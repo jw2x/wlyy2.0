@@ -9,7 +9,6 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
-        <module>../common/common-log</module>
         <module>../common/common-swagger</module>
     </modules>
 
