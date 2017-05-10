@@ -4,7 +4,7 @@ server:
 spring:
   cloud:
     config:
-      enabled: false
+      enabled: false    ##是否加入配置服务
 
 eureka:
   client:
@@ -22,10 +22,6 @@ info:
 ---
 spring:
   profiles: dev
-
----
-spring:
-  profiles: alpha
 
 ---
 spring:

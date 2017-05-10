@@ -1,8 +1,8 @@
 项目结构
      common    公共的一些配置
-        common-log   日志工程
         common-swagger   swagger工程
      svr    业务微服务  
+        svr-user 用户微服务
      svr-configuration    配置服务
      svr-discovery    发现服务
      common-lib-parent-pom    common公共工程的maven父pom
