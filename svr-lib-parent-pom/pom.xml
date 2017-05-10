@@ -24,6 +24,9 @@
 
         <module>../svr-configuration</module> <!--配置服务-->
         <module>../svr-discovery</module><!--发现服务-->
+
+        <!--业务微服务-->
+        <module>../svr/svr-user</module><!--用户微服务-->
     </modules>
 
     <properties>

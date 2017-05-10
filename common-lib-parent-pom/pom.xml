@@ -6,11 +6,32 @@
 
     <groupId>com.yihu</groupId>
     <artifactId>common-lib-parent-pom</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
         <module>../common/common-log</module>
         <module>../common/common-swagger</module>
     </modules>
 
+    <properties>
+        <version.swagger>2.4.0</version.swagger>
+        <version.swagger-ui>2.4.0</version.swagger-ui>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--swagger ui start-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${version.swagger}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${version.swagger-ui}</version>
+            </dependency>
+            <!--swagger ui end-->
+        </dependencies>
+    </dependencyManagement>
 </project>
