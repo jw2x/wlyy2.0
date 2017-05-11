@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 /**
  * Created by chenweida on 2017/5/10.
  */
-@SpringBootApplication(exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
+@SpringBootApplication
 @EnableDiscoveryClient//服务注册到发现服务
 public class Application {
 

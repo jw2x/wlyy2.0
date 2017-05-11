@@ -10,7 +10,7 @@
         <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
     <groupId>com.yihu</groupId>
-    <artifactId>svr-user</artifactId>
+    <artifactId>svr-base</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
@@ -47,5 +47,9 @@
             <artifactId>spring-cloud-starter-eureka-server</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
     </dependencies>
 </project>
