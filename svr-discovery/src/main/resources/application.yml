@@ -8,16 +8,21 @@ spring:
 
 eureka:
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: false #是否注册到eurika
+    registry-fetch-interval-seconds: 30 #定期的更新客户端的服务清单 30秒更新一次
+#    fetch-registry: false
     serviceUrl:
-      defaultZone: http://127.0.0.1:${server.port}/eureka/
+      defaultZone: http://user:123456@127.0.0.1:8761/eureka/
 
-info:
-  app:
-    name: DiscoveryService
-    description: EHR platform global discovery service
-    version: 1.0.0
+
+#eurika界面的账号密码
+security:
+  basic:
+    enabled: true
+  user:
+    name: user
+    password: 123456
+
 
 ---
 spring:

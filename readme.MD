@@ -7,4 +7,5 @@
      svr-discovery    发现服务
      common-lib-parent-pom    common公共工程的maven父pom
      jw-lib-parent-pom   jw业务公共工程的maven父pom
+     web-gateway 对外的接口网关
      .gitignore   项目提交忽略配置文件
