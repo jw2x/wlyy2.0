@@ -3,40 +3,25 @@ spring:
     name: svr-configurations
 
 
-security:
-  user:
-    name: jw
-    password:  jkzlJwConfiguration
-
-
 
 ---
 spring:
   profiles: dev
-
+##git配置
   cloud:
     config:
       server:
         git:
           #uri: http://192.168.1.220:10080/hill9868/ehr.config.git
-          uri: http://192.168.1.220:10080/EHR/ehr.config.git
-        default-label: dev
+          uri: http://192.168.1.220:10080/chenweida/jw.config.git
+        default-label: master
 
----
-spring:
-  profiles: alpha
 
-  cloud:
-    config:
-      server:
-        git:
-          uri: http://192.168.1.220:10080/EHR/ehr.config.git
-        default-label: dev
 
 ---
 spring:
   profiles: test
-
+##git配置
   cloud:
     config:
       server:
@@ -47,6 +32,7 @@ spring:
 ---
 spring:
   profiles: prod
+##git配置
   cloud:
     config:
       server:

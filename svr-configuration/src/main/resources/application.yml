@@ -1,16 +1,21 @@
 server:
   port: 1221
 
-management:
-  port: ${server.port}
 
-info:
-  app:
-    name: ConfigurationService
-    description: 全局配置服务
-    version: 1.0.0
+eureka:
+  client:
+    healthcheck:
+      enabled: true #启动监控检查
+  instance:
+    #eurika使用IP不使用host
+    prefer-ip-address: true
+    #定制化在eurika中显示的名称
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
 
-
+security:
+  user:
+    name: jw
+    password:  jkzl
 
 
 ---
@@ -18,24 +23,26 @@ spring:
   profiles: dev
 
 eureka:
-  instance:
-    ip-address: http://${discovery.name}:${discovery.password}@127.0.0.1:8761
-    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
+
 
 ---
 spring:
   profiles: test
 
 eureka:
-  instance:
-    ip-address: http://${discovery.name}:${discovery.password}@172.19.103.73:8761
-    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
 
 ---
 spring:
   profiles: prod
 
+
 eureka:
-  instance:
-    ip-address: http://${discovery.name}:${discovery.password}@11.1.2.21:8761
-    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka

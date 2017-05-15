@@ -6,7 +6,7 @@ spring:
   cloud:
     config:
       username: jw
-      password: jkzlJwConfiguration
+      password: jkzl
       discovery:
         enabled: true ##开始发现服务
         service-id: svr-configurations ##配置服务的名字
@@ -14,9 +14,6 @@ spring:
 
 eureka:
   client:
-    serviceUrl:
-      #http://账号:密码@127.0.0.1:8761/eureka/
-      defaultZone: http://user:123456@127.0.0.1:8761/eureka/
     healthcheck:
       enabled: true #启动监控检查
   instance:
@@ -24,3 +21,37 @@ eureka:
     prefer-ip-address: true
     #定制化在eurika中显示的名称
     instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+
+---
+spring:
+  profiles: dev
+
+
+eureka:
+  client:
+    serviceUrl:
+      #http://账号:密码@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/
+
+---
+spring:
+  profiles: test
+
+
+eureka:
+  client:
+    serviceUrl:
+      #http://账号:密码@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/
+
+
+---
+spring:
+  profiles: prod
+
+
+eureka:
+  client:
+    serviceUrl:
+      #http://账号:密码@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/

@@ -16,9 +16,9 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootApplication
 @EnableDiscoveryClient//服务注册到发现服务
-public class Application {
+public class SvrBaseApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(SvrBaseApplication.class, args);
     }
 }
