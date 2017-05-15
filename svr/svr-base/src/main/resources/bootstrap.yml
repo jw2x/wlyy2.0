@@ -1,0 +1,26 @@
+##优先读取 boostarap配置 然后在读取application。yml的配置
+spring:
+  application:
+    name: svr-user
+  #从发现服务里面取配置服务的信息
+  cloud:
+    config:
+      username: jw
+      password: jkzlJwConfiguration
+      discovery:
+        enabled: true ##开始发现服务
+        service-id: svr-configurations ##配置服务的名字
+
+
+eureka:
+  client:
+    serviceUrl:
+      #http://账号:密码@127.0.0.1:8761/eureka/
+      defaultZone: http://user:123456@127.0.0.1:8761/eureka/
+    healthcheck:
+      enabled: true #启动监控检查
+  instance:
+    #eurika使用IP不使用host
+    prefer-ip-address: true
+    #定制化在eurika中显示的名称
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}

@@ -1,0 +1,36 @@
+##优先读取 boostarap配置 然后在读取application。yml的配置
+##boostarap一般是配置基本不会修改的配置
+spring:
+  application:
+    name: web-gateway  ##写这个配置的话 会先去服务器找web-gateway.yml的配置 没有的话就找application.yml
+
+---
+spring:
+  profiles: dev
+  cloud:
+    config:
+      username: jw
+      password: jkzljw
+      uri: http://127.0.0.1:1221
+      #uri: http://192.168.1.221:1221
+      label: dev
+
+---
+spring:
+  profiles: test
+  cloud:
+    config:
+      username: jw
+      password: jkzljw
+      uri: http://172.19.103.73:1221
+      label: dev
+
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      username: jw
+      password: jkzljw
+      uri: http://11.1.2.21:1221
+      label: master

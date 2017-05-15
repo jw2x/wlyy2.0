@@ -2,6 +2,14 @@ spring:
   application:
     name: svr-configurations
 
+
+security:
+  user:
+    name: jw
+    password:  jkzlJwConfiguration
+
+
+
 ---
 spring:
   profiles: dev
