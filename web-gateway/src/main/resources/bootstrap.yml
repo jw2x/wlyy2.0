@@ -1,36 +1,47 @@
+
+
 ##优先读取 boostarap配置 然后在读取application。yml的配置
-##boostarap一般是配置基本不会修改的配置
 spring:
-  application:
-    name: web-gateway  ##写这个配置的话 会先去服务器找web-gateway.yml的配置 没有的话就找application.yml
+  #从发现服务里面取配置服务的信息
+  cloud:
+    config:
+      username: jw
+      password: jkzl
+      discovery:
+        enabled: true ##使用发现服务
+        service-id: svr-configurations ##配置服务的名字
+
 
 ---
 spring:
   profiles: dev
-  cloud:
-    config:
-      username: jw
-      password: jkzljw
-      uri: http://127.0.0.1:1221
-      #uri: http://192.168.1.221:1221
-      label: dev
+
+
+eureka:
+  client:
+    serviceUrl:
+      #http://账号:密码@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/
 
 ---
 spring:
   profiles: test
-  cloud:
-    config:
-      username: jw
-      password: jkzljw
-      uri: http://172.19.103.73:1221
-      label: dev
+
+
+eureka:
+  client:
+    serviceUrl:
+      #http://账号:密码@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/
+
 
 ---
 spring:
   profiles: prod
-  cloud:
-    config:
-      username: jw
-      password: jkzljw
-      uri: http://11.1.2.21:1221
-      label: master
+
+
+eureka:
+  client:
+    serviceUrl:
+      #http://账号:密码@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/

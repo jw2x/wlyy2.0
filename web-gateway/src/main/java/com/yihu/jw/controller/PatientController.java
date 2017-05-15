@@ -26,7 +26,7 @@ public class PatientController {
     @GetMapping(value = "findByCode")
     //配置HystrixProperty 则调用的方法和fallback是同一个线程 否则就不是
     //@HystrixCommand(fallbackMethod = "findByCodeFallback",commandProperties = @HystrixProperty(name = "execution.isolation.strategy",value = "SEMAPHORE"))
-    @HystrixCommand(fallbackMethod = "findByCodeFallback" )
+    //@HystrixCommand(fallbackMethod = "findByCodeFallback" )
     public String findByCode(
             @ApiParam(name = "code", value = "患者code", required = true) @RequestParam(value = "code", required = true) String code) {
         return patientFegin.findByCode(code);

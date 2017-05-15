@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestParam;
  * Created by chenweida on 2017/5/13.
  */
 @Component
-public class PatientFeginFallback implements PatientFegin{
+public class PatientFeginFallback implements PatientFegin {
+
     @Override
-    public String findByCode(@RequestParam(value = "code", required = true) String code) {
-        return "";
+    public String findByCode(String code) {
+        return "断路器启动";
     }
 }
