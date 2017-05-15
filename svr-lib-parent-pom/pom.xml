@@ -38,10 +38,21 @@
         <version.springCloud.start>1.2.0.RELEASE</version.springCloud.start>
         <version.springBoot>1.5.3.RELEASE</version.springBoot>
         <version.mysql>5.1.38</version.mysql>
+        <version.jackson>2.6.6</version.jackson>
+        <version.myCommon>1.0.0</version.myCommon>
+        <version.spring>4.3.3.RELEASE</version.spring>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
         <dependencies>
+
+            <!--自己的封装 common -->
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>common-swagger</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+
             <!--springCloud start-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -68,13 +79,42 @@
                 <artifactId>spring-cloud-starter-bus-amqp</artifactId>
                 <version>${version.springCloud}</version>
             </dependency>
+            <!--路由网关-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-zuul</artifactId>
+                <version>${version.springCloud}</version>
+            </dependency>
             <!--断路由-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-hystrix</artifactId>
                 <version>${version.springCloud}</version>
             </dependency>
-
+            <!--hystrix仪表盘-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-netflix-hystrix-dashboard</artifactId>
+                <version>${version.springCloud}</version>
+            </dependency>
+            <!--配置服务客户端-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-config</artifactId>
+                <version>${version.springCloud}</version>
+            </dependency>
+            <!--发现服务服务客户端-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-eureka</artifactId>
+                <version>${version.springCloud}</version>
+            </dependency>
+            <!--收集集群中的数据-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-turbine</artifactId>
+                <version>${version.springCloud}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-feign</artifactId>
@@ -148,6 +188,11 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>${version.springBoot}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-tomcat</artifactId>
                 <version>${version.springBoot}</version>
             </dependency>
@@ -163,6 +208,14 @@
             </dependency>
             <!--springBoot end-->
 
+            <!--spring start-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <!--spring end-->
+
             <!--数据库驱动 start-->
             <dependency>
                 <groupId>mysql</groupId>
@@ -170,6 +223,24 @@
                 <version>${version.mysql}</version>
             </dependency>
             <!--数据库驱动 end-->
+
+            <!--fastJson start-->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+            <!--fastJson end-->
         </dependencies>
     </dependencyManagement>
 
