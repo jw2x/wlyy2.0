@@ -1,17 +1,20 @@
-##如果有配置服务的话，远程服务器和本地服务器配置不一致的情况下，优先远程的为主
+##优先读取 boostarap配置 然后在读取application。yml的配置
 spring:
-  application:
-    name:  svr-dashboard  ##注册到发现服务的id 如果id一样 eurika会自动做负载
   #从发现服务里面取配置服务的信息
-
+  cloud:
+    config:
+      username: jw
+      password: jkzl
+      discovery:
+        enabled: true ##使用发现服务
+        service-id: svr-configurations ##配置服务的名字
 
 
 ---
-
 spring:
-  profiles: jwdev
+  profiles: dev
 
-
+##发现服务的地址
 eureka:
   client:
     serviceUrl:
@@ -20,7 +23,7 @@ eureka:
 
 ---
 spring:
-  profiles: jwtest
+  profiles: test
 
 
 eureka:
@@ -32,7 +35,7 @@ eureka:
 
 ---
 spring:
-  profiles: jwprod
+  profiles: prod
 
 
 eureka:
