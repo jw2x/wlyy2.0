@@ -1,4 +1,5 @@
-
+server:
+  port: 1221
 
 ##配置服务的账号密码
 security:
@@ -9,7 +10,7 @@ security:
 
 ---
 spring:
-  profiles: dev
+  profiles: jwdev
 
 eureka:
   client:
@@ -19,7 +20,7 @@ eureka:
 
 ---
 spring:
-  profiles: test
+  profiles: jwtest
 
 eureka:
   client:
@@ -28,7 +29,7 @@ eureka:
 
 ---
 spring:
-  profiles: prod
+  profiles: jwprod
 
 
 eureka:

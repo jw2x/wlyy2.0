@@ -5,6 +5,7 @@
         svr-user 用户微服务
      svr-configuration    配置服务
      svr-discovery    发现服务
+     svr-dashboard    监控服务
      common-lib-parent-pom    common公共工程的maven父pom
      jw-lib-parent-pom   jw业务公共工程的maven父pom
      web-gateway 对外的接口网关

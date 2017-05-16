@@ -24,12 +24,12 @@ security:
 
 ---
 spring:
-  profiles: dev
+  profiles: jwdev
 
 ---
 spring:
-  profiles: test
+  profiles: jwtest
 
 ---
 spring:
-  profiles: prod
+  profiles: jwprod
