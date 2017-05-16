@@ -27,6 +27,7 @@
 
         <!--业务微服务-->
         <module>../svr/svr-base</module><!--基础微服务-->
+        <module>../svr/svr-quota</module><!--统计微服务-->
 
 
         <!--网关-->
