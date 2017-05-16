@@ -3,12 +3,11 @@ spring:
   application:
     name:  web-gateway  ##注册到发现服务的id 如果id一样 eurika会自动做负载
 
+##开启feign断路器
+feign:
+  hystrix:
+    enabled: true
 
-##断路器
-#hystrix:
-#  metrics:
-#    enabled: true
-#    polling-interval-ms: 20000 ##熔断间隔时间 默认是2秒
 
 
 #zuul 默认会代理所有的微服务  路径 /{appliction.name}/**

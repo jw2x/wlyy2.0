@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * Created by chenweida on 2017/5/13.
  */
-//@Component
+@Component
 public class PatientFeginFallback implements PatientFegin {
 
     private Logger logger = LoggerFactory.getLogger(PatientFeginFallback.class);
 
     @Override
-    public String findByCode(String code) {
+    public String findByCode( @RequestParam(value = "code", required = true) String code) {
         logger.info("进入断路器");
         return "断路器启动";
     }

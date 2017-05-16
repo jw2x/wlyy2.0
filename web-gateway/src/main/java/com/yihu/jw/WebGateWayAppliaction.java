@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableDiscoveryClient//服务注册到发现服务
 @EnableHystrix //启动断路器
 @EnableHystrixDashboard //启动Hystrix仪表盘（监控数据）
-@EnableZuulProxy //启动zuul代理 路由
+//@EnableZuulProxy //启动zuul代理 路由
 @EnableFeignClients //声名式的客户端
 @EnableCircuitBreaker
 public class WebGateWayAppliaction {

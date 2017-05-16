@@ -6,6 +6,8 @@ import com.yihu.jw.fegin.PatientFegin;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @RequestMapping("/rest/patient")
 @Api(description = "患者")
 public class PatientController {
+    private Logger logger= LoggerFactory.getLogger(PatientController.class);
     @Autowired
     private PatientFegin patientFegin;
 
@@ -27,9 +30,16 @@ public class PatientController {
     //配置HystrixProperty 则调用的方法和fallback是同一个线程 否则就不是
     //@HystrixCommand(fallbackMethod = "findByCodeFallback",commandProperties = @HystrixProperty(name = "execution.isolation.strategy",value = "SEMAPHORE"))
 //   @HystrixCommand(fallbackMethod = "findByCodeFallback" )
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public String findByCode(
             @ApiParam(name = "code", value = "患者code", required = true) @RequestParam(value = "code", required = true) String code) {
-        return patientFegin.findByCode(code);
+        logger.info("start");
+        String text1 =patientFegin.findByCode(code);
+        logger.info("text");
+        String text2 =patientFegin.findByCode(code);
+        return text1+text2;
     }
 
 //    /**
