@@ -5,7 +5,7 @@ spring:
 
 ---
 spring:
-  profiles: dev
+  profiles: jwdev
 ##git配置
   cloud:
     config:
@@ -17,7 +17,7 @@ spring:
 
 ---
 spring:
-  profiles: test
+  profiles: jwtest
 ##git配置
   cloud:
     config:
@@ -28,7 +28,7 @@ spring:
 
 ---
 spring:
-  profiles: prod
+  profiles: jwprod
 ##git配置
   cloud:
     config:
