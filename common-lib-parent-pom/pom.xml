@@ -10,11 +10,13 @@
     <packaging>pom</packaging>
     <modules>
         <module>../common/common-swagger</module>
+        <module>../common/common-quartz</module>
     </modules>
 
     <properties>
         <version.swagger>2.4.0</version.swagger>
         <version.swagger-ui>2.4.0</version.swagger-ui>
+        <version.quartz>2.3.0</version.quartz>
     </properties>
 
     <dependencyManagement>
@@ -31,6 +33,18 @@
                 <version>${version.swagger-ui}</version>
             </dependency>
             <!--swagger ui end-->
+            <!--quartz start-->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${version.quartz}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz-jobs</artifactId>
+                <version>${version.quartz}</version>
+            </dependency>
+            <!--quartz end-->
         </dependencies>
     </dependencyManagement>
 </project>
