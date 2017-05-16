@@ -16,4 +16,7 @@
      web-gateway 对外的接口网关
      .gitignore   项目提交忽略配置文件
      
-     
+项目运行
+    先启动      svr-discovery(发现服务)
+    然后在启动  svr-configuration(配置服务)
+    之后启动微服务即可（微服务启动顺序一般没有要求）
