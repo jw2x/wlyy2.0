@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -20,10 +22,13 @@ import org.springframework.web.context.annotation.SessionScope;
 @RestController
 @RequestMapping("/rest/patient")
 @Api(description = "患者")
+@RefreshScope
 public class PatientController {
     private Logger logger= LoggerFactory.getLogger(PatientController.class);
     @Autowired
     private PatientFegin patientFegin;
+    @Value("${test}")
+    private  String test;
 
     @ApiOperation(value = "根据code查找患者")
     @GetMapping(value = "findByCode")
@@ -41,7 +46,11 @@ public class PatientController {
         String text2 =patientFegin.findByCode(code);
         return text1+text2;
     }
-
+    @ApiOperation(value = "测试配置刷新")
+    @GetMapping(value = "test")
+    public String test() {
+        return test;
+    }
 //    /**
 //     * 参数要一致 返回值类型也要一致
 //     *

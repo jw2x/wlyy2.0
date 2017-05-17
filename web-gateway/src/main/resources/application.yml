@@ -12,7 +12,7 @@ feign:
 
 #zuul 默认会代理所有的微服务  路径 /{appliction.name}/**
 zuul:
-  ignored-services: '*'  ##忽略全部的代理  忽略单个微服务   ignored-services: svr-base 多个逗号分割
+#  ignored-services: '*'  ##忽略全部的代理  忽略单个微服务   ignored-services: svr-base 多个逗号分割
   routes:
     svr-base: /base/**  ##svr-base方向代理到/base下多层级的路径
 #    svr-base:    这种方式和  svr-base: /base/**  一样  svr-base可以随便写 唯一即可
@@ -34,7 +34,15 @@ zuul:
 ---
 spring:
   profiles: jwdev
-
+#  cloud:
+#    stream:
+#      kafka:
+#        binder:
+#          brokers: 172.17.110.201
+#          defaultBrokerPort: 9092
+#          zkNodes: 172.17.110.201
+#          defaultZkPort: 2181
+#          replicationFactor: 1
 ---
 spring:
   profiles: jwtest
