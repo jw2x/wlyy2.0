@@ -9,3 +9,8 @@
         </dependency>
     
     localhost:8088/health
+    
+刷新配置
+在有需要刷新配置的地方的类加上注解
+@RefreshScope
+curl -X POST http://localhost:8088/refresh

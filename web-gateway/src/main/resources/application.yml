@@ -9,6 +9,11 @@ feign:
     enabled: true
 
 
+management:
+  security:
+    enabled: false  ##关闭 refresh的权限认证
+
+
 
 #zuul 默认会代理所有的微服务  路径 /{appliction.name}/**
 zuul:
