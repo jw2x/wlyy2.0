@@ -12,6 +12,7 @@
         <module>../common/common-swagger</module>
         <module>../common/common-quartz</module>
         <module>../common/common-log</module>
+        <module>../common/common-rest-model</module>
     </modules>
 
     <properties>
