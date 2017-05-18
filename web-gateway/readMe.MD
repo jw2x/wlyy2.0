@@ -12,5 +12,7 @@
     
 刷新配置
 在有需要刷新配置的地方的类加上注解
-@RefreshScope
-curl -X POST http://localhost:8088/refresh
+
+    @RefreshScope
+    访问以下路径刷新配置
+    curl -X POST http://localhost:8088/refresh
