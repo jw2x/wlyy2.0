@@ -6,6 +6,7 @@
     
 添加需要监控的客户端
     添加maven支持即可
+    
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

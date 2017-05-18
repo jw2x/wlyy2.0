@@ -4,6 +4,7 @@ svr-logServer
     
 配置需要跟踪的系统
     添加maven支持即可
+    
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-sleuth</artifactId>
