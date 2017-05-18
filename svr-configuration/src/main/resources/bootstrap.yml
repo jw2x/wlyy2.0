@@ -6,6 +6,8 @@ security:
   user:
     name: jw
     password:  jkzl
+
+
 ---
 spring:
   profiles: jwdev
