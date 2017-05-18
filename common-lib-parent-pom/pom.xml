@@ -11,12 +11,14 @@
     <modules>
         <module>../common/common-swagger</module>
         <module>../common/common-quartz</module>
+        <module>../common/common-log</module>
     </modules>
 
     <properties>
         <version.swagger>2.4.0</version.swagger>
         <version.swagger-ui>2.4.0</version.swagger-ui>
         <version.quartz>2.3.0</version.quartz>
+        <version.logback>1.2.3</version.logback>
     </properties>
 
     <dependencyManagement>
@@ -45,6 +47,23 @@
                 <version>${version.quartz}</version>
             </dependency>
             <!--quartz end-->
+            <!--log start-->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-access</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+            <!--log end-->
         </dependencies>
     </dependencyManagement>
 </project>
