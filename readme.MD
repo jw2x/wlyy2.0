@@ -19,6 +19,11 @@
      .gitignore   项目提交忽略配置文件
      
 项目运行
-    先启动      svr-discovery(发现服务)
-    然后在启动  svr-configuration(配置服务)
-    之后启动微服务即可（微服务启动顺序一般没有要求）
+    环境变量配置
+        开发环境:  spring_profiles_active jwdev
+        测试环境:  spring_profiles_active jwtest
+        正式环境:  spring_profiles_active jwprod
+    启动顺序
+        先启动      svr-discovery(发现服务)
+        然后在启动  svr-configuration(配置服务)
+        之后启动微服务即可（微服务启动顺序一般没有要求）
