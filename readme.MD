@@ -11,6 +11,8 @@
         涉及主要技术 euruka ribbon 
      svr-dashboard    监控服务 
         涉及主要技术 hystrix,hystrix-dashboard
+     svr-logServer 分布式追踪
+        涉及主要技术 zipkin 
      common-lib-parent-pom    common公共工程的maven父pom
      jw-lib-parent-pom   jw业务公共工程的maven父pom 
      web-gateway 对外的接口网关
