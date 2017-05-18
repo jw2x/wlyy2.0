@@ -18,7 +18,6 @@ public class PatientController {
     @GetMapping(value = "findByCode")
     public String findByCode(
             @ApiParam(name = "code", value = "患者code", required = true)@RequestParam(value = "code", required = true) String code) {
-        System.out.println(code);
        return "调用根据code查找患者";
     }
 }
