@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -27,6 +28,9 @@ public class PatientController {
     @Autowired
     private PatientFegin patientFegin;
 
+    @Autowired
+    private Tracer tracer;
+
     @ApiOperation(value = "根据code查找患者")
     @GetMapping(value = "findByCode")
     //配置HystrixProperty 则调用的方法和fallback是同一个线程 否则就不是
@@ -37,11 +41,10 @@ public class PatientController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public String findByCode(
             @ApiParam(name = "code", value = "患者code", required = true) @RequestParam(value = "code", required = true) String code) {
-        logger.info("start");
+        tracer.getCurrentSpan().logEvent("开始调用微服务查询患者");
         String text1 =patientFegin.findByCode(code);
-        logger.info("text");
-        String text2 =patientFegin.findByCode(code);
-        return text1+text2;
+        tracer.getCurrentSpan().logEvent("查询调用微服务找患者结束");
+        return text1;
     }
 
 //    /**
