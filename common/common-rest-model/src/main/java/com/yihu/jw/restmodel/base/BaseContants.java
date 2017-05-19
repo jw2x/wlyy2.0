@@ -30,4 +30,24 @@ public class BaseContants {
         public static final String api_getFunctionsNoPage="getFunctionsNoPage";
 
     }
+    //微信token模块常量
+    public static class WxAccessToken{
+        public static final String message_success_create="wxAccessToken create success";
+        public static final String message_success_get="wxAccessToken get success";
+
+        public static final String api_common="wxAccessToken";
+        public static final String api_create="create";
+        public static final String api_get="get";
+        public static final String message_fail_wechatCode_is_null="wechatCode is null";
+    }
+
+    //微信按钮模块常量
+    public static class WxMenu{
+        public static final String message_success_create="wxMenu create success";
+        public static final String message_success_get="wxMenu get success";
+
+        public static final String api_common="wxMenu";
+        public static final String api_create="create";
+        public static final String api_get="get";
+    }
 }
