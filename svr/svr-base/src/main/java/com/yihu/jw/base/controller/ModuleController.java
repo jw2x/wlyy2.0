@@ -1,9 +1,10 @@
 package com.yihu.jw.base.controller;
 
-import com.yihu.jw.base.model.Function;
-import com.yihu.jw.base.service.FunctionService;
+import com.yihu.jw.base.model.Module;
+import com.yihu.jw.base.service.ModuleService;
+import com.yihu.jw.base.service.ModuleService;
 import com.yihu.jw.restmodel.base.BaseContants;
-import com.yihu.jw.restmodel.base.MFunction;
+import com.yihu.jw.restmodel.base.MModule;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
@@ -17,74 +18,73 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by chenweida on 2017/5/19.
  */
 @RestController
-@RequestMapping(BaseContants.Function.api_common)
-@Api(value = "功能模块", description = "功能模块接口管理")
-public class FunctionController extends EnvelopRestController {
+@RequestMapping(BaseContants.Module.api_common)
+@Api(value = "模块模块", description = "模块接口管理")
+public class ModuleController extends EnvelopRestController {
     @Autowired
-    private FunctionService functionService;
+    private ModuleService moduleService;
 
-    @PostMapping(value = BaseContants.Function.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建功能", notes = "创建单个功能")
-    public Envelop createFunction(
+    @PostMapping(value = BaseContants.Module.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建模块", notes = "创建单个模块")
+    public Envelop createModule(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Function function = toEntity(jsonData, Function.class);
-            return Envelop.getSuccess(BaseContants.Function.message_success_create, functionService.createFunction(function));
+            Module module = toEntity(jsonData, Module.class);
+            return Envelop.getSuccess(BaseContants.Module.message_success_create, moduleService.createModule(module));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = BaseContants.Function.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "修改功能", notes = "修改功能")
-    public Envelop updateFunction(
+    @PutMapping(value = BaseContants.Module.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "修改模块", notes = "修改模块")
+    public Envelop updateModule(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Function function = toEntity(jsonData, Function.class);
-            return Envelop.getSuccess(BaseContants.Function.message_success_update, functionService.updateFunction(function));
+            Module module = toEntity(jsonData, Module.class);
+            return Envelop.getSuccess(BaseContants.Module.message_success_update, moduleService.updateModule(module));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
-    @DeleteMapping(value = BaseContants.Function.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "删除功能", notes = "删除功能")
-    public Envelop deleteFunction(
+    @DeleteMapping(value = BaseContants.Module.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "删除模块", notes = "删除模块")
+    public Envelop deleteModule(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
         try {
-            functionService.deleteFunction(code);
-            return Envelop.getSuccess(BaseContants.Function.message_success_delete );
+            moduleService.deleteModule(code);
+            return Envelop.getSuccess(BaseContants.Module.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseContants.Function.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "根据code查找功能", notes = "根据code查找功能")
+    @GetMapping(value = BaseContants.Module.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "根据code查找模块", notes = "根据code查找模块")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(BaseContants.Function.message_success_find, functionService.findByCode(code));
+            return Envelop.getSuccess(BaseContants.Module.message_success_find, moduleService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @RequestMapping(value = BaseContants.Function.api_getFunctions, method = RequestMethod.GET)
-    @ApiOperation(value = "获取功能列表(分页)")
-    public Envelop getFunctions(
+    @RequestMapping(value = BaseContants.Module.api_getModules, method = RequestMethod.GET)
+    @ApiOperation(value = "获取模块列表(分页)")
+    public Envelop getModules(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -99,20 +99,20 @@ public class FunctionController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<Function> list = functionService.search(fields, filters, sorts, page, size);
+        List<Module> list = moduleService.search(fields, filters, sorts, page, size);
         //获取总数
-        long count=functionService.getCount(filters);
+        long count=moduleService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MFunction> mFunctions = convertToModels(list, new ArrayList<>(list.size()), MFunction.class, fields);
+        List<MModule> mModules = convertToModels(list, new ArrayList<>(list.size()), MModule.class, fields);
 
-        return Envelop.getSuccessListWithPage(BaseContants.Function.message_success_find_functions,mFunctions, page, size,count);
+        return Envelop.getSuccessListWithPage(BaseContants.Module.message_success_find_Modules,mModules, page, size,count);
     }
 
 
-    @GetMapping(value = BaseContants.Function.api_getFunctionsNoPage)
-    @ApiOperation(value = "获取功能列表，不分页")
+    @GetMapping(value = BaseContants.Module.api_getModulesNoPage)
+    @ApiOperation(value = "获取模块列表，不分页")
     public Envelop getAppsNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
             @RequestParam(value = "fields", required = false) String fields,
@@ -121,9 +121,9 @@ public class FunctionController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<Function> list = functionService.search(fields,filters,sorts);
+        List<Module> list = moduleService.search(fields,filters,sorts);
         //封装返回格式
-        List<MFunction> mFunctions = convertToModels(list, new ArrayList<>(list.size()), MFunction.class, fields);
-        return Envelop.getSuccessList(BaseContants.Function.message_success_find_functions,mFunctions);
+        List<MModule> mModules = convertToModels(list, new ArrayList<>(list.size()), MModule.class, fields);
+        return Envelop.getSuccessList(BaseContants.Module.message_success_find_Modules,mModules);
     }
 }
