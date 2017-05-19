@@ -158,10 +158,10 @@ public class Envelop implements Serializable {
         return envelop;
     }
 
-    public static Envelop getSuccessList(String message, List<MFunction> mFunctions) {
+    public static Envelop getSuccessList(String message, List objList) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
-        envelop.setDetailModelList(mFunctions);
+        envelop.setDetailModelList(objList);
         return envelop;
     }
 }
