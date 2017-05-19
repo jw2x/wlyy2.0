@@ -3,6 +3,7 @@ package com.yihu.jw.base.model;// default package
 import com.yihu.jw.base.model.base.IdEntity;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.*;
 
 /**
@@ -13,17 +14,17 @@ import javax.persistence.*;
 public class Module extends IdEntity implements java.io.Serializable {
 
 	// Fields
-	private String code;
-	private String name;
-	private String saasId;
-	private String parentCode;
-	private Byte status;
+	private String code; //业务code
+	private String name; //模块名称
+	private String saasId; //关联 Saas code
+	private String parentCode;//父id
+	private Integer status;
 	private String createUser;
 	private String createUserName;
-	private Timestamp createTime;
+	private Date createTime;
 	private String modifyUser;
 	private String modifyUserName;
-	private Timestamp modifyTime;
+	private Date modifyTime;
 	private String remark;
 
 	// Constructors
@@ -41,7 +42,7 @@ public class Module extends IdEntity implements java.io.Serializable {
 
 	/** full constructor */
 	public Module(Long id, String code, String name, String saasId,
-			String parentCode, Byte status, String createUser,
+			String parentCode, Integer status, String createUser,
 			String createUserName, Timestamp createTime, String modifyUser,
 			String modifyUserName, Timestamp modifyTime, String remark) {
 		this.id = id;
@@ -96,11 +97,11 @@ public class Module extends IdEntity implements java.io.Serializable {
 	}
 
 	@Column(name = "status", precision = 2, scale = 0)
-	public Byte getStatus() {
+	public Integer getStatus() {
 		return this.status;
 	}
 
-	public void setStatus(Byte status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
 
@@ -123,11 +124,11 @@ public class Module extends IdEntity implements java.io.Serializable {
 	}
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_time", nullable = false, length = 0)
-	public Timestamp getCreateTime() {
+	public Date getCreateTime() {
 		return this.createTime;
 	}
 
-	public void setCreateTime(Timestamp createTime) {
+	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
 
@@ -150,11 +151,11 @@ public class Module extends IdEntity implements java.io.Serializable {
 	}
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "modify_time", nullable = false, length = 0)
-	public Timestamp getModifyTime() {
+	public Date getModifyTime() {
 		return this.modifyTime;
 	}
 
-	public void setModifyTime(Timestamp modifyTime) {
+	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
 	}
 

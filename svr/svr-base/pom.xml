@@ -28,6 +28,10 @@
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
+            <artifactId>common-mysql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
             <artifactId>common-log</artifactId>
         </dependency>
         <dependency>
@@ -74,10 +78,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
         <dependency>

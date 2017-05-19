@@ -8,15 +8,26 @@ public class BaseContants {
     //功能模块常量
     public static class Function{
         public static final String message_success_create="function create success";
+        public static final String message_success_update="function update success";
+        public static final String message_success_find="function find success";
+        public static final String message_success_find_functions="functions find success";
+        public static final String message_success_delete="function delete success";
+
+
         public static final String message_fail_name_exist="function name exist";
         public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="function is null";
         public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_code_no_exist="code no exist";
 
 
-        public static final String common="function";
-        public static final String create="create";
-        public static final String update="update";
+        public static final String api_common="function";
+        public static final String api_create="create";
+        public static final String api_update="update";
+        public static final String api_delete="delete";
+        public static final String api_getByCode="getByCode";
+        public static final String api_getFunctions="getFunctions";
+        public static final String api_getFunctionsNoPage="getFunctionsNoPage";
 
     }
 }

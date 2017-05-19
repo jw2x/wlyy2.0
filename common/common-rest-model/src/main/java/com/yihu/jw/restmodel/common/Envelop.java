@@ -1,5 +1,7 @@
 package com.yihu.jw.restmodel.common;
 
+import com.yihu.jw.restmodel.base.MFunction;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -137,11 +139,29 @@ public class Envelop implements Serializable {
         envelop.setObj(obj);
         return envelop;
     }
+
+    public static Envelop getSuccessListWithPage(String message,List detailModelList,Integer page,Integer size,Long count) {
+        Envelop envelop = new Envelop();
+        envelop.setSuccessMsg(message);
+        envelop.setPageSize(size);
+        envelop.setDetailModelList(detailModelList);
+        envelop.setCurrPage(page);
+        envelop.setTotalCount(count.intValue());
+        return envelop;
+    }
+
     public static Envelop getError(String message,int errorCode) {
         Envelop envelop = new Envelop();
         envelop.setSuccessFlg(false);
         envelop.setErrorMsg(message);
         envelop.setErrorCode(errorCode);
+        return envelop;
+    }
+
+    public static Envelop getSuccessList(String message, List<MFunction> mFunctions) {
+        Envelop envelop = new Envelop();
+        envelop.setSuccessMsg(message);
+        envelop.setDetailModelList(mFunctions);
         return envelop;
     }
 }
