@@ -1,5 +1,6 @@
 package com.yihu.jw.config;
 
+import com.yihu.jw.restmodel.base.BaseContants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,14 +27,15 @@ public class SwaggerConfig {
                 .pathMapping("/")
                 .select()
                 .paths(or(
-                        regex("/patient/.*")))
+                        regex("/patient/.*"),
+                        regex("/"+ BaseContants.Function.api_common+"/.*")))
                 .build()
                 .apiInfo(publicApiInfo());
     }
 
     private ApiInfo publicApiInfo() {
         ApiInfo apiInfo = new ApiInfo("基卫2.0API",
-                "基卫2.0API，提供健康档案服务。",
+                "基卫2.0API，提供基础卫生相关服务。",
                 "1.0",
                 "No terms of service",
                 "wenfujian@jkzl.com",
