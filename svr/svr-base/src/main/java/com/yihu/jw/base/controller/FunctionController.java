@@ -88,7 +88,8 @@ public class FunctionController extends EnvelopRestController {
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
-            @RequestParam(value = "filters", required = false) String filters,
+            //code like 1,name大于aa ,code 等于1
+            @RequestParam(value = "filters", required = false, defaultValue = "code?1;name>aa;code=1") String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
