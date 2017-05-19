@@ -1,6 +1,12 @@
-package com.yihu.jw.restmodel.base;
+package com.yihu.jw.restmodel.common;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.jw.restmodel.exception.ApiException;
+import com.yihu.jw.util.date.DateUtil;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -31,5 +37,15 @@ public class EnvelopRestController {
 
         return envelop;
     }
-
+    //Json转实体类
+    public <T> T toEntity(String json, Class<T> entityCls) {
+        try {
+            ObjectMapper objectMapper=new ObjectMapper();
+            objectMapper.setDateFormat(new SimpleDateFormat(DateUtil.yyyy_MM_dd_HH_mm_ss));
+            T entity = objectMapper.readValue(json, entityCls);
+            return entity;
+        } catch (IOException ex) {
+            throw new ApiException( "Unable to parse json, " + ex.getMessage(),CommonContants.common_error_params_code);
+        }
+    }
 }

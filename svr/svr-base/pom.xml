@@ -24,6 +24,10 @@
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
+            <artifactId>common-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
             <artifactId>common-log</artifactId>
         </dependency>
         <dependency>
@@ -74,6 +78,19 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
         </dependency>
     </dependencies>
 </project>

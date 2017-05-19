@@ -1,5 +1,6 @@
 package com.yihu.jw.base.model;// default package
 
+import com.yihu.jw.base.model.base.IdEntity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -9,11 +10,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "system_dict")
-public class SystemDict implements java.io.Serializable {
+public class SystemDict extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;
 	private String saasId;
 	private String dictName;
 	private String code;
@@ -25,38 +25,6 @@ public class SystemDict implements java.io.Serializable {
 
 	/** default constructor */
 	public SystemDict() {
-	}
-
-	/** minimal constructor */
-	public SystemDict(Integer id, String dictName, String code, String value) {
-		this.id = id;
-		this.dictName = dictName;
-		this.code = code;
-		this.value = value;
-	}
-
-	/** full constructor */
-	public SystemDict(Integer id, String saasId, String dictName, String code,
-			String value, String pyCode, Integer sort) {
-		this.id = id;
-		this.saasId = saasId;
-		this.dictName = dictName;
-		this.code = code;
-		this.value = value;
-		this.pyCode = pyCode;
-		this.sort = sort;
-	}
-
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	@Column(name = "saas_id", length = 100)

@@ -1,4 +1,4 @@
-package com.yihu.jw.restmodel.base;
+package com.yihu.jw.restmodel.common;
 
 import java.io.Serializable;
 import java.util.List;
@@ -10,18 +10,18 @@ import java.util.List;
  * - 错误消息
  * - 错误代码
  * - 对象模型
- *
+ * <p>
  * 信封对象的返回场景：
  * - API使用者确实无法访问返回头，即一些语言库无法处理HTTP的响应消息，这时候需要以这种形式提供返回值。
  * - API需要支持交叉域请求（通过JSONP）。
  *
  * @author llh
  */
-public class Envelop implements Serializable{
+public class Envelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
 
-    private boolean successFlg;
+    private boolean successFlg=true;
 
     private int pageSize = 10;
 
@@ -124,5 +124,24 @@ public class Envelop implements Serializable{
 
     public void setSuccessMsg(String successMsg) {
         this.successMsg = successMsg;
+    }
+
+    public static Envelop getSuccess(String message) {
+        Envelop envelop = new Envelop();
+        envelop.setSuccessMsg(message);
+        return envelop;
+    }
+    public static Envelop getSuccess(String message,Object obj) {
+        Envelop envelop = new Envelop();
+        envelop.setSuccessMsg(message);
+        envelop.setObj(obj);
+        return envelop;
+    }
+    public static Envelop getError(String message,int errorCode) {
+        Envelop envelop = new Envelop();
+        envelop.setSuccessFlg(false);
+        envelop.setErrorMsg(message);
+        envelop.setErrorCode(errorCode);
+        return envelop;
     }
 }

@@ -8,28 +8,16 @@
         <artifactId>common-lib-parent-pom</artifactId>
         <version>1.0.0</version>
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
+
     </parent>
-    
     <groupId>com.yihu.jw</groupId>
-    <artifactId>common-rest-model</artifactId>
+    <artifactId>common-util</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
         </dependency>
     </dependencies>
 </project>

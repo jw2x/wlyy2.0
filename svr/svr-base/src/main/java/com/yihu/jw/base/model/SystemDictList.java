@@ -1,5 +1,7 @@
 package com.yihu.jw.base.model;// default package
 
+import com.yihu.jw.base.model.base.IdEntity;
+
 import javax.persistence.*;
 
 /**
@@ -7,11 +9,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "system_dict_list")
-public class SystemDictList implements java.io.Serializable {
+public class SystemDictList extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;
 	private String dictName;
 	private String chineseName;
 	private String pyCode;
@@ -22,49 +23,6 @@ public class SystemDictList implements java.io.Serializable {
 	private String relationColValue;
 	private String relationColExtend;
 
-	// Constructors
-
-	/** default constructor */
-	public SystemDictList() {
-	}
-
-	/** minimal constructor */
-	public SystemDictList(Integer id, String dictName, String chineseName,
-			String pid) {
-		this.id = id;
-		this.dictName = dictName;
-		this.chineseName = chineseName;
-		this.pid = pid;
-	}
-
-	/** full constructor */
-	public SystemDictList(Integer id, String dictName, String chineseName,
-			String pyCode, String pid, String remark, String relationTable,
-			String relationColCode, String relationColValue,
-			String relationColExtend) {
-		this.id = id;
-		this.dictName = dictName;
-		this.chineseName = chineseName;
-		this.pyCode = pyCode;
-		this.pid = pid;
-		this.remark = remark;
-		this.relationTable = relationTable;
-		this.relationColCode = relationColCode;
-		this.relationColValue = relationColValue;
-		this.relationColExtend = relationColExtend;
-	}
-
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "dict_name", nullable = false, length = 50)
 	public String getDictName() {
