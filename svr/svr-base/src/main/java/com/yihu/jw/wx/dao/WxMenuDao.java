@@ -1,12 +1,15 @@
 package com.yihu.jw.wx.dao;
 
-import com.yihu.jw.wx.model.WxAccessToken;
+import com.yihu.jw.wx.model.WxMenu;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
  */
-public interface WxMenuDao extends PagingAndSortingRepository<WxAccessToken, Long>, JpaSpecificationExecutor<WxAccessToken> {
+public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, JpaSpecificationExecutor<WxMenu> {
 
+    @Query("from WxMenu m where m.id = ?1")
+    WxMenu findById(Integer id);
 }

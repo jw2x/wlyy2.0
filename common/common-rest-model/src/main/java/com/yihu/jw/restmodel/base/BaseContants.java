@@ -5,6 +5,8 @@ package com.yihu.jw.restmodel.base;
  * 基础模块的静态变量
  */
 public class BaseContants {
+
+
     //功能模块常量
     public static class Function{
         public static final String message_success_create="function create success";
@@ -18,17 +20,18 @@ public class BaseContants {
         public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="function is null";
         public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_wechatCode_is_null="wechatCode is null";
+
+
         public static final String message_fail_code_no_exist="code no exist";
-
-
         public static final String api_common="function";
         public static final String api_create="create";
         public static final String api_update="update";
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";
         public static final String api_getFunctions="getFunctions";
-        public static final String api_getFunctionsNoPage="getFunctionsNoPage";
 
+        public static final String api_getFunctionsNoPage="getFunctionsNoPage";
     }
 
     //模块常量
@@ -103,5 +106,41 @@ public class BaseContants {
         public static final String api_common="wxMenu";
         public static final String api_create="create";
         public static final String api_get="get";
+        public static final String api_delete="delete";
+        public static final String api_getById="getById";
+        public static final String api_update="update";
+
+        public static final String message_fail_wechatCode_is_null="wechatCode is null";
+        public static final String message_fail_wxMenuName_is_null="wxMenuName is null";
+        public static final String message_fail_code_is_null="wechatCode is null";
+        public static final String message_fail_name_is_null="weChatMenuName is null";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_id_no_exist="id is null";
+
+        public static final String message_success_update="wxMenu update success";
+        public static final String message_success_delete="wxMenu delete success";
+        public static final String message_success_find="wxMenu success find";
+    }
+
+    public static class WxTemplate {
+        public static final String api_common="wxTemplate";
+        public static final String api_create="create";
+        public static final String api_update="update";
+        public static final String api_delete="delete";
+        public static final String api_getByCode="getByCode";
+
+        public static final String message_success_create="wxTemplate create success";
+        public static final String message_success_update="wxTemplate update success";
+        public static final String message_success_find="wxTemplate find success";
+        public static final String message_success_find_functions="wxTemplate find success";
+        public static final String message_success_delete="wxTemplate delete success";
+
+
+        public static final String message_fail_name_exist="wxTemplate name exist";
+        public static final String message_fail_code_is_null="code is null";
+        public static final String message_fail_name_is_null="wxTemplate is null";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_code_no_exist="code no exist";
+
     }
 }

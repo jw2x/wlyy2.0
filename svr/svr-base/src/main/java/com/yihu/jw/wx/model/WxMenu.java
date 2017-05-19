@@ -1,7 +1,7 @@
 package com.yihu.jw.wx.model;// default package
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 微信 菜单表
@@ -24,7 +24,15 @@ public class WxMenu implements java.io.Serializable {
 	private Date createTime;//创建时间
 	private String createUser;//创建人
 	private String remark;//备注
+	private Integer status; //状态 -1 已删除 0可用
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 	// Constructors
 
 	/** default constructor */
@@ -36,11 +44,7 @@ public class WxMenu implements java.io.Serializable {
 		this.id = id;
 	}
 
-	/** full constructor */
-	public WxMenu(Integer id, String wechatCode, String supMenucode,
-			String type, String name, Integer sort, String url,
-			String updateUser, Date updateTime, Date createTime,
-			String createUser, String remark) {
+	public WxMenu(Integer id, String wechatCode, String supMenucode, String type, String name, Integer sort, String url, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
 		this.id = id;
 		this.wechatCode = wechatCode;
 		this.supMenucode = supMenucode;
@@ -53,6 +57,7 @@ public class WxMenu implements java.io.Serializable {
 		this.createTime = createTime;
 		this.createUser = createUser;
 		this.remark = remark;
+		this.status = status;
 	}
 
 	// Property accessors

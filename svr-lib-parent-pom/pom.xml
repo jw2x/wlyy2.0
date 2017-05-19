@@ -43,7 +43,7 @@
         <version.mysql>5.1.38</version.mysql>
         <version.jackson>2.8.1</version.jackson>
         <version.myCommon>1.0.0</version.myCommon>
-        <version.spring>5.0.0.M5</version.spring>
+        <version.spring>4.3.8.RELEASE</version.spring>
         <version.spring-data-jpa>2.0.0.M2</version.spring-data-jpa>
         <version.zipkin>1.24.0</version.zipkin>
         <version.hibernate>5.0.12.Final</version.hibernate>
