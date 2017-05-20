@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.*;
  * Created by chenweida on 2017/5/11.
  */
 @RestController
-@RequestMapping("/wechat")
-@Api(description = "微信相关操作")
+@RequestMapping(BaseContants.Wechat.api_common)
+@Api(value = "微信相关操作", description = "微信相关操作")
 public class WechatController  extends EnvelopRestController {
     @Autowired
     private WechatService wechatService;

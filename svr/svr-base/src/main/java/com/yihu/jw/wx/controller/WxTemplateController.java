@@ -6,6 +6,7 @@ import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.wx.model.WxTemplate;
 import com.yihu.jw.wx.service.WxTemplateService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by Administrator on 2017/5/19 0019.
  */
+@RestController
+@RequestMapping(BaseContants.WxTemplate.api_common)
+@Api(value = "微信模版相关操作", description = "微信模版相关操作")
 public class WxTemplateController extends EnvelopRestController {
     @Autowired
     private WxTemplateService wxTemplateService;
