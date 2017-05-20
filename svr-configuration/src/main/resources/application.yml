@@ -1,16 +1,21 @@
 server:
   port: 1221
 
-##配置服务的账号密码
-security:
-  user:
-    name: jw
-    password:  jkzl
 
 
 ---
 spring:
   profiles: jwdev
+#
+#  cloud:
+#    stream:
+#      kafka:
+#        binder:
+#          brokers: 172.17.110.201
+#          defaultBrokerPort: 9092
+#          zkNodes: 172.17.110.201
+#          defaultZkPort: 2181
+#          replicationFactor: 1
 
 eureka:
   client:

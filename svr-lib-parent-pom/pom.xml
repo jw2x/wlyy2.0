@@ -24,6 +24,8 @@
 
         <module>../svr-configuration</module> <!--配置服务-->
         <module>../svr-discovery</module><!--发现服务-->
+        <module>../svr-dashboard</module><!--监控服务-->
+        <module>../svr-logServer</module><!--分布式追踪服务-->
 
         <!--业务微服务-->
         <module>../svr/svr-base</module><!--基础微服务-->
@@ -39,9 +41,19 @@
         <version.springCloud.start>1.2.0.RELEASE</version.springCloud.start>
         <version.springBoot>1.5.3.RELEASE</version.springBoot>
         <version.mysql>5.1.38</version.mysql>
-        <version.jackson>2.6.6</version.jackson>
+        <version.jackson>2.8.1</version.jackson>
         <version.myCommon>1.0.0</version.myCommon>
-        <version.spring>4.3.3.RELEASE</version.spring>
+        <version.spring>4.3.8.RELEASE</version.spring>
+        <version.spring-data-jpa>1.11.3.RELEASE</version.spring-data-jpa>
+        <version.spring-data-common>1.13.3.RELEASE</version.spring-data-common>
+        <version.zipkin>1.24.0</version.zipkin>
+        <version.hibernate>5.0.12.Final</version.hibernate>
+        <version.hibernate-jpa>1.0.0.Final</version.hibernate-jpa>
+        <version.servlet-api>3.1.0</version.servlet-api>
+        <version.swagger>2.4.0</version.swagger>
+        <version.swagger-ui>2.4.0</version.swagger-ui>
+        <version.quartz>2.3.0</version.quartz>
+        <version.logback>1.2.3</version.logback>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -53,7 +65,26 @@
                 <artifactId>common-swagger</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-mysql</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-rest-model</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-util</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-log</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
             <!--springCloud start-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
@@ -116,6 +147,12 @@
                 <artifactId>spring-cloud-starter-turbine</artifactId>
                 <version>${version.springCloud}</version>
             </dependency>
+            <!--配置服务消息总线-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-bus-kafka</artifactId>
+                <version>${version.springCloud}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-feign</artifactId>
@@ -133,7 +170,12 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-zipkin</artifactId>
+                <artifactId>spring-cloud-sleuth-zipkin</artifactId>
+                <version>${version.springCloud.start}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-sleuth</artifactId>
                 <version>${version.springCloud.start}</version>
             </dependency>
             <!--springCloud end-->
@@ -170,6 +212,11 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${version.springBoot}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
                 <version>${version.springBoot}</version>
             </dependency>
             <dependency>
@@ -215,6 +262,43 @@
                 <artifactId>spring-webmvc</artifactId>
                 <version>${version.spring}</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-orm</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <version>${version.spring-data-jpa}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <version>${version.spring-data-common}</version>
+            </dependency>
             <!--spring end-->
 
             <!--数据库驱动 start-->
@@ -242,6 +326,80 @@
                 <version>${version.jackson}</version>
             </dependency>
             <!--fastJson end-->
+            <!--zipkin 日志追踪 start-->
+            <dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-server</artifactId>
+                <version>${version.zipkin}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-autoconfigure-ui</artifactId>
+                <version>${version.zipkin}</version>
+            </dependency>
+
+            <!--zipkin  end-->
+            <!--hibernate start-->
+            <dependency>
+                <groupId>org.hibernate</groupId>
+                <artifactId>hibernate-core</artifactId>
+                <version>${version.hibernate}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.javax.persistence</groupId>
+                <artifactId>hibernate-jpa-2.1-api</artifactId>
+                <version>${version.hibernate-jpa}</version>
+            </dependency>
+            <!--hibernate end-->
+            <!--servlet api-->
+
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${version.servlet-api}</version>
+            </dependency>
+            <!--servlet api-->
+            <!--swagger ui start-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${version.swagger}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${version.swagger-ui}</version>
+            </dependency>
+            <!--swagger ui end-->
+            <!--quartz start-->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${version.quartz}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz-jobs</artifactId>
+                <version>${version.quartz}</version>
+            </dependency>
+            <!--quartz end-->
+            <!--log start-->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-access</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+            <!--log end-->
         </dependencies>
     </dependencyManagement>
 

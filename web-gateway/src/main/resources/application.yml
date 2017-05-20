@@ -9,6 +9,11 @@ feign:
     enabled: true
 
 
+management:
+  security:
+    enabled: false  ##关闭 refresh的权限认证
+
+
 
 #zuul 默认会代理所有的微服务  路径 /{appliction.name}/**
 zuul:
@@ -34,7 +39,15 @@ zuul:
 ---
 spring:
   profiles: jwdev
-
+#  cloud:
+#    stream:
+#      kafka:
+#        binder:
+#          brokers: 172.17.110.201
+#          defaultBrokerPort: 9092
+#          zkNodes: 172.17.110.201
+#          defaultZkPort: 2181
+#          replicationFactor: 1
 ---
 spring:
   profiles: jwtest

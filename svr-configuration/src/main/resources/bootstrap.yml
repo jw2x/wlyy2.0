@@ -2,6 +2,25 @@ spring:
   application:
     name: svr-configurations
 
+security:
+  user:
+    name: jw
+    password:  jkzl
+
+
+#发现服务
+eureka:
+  client:
+    healthcheck:
+      enabled: true #启动监控检查
+  instance:
+    #eurika使用IP不使用host
+    prefer-ip-address: true
+    #定制化在eurika中显示的名称
+    ##instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+
 
 ---
 spring:
@@ -9,11 +28,14 @@ spring:
 ##git配置
   cloud:
     config:
+      failFast: true ##启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
-          #uri: http://192.168.1.220:10080/hill9868/ehr.config.git
           uri: http://192.168.1.220:10080/chenweida/jw.config.git
+          #uri: http://192.168.116.100:10080/chenweida/mini.jw.config.git
         default-label: master
+
+
 
 ---
 spring:

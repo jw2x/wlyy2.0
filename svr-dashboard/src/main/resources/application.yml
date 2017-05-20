@@ -2,6 +2,9 @@
 spring:
   application:
     name:  svr-dashboard  ##注册到发现服务的id 如果id一样 eurika会自动做负载
+  #从发现服务里面取配置服务的信息
+
+
 
 ---
 

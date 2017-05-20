@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: svr-logServer
+
+---
+spring:
+  profiles: jwdev
+
+---
+spring:
+  profiles: jwtest
+
+---
+spring:
+  profiles: jwprod
