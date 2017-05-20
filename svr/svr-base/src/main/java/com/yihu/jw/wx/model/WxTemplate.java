@@ -1,7 +1,7 @@
 package com.yihu.jw.wx.model;// default package
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * WxTemplate entity. @author MyEclipse Persistence Tools
@@ -25,7 +25,56 @@ public class WxTemplate implements java.io.Serializable {
 	private String updateUserName;//修改人名称
 	private Date updateTime;//修改时间
 	private String remark;
+	private Integer status; //状态 -1 已删除 0可用
 
+	public WxTemplate(Integer id, String code, String name, String wechatCode, String templateCode, String value, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
+		this.id = id;
+		this.code = code;
+		this.name = name;
+		this.wechatCode = wechatCode;
+		this.templateCode = templateCode;
+		this.value = value;
+		this.createUser = createUser;
+		this.createUserName = createUserName;
+		this.createTime = createTime;
+		this.updateUser = updateUser;
+		this.updateUserName = updateUserName;
+		this.updateTime = updateTime;
+		this.remark = remark;
+		this.status = status;
+	}
+
+	public String getUpdateUser() {
+		return updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
+	}
+
+	public String getUpdateUserName() {
+		return updateUserName;
+	}
+
+	public void setUpdateUserName(String updateUserName) {
+		this.updateUserName = updateUserName;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 	// Constructors
 
 	/** default constructor */

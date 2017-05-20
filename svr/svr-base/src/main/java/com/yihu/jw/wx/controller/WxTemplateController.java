@@ -4,7 +4,6 @@ import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.wx.model.WxMenu;
 import com.yihu.jw.wx.model.WxTemplate;
 import com.yihu.jw.wx.service.WxTemplateService;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +39,7 @@ public class WxTemplateController extends EnvelopRestController {
             @RequestBody String jsonData) {
         try {
             WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);
-            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_update, WxTemplateService.updateWxTemplate(WxTemplate));
+            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_update, wxTemplateService.updateWxTemplate(WxTemplate));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -50,24 +49,24 @@ public class WxTemplateController extends EnvelopRestController {
     @DeleteMapping(value = BaseContants.WxTemplate.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "删除微信模版", notes = "删除微信模版")
     public Envelop deleteWxTemplate(
-            @ApiParam(name = "id", value = "id")
-            @RequestParam(value = "id", required = true) Integer id) {
+            @ApiParam(name = "code", value = "code")
+            @RequestParam(value = "code", required = true) String code) {
         try {
-            WxTemplateService.deleteWxTemplate(id);
+            wxTemplateService.deleteWxTemplate(code);
             return Envelop.getSuccess(BaseContants.WxTemplate.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseContants.WxTemplate.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseContants.WxTemplate.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据id查找微信菜单", notes = "根据id查找微信菜单")
-    public Envelop findById(
-            @ApiParam(name = "id", value = "id")
-            @RequestParam(value = "id", required = true) Integer id
+    public Envelop findByCode(
+            @ApiParam(name = "code", value = "code")
+            @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_find, WxTemplateService.findById(id));
+            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_find, wxTemplateService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

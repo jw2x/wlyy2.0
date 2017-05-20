@@ -13,6 +13,34 @@ public class WxMenu implements java.io.Serializable {
 	// Fields
 
 	private Integer id;//菜单id
+
+	public WxMenu(Integer id, String code, String wechatCode, String supMenucode, String type, String name, Integer sort, String url, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
+		this.id = id;
+		this.code = code;
+		this.wechatCode = wechatCode;
+		this.supMenucode = supMenucode;
+		this.type = type;
+		this.name = name;
+		this.sort = sort;
+		this.url = url;
+		this.updateUser = updateUser;
+		this.updateTime = updateTime;
+		this.createTime = createTime;
+		this.createUser = createUser;
+		this.remark = remark;
+		this.status = status;
+	}
+
+	public String getCode() {
+
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	private String code;//业务code
 	private String wechatCode;//关联的微信code 关联表 Wx_Wechat
 	private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
 	private String type;//菜单类型 1 view 2click
@@ -42,22 +70,6 @@ public class WxMenu implements java.io.Serializable {
 	/** minimal constructor */
 	public WxMenu(Integer id) {
 		this.id = id;
-	}
-
-	public WxMenu(Integer id, String wechatCode, String supMenucode, String type, String name, Integer sort, String url, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
-		this.id = id;
-		this.wechatCode = wechatCode;
-		this.supMenucode = supMenucode;
-		this.type = type;
-		this.name = name;
-		this.sort = sort;
-		this.url = url;
-		this.updateUser = updateUser;
-		this.updateTime = updateTime;
-		this.createTime = createTime;
-		this.createUser = createUser;
-		this.remark = remark;
-		this.status = status;
 	}
 
 	// Property accessors

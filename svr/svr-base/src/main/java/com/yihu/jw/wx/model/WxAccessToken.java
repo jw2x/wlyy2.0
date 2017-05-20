@@ -1,7 +1,7 @@
 package com.yihu.jw.wx.model;// default package
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 微信 accesstoken表
@@ -13,6 +13,16 @@ public class WxAccessToken implements java.io.Serializable {
 	// Fields
 
 	private Integer id;//业务id
+	private String code;//业务code
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	private String wechatCode;//关联的微信code 关联表 Wx_Wechat
 	private String accessToken;//调用微信返回的accesstoken
 	private long addTimestamp;//创建时间
@@ -35,10 +45,9 @@ public class WxAccessToken implements java.io.Serializable {
 		this.czrq = czrq;
 	}
 
-	/** full constructor */
-	public WxAccessToken(Integer id, String wechatCode, String accessToken,
-			long addTimestamp, Integer expiresIn, Date czrq) {
+	public WxAccessToken(Integer id, String code, String wechatCode, String accessToken, long addTimestamp, Integer expiresIn, Date czrq) {
 		this.id = id;
+		this.code = code;
 		this.wechatCode = wechatCode;
 		this.accessToken = accessToken;
 		this.addTimestamp = addTimestamp;
