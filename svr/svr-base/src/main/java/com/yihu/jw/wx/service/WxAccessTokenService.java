@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,8 +40,8 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
         if (StringUtils.isEmpty(wxAccessToken.getWechatCode())) {
             throw new ApiException(BaseContants.WxAccessToken.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
         }
-        if ("".equals(wxAccessToken.getAddTimestamp())){
-            wxAccessToken.setAddTimestamp(new Date().getTime());
+        if (StringUtils.isEmpty(wxAccessToken.getExpiresIn())) {
+            throw new ApiException(BaseContants.WxAccessToken.message_fail_expiresIn_is_null, CommonContants.common_error_params_code);
         }
         return wxAccessTokenDao.save(wxAccessToken);
     }

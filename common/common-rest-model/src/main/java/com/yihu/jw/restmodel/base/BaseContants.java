@@ -96,6 +96,7 @@ public class BaseContants {
         public static final String api_create="create";
         public static final String api_get="get";
         public static final String message_fail_wechatCode_is_null="wechatCode is null";
+        public static final String message_fail_expiresIn_is_null="expiresIn is null";
     }
 
     //微信按钮模块常量

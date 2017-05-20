@@ -1,5 +1,7 @@
 package com.yihu.jw.wx.model;// default package
 
+import com.yihu.jw.base.model.base.IdEntity;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,13 +10,12 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wx_menu")
-public class WxMenu implements java.io.Serializable {
+public class WxMenu extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;//菜单id
 
-	public WxMenu(Integer id, String code, String wechatCode, String supMenucode, String type, String name, Integer sort, String url, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
+	public WxMenu(Long id, String code, String wechatCode, String supMenucode, String type, String name, Integer sort, String url, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
 		this.id = id;
 		this.code = code;
 		this.wechatCode = wechatCode;
@@ -67,21 +68,6 @@ public class WxMenu implements java.io.Serializable {
 	public WxMenu() {
 	}
 
-	/** minimal constructor */
-	public WxMenu(Integer id) {
-		this.id = id;
-	}
-
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "wechat_code", length = 200)
 	public String getWechatCode() {

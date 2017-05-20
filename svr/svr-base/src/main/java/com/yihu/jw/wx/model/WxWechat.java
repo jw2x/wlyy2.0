@@ -1,5 +1,7 @@
 package com.yihu.jw.wx.model;// default package
 
+import com.yihu.jw.base.model.base.IdEntity;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,10 +10,9 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wx_wechat")
-public class WxWechat implements java.io.Serializable {
+public class WxWechat extends IdEntity implements java.io.Serializable{
 
 	// Fields
-	private Integer id;//'主键
 	private String code;//业务code
 	private String saasId;//'saas配置id'
 	private String weichatId;//微信的id
@@ -58,7 +59,7 @@ public class WxWechat implements java.io.Serializable {
 		this.modifyTime = modifyTime;
 	}
 
-	public WxWechat(Integer id, String code, String saasId, String weichatId, String name, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String modifyUser, String modifyUserName, Date modifyTime, String remark) {
+	public WxWechat(Long id, String code, String saasId, String weichatId, String name, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String modifyUser, String modifyUserName, Date modifyTime, String remark) {
 		this.id = id;
 		this.code = code;
 		this.saasId = saasId;
@@ -83,16 +84,6 @@ public class WxWechat implements java.io.Serializable {
 	public WxWechat() {
 	}
 
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "code", length = 64)
 	public String getCode() {
