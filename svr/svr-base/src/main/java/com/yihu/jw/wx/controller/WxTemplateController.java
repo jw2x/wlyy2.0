@@ -30,7 +30,7 @@ public class WxTemplateController extends EnvelopRestController {
             @RequestBody String jsonData) {
         try {
             WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);
-            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_create, wxTemplateService.createWxMenu(WxTemplate));
+            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_create, wxTemplateService.createWxTemplate(WxTemplate));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -64,7 +64,7 @@ public class WxTemplateController extends EnvelopRestController {
     }
 
     @GetMapping(value = BaseContants.WxTemplate.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "根据id查找微信菜单", notes = "根据id查找微信菜单")
+    @ApiOperation(value = "根据code查找微信模版", notes = "根据code查找微信模版")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code

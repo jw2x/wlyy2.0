@@ -17,7 +17,7 @@ public class WxTemplateService {
     private WxTemplateDao wxTemplateDao;
 
 
-    public WxTemplate createWxMenu(WxTemplate wxTemplate) {
+    public WxTemplate createWxTemplate(WxTemplate wxTemplate) {
         if (StringUtils.isEmpty(wxTemplate.getCode())) {
             throw new ApiException(BaseContants.WxTemplate.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
@@ -57,4 +57,5 @@ public class WxTemplateService {
         }
         return wxTemplate;
     }
+
 }
