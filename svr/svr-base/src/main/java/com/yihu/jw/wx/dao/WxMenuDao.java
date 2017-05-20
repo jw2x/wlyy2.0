@@ -10,6 +10,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, JpaSpecificationExecutor<WxMenu> {
 
-    @Query("from WxMenu m where m.code = ?1 and m.")
+    @Query("from WxMenu m where m.code = ?1")
     WxMenu findByCode(String code);
 }
