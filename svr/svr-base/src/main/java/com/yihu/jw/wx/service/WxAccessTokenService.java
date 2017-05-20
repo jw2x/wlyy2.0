@@ -29,7 +29,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
      */
     public WxAccessToken getWxAccessTokenByCode(String wechatCode) {
         List<WxAccessToken> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenByCode(wechatCode);
-        if(wxAccessTokens!=null){
+        if(wxAccessTokens!=null&&wxAccessTokens.size()>0){
             return wxAccessTokens.get(0);
         }
         return null;

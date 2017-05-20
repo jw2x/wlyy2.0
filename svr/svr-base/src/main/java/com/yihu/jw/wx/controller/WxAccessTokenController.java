@@ -30,11 +30,11 @@ public class WxAccessTokenController extends EnvelopRestController {
      * @return MWxAccessToken
      * @throws Exception
      */
-    @RequestMapping(value = BaseContants.WxAccessToken.api_get, method = RequestMethod.GET)
+    @GetMapping(value = BaseContants.WxAccessToken.api_get)
     @ApiOperation(value = "根据wechatCode获取最新的WxAccessToken")
     public Envelop getWxAccessToken(
             @ApiParam(name = "wechatCode", value = "wechatCode")
-            @PathVariable(value = "wechatCode") String wechatCode) throws Exception {
+            @RequestParam(value = "wechatCode") String wechatCode) {
         try {
             WxAccessToken wxAccessToken = wxAccessTokenService.getWxAccessTokenByCode(wechatCode);
             return Envelop.getSuccess(BaseContants.WxAccessToken.message_success_get, wxAccessToken);
