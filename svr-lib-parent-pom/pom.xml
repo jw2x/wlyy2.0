@@ -44,7 +44,8 @@
         <version.jackson>2.8.1</version.jackson>
         <version.myCommon>1.0.0</version.myCommon>
         <version.spring>4.3.8.RELEASE</version.spring>
-        <version.spring-data-jpa>2.0.0.M2</version.spring-data-jpa>
+        <version.spring-data-jpa>1.11.3.RELEASE</version.spring-data-jpa>
+        <version.spring-data-common>1.13.3.RELEASE</version.spring-data-common>
         <version.zipkin>1.24.0</version.zipkin>
         <version.hibernate>5.0.12.Final</version.hibernate>
         <version.hibernate-jpa>1.0.0.Final</version.hibernate-jpa>
@@ -273,7 +274,6 @@
                 <artifactId>spring-core</artifactId>
                 <version>${version.spring}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
@@ -297,7 +297,7 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
-                <version>${version.spring-data-jpa}</version>
+                <version>${version.spring-data-common}</version>
             </dependency>
             <!--spring end-->
 

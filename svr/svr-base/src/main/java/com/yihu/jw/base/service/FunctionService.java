@@ -6,7 +6,6 @@ import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
-import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
