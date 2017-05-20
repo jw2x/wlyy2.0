@@ -31,7 +31,7 @@ public class WxMenuController extends EnvelopRestController {
             @RequestBody String jsonData) {
         try {
             WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
-            return Envelop.getSuccess(BaseContants.Function.message_success_create, wxMenuService.createWxMenu(wxMenu));
+            return Envelop.getSuccess(BaseContants.WxMenu.message_success_create, wxMenuService.createWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -64,9 +64,9 @@ public class WxMenuController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = BaseContants.WxMenu.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseContants.WxMenu.api_getByCode)
     @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
-    public Envelop findById(
+    public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {

@@ -108,7 +108,7 @@ public class BaseContants {
         public static final String api_create="create";
         public static final String api_get="get";
         public static final String api_delete="delete";
-        public static final String api_getById="getById";
+        public static final String api_getByCode="getByCode";
         public static final String api_update="update";
 
         public static final String message_fail_wechatCode_is_null="wechatCode is null";

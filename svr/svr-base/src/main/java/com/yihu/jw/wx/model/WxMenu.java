@@ -12,9 +12,6 @@ import java.util.Date;
 @Table(name = "wx_menu")
 public class WxMenu extends IdEntity implements java.io.Serializable {
 
-	// Fields
-
-
 	public WxMenu(Long id, String code, String wechatCode, String supMenucode, String type, String name, Integer sort, String url, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
 		this.id = id;
 		this.code = code;
@@ -33,7 +30,6 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
 	}
 
 	public String getCode() {
-
 		return code;
 	}
 

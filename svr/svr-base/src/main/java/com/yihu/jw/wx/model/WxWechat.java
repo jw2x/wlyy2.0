@@ -25,42 +25,12 @@ public class WxWechat extends IdEntity implements java.io.Serializable{
 	private String createUser;//'创建人'
 	private String createUserName;//'创建人名'
 	private Date createTime;//'创建时间'
-	private String modifyUser;//'修改人
-	private String modifyUserName;//'修改人名'{\"id\":\"1\",\"code\":\"1\",\"saas_id\":\"1\",\"weichat_id\":\"1\",\"name\":\"hehe\",\"status\":\"0\",\"app_id\":\"1\",\"app_secret\":\"1\"}
-	private Date modifyTime;//'修改时间'
+	private String updateUser;//'修改人
+	private String updateUserName;//'修改人名'
+	private Date updateTime;//'修改时间'
 	private String remark;//'备注'
 
-
-	@Column(name = "modify_user", length = 200)
-	public String getModifyUser() {
-		return modifyUser;
-	}
-
-	public void setModifyUser(String modifyUser) {
-		this.modifyUser = modifyUser;
-	}
-
-	@Column(name = "modify_user_name", length = 200)
-	public String getModifyUserName() {
-		return modifyUserName;
-	}
-
-	public void setModifyUserName(String modifyUserName) {
-		this.modifyUserName = modifyUserName;
-	}
-
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "modify_time", nullable = false, length = 0)
-	public Date getModifyTime() {
-		return modifyTime;
-	}
-
-	public void setModifyTime(Date modifyTime) {
-		this.modifyTime = modifyTime;
-	}
-
-	public WxWechat(Long id, String code, String saasId, String weichatId, String name, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String modifyUser, String modifyUserName, Date modifyTime, String remark) {
-		this.id = id;
+	public WxWechat(String code, String saasId, String weichatId, String name, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
 		this.code = code;
 		this.saasId = saasId;
 		this.weichatId = weichatId;
@@ -73,12 +43,11 @@ public class WxWechat extends IdEntity implements java.io.Serializable{
 		this.createUser = createUser;
 		this.createUserName = createUserName;
 		this.createTime = createTime;
-		this.modifyUser = modifyUser;
-		this.modifyUserName = modifyUserName;
-		this.modifyTime = modifyTime;
+		this.updateUser = updateUser;
+		this.updateUserName = updateUserName;
+		this.updateTime = updateTime;
 		this.remark = remark;
 	}
-	// Constructors
 
 	/** default constructor */
 	public WxWechat() {
@@ -201,6 +170,34 @@ public class WxWechat extends IdEntity implements java.io.Serializable{
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	@Column(name = "update_user", length = 200)
+	public String getUpdateUser() {
+		return this.updateUser;
+	}
+
+	public void setUpdateUser(String updateUser) {
+		this.updateUser = updateUser;
+	}
+
+	@Column(name = "update_user_name", length = 200)
+	public String getUpdateUserName() {
+		return this.updateUserName;
+	}
+
+	public void setUpdateUserName(String updateUserName) {
+		this.updateUserName = updateUserName;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "update_time", nullable = false, length = 0)
+	public Date getUpdateTime() {
+		return this.updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
 	}
 
 }
