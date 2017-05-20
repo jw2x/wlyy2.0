@@ -1,5 +1,6 @@
 package com.yihu.jw.wx.service;
 
+import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
@@ -13,7 +14,7 @@ import javax.persistence.Transient;
 /**
  * Created by Administrator on 2017/5/19 0019.
  */
-public class WxMenuService {
+public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
 
     @Autowired
     private WxMenuDao wxMenuDao;

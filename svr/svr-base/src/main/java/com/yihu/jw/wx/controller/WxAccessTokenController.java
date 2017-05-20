@@ -9,6 +9,7 @@ import com.yihu.jw.wx.service.WxAccessTokenService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "微信token模块", description = "微信token模块接口管理")
 public class WxAccessTokenController extends EnvelopRestController {
 
+    @Autowired
     private WxAccessTokenService wxAccessTokenService;
 
     /**

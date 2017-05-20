@@ -1,5 +1,6 @@
 package com.yihu.jw.wx.service;
 
+import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
@@ -11,7 +12,7 @@ import org.springframework.util.StringUtils;
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
-public class WechatService {
+public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
 
     @Autowired
     private WechatDao wechatDao;

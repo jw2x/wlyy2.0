@@ -1,5 +1,6 @@
 package com.yihu.jw.wx.service;
 
+import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
@@ -15,7 +16,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/5/18 0018.
  */
-public class WxAccessTokenService {
+public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccessTokenDao> {
 
     @Autowired
     private WxAccessTokenDao wxAccessTokenDao;
