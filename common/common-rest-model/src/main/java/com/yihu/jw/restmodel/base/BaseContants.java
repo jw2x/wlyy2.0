@@ -143,4 +143,28 @@ public class BaseContants {
         public static final String message_fail_code_no_exist="code no exist";
 
     }
+
+    public static class Wechat {
+        public static final String api_common="wechat";
+        public static final String api_create="create";
+        public static final String api_get="get";
+        public static final String api_update="update";
+        public static final String api_delete="delete";
+        public static final String api_getByCode="getByCode";
+
+        public static final String message_success_create="wechat create success";
+        public static final String message_success_update="wechat update success";
+        public static final String message_success_find="wechat find success";
+        public static final String message_success_find_functions="wechat find success";
+        public static final String message_success_delete="wechat delete success";
+
+        public static final String message_fail_name_exist="wechat name exist";
+        public static final String message_fail_code_is_null="code is null";
+        public static final String message_fail_name_is_null="wechat is null";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_appId_is_null="appId is null";
+        public static final String message_fail_appSecret_is_null="appSecret is null";
+        public static final String message_fail_appId_exist="wechat appId exist";
+    }
 }
