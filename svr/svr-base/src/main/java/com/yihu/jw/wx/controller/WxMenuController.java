@@ -4,7 +4,9 @@ import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
+import com.yihu.jw.restmodel.wx.MWxMenu;
 import com.yihu.jw.wx.model.WxMenu;
+import com.yihu.jw.wx.model.WxWechat;
 import com.yihu.jw.wx.service.WxMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +14,11 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -77,5 +84,48 @@ public class WxMenuController extends EnvelopRestController {
         }
     }
 
+    @RequestMapping(value = BaseContants.WxMenu.api_getWxMenus, method = RequestMethod.GET)
+    @ApiOperation(value = "获取微信菜单列表(分页)")
+    public Envelop getWxMenus(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) int size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) int page,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        //得到list数据
+        List<WxWechat> list = wxMenuService.search(fields, filters, sorts, page, size);
+        //获取总数
+        long count=wxMenuService.getCount(filters);
+        //封装头信息
+        pagedResponse(request, response, count, page, size);
+        //封装返回格式
+        List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
+
+        return Envelop.getSuccessListWithPage(BaseContants.WxMenu.message_success_find_functions,mWxMenus, page, size,count);
+    }
+
+
+    @GetMapping(value = BaseContants.WxMenu.api_getWxMenuNoPage)
+    @ApiOperation(value = "获取功能列表，不分页")
+    public Envelop getWxMenuNoPage(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        //得到list数据
+        List<WxMenu> list = wxMenuService.search(fields,filters,sorts);
+        //封装返回格式
+        List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
+        return Envelop.getSuccessList(BaseContants.WxMenu.message_success_find_functions,mWxMenus);
+    }
 
 }

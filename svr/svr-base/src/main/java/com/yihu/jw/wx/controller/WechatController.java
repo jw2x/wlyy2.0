@@ -4,6 +4,7 @@ import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
+import com.yihu.jw.restmodel.wx.MWxWechat;
 import com.yihu.jw.wx.model.WxWechat;
 import com.yihu.jw.wx.service.WechatService;
 import io.swagger.annotations.Api;
@@ -12,6 +13,11 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by chenweida on 2017/5/11.
@@ -74,6 +80,50 @@ public class WechatController extends EnvelopRestController {
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
+    }
+
+    @RequestMapping(value = BaseContants.Wechat.api_getWechats, method = RequestMethod.GET)
+    @ApiOperation(value = "获取微信列表(分页)")
+    public Envelop getWechats(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) int size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) int page,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        //得到list数据
+        List<WxWechat> list = wechatService.search(fields, filters, sorts, page, size);
+        //获取总数
+        long count=wechatService.getCount(filters);
+        //封装头信息
+        pagedResponse(request, response, count, page, size);
+        //封装返回格式
+        List<MWxWechat> mWxWechats = convertToModels(list, new ArrayList<>(list.size()), MWxWechat.class, fields);
+
+        return Envelop.getSuccessListWithPage(BaseContants.Wechat.message_success_find_functions,mWxWechats, page, size,count);
+    }
+
+
+    @GetMapping(value = BaseContants.Wechat.api_getWechatNoPage)
+    @ApiOperation(value = "获取功能列表，不分页")
+    public Envelop getWechatNoPage(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        //得到list数据
+        List<WxWechat> list = wechatService.search(fields,filters,sorts);
+        //封装返回格式
+        List<MWxWechat> mWxWechats = convertToModels(list, new ArrayList<>(list.size()), MWxWechat.class, fields);
+        return Envelop.getSuccessList(BaseContants.Wechat.message_success_find_functions,mWxWechats);
     }
 
 }
