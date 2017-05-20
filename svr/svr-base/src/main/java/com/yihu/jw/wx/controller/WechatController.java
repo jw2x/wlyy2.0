@@ -50,7 +50,7 @@ public class WechatController extends EnvelopRestController {
     }
 
 
-    @DeleteMapping(value = BaseContants.Wechat.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = BaseContants.Wechat.api_delete)
     @ApiOperation(value = "删除微信", notes = "删除微信")
     public Envelop deleteWechat(
             @ApiParam(name = "code", value = "code")
@@ -63,7 +63,7 @@ public class WechatController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = BaseContants.Wechat.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseContants.Wechat.api_getByCode)
     @ApiOperation(value = "根据code查找微信", notes = "根据code查找微信")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -75,4 +75,5 @@ public class WechatController extends EnvelopRestController {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
+
 }

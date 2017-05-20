@@ -50,7 +50,7 @@ public class WxTemplateController extends EnvelopRestController {
     }
 
 
-    @DeleteMapping(value = BaseContants.WxTemplate.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = BaseContants.WxTemplate.api_delete)
     @ApiOperation(value = "删除微信模版", notes = "删除微信模版")
     public Envelop deleteWxTemplate(
             @ApiParam(name = "code", value = "code")
@@ -63,7 +63,7 @@ public class WxTemplateController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = BaseContants.WxTemplate.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseContants.WxTemplate.api_getByCode)
     @ApiOperation(value = "根据code查找微信模版", notes = "根据code查找微信模版")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")

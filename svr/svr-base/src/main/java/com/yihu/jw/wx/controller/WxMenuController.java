@@ -51,13 +51,13 @@ public class WxMenuController extends EnvelopRestController {
     }
 
 
-    @DeleteMapping(value = BaseContants.WxMenu.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = BaseContants.WxMenu.api_delete)
     @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
     public Envelop deleteWxMenu(
-            @ApiParam(name = "id", value = "id")
-            @RequestParam(value = "id", required = true) Integer id) {
+            @ApiParam(name = "code", value = "code")
+            @RequestParam(value = "code", required = true) String code) {
         try {
-            wxMenuService.deleteWxMenu(id);
+            wxMenuService.deleteWxMenu(code);
             return Envelop.getSuccess(BaseContants.WxMenu.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -65,13 +65,13 @@ public class WxMenuController extends EnvelopRestController {
     }
 
     @GetMapping(value = BaseContants.WxMenu.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "根据id查找微信菜单", notes = "根据id查找微信菜单")
+    @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
     public Envelop findById(
-            @ApiParam(name = "id", value = "id")
-            @RequestParam(value = "id", required = true) Integer id
+            @ApiParam(name = "code", value = "code")
+            @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(BaseContants.WxMenu.message_success_find, wxMenuService.findById(id));
+            return Envelop.getSuccess(BaseContants.WxMenu.message_success_find, wxMenuService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

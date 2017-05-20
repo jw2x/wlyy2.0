@@ -30,7 +30,11 @@ public class SwaggerConfig {
                 .select()
                 .paths(or(
                         regex("/patient/.*")
-                     //   , regex("/"+ BaseContants.Function.api_common+"/.*")
+                        , regex("/"+ BaseContants.Function.api_common+"/.*")
+                        ,regex("/"+BaseContants.Wechat.api_common+"/.*")
+                        ,regex("/"+BaseContants.WxAccessToken.api_common+"/.*")
+                        ,regex("/"+BaseContants.WxMenu.api_common+"/.*")
+                        ,regex("/"+BaseContants.WxTemplate.api_common+"/.*")
                         ))
                 .build()
                 .apiInfo(publicApiInfo());

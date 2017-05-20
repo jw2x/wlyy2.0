@@ -112,10 +112,11 @@ public class BaseContants {
 
         public static final String message_fail_wechatCode_is_null="wechatCode is null";
         public static final String message_fail_wxMenuName_is_null="wxMenuName is null";
-        public static final String message_fail_code_is_null="wechatCode is null";
+        public static final String message_fail_wechatcode_is_null="wechatCode is null";
+        public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="weChatMenuName is null";
         public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_id_no_exist="id is null";
+        public static final String message_fail_code_no_exist="id is null";
 
         public static final String message_success_update="wxMenu update success";
         public static final String message_success_delete="wxMenu delete success";

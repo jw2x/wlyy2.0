@@ -46,16 +46,16 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     }
 
     @Transient
-    public void deleteWxMenu(Integer id) {
-        WxMenu wxMenu = wxMenuDao.findById(id);
+    public void deleteWxMenu(String code) {
+        WxMenu wxMenu = wxMenuDao.findByCode(code);
         if (wxMenu == null) {
-            throw new ApiException(BaseContants.WxMenu.message_fail_id_no_exist, CommonContants.common_error_params_code);
+            throw new ApiException(BaseContants.WxMenu.message_fail_code_no_exist, CommonContants.common_error_params_code);
         }
         wxMenu.setStatus(-1);
         wxMenuDao.save(wxMenu);
     }
 
-    public Object findById(Integer id) {
-        return wxMenuDao.findById(id);
+    public WxMenu findByCode(String code) {
+        return wxMenuDao.findByCode(code);
     }
 }
