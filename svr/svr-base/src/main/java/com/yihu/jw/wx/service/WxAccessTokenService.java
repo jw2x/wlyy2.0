@@ -7,6 +7,7 @@ import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.wx.dao.WxAccessTokenDao;
 import com.yihu.jw.wx.model.WxAccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/5/18 0018.
  */
+@Service
 public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccessTokenDao> {
 
     @Autowired

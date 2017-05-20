@@ -7,6 +7,7 @@ import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.wx.dao.WxMenuDao;
 import com.yihu.jw.wx.model.WxMenu;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
@@ -14,6 +15,7 @@ import javax.persistence.Transient;
 /**
  * Created by Administrator on 2017/5/19 0019.
  */
+@Service
 public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
 
     @Autowired

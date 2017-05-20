@@ -7,11 +7,13 @@ import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.wx.dao.WechatDao;
 import com.yihu.jw.wx.model.WxWechat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
+@Service
 public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
 
     @Autowired

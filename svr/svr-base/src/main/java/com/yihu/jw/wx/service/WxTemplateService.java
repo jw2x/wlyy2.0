@@ -7,11 +7,13 @@ import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.wx.dao.WxTemplateDao;
 import com.yihu.jw.wx.model.WxTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
  */
+@Service
 public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao> {
 
     @Autowired
