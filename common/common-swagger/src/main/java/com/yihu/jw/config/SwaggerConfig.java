@@ -36,6 +36,7 @@ public class SwaggerConfig {
                         ,regex("/"+WxContants.WxAccessToken.api_common+"/.*")
                         ,regex("/"+WxContants.WxMenu.api_common+"/.*")
                         ,regex("/"+WxContants.WxTemplate.api_common+"/.*")
+                        ,regex("/"+WxContants.WxGraphicMessage.api_common+"/.*")
                         ))
                 .build()
                 .apiInfo(publicApiInfo());

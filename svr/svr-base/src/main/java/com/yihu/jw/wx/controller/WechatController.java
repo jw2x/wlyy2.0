@@ -111,7 +111,7 @@ public class WechatController extends EnvelopRestController {
 
 
     @GetMapping(value = WxContants.Wechat.api_getWechatNoPage)
-    @ApiOperation(value = "获取功能列表，不分页")
+    @ApiOperation(value = "获取微信列表，不分页")
     public Envelop getWechatNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,

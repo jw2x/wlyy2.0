@@ -24,13 +24,13 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(WxContants.WxGraphicMessage.api_common)
-@Api(value = "微信相关操作", description = "微信相关操作")
+@Api(value = "微信图文相关操作", description = "微信图文相关操作")
 public class WxGraphicMessageController extends EnvelopRestController {
     @Autowired
     private WxGraphicMessageService wxGraphicMessageService;
 
     @PostMapping(value = WxContants.WxGraphicMessage.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建微信", notes = "创建微信")
+    @ApiOperation(value = "创建微信图文消息", notes = "创建微信图文消息")
     public Envelop createWxGraphicMessage(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
@@ -43,7 +43,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
     }
 
     @PutMapping(value = WxContants.WxGraphicMessage.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "修改微信", notes = "修改微信")
+    @ApiOperation(value = "修改微信图文消息", notes = "修改微信图文消息")
     public Envelop updateWxGraphicMessage(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
@@ -57,7 +57,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
 
 
     @DeleteMapping(value = WxContants.WxGraphicMessage.api_delete)
-    @ApiOperation(value = "删除微信", notes = "删除微信")
+    @ApiOperation(value = "删除微信图文消息", notes = "删除微信图文消息")
     public Envelop deleteWxGraphicMessage(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
@@ -70,7 +70,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
     }
 
     @GetMapping(value = WxContants.WxGraphicMessage.api_getByCode)
-    @ApiOperation(value = "根据code查找微信", notes = "根据code查找微信")
+    @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
@@ -83,7 +83,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
     }
 
     @RequestMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
-    @ApiOperation(value = "获取微信列表(分页)")
+    @ApiOperation(value = "获取微信图文消息列表(分页)")
     public Envelop getWxGraphicMessages(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
@@ -111,7 +111,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
 
 
     @GetMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessageNoPage)
-    @ApiOperation(value = "获取功能列表，不分页")
+    @ApiOperation(value = "获取图文消息列表，不分页")
     public Envelop getWxGraphicMessageNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,

@@ -83,7 +83,7 @@ public class WxTemplateController extends EnvelopRestController {
     }
 
     @RequestMapping(value = WxContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
-    @ApiOperation(value = "获取微信列表(分页)")
+    @ApiOperation(value = "获取微信模版列表(分页)")
     public Envelop getWechats(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
@@ -111,7 +111,7 @@ public class WxTemplateController extends EnvelopRestController {
 
 
     @GetMapping(value = WxContants.WxTemplate.api_getWxTemplatesNoPage)
-    @ApiOperation(value = "获取功能列表，不分页")
+    @ApiOperation(value = "获取微信模版列表(不分页)")
     public Envelop getWechatNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,

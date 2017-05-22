@@ -113,7 +113,7 @@ public class WxMenuController extends EnvelopRestController {
 
 
     @GetMapping(value = WxContants.WxMenu.api_getWxMenuNoPage)
-    @ApiOperation(value = "获取功能列表，不分页")
+    @ApiOperation(value = "获取微信菜单列表，不分页")
     public Envelop getWxMenuNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
