@@ -2,8 +2,7 @@ package com.yihu.jw.wx.model;
 
 import com.yihu.jw.base.model.base.IdEntity;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -46,6 +45,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
     public WxGraphicMessage() {
     }
 
+    @Column(name = "code", length = 64)
     public String getCode() {
         return code;
     }
@@ -54,6 +54,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.code = code;
     }
 
+    @Column(name = "wechat_code", length = 200)
     public String getWechatCode() {
         return wechatCode;
     }
@@ -62,6 +63,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.wechatCode = wechatCode;
     }
 
+    @Column(name = "name", length = 200)
     public String getName() {
         return name;
     }
@@ -70,6 +72,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.name = name;
     }
 
+    @Column(name = "value", length = 2000)
     public String getValue() {
         return value;
     }
@@ -78,6 +81,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.value = value;
     }
 
+    @Column(name = "keyword", length = 100)
     public String getKeyword() {
         return keyword;
     }
@@ -86,6 +90,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.keyword = keyword;
     }
 
+    @Column(name = "create_user", length = 200)
     public String getCreateUser() {
         return createUser;
     }
@@ -94,6 +99,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.createUser = createUser;
     }
 
+    @Column(name = "create_user_name", length = 200)
     public String getCreateUserName() {
         return createUserName;
     }
@@ -102,6 +108,8 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.createUserName = createUserName;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_time", length = 0)
     public Date getCreateTime() {
         return createTime;
     }
@@ -110,14 +118,17 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.createTime = createTime;
     }
 
+    @Column(name = "update_user", length = 200)
     public String getUpdateUser() {
         return updateUser;
     }
 
+    @Column(name = "remark", length = 1000)
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
     }
 
+    @Column(name = "update_user_name", length = 200)
     public String getUpdateUserName() {
         return updateUserName;
     }
@@ -126,6 +137,8 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.updateUserName = updateUserName;
     }
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "update_time", length = 0)
     public Date getUpdateTime() {
         return updateTime;
     }
@@ -134,6 +147,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.updateTime = updateTime;
     }
 
+    @Column(name = "remark", length = 1000)
     public String getRemark() {
         return remark;
     }

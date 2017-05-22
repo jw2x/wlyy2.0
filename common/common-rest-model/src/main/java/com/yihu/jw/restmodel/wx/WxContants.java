@@ -91,4 +91,29 @@ public class WxContants {
         public static final String message_fail_appSecret_is_null="appSecret is null";
         public static final String message_fail_appId_exist="wechat appId exist";
     }
+
+    public static class WxGraphicMessage {
+        public static final String api_common="wxGraphicMessage";
+        public static final String api_create="create";
+        public static final String api_get="get";
+        public static final String api_update="update";
+        public static final String api_delete="delete";
+        public static final String api_getWxGraphicMessageNoPage="getWxGraphicMessageNoPage";
+
+        public static final String api_getWxGraphicMessages="getWxGraphicMessages";
+        public static final String api_getByCode="getByCode";
+        public static final String message_success_create="wxGraphicMessage create success";
+        public static final String message_success_update="wxGraphicMessage update success";
+        public static final String message_success_find="wxGraphicMessage find success";
+
+        public static final String message_success_find_functions="wxGraphicMessage find success";
+        public static final String message_success_delete="wxGraphicMessage delete success";
+        public static final String message_fail_code_is_null="code is null";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_code_exist="code exist";
+        public static final String message_fail_appSecret_is_null="appSecret is null";
+        public static final String message_fail_appId_exist="wxGraphicMessage appId exist";
+        public static final String message_fail_value_is_null="value is null";
+    }
 }

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.persistence.Transient;
+
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
@@ -19,8 +21,8 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     @Autowired
     private WechatDao wechatDao;
 
-
-    public WxWechat createWechat(WxWechat wechat) {//Wechat     //WxWechat
+    @Transient
+    public WxWechat createWechat(WxWechat wechat) {
         if (StringUtils.isEmpty(wechat.getCode())) {
             throw new ApiException(WxContants.Wechat.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
@@ -37,6 +39,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         return wechatDao.save(wechat);
     }
 
+    @Transient
     public WxWechat updateWxchat(WxWechat wechat) {
         if (StringUtils.isEmpty(wechat.getCode())) {
             throw new ApiException(WxContants.Wechat.message_fail_code_is_null, CommonContants.common_error_params_code);
@@ -65,6 +68,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         return wxWechat;
     }
 
+    @Transient
     public void deleteWechat(String code) {
         WxWechat wxWechat = wechatDao.findByCode(code);
         if (wxWechat == null) {
