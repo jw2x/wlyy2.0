@@ -30,7 +30,7 @@ public class WechatController extends EnvelopRestController {
     private WechatService wechatService;
 
     @PostMapping(value = WxContants.Wechat.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建微信", notes = "创建微信")
+    @ApiOperation(value = "创建微信配置", notes = "创建微信配置")
     public Envelop createWechat(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
@@ -43,7 +43,7 @@ public class WechatController extends EnvelopRestController {
     }
 
     @PutMapping(value = WxContants.Wechat.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "修改微信", notes = "修改微信")
+    @ApiOperation(value = "修改微信配置", notes = "修改微信配置")
     public Envelop updateWechat(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
@@ -57,7 +57,7 @@ public class WechatController extends EnvelopRestController {
 
 
     @DeleteMapping(value = WxContants.Wechat.api_delete)
-    @ApiOperation(value = "删除微信", notes = "删除微信")
+    @ApiOperation(value = "删除微信配置", notes = "删除微信配置")
     public Envelop deleteWechat(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
@@ -70,7 +70,7 @@ public class WechatController extends EnvelopRestController {
     }
 
     @GetMapping(value = WxContants.Wechat.api_getByCode)
-    @ApiOperation(value = "根据code查找微信", notes = "根据code查找微信")
+    @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
@@ -83,7 +83,7 @@ public class WechatController extends EnvelopRestController {
     }
 
     @RequestMapping(value = WxContants.Wechat.api_getWechats, method = RequestMethod.GET)
-    @ApiOperation(value = "获取微信列表(分页)")
+    @ApiOperation(value = "获取微信配置列表(分页)")
     public Envelop getWechats(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
@@ -111,7 +111,7 @@ public class WechatController extends EnvelopRestController {
 
 
     @GetMapping(value = WxContants.Wechat.api_getWechatNoPage)
-    @ApiOperation(value = "获取微信列表，不分页")
+    @ApiOperation(value = "获取微信列表配置，不分页")
     public Envelop getWechatNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
