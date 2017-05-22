@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Created by chenweida on 2017/5/11.
+ * Created by cyx on 2017/5/11.
  */
 @RestController
 @RequestMapping(WxContants.WxAccessToken.api_common)
