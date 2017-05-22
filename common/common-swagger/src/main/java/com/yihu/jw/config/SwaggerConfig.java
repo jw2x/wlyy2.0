@@ -1,6 +1,7 @@
 package com.yihu.jw.config;
 
 import com.yihu.jw.restmodel.base.BaseContants;
+import com.yihu.jw.restmodel.wx.WxContants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,10 +32,10 @@ public class SwaggerConfig {
                 .paths(or(
                         regex("/patient/.*")
                         , regex("/"+ BaseContants.Function.api_common+"/.*")
-                        ,regex("/"+BaseContants.Wechat.api_common+"/.*")
-                        ,regex("/"+BaseContants.WxAccessToken.api_common+"/.*")
-                        ,regex("/"+BaseContants.WxMenu.api_common+"/.*")
-                        ,regex("/"+BaseContants.WxTemplate.api_common+"/.*")
+                        ,regex("/"+ WxContants.Wechat.api_common+"/.*")
+                        ,regex("/"+WxContants.WxAccessToken.api_common+"/.*")
+                        ,regex("/"+WxContants.WxMenu.api_common+"/.*")
+                        ,regex("/"+WxContants.WxTemplate.api_common+"/.*")
                         ))
                 .build()
                 .apiInfo(publicApiInfo());
