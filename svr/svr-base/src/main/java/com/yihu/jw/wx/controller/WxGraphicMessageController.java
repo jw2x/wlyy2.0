@@ -85,7 +85,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
     @RequestMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信图文消息列表(分页)")
     public Envelop getWxGraphicMessages(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,wechatCode,value,keyword,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
@@ -113,7 +113,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
     @GetMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessageNoPage)
     @ApiOperation(value = "获取图文消息列表，不分页")
     public Envelop getWxGraphicMessageNoPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,wechatCode,value,keyword,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
