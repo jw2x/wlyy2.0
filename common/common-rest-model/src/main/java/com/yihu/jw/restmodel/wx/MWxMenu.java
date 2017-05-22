@@ -8,6 +8,19 @@ import java.util.Date;
 public class MWxMenu {
     private Long id;
 
+    private String code;//业务code
+    private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+    private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
+    private String type;//菜单类型 1 view 2click
+    private String name;//菜单名称
+    private Integer sort;//菜单排序 父菜单排序 不包含子菜单那
+    private String url;//url
+    private String updateUser;//更新人
+    private Date updateTime;//更新时间
+    private Date createTime;//创建时间
+    private String createUser;//创建人
+    private String remark;//备注
+    private Integer status; //状态 -1 已删除 0可用
     public Long getId() {
         return id;
     }
@@ -120,17 +133,4 @@ public class MWxMenu {
         this.status = status;
     }
 
-    private String code;//业务code
-    private String wechatCode;//关联的微信code 关联表 Wx_Wechat
-    private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
-    private String type;//菜单类型 1 view 2click
-    private String name;//菜单名称
-    private Integer sort;//菜单排序 父菜单排序 不包含子菜单那
-    private String url;//url
-    private String updateUser;//更新人
-    private Date updateTime;//更新时间
-    private Date createTime;//创建时间
-    private String createUser;//创建人
-    private String remark;//备注
-    private Integer status; //状态 -1 已删除 0可用
 }

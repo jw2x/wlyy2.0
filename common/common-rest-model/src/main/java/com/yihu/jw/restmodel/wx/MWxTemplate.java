@@ -7,6 +7,19 @@ import java.util.Date;
  */
 public class MWxTemplate {
     private Long id;
+    private String code;//模板code
+    private String name;//模板名称
+    private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+    private String templateCode;//微信的模板code
+    private String value;//模板值
+    private String createUser;//创建人
+    private String createUserName;//创建人名
+    private Date createTime;//创建时间
+    private String updateUser;//修改人
+    private String updateUserName;//修改人名称
+    private Date updateTime;//修改时间
+    private String remark;
+    private Integer status; //状态 -1 已删除 0可用
 
     public Long getId() {
         return id;
@@ -120,17 +133,5 @@ public class MWxTemplate {
         this.status = status;
     }
 
-    private String code;//模板code
-    private String name;//模板名称
-    private String wechatCode;//关联的微信code 关联表 Wx_Wechat
-    private String templateCode;//微信的模板code
-    private String value;//模板值
-    private String createUser;//创建人
-    private String createUserName;//创建人名
-    private Date createTime;//创建时间
-    private String updateUser;//修改人
-    private String updateUserName;//修改人名称
-    private Date updateTime;//修改时间
-    private String remark;
-    private Integer status; //状态 -1 已删除 0可用
+
 }

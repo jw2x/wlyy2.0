@@ -8,6 +8,22 @@ import java.util.Date;
 public class MWxWechat {
 
     private Long id;
+    private String code;//业务code
+    private String saasId;//'saas配置id'
+    private String weichatId;//微信的id
+    private String name;//名称
+    private String status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
+    private String type;//'1：服务号 2 订阅号
+    private String appId;//'微信app_id'
+    private String appSecret;//'微信app_secret'
+    private String baseUrl;//'微信base_url'
+    private String createUser;//'创建人'
+    private String createUserName;//'创建人名'
+    private Date createTime;//'创建时间'
+    private String updateUser;//'修改人
+    private String updateUserName;//'修改人名'
+    private Date updateTime;//'修改时间'
+    private String remark;//'备注'
 
     public Long getId() {
         return id;
@@ -145,20 +161,4 @@ public class MWxWechat {
         this.remark = remark;
     }
 
-    private String code;//业务code
-    private String saasId;//'saas配置id'
-    private String weichatId;//微信的id
-    private String name;//名称
-    private String status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
-    private String type;//'1：服务号 2 订阅号
-    private String appId;//'微信app_id'
-    private String appSecret;//'微信app_secret'
-    private String baseUrl;//'微信base_url'
-    private String createUser;//'创建人'
-    private String createUserName;//'创建人名'
-    private Date createTime;//'创建时间'
-    private String updateUser;//'修改人
-    private String updateUserName;//'修改人名'
-    private Date updateTime;//'修改时间'
-    private String remark;//'备注'
 }

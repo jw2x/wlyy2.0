@@ -37,12 +37,12 @@ public class WxContants {
 
         public static final String message_success_update="wxMenu update success";
         public static final String message_success_delete="wxMenu delete success";
-        public static final String message_success_find="wxMenu success find";
+        public static final String message_success_find="wxMenu find success";
         public static final String message_success_create="wxMenu create success";
         public static final String message_success_get="wxMenu get success";
         public static final String message_success_find_functions="wxMenu find success";
     }
-
+    //微信模板消息
     public static class WxTemplate {
         public static final String api_common="wxTemplate";
         public static final String api_create="create";
@@ -65,7 +65,7 @@ public class WxContants {
         public static final String message_fail_code_no_exist="code no exist";
         public static final String message_fail_wechatCode_is_null="wechatCode is null";
     }
-
+    //微信配置表
     public static class Wechat {
         public static final String api_common="wechat";
         public static final String api_create="create";
@@ -91,7 +91,7 @@ public class WxContants {
         public static final String message_fail_appSecret_is_null="appSecret is null";
         public static final String message_fail_appId_exist="wechat appId exist";
     }
-
+    //微信图文消息
     public static class WxGraphicMessage {
         public static final String api_common="wxGraphicMessage";
         public static final String api_create="create";
