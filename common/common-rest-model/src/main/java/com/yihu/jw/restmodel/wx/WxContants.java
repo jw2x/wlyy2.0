@@ -63,7 +63,7 @@ public class WxContants {
         public static final String message_fail_name_is_null="wxTemplate is null";
         public static final String message_fail_id_is_null="id is null";
         public static final String message_fail_code_no_exist="code no exist";
-
+        public static final String message_fail_wechatCode_is_null="wechatCode is null";
     }
 
     public static class Wechat {

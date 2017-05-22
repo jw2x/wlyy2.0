@@ -1,9 +1,9 @@
 package com.yihu.jw.wx.service;
 
 import com.yihu.jw.mysql.query.BaseJpaService;
-import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
+import com.yihu.jw.restmodel.wx.WxContants;
 import com.yihu.jw.wx.dao.WxAccessTokenDao;
 import com.yihu.jw.wx.model.WxAccessToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +38,10 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
     @Transactional
     public WxAccessToken createWxAccessToken(WxAccessToken wxAccessToken) {
         if (StringUtils.isEmpty(wxAccessToken.getWechatCode())) {
-            throw new ApiException(BaseContants.WxAccessToken.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WxContants.WxAccessToken.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxAccessToken.getExpiresIn())) {
-            throw new ApiException(BaseContants.WxAccessToken.message_fail_expiresIn_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WxContants.WxAccessToken.message_fail_expiresIn_is_null, CommonContants.common_error_params_code);
         }
         return wxAccessTokenDao.save(wxAccessToken);
     }

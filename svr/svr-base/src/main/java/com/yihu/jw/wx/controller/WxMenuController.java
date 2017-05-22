@@ -1,10 +1,10 @@
 package com.yihu.jw.wx.controller;
 
-import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxMenu;
+import com.yihu.jw.restmodel.wx.WxContants;
 import com.yihu.jw.wx.model.WxMenu;
 import com.yihu.jw.wx.model.WxWechat;
 import com.yihu.jw.wx.service.WxMenuService;
@@ -24,67 +24,67 @@ import java.util.List;
  * Created by Administrator on 2017/5/19 0019.
  */
 @RestController
-@RequestMapping(BaseContants.WxMenu.api_common)
+@RequestMapping(WxContants.WxMenu.api_common)
 @Api(value = "微信菜单相关操作", description = "微信菜单相关操作")
 public class WxMenuController extends EnvelopRestController {
 
     @Autowired
     private WxMenuService wxMenuService;
 
-    @PostMapping(value = BaseContants.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WxContants.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信菜单", notes = "创建微信菜单")
     public Envelop createWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
-            return Envelop.getSuccess(BaseContants.WxMenu.message_success_create, wxMenuService.createWxMenu(wxMenu));
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_create, wxMenuService.createWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = BaseContants.WxMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WxContants.WxMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信菜单", notes = "修改微信菜单")
     public Envelop updateWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
-            return Envelop.getSuccess(BaseContants.WxMenu.message_success_update, wxMenuService.updateWxMenu(wxMenu));
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_update, wxMenuService.updateWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @DeleteMapping(value = BaseContants.WxMenu.api_delete)
+    @DeleteMapping(value = WxContants.WxMenu.api_delete)
     @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
     public Envelop deleteWxMenu(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
         try {
             wxMenuService.deleteWxMenu(code);
-            return Envelop.getSuccess(BaseContants.WxMenu.message_success_delete );
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseContants.WxMenu.api_getByCode)
+    @GetMapping(value = WxContants.WxMenu.api_getByCode)
     @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(BaseContants.WxMenu.message_success_find, wxMenuService.findByCode(code));
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_find, wxMenuService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = BaseContants.WxMenu.api_getWxMenus, method = RequestMethod.GET)
+    @RequestMapping(value = WxContants.WxMenu.api_getWxMenus, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信菜单列表(分页)")
     public Envelop getWxMenus(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
@@ -108,11 +108,11 @@ public class WxMenuController extends EnvelopRestController {
         //封装返回格式
         List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
 
-        return Envelop.getSuccessListWithPage(BaseContants.WxMenu.message_success_find_functions,mWxMenus, page, size,count);
+        return Envelop.getSuccessListWithPage(WxContants.WxMenu.message_success_find_functions,mWxMenus, page, size,count);
     }
 
 
-    @GetMapping(value = BaseContants.WxMenu.api_getWxMenuNoPage)
+    @GetMapping(value = WxContants.WxMenu.api_getWxMenuNoPage)
     @ApiOperation(value = "获取功能列表，不分页")
     public Envelop getWxMenuNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
@@ -125,7 +125,7 @@ public class WxMenuController extends EnvelopRestController {
         List<WxMenu> list = wxMenuService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
-        return Envelop.getSuccessList(BaseContants.WxMenu.message_success_find_functions,mWxMenus);
+        return Envelop.getSuccessList(WxContants.WxMenu.message_success_find_functions,mWxMenus);
     }
 
 }

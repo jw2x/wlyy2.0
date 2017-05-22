@@ -1,10 +1,10 @@
 package com.yihu.jw.wx.controller;
 
-import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxTemplate;
+import com.yihu.jw.restmodel.wx.WxContants;
 import com.yihu.jw.wx.model.WxTemplate;
 import com.yihu.jw.wx.service.WxTemplateService;
 import io.swagger.annotations.Api;
@@ -23,66 +23,66 @@ import java.util.List;
  * Created by Administrator on 2017/5/19 0019.
  */
 @RestController
-@RequestMapping(BaseContants.WxTemplate.api_common)
+@RequestMapping(WxContants.WxTemplate.api_common)
 @Api(value = "微信模版相关操作", description = "微信模版相关操作")
 public class WxTemplateController extends EnvelopRestController {
     @Autowired
     private WxTemplateService wxTemplateService;
 
-    @PostMapping(value = BaseContants.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WxContants.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信模版", notes = "创建微信模版")
     public Envelop createWxTemplate(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);
-            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_create, wxTemplateService.createWxTemplate(WxTemplate));
+            return Envelop.getSuccess(WxContants.WxTemplate.message_success_create, wxTemplateService.createWxTemplate(WxTemplate));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = BaseContants.WxTemplate.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WxContants.WxTemplate.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信模版", notes = "修改微信模版")
     public Envelop updateWxTemplate(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);
-            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_update, wxTemplateService.updateWxTemplate(WxTemplate));
+            return Envelop.getSuccess(WxContants.WxTemplate.message_success_update, wxTemplateService.updateWxTemplate(WxTemplate));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @DeleteMapping(value = BaseContants.WxTemplate.api_delete)
+    @DeleteMapping(value = WxContants.WxTemplate.api_delete)
     @ApiOperation(value = "删除微信模版", notes = "删除微信模版")
     public Envelop deleteWxTemplate(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
         try {
             wxTemplateService.deleteWxTemplate(code);
-            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_delete );
+            return Envelop.getSuccess(WxContants.WxTemplate.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseContants.WxTemplate.api_getByCode)
+    @GetMapping(value = WxContants.WxTemplate.api_getByCode)
     @ApiOperation(value = "根据code查找微信模版", notes = "根据code查找微信模版")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(BaseContants.WxTemplate.message_success_find, wxTemplateService.findByCode(code));
+            return Envelop.getSuccess(WxContants.WxTemplate.message_success_find, wxTemplateService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = BaseContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
+    @RequestMapping(value = WxContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信列表(分页)")
     public Envelop getWechats(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
@@ -106,11 +106,11 @@ public class WxTemplateController extends EnvelopRestController {
         //封装返回格式
         List<MWxTemplate> mWxWechats = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
 
-        return Envelop.getSuccessListWithPage(BaseContants.WxTemplate.message_success_find_functions,mWxWechats, page, size,count);
+        return Envelop.getSuccessListWithPage(WxContants.WxTemplate.message_success_find_functions,mWxWechats, page, size,count);
     }
 
 
-    @GetMapping(value = BaseContants.WxTemplate.api_getWxTemplatesNoPage)
+    @GetMapping(value = WxContants.WxTemplate.api_getWxTemplatesNoPage)
     @ApiOperation(value = "获取功能列表，不分页")
     public Envelop getWechatNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
@@ -123,6 +123,6 @@ public class WxTemplateController extends EnvelopRestController {
         List<WxTemplate> list = wxTemplateService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxTemplate> mMWxTemplates = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
-        return Envelop.getSuccessList(BaseContants.WxTemplate.message_success_find_functions,mMWxTemplates);
+        return Envelop.getSuccessList(WxContants.WxTemplate.message_success_find_functions,mMWxTemplates);
     }
 }
