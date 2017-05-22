@@ -5,4 +5,10 @@
         saas  saas配置
         module 模块配置管理
         function 功能配置管理
+    wx:
+        wechat   微信配置相关
+        wxAccessToken  微信token管理
+        wxGraphicMessage    微信图文管理
+        wxMenu  微信菜单管理
+        wxTemplate  微信模版
     

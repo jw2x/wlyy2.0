@@ -1,47 +1,20 @@
 package com.yihu.jw.wx.model;// default package
 
-import java.util.Date;
+import com.yihu.jw.base.model.base.IdEntity;
+
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 微信 菜单表
  */
 @Entity
 @Table(name = "wx_menu")
-public class WxMenu implements java.io.Serializable {
+public class WxMenu extends IdEntity implements java.io.Serializable {
 
-	// Fields
-
-	private Integer id;//菜单id
-	private String wechatCode;//关联的微信code 关联表 Wx_Wechat
-	private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
-	private String type;//菜单类型 1 view 2click
-	private String name;//菜单名称
-	private Integer sort;//菜单排序 父菜单排序 不包含子菜单那
-	private String url;//url
-	private String updateUser;//更新人
-	private Date updateTime;//更新时间
-	private Date createTime;//创建时间
-	private String createUser;//创建人
-	private String remark;//备注
-
-	// Constructors
-
-	/** default constructor */
-	public WxMenu() {
-	}
-
-	/** minimal constructor */
-	public WxMenu(Integer id) {
+	public WxMenu(Long id, String code, String wechatCode, String supMenucode, String type, String name, Integer sort, String url, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
 		this.id = id;
-	}
-
-	/** full constructor */
-	public WxMenu(Integer id, String wechatCode, String supMenucode,
-			String type, String name, Integer sort, String url,
-			String updateUser, Date updateTime, Date createTime,
-			String createUser, String remark) {
-		this.id = id;
+		this.code = code;
 		this.wechatCode = wechatCode;
 		this.supMenucode = supMenucode;
 		this.type = type;
@@ -53,18 +26,44 @@ public class WxMenu implements java.io.Serializable {
 		this.createTime = createTime;
 		this.createUser = createUser;
 		this.remark = remark;
+		this.status = status;
 	}
 
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
+	public String getCode() {
+		return code;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public void setCode(String code) {
+		this.code = code;
 	}
+
+	private String code;//业务code
+	private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+	private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
+	private String type;//菜单类型 1 view 2click
+	private String name;//菜单名称
+	private Integer sort;//菜单排序 父菜单排序 不包含子菜单那
+	private String url;//url
+	private String updateUser;//更新人
+	private Date updateTime;//更新时间
+	private Date createTime;//创建时间
+	private String createUser;//创建人
+	private String remark;//备注
+	private Integer status; //状态 -1 已删除 0可用
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+	// Constructors
+
+	/** default constructor */
+	public WxMenu() {
+	}
+
 
 	@Column(name = "wechat_code", length = 200)
 	public String getWechatCode() {

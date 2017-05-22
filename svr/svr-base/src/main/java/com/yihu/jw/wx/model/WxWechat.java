@@ -1,17 +1,18 @@
 package com.yihu.jw.wx.model;// default package
 
-import java.util.Date;
+import com.yihu.jw.base.model.base.IdEntity;
+
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * WxWechat entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "wx_wechat")
-public class WxWechat implements java.io.Serializable {
+public class WxWechat extends IdEntity implements java.io.Serializable{
 
 	// Fields
-	private Integer id;//'主键
 	private String code;//业务code
 	private String saasId;//'saas配置id'
 	private String weichatId;//微信的id
@@ -29,26 +30,7 @@ public class WxWechat implements java.io.Serializable {
 	private Date updateTime;//'修改时间'
 	private String remark;//'备注'
 
-	// Constructors
-
-	/** default constructor */
-	public WxWechat() {
-	}
-
-	/** minimal constructor */
-	public WxWechat(Integer id, Date createTime, Date updateTime) {
-		this.id = id;
-		this.createTime = createTime;
-		this.updateTime = updateTime;
-	}
-
-	/** full constructor */
-	public WxWechat(Integer id, String code, String saasId, String weichatId,
-			String name, String status, String type, String appId,
-			String appSecret, String baseUrl, String createUser,
-			String createUserName, Date createTime, String updateUser,
-			String updateUserName, Date updateTime, String remark) {
-		this.id = id;
+	public WxWechat(String code, String saasId, String weichatId, String name, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
 		this.code = code;
 		this.saasId = saasId;
 		this.weichatId = weichatId;
@@ -67,16 +49,10 @@ public class WxWechat implements java.io.Serializable {
 		this.remark = remark;
 	}
 
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
+	/** default constructor */
+	public WxWechat() {
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "code", length = 64)
 	public String getCode() {
@@ -187,6 +163,15 @@ public class WxWechat implements java.io.Serializable {
 		this.createTime = createTime;
 	}
 
+	@Column(name = "remark", length = 1000)
+	public String getRemark() {
+		return this.remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 	@Column(name = "update_user", length = 200)
 	public String getUpdateUser() {
 		return this.updateUser;
@@ -213,15 +198,6 @@ public class WxWechat implements java.io.Serializable {
 
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
-	}
-
-	@Column(name = "remark", length = 1000)
-	public String getRemark() {
-		return this.remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
 	}
 
 }

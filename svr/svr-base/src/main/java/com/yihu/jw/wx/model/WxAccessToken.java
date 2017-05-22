@@ -1,18 +1,29 @@
 package com.yihu.jw.wx.model;// default package
 
-import java.util.Date;
+import com.yihu.jw.base.model.base.IdEntity;
+
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 微信 accesstoken表
  */
 @Entity
 @Table(name = "wx_access_token")
-public class WxAccessToken implements java.io.Serializable {
+public class WxAccessToken extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;//业务id
+	private String code;//业务code
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	private String wechatCode;//关联的微信code 关联表 Wx_Wechat
 	private String accessToken;//调用微信返回的accesstoken
 	private long addTimestamp;//创建时间
@@ -26,7 +37,7 @@ public class WxAccessToken implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public WxAccessToken(Integer id, String accessToken, long addTimestamp,
+	public WxAccessToken(Long id, String accessToken, long addTimestamp,
 			Integer expiresIn, Date czrq) {
 		this.id = id;
 		this.accessToken = accessToken;
@@ -35,10 +46,9 @@ public class WxAccessToken implements java.io.Serializable {
 		this.czrq = czrq;
 	}
 
-	/** full constructor */
-	public WxAccessToken(Integer id, String wechatCode, String accessToken,
-			long addTimestamp, Integer expiresIn, Date czrq) {
+	public WxAccessToken(Long id, String code, String wechatCode, String accessToken, long addTimestamp, Integer expiresIn, Date czrq) {
 		this.id = id;
+		this.code = code;
 		this.wechatCode = wechatCode;
 		this.accessToken = accessToken;
 		this.addTimestamp = addTimestamp;
@@ -46,16 +56,6 @@ public class WxAccessToken implements java.io.Serializable {
 		this.czrq = czrq;
 	}
 
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "wechat_code", length = 64)
 	public String getWechatCode() {

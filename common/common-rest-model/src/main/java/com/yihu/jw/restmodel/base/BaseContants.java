@@ -5,7 +5,9 @@ package com.yihu.jw.restmodel.base;
  * 基础模块的静态变量
  */
 public class BaseContants {
-    //功能常量
+
+
+    //功能模块常量
     public static class Function{
         public static final String message_success_create="function create success";
         public static final String message_success_update="function update success";
@@ -16,19 +18,20 @@ public class BaseContants {
 
         public static final String message_fail_name_exist="function name exist";
         public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_name_is_null="name is null";
+        public static final String message_fail_name_is_null="function is null";
         public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_wechatCode_is_null="wechatCode is null";
+
+
         public static final String message_fail_code_no_exist="code no exist";
-
-
         public static final String api_common="function";
         public static final String api_create="create";
         public static final String api_update="update";
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";
         public static final String api_getFunctions="getFunctions";
-        public static final String api_getFunctionsNoPage="getFunctionsNoPage";
 
+        public static final String api_getFunctionsNoPage="getFunctionsNoPage";
     }
 
     //模块常量
@@ -83,4 +86,5 @@ public class BaseContants {
         public static final String api_getSaassNoPage="getSaassNoPage";
 
     }
+
 }

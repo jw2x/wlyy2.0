@@ -3,10 +3,11 @@ package com.yihu.jw.wx.controller;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.restmodel.wx.MWxWechat;
+import com.yihu.jw.restmodel.wx.MWxMenu;
 import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.wx.model.WxMenu;
 import com.yihu.jw.wx.model.WxWechat;
-import com.yihu.jw.wx.service.WechatService;
+import com.yihu.jw.wx.service.WxMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,71 +21,72 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by chenweida on 2017/5/11.
+ * Created by Administrator on 2017/5/19 0019.
  */
 @RestController
-@RequestMapping(WxContants.Wechat.api_common)
-@Api(value = "微信相关操作", description = "微信相关操作")
-public class WechatController extends EnvelopRestController {
+@RequestMapping(WxContants.WxMenu.api_common)
+@Api(value = "微信菜单相关操作", description = "微信菜单相关操作")
+public class WxMenuController extends EnvelopRestController {
+
     @Autowired
-    private WechatService wechatService;
+    private WxMenuService wxMenuService;
 
-    @PostMapping(value = WxContants.Wechat.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建微信配置", notes = "创建微信配置")
-    public Envelop createWechat(
+    @PostMapping(value = WxContants.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建微信菜单", notes = "创建微信菜单")
+    public Envelop createWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxWechat wechat = toEntity(jsonData, WxWechat.class);
-            return Envelop.getSuccess(WxContants.Wechat.message_success_create, wechatService.createWechat(wechat));
+            WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_create, wxMenuService.createWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = WxContants.Wechat.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "修改微信配置", notes = "修改微信配置")
-    public Envelop updateWechat(
+    @PutMapping(value = WxContants.WxMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "修改微信菜单", notes = "修改微信菜单")
+    public Envelop updateWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxWechat Wechat = toEntity(jsonData, WxWechat.class);
-            return Envelop.getSuccess(WxContants.Wechat.message_success_update, wechatService.updateWxchat(Wechat));
+            WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_update, wxMenuService.updateWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @DeleteMapping(value = WxContants.Wechat.api_delete)
-    @ApiOperation(value = "删除微信配置", notes = "删除微信配置")
-    public Envelop deleteWechat(
+    @DeleteMapping(value = WxContants.WxMenu.api_delete)
+    @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
+    public Envelop deleteWxMenu(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
         try {
-            wechatService.deleteWechat(code);
-            return Envelop.getSuccess(WxContants.Wechat.message_success_delete );
+            wxMenuService.deleteWxMenu(code);
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WxContants.Wechat.api_getByCode)
-    @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
+    @GetMapping(value = WxContants.WxMenu.api_getByCode)
+    @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(WxContants.Wechat.message_success_find, wechatService.findByCode(code));
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_find, wxMenuService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = WxContants.Wechat.api_getWechats, method = RequestMethod.GET)
-    @ApiOperation(value = "获取微信配置列表(分页)")
-    public Envelop getWechats(
+    @RequestMapping(value = WxContants.WxMenu.api_getWxMenus, method = RequestMethod.GET)
+    @ApiOperation(value = "获取微信菜单列表(分页)")
+    public Envelop getWxMenus(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -98,21 +100,21 @@ public class WechatController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<WxWechat> list = wechatService.search(fields, filters, sorts, page, size);
+        List<WxWechat> list = wxMenuService.search(fields, filters, sorts, page, size);
         //获取总数
-        long count=wechatService.getCount(filters);
+        long count=wxMenuService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MWxWechat> mWxWechats = convertToModels(list, new ArrayList<>(list.size()), MWxWechat.class, fields);
+        List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
 
-        return Envelop.getSuccessListWithPage(WxContants.Wechat.message_success_find_functions,mWxWechats, page, size,count);
+        return Envelop.getSuccessListWithPage(WxContants.WxMenu.message_success_find_functions,mWxMenus, page, size,count);
     }
 
 
-    @GetMapping(value = WxContants.Wechat.api_getWechatNoPage)
-    @ApiOperation(value = "获取微信列表配置，不分页")
-    public Envelop getWechatNoPage(
+    @GetMapping(value = WxContants.WxMenu.api_getWxMenuNoPage)
+    @ApiOperation(value = "获取微信菜单列表，不分页")
+    public Envelop getWxMenuNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -120,10 +122,10 @@ public class WechatController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WxWechat> list = wechatService.search(fields,filters,sorts);
+        List<WxMenu> list = wxMenuService.search(fields,filters,sorts);
         //封装返回格式
-        List<MWxWechat> mWxWechats = convertToModels(list, new ArrayList<>(list.size()), MWxWechat.class, fields);
-        return Envelop.getSuccessList(WxContants.Wechat.message_success_find_functions,mWxWechats);
+        List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
+        return Envelop.getSuccessList(WxContants.WxMenu.message_success_find_functions,mWxMenus);
     }
 
 }
