@@ -24,7 +24,7 @@ public class BaseSmsGateway  extends IdEntity implements java.io.Serializable {
 	private String username;  //短信接口的账号
 	private String password;	//短信接口的密码
 	private String url;	//短信接口的url
-	private Integer status;// -1 删除 0可用
+	private Integer status;// -1 删除 0 禁用 可用
 
 
 	// Constructors

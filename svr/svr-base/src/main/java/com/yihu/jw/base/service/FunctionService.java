@@ -98,7 +98,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     }
 
     public List<MFunction> getModuleFunctions(String saasCode) {
-        String sql=" select m.code,m.parent_code,m.name from base_function f,base_module_function mf where f.code=mf.function_id and f.status=0 and mf.module_id=?";
+        String sql=" select m.code,m.parent_code,m.name from base_function f,base_module_function mf where f.code=mf.function_id and f.status=1 and mf.module_id=?";
         return jdbcTemplate.queryForList(sql,MFunction.class,saasCode);
     }
 

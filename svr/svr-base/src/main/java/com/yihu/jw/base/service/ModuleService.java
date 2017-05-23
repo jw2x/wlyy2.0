@@ -103,7 +103,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
     }
 
     public List<MModule> getSaasModules(String saasCode) {
-        String sql=" select m.code,m.parent_code,m.name from base_module m,base_saas_module sm where m.code=sm.module_id and m.status=0 and sm.saas_id=?";
+        String sql=" select m.code,m.parent_code,m.name from base_module m,base_saas_module sm where m.code=sm.module_id and m.status=1 and sm.saas_id=?";
        return jdbcTemplate.queryForList(sql,MModule.class,saasCode);
     }
 }

@@ -11,7 +11,7 @@ public class MFunction {
     private String name; //功能名称
     private String saasId; // saasid
     private String parentCode; //父功能code
-    private Integer status; //状态 -1 已删除 0可用
+    private Integer status; //状态 -1 删除 0 禁用 可用
     private String createUser;
     private String createUserName;
     private Date createTime;
