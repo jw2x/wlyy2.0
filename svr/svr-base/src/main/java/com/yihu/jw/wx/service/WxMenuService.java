@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -57,5 +58,22 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
 
     public WxMenu findByCode(String code) {
         return wxMenuDao.findByCode(code);
+    }
+
+    public List<WxMenu> findByWechatCode(String wechatCode){
+        return wxMenuDao.findByWechatCode(wechatCode);
+    }
+
+    public void createWechatMenu(String wechatCode) {
+        //首先根据wechatCode获取菜单,然后封装成json字符串
+        List<WxMenu> menus = wxMenuDao.findByWechatCode(wechatCode);
+
+    }
+
+    public String getMenu(List<WxMenu> menus){
+        if(menus!=null){
+            for(WxMenu wxMenu:menus)
+        }
+
     }
 }

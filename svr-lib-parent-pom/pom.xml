@@ -54,6 +54,8 @@
         <version.swagger-ui>2.4.0</version.swagger-ui>
         <version.quartz>2.3.0</version.quartz>
         <version.logback>1.2.3</version.logback>
+        <version.json>20160212</version.json>
+        <version.springside>4.2.3-GA</version.springside>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -122,6 +124,7 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-hystrix</artifactId>
                 <version>${version.springCloud}</version>
+
             </dependency>
             <!--hystrix仪表盘-->
             <dependency>
@@ -400,6 +403,21 @@
                 <version>${version.logback}</version>
             </dependency>
             <!--log end-->
+            <!-- json start-->
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${version.json}</version>
+            </dependency>
+            <!--json end -->
+            <!-- springside-core start-->
+            <dependency>
+                <groupId>org.springside</groupId>
+                <artifactId>springside-core</artifactId>
+                <version>${version.springside}</version>
+            </dependency>
+            <!-- springside-core end-->
+
         </dependencies>
     </dependencyManagement>
 

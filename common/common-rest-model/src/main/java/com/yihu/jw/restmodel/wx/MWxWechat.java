@@ -10,7 +10,6 @@ public class MWxWechat {
     private Long id;
     private String code;//业务code
     private String saasId;//'saas配置id'
-    private String weichatId;//微信的id
     private String name;//名称
     private String status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
     private String type;//'1：服务号 2 订阅号
@@ -47,14 +46,6 @@ public class MWxWechat {
 
     public void setSaasId(String saasId) {
         this.saasId = saasId;
-    }
-
-    public String getWeichatId() {
-        return weichatId;
-    }
-
-    public void setWeichatId(String weichatId) {
-        this.weichatId = weichatId;
     }
 
     public String getName() {

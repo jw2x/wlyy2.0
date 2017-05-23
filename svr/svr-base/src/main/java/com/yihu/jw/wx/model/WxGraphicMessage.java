@@ -24,7 +24,7 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
     private String remark;
-    private Integer status; //状态 -1 已删除 0可用
+    private Integer status;  //状态 -1删除 0 冻结 1可用
 
     public WxGraphicMessage(String code, String wechatCode, String name, String value, String keyword, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
         this.code = code;

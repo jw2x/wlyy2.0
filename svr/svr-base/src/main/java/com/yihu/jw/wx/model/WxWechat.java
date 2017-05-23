@@ -15,7 +15,6 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     // Fields
     private String code;//业务code
     private String saasId;//'saas配置id'
-    private String weichatId;//微信的id
     private String name;//名称
     private String status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
     private String type;//'1：服务号 2 订阅号
@@ -30,10 +29,9 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private Date updateTime;//'修改时间'
     private String remark;//'备注'
 
-    public WxWechat(String code, String saasId, String weichatId, String name, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
+    public WxWechat(String code, String saasId, String name, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
         this.code = code;
         this.saasId = saasId;
-        this.weichatId = weichatId;
         this.name = name;
         this.status = status;
         this.type = type;
@@ -72,15 +70,6 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
 
     public void setSaasId(String saasId) {
         this.saasId = saasId;
-    }
-
-    @Column(name = "weichat_id", length = 50)
-    public String getWeichatId() {
-        return this.weichatId;
-    }
-
-    public void setWeichatId(String weichatId) {
-        this.weichatId = weichatId;
     }
 
     @Column(name = "name", length = 200)

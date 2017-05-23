@@ -50,9 +50,6 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getAppSecret())) {
             throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wechat.getCode())) {
-            throw new ApiException(WxContants.Wechat.message_fail_code_is_null, CommonContants.common_error_params_code);
-        }
         WxWechat wechatTem = wechatDao.findByAppIdExcludeCode(wechat.getAppId(),wechat.getCode());
         if(wechatTem!=null){
             throw new ApiException(WxContants.Wechat.message_fail_appId_exist, CommonContants.common_error_params_code);

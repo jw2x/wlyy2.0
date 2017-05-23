@@ -125,4 +125,6 @@ public class WxTemplateController extends EnvelopRestController {
         List<MWxTemplate> mMWxTemplates = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
         return Envelop.getSuccessList(WxContants.WxTemplate.message_success_find_functions,mMWxTemplates);
     }
+
+    //微信模版消息测试
 }

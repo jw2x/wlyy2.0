@@ -26,7 +26,7 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
     private String remark;
-    private Integer status; //状态 -1 已删除 0可用
+    private Integer status;  //状态 -1删除 0 冻结 1可用
 
     public WxTemplate(Long id, String code, String name, String wechatCode, String templateCode, String value, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
         this.id = id;
