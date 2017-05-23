@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by chenweida on 2017/5/11.
+ *   2017/5/11.
  */
 @RestController
 @RequestMapping(WxContants.WxGraphicMessage.api_common)
@@ -126,4 +126,12 @@ public class WxGraphicMessageController extends EnvelopRestController {
         return Envelop.getSuccessList(WxContants.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages);
     }
 
+    @GetMapping(value = "sendGraphicMessages")
+    @ApiOperation(value = "发送图文消息")
+    public Envelop sendGraphicMessages(
+            @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
+            @RequestParam(value = "codes", required = true) String codes,HttpServletRequest request) throws Exception {
+        wxGraphicMessageService.sendGraphicMessages(codes,request);
+        return null;
+    }
 }
