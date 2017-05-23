@@ -17,4 +17,7 @@ public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, Jp
 
     @Query("from WxMenu m where m.wechatCode =?1 and m.status = 1 order  by m.supMenucode ,m.sort")
     List<WxMenu> findByWechatCode(String wechatCode);
+
+    @Query("from WxMenu m where m.wechatCode = ?1 and  m.supMenucode= ?2 and m.status =1 order by m.sort")
+    List<WxMenu> findChildMenus(String wechatCode, String sup_menucode);
 }

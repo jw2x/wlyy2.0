@@ -141,27 +141,19 @@ public class WxMenuController extends EnvelopRestController {
     @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
     @RequestMapping(value = "/menu/create" ,method = RequestMethod.GET)
     @ResponseBody
-    public String createWechatMenu(
+    public Envelop createWechatMenu(
             @ApiParam(name = "wechatCode", value = "", defaultValue = "")
             @RequestParam(value = "wechatCode", required = true)String wechatCode){
         try{
             String params ="";
-            wxMenuService.createWechatMenu(wechatCode);
-
-            //String url = " https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + getAccessToken();
-            //
-            //// 请求微信接口创建菜单
-            //String jsonStr = HttpUtil.sendPost(url, params);
-            //JSONObject result = new JSONObject(jsonStr);
-            //if(result != null && result.get("errcode").toString().equals("0") && result.getString("errmsg").equals("ok")){
-            //    return write(200,"创建成功!","data",jsonStr);
-            //}else{
-            //    return write(-1,"创建失败!","data",jsonStr);
-            //}
-            return null;
+            JSONObject result = wxMenuService.createWechatMenu(wechatCode);
+            if(result != null && result.get("errcode").toString().equals("0") && result.getString("errmsg").equals("ok")){
+                return Envelop.getSuccess("创建成功",result );
+            }else{
+                return Envelop.getSuccess("创建失败",result );
+            }
         }catch (Exception e){
-            //return error(-1,"创建失败");
-            return null;
+            return Envelop.getSuccess("创建成功",e );
         }
     }
 
