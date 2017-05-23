@@ -10,12 +10,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface FunctionDao extends PagingAndSortingRepository<Function, Long>, JpaSpecificationExecutor<Function> {
 
-    @Query("from Function f where f.name=?1 and f.status=0")
+    @Query("from Function f where f.name=?1 and f.status=1")
     Function findByName(String name);
 
-    @Query("from Function f where f.name=?1 and f.status=0 and f.code != ?2")
+    @Query("from Function f where f.name=?1 and f.status=1 and f.code != ?2")
     Function findByNameExcludeCode(String name, String code);
 
-    @Query("from Function f where f.code=?1 and f.status=0")
+    @Query("from Function f where f.code=?1 and f.status=1")
     Function findByCode(String code);
 }

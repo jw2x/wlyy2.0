@@ -11,12 +11,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface SmsDao extends PagingAndSortingRepository<BaseSms, Long>, JpaSpecificationExecutor<BaseSms> {
 
-    @Query("from Function f where f.name=?1 and f.status=0")
+    @Query("from Function f where f.name=?1 and f.status=1")
     BaseSms findByName(String name);
 
-    @Query("from Function f where f.name=?1 and f.status=0 and f.code != ?2")
+    @Query("from Function f where f.name=?1 and f.status=1 and f.code != ?2")
     BaseSms findByNameExcludeCode(String name, String code);
 
-    @Query("from Function f where f.code=?1 and f.status=0")
+    @Query("from Function f where f.code=?1 and f.status=1")
     BaseSms findByCode(String code);
 }

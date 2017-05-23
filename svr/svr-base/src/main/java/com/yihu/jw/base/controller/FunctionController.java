@@ -125,4 +125,31 @@ public class FunctionController extends EnvelopRestController {
         List<MFunction> mFunctions = convertToModels(list, new ArrayList<>(list.size()), MFunction.class, fields);
         return Envelop.getSuccessList(BaseContants.Function.message_success_find_functions,mFunctions);
     }
+
+    @PutMapping(value = BaseContants.Function.api_assignFunction, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "给对应的模块分配功能")
+    public Envelop assignModule(
+            @ApiParam(name = "module_code", value = "module_code", defaultValue = "")
+            @RequestParam String moduleCode,
+            @ApiParam(name = "functionCodes", value = "功能的code，可以传多个，逗号分割", defaultValue = "")
+            @RequestParam String functionCodes) {
+        try {
+            functionService.assignFunction(moduleCode,functionCodes);
+            return Envelop.getSuccess(BaseContants.Function.message_success_assign_function);
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
+    @GetMapping(value = BaseContants.Function.api_getModuleFunctions, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "查询saas的模块")
+    public Envelop getModuleFunctions(
+            @ApiParam(name = "saas_code", value = "saas_code", defaultValue = "")
+            @RequestParam String saasCode) {
+        try {
+            return Envelop.getSuccess(BaseContants.Function.message_success_find_functions_module,functionService.getModuleFunctions(saasCode));
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
 }

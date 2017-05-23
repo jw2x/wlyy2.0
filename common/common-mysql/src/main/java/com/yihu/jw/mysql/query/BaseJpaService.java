@@ -42,6 +42,7 @@ public class BaseJpaService<T, R> {
     @PersistenceContext
     protected EntityManager entityManager;
 
+
     public BaseJpaService(){
         Type genType = getClass().getGenericSuperclass();
         if ((genType instanceof ParameterizedType)) {

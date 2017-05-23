@@ -14,6 +14,8 @@ public class BaseContants {
         public static final String message_success_find="function find success";
         public static final String message_success_find_functions="functions find success";
         public static final String message_success_delete="function delete success";
+        public static final String message_success_assign_function=" assign function create success";
+        public static final String message_success_find_functions_module="moduleFunctions find success";
 
 
         public static final String message_fail_name_exist="function name exist";
@@ -29,6 +31,8 @@ public class BaseContants {
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";
         public static final String api_getFunctions="getFunctions";
+        public static final String api_assignFunction="assignFunction";
+        public static final String api_getModuleFunctions="api_getModuleFunctions";
 
         public static final String api_getFunctionsNoPage="getFunctionsNoPage";
     }
@@ -40,6 +44,7 @@ public class BaseContants {
         public static final String message_success_find="Module find success";
         public static final String message_success_find_Modules="Module find success";
         public static final String message_success_delete="Module delete success";
+        public static final String message_success_assign_module=" assign Module create success";
 
 
         public static final String message_fail_name_exist=" name exist";
@@ -57,6 +62,8 @@ public class BaseContants {
         public static final String api_getByCode="getByCode";
         public static final String api_getModules="getModules";
         public static final String api_getModulesNoPage="getModulesNoPage";
+        public static final String api_assignModule="assignModule";
+        public static final String api_getSaasModules="api_getSaasModules";
 
     }
 
