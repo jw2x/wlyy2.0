@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,13 +68,53 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     public void createWechatMenu(String wechatCode) {
         //首先根据wechatCode获取菜单,然后封装成json字符串
         List<WxMenu> menus = wxMenuDao.findByWechatCode(wechatCode);
+        getMenuToString(menus,wechatCode);
 
     }
 
-    public String getMenu(List<WxMenu> menus){
+    public String getMenuToString(List<WxMenu> menus,String wechatCode){
+        String menuJsonStr = "";
+        List<WxMenu> parentMenus = new ArrayList<WxMenu>();//存储父菜单
+        List<WxMenu> childMenus = new ArrayList<WxMenu>();//存储二级菜单/子菜单
         if(menus!=null){
-            for(WxMenu wxMenu:menus)
+            menuJsonStr = "{\"button\":[{\"";
+            for(WxMenu wxMenu:menus){
+                if(StringUtils.isEmpty(wxMenu.getSupMenucode())){//说明是父菜单
+                    parentMenus.add(wxMenu);
+                }else{
+                    childMenus.add(wxMenu);
+                }
+            }
         }
+        for(WxMenu menu:parentMenus){//遍历父菜单
+            menuJsonStr += "name\":\""+ menu.getName()+"\"";
+            if(!StringUtils.isEmpty(menu.getType())){
+                menuJsonStr += ",\"type\":\"" + menu.getType()+"\"";
+            }
+            if(!StringUtils.isEmpty(menu.getKey())){
+                menuJsonStr += ",\"key\":\"" + menu.getKey()+"\"";
+            }
+            if(!StringUtils.isEmpty(menu.getType())){
+                menuJsonStr += ",\"type\":\"" + menu.getType()+"\"";
+            }
+            if(!StringUtils.isEmpty(menu.getUrl())){
+                menuJsonStr += ",\"url\":\"" + menu.getUrl()+"\"";
+            }
+            if(!StringUtils.isEmpty(menu.getMediaId())){
+                menuJsonStr += ",\"media_id\":\"" + menu.getMediaId()+"\"";
+            }
+            if(!StringUtils.isEmpty(menu.getAppid())){
+                menuJsonStr += ",\"appid\":\"" + menu.getAppid()+"\"";
+            }
+            if(!StringUtils.isEmpty(menu.getPagepath())){
+                menuJsonStr += ",\"pagepath\":\"" + menu.getPagepath()+"\"";
+            }
+            //查找是否有子菜单
 
+
+        }
+        return null;
     }
+
+    //public List<WxMenu> findChildMenus(String )
 }

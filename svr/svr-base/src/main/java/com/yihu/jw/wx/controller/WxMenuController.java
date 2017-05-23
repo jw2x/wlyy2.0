@@ -139,11 +139,11 @@ public class WxMenuController extends EnvelopRestController {
      * @return
      */
     @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
-    @RequestMapping(value = "/menu/create")
+    @RequestMapping(value = "/menu/create" ,method = RequestMethod.GET)
     @ResponseBody
     public String createWechatMenu(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String wechatCode){
+            @ApiParam(name = "wechatCode", value = "", defaultValue = "")
+            @RequestParam(value = "wechatCode", required = true)String wechatCode){
         try{
             String params ="";
             wxMenuService.createWechatMenu(wechatCode);
