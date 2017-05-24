@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springside.modules.utils.Clock;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/5/18 0018.
@@ -47,34 +48,35 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
                         break;
                     }
                 }
-                String token_url = "https://api.weixin.qq.com/cgi-bin/token";
-                String appId="";
-                String appSecret="";
-                //根据wechatCode查找出appid和appSecret
-                WxWechat wxWechat = wechatDao.findByCode(wechatCode);
-                if(wxWechat==null){
-                    return null;
-                }
-                appId = wxWechat.getAppId();
-                appSecret = wxWechat.getAppSecret();
-                String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
-                String result = HttpUtil.sendGet(token_url, params);
-                JSONObject json = new JSONObject(result);
-                if (json.has("access_token")) {
-                    String token = json.get("access_token").toString();
-                    String expires_in = json.get("expires_in").toString();
-                    WxAccessToken newaccessToken = new WxAccessToken();
-                    newaccessToken.setAccessToken(token);
-                    newaccessToken.setExpiresIn(Long.parseLong(expires_in));
-                    newaccessToken.setAddTimestamp(System.currentTimeMillis());
-                    newaccessToken.setCzrq(new Clock.DefaultClock().getCurrentDate());
-                    wxAccessTokenDao.save(newaccessToken);
-                    return newaccessToken;
-                } else {
-                    return null;
-                }
             }
-            return null;
+            String token_url = "https://api.weixin.qq.com/cgi-bin/token";
+            String appId="";
+            String appSecret="";
+            //根据wechatCode查找出appid和appSecret
+            WxWechat wxWechat = wechatDao.findByCode(wechatCode);
+            if(wxWechat==null){
+                return null;
+            }
+            appId = wxWechat.getAppId();
+            appSecret = wxWechat.getAppSecret();
+            String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
+            String result = HttpUtil.sendGet(token_url, params);
+            JSONObject json = new JSONObject(result);
+            if (json.has("access_token")) {
+                String token = json.get("access_token").toString();
+                String expires_in = json.get("expires_in").toString();
+                WxAccessToken newaccessToken = new WxAccessToken();
+                newaccessToken.setAccessToken(token);
+                newaccessToken.setExpiresIn(Long.parseLong(expires_in));
+                newaccessToken.setAddTimestamp(System.currentTimeMillis());
+                newaccessToken.setCzrq(new Clock.DefaultClock().getCurrentDate());
+                newaccessToken.setCode(UUID.randomUUID().toString().replace("-",""));
+                newaccessToken.setWechatCode(wechatCode);
+                wxAccessTokenDao.save(newaccessToken);
+                return newaccessToken;
+            } else {
+                return null;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return null;

@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,7 +141,6 @@ public class WxMenuController extends EnvelopRestController {
             @ApiParam(name = "wechatCode", value = "", defaultValue = "")
             @RequestParam(value = "wechatCode", required = true)String wechatCode){
         try{
-            String params ="";
             JSONObject result = wxMenuService.createWechatMenu(wechatCode);
             if(result != null && result.get("errcode").toString().equals("0") && result.getString("errmsg").equals("ok")){
                 return Envelop.getSuccess("创建成功",result );
