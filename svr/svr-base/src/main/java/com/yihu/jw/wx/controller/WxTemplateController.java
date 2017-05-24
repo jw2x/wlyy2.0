@@ -5,11 +5,14 @@ import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxTemplate;
 import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.wx.model.Miniprogram;
 import com.yihu.jw.wx.model.WxTemplate;
 import com.yihu.jw.wx.service.WxTemplateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -126,5 +129,29 @@ public class WxTemplateController extends EnvelopRestController {
         return Envelop.getSuccessList(WxContants.WxTemplate.message_success_find_functions,mMWxTemplates);
     }
 
-    //微信模版消息测试
+    @GetMapping(value = "sendTemplateMessage")
+    @ApiOperation(value = "发送微信模板消息")
+    public Envelop sendTemplateMessage(
+            @ApiParam(name="openid",value="微信用户的openid")
+            @RequestParam String openid,
+            @ApiParam(name="tempalteCode",value = "模板code")
+            @RequestParam String templateCode,
+            @ApiParam(name="url",value="模板跳转链接")
+            @RequestParam(required = false) String url,
+            @ApiParam(name="appid",value="所需跳转到的小程序appid（该小程序appid必须与发模板消息的公众号是绑定关联关系）")
+            @RequestParam(required = false) String appid,
+            @ApiParam(name="pagepath",value="所需跳转到小程序的具体页面路径，支持带参数,（示例index?foo=bar）")
+            @RequestParam(required = false) String pagepath,
+            @ApiParam(name="data",value="json字符串")
+            @RequestParam String data
+    ){
+        Miniprogram miniprogram = null;
+        if(StringUtils.isNotBlank(appid)&&StringUtils.isNotBlank(pagepath)){
+            miniprogram = new Miniprogram();
+            miniprogram.setAppid(appid);
+            miniprogram.setPagepath(pagepath);
+        }
+        JSONObject jsonObject = wxTemplateService.sendTemplateMessage(openid, templateCode, url, data, miniprogram);
+        return Envelop.getSuccess("成功",jsonObject);
+    }
 }

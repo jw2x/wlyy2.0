@@ -13,28 +13,51 @@ import java.util.Date;
 public class WxTemplate extends IdEntity implements java.io.Serializable {
 
     // Fields
-
     private String code;//模板code
-    private String name;//模板名称
+    private String title;//模板标题
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
-    private String templateCode;//微信的模板code
-    private String value;//模板值
+    private String templateId;//微信模板id
+    private String content;//模板内容
     private String createUser;//创建人
     private String createUserName;//创建人名
     private Date createTime;//创建时间
     private String updateUser;//修改人
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
-    private String remark;
-    private Integer status;  //状态 -1删除 0 冻结 1可用
 
-    public WxTemplate(Long id, String code, String name, String wechatCode, String templateCode, String value, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
-        this.id = id;
-        this.code = code;
-        this.name = name;
+    @Column(name = "title")
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    @Column(name="wechat_code")
+    public String getWechatCode() {
+        return wechatCode;
+    }
+
+    public void setWechatCode(String wechatCode) {
         this.wechatCode = wechatCode;
-        this.templateCode = templateCode;
-        this.value = value;
+    }
+
+    @Column(name="template_id")
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public WxTemplate(String code, String title, String wechatCode, String templateId, String content, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
+        this.code = code;
+        this.title = title;
+        this.wechatCode = wechatCode;
+        this.templateId = templateId;
+        this.content = content;
         this.createUser = createUser;
         this.createUserName = createUserName;
         this.createTime = createTime;
@@ -44,6 +67,21 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
         this.remark = remark;
         this.status = status;
     }
+
+    @Column(name="content")
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    private String remark;
+    private Integer status;  //状态 -1删除 0 冻结 1可用
+
+
 
     /**
      * default constructor
@@ -91,42 +129,6 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    @Column(name = "name", length = 200)
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Column(name = "wechat_code", length = 64)
-    public String getWechatCode() {
-        return this.wechatCode;
-    }
-
-    public void setWechatCode(String wechatCode) {
-        this.wechatCode = wechatCode;
-    }
-
-    @Column(name = "template_code", length = 100)
-    public String getTemplateCode() {
-        return this.templateCode;
-    }
-
-    public void setTemplateCode(String templateCode) {
-        this.templateCode = templateCode;
-    }
-
-    @Column(name = "value", length = 2000)
-    public String getValue() {
-        return this.value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
     }
 
     @Column(name = "create_user", length = 200)
