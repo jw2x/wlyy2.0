@@ -106,9 +106,9 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         try {
             // xml请求解析
             Map<String, String> requestMap = MessageUtil.parseXml(request);
-            // 发送方帐号（open_id）
+            //用户openid
             String fromUserName = requestMap.get("FromUserName");
-            // 公众帐号
+            //微信公众号
             String toUserName = requestMap.get("ToUserName");
 
             // 图文信息
@@ -132,4 +132,36 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
             return e.getMessage();
         }
     }
+
+    /**
+     * 发送图文消息
+     * @param codes
+     * @param fromUserName   用户的openId
+     * @param toUserName
+     * @return
+     */
+    public String sendGraphicMessages(String codes, String fromUserName,String toUserName) {
+        try {
+        // 图文信息
+            List<Map<String,String>> articles =  new ArrayList<>();
+            if(codes!=null){
+                String[] codeArray = codes.split(",");
+                for(String code: codeArray){
+                    WxGraphicMessage graphicMessage = findByCode(code);
+                    Map<String,String> article = new HashMap<>();
+                    article.put("Url",graphicMessage.getUrl());
+                    article.put("Title", graphicMessage.getTitle());
+                    article.put("Description",graphicMessage.getDescription());
+                    article.put("PicUrl",graphicMessage.getPicUrl());
+                    articles.add(article);
+                }
+            }
+            // 构建回复消息XML
+            return replyNewsMessage(fromUserName, toUserName, articles);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+
 }
