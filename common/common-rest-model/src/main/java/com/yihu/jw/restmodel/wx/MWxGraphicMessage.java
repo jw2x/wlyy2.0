@@ -8,18 +8,18 @@ import java.util.Date;
 public class MWxGraphicMessage {
     private Long id;
     private String code;//业务code
-    private String wechatCode;//关联的微信code 关联表 Wx_Wechat
-    private String name;//名称
-    private String value;//图文消息url值
-    private String keyword;//关键字
+    private String title;//标题
+    private String description;//描述
+    private String url;//图文消息url值
+    private String picUrl;//图片地址
     private String createUser;//创建人
     private String createUserName;//创建人名
     private Date createTime;//创建时间
     private String updateUser;//修改人
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
-    private String remark;
-    private Integer status; //状态 -1 已删除 0可用
+    private String remark;//备注
+    private Integer status;  //状态 -1删除 0 冻结 1可用
 
     public Long getId() {
         return id;
@@ -37,36 +37,36 @@ public class MWxGraphicMessage {
         this.code = code;
     }
 
-    public String getWechatCode() {
-        return wechatCode;
+    public String getTitle() {
+        return title;
     }
 
-    public void setWechatCode(String wechatCode) {
-        this.wechatCode = wechatCode;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getValue() {
-        return value;
+    public String getUrl() {
+        return url;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    public String getKeyword() {
-        return keyword;
+    public String getPicUrl() {
+        return picUrl;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     public String getCreateUser() {

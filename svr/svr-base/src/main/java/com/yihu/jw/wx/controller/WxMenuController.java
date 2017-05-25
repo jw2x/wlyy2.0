@@ -11,6 +11,7 @@ import com.yihu.jw.wx.service.WxMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class WxMenuController extends EnvelopRestController {
     private WxMenuService wxMenuService;
 
     @PostMapping(value = WxContants.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建微信菜单", notes = "创建微信菜单")
+    @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
     public Envelop createWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
@@ -126,6 +127,29 @@ public class WxMenuController extends EnvelopRestController {
         //封装返回格式
         List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
         return Envelop.getSuccessList(WxContants.WxMenu.message_success_find_functions,mWxMenus);
+    }
+
+    /**
+     * 创建微信公众号菜单
+     *
+     * @return
+     */
+    @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
+    @RequestMapping(value = WxContants.WxMenu.api_createMenu ,method = RequestMethod.GET)
+    @ResponseBody
+    public Envelop createWechatMenu(
+            @ApiParam(name = "wechatCode", value = "", defaultValue = "")
+            @RequestParam(value = "wechatCode", required = true)String wechatCode){
+        try{
+            JSONObject result = wxMenuService.createWechatMenu(wechatCode);
+            if(result != null && result.get("errcode").toString().equals("0") && result.getString("errmsg").equals("ok")){
+                return Envelop.getSuccess("创建成功",result );
+            }else{
+                return Envelop.getSuccess("创建失败",result );
+            }
+        }catch (Exception e){
+            return Envelop.getSuccess("创建成功",e );
+        }
     }
 
 }

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by chenweida on 2017/5/11.
+ *   2017/5/11.
  */
 @RestController
 @RequestMapping(WxContants.WxGraphicMessage.api_common)
@@ -41,6 +41,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
+
 
     @PutMapping(value = WxContants.WxGraphicMessage.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信图文消息", notes = "修改微信图文消息")
@@ -125,5 +126,29 @@ public class WxGraphicMessageController extends EnvelopRestController {
         List<MWxGraphicMessage> mWxGraphicMessages = convertToModels(list, new ArrayList<>(list.size()), MWxGraphicMessage.class, fields);
         return Envelop.getSuccessList(WxContants.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages);
     }
+
+    @GetMapping(value = WxContants.WxGraphicMessage.api_sendGraphicMessages)
+    @ApiOperation(value = "发送图文消息")
+    public Envelop sendGraphicMessages(
+            @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
+            @RequestParam(value = "codes", required = true) String codes,HttpServletRequest request) throws Exception {
+        String messages = wxGraphicMessageService.sendGraphicMessages(codes, request);
+        return Envelop.getSuccess("成功",messages);
+    }
+
+    @GetMapping(value = WxContants.WxGraphicMessage.api_sendGraphicMessages)
+    @ApiOperation(value = "发送图文消息")
+    public Envelop sendGraphicMessages(
+            @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
+            @RequestParam(value = "codes", required = true) String codes,
+            @ApiParam(name = "fromUserName", value = "用户openid")
+            @RequestParam(value = "fromUserName", required = true) String fromUserName,
+            @ApiParam(name = "toUserName", value = "公众号")
+            @RequestParam(value = "toUserName", required = true) String toUserName
+            ) throws Exception {
+        String messages = wxGraphicMessageService.sendGraphicMessages(codes, fromUserName,toUserName);
+        return Envelop.getSuccess("成功",messages);
+    }
+
 
 }

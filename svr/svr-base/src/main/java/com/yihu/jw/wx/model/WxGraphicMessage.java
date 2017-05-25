@@ -13,25 +13,29 @@ import java.util.Date;
 public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
 
     private String code;//业务code
-    private String wechatCode;//关联的微信code 关联表 Wx_Wechat
-    private String name;//名称
-    private String value;//图文消息url值
-    private String keyword;//关键字
+    private String title;//标题
+    private String description;//描述
+    private String url;//图文消息url值
+    private String picUrl;//图片地址
     private String createUser;//创建人
     private String createUserName;//创建人名
     private Date createTime;//创建时间
     private String updateUser;//修改人
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
-    private String remark;
-    private Integer status; //状态 -1 已删除 0可用
+    private String remark;//备注
+    private Integer status;  //状态 -1删除 0 冻结 1可用
 
-    public WxGraphicMessage(String code, String wechatCode, String name, String value, String keyword, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
+
+    public WxGraphicMessage() {
+    }
+
+    public WxGraphicMessage(String code, String title, String description, String url, String picUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
         this.code = code;
-        this.wechatCode = wechatCode;
-        this.name = name;
-        this.value = value;
-        this.keyword = keyword;
+        this.title = title;
+        this.description = description;
+        this.url = url;
+        this.picUrl = picUrl;
         this.createUser = createUser;
         this.createUserName = createUserName;
         this.createTime = createTime;
@@ -40,9 +44,6 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.updateTime = updateTime;
         this.remark = remark;
         this.status = status;
-    }
-
-    public WxGraphicMessage() {
     }
 
     @Column(name = "code", length = 64)
@@ -54,40 +55,40 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
         this.code = code;
     }
 
-    @Column(name = "wechat_code", length = 200)
-    public String getWechatCode() {
-        return wechatCode;
+    @Column(name = "title", length = 200)
+    public String getTitle() {
+        return title;
     }
 
-    public void setWechatCode(String wechatCode) {
-        this.wechatCode = wechatCode;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    @Column(name = "name", length = 200)
-    public String getName() {
-        return name;
+    @Column(name = "description", length = 2000)
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    @Column(name = "value", length = 2000)
-    public String getValue() {
-        return value;
+    @Column(name = "url", length = 2000)
+    public String getUrl() {
+        return url;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
-    @Column(name = "keyword", length = 100)
-    public String getKeyword() {
-        return keyword;
+    @Column(name = "pic_url", length = 2000)
+    public String getPicUrl() {
+        return picUrl;
     }
 
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
     }
 
     @Column(name = "create_user", length = 200)
