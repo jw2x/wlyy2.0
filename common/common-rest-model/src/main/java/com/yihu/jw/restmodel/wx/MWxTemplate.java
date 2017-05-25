@@ -18,6 +18,24 @@ public class MWxTemplate {
     private String updateUser;//修改人
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
+    private String remark;
+    private Integer status;  //状态 -1删除 0 冻结 1可用
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;

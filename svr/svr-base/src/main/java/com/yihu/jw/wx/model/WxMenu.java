@@ -52,6 +52,12 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
         this.status = status;
     }
 
+    /**
+     * default constructor
+     */
+    public WxMenu() {
+    }
+
     public String getKey() {
         return key;
     }
@@ -83,12 +89,6 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
 
     public void setPagepath(String pagepath) {
         this.pagepath = pagepath;
-    }
-
-    /**
-     * default constructor
-     */
-    public WxMenu() {
     }
 
     public String getCode() {

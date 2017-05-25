@@ -11,22 +11,16 @@ public class WechatTemplate implements Serializable {
 
 	private static final long serialVersionUID = 3877107913397496785L;
 
-    /**
-     * 用户openId
-     */
-    private String touser;
+    private String touser;//用户openId
 
-	/**
-     * 模板消息id
-     */
-    private String template_id;
+    private String template_id;//模板消息id
 
-    /**
-     * URL置空，则在发送后，点击模板消息会进入一个空白页面（ios），或无法点击（android）
-     */
-    private String url;
+    private String url;//URL置空，则在发送后，点击模板消息会进入一个空白页面（ios），或无法点击（android）
 
     private Miniprogram miniprogram;
+
+    private Map<String,WechatTemplateData> data;//详细内容
+
 
     public Miniprogram getMiniprogram() {
         return miniprogram;
@@ -35,11 +29,6 @@ public class WechatTemplate implements Serializable {
     public void setMiniprogram(Miniprogram miniprogram) {
         this.miniprogram = miniprogram;
     }
-
-    /**
-     * 详细内容
-     */
-    private Map<String,WechatTemplateData> data;
     
     public String getTemplate_id() {
         return template_id;
