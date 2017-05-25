@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -89,8 +86,8 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
 
             ObjectMapper mapper = new ObjectMapper();
             ////将data转为对象
-            Map<String, WechatTemplateData> dataMap = mapper.readValue(data, new TypeReference<HashMap<String, WechatTemplateData>>() {});
-            Map<String, WechatTemplateData> newDataMap = new HashMap<String, WechatTemplateData>();
+            Map<String, WechatTemplateData> dataMap = mapper.readValue(data, new TypeReference<LinkedHashMap<String, WechatTemplateData>>() {});
+            Map<String, WechatTemplateData> newDataMap = new LinkedHashMap<String, WechatTemplateData>();
             int j = 0;
             for (Map.Entry<String, WechatTemplateData> entry : dataMap.entrySet()) {//(keyword1,WechatTemplateData)
                 String key = entry.getKey();//keyword1   转为result
@@ -121,17 +118,5 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             JSONObject jsonResult = new JSONObject(e);
             return jsonResult;
         }
-    }
-
-    public static void main(String[] args) {
-        String a = "{{result.DATA}}领奖金额:{{withdrawMoney.DATA}   }领奖  时间:{ {withdrawTime.DATA} }银行信息:{ {cardInfo.DATA} }到账时间:{{arrivedTime.DATA}}{{remark.DATA}}".replaceAll(" ", "");
-        System.out.println(a);
-        String[] strings = a.split("\\{\\{");
-        List<String> contentList = new ArrayList<>();
-        for(int i=1;i<strings.length;i++){
-            System.out.println(strings[i].substring(0,strings[i].indexOf(".")));
-            contentList.add(strings[i].substring(0,strings[i].indexOf(".")));
-        }
-
     }
 }
