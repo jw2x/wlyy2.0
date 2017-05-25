@@ -127,14 +127,14 @@ public class WxGraphicMessageController extends EnvelopRestController {
         return Envelop.getSuccessList(WxContants.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages);
     }
 
-    @GetMapping(value = WxContants.WxGraphicMessage.api_sendGraphicMessages)
-    @ApiOperation(value = "发送图文消息")
-    public Envelop sendGraphicMessages(
-            @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
-            @RequestParam(value = "codes", required = true) String codes,HttpServletRequest request) throws Exception {
-        String messages = wxGraphicMessageService.sendGraphicMessages(codes, request);
-        return Envelop.getSuccess("成功",messages);
-    }
+    //@GetMapping(value = WxContants.WxGraphicMessage.api_sendGraphicMessages)
+    //@ApiOperation(value = "发送图文消息")
+    //public Envelop sendGraphicMessages(
+    //        @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
+    //        @RequestParam(value = "codes", required = true) String codes,HttpServletRequest request) throws Exception {
+    //    String messages = wxGraphicMessageService.sendGraphicMessages(codes, request);
+    //    return Envelop.getSuccess("成功",messages);
+    //}
 
     @GetMapping(value = WxContants.WxGraphicMessage.api_sendGraphicMessages)
     @ApiOperation(value = "发送图文消息")
