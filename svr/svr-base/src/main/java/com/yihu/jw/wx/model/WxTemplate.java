@@ -24,6 +24,30 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
     private String updateUser;//修改人
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
+    private String remark;
+    private Integer status;  //状态 -1删除 0 冻结 1可用
+
+    public WxTemplate(String code, String title, String wechatCode, String templateId, String content, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
+        this.code = code;
+        this.title = title;
+        this.wechatCode = wechatCode;
+        this.templateId = templateId;
+        this.content = content;
+        this.createUser = createUser;
+        this.createUserName = createUserName;
+        this.createTime = createTime;
+        this.updateUser = updateUser;
+        this.updateUserName = updateUserName;
+        this.updateTime = updateTime;
+        this.remark = remark;
+        this.status = status;
+    }
+
+    /**
+     * default constructor
+     */
+    public WxTemplate() {
+    }
 
     @Column(name = "title")
     public String getTitle() {
@@ -52,22 +76,6 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
         this.templateId = templateId;
     }
 
-    public WxTemplate(String code, String title, String wechatCode, String templateId, String content, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
-        this.code = code;
-        this.title = title;
-        this.wechatCode = wechatCode;
-        this.templateId = templateId;
-        this.content = content;
-        this.createUser = createUser;
-        this.createUserName = createUserName;
-        this.createTime = createTime;
-        this.updateUser = updateUser;
-        this.updateUserName = updateUserName;
-        this.updateTime = updateTime;
-        this.remark = remark;
-        this.status = status;
-    }
-
     @Column(name="content")
 
     public String getContent() {
@@ -76,17 +84,6 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    private String remark;
-    private Integer status;  //状态 -1删除 0 冻结 1可用
-
-
-
-    /**
-     * default constructor
-     */
-    public WxTemplate() {
     }
 
     public String getUpdateUser() {
