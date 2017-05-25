@@ -117,10 +117,10 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
                     menuJsonStr = getString(menuJsonStr, childMenu);
                     menuJsonStr += "}";
                 }
-                menuJsonStr += "]}}";
+                menuJsonStr += "]}";
             }
         }
-        menuJsonStr += "}";
+        menuJsonStr += "]}";
         return menuJsonStr;
     }
 
