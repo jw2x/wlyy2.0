@@ -42,6 +42,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
         }
     }
 
+
     @PutMapping(value = WxContants.WxGraphicMessage.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信图文消息", notes = "修改微信图文消息")
     public Envelop updateWxGraphicMessage(

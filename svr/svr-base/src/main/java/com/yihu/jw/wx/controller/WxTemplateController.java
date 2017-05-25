@@ -35,7 +35,7 @@ public class WxTemplateController extends EnvelopRestController {
     @PostMapping(value = WxContants.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信模版", notes = "创建微信模版")
     public Envelop createWxTemplate(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @ApiParam(name = "json_data", value = "微信模版json字符串")
             @RequestBody String jsonData) {
         try {
             WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);

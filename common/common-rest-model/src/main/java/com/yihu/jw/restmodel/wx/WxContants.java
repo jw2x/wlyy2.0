@@ -6,21 +6,17 @@ package com.yihu.jw.restmodel.wx;
 public class WxContants {
     //微信token模块常量
     public static class WxAccessToken{
-        public static final String message_success_create="wxAccessToken create success";
         public static final String message_success_get="wxAccessToken get success";
 
         public static final String api_common="wxAccessToken";
         public static final String api_create="create";
         public static final String api_get="get";
-        public static final String message_fail_wechatCode_is_null="wechatCode is null";
-        public static final String message_fail_expiresIn_is_null="expiresIn is null";
     }
 
     //微信按钮模块常量
     public static class WxMenu{
         public static final String api_common="wxMenu";
         public static final String api_create="create";
-        public static final String api_get="get";
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";
         public static final String api_update="update";
@@ -28,18 +24,19 @@ public class WxContants {
         public static final String api_getWxMenuNoPage="getWxMenuNoPage";
 
         public static final String message_fail_wechatCode_is_null="wechatCode is null";
-        public static final String message_fail_wxMenuName_is_null="wxMenuName is null";
-        public static final String message_fail_wechatcode_is_null="wechatCode is null";
         public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_name_is_null="weChatMenuName is null";
-        public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_code_no_exist="id is null";
+        public static final String message_fail_name_is_null="name is null";
+        public static final String message_fail_type_is_null="type is null";
+        public static final String message_fail_wxMenuKey_is_null="key is null";
+        public static final String message_fail_wxMenuKey_is_toLong="key is toLong";
+        public static final String message_fail_sort_is_null="sort is null";
+        public static final String message_fail_sort_is_repeat="sort is repeat";
+        public static final String message_fail_code_no_exist="code no exist";
 
         public static final String message_success_update="wxMenu update success";
         public static final String message_success_delete="wxMenu delete success";
         public static final String message_success_find="wxMenu find success";
         public static final String message_success_create="wxMenu create success";
-        public static final String message_success_get="wxMenu get success";
         public static final String message_success_find_functions="wxMenu find success";
     }
     //微信模板消息
@@ -58,18 +55,18 @@ public class WxContants {
         public static final String message_success_find_functions="wxTemplate find success";
         public static final String message_success_delete="wxTemplate delete success";
 
-        public static final String message_fail_name_exist="wxTemplate name exist";
         public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_name_is_null="wxTemplate is null";
         public static final String message_fail_id_is_null="id is null";
         public static final String message_fail_code_no_exist="code no exist";
         public static final String message_fail_wechatCode_is_null="wechatCode is null";
+        public static final String message_fail_templateid_is_null="templateid is null";
+        public static final String message_fail_content_is_null="content is null";
+        public static final String message_fail_content_format_is_not_right="content format is not right";
     }
     //微信配置表
     public static class Wechat {
         public static final String api_common="wechat";
         public static final String api_create="create";
-        public static final String api_get="get";
         public static final String api_update="update";
         public static final String api_delete="delete";
         public static final String api_getWechatNoPage="getWechatNoPage";
@@ -82,20 +79,17 @@ public class WxContants {
 
         public static final String message_success_find_functions="wechat find success";
         public static final String message_success_delete="wechat delete success";
-        public static final String message_fail_name_exist="wechat name exist";
         public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_name_is_null="wechat is null";
-        public static final String message_fail_id_is_null="id is null";
         public static final String message_fail_code_no_exist="code no exist";
-        public static final String message_fail_appId_is_null="appId is null";
         public static final String message_fail_appSecret_is_null="appSecret is null";
         public static final String message_fail_appId_exist="wechat appId exist";
+        public static final String message_fail_status_is_null="status is null";
+        public static final String message_fail_type_is_null="type is null";
     }
     //微信图文消息
     public static class WxGraphicMessage {
         public static final String api_common="wxGraphicMessage";
         public static final String api_create="create";
-        public static final String api_get="get";
         public static final String api_update="update";
         public static final String api_delete="delete";
         public static final String api_getWxGraphicMessageNoPage="getWxGraphicMessageNoPage";
@@ -109,11 +103,8 @@ public class WxContants {
         public static final String message_success_find_functions="wxGraphicMessage find success";
         public static final String message_success_delete="wxGraphicMessage delete success";
         public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_id_is_null="id is null";
         public static final String message_fail_code_no_exist="code no exist";
         public static final String message_fail_code_exist="code exist";
-        public static final String message_fail_appSecret_is_null="appSecret is null";
-        public static final String message_fail_appId_exist="wxGraphicMessage appId exist";
-        public static final String message_fail_value_is_null="value is null";
+        public static final String message_fail_status_is_null="status is null";
     }
 }

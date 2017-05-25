@@ -29,6 +29,9 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         if (StringUtils.isEmpty(wxGraphicMessage.getCode())) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
+        if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
+            throw new ApiException(WxContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
+        }
         WxGraphicMessage wxGraphicMessageTem = wxGraphicMessageDao.findByCode(wxGraphicMessage.getCode());
         if (wxGraphicMessageTem != null) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_exist, CommonContants.common_error_params_code);
@@ -40,6 +43,9 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
     public WxGraphicMessage updateWxchat(WxGraphicMessage wxGraphicMessage) {
         if (StringUtils.isEmpty(wxGraphicMessage.getCode())) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_is_null, CommonContants.common_error_params_code);
+        }
+        if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
+            throw new ApiException(WxContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
@@ -61,16 +67,7 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
 
 
 
-    /**
-     * 回复图文消息
-     *
-     * @param toUser
-     * @param fromUser
-     * @param articles
-     * @return
-     * @throws Exception
-     */
-    public String replyNewsMessage(String toUser,String fromUser,List<Map<String,String>> articles) throws Exception {
+    private String replyNewsMessage(String toUser,String fromUser,List<Map<String,String>> articles) throws Exception {
         if(articles == null || articles.size() < 1){
             throw new Exception("图文信息不能为空!");
         }
@@ -99,6 +96,12 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         return result.toString();
     }
 
+    /**
+     * 发送图文消息
+     * @param codes
+     * @param request
+     * @return
+     */
     public String sendGraphicMessages(String codes, HttpServletRequest request) {
         try {
             // xml请求解析
@@ -123,8 +126,7 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
                 }
             }
             // 构建回复消息XML
-            String result = replyNewsMessage(fromUserName, toUserName, articles);
-            return result;
+            return replyNewsMessage(fromUserName, toUserName, articles);
         } catch (Exception e) {
             e.printStackTrace();
             return e.getMessage();
