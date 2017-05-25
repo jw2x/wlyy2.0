@@ -2,7 +2,16 @@
 spring:
   application:
     name:  svr-quota  ##注册到发现服务的id 如果id一样 eurika会自动做负载
+  data:
+    elasticsearch:
+      repositories:
+        enabled: true
 
+  elasticsearch:
+      jest:
+        proxy:
+          host: 172.19.103.45
+          port: 9300
 
 ---
 spring:

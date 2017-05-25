@@ -20,17 +20,17 @@
     </developers>
     <!--deploy 的时候发布到这个服务器-->
     <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <name>Releases</name>
-            <url>http://172.19.103.43:8081/nexus/content/repositories/releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>Snapshots</name>
-            <url>http://172.19.103.43:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <repository>
+        <id>releases</id>
+        <name>Releases</name>
+        <url>http://172.19.103.43:8081/nexus/content/repositories/releases/</url>
+    </repository>
+    <snapshotRepository>
+        <id>snapshots</id>
+        <name>Snapshots</name>
+        <url>http://172.19.103.43:8081/nexus/content/repositories/snapshots/</url>
+    </snapshotRepository>
+</distributionManagement>
     <modules>
 
         <module>../svr-configuration</module> <!--配置服务-->
@@ -272,11 +272,6 @@
                 <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
                 <version>${version.springBoot}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-elasticsearch</artifactId>
-                <version>${version.spring-elasticsearch}</version>
-            </dependency>
 
             <!--springBoot end-->
 
@@ -322,6 +317,11 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
                 <version>${version.spring-data-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-elasticsearch</artifactId>
+                <version>${version.spring-elasticsearch}</version>
             </dependency>
             <!--spring end-->
 
