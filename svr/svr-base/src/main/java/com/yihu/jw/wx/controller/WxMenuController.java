@@ -135,7 +135,7 @@ public class WxMenuController extends EnvelopRestController {
      * @return
      */
     @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
-    @RequestMapping(value = "/menu/create" ,method = RequestMethod.GET)
+    @RequestMapping(value = WxContants.WxMenu.api_createMenu ,method = RequestMethod.GET)
     @ResponseBody
     public Envelop createWechatMenu(
             @ApiParam(name = "wechatCode", value = "", defaultValue = "")

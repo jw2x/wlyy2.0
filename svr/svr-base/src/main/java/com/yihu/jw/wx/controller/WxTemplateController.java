@@ -129,7 +129,7 @@ public class WxTemplateController extends EnvelopRestController {
         return Envelop.getSuccessList(WxContants.WxTemplate.message_success_find_functions,mMWxTemplates);
     }
 
-    @GetMapping(value = "sendTemplateMessage")
+    @GetMapping(value = WxContants.WxTemplate.api_sendTemplateMessage)
     @ApiOperation(value = "发送微信模板消息")
     public Envelop sendTemplateMessage(
             @ApiParam(name="openid",value="微信用户的openid")

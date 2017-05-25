@@ -22,6 +22,7 @@ public class WxContants {
         public static final String api_update="update";
         public static final String api_getWxMenus="getWxMenus";
         public static final String api_getWxMenuNoPage="getWxMenuNoPage";
+        public static final String api_createMenu="createMenu";
 
         public static final String message_fail_wechatCode_is_null="wechatCode is null";
         public static final String message_fail_code_is_null="code is null";
@@ -48,6 +49,7 @@ public class WxContants {
         public static final String api_getByCode="getByCode";
         public static final String api_getWxTemplates="getWxTemplates";
         public static final String api_getWxTemplatesNoPage="getWxTemplatesNoPage";
+        public static final String api_sendTemplateMessage="sendTemplateMessage";
 
         public static final String message_success_create="wxTemplate create success";
         public static final String message_success_update="wxTemplate update success";
@@ -93,6 +95,7 @@ public class WxContants {
         public static final String api_update="update";
         public static final String api_delete="delete";
         public static final String api_getWxGraphicMessageNoPage="getWxGraphicMessageNoPage";
+        public static final String api_sendGraphicMessages="sendGraphicMessages";
 
         public static final String api_getWxGraphicMessages="getWxGraphicMessages";
         public static final String api_getByCode="getByCode";
@@ -106,5 +109,6 @@ public class WxContants {
         public static final String message_fail_code_no_exist="code no exist";
         public static final String message_fail_code_exist="code exist";
         public static final String message_fail_status_is_null="status is null";
+
     }
 }
