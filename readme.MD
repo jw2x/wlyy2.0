@@ -27,3 +27,5 @@
         先启动      svr-discovery(发现服务)
         然后在启动  svr-configuration(配置服务)
         之后启动微服务即可（微服务启动顺序一般没有要求）
+项目文档资料
+	SVN:https://192.168.1.103:888/svn/outwindow/基础开发部/doc/i健康2.0

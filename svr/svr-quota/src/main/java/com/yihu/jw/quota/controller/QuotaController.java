@@ -43,4 +43,13 @@ public class QuotaController {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
+    @GetMapping(value = "save")
+    public Envelop save() {
+        try {
+            quotaService.save();
+            return Envelop.getSuccess(BaseContants.Function.message_success_create);
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
 }
