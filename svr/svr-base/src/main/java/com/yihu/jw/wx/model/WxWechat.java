@@ -16,6 +16,9 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private String code;//业务code
     private String saasId;//'saas配置id'
     private String name;//名称
+    private String token;//token
+    private String encodingAesKey;//加密密钥
+    private Integer encType;//加密方式  0:明文模式   1:兼容模式   2:安全模式
     private String status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
     private String type;//'1：服务号 2 订阅号
     private String appId;//'微信app_id'
@@ -28,11 +31,13 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private String updateUserName;//'修改人名'
     private Date updateTime;//'修改时间'
     private String remark;//'备注'
-
-    public WxWechat(String code, String saasId, String name, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
+    public WxWechat(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
         this.code = code;
         this.saasId = saasId;
         this.name = name;
+        this.token = token;
+        this.encodingAesKey = encodingAesKey;
+        this.encType = encType;
         this.status = status;
         this.type = type;
         this.appId = appId;
@@ -46,13 +51,37 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
         this.updateTime = updateTime;
         this.remark = remark;
     }
-
     /**
      * default constructor
      */
     public WxWechat() {
     }
+    @Column(name = "enc_type")
+    public Integer getEncType() {
+        return encType;
+    }
 
+    public void setEncType(Integer encType) {
+        this.encType = encType;
+    }
+
+    @Column(name = "token", length = 64)
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    @Column(name="encoding_aes_key")
+    public String getEncodingAesKey() {
+        return encodingAesKey;
+    }
+
+    public void setEncodingAesKey(String encodingAesKey) {
+        this.encodingAesKey = encodingAesKey;
+    }
 
     @Column(name = "code", length = 64)
     public String getCode() {
