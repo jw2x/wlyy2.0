@@ -28,17 +28,27 @@ public class WxContants {
         public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="name is null";
         public static final String message_fail_type_is_null="type is null";
-        public static final String message_fail_wxMenuKey_is_null="key is null";
-        public static final String message_fail_wxMenuKey_is_toLong="key is toLong";
+        public static final String message_fail_key_is_null="key is null";
+        public static final String message_fail_key_is_toLong="key is to long";
+        public static final String message_fail_url_is_null="url is null";
+        public static final String message_fail_appid_is_null="appid is null";
+        public static final String message_fail_pagepath_is_null="pagepath is null";
+        public static final String message_fail_url_is_toLong="url is to long";
         public static final String message_fail_sort_is_null="sort is null";
         public static final String message_fail_sort_is_repeat="sort is repeat";
         public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_supMenuCode_is_no_exist="supMenuCode is no exist";
+        public static final String message_fail_mediaId_is_null="mediaId is null";
+        public static final String message_fail_childMenu_is_to_much="childMenu is to much";//子菜单数目过多
+        public static final String message_fail_parentMenu_is_to_much="parentMenu is to much";//子菜单数目过多
+        public static final String message_fail_name_is_to_long="name is to long";
 
         public static final String message_success_update="wxMenu update success";
         public static final String message_success_delete="wxMenu delete success";
         public static final String message_success_find="wxMenu find success";
         public static final String message_success_create="wxMenu create success";
         public static final String message_success_find_functions="wxMenu find success";
+
     }
     //微信模板消息
     public static class WxTemplate {
@@ -58,7 +68,6 @@ public class WxContants {
         public static final String message_success_delete="wxTemplate delete success";
 
         public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_id_is_null="id is null";
         public static final String message_fail_code_no_exist="code no exist";
         public static final String message_fail_wechatCode_is_null="wechatCode is null";
         public static final String message_fail_templateid_is_null="templateid is null";
@@ -87,6 +96,8 @@ public class WxContants {
         public static final String message_fail_appId_exist="wechat appId exist";
         public static final String message_fail_status_is_null="status is null";
         public static final String message_fail_type_is_null="type is null";
+        public static final String message_fail_appId_is_null="appId is null";
+        public static final String message_fail_name_is_null="name is null";
     }
     //微信图文消息
     public static class WxGraphicMessage {
@@ -109,6 +120,6 @@ public class WxContants {
         public static final String message_fail_code_no_exist="code no exist";
         public static final String message_fail_code_exist="code exist";
         public static final String message_fail_status_is_null="status is null";
-
+        public static final String message_fail_title_is_null="title is null";
     }
 }

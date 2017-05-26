@@ -18,7 +18,7 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
     private String type;//菜单类型
     private String name;//菜单名称
-    private String key;//click等点击类型必须
+    private String menuKey;//click等点击类型必须
     private Integer sort;//菜单排序 父菜单排序 不包含子菜单那
     private String url;//url
     private String mediaId;//点用新增永久素材接口返回的合法media_id
@@ -32,13 +32,20 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     private Integer status; //状态 -1删除 0 冻结 1可用
 
 
-    public WxMenu(String code, String wechatCode, String supMenucode, String type, String name, String key, Integer sort, String url, String mediaId, String appid, String pagepath, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
+
+    /**
+     * default constructor
+     */
+    public WxMenu() {
+    }
+
+    public WxMenu(String code, String wechatCode, String supMenucode, String type, String name, String menuKey, Integer sort, String url, String mediaId, String appid, String pagepath, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
         this.code = code;
         this.wechatCode = wechatCode;
         this.supMenucode = supMenucode;
         this.type = type;
         this.name = name;
-        this.key = key;
+        this.menuKey = menuKey;
         this.sort = sort;
         this.url = url;
         this.mediaId = mediaId;
@@ -52,18 +59,14 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
         this.status = status;
     }
 
-    /**
-     * default constructor
-     */
-    public WxMenu() {
+    @Column(name="menu_key")
+
+    public String getMenuKey() {
+        return menuKey;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
+    public void setMenuKey(String menuKey) {
+        this.menuKey = menuKey;
     }
 
     public String getMediaId() {

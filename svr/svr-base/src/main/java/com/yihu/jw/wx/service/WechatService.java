@@ -32,8 +32,11 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getType())) {
             throw new ApiException(WxContants.Wechat.message_fail_type_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wechat.getAppSecret())) {
-            throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);
+        if (StringUtils.isEmpty(wechat.getName())) {
+            throw new ApiException(WxContants.Wechat.message_fail_name_is_null, CommonContants.common_error_params_code);
+        }
+        if (StringUtils.isEmpty(wechat.getAppId())) {
+            throw new ApiException(WxContants.Wechat.message_fail_appId_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wechat.getAppSecret())) {
             throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);
@@ -56,8 +59,11 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getType())) {
             throw new ApiException(WxContants.Wechat.message_fail_type_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wechat.getAppSecret())) {
-            throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);
+        if (StringUtils.isEmpty(wechat.getName())) {
+            throw new ApiException(WxContants.Wechat.message_fail_name_is_null, CommonContants.common_error_params_code);
+        }
+        if (StringUtils.isEmpty(wechat.getAppId())) {
+            throw new ApiException(WxContants.Wechat.message_fail_appId_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wechat.getAppSecret())) {
             throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);

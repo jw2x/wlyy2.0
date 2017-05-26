@@ -32,6 +32,9 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
+        if (StringUtils.isEmpty(wxGraphicMessage.getTitle())) {
+            throw new ApiException(WxContants.WxGraphicMessage.message_fail_title_is_null, CommonContants.common_error_params_code);
+        }
         WxGraphicMessage wxGraphicMessageTem = wxGraphicMessageDao.findByCode(wxGraphicMessage.getCode());
         if (wxGraphicMessageTem != null) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_exist, CommonContants.common_error_params_code);
@@ -108,9 +111,10 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
             Map<String, String> requestMap = MessageUtil.parseXml(request);
             //用户openid
             String fromUserName = requestMap.get("FromUserName");
+            System.out.println("fromUserName+=   "+fromUserName);
             //微信公众号
             String toUserName = requestMap.get("ToUserName");
-
+            System.out.println("ToUserName+=   "+toUserName);
             // 图文信息
             List<Map<String,String>> articles =  new ArrayList<>();
             if(codes!=null){

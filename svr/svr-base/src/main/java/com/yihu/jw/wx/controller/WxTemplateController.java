@@ -88,11 +88,11 @@ public class WxTemplateController extends EnvelopRestController {
     @RequestMapping(value = WxContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信模版列表(分页)")
     public Envelop getWechats(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,wechatCode,templateId,content,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
             @RequestParam(value = "size", required = false) int size,
@@ -116,11 +116,11 @@ public class WxTemplateController extends EnvelopRestController {
     @GetMapping(value = WxContants.WxTemplate.api_getWxTemplatesNoPage)
     @ApiOperation(value = "获取微信模版列表(不分页)")
     public Envelop getWechatNoPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,wechatCode,templateId,content,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
         List<WxTemplate> list = wxTemplateService.search(fields,filters,sorts);
@@ -131,10 +131,11 @@ public class WxTemplateController extends EnvelopRestController {
 
     @GetMapping(value = WxContants.WxTemplate.api_sendTemplateMessage)
     @ApiOperation(value = "发送微信模板消息")
+    @ResponseBody
     public Envelop sendTemplateMessage(
             @ApiParam(name="openid",value="微信用户的openid")
             @RequestParam String openid,
-            @ApiParam(name="tempalteCode",value = "模板code")
+            @ApiParam(name="templateCode",value = "模板code")
             @RequestParam String templateCode,
             @ApiParam(name="url",value="模板跳转链接")
             @RequestParam(required = false) String url,
@@ -152,6 +153,6 @@ public class WxTemplateController extends EnvelopRestController {
             miniprogram.setPagepath(pagepath);
         }
         JSONObject jsonObject = wxTemplateService.sendTemplateMessage(openid, templateCode, url, data, miniprogram);
-        return Envelop.getSuccess("成功",jsonObject);
+        return Envelop.getSuccess("成功",jsonObject.toString());
     }
 }

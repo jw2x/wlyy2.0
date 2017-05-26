@@ -136,19 +136,18 @@ public class WxMenuController extends EnvelopRestController {
      */
     @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
     @RequestMapping(value = WxContants.WxMenu.api_createMenu ,method = RequestMethod.GET)
-    @ResponseBody
     public Envelop createWechatMenu(
             @ApiParam(name = "wechatCode", value = "", defaultValue = "")
             @RequestParam(value = "wechatCode", required = true)String wechatCode){
         try{
             JSONObject result = wxMenuService.createWechatMenu(wechatCode);
             if(result != null && result.get("errcode").toString().equals("0") && result.getString("errmsg").equals("ok")){
-                return Envelop.getSuccess("创建成功",result );
+                return Envelop.getSuccess("创建成功",result.toString() );
             }else{
-                return Envelop.getSuccess("创建失败",result );
+                return Envelop.getSuccess("创建失败",result.toString() );
             }
         }catch (Exception e){
-            return Envelop.getSuccess("创建成功",e );
+            return Envelop.getSuccess("创建失败",e );
         }
     }
 
