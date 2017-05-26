@@ -176,9 +176,17 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     private boolean canSaveOrUpata(WxMenu wxMenu){
         if (StringUtils.isEmpty(wxMenu.getCode())) {
             throw new ApiException(WxContants.WxMenu.message_fail_code_is_null, CommonContants.common_error_params_code);
-        }
-        if (StringUtils.isEmpty(wxMenu.getWechatCode())) {
+        }//通过wechatCode查找是否有父菜单,若没有父菜单,则不让创建子菜单
+        String wechatCode = wxMenu.getWechatCode();
+        if (StringUtils.isEmpty(wechatCode)) {
             throw new ApiException(WxContants.WxMenu.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
+        }
+        String supMenucode = wxMenu.getSupMenucode();
+        if (!StringUtils.isEmpty(supMenucode)) {//不为空,说明是子菜单,判断父菜单是否存在
+            List<WxMenu> childMenus = findChildMenus(wechatCode, supMenucode);
+            if(childMenus==null||childMenus.size()==0){
+                throw new ApiException(WxContants.WxMenu.message_fail_supMenuCode_is_no_exist, CommonContants.common_error_params_code);
+            }
         }
         if (StringUtils.isEmpty(wxMenu.getName())) {
             throw new ApiException(WxContants.WxMenu.message_fail_name_is_null, CommonContants.common_error_params_code);
@@ -191,7 +199,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
             if(StringUtils.isEmpty(key)){
                 throw new ApiException(WxContants.WxMenu.message_fail_wxMenuKey_is_null, CommonContants.common_error_params_code);
             }
-            if(key.length()>128){
+            if(key.getBytes().length>128){
                 throw new ApiException(WxContants.WxMenu.message_fail_wxMenuKey_is_toLong, CommonContants.common_error_params_code);
             }
         }
