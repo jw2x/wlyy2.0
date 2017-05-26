@@ -5,6 +5,8 @@ import com.yihu.jw.quota.model.QuotaResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by chenweida on 2017/5/23.
  */
@@ -21,5 +23,16 @@ public class QuotaService {
     public QuotaResult findBy_Id(String id) {
         QuotaResult quotaResult=quotaResultDao.findOne(id);
         return quotaResult;
+    }
+
+    public String save() {
+        QuotaResult wlyyQuotaResult=new QuotaResult();
+        wlyyQuotaResult.setDel("1");
+        wlyyQuotaResult.setOrgCode("orgtest");
+        wlyyQuotaResult.setOrgName("机构测试");
+        wlyyQuotaResult.setCreateTime(new Date());
+
+        quotaResultDao.save(wlyyQuotaResult);
+        return null;
     }
 }
