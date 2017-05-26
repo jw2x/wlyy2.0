@@ -10,8 +10,10 @@ public class MWxWechat {
     private Long id;
     private String code;//业务code
     private String saasId;//'saas配置id'
-    private String weichatId;//微信的id
     private String name;//名称
+    private String token;//token
+    private String encodingAesKey;//加密密钥
+    private Integer encType;//加密方式  0:明文模式   1:兼容模式   2:安全模式
     private String status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
     private String type;//'1：服务号 2 订阅号
     private String appId;//'微信app_id'
@@ -49,20 +51,36 @@ public class MWxWechat {
         this.saasId = saasId;
     }
 
-    public String getWeichatId() {
-        return weichatId;
-    }
-
-    public void setWeichatId(String weichatId) {
-        this.weichatId = weichatId;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getEncodingAesKey() {
+        return encodingAesKey;
+    }
+
+    public void setEncodingAesKey(String encodingAesKey) {
+        this.encodingAesKey = encodingAesKey;
+    }
+
+    public Integer getEncType() {
+        return encType;
+    }
+
+    public void setEncType(Integer encType) {
+        this.encType = encType;
     }
 
     public String getStatus() {
@@ -160,5 +178,4 @@ public class MWxWechat {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
 }

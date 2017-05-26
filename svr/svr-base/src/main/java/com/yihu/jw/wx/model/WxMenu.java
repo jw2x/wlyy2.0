@@ -16,26 +16,34 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     private String code;//业务code
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
     private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
-    private String type;//菜单类型 1 view 2click
+    private String type;//菜单类型
     private String name;//菜单名称
+    private String key;//click等点击类型必须
     private Integer sort;//菜单排序 父菜单排序 不包含子菜单那
     private String url;//url
+    private String mediaId;//点用新增永久素材接口返回的合法media_id
+    private String appid;//小程序的appid
+    private String pagepath;//小程序的页面程序
     private String updateUser;//更新人
     private Date updateTime;//更新时间
     private Date createTime;//创建时间
     private String createUser;//创建人
     private String remark;//备注
-    private Integer status; //状态 -1 已删除 0可用
+    private Integer status; //状态 -1删除 0 冻结 1可用
 
-    public WxMenu(Long id, String code, String wechatCode, String supMenucode, String type, String name, Integer sort, String url, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
-        this.id = id;
+
+    public WxMenu(String code, String wechatCode, String supMenucode, String type, String name, String key, Integer sort, String url, String mediaId, String appid, String pagepath, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
         this.code = code;
         this.wechatCode = wechatCode;
         this.supMenucode = supMenucode;
         this.type = type;
         this.name = name;
+        this.key = key;
         this.sort = sort;
         this.url = url;
+        this.mediaId = mediaId;
+        this.appid = appid;
+        this.pagepath = pagepath;
         this.updateUser = updateUser;
         this.updateTime = updateTime;
         this.createTime = createTime;
@@ -48,6 +56,39 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
      * default constructor
      */
     public WxMenu() {
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getMediaId() {
+        return mediaId;
+    }
+
+    @Column(name = "media_id", length = 200)
+    public void setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public String getPagepath() {
+        return pagepath;
+    }
+
+    public void setPagepath(String pagepath) {
+        this.pagepath = pagepath;
     }
 
     public String getCode() {

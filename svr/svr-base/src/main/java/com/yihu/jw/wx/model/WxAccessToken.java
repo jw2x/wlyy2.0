@@ -18,14 +18,14 @@ public class WxAccessToken extends IdEntity implements java.io.Serializable {
 	private String wechatCode;//关联的微信code 关联表 Wx_Wechat
 	private String accessToken;//调用微信返回的accesstoken
 	private long addTimestamp;//创建时间
-	private Integer expiresIn;//凭证有效时间（秒）
+	private long expiresIn;//凭证有效时间（秒）
 	private Date czrq;//操作时间
 	/** default constructor */
 	public WxAccessToken() {
 	}
 	/** minimal constructor */
 	public WxAccessToken(Long id, String accessToken, long addTimestamp,
-			Integer expiresIn, Date czrq) {
+			long expiresIn, Date czrq) {
 		this.id = id;
 		this.accessToken = accessToken;
 		this.addTimestamp = addTimestamp;
@@ -81,11 +81,11 @@ public class WxAccessToken extends IdEntity implements java.io.Serializable {
 	}
 
 	@Column(name = "expires_in", nullable = false)
-	public Integer getExpiresIn() {
+	public Long getExpiresIn() {
 		return this.expiresIn;
 	}
 
-	public void setExpiresIn(Integer expiresIn) {
+	public void setExpiresIn(Long expiresIn) {
 		this.expiresIn = expiresIn;
 	}
 

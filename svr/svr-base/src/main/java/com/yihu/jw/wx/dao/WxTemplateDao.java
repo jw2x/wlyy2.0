@@ -10,6 +10,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface WxTemplateDao extends PagingAndSortingRepository<WxTemplate, Long>, JpaSpecificationExecutor<WxTemplate> {
 
-    @Query("from WxTemplate w where w.code = ?1 and w.status =0")
+    @Query("from WxTemplate w where w.code = ?1 and w.status =1")
     WxTemplate findByCode(String code);
 }

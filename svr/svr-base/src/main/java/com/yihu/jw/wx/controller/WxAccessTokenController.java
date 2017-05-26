@@ -10,8 +10,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Created by cyx on 2017/5/11.
@@ -42,19 +44,4 @@ public class WxAccessTokenController extends EnvelopRestController {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
-
-    @PostMapping(value = WxContants.WxAccessToken.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建WxAccessToken")
-    public Envelop createWxAccessToken(
-            @ApiParam(name = "wxAccessToken", value = "对象JSON结构体", allowMultiple = true)
-            @RequestBody String wxAccessTokenJson) throws Exception {
-        try {
-            WxAccessToken wxAccessToken = toEntity(wxAccessTokenJson, WxAccessToken.class);
-            wxAccessToken = wxAccessTokenService.createWxAccessToken(wxAccessToken);
-            return Envelop.getSuccess(WxContants.WxAccessToken.message_success_create, wxAccessToken);
-        }catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
-        }
-    }
-
 }

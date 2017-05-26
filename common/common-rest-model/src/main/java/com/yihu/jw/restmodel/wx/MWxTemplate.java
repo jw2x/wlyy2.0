@@ -8,10 +8,10 @@ import java.util.Date;
 public class MWxTemplate {
     private Long id;
     private String code;//模板code
-    private String name;//模板名称
+    private String title;//模板标题
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
-    private String templateCode;//微信的模板code
-    private String value;//模板值
+    private String templateId;//微信模板id
+    private String content;//模板内容
     private String createUser;//创建人
     private String createUserName;//创建人名
     private Date createTime;//创建时间
@@ -19,7 +19,23 @@ public class MWxTemplate {
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
     private String remark;
-    private Integer status; //状态 -1 已删除 0可用
+    private Integer status;  //状态 -1删除 0 冻结 1可用
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public Long getId() {
         return id;
@@ -37,12 +53,12 @@ public class MWxTemplate {
         this.code = code;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getWechatCode() {
@@ -53,20 +69,20 @@ public class MWxTemplate {
         this.wechatCode = wechatCode;
     }
 
-    public String getTemplateCode() {
-        return templateCode;
+    public String getTemplateId() {
+        return templateId;
     }
 
-    public void setTemplateCode(String templateCode) {
-        this.templateCode = templateCode;
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 
-    public String getValue() {
-        return value;
+    public String getContent() {
+        return content;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getCreateUser() {
@@ -116,22 +132,4 @@ public class MWxTemplate {
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-
 }
