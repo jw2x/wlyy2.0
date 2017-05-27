@@ -1,6 +1,9 @@
 package com.yihu.jw.wx.service;
 
 import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.jw.restmodel.common.CommonContants;
+import com.yihu.jw.restmodel.exception.ApiException;
+import com.yihu.jw.restmodel.wx.WxContants;
 import com.yihu.jw.util.HttpUtil;
 import com.yihu.jw.wx.dao.WechatDao;
 import com.yihu.jw.wx.dao.WxAccessTokenDao;
@@ -9,6 +12,7 @@ import com.yihu.jw.wx.model.WxWechat;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springside.modules.utils.Clock;
 
 import java.util.List;
@@ -33,6 +37,11 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
      */
     public WxAccessToken getWxAccessTokenByCode(String wechatCode) {
         try {
+            //根据wechatCode查找出appid和appSecret
+            WxWechat wxWechat = wechatDao.findByCode(wechatCode);
+            if(wxWechat==null){
+                throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
+            }
             List<WxAccessToken> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenByCode(wechatCode);
             if(wxAccessTokens!=null&&wxAccessTokens.size()>0){
                 for (WxAccessToken accessToken : wxAccessTokens) {
@@ -47,13 +56,14 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
             String token_url = "https://api.weixin.qq.com/cgi-bin/token";
             String appId="";
             String appSecret="";
-            //根据wechatCode查找出appid和appSecret
-            WxWechat wxWechat = wechatDao.findByCode(wechatCode);
-            if(wxWechat==null){
-                return null;
-            }
             appId = wxWechat.getAppId();
             appSecret = wxWechat.getAppSecret();
+            if (StringUtils.isEmpty(appId)){
+                throw new ApiException(WxContants.Wechat.message_fail_appId_is_null, CommonContants.common_error_params_code);
+            }
+            if (StringUtils.isEmpty(appSecret)){
+                throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);
+            }
             String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
             String result = HttpUtil.sendGet(token_url, params);
             JSONObject json = new JSONObject(result);
