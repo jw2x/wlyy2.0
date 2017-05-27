@@ -77,9 +77,6 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
 
     public WxWechat findByCode(String code) {
         WxWechat wxWechat = wechatDao.findByCode(code);
-        if (wxWechat == null) {
-            throw new ApiException(WxContants.Wechat.message_fail_code_no_exist, CommonContants.common_error_params_code);
-        }
         return wxWechat;
     }
 
