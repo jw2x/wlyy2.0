@@ -42,6 +42,7 @@ public class WxContants {
         public static final String message_fail_childMenu_is_to_much="childMenu is to much";//子菜单数目过多
         public static final String message_fail_parentMenu_is_to_much="parentMenu is to much";//子菜单数目过多
         public static final String message_fail_name_is_to_long="name is to long";
+        public static final String message_fail_status_is_null="status is null";
 
         public static final String message_success_update="wxMenu update success";
         public static final String message_success_delete="wxMenu delete success";
@@ -81,15 +82,15 @@ public class WxContants {
         public static final String api_update="update";
         public static final String api_delete="delete";
         public static final String api_getWechatNoPage="getWechatNoPage";
-
         public static final String api_getWechats="getWechats";
         public static final String api_getByCode="getByCode";
+
         public static final String message_success_create="wechat create success";
         public static final String message_success_update="wechat update success";
         public static final String message_success_find="wechat find success";
-
         public static final String message_success_find_functions="wechat find success";
         public static final String message_success_delete="wechat delete success";
+
         public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_code_no_exist="code no exist";
         public static final String message_fail_appSecret_is_null="appSecret is null";
@@ -98,6 +99,7 @@ public class WxContants {
         public static final String message_fail_type_is_null="type is null";
         public static final String message_fail_appId_is_null="appId is null";
         public static final String message_fail_name_is_null="name is null";
+        public static final String message_fail_wxWechat_is_no_exist="wxWechat is no exist";//微信配置不存在
     }
     //微信图文消息
     public static class WxGraphicMessage {

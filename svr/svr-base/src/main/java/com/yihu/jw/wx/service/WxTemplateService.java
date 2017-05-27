@@ -28,6 +28,9 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     @Autowired
     private WxAccessTokenService wxAccessTokenService;
 
+    @Autowired
+    private WechatService wechatService;
+
 
     public WxTemplate createWxTemplate(WxTemplate wxTemplate) {
         if (StringUtils.isEmpty(wxTemplate.getCode())) {
@@ -35,6 +38,11 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         }
         if (StringUtils.isEmpty(wxTemplate.getWechatCode())) {
             throw new ApiException(WxContants.WxTemplate.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
+        }
+        //根据wechatCode查找是否存在微信配置
+        WxWechat wxWechat = wechatService.findByCode(wxTemplate.getWechatCode());
+        if(wxWechat==null){
+            throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
             throw new ApiException(WxContants.WxTemplate.message_fail_templateid_is_null, CommonContants.common_error_params_code);
