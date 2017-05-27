@@ -5,6 +5,7 @@ import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxTemplate;
 import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.wx.WechatResponse;
 import com.yihu.jw.wx.model.Miniprogram;
 import com.yihu.jw.wx.model.WxTemplate;
 import com.yihu.jw.wx.service.WxTemplateService;
@@ -146,13 +147,20 @@ public class WxTemplateController extends EnvelopRestController {
             @ApiParam(name="data",value="json字符串")
             @RequestParam String data
     ){
-        Miniprogram miniprogram = null;
-        if(StringUtils.isNotBlank(appid)&&StringUtils.isNotBlank(pagepath)){
-            miniprogram = new Miniprogram();
-            miniprogram.setAppid(appid);
-            miniprogram.setPagepath(pagepath);
+        try {
+            Miniprogram miniprogram = null;
+            if(StringUtils.isNotBlank(appid)&&StringUtils.isNotBlank(pagepath)){
+                miniprogram = new Miniprogram();
+                miniprogram.setAppid(appid);
+                miniprogram.setPagepath(pagepath);
+            }
+            JSONObject jsonObject = wxTemplateService.sendTemplateMessage(openid, templateCode, url, data, miniprogram);
+            String errcode = jsonObject.get("errcode").toString();
+            WechatResponse wechatResponse = new WechatResponse(Integer.valueOf(errcode));
+            String msg = wechatResponse.getMsg();
+            return Envelop.getSuccess("成功",msg);
+        }catch (Exception exception) {
+            return Envelop.getSuccess("error", exception);
         }
-        JSONObject jsonObject = wxTemplateService.sendTemplateMessage(openid, templateCode, url, data, miniprogram);
-        return Envelop.getSuccess("成功",jsonObject.toString());
     }
 }

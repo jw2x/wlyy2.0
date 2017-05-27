@@ -101,8 +101,16 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
      * @return JSONObject
      */
     public JSONObject createWechatMenu(String wechatCode) {
+        WxWechat wechat = wechatService.findByCode(wechatCode);
+        if(wechat==null){
+            throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
+        }
+
         //首先根据wechatCode获取菜单,然后封装成json字符串
         List<WxMenu> menus = wxMenuDao.findByWechatCode(wechatCode);
+        if(menus==null){
+            throw new ApiException(WxContants.WxMenu.message_fail_WxMenu_is_no_exist, CommonContants.common_error_params_code);
+        }
         String menuJsonString = getMenuToString(menus, wechatCode);
         WxAccessToken wxAccessTokenByCode = wxAccessTokenService.getWxAccessTokenByCode(wechatCode);
         String token = wxAccessTokenByCode.getAccessToken();

@@ -43,6 +43,7 @@ public class WxContants {
         public static final String message_fail_parentMenu_is_to_much="parentMenu is to much";//子菜单数目过多
         public static final String message_fail_name_is_to_long="name is to long";
         public static final String message_fail_status_is_null="status is null";
+        public static final String message_fail_WxMenu_is_no_exist="menu is no exist";//微信菜单未配置
 
         public static final String message_success_update="wxMenu update success";
         public static final String message_success_delete="wxMenu delete success";
