@@ -13,6 +13,7 @@
     <groupId>com.yihu.jw</groupId>
     <artifactId>web-gateway</artifactId>
     <version>1.0.0</version>
+
     <dependencies>
         <dependency>
             <groupId>com.yihu.jw</groupId>
