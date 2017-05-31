@@ -75,6 +75,7 @@ public class WxContants {
         public static final String message_fail_templateid_is_null="templateid is null";
         public static final String message_fail_content_is_null="content is null";
         public static final String message_fail_content_format_is_not_right="content format is not right";
+        public static final String message_fail_template_is_no_exist="template is no exist";
     }
     //微信配置表
     public static class Wechat {

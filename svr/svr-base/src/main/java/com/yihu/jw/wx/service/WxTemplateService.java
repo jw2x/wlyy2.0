@@ -98,6 +98,9 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         try {
             //首先根据wechatTemplate获取微信模版
             WxTemplate wxTemplate = findByCode(templateCode);
+            if(wxTemplate==null){
+                throw new ApiException(WxContants.WxTemplate.message_fail_template_is_no_exist, CommonContants.common_error_params_code);
+            }
             String wechatCode =  wxTemplate.getWechatCode();
             String content = wxTemplate.getContent().replaceAll(" ", "");//{{result.DATA}}领奖金额:{{withdrawMoney.DATA}   }领奖  时间:{ {withdrawTime.DATA} }银行信息:{ {cardInfo.DATA} }到账时间:{{arrivedTime.DATA}}{{remark.DATA}}
             String[] contentArray = content.split("\\{\\{");
