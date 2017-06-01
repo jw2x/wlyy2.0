@@ -1,6 +1,7 @@
 package com.yihu.jw.config;
 
 import com.yihu.jw.restmodel.base.BaseContants;
+import com.yihu.jw.restmodel.wlyy.WlyyContants;
 import com.yihu.jw.restmodel.wx.WxContants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,10 +16,11 @@ import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
-@ComponentScan("com.yihu.jw.*.controller")
+@ComponentScan("com.yihu.jw.**")
 public class SwaggerConfig {
     public static final String PUBLIC_API = "Default";
     public static final String Base_API = "JwBase";
+    public static final String Wlyy_API = "Wlyy";
 
 
     @Bean
@@ -53,6 +55,36 @@ public class SwaggerConfig {
         );
 
         return apiInfo;
+    }
+
+    @Bean
+    public Docket wlyyAPI() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName(Wlyy_API)
+                .useDefaultResponseMessages(false)
+                .forCodeGeneration(false)
+                .pathMapping("/")
+                .select()
+                .paths(or(
+                        regex("/" + WlyyContants.Agreement.api_common + "/.*")
+                        ,regex("/"+WlyyContants.AgreementKpi.api_common+"/.*")
+                        ,regex("/"+WlyyContants.AgreementKpiLog.api_common+"/.*")
+                ))
+                .build()
+                .apiInfo(wlyyApiInfo());
+    }
+
+    private ApiInfo wlyyApiInfo() {
+        ApiInfo wlyyInfo = new ApiInfo("基卫2.0API",
+                "基卫2.0API，提供基础卫生相关服务。",
+                "1.0",
+                "No terms of service",
+                "wenfujian@jkzl.com",
+                "The Apache License, Version 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0.html"
+        );
+
+        return wlyyInfo;
     }
 
 

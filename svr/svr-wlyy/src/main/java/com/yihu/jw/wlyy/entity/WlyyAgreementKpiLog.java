@@ -1,8 +1,11 @@
 package com.yihu.jw.wlyy.entity;
 
-import com.yihu.jw.base.model.base.IdEntity;
 
-import javax.persistence.*;
+import com.yihu.jw.wlyy.entity.base.IdEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
@@ -10,7 +13,7 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name = "wlyy_agreement_kpi_log")
-public class WlyyAgreementKpiLog extends IdEntity{
+public class WlyyAgreementKpiLog extends IdEntity {
     private String code;//业务code
     private String patientCode;//患者code
     private String signCode;

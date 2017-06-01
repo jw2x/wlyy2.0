@@ -1,8 +1,11 @@
 package com.yihu.jw.wlyy.entity;
 
-import com.yihu.jw.base.model.base.IdEntity;
 
-import javax.persistence.*;
+import com.yihu.jw.wlyy.entity.base.IdEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**

@@ -1,6 +1,7 @@
 package com.yihu.jw.wlyy.entity;
 
-import com.yihu.jw.base.model.base.IdEntity;
+
+import com.yihu.jw.wlyy.entity.base.IdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
