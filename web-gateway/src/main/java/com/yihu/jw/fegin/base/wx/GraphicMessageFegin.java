@@ -32,7 +32,7 @@ public interface GraphicMessageFegin {
     @RequestMapping(value = WxContants.WxGraphicMessage.api_getByCode,method = RequestMethod.GET)
     Envelop findByCode(String code);
 
-    //@RequestMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessages,method = RequestMethod.GET)
+    //@RequestMapping(value = WlyyContants.WxGraphicMessage.api_getWxGraphicMessages,method = RequestMethod.GET)
     //Envelop getWxGraphicMessages(
     //        @RequestParam(value = "fields", required = false) String fields,
     //        @RequestParam(value = "filters", required = false) String filters,

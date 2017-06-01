@@ -17,30 +17,25 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = WxContants.WxTemplate.api_common)
 public interface WechatTemplateFegin {
 
-    //@PostMapping(value = WxContants.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @RequestMapping(value = WxContants.WxTemplate.api_create ,method = RequestMethod.POST)
     Envelop createWxTemplate(@RequestBody String jsonData);
 
-    //@PutMapping(value = WxContants.WxTemplate.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @RequestMapping(value = WxContants.WxTemplate.api_update ,method = RequestMethod.PUT)
     Envelop updateWxTemplate(@RequestBody String jsonData);
 
-    //@DeleteMapping(value = WxContants.WxTemplate.api_delete)
     @RequestMapping(value = WxContants.WxTemplate.api_delete ,method = RequestMethod.DELETE)
     Envelop deleteWxTemplate( @RequestParam(value = "code", required = true) String code);
 
-    //@GetMapping(value = WxContants.WxTemplate.api_getByCode)
     @RequestMapping(value = WxContants.WxTemplate.api_getByCode ,method = RequestMethod.GET)
     Envelop findByCode( @RequestParam(value = "code", required = true) String code);
 
-    //@GetMapping(value = WxContants.WxTemplate.api_getWxTemplatesNoPage)
     @RequestMapping(value = WxContants.WxTemplate.api_getWxTemplatesNoPage ,method = RequestMethod.GET)
     Envelop getWechatNoPage(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts);
 
-    //@RequestMapping(value = WxContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
+    //@RequestMapping(value = WlyyContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
     //Envelop getWechats(
     //        @RequestParam(value = "fields", required = false) String fields,
     //        @RequestParam(value = "filters", required = false) String filters,
@@ -50,7 +45,6 @@ public interface WechatTemplateFegin {
     //        HttpServletRequest request,
     //        HttpServletResponse response);
 
-    //@GetMapping(value = WxContants.WxTemplate.api_sendTemplateMessage)
     @RequestMapping(value = WxContants.WxTemplate.api_sendTemplateMessage ,method = RequestMethod.GET)
     @ResponseBody
     Envelop sendTemplateMessage(

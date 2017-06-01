@@ -38,7 +38,7 @@ public interface WechatMenuFegin {
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts);
 
-    //@RequestMapping(value = WxContants.WxMenu.api_getWxMenus,method = RequestMethod.GET)
+    //@RequestMapping(value = WlyyContants.WxMenu.api_getWxMenus,method = RequestMethod.GET)
     //Envelop getWxMenus(
     //        @RequestParam(value = "fields", required = false) String fields,
     //        @RequestParam(value = "filters", required = false) String filters,
