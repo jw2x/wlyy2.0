@@ -71,6 +71,9 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if (StringUtils.isEmpty(content)) {
             throw new ApiException(WxContants.WxTemplate.message_fail_content_is_null, CommonContants.common_error_params_code);
         }
+        if (StringUtils.isEmpty(wxTemplate.getId())) {
+            throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
+        }
         if(!content.matches("\\{\\{.+\\.DATA\\}\\}")){//content必须还有 "{{.DATA}}"
             throw new ApiException(WxContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
         }

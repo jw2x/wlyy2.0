@@ -102,6 +102,7 @@ public class WxContants {
         public static final String message_fail_appId_is_null="appId is null";
         public static final String message_fail_name_is_null="name is null";
         public static final String message_fail_wxWechat_is_no_exist="wxWechat is no exist";//微信配置不存在
+        public static final String message_fail_id_is_null="id is null";
     }
     //微信图文消息
     public static class WxGraphicMessage {

@@ -50,6 +50,9 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
+        if (StringUtils.isEmpty(wxGraphicMessage.getId())) {
+            throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
+        }
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
 

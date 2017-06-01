@@ -48,6 +48,9 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     @Transient
     public WxMenu updateWxMenu(WxMenu wxMenu) {
         if(canSaveOrUpata(wxMenu)){
+            if (StringUtils.isEmpty(wxMenu.getId())) {
+                throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
+            }
             return wxMenuDao.save(wxMenu);
         }
         return null;
