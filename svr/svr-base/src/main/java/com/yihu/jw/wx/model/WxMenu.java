@@ -60,7 +60,6 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     }
 
     @Column(name="menu_key")
-
     public String getMenuKey() {
         return menuKey;
     }
