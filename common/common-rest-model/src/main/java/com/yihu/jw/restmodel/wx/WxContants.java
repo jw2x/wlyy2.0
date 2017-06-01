@@ -111,9 +111,9 @@ public class WxContants {
         public static final String api_delete="delete";
         public static final String api_getWxGraphicMessageNoPage="getWxGraphicMessageNoPage";
         public static final String api_sendGraphicMessages="sendGraphicMessages";
-
         public static final String api_getWxGraphicMessages="getWxGraphicMessages";
         public static final String api_getByCode="getByCode";
+
         public static final String message_success_create="wxGraphicMessage create success";
         public static final String message_success_update="wxGraphicMessage update success";
         public static final String message_success_find="wxGraphicMessage find success";

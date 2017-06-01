@@ -8,6 +8,7 @@ import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @FeignClient(
@@ -24,14 +25,14 @@ public interface WechatFegin {
     Envelop updateWechat(String jsonData);
 
     @RequestMapping(value = WxContants.Wechat.api_delete,method = RequestMethod.DELETE)
-    Envelop deleteWechat(String code);
+    Envelop deleteWechat(@RequestParam(value = "code") String code);
 
     @RequestMapping(value = WxContants.Wechat.api_getByCode,method = RequestMethod.GET)
-    Envelop findByCode(String code);
+    Envelop findByCode(@RequestParam(value = "code") String code);
 
     @RequestMapping(value = WxContants.Wechat.api_getWechats ,method = RequestMethod.GET)
-    Envelop getWechats(String fields, String filters, String sorts, int page, int size);
+    Envelop getWechats(@RequestParam(value = "fields")String fields, @RequestParam(value = "filters") String filters, @RequestParam(value = "sorts")String sorts, @RequestParam(value = "page")int page,@RequestParam(value = "size") int size);
 
     @RequestMapping(value = WxContants.Wechat.api_getWechatNoPage,method = RequestMethod.GET )
-    Envelop getWechatNoPage(String fields, String filters, String sorts);
+    Envelop getWechatNoPage(@RequestParam(value = "code")String fields,@RequestParam(value = "code") String filters,@RequestParam(value = "code") String sorts);
 }
