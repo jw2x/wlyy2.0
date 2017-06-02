@@ -86,11 +86,11 @@ public class WxGraphicMessageController extends EnvelopRestController {
     @RequestMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信图文消息列表(分页)")
     public Envelop getWxGraphicMessages(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,wechatCode,value,keyword,remark,status")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,description,url,pic_url,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
             @RequestParam(value = "size", required = false) int size,
@@ -114,11 +114,11 @@ public class WxGraphicMessageController extends EnvelopRestController {
     @GetMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessageNoPage)
     @ApiOperation(value = "获取图文消息列表，不分页")
     public Envelop getWxGraphicMessageNoPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,wechatCode,value,keyword,remark,status")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,description,url,pic_url,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
         List<WxGraphicMessage> list = wxGraphicMessageService.search(fields,filters,sorts);
@@ -127,7 +127,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
         return Envelop.getSuccessList(WxContants.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages);
     }
 
-    //@GetMapping(value = WxContants.WxGraphicMessage.api_sendGraphicMessages)
+    //@GetMapping(value = WlyyContants.WxGraphicMessage.api_sendGraphicMessages)
     //@ApiOperation(value = "发送图文消息")
     //public Envelop sendGraphicMessages(
     //        @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
@@ -138,7 +138,8 @@ public class WxGraphicMessageController extends EnvelopRestController {
 
     @GetMapping(value = WxContants.WxGraphicMessage.api_sendGraphicMessages)
     @ApiOperation(value = "发送图文消息")
-    public Envelop sendGraphicMessages(
+    @ResponseBody
+    public String sendGraphicMessages(
             @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
             @RequestParam(value = "codes", required = true) String codes,
             @ApiParam(name = "fromUserName", value = "用户openid")
@@ -147,7 +148,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
             @RequestParam(value = "toUserName", required = true) String toUserName
             ) throws Exception {
         String messages = wxGraphicMessageService.sendGraphicMessages(codes, fromUserName,toUserName);
-        return Envelop.getSuccess("成功",messages);
+        return messages;
     }
 
 

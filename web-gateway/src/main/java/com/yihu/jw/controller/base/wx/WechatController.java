@@ -4,7 +4,6 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.fegin.base.wx.WechatFegin;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.wx.WxContants;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,8 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 
 @RestController
+@RequestMapping(WechatContants.Config.api_common)
 @Api(description = "微信配置")
 public class WechatController{
+
     private Logger logger= LoggerFactory.getLogger(WechatController.class);
     @Autowired
     private WechatFegin wechatFegin;
@@ -29,7 +30,7 @@ public class WechatController{
     private Tracer tracer;
 
     @ApiOperation(value = "创建微信配置")
-    @PostMapping(value = "/"+WxContants.Wechat.api_common+"/"+WxContants.Wechat.api_create)
+    @PostMapping(value = WechatContants.Config.api_create)
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
@@ -42,7 +43,7 @@ public class WechatController{
     }
 
     @ApiOperation(value = "更新微信配置")
-    @PutMapping(value = "/"+WxContants.Wechat.api_common+"/"+WxContants.Wechat.api_update)
+    @PutMapping(value = WechatContants.Config.api_update)
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
@@ -53,8 +54,11 @@ public class WechatController{
         return wechat;
     }
 
-    @DeleteMapping(value = "/"+WxContants.Wechat.api_common+"/"+WxContants.Wechat.api_delete)
+    @DeleteMapping(value = WechatContants.Config.api_delete)
     @ApiOperation(value = "删除微信配置", notes = "删除微信配置")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop deleteWechat(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
@@ -62,8 +66,11 @@ public class WechatController{
         return wechat;
     }
 
-    @GetMapping(value = "/"+WxContants.Wechat.api_common+"/"+WxContants.Wechat.api_getByCode)
+    @GetMapping(value = WechatContants.Config.api_getByCode)
     @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
@@ -71,8 +78,11 @@ public class WechatController{
        return wechatFegin.findByCode(code);
     }
 
-    @RequestMapping(value = "/"+WxContants.Wechat.api_common+"/"+WxContants.Wechat.api_getWechats, method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.Config.api_getWechats, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信配置列表(分页)")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop getWechats(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
@@ -90,9 +100,11 @@ public class WechatController{
         return envelop;
     }
 
-
-    @GetMapping(value = "/"+WxContants.Wechat.api_common+"/"+WxContants.Wechat.api_getWechatNoPage)
+    @GetMapping(value = WechatContants.Config.api_getWechatNoPage)
     @ApiOperation(value = "获取微信列表配置，不分页")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop getWechatNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,

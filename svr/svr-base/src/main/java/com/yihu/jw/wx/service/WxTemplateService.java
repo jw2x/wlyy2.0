@@ -28,6 +28,9 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     @Autowired
     private WxAccessTokenService wxAccessTokenService;
 
+    @Autowired
+    private WechatService wechatService;
+
 
     public WxTemplate createWxTemplate(WxTemplate wxTemplate) {
         if (StringUtils.isEmpty(wxTemplate.getCode())) {
@@ -35,6 +38,11 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         }
         if (StringUtils.isEmpty(wxTemplate.getWechatCode())) {
             throw new ApiException(WxContants.WxTemplate.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
+        }
+        //根据wechatCode查找是否存在微信配置
+        WxWechat wxWechat = wechatService.findByCode(wxTemplate.getWechatCode());
+        if(wxWechat==null){
+            throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
             throw new ApiException(WxContants.WxTemplate.message_fail_templateid_is_null, CommonContants.common_error_params_code);
@@ -63,6 +71,9 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if (StringUtils.isEmpty(content)) {
             throw new ApiException(WxContants.WxTemplate.message_fail_content_is_null, CommonContants.common_error_params_code);
         }
+        if (StringUtils.isEmpty(wxTemplate.getId())) {
+            throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
+        }
         if(!content.matches("\\{\\{.+\\.DATA\\}\\}")){//content必须还有 "{{.DATA}}"
             throw new ApiException(WxContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
         }
@@ -90,6 +101,9 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         try {
             //首先根据wechatTemplate获取微信模版
             WxTemplate wxTemplate = findByCode(templateCode);
+            if(wxTemplate==null){
+                throw new ApiException(WxContants.WxTemplate.message_fail_template_is_no_exist, CommonContants.common_error_params_code);
+            }
             String wechatCode =  wxTemplate.getWechatCode();
             String content = wxTemplate.getContent().replaceAll(" ", "");//{{result.DATA}}领奖金额:{{withdrawMoney.DATA}   }领奖  时间:{ {withdrawTime.DATA} }银行信息:{ {cardInfo.DATA} }到账时间:{{arrivedTime.DATA}}{{remark.DATA}}
             String[] contentArray = content.split("\\{\\{");

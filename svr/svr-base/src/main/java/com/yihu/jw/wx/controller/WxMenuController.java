@@ -5,6 +5,7 @@ import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxMenu;
 import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.wx.WechatResponse;
 import com.yihu.jw.wx.model.WxMenu;
 import com.yihu.jw.wx.model.WxWechat;
 import com.yihu.jw.wx.service.WxMenuService;
@@ -136,19 +137,17 @@ public class WxMenuController extends EnvelopRestController {
      */
     @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
     @RequestMapping(value = WxContants.WxMenu.api_createMenu ,method = RequestMethod.GET)
-    @ResponseBody
     public Envelop createWechatMenu(
             @ApiParam(name = "wechatCode", value = "", defaultValue = "")
             @RequestParam(value = "wechatCode", required = true)String wechatCode){
         try{
             JSONObject result = wxMenuService.createWechatMenu(wechatCode);
-            if(result != null && result.get("errcode").toString().equals("0") && result.getString("errmsg").equals("ok")){
-                return Envelop.getSuccess("创建成功",result );
-            }else{
-                return Envelop.getSuccess("创建失败",result );
-            }
+            String errcode = result.get("errcode").toString();
+            WechatResponse wechatResponse = new WechatResponse(Integer.valueOf(errcode));
+            String msg = wechatResponse.getMsg();
+            return Envelop.getSuccess("成功",msg);
         }catch (Exception e){
-            return Envelop.getSuccess("创建成功",e );
+            return Envelop.getSuccess("创建失败",e );
         }
     }
 

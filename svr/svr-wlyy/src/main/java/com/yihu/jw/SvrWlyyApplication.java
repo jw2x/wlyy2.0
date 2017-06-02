@@ -1,4 +1,4 @@
-package com.yihu.jw.wlyy;
+package com.yihu.jw;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
