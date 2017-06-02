@@ -25,7 +25,8 @@ public interface WlyyAgreementFegin {
     @DeleteMapping(value =WlyyContants.Agreement.api_delete)
     Envelop delete( @RequestParam(value = "code") String code);
 
-    @GetMapping(value =WlyyContants.Agreement.api_getByCode)
+    //@GetMapping(value =WlyyContants.Agreement.api_getByCode)
+    @RequestMapping(value=WlyyContants.Agreement.api_getByCode,method = RequestMethod.GET)
     Envelop findByCode( @RequestParam(value = "code" ) String code);
 
     //@RequestMapping(value =WlyyContants.Agreement.api_queryPage, method = RequestMethod.GET)

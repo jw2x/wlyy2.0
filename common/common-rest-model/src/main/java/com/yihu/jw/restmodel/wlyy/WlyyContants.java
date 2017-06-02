@@ -6,7 +6,7 @@ package com.yihu.jw.restmodel.wlyy;
 public class WlyyContants {
     //协议模块常量
     public static class Agreement{
-        public static final String api_common="wlyyAgreement";
+        public static final String api_common="agreement";
         public static final String api_create="create";
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";
@@ -34,7 +34,7 @@ public class WlyyContants {
 
     //协议模块常量
     public static class AgreementKpi{
-        public static final String api_common="wlyyAgreementKpi";
+        public static final String api_common="agreementKpi";
         public static final String api_create="create";
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";
@@ -63,7 +63,7 @@ public class WlyyContants {
 
     //协议模块常量
     public static class AgreementKpiLog{
-        public static final String api_common="wlyyAgreementKpiLog";
+        public static final String api_common="agreementKpiLog";
         public static final String api_create="create";
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";

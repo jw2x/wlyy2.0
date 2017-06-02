@@ -7,7 +7,7 @@ public class AgreementContants {
 
     //协议常量
     public static class Agreement{
-        public static final String api_common="agreement";
+        public static final String api_common="wlyyAgreement";
         public static final String api_create="create";
         public static final String api_update="update";
         public static final String api_delete="delete";
@@ -18,7 +18,7 @@ public class AgreementContants {
 
 
     public static class AgreementKpi {
-        public static final String api_common="agreementKpi";
+        public static final String api_common="wlyyAgreementKpi";
         public static final String api_create="create";
         public static final String api_update="update";
         public static final String api_delete="delete";
@@ -28,7 +28,7 @@ public class AgreementContants {
     }
 
     public static class AgreementKpiLog {
-        public static final String api_common="agreementKpiLog";
+        public static final String api_common="wlyyAgreementKpiLog";
         public static final String api_create="create";
         public static final String api_getByCode="getByCode";
         public static final String api_queryPage="queryPage";
