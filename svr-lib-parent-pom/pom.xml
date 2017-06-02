@@ -69,6 +69,7 @@
         <version.logback>1.2.3</version.logback>
         <version.spring-elasticsearch>2.1.3.RELEASE</version.spring-elasticsearch>
         <version.json>20160212</version.json>
+        <version.net-json>2.4</version.net-json>
         <version.springside>4.2.3-GA</version.springside>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
@@ -293,6 +294,11 @@
 
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
                 <version>${version.spring}</version>
             </dependency>
@@ -433,6 +439,12 @@
                 <artifactId>json</artifactId>
                 <version>${version.json}</version>
             </dependency>
+            <dependency>
+                <groupId>net.sf.json-lib</groupId>
+                <artifactId>json-lib</artifactId>
+                <version>${version.net-json}</version>
+            </dependency>
+
             <!--json end -->
             <!-- springside-core start-->
             <dependency>
