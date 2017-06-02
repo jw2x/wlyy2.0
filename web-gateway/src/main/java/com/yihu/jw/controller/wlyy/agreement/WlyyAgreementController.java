@@ -1,10 +1,11 @@
-package com.yihu.jw.controller.base.wx;
+package com.yihu.jw.controller.wlyy.agreement;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yihu.jw.commnon.base.wx.WechatContants;
-import com.yihu.jw.fegin.base.wx.WechatMenuFegin;
+import com.yihu.jw.commnon.wlyy.AgreementContants;
+import com.yihu.jw.fegin.wlyy.agreement.WlyyAgreementFegin;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,58 +16,54 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * Created by Administrator on 2017/5/31 0031.
- */
 @RestController
-@RequestMapping(WechatContants.Menu.api_common)
-@Api(description = "微信菜单配置")
-public class WechatMenuController {
+@RequestMapping(AgreementContants.Agreement.api_common)
+@Api(value = "协议相关操作", description = "协议相关操作")
+public class WlyyAgreementController extends EnvelopRestController {
 
-    private Logger logger= LoggerFactory.getLogger(WechatMenuController.class);
+    private Logger logger = LoggerFactory.getLogger(WlyyAgreementController.class);
 
     @Autowired
-    private WechatMenuFegin wechatMenuFegin;
+    private WlyyAgreementFegin wlyyAgreementFegin;
 
     @Autowired
     private Tracer tracer;
 
-    @PostMapping(value = WechatContants.Menu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
+    @PostMapping(value = AgreementContants.Agreement.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建协议", notes = "创建协议")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop createWxMenu(
+    public Envelop create(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
-        return wechatMenuFegin.createWxMenu(jsonData);
+        return wlyyAgreementFegin.create(jsonData);
     }
 
-    @PutMapping(value = WechatContants.Menu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "修改微信菜单", notes = "修改微信菜单")
+    @PutMapping(value = AgreementContants.Agreement.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "修改协议", notes = "修改协议")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop updateWxMenu(
+    public Envelop update(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
-        return wechatMenuFegin.updateWxMenu(jsonData);
+        return wlyyAgreementFegin.update(jsonData);
     }
 
-
-    @DeleteMapping(value = WechatContants.Menu.api_delete)
-    @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
+    @DeleteMapping(value =AgreementContants.Agreement.api_delete)
+    @ApiOperation(value = "删除协议", notes = "删除协议")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop deleteWxMenu(
+    public Envelop delete(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
-        return wechatMenuFegin.deleteWxMenu(code);
+        return wlyyAgreementFegin.delete(code);
     }
 
-    @GetMapping(value = WechatContants.Menu.api_getByCode)
-    @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
+    @GetMapping(value =AgreementContants.Agreement.api_getByCode)
+    @ApiOperation(value = "根据code查找协议", notes = "根据code查找协议")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
@@ -74,13 +71,16 @@ public class WechatMenuController {
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
-        return wechatMenuFegin.findByCode(code);
+        return wlyyAgreementFegin.findByCode(code);
     }
 
-    //@RequestMapping(value = WechatContants.Menu.api_getWxMenus, method = RequestMethod.GET)
-    //@ApiOperation(value = "获取微信菜单列表(分页)")
-    //public Envelop getWxMenus(
-    //        @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+    //@RequestMapping(value =AgreementContants.Agreement.api_queryPage, method = RequestMethod.GET)
+    //@ApiOperation(value = "分页获取协议")
+    //@HystrixCommand(commandProperties = {
+    //        @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+    //        @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    //public Envelop queryPage(
+    //        @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
     //        @RequestParam(value = "fields", required = false) String fields,
     //        @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
     //        @RequestParam(value = "filters", required = false) String filters,
@@ -92,38 +92,22 @@ public class WechatMenuController {
     //        @RequestParam(value = "page", required = false) int page,
     //        HttpServletRequest request,
     //        HttpServletResponse response) throws Exception {
-    //    return wechatMenuFegin.getWxMenus(fields,filters,sorts,size,page,request,response);
+    //    return wlyyAgreementFegin.queryPage(fields,filters,sorts,size,page,request,response);
     //}
 
 
-    @GetMapping(value = WechatContants.Menu.api_getWxMenuNoPage)
-    @ApiOperation(value = "获取微信菜单列表，不分页")
+    @GetMapping(value =AgreementContants.Agreement.api_getList)
+    @ApiOperation(value = "获取协议列表(不分页)")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop getWxMenuNoPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+    public Envelop getList(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        return wechatMenuFegin.getWxMenuNoPage(fields,filters,sorts);
-    }
-
-    /**
-     * 创建微信公众号菜单
-     *
-     * @return
-     */
-    @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
-    @RequestMapping(value = WechatContants.Menu.api_createMenu ,method = RequestMethod.GET)
-    @HystrixCommand(commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
-            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop createWechatMenu(
-            @ApiParam(name = "wechatCode", value = "", defaultValue = "")
-            @RequestParam(value = "wechatCode", required = true)String wechatCode){
-        return wechatMenuFegin.createWechatMenu(wechatCode);
+        return wlyyAgreementFegin.getList(fields,filters,sorts);
     }
 }

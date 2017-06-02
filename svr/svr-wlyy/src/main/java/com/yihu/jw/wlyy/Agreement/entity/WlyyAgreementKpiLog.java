@@ -1,7 +1,7 @@
-package com.yihu.jw.wlyy.entity;
+package com.yihu.jw.wlyy.Agreement.entity;
 
 
-import com.yihu.jw.wlyy.entity.base.IdEntity;
+import com.yihu.jw.wlyy.Agreement.entity.base.IdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
