@@ -128,11 +128,11 @@ public class WlyyContants {
         public static final String message_fail_code_no_exist="code no exist";
         public static final String message_fail_id_is_null="id is null";
 
-        public static final String message_success_update="agreement update success";
-        public static final String message_success_delete="agreement delete success";
-        public static final String message_success_find="agreement find success";
-        public static final String message_success_create="agreement create success";
-        public static final String message_success_find_functions="agreement find success";
+        public static final String message_success_update="signFamily update success";
+        public static final String message_success_delete="signFamily delete success";
+        public static final String message_success_find="signFamily find success";
+        public static final String message_success_create="signFamily create success";
+        public static final String message_success_find_functions="signFamily find success";
 
     }
 }

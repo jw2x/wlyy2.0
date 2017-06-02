@@ -34,4 +34,15 @@ public class AgreementContants {
         public static final String api_queryPage="queryPage";
         public static final String api_getList="getList";
     }
+
+    //协议常量
+    public static class SignFamily{
+        public static final String api_common="wlyySignFamily";
+        public static final String api_create="create";
+        public static final String api_update="update";
+        public static final String api_delete="delete";
+        public static final String api_getByCode="getByCode";
+        public static final String api_queryPage="queryPage";
+        public static final String api_getList="getList";
+    }
 }

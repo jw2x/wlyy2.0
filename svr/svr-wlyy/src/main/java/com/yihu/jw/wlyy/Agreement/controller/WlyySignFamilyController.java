@@ -4,7 +4,6 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.WlyyContants;
-import com.yihu.jw.wlyy.Agreement.entity.WlyyAgreement;
 import com.yihu.jw.wlyy.Agreement.entity.WlyySignFamily;
 import com.yihu.jw.wlyy.Agreement.service.WlyySignFamilyService;
 import io.swagger.annotations.Api;
@@ -69,11 +68,11 @@ public class WlyySignFamilyController extends EnvelopRestController {
     @RequestMapping(value =WlyyContants.WlyySignFamily.api_queryPage, method = RequestMethod.GET)
     @ApiOperation(value = "分页获取协议")
     public Envelop queryPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name")
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
             @RequestParam(value = "size", required = false) int size,
@@ -82,32 +81,32 @@ public class WlyySignFamilyController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<WlyyAgreement> list = wlyySignFamilyService.search(fields, filters, sorts, page, size);
+        List<WlyySignFamily> list = wlyySignFamilyService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=wlyySignFamilyService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<WlyyAgreement> wlyyAgreement = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreement.class, fields);
+        List<WlyySignFamily> wlyySignFamily = convertToModels(list, new ArrayList<>(list.size()), WlyySignFamily.class, fields);
 
-        return Envelop.getSuccessListWithPage(WlyyContants.WlyySignFamily.message_success_find_functions,wlyyAgreement, page, size,count);
+        return Envelop.getSuccessListWithPage(WlyyContants.WlyySignFamily.message_success_find_functions,wlyySignFamily, page, size,count);
     }
 
 
     @GetMapping(value =WlyyContants.WlyySignFamily.api_getList)
     @ApiOperation(value = "获取协议列表(不分页)")
     public Envelop getList(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WlyyAgreement> list = wlyySignFamilyService.search(fields,filters,sorts);
+        List<WlyySignFamily> list = wlyySignFamilyService.search(fields,filters,sorts);
         //封装返回格式
-        List<WlyyAgreement> wlyyAgreement = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreement.class, fields);
-        return Envelop.getSuccessList(WlyyContants.WlyySignFamily.message_success_find_functions,wlyyAgreement);
+        List<WlyySignFamily> wlyySignFamily = convertToModels(list, new ArrayList<>(list.size()), WlyySignFamily.class, fields);
+        return Envelop.getSuccessList(WlyyContants.WlyySignFamily.message_success_find_functions,wlyySignFamily);
     }
 
 }
