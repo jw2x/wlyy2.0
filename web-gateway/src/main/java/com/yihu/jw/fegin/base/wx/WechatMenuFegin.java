@@ -38,15 +38,13 @@ public interface WechatMenuFegin {
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts);
 
-    //@RequestMapping(value = WlyyContants.WxMenu.api_getWxMenus,method = RequestMethod.GET)
-    //Envelop getWxMenus(
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response);
+    @RequestMapping(value = WxContants.WxMenu.api_getWxMenus,method = RequestMethod.GET)
+    Envelop getWxMenus(
+            @RequestParam(value = "fields", required = false) String fields,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @RequestParam(value = "size", required = false) int size,
+            @RequestParam(value = "page", required = false) int page);
 
     @RequestMapping(value = WxContants.WxMenu.api_createMenu ,method = RequestMethod.GET)
     Envelop createWechatMenu(@RequestParam(value = "wechatCode", required = true)String wechatCode);

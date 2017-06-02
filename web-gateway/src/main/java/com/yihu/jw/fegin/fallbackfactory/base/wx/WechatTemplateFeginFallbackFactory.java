@@ -44,10 +44,10 @@ public class WechatTemplateFeginFallbackFactory implements FallbackFactory<Wecha
                 return null;
             }
 
-            //@Override
-            //public Envelop getWechats(String fields, String filters, String sorts, int size, int page, HttpServletRequest request, HttpServletResponse response) {
-            //    return null;
-            //}
+            @Override
+            public Envelop getWechats(String fields, String filters, String sorts, int size, int page) {
+                return null;
+            }
         };
     }
 }

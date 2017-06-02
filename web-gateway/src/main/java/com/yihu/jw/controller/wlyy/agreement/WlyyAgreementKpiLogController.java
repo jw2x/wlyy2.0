@@ -14,6 +14,8 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping(AgreementContants.AgreementKpiLog.api_common)
 @Api(value = "套餐指标执行日志相关操作", description = "套餐指标执行日志相关操作")
@@ -44,23 +46,21 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
         return wlyyAgreementKpiLogFegin.findByCode(code);
     }
 
-    //@RequestMapping(value =AgreementContants.AgreementKpiLog.api_queryPage, method = RequestMethod.GET)
-    //@ApiOperation(value = "分页获取套餐指标日志")
-    //public Envelop queryPage(
-    //        @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,patientCode,signCode,kpiCode,agreementCode,kpiName")
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+kpiName,+createTime")
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @ApiParam(name = "page", value = "页码", defaultValue = "1")
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response) throws Exception {
-    //    return wlyyAgreementKpiLogFegin.queryPage(fields, filters, sorts, size, page, request, response);
-    //}
+    @RequestMapping(value =AgreementContants.AgreementKpiLog.api_queryPage, method = RequestMethod.GET)
+    @ApiOperation(value = "分页获取套餐指标日志")
+    public Envelop queryPage(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,patientCode,signCode,kpiCode,agreementCode,kpiName")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+kpiName,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) int size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) int page) throws Exception {
+        return wlyyAgreementKpiLogFegin.queryPage(fields, filters, sorts, size, page);
+    }
 
 
     @GetMapping(value =AgreementContants.AgreementKpiLog.api_getList)

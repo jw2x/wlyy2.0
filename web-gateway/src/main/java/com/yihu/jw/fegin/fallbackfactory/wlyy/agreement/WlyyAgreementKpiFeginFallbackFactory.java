@@ -34,10 +34,10 @@ public class WlyyAgreementKpiFeginFallbackFactory implements FallbackFactory<Wly
                 return null;
             }
 
-            //@Override
-            //public Envelop queryPage(String fields, String filters, String sorts, int size, int page, HttpServletRequest request, HttpServletResponse response) {
-            //    return null;
-            //}
+            @Override
+            public Envelop queryPage(String fields, String filters, String sorts, int size, int page) {
+                return null;
+            }
 
             @Override
             public Envelop getList(String fields, String filters, String sorts) {

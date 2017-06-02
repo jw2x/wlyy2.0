@@ -38,15 +38,16 @@ public class WechatMenuFeginFallbackFactory implements FallbackFactory<WechatMen
                 return null;
             }
 
-            //@Override
 
             @Override
             public Envelop createWechatMenu(String wechatCode) {
                 return null;
             }
-            //public Envelop getWxMenus(String fields, String filters, String sorts, int size, int page, HttpServletRequest request, HttpServletResponse response) {
-            //    return null;
-            //}
+
+            @Override
+            public Envelop getWxMenus(String fields, String filters, String sorts, int size, int page) {
+                return null;
+            }
         };
     }
 }

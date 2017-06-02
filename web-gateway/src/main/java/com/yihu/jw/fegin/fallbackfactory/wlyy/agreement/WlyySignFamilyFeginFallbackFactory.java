@@ -31,10 +31,10 @@ public class WlyySignFamilyFeginFallbackFactory implements FallbackFactory<WlyyS
                 return null;
             }
 
-            //@Override
-            //public Envelop queryPage(@RequestParam(value = "fields", required = false) String fields, @RequestParam(value = "filters", required = false) String filters, @RequestParam(value = "sorts", required = false) String sorts, @RequestParam(value = "size", required = false) int size, @RequestParam(value = "page", required = false) int page, HttpServletRequest request, HttpServletResponse response) {
-            //    return null;
-            //}
+            @Override
+            public Envelop queryPage(@RequestParam(value = "fields", required = false) String fields, @RequestParam(value = "filters", required = false) String filters, @RequestParam(value = "sorts", required = false) String sorts, @RequestParam(value = "size", required = false) int size, @RequestParam(value = "page", required = false) int page) {
+                return null;
+            }
 
             @Override
             public Envelop getList(@RequestParam(value = "fields", required = false) String fields, @RequestParam(value = "filters", required = false) String filters, @RequestParam(value = "sorts", required = false) String sorts) {

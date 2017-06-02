@@ -61,23 +61,21 @@ public class WlyyAgreementKpiController extends EnvelopRestController {
         return wlyyAgreementKpiFegin.findByCode(code);
     }
 
-    //@RequestMapping(value =AgreementContants.AgreementKpi.api_queryPage, method = RequestMethod.GET)
-    //@ApiOperation(value = "分页获取套餐指标")
-    //public Envelop queryPage(
-    //        @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,agreementCode,kpiName,type,kpiTimes,status,del,kpiContent,keyword")
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+kpiName,+createTime")
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @ApiParam(name = "page", value = "页码", defaultValue = "1")
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response) throws Exception {
-    //    return wlyyAgreementKpiFegin.queryPage(fields, filters, sorts, size, page, request, response);
-    //}
+    @RequestMapping(value =AgreementContants.AgreementKpi.api_queryPage, method = RequestMethod.GET)
+    @ApiOperation(value = "分页获取套餐指标")
+    public Envelop queryPage(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,agreementCode,kpiName,type,kpiTimes,status,del,kpiContent,keyword")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+kpiName,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) int size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) int page) throws Exception {
+        return wlyyAgreementKpiFegin.queryPage(fields, filters, sorts, size, page);
+    }
 
     @GetMapping(value =AgreementContants.AgreementKpi.api_getList)
     @ApiOperation(value = "获取套餐指标列表(不分页)")

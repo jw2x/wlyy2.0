@@ -25,15 +25,13 @@ public interface WlyySignFamilyFegin {
     @RequestMapping(value=WlyyContants.SignFamily.api_getByCode,method = RequestMethod.GET)
     Envelop findByCode(@RequestParam(value = "code") String code);
 
-    //@RequestMapping(value =WlyyContants.SignFamily.api_queryPage, method = RequestMethod.GET)
-    //Envelop queryPage(
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response);
+    @RequestMapping(value =WlyyContants.SignFamily.api_queryPage, method = RequestMethod.GET)
+    Envelop queryPage(
+            @RequestParam(value = "fields", required = false) String fields,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @RequestParam(value = "size", required = false) int size,
+            @RequestParam(value = "page", required = false) int page);
 
     @GetMapping(value =WlyyContants.SignFamily.api_getList)
     Envelop getList(

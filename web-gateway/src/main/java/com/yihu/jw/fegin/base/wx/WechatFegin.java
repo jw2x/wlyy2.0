@@ -31,8 +31,8 @@ public interface WechatFegin {
     Envelop findByCode(@RequestParam(value = "code") String code);
 
     @RequestMapping(value = WxContants.Wechat.api_getWechats ,method = RequestMethod.GET)
-    Envelop getWechats(@RequestParam(value = "fields")String fields, @RequestParam(value = "filters") String filters, @RequestParam(value = "sorts")String sorts, @RequestParam(value = "page")int page,@RequestParam(value = "size") int size);
+    Envelop getWechats(@RequestParam(value = "fields" ,required = false)String fields, @RequestParam(value = "filters",required = false) String filters, @RequestParam(value = "sorts" ,required = false)String sorts, @RequestParam(value = "size" ,required = false) int size,@RequestParam(value = "page" ,required = false)int page);
 
     @RequestMapping(value = WxContants.Wechat.api_getWechatNoPage,method = RequestMethod.GET )
-    Envelop getWechatNoPage(@RequestParam(value = "code")String fields,@RequestParam(value = "code") String filters,@RequestParam(value = "code") String sorts);
+    Envelop getWechatNoPage(@RequestParam(value = "fields")String fields,@RequestParam(value = "filters") String filters,@RequestParam(value = "sorts") String sorts);
 }

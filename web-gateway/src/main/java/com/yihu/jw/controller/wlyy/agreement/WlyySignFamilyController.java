@@ -14,6 +14,8 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping(AgreementContants.SignFamily.api_common)
 @Api(value = "签约相关操作", description = "签约相关操作")
@@ -52,23 +54,21 @@ public class WlyySignFamilyController extends EnvelopRestController {
        return wlyySignFamilyFegin.findByCode(code);
     }
 
-    //@RequestMapping(value =AgreementContants.SignFamily.api_queryPage, method = RequestMethod.GET)
-    //@ApiOperation(value = "分页获取协议")
-    //public Envelop queryPage(
-    //        @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name")
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @ApiParam(name = "page", value = "页码", defaultValue = "1")
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response) throws Exception {
-    //   return wlyySignFamilyFegin.queryPage(fields, filters, sorts, size, page, request, response);
-    //}
+    @RequestMapping(value =AgreementContants.SignFamily.api_queryPage, method = RequestMethod.GET)
+    @ApiOperation(value = "分页获取协议")
+    public Envelop queryPage(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) int size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) int page) throws Exception {
+       return wlyySignFamilyFegin.queryPage(fields, filters, sorts, size, page);
+    }
 
 
     @GetMapping(value =AgreementContants.SignFamily.api_getList)

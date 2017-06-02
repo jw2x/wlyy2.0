@@ -15,6 +15,9 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Created by Administrator on 2017/5/31 0031.
  */
@@ -77,23 +80,23 @@ public class WechatGraphicMessageController {
         return graphicMessageFegin.findByCode(code);
     }
 
-    //@RequestMapping(value = WechatContants.GraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
-    //@ApiOperation(value = "获取微信图文消息列表(分页)")
-    //public Envelop getWxGraphicMessages(
-    //        @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,description,url,pic_url,remark,status")
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @ApiParam(name = "page", value = "页码", defaultValue = "1")
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response) throws Exception {
-    //    return graphicMessageFegin.getWxGraphicMessages(fields,filters,sorts,size,page,request,response);
-    //}
+    @RequestMapping(value = WechatContants.GraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
+    @ApiOperation(value = "获取微信图文消息列表(分页)")
+    public Envelop getWxGraphicMessages(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,description,url,pic_url,remark,status")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) int size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) int page,
+            HttpServletRequest request,
+            HttpServletResponse response) throws Exception {
+        return graphicMessageFegin.getWxGraphicMessages(fields,filters,sorts,size,page);
+    }
 
 
     @GetMapping(value = WechatContants.GraphicMessage.api_getWxGraphicMessageNoPage)

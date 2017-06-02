@@ -14,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 
 @RestController
 @RequestMapping(WechatContants.Config.api_common)
@@ -94,9 +91,7 @@ public class WechatController{
             @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
             @RequestParam(value = "size", required = false) int size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
-            @RequestParam(value = "page", required = false) int page,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            @RequestParam(value = "page", required = false) int page) throws Exception {
         Envelop envelop = wechatFegin.getWechats(fields,filters,sorts,size,page);
         return envelop;
     }
