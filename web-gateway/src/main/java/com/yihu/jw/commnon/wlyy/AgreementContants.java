@@ -16,7 +16,7 @@ public class AgreementContants {
         public static final String api_getList="getList";
     }
 
-
+    //套餐指标
     public static class AgreementKpi {
         public static final String api_common="wlyyAgreementKpi";
         public static final String api_create="create";
@@ -27,6 +27,7 @@ public class AgreementContants {
         public static final String api_getList="getList";
     }
 
+    //套餐指标日志
     public static class AgreementKpiLog {
         public static final String api_common="wlyyAgreementKpiLog";
         public static final String api_create="create";
@@ -35,7 +36,7 @@ public class AgreementContants {
         public static final String api_getList="getList";
     }
 
-    //协议常量
+    //签约
     public static class SignFamily{
         public static final String api_common="wlyySignFamily";
         public static final String api_create="create";
