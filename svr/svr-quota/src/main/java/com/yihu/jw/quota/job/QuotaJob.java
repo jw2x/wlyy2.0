@@ -1,19 +1,19 @@
 package com.yihu.jw.quota.job;
 
+import com.yihu.jw.quota.dao.jpa.TjQuotaLogDao;
 import com.yihu.jw.quota.etl.Contant;
 import com.yihu.jw.quota.etl.compute.ComputeHelper;
 import com.yihu.jw.quota.etl.extract.ExtractHelper;
 import com.yihu.jw.quota.etl.filter.FilterHelper;
 import com.yihu.jw.quota.etl.save.SaveHelper;
+import com.yihu.jw.quota.model.jpa.TjQuotaLog;
 import com.yihu.jw.quota.model.jpa.compute.TjCompute;
 import com.yihu.jw.quota.service.compute.TjComputeService;
 import com.yihu.jw.quota.service.rule.TjCleanRuleService;
 import com.yihu.jw.quota.service.source.TjDataSourceService;
 import com.yihu.jw.quota.util.SpringUtil;
-import com.yihu.jw.quota.vo.DataModel;
-import com.yihu.jw.quota.vo.FilterModel;
-import com.yihu.jw.quota.vo.QuotaVO;
-import com.yihu.jw.quota.vo.SaveModel;
+import com.yihu.jw.quota.vo.*;
+import net.sf.json.JSONObject;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.quartz.*;
@@ -29,6 +29,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -46,6 +47,8 @@ public class QuotaJob implements Job {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private TjComputeService computeService;
+    @Autowired
+    private TjQuotaLogDao tjQuotaLogDao;
 
     private String saasid;//saasid
     private QuotaVO quotaVO;//指标对象
@@ -111,14 +114,22 @@ public class QuotaJob implements Job {
      */
     private void computequota() {
         try {
+            TjQuotaLog tjQuotaLog=new TjQuotaLog();
+            tjQuotaLog.setQuotaCode(quotaVO.getCode());
+            tjQuotaLog.setSaasId(saasid);
+            tjQuotaLog.setStartTime(new Date());
+            JobLogModel jobLogModel=new JobLogModel();
             //抽取数据 如果是累加就是 List<DataModel>  如果是相除 Map<String,List<DataModel>>
             Object dataModels = extract();
             //根据规则过滤数据
             FilterModel filterModel = filter(dataModels);
+            jobLogModel.setErrorModels(filterModel.getErrorModels());
             //统计数据
             List<SaveModel> sms = compute(filterModel.getData());
             //保存数据
             saveDate(sms);
+            tjQuotaLog.setEndTime(new Date());
+            tjQuotaLog.setContent(JSONObject.fromObject(jobLogModel).toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
