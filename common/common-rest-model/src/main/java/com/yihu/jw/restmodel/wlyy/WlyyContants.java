@@ -82,7 +82,7 @@ public class WlyyContants {
     }
 
     //协议模块常量
-    public static class WlyySignFamily{
+    public static class SignFamily{
         public static final String api_common="signFamily";
         public static final String api_create="create";
         public static final String api_delete="delete";
@@ -104,29 +104,6 @@ public class WlyyContants {
         public static final String message_fail_expense_is_null="expense is null";
         public static final String message_fail_expenseStatus_is_null="expenseStatus is null";
         public static final String message_fail_agreementCode_is_null="agreementCode is null";
-
-        public static final String message_success_update="agreement update success";
-        public static final String message_success_delete="agreement delete success";
-        public static final String message_success_find="agreement find success";
-        public static final String message_success_create="agreement create success";
-        public static final String message_success_find_functions="agreement find success";
-
-    }
-
-    //协议模块常量
-    public static class SignFamily{
-        public static final String api_common="signFamily";
-        public static final String api_create="create";
-        public static final String api_delete="delete";
-        public static final String api_getByCode="getByCode";
-        public static final String api_update="update";
-        public static final String api_queryPage="queryPage";
-        public static final String api_getList="getList";
-
-        public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_name_is_null="name is null";
-        public static final String message_fail_code_no_exist="code no exist";
-        public static final String message_fail_id_is_null="id is null";
 
         public static final String message_success_update="signFamily update success";
         public static final String message_success_delete="signFamily delete success";
