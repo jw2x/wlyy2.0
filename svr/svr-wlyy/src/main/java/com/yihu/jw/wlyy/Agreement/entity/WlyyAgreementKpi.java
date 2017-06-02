@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/1 0001.
@@ -19,13 +20,12 @@ public class WlyyAgreementKpi extends IdEntity {
     private String kpiName;//服务项名称
     private String type;//服务项类型
     private String kpiTimes;//服务次数
-    private Integer status;//状态
-    private Integer del;//删除状态
+    private Integer status;//状态  -1删除 0 冻结 1可用
     private String kpiContent;//服务内容描述
     private String keyword;//关键字
-    private Timestamp createTime;
+    private Date createTime;
     private String createUser;
-    private Timestamp updaateTime;
+    private Date updaateTime;
 
     public String getAgreementCode() {
         return agreementCode;
@@ -80,15 +80,6 @@ public class WlyyAgreementKpi extends IdEntity {
         this.status = status;
     }
 
-    @Column(name = "del")
-    public Integer getDel() {
-        return del;
-    }
-
-    public void setDel(Integer del) {
-        this.del = del;
-    }
-
     @Column(name = "kpi_content")
     public String getKpiContent() {
         return kpiContent;
@@ -108,7 +99,7 @@ public class WlyyAgreementKpi extends IdEntity {
     }
 
     @Column(name = "create_time")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
@@ -126,11 +117,11 @@ public class WlyyAgreementKpi extends IdEntity {
     }
 
     @Column(name = "updaate_time")
-    public Timestamp getUpdaateTime() {
+    public Date getUpdaateTime() {
         return updaateTime;
     }
 
-    public void setUpdaateTime(Timestamp updaateTime) {
+    public void setUpdaateTime(Date updaateTime) {
         this.updaateTime = updaateTime;
     }
 }

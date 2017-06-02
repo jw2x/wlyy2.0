@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/1 0001.
@@ -27,12 +27,12 @@ public class WlyyAgreement extends IdEntity implements Serializable{
     private String posterPic;//海报图
     private String remark;//描述
     private String type;//类型
-    private Timestamp createTime;
-    private Timestamp updateTime;
-    private String status;//状态
+    private Date createTime;
+    private Date updateTime;
+    private String status;//状态 -1删除 0 冻结 1可用
     private String createUser;
 
-    public WlyyAgreement(String code, String parentCode, String saasId, String name, BigDecimal price, String posterPic, String remark, String type, Timestamp createTime, Timestamp updateTime, String status, String createUser) {
+    public WlyyAgreement(String code, String parentCode, String saasId, String name, BigDecimal price, String posterPic, String remark, String type, Date createTime, Date updateTime, String status, String createUser) {
         this.code = code;
         this.parentCode = parentCode;
         this.saasId = saasId;
@@ -45,6 +45,10 @@ public class WlyyAgreement extends IdEntity implements Serializable{
         this.updateTime = updateTime;
         this.status = status;
         this.createUser = createUser;
+    }
+
+    public WlyyAgreement(){
+
     }
 
     @Column(name = "code")
@@ -120,20 +124,20 @@ public class WlyyAgreement extends IdEntity implements Serializable{
     }
 
     @Column(name = "create_time")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
     @Column(name = "update_time")
-    public Timestamp getUpdateTime() {
+    public Date getUpdateTime() {
         return updateTime;
     }
 
-    public void setUpdateTime(Timestamp updateTime) {
+    public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
     }
 
