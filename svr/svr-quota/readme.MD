@@ -8,3 +8,7 @@
     service:服务层
     util：工具类
     vo：modelvo
+    
+    
+相关资料
+    powerdesign:https://192.168.1.103:888/svn/outwindow/基础开发部/doc/i健康2.0

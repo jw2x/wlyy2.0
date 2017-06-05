@@ -101,6 +101,11 @@ public class ExtractHelper {
         return null;
     }
 
+    /**
+     * 初始化sql
+     * @param sql 替换时间
+     * @return
+     */
     private String initSql(String sql) {
         try {
             if (sql.contains(Contant.endTime)) {
