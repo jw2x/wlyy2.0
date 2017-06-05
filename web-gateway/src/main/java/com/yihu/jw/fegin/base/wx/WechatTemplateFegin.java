@@ -35,15 +35,13 @@ public interface WechatTemplateFegin {
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts);
 
-    //@RequestMapping(value = WlyyContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
-    //Envelop getWechats(
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response);
+    @RequestMapping(value = WxContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
+    Envelop getWechats(
+            @RequestParam(value = "fields", required = false) String fields,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @RequestParam(value = "size", required = false) int size,
+            @RequestParam(value = "page", required = false) int page);
 
     @RequestMapping(value = WxContants.WxTemplate.api_sendTemplateMessage ,method = RequestMethod.GET)
     @ResponseBody

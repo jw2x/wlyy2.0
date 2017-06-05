@@ -1,4 +1,4 @@
-package com.yihu.jw.controller.base.wx;
+package com.yihu.jw.commnon.base.wx;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -6,8 +6,6 @@ package com.yihu.jw.controller.base.wx;
 public class WechatContants {
     //微信token模块常量
     public static class AccessToken{
-        public static final String message_success_get="wxAccessToken get success";
-
         public static final String api_common="accessToken";
         public static final String api_create="create";
         public static final String api_get="get";

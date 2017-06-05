@@ -32,7 +32,7 @@ public class WechatFeginFallbackFactory implements FallbackFactory<WechatFegin> 
                 return envelop;
             }
 
-            public Envelop getWechats(String fields, String filters, String sorts, int page, int size){
+            public Envelop getWechats(String fields, String filters, String sorts, int size, int page){
                 Envelop envelop = new Envelop();
                 envelop.getError(e.getMessage(),-1);
                 return envelop;

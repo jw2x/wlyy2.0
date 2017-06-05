@@ -2,6 +2,7 @@ package com.yihu.jw.controller.base.wx;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.fegin.base.wx.WechatMenuFegin;
 import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.Api;
@@ -76,23 +77,21 @@ public class WechatMenuController {
         return wechatMenuFegin.findByCode(code);
     }
 
-    //@RequestMapping(value = WechatContants.Menu.api_getWxMenus, method = RequestMethod.GET)
-    //@ApiOperation(value = "获取微信菜单列表(分页)")
-    //public Envelop getWxMenus(
-    //        @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @ApiParam(name = "page", value = "页码", defaultValue = "1")
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response) throws Exception {
-    //    return wechatMenuFegin.getWxMenus(fields,filters,sorts,size,page,request,response);
-    //}
+    @RequestMapping(value = WechatContants.Menu.api_getWxMenus, method = RequestMethod.GET)
+    @ApiOperation(value = "获取微信菜单列表(分页)")
+    public Envelop getWxMenus(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) int size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) int page) throws Exception {
+        return wechatMenuFegin.getWxMenus(fields,filters,sorts,size,page);
+    }
 
 
     @GetMapping(value = WechatContants.Menu.api_getWxMenuNoPage)

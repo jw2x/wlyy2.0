@@ -126,5 +126,6 @@ public class WxContants {
         public static final String message_fail_code_exist="code exist";
         public static final String message_fail_status_is_null="status is null";
         public static final String message_fail_title_is_null="title is null";
+        public static final String message_fail_wxGraphicMessage_is_no_exist="wxGraphicMessage is no exist";
     }
 }

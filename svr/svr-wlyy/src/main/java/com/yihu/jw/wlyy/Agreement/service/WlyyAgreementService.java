@@ -1,16 +1,17 @@
-package com.yihu.jw.wlyy.service;
+package com.yihu.jw.wlyy.Agreement.service;
 
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.WlyyContants;
-import com.yihu.jw.wlyy.dao.WlyyAgreementDao;
-import com.yihu.jw.wlyy.entity.WlyyAgreement;
+import com.yihu.jw.wlyy.Agreement.dao.WlyyAgreementDao;
+import com.yihu.jw.wlyy.Agreement.entity.WlyyAgreement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/1 0001.
@@ -35,6 +36,10 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
         if (StringUtils.isEmpty(wlyyAgreement.getStatus())) {
             throw new ApiException(WlyyContants.Agreement.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
+        //设置创建时间和修改时间
+        Date date = new Date();
+        wlyyAgreement.setCreateTime(date);
+        wlyyAgreement.setUpdateTime(date);
         return wlyyAgreementDao.save(wlyyAgreement);
     }
 
@@ -61,7 +66,12 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
         if(wlyyAgreement1==null){
             throw new ApiException(WlyyContants.Agreement.message_fail_wlyyAgreement_is_no_exist, CommonContants.common_error_params_code);
         }
-         wlyyAgreement1 = wlyyAgreementDao.findCodeExcludeId(code,id);
+        //设置创建时间和修改时间
+        Date date = new Date();
+        wlyyAgreement.setCreateTime(wlyyAgreement1.getCreateTime());
+        wlyyAgreement.setUpdateTime(date);
+
+        wlyyAgreement1 = wlyyAgreementDao.findCodeExcludeId(code,id);
         if(wlyyAgreement1 !=null){
             throw new ApiException(WlyyContants.Agreement.message_fail_code_exist, CommonContants.common_error_params_code);
         }

@@ -1,12 +1,12 @@
-package com.yihu.jw.wlyy.entity;
+package com.yihu.jw.wlyy.Agreement.entity;
 
 
-import com.yihu.jw.wlyy.entity.base.IdEntity;
+import com.yihu.jw.wlyy.Agreement.entity.base.IdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/1 0001.
@@ -14,13 +14,16 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "wlyy_agreement_kpi_log")
 public class WlyyAgreementKpiLog extends IdEntity {
+
+    private static final long serialVersionUID = -3196907595969778396L;
+
     private String code;//业务code
     private String patientCode;//患者code
     private String signCode;
     private String kpiCode;
     private String agreementCode;//套餐代码
     private String kpiName;//服务项名称
-    private Timestamp createTime;
+    private Date createTime;
     private String createUser;
 
 
@@ -79,11 +82,11 @@ public class WlyyAgreementKpiLog extends IdEntity {
     }
 
     @Column(name = "create_time")
-    public Timestamp getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

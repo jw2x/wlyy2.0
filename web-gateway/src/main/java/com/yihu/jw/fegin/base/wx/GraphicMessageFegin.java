@@ -32,15 +32,13 @@ public interface GraphicMessageFegin {
     @RequestMapping(value = WxContants.WxGraphicMessage.api_getByCode,method = RequestMethod.GET)
     Envelop findByCode(String code);
 
-    //@RequestMapping(value = WlyyContants.WxGraphicMessage.api_getWxGraphicMessages,method = RequestMethod.GET)
-    //Envelop getWxGraphicMessages(
-    //        @RequestParam(value = "fields", required = false) String fields,
-    //        @RequestParam(value = "filters", required = false) String filters,
-    //        @RequestParam(value = "sorts", required = false) String sorts,
-    //        @RequestParam(value = "size", required = false) int size,
-    //        @RequestParam(value = "page", required = false) int page,
-    //        HttpServletRequest request,
-    //        HttpServletResponse response);
+    @RequestMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessages,method = RequestMethod.GET)
+    Envelop getWxGraphicMessages(
+            @RequestParam(value = "fields", required = false) String fields,
+            @RequestParam(value = "filters", required = false) String filters,
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @RequestParam(value = "size", required = false) int size,
+            @RequestParam(value = "page", required = false) int page);
 
     @RequestMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessageNoPage,method = RequestMethod.GET)
     Envelop getWxGraphicMessageNoPage(

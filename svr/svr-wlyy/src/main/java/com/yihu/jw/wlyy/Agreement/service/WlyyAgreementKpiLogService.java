@@ -1,16 +1,17 @@
-package com.yihu.jw.wlyy.service;
+package com.yihu.jw.wlyy.Agreement.service;
 
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.WlyyContants;
-import com.yihu.jw.wlyy.dao.WlyyAgreementKpiLogDao;
-import com.yihu.jw.wlyy.entity.WlyyAgreementKpiLog;
+import com.yihu.jw.wlyy.Agreement.dao.WlyyAgreementKpiLogDao;
+import com.yihu.jw.wlyy.Agreement.entity.WlyyAgreementKpiLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/1 0001.
@@ -41,6 +42,9 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
         if (StringUtils.isEmpty(wlyyAgreementKpiLog.getCode())) {
             throw new ApiException(WlyyContants.AgreementKpi.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
+        //设置创建时间
+        Date date = new Date();
+        wlyyAgreementKpiLog.setCreateTime(date);
         return wlyyAgreementKpiLogDao.save(wlyyAgreementKpiLog);
     }
 

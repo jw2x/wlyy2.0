@@ -1,11 +1,11 @@
-package com.yihu.jw.wlyy.controller;
+package com.yihu.jw.wlyy.Agreement.controller;
 
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.WlyyContants;
-import com.yihu.jw.wlyy.entity.WlyyAgreement;
-import com.yihu.jw.wlyy.service.WlyyAgreementService;
+import com.yihu.jw.wlyy.Agreement.entity.WlyyAgreement;
+import com.yihu.jw.wlyy.Agreement.service.WlyyAgreementService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -82,7 +82,7 @@ public class WlyyAgreementController extends EnvelopRestController {
     @RequestMapping(value =WlyyContants.Agreement.api_queryPage, method = RequestMethod.GET)
     @ApiOperation(value = "分页获取协议")
     public Envelop queryPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
@@ -110,7 +110,7 @@ public class WlyyAgreementController extends EnvelopRestController {
     @GetMapping(value =WlyyContants.Agreement.api_getList)
     @ApiOperation(value = "获取协议列表(不分页)")
     public Envelop getList(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,

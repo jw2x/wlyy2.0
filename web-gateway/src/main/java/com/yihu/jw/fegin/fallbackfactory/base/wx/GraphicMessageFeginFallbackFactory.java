@@ -35,10 +35,10 @@ public class GraphicMessageFeginFallbackFactory implements FallbackFactory<Graph
                 return null;
             }
 
-            //@Override
-            //public Envelop getWxGraphicMessages(@RequestParam(value = "fields", required = false) String fields, @RequestParam(value = "filters", required = false) String filters, @RequestParam(value = "sorts", required = false) String sorts, @RequestParam(value = "size", required = false) int size, @RequestParam(value = "page", required = false) int page, HttpServletRequest request, HttpServletResponse response) {
-            //    return null;
-            //}
+            @Override
+            public Envelop getWxGraphicMessages(@RequestParam(value = "fields", required = false) String fields, @RequestParam(value = "filters", required = false) String filters, @RequestParam(value = "sorts", required = false) String sorts, @RequestParam(value = "size", required = false) int size, @RequestParam(value = "page", required = false) int page) {
+                return null;
+            }
 
             @Override
             public Envelop getWxGraphicMessageNoPage(@RequestParam(value = "fields", required = false) String fields, @RequestParam(value = "filters", required = false) String filters, @RequestParam(value = "sorts", required = false) String sorts) {
