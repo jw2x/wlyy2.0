@@ -23,7 +23,8 @@ public class ElasticFactory {
         factory.setHttpClientConfig(new HttpClientConfig
                 .Builder(hostAddress)
                 .multiThreaded(true)
-                .readTimeout(30)
+                .discoveryEnabled(true)
+                .readTimeout(30000)//30秒
                 .build());
         return factory.getObject();
     }

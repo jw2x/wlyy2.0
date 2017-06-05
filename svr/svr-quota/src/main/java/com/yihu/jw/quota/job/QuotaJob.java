@@ -138,9 +138,14 @@ public class QuotaJob implements Job {
             tjQuotaLog.setStatus(success ? Contant.save_status.success : Contant.save_status.fail);
             tjQuotaLog.setEndTime(new Date());
             tjQuotaLog.setContent(JSONObject.fromObject(jobLogModel).toString());
+            saveLog(tjQuotaLog);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @Transactional
+    private void saveLog(TjQuotaLog tjQuotaLog) {
+        tjQuotaLogDao.save(tjQuotaLog);
     }
 
     private FilterModel convert(FilterModel dataModels) {

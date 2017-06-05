@@ -33,7 +33,7 @@ public class ConvertHelper {
         List<TjQuotaDimensionSlave> tj = dimensionSlaveService.findTjQuotaDimensionSlaveByQuotaCode(quotaVO.getCode());
         for (int i = 0; i < tj.size(); i++) {
             TjQuotaDimensionSlave temp = tj.get(i);
-            if (!StringUtils.isEmpty(temp)) {
+            if (!StringUtils.isEmpty(temp.getConvertClazz())) {
                 if (Contant.compute.add.equals(quotaVO.getComputeType())) {
                     //判断是否是累加计算 如果强转成list类型
                     List<DataModel> oneList = (List<DataModel>) filterModel.getData();

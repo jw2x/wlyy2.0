@@ -43,6 +43,8 @@ public class ElastricSearchSave {
                 bulk.addAction(index);
             }
             BulkResult br = jestClient.execute(bulk.build());
+            //关闭链接
+            jestClient.shutdownClient();
             return br.isSucceeded();
         } catch (Exception e) {
             logger.error(" save error ：" + e.getMessage());
