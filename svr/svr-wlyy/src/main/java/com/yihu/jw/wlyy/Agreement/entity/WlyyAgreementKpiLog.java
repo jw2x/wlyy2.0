@@ -6,7 +6,6 @@ import com.yihu.jw.wlyy.Agreement.entity.base.IdEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -87,7 +86,7 @@ public class WlyyAgreementKpiLog extends IdEntity {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

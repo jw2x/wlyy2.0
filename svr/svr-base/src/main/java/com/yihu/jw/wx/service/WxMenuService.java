@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -40,6 +41,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
      */
     public WxMenu createWxMenu(WxMenu wxMenu) {
         if(canSaveOrUpata(wxMenu)){
+            wxMenu.setCreateTime(new Date());
             return wxMenuDao.save(wxMenu);
         }
         return null;
@@ -48,9 +50,15 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     @Transient
     public WxMenu updateWxMenu(WxMenu wxMenu) {
         if(canSaveOrUpata(wxMenu)){
-            if (StringUtils.isEmpty(wxMenu.getId())) {
+            Long id = wxMenu.getId();
+            if (StringUtils.isEmpty(id)) {
                 throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
             }
+            WxMenu wxMenu1 = findById(id);
+            if(wxMenu1==null){
+                throw new ApiException(WxContants.WxMenu.message_fail_WxMenu_is_no_exist, CommonContants.common_error_params_code);
+            }
+            wxMenu.setCreateTime(wxMenu1.getCreateTime());
             return wxMenuDao.save(wxMenu);
         }
         return null;
@@ -78,6 +86,10 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
 
     public WxMenu findByCode(String code) {
         return wxMenuDao.findByCode(code);
+    }
+
+    public WxMenu findById(Long id) {
+        return wxMenuDao.findById(id);
     }
 
     /**
@@ -307,6 +319,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
         if(null!=wxMenuTemp){
             throw new ApiException(WxContants.WxMenu.message_fail_sort_is_repeat, CommonContants.common_error_params_code);
         }
+        wxMenu.setUpdateTime(new Date());
         return true;
     }
 }

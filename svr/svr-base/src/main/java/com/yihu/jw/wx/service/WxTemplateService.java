@@ -31,7 +31,6 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     @Autowired
     private WechatService wechatService;
 
-
     public WxTemplate createWxTemplate(WxTemplate wxTemplate) {
         if (StringUtils.isEmpty(wxTemplate.getCode())) {
             throw new ApiException(WxContants.WxTemplate.message_fail_code_is_null, CommonContants.common_error_params_code);
@@ -54,6 +53,10 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if(!content.matches("\\{\\{.+\\.DATA\\}\\}")){//content必须还有 "{{.DATA}}"
             throw new ApiException(WxContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
         }
+        //设置创建时间和修改时间
+        Date date = new Date();
+        wxTemplate.setCreateTime(date);
+        wxTemplate.setUpdateTime(date);
         return wxTemplateDao.save(wxTemplate);
     }
 
@@ -71,9 +74,16 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if (StringUtils.isEmpty(content)) {
             throw new ApiException(WxContants.WxTemplate.message_fail_content_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wxTemplate.getId())) {
+        Long id = wxTemplate.getId();
+        if (StringUtils.isEmpty(id)) {
             throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
         }
+        WxTemplate wxTemplate1 = findById(id);
+        if(wxTemplate1==null){
+            throw new ApiException(WxContants.WxTemplate.message_fail_template_is_no_exist, CommonContants.common_error_params_code);
+        }
+        wxTemplate.setCreateTime(wxTemplate1.getCreateTime());
+        wxTemplate.setUpdateTime(new Date());
         if(!content.matches("\\{\\{.+\\.DATA\\}\\}")){//content必须还有 "{{.DATA}}"
             throw new ApiException(WxContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
         }
@@ -91,9 +101,11 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
 
     public WxTemplate findByCode(String code) {
         WxTemplate wxTemplate = wxTemplateDao.findByCode(code);
-        if (wxTemplate == null) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_code_no_exist, CommonContants.common_error_params_code);
-        }
+        return wxTemplate;
+    }
+
+    public WxTemplate findById(Long id) {
+        WxTemplate wxTemplate = wxTemplateDao.findById(id);
         return wxTemplate;
     }
 

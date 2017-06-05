@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -45,6 +46,11 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (wechatTem != null) {
             throw new ApiException(WxContants.Wechat.message_fail_appId_exist, CommonContants.common_error_params_code);
         }
+        //设置创建时间和修改时间
+        Date date = new Date();
+        wechat.setCreateTime(date);
+        wechat.setUpdateTime(date);
+
         return wechatDao.save(wechat);
     }
 
@@ -68,9 +74,17 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getAppSecret())) {
             throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wechat.getId())) {
+        Long id = wechat.getId();
+        if (StringUtils.isEmpty(id)) {
             throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
         }
+        WxWechat wechat1 = findById(id);
+        if(wechat1 == null){
+            throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
+        }
+        //设置修改时间创建时间
+        wechat.setCreateTime(wechat1.getCreateTime());
+        wechat.setUpdateTime(new Date());
         WxWechat wechatTem = wechatDao.findByAppIdExcludeCode(wechat.getAppId(),wechat.getCode());
         if(wechatTem!=null){
             throw new ApiException(WxContants.Wechat.message_fail_appId_exist, CommonContants.common_error_params_code);
@@ -81,6 +95,10 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     public WxWechat findByCode(String code) {
         WxWechat wxWechat = wechatDao.findByCode(code);
         return wxWechat;
+    }
+
+    public WxWechat findById(Long id){
+        return wechatDao.findById(id);
     }
 
     @Transient

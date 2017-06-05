@@ -52,6 +52,7 @@ public class WlyyContants {
         public static final String message_fail_signCode_is_null="signCode is null";
         public static final String message_fail_kpiCode_is_null="kpiCode is null";
         public static final String message_fail_agreementCode_is_null="agreementCode is null";
+        public static final String message_fail_agreement_is_null="agreement is null";
 
         public static final String message_success_update="agreementKpi update success";
         public static final String message_success_delete="agreementKpi delete success";

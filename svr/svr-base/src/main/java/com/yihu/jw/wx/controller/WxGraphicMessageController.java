@@ -50,7 +50,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
             @RequestBody String jsonData) {
         try {
             WxGraphicMessage WxGraphicMessage = toEntity(jsonData, WxGraphicMessage.class);
-            return Envelop.getSuccess(WxContants.WxGraphicMessage.message_success_update, wxGraphicMessageService.updateWxchat(WxGraphicMessage));
+            return Envelop.getSuccess(WxContants.WxGraphicMessage.message_success_update, wxGraphicMessageService.updateWxGraphicMessage(WxGraphicMessage));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

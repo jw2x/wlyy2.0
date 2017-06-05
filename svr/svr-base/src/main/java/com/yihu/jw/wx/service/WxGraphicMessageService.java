@@ -39,29 +39,46 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         if (wxGraphicMessageTem != null) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_exist, CommonContants.common_error_params_code);
         }
+
+        //设置创建时间和修改时间
+        Date date = new Date();
+        wxGraphicMessage.setCreateTime(date);
+        wxGraphicMessage.setUpdateTime(date);
+
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
 
     @Transient
-    public WxGraphicMessage updateWxchat(WxGraphicMessage wxGraphicMessage) {
+    public WxGraphicMessage updateWxGraphicMessage(WxGraphicMessage wxGraphicMessage) {
         if (StringUtils.isEmpty(wxGraphicMessage.getCode())) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wxGraphicMessage.getId())) {
+        Long id = wxGraphicMessage.getId();
+        if (StringUtils.isEmpty(id)) {
             throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
         }
+        //根据id查找
+        WxGraphicMessage wxGraphicMessage1 = findById(id);
+        if(wxGraphicMessage1==null){
+            throw new ApiException(WxContants.WxGraphicMessage.message_fail_wxGraphicMessage_is_no_exist, CommonContants.common_error_params_code);
+        }
+        //设置创建时间和修改时间
+        Date date = new Date();
+        wxGraphicMessage.setCreateTime(wxGraphicMessage1.getCreateTime());
+        wxGraphicMessage.setUpdateTime(date);
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
 
     public WxGraphicMessage findByCode(String code) {
         WxGraphicMessage WxGraphicMessage = wxGraphicMessageDao.findByCode(code);
-        if (WxGraphicMessage == null) {
-            throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_no_exist, CommonContants.common_error_params_code);
-        }
         return WxGraphicMessage;
+    }
+
+    public WxGraphicMessage findById(Long id) {
+      return wxGraphicMessageDao.findById(id);
     }
 
     @Transient
