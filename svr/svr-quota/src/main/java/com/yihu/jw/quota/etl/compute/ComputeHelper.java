@@ -70,12 +70,13 @@ public class ComputeHelper {
                 saveModel.setTimeLevel(timeLevel);
                 saveModel.setSaasId(saasid);
                 saveModel.setQuotaDate(startTime);
-
+                //如果是2位数的计算 多保存分子和分母
                 Integer oneResult=tjone.getValue().getSlaveDimensionModels().size();
                 Integer twoResult=tow.get(tjone.getKey()).getSlaveDimensionModels().size();
+
+                //为了保持数据的格式统一是integer 所以这边默认保留2位乘以100
                 DecimalFormat df=new DecimalFormat("0.00");
                 String tempResult=df.format((double)oneResult/twoResult);
-                //为了保持数据的格式统一是integer 所以这边默认保留2位乘以100
                 Integer intResult= new Double((Double.valueOf(tempResult)*100)).intValue();
 
 
