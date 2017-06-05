@@ -1,5 +1,12 @@
 package com.yihu.jw.quota.etl;
 
+import com.yihu.jw.quota.model.jpa.dimension.TjQuotaDimensionSlave;
+import com.yihu.jw.quota.vo.QuotaDimensionSlaveVO;
+import org.springframework.beans.BeanUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by chenweida on 2017/6/1.
  */
@@ -23,7 +30,6 @@ public class Contant {
         public static final String computeKey1 = "oneKey";
         public static final String computeKey2 = "senondKey";
     }
-
     /**
      * 运算常量
      */
@@ -98,6 +104,10 @@ public class Contant {
         public static final String age = "2";//年龄段
     }
 
+    public static class slave_dimension_key {
+        public static final String one = "one";
+        public static final String two = "two";
+    }
     public static class save_status {
         public static final String success = "1";
         public static final String fail = "0";
@@ -117,4 +127,48 @@ public class Contant {
         public static final String es = "3";
     }
 
+    public static class convert{
+        public static String level_age_1="1";
+        public static String level_age_2="2";
+        public static String level_age_3="3";
+        public static String level_age_4="4";
+        public static String level_age_5="5";
+        public static String level_age_6="6";
+        public static String level_age_1_name="0~6";
+        public static String level_age_2_name="7~18";
+        public static String level_age_3_name="19~30";
+        public static String level_age_4_name="31~50";
+        public static String level_age_5_name="51~65";
+        public static String level_age_6_name=">65";
+    }
+    /**
+     * 数据设置
+     * @param quotaDimensionSlaves
+     * @param key
+     * @return
+     */
+    public static List<QuotaDimensionSlaveVO> init(List<TjQuotaDimensionSlave> quotaDimensionSlaves, String key) {
+        List<QuotaDimensionSlaveVO> returnData = new ArrayList<>();
+        if(Contant.slave_dimension_key.one.equals(key)){
+            quotaDimensionSlaves.stream().forEach(one->{
+                QuotaDimensionSlaveVO q=new QuotaDimensionSlaveVO();
+                BeanUtils.copyProperties(one,q);
+                q.setDictSql(one.getGetOneDictSql());
+                q.setConvertClazz(one.getGetOneConvertClazz());
+                returnData.add(q);
+            });
+        }else if(Contant.slave_dimension_key.two.equals(key)){
+            quotaDimensionSlaves.stream().forEach(one->{
+                QuotaDimensionSlaveVO q=new QuotaDimensionSlaveVO();
+                BeanUtils.copyProperties(one,q);
+                q.setDictSql(one.getGetTwoDictSql());
+                q.setConvertClazz(one.getGetTwoConvertClazz());
+                returnData.add(q);
+            });
+            return returnData;
+        }
+
+
+        return returnData;
+    }
 }

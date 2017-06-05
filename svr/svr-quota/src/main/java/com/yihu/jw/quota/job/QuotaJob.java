@@ -3,6 +3,7 @@ package com.yihu.jw.quota.job;
 import com.yihu.jw.quota.dao.jpa.TjQuotaLogDao;
 import com.yihu.jw.quota.etl.Contant;
 import com.yihu.jw.quota.etl.compute.ComputeHelper;
+import com.yihu.jw.quota.etl.dimenconvert.ConvertHelper;
 import com.yihu.jw.quota.etl.extract.ExtractHelper;
 import com.yihu.jw.quota.etl.filter.FilterHelper;
 import com.yihu.jw.quota.etl.save.SaveHelper;
@@ -119,21 +120,41 @@ public class QuotaJob implements Job {
             tjQuotaLog.setSaasId(saasid);
             tjQuotaLog.setStartTime(new Date());
             JobLogModel jobLogModel = new JobLogModel();
+
+
             //抽取数据 如果是累加就是 List<DataModel>  如果是相除 Map<String,List<DataModel>>
             Object dataModels = extract();
             //根据规则过滤数据
             FilterModel filterModel = filter(dataModels);
             jobLogModel.setErrorModels(filterModel.getErrorModels());
+            //从维度的key转换
+            filterModel = convert(filterModel);
             //统计数据
             List<SaveModel> sms = compute(filterModel.getData());
             //保存数据
             Boolean success = saveDate(sms);
+
+
             tjQuotaLog.setStatus(success ? Contant.save_status.success : Contant.save_status.fail);
             tjQuotaLog.setEndTime(new Date());
             tjQuotaLog.setContent(JSONObject.fromObject(jobLogModel).toString());
+            saveLog(tjQuotaLog);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    @Transactional
+    private void saveLog(TjQuotaLog tjQuotaLog) {
+        tjQuotaLogDao.save(tjQuotaLog);
+    }
+
+    private FilterModel convert(FilterModel dataModels) {
+        try{
+            return SpringUtil.getBean(ConvertHelper.class).convert(dataModels,quotaVO);
+        }catch (Exception e){
+            logger.error("convert error:" + e.getMessage());
+        }
+        return null;
     }
 
     /**
@@ -167,12 +188,12 @@ public class QuotaJob implements Job {
     /**
      * 过滤数据
      *
-     * @param dataModels
+     * @param filterModel
      * @return
      */
-    private FilterModel filter(Object dataModels) {
+    private FilterModel filter(Object filterModel) {
         try {
-            return SpringUtil.getBean(FilterHelper.class).filter(dataModels, quotaVO);
+            return SpringUtil.getBean(FilterHelper.class).filter(filterModel,quotaVO);
         } catch (Exception e) {
             logger.error("filter error:" + e.getMessage());
         }

@@ -8,7 +8,8 @@ import java.util.List;
  */
 public class FilterModel {
     private Object data;//可能是list 也可能是map
-    private List<ErrModel> ErrorModels =new ArrayList<>();
+    private List<ErrModel> ErrorModels =new ArrayList<>();//
+    private List<ErrModel> slaveKeyChange=new ArrayList<>();
 
     public FilterModel(Object data) {
         this.data = data;
@@ -29,5 +30,13 @@ public class FilterModel {
 
     public void setErrorModels(List<ErrModel> ErrorModels) {
         this.ErrorModels = ErrorModels;
+    }
+
+    public List<ErrModel> getSlaveKeyChange() {
+        return slaveKeyChange;
+    }
+
+    public void setSlaveKeyChange(List<ErrModel> slaveKeyChange) {
+        this.slaveKeyChange = slaveKeyChange;
     }
 }

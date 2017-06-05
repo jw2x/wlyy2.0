@@ -24,6 +24,7 @@ public class ElasticFactory {
                 .Builder(hostAddress)
                 .multiThreaded(true)
                 .discoveryEnabled(true)
+                .readTimeout(30000)//30秒
                 .build());
         return factory.getObject();
     }

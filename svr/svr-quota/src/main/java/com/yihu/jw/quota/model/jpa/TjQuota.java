@@ -18,6 +18,7 @@ public class TjQuota implements java.io.Serializable {
 	private String code;
 	private String compute; //关联表tj_compute code
 	private String name;
+	private String cron;//quartz时间表达式
 	private String jobClazz; //类class
 	private Date createTime;
 	private String createUser;
@@ -175,5 +176,13 @@ public class TjQuota implements java.io.Serializable {
 
 	public void setCompute(String compute) {
 		this.compute = compute;
+	}
+
+	public String getCron() {
+		return cron;
+	}
+
+	public void setCron(String cron) {
+		this.cron = cron;
 	}
 }
