@@ -99,13 +99,13 @@ public class QuotaJob implements Job {
             //得到算法
             TjCompute compute = computeService.findByQuotaCode(quotaVO.getCode());
             quotaVO.setComputeType(compute.getType());
-        }else{
+        } else {
             logger.error("quotaVO is null");
             return;
         }
-        this.timeLevel= (String) map.get("timeLevel");
-        if(StringUtils.isEmpty(this.timeLevel)){
-            this.timeLevel=Contant.main_dimension_timeLevel.day;
+        this.timeLevel = (String) map.get("timeLevel");
+        if (StringUtils.isEmpty(this.timeLevel)) {
+            this.timeLevel = Contant.main_dimension_timeLevel.day;
         }
     }
 
@@ -114,11 +114,11 @@ public class QuotaJob implements Job {
      */
     private void computequota() {
         try {
-            TjQuotaLog tjQuotaLog=new TjQuotaLog();
+            TjQuotaLog tjQuotaLog = new TjQuotaLog();
             tjQuotaLog.setQuotaCode(quotaVO.getCode());
             tjQuotaLog.setSaasId(saasid);
             tjQuotaLog.setStartTime(new Date());
-            JobLogModel jobLogModel=new JobLogModel();
+            JobLogModel jobLogModel = new JobLogModel();
             //抽取数据 如果是累加就是 List<DataModel>  如果是相除 Map<String,List<DataModel>>
             Object dataModels = extract();
             //根据规则过滤数据
@@ -127,7 +127,8 @@ public class QuotaJob implements Job {
             //统计数据
             List<SaveModel> sms = compute(filterModel.getData());
             //保存数据
-            saveDate(sms);
+            Boolean success = saveDate(sms);
+            tjQuotaLog.setStatus(success ? Contant.save_status.success : Contant.save_status.fail);
             tjQuotaLog.setEndTime(new Date());
             tjQuotaLog.setContent(JSONObject.fromObject(jobLogModel).toString());
         } catch (Exception e) {
@@ -137,14 +138,16 @@ public class QuotaJob implements Job {
 
     /**
      * 保存数据
+     *
      * @param sms
      */
-    private void saveDate(List<SaveModel> sms) {
+    private Boolean saveDate(List<SaveModel> sms) {
         try {
-           SpringUtil.getBean(SaveHelper.class).save(sms, quotaVO);
+            return SpringUtil.getBean(SaveHelper.class).save(sms, quotaVO);
         } catch (Exception e) {
-            logger.error("save error:"+e.getMessage());
+            logger.error("save error:" + e.getMessage());
         }
+        return false;
     }
 
     /**
@@ -154,9 +157,9 @@ public class QuotaJob implements Job {
      */
     private List<SaveModel> compute(Object dataModels) {
         try {
-            return SpringUtil.getBean(ComputeHelper.class).compute(dataModels, quotaVO,timeLevel,saasid,startTime);
+            return SpringUtil.getBean(ComputeHelper.class).compute(dataModels, quotaVO, timeLevel, saasid, startTime);
         } catch (Exception e) {
-            logger.error("compute error:"+e.getMessage());
+            logger.error("compute error:" + e.getMessage());
         }
         return null;
     }
@@ -171,7 +174,7 @@ public class QuotaJob implements Job {
         try {
             return SpringUtil.getBean(FilterHelper.class).filter(dataModels, quotaVO);
         } catch (Exception e) {
-            logger.error("filter error:"+e.getMessage());
+            logger.error("filter error:" + e.getMessage());
         }
         return null;
     }
@@ -185,7 +188,7 @@ public class QuotaJob implements Job {
         try {
             return SpringUtil.getBean(ExtractHelper.class).extractData(quotaVO, startTime, endTime);
         } catch (Exception e) {
-            logger.error("extract error:"+e.getMessage());
+            logger.error("extract error:" + e.getMessage());
         }
         return null;
     }

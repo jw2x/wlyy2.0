@@ -2,22 +2,18 @@ package com.yihu.jw.quota.etl.save.es;
 
 import com.yihu.jw.quota.etl.model.EsConfig;
 import com.yihu.jw.quota.vo.SaveModel;
-import net.sf.json.JSONObject;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import io.searchbox.client.JestClient;
+import io.searchbox.core.Bulk;
+import io.searchbox.core.BulkResult;
+import io.searchbox.core.Index;
+import net.sf.json.JSONObject;;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.IndexQuery;
-import org.springframework.data.elasticsearch.core.query.IndexQueryBuilder;
 import org.springframework.stereotype.Component;
 
-import java.net.InetAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by chenweida on 2017/6/2.
@@ -26,47 +22,30 @@ import java.util.Map;
 @Scope("prototype")
 public class ElastricSearchSave {
 
-    private ElasticsearchTemplate elasticsearchTemplate;
+    private Logger logger = LoggerFactory.getLogger(ElastricSearchSave.class);
+    @Autowired
+    private ElasticFactory elasticFactory;
+
     private EsConfig esConfig;
 
-    public void save(List<SaveModel> sms, String jsonConfig) {
-        //初始化链接
-        initTemplate(jsonConfig);
-        //判断索引是否存在
-//        if (!elasticsearchTemplate.indexExists(esConfig.getIndex())) {
-//            //不存在就新增缩影
-//            Map<String, String> setting = new HashMap<>();
-//            setting.put("number_of_replicas", "2");// 设置备份
-//            setting.put("number_of_shards", "6");//设置分片
-//            elasticsearchTemplate.createIndex(esConfig.getIndex(), setting);
-//        }
-//        //判断type是否存在
-//        if(!elasticsearchTemplate.typeExists(esConfig.getIndex(),esConfig.getType())){
-//
-//        }
-
-        List<IndexQuery> queries = new ArrayList<IndexQuery>();
-        for (SaveModel saveModel : sms) {
-            IndexQuery indexQuery = new IndexQueryBuilder().withObject(saveModel).build();
-            queries.add(indexQuery);
-        }
-        elasticsearchTemplate.bulkIndex(queries);
-    }
-
-    private void initTemplate(String jsonConfig) {
+    public Boolean save(List<SaveModel> sms, String jsonConfig) {
         try {
+            //初始化参数
             esConfig = (EsConfig) JSONObject.toBean(JSONObject.fromObject(jsonConfig), EsConfig.class);
-            Settings esSettings = Settings.settingsBuilder()
-                    .put("cluster.name", esConfig.getClusterName())
-                    .build();
-            Client client = TransportClient.builder()
-                    .settings(esSettings)
-                    .build()
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(esConfig.getHost()), Integer.valueOf(esConfig.getPort())));
+            //得到链接
+            JestClient jestClient = elasticFactory.getClient(esConfig.getHost());
 
-            elasticsearchTemplate = new ElasticsearchTemplate(client);
+            Bulk.Builder bulk = new Bulk.Builder().defaultIndex(esConfig.getIndex()).defaultType(esConfig.getType());
+            for (SaveModel obj : sms) {
+                Index index = new Index.Builder(obj).build();
+                bulk.addAction(index);
+            }
+            BulkResult br = jestClient.execute(bulk.build());
+            return br.isSucceeded();
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(" save error ：" + e.getMessage());
         }
+        return null;
     }
+
 }

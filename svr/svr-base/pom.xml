@@ -16,15 +16,15 @@
     <dependencies>
         <dependency>
             <groupId>com.yihu.jw</groupId>
-            <artifactId>common-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-rest-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-swagger</artifactId>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
@@ -111,10 +111,6 @@
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springside</groupId>
-            <artifactId>springside-core</artifactId>
         </dependency>
     </dependencies>
 </project>

@@ -98,6 +98,11 @@ public class Contant {
         public static final String age = "2";//年龄段
     }
 
+    public static class save_status {
+        public static final String success = "1";
+        public static final String fail = "0";
+    }
+
     /**
      * 数据过滤用到的参量
      */

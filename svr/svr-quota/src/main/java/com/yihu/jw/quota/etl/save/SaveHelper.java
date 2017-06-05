@@ -22,7 +22,7 @@ public class SaveHelper {
     @Autowired
     private TjDataSaveService datsSaveService;
 
-    public void save(List<SaveModel> sms, QuotaVO quotaVO) {
+    public Boolean save(List<SaveModel> sms, QuotaVO quotaVO) {
         //查看指标保存的数据源
         TjQuotaDataSave quotaDataSave = datsSaveService.findByQuota(quotaVO.getCode());
         switch (quotaDataSave.getType()) {
@@ -33,9 +33,9 @@ public class SaveHelper {
                 break;
             }
             case Contant.save.es: {
-                SpringUtil.getBean(ElastricSearchSave.class).save(sms,quotaDataSave.getJsonConfig());
-                break;
+                return SpringUtil.getBean(ElastricSearchSave.class).save(sms,quotaDataSave.getJsonConfig());
             }
         }
+        return false;
     }
 }
