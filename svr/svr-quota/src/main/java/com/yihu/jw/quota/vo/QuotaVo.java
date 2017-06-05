@@ -12,6 +12,7 @@ public class QuotaVO implements Serializable{
     private String compute;
     private String computeType;//计算类型
     private String name;
+    private String cron;//quartz时间表达式
     private String jobClazz;
     private Date createTime;
     private String createUser;
@@ -153,5 +154,13 @@ public class QuotaVO implements Serializable{
                 ", del='" + del + '\'' +
                 ", remark='" + remark + '\'' +
                 '}';
+    }
+
+    public String getCron() {
+        return cron;
+    }
+
+    public void setCron(String cron) {
+        this.cron = cron;
     }
 }

@@ -3,6 +3,7 @@ package com.yihu.jw.quota.etl.compute.slave;
 import com.yihu.jw.quota.model.jpa.dimension.TjQuotaDimensionSlave;
 import com.yihu.jw.quota.vo.DictModel;
 import com.yihu.jw.quota.vo.MainDimensionModel;
+import com.yihu.jw.quota.vo.QuotaDimensionSlaveVO;
 import com.yihu.jw.quota.vo.SlaveDimensionModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,15 +31,17 @@ public class SlaveCompute {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public Map<String, MainDimensionModel> compute(Map<String, MainDimensionModel> mainData, List<TjQuotaDimensionSlave> quotaDimensionSlaves) {
+    public Map<String, MainDimensionModel> compute(Map<String, MainDimensionModel> mainData,  List<QuotaDimensionSlaveVO> quotaDimensionSlaves) {
         try {
             //找出所有得到字典放到里面List里面去
             List<Map<String, String>> dictList = new ArrayList<>();
             for (int i = 0; i < quotaDimensionSlaves.size(); i++) {
                 Map<String, String> dictMap = new HashMap<>();
-                String dictSql=quotaDimensionSlaves.get(i).getDictSql();
+                QuotaDimensionSlaveVO tjQuotaDimensionSlave= quotaDimensionSlaves.get(i);
+
+                String dictSql=tjQuotaDimensionSlave.getDictSql();
                 if(StringUtils.isEmpty(dictSql)){
-                    logger.warn("slaveDict sql is null ,quotaID:"+quotaDimensionSlaves.get(i).getQuotaCode()+",quotaSlaveId:"+quotaDimensionSlaves.get(i).getId());
+                    logger.warn("slaveDict sql is null ,quotaID:"+tjQuotaDimensionSlave.getQuotaCode()+",quotaSlaveId:"+tjQuotaDimensionSlave.getId());
                 }
                 List<DictModel> quotaDataSources = jdbcTemplate.query(dictSql, new BeanPropertyRowMapper(DictModel.class));
                 quotaDataSources.stream().forEach(one -> {
@@ -46,16 +49,17 @@ public class SlaveCompute {
                 });
                 dictList.add(dictMap);
             }
-            //遍历从维度
+            //递归遍历从维度
             for (int i = 0; i < quotaDimensionSlaves.size(); i++) {
                 Map<String, MainDimensionModel> temp = new HashMap<>();
-                //得到字典
+                //得到维度对应的字典
                 Map<String, String> dict = dictList.get(i);
                 //遍历元数据
                 for (Map.Entry<String, MainDimensionModel> oneMainDimensionModel : mainData.entrySet()) {
                     //遍历字典
                     for (Map.Entry<String, String> oneDict : dict.entrySet()) {
                         List<SlaveDimensionModel> slaveDimensionModels = oneMainDimensionModel.getValue().getSlaveDimensionModels();
+                        //生成新的key
                         String key = new StringBuffer(oneMainDimensionModel.getKey() + "-" + oneDict.getKey()).toString();
 
                         List<SlaveDimensionModel> slaveDimensionModelTemps = new ArrayList<>();
