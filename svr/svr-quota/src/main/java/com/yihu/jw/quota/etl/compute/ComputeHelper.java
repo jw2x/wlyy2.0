@@ -1,5 +1,6 @@
 package com.yihu.jw.quota.etl.compute;
 
+import com.mchange.lang.IntegerUtils;
 import com.yihu.jw.quota.etl.Contant;
 import com.yihu.jw.quota.etl.compute.main.AreaCompute;
 import com.yihu.jw.quota.etl.compute.slave.SlaveCompute;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,7 +50,7 @@ public class ComputeHelper {
                 saveModel.setTimeLevel(timeLevel);
                 saveModel.setSaasId(saasid);
                 saveModel.setQuotaDate(startTime);
-                saveModel.setResult(tjone.getValue().getSlaveDimensionModels().size() + "");
+                saveModel.setResult(tjone.getValue().getSlaveDimensionModels().size() );
                 saveModels.add(saveModel);
             }
         } else if (Contant.compute.division.equals(quotaVO.getComputeType())) {
@@ -68,7 +70,18 @@ public class ComputeHelper {
                 saveModel.setTimeLevel(timeLevel);
                 saveModel.setSaasId(saasid);
                 saveModel.setQuotaDate(startTime);
-                saveModel.setResult(new StringBuffer(tjone.getValue().getSlaveDimensionModels().size() + "/" + tow.get(tjone.getKey()).getSlaveDimensionModels()).toString());
+
+                Integer oneResult=tjone.getValue().getSlaveDimensionModels().size();
+                Integer twoResult=tow.get(tjone.getKey()).getSlaveDimensionModels().size();
+                DecimalFormat df=new DecimalFormat("0.00");
+                String tempResult=df.format((double)oneResult/twoResult);
+                //为了保持数据的格式统一是integer 所以这边默认保留2位乘以100
+                Integer intResult= new Double((Double.valueOf(tempResult)*100)).intValue();
+
+
+                saveModel.setResult(intResult);
+                saveModel.setOne(oneResult);
+                saveModel.setTwo(twoResult);
                 saveModels.add(saveModel);
             }
         }

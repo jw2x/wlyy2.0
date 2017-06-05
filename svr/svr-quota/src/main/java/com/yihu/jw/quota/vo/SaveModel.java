@@ -56,15 +56,18 @@ public class SaveModel {
 
     private String slaveKey4Name;
 
-    private String result;//统计结果
+    private Integer result;//统计结果
 
     private String timeLevel;// 1 日 2 周 3 月 4 年
-
 
     private String areaLevel;// 1 省 2 市 3 区县 4 机构 5团队
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd'T'HHmmss.SSS'Z'")
     @CreatedDate
     private Date createTime;//创建时间
+
+    private Integer one;
+    private Integer two;
+
 
     public String getQuotaDate() {
         return quotaDate;
@@ -146,11 +149,11 @@ public class SaveModel {
         this.slaveKey4 = slaveKey4;
     }
 
-    public String getResult() {
+    public Integer getResult() {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(Integer result) {
         this.result = result;
     }
 
@@ -274,5 +277,19 @@ public class SaveModel {
         this.id = id;
     }
 
+    public Integer getOne() {
+        return one;
+    }
 
+    public void setOne(Integer one) {
+        this.one = one;
+    }
+
+    public Integer getTwo() {
+        return two;
+    }
+
+    public void setTwo(Integer two) {
+        this.two = two;
+    }
 }
