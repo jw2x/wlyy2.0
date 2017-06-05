@@ -13,8 +13,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import org.springside.modules.utils.Clock;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -74,7 +74,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
                 newaccessToken.setAccessToken(token);
                 newaccessToken.setExpiresIn(Long.parseLong(expires_in));
                 newaccessToken.setAddTimestamp(System.currentTimeMillis());
-                newaccessToken.setCzrq(new Clock.DefaultClock().getCurrentDate());
+                newaccessToken.setCzrq(new Date());
                 newaccessToken.setCode(UUID.randomUUID().toString().replace("-",""));
                 newaccessToken.setWechatCode(wechatCode);
                 wxAccessTokenDao.save(newaccessToken);

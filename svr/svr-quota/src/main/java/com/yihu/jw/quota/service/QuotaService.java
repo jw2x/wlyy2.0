@@ -1,7 +1,7 @@
 package com.yihu.jw.quota.service;
 
 import com.yihu.jw.quota.dao.es.QuotaResultDao;
-import com.yihu.jw.quota.model.QuotaResult;
+import com.yihu.jw.quota.model.es.QuotaResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

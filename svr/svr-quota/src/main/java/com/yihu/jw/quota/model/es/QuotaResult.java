@@ -1,4 +1,4 @@
-package com.yihu.jw.quota.model;
+package com.yihu.jw.quota.model.es;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.CreatedDate;

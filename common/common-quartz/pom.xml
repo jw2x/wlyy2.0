@@ -14,14 +14,6 @@
     <artifactId>common-quartz</artifactId>
     <version>1.0.0</version>
     <dependencies>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz-jobs</artifactId>
-        </dependency>
     </dependencies>
 
 </project>

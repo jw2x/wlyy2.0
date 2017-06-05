@@ -1,10 +1,8 @@
 package com.yihu.jw.quota.dao.es;
 
-import com.yihu.jw.quota.model.QuotaResult;
+import com.yihu.jw.quota.model.es.QuotaResult;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 import org.springframework.data.jpa.repository.Query;
-
-import java.util.List;
 
 /**
  * Created by chenweida on 2017/5/23.
