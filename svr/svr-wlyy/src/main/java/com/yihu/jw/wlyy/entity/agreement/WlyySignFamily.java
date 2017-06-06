@@ -33,7 +33,7 @@ public class WlyySignFamily extends IdEntity{
     private Date end;//签约结束日期
     private String images;//签约图片附件URL，多图以逗号分隔
     private String groupCode;//分组标识
-    private int status;//签约状态(-1患者已取消，-2已拒绝，-3已解约，-4已到期，0待签约，1已签约，2患者申请取消签约，3医生申请取消签约
+    private Integer status;//签约状态(-1患者已取消，-2已拒绝，-3已解约，-4已到期，0待签约，1已签约，2患者申请取消签约，3医生申请取消签约
     private String reason;//解决原因
     private Date czrq;//操作时间
     private String teamCode;//所属团队code 关联wlyy_doctor_team
@@ -218,11 +218,11 @@ public class WlyySignFamily extends IdEntity{
     }
 
     @Column(name = "status")
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

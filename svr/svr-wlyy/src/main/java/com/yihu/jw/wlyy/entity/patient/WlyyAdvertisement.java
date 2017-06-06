@@ -22,7 +22,7 @@ public class WlyyAdvertisement extends IdEntity implements Serializable {
     private String picture;//展示的图片
     private String url;//链接
     private Integer sort;//排序( 数字越小排越前面)
-    private String status;//状态 -1 删除 0 禁用 1可用
+    private Integer status;//状态 -1 删除 0 禁用 1可用
     private String createUser;//创建人
     private String createUserName;////创建人名
     private Date createTime;//创建时间
@@ -93,11 +93,11 @@ public class WlyyAdvertisement extends IdEntity implements Serializable {
 
     
     @Column(name = "status")
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

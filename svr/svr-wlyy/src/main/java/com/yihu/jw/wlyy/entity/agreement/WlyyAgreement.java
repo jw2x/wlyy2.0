@@ -30,10 +30,10 @@ public class WlyyAgreement extends IdEntity implements Serializable{
     private String type;//类型
     private Date createTime;
     private Date updateTime;
-    private String status;//状态 -1删除 0 冻结 1可用
+    private Integer status;//状态 -1删除 0 冻结 1可用
     private String createUser;
 
-    public WlyyAgreement(String code, String parentCode, String saasId, String name, BigDecimal price, String posterPic, String remark, String type, Date createTime, Date updateTime, String status, String createUser) {
+    public WlyyAgreement(String code, String parentCode, String saasId, String name, BigDecimal price, String posterPic, String remark, String type, Date createTime, Date updateTime, Integer status, String createUser) {
         this.code = code;
         this.parentCode = parentCode;
         this.saasId = saasId;
@@ -143,11 +143,11 @@ public class WlyyAgreement extends IdEntity implements Serializable{
     }
 
     @Column(name = "status")
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
