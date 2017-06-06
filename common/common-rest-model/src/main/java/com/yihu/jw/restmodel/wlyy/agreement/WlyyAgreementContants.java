@@ -1,9 +1,9 @@
-package com.yihu.jw.restmodel.wlyy;
+package com.yihu.jw.restmodel.wlyy.agreement;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
-public class WlyyContants {
+public class WlyyAgreementContants {
     //协议模块常量
     public static class Agreement{
         public static final String api_common="agreement";
