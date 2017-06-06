@@ -1,11 +1,11 @@
-package com.yihu.jw.wlyy.Agreement.service;
+package com.yihu.jw.wlyy.agreement.service;
 
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.WlyyContants;
-import com.yihu.jw.wlyy.Agreement.dao.WlyyAgreementDao;
-import com.yihu.jw.wlyy.Agreement.entity.WlyyAgreement;
+import com.yihu.jw.wlyy.agreement.dao.WlyyAgreementDao;
+import com.yihu.jw.wlyy.agreement.entity.WlyyAgreement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

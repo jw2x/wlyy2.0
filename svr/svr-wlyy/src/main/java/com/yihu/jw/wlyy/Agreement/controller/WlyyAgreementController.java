@@ -1,11 +1,11 @@
-package com.yihu.jw.wlyy.Agreement.controller;
+package com.yihu.jw.wlyy.agreement.controller;
 
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.WlyyContants;
-import com.yihu.jw.wlyy.Agreement.entity.WlyyAgreement;
-import com.yihu.jw.wlyy.Agreement.service.WlyyAgreementService;
+import com.yihu.jw.wlyy.agreement.entity.WlyyAgreement;
+import com.yihu.jw.wlyy.agreement.service.WlyyAgreementService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

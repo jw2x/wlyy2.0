@@ -3,7 +3,7 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  *******************************************************************************/
-package com.yihu.jw.wlyy.Agreement.entity.base;
+package com.yihu.jw.wlyy.common.entity.base;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
