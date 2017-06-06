@@ -73,6 +73,7 @@
         <version.net-json>2.4</version.net-json>
         <version.springside>4.2.3-GA</version.springside>
         <version.common.lang3>3.1</version.common.lang3>
+        <version.elasticsearch>2.4.4</version.elasticsearch>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -454,6 +455,11 @@
                 <artifactId>jest</artifactId>
                 <version>${version.jest}</version>
             </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${version.elasticsearch}</version>
+            </dependency>
             <!-- es 客户端 end-->
 
             <dependency>
@@ -461,6 +467,7 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.common.lang3}</version>
             </dependency>
+
         </dependencies>
 
 

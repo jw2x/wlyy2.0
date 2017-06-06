@@ -69,7 +69,7 @@ public class SwaggerConfig {
                         regex("/" + WlyyContants.Agreement.api_common + "/.*")
                         ,regex("/"+WlyyContants.AgreementKpi.api_common+"/.*")
                         ,regex("/"+WlyyContants.AgreementKpiLog.api_common+"/.*")
-                        ,regex("/"+WlyyContants.WlyySignFamily.api_common+"/.*")
+                        ,regex("/"+WlyyContants.SignFamily.api_common+"/.*")
                 ))
                 .build()
                 .apiInfo(wlyyApiInfo());
