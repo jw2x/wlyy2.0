@@ -97,6 +97,11 @@
             </dependency>
             <dependency>
                 <groupId>com.yihu.jw</groupId>
+                <artifactId>svr-base</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
                 <artifactId>common-util</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
