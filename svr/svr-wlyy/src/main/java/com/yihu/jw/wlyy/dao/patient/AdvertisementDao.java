@@ -23,6 +23,6 @@ public interface AdvertisementDao extends PagingAndSortingRepository<WlyyAdverti
     List<WlyyAdvertisement> getListBySaasCode(String saasCode);
 
     //查询默认广告
-    @Query("from WlyyAdvertisement w where w.saasId is null and w.status !=-1 order by w.sort")
+    @Query("from WlyyAdvertisement w where w.saasId ='0' and w.status !=-1 order by w.sort")
     List<WlyyAdvertisement> getDefaultList();
 }

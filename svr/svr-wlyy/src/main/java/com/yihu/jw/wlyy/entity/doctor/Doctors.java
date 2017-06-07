@@ -1,6 +1,7 @@
 package com.yihu.jw.wlyy.entity.doctor;
 
-import com.yihu.jw.base.model.base.IdEntity;
+
+import com.yihu.jw.wlyy.entity.IdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,7 @@ import java.util.Date;
  * Created by Administrator on 2017/6/7 0007.
  */
 @Entity
-public class Doctors extends IdEntity{
+public class Doctors extends IdEntity {
 
     private static final long serialVersionUID = 3138130150854187709L;
 

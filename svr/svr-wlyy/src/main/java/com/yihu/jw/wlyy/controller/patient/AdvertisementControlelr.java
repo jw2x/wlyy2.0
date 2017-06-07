@@ -6,6 +6,7 @@ import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
 import com.yihu.jw.wlyy.entity.patient.WlyyAdvertisement;
 import com.yihu.jw.wlyy.service.patient.AdvertisementService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,10 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/6/6 0006.
  */
+
+@RestController
+@RequestMapping(WlyyPatientContants.Advertisement.api_common)
+@Api(value = "广告相关操作", description = "广告相关操作")
 public class AdvertisementControlelr extends EnvelopRestController {
 
     @Autowired

@@ -1,9 +1,6 @@
 package com.yihu.jw.wlyy.service.agreement;
 
-import com.yihu.jw.base.model.Saas;
-import com.yihu.jw.base.service.SaasService;
 import com.yihu.jw.mysql.query.BaseJpaService;
-import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
@@ -25,8 +22,8 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
     @Autowired
     private WlyyAgreementKpiLogDao wlyyAgreementKpiLogDao;
 
-    @Autowired
-    private SaasService saasService;
+    //@Autowired
+    //private SaasService saasService;
 
     @Transient
     public WlyyAgreementKpiLog create(WlyyAgreementKpiLog wlyyAgreementKpiLog) {
@@ -34,10 +31,10 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyAgreementContants.Agreement.message_fail_saasId_is_null, CommonContants.common_error_params_code);
         }
-        Saas saas = saasService.findByCode(saasId);
-        if(saas==null){
-            throw new ApiException(BaseContants.Saas.message_fail_code_no_exist, CommonContants.common_error_params_code);
-        }
+        //Saas saas = saasService.findByCode(saasId);
+        //if(saas==null){
+        //    throw new ApiException(BaseContants.Saas.message_fail_code_no_exist, CommonContants.common_error_params_code);
+        //}
         if (StringUtils.isEmpty(wlyyAgreementKpiLog.getPatientCode())) {
             throw new ApiException(WlyyAgreementContants.AgreementKpi.message_fail_patientCode_is_null, CommonContants.common_error_params_code);
         }

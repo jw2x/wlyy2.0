@@ -1,15 +1,18 @@
 package com.yihu.jw.wlyy.entity.doctor;
 
-import com.yihu.jw.base.model.base.IdEntity;
 
-import javax.persistence.*;
+import com.yihu.jw.wlyy.entity.IdEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by Administrator on 2017/6/7 0007.
  */
 @Entity
 @Table(name = "base_org_hospital")
-public class BaseOrgHospital extends IdEntity{
+public class BaseOrgHospital extends IdEntity {
 
     private static final long serialVersionUID = 5463913446686402252L;
 

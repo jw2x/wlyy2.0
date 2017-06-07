@@ -1,16 +1,18 @@
 package com.yihu.jw.wlyy.service.patient;
 
-import com.yihu.jw.base.model.Saas;
-import com.yihu.jw.base.service.SaasService;
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
 import com.yihu.jw.wlyy.dao.patient.AdvertisementDao;
+import com.yihu.jw.wlyy.entity.BaseSaas;
+import com.yihu.jw.wlyy.entity.agreement.WlyySignFamily;
 import com.yihu.jw.wlyy.entity.patient.BasePatient;
 import com.yihu.jw.wlyy.entity.patient.WlyyAdvertisement;
+import com.yihu.jw.wlyy.service.BaseSaasService;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
@@ -20,6 +22,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/6/6 0006.
  */
+@Service
 public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, AdvertisementDao> {
 
     @Autowired
@@ -32,7 +35,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
     private WlyySignFamilyService signFamilyService;
 
     @Autowired
-    private SaasService saasService;
+    private BaseSaasService saasService;
 
     @Transient
      public WlyyAdvertisement create(WlyyAdvertisement advertisement) {
@@ -112,13 +115,27 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
 
     public List<WlyyAdvertisement> getListByPatientCode(String patientCode) {
         List<WlyyAdvertisement> advertisements = null;
-        //查询患者的地址,根据患者的地址显示广告
+        //查找已签约的,根据签约的saasId查找地区,获得广告
+        List<WlyySignFamily> signs =  signFamilyService.findByPatientCode(patientCode,1);
+        if(signs!=null){
+            for(WlyySignFamily sign:signs){
+                String saasCode = sign.getSaasId();
+                if(!StringUtils.isEmpty(sign.getSaasId())){
+                    advertisements = getListBySaasCode(saasCode);
+                    if(advertisements!=null){
+                        return advertisements;
+                    }
+                }
+            }
+        }
+
+        //如果广告为空,则查询患者的地址,根据患者的地址显示广告
         BasePatient patient = patientService.findByCode(patientCode);
         if(patient!=null){//patient为空时,查找默认广告
             String cityName = patient.getCityName();
             //根据cityName查找saas
             if(!StringUtils.isEmpty(cityName)){
-                Saas saas = saasService.findByName(cityName);
+                BaseSaas saas = saasService.findByName(cityName);
                 if(saas!=null){
                     String saasCode = saas.getCode();
                     advertisements = getListBySaasCode(saasCode);
