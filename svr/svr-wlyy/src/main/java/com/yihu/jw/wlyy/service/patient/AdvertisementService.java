@@ -107,7 +107,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
         if(advertisement==null){
             throw new ApiException(WlyyPatientContants.Advertisement.message_fail_wlyyAdvertisement_is_not_exist, CommonContants.common_error_params_code);
         }
-        advertisement.setStatus("-1");
+        advertisement.setStatus(-1);
         advertisementDao.save(advertisement);
     }
 

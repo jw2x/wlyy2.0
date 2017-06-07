@@ -89,7 +89,7 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
         if(wlyyAgreement==null){
             throw new ApiException(WlyyAgreementContants.Agreement.message_fail_wlyyAgreement_is_no_exist, CommonContants.common_error_params_code);
         }
-        wlyyAgreement.setStatus("-1");
+        wlyyAgreement.setStatus(-1);
         wlyyAgreementDao.save(wlyyAgreement);
     }
 }
