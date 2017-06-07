@@ -1,6 +1,9 @@
 package com.yihu.jw.wlyy.service.agreement;
 
+import com.yihu.jw.base.model.Saas;
+import com.yihu.jw.base.service.SaasService;
 import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
@@ -26,10 +29,21 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
     @Autowired
     private WlyyAgreementService wlyyAgreementService;
 
+    @Autowired
+    private SaasService saasService;
+
     @Transient
     public WlyyAgreementKpi create(WlyyAgreementKpi wlyyAgreementKpi) {
         if (StringUtils.isEmpty(wlyyAgreementKpi.getCode())) {
             throw new ApiException(WlyyAgreementContants.AgreementKpi.message_fail_code_is_null, CommonContants.common_error_params_code);
+        }
+        String saasId = wlyyAgreementKpi.getSaasId();
+        if (StringUtils.isEmpty(saasId)) {
+            throw new ApiException(WlyyAgreementContants.Agreement.message_fail_saasId_is_null, CommonContants.common_error_params_code);
+        }
+        Saas saas = saasService.findByCode(saasId);
+        if(saas==null){
+            throw new ApiException(BaseContants.Saas.message_fail_code_no_exist, CommonContants.common_error_params_code);
         }
         //判断agreement是否存在
         String agreementCode = wlyyAgreementKpi.getAgreementCode();
@@ -61,6 +75,14 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
         String code = wlyyAgreementKpi.getCode();
         if (StringUtils.isEmpty(code)) {
             throw new ApiException(WlyyAgreementContants.AgreementKpi.message_fail_code_is_null, CommonContants.common_error_params_code);
+        }
+        String saasId = wlyyAgreementKpi.getSaasId();
+        if (StringUtils.isEmpty(saasId)) {
+            throw new ApiException(WlyyAgreementContants.Agreement.message_fail_saasId_is_null, CommonContants.common_error_params_code);
+        }
+        Saas saas = saasService.findByCode(saasId);
+        if(saas==null){
+            throw new ApiException(BaseContants.Saas.message_fail_code_no_exist, CommonContants.common_error_params_code);
         }
         //判断agreement是否存在
         String agreementCode = wlyyAgreementKpi.getAgreementCode();

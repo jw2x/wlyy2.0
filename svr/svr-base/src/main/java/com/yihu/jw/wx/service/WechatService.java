@@ -27,6 +27,9 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getCode())) {
             throw new ApiException(WxContants.Wechat.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
+        if (StringUtils.isEmpty(wechat.getSaasId())) {
+            throw new ApiException(WxContants.Wechat.message_fail_saasId_is_null, CommonContants.common_error_params_code);
+        }
         if (StringUtils.isEmpty(wechat.getStatus())) {
             throw new ApiException(WxContants.Wechat.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
@@ -58,6 +61,9 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     public WxWechat updateWxchat(WxWechat wechat) {
         if (StringUtils.isEmpty(wechat.getCode())) {
             throw new ApiException(WxContants.Wechat.message_fail_code_is_null, CommonContants.common_error_params_code);
+        }
+        if (StringUtils.isEmpty(wechat.getSaasId())) {
+            throw new ApiException(WxContants.Wechat.message_fail_saasId_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wechat.getStatus())) {
             throw new ApiException(WxContants.Wechat.message_fail_status_is_null, CommonContants.common_error_params_code);

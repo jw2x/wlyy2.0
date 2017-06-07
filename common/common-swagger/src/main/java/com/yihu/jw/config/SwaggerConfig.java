@@ -2,6 +2,7 @@ package com.yihu.jw.config;
 
 import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
+import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
 import com.yihu.jw.restmodel.wx.WxContants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -67,9 +68,10 @@ public class SwaggerConfig {
                 .select()
                 .paths(or(
                         regex("/" + WlyyAgreementContants.Agreement.api_common + "/.*")
-                        ,regex("/"+ WlyyAgreementContants.AgreementKpi.api_common+"/.*")
-                        ,regex("/"+ WlyyAgreementContants.AgreementKpiLog.api_common+"/.*")
-                        ,regex("/"+ WlyyAgreementContants.SignFamily.api_common+"/.*")
+                        , regex("/" + WlyyAgreementContants.AgreementKpi.api_common + "/.*")
+                        , regex("/" + WlyyAgreementContants.AgreementKpiLog.api_common + "/.*")
+                        , regex("/" + WlyyAgreementContants.SignFamily.api_common + "/.*")
+                        , regex("/" + WlyyPatientContants.Advertisement.api_common + "/.*")
                 ))
                 .build()
                 .apiInfo(wlyyApiInfo());

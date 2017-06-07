@@ -14,6 +14,12 @@ public class WlyyAgreementContants {
         public static final String api_queryPage="queryPage";
         public static final String api_getList="getList";
 
+        public static final String message_success_update="agreement update success";
+        public static final String message_success_delete="agreement delete success";
+        public static final String message_success_find="agreement find success";
+        public static final String message_success_create="agreement create success";
+        public static final String message_success_find_functions="agreement find success";
+
         public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="name is null";
         public static final String message_fail_price_is_null="price is null";
@@ -22,13 +28,7 @@ public class WlyyAgreementContants {
         public static final String message_fail_status_is_null="status is null";
         public static final String message_fail_id_is_null="id is null";
         public static final String message_fail_code_exist="code exist";
-
-        public static final String message_success_update="agreement update success";
-        public static final String message_success_delete="agreement delete success";
-        public static final String message_success_find="agreement find success";
-        public static final String message_success_create="agreement create success";
-        public static final String message_success_find_functions="agreement find success";
-
+        public static final String message_fail_saasId_is_null="saasId is null";
     }
 
     //协议模块常量

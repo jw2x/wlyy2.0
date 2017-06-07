@@ -7,7 +7,6 @@ import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
 import com.yihu.jw.wlyy.dao.patient.AdvertisementDao;
-import com.yihu.jw.wlyy.entity.agreement.WlyySignFamily;
 import com.yihu.jw.wlyy.entity.patient.BasePatient;
 import com.yihu.jw.wlyy.entity.patient.WlyyAdvertisement;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
@@ -113,38 +112,40 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
 
     public List<WlyyAdvertisement> getListByPatientCode(String patientCode) {
         List<WlyyAdvertisement> advertisements = null;
-        //查找已签约的
-        List<WlyySignFamily> signs =  signFamilyService.findByPatientCode(patientCode,1);
-        if(signs!=null){
-            for(WlyySignFamily sign:signs){
-                String hospital = sign.getHospital();
-                //通过hospital查找市区
-
-            }
-        }
-
-        //如果还是空的,则查询患者的地址,根据患者的地址显示广告
-        if(advertisements==null){
-            BasePatient patient = patientService.findByCode(patientCode);
-            if(patient==null){
-                return null;
-            }else{
-                String cityName = patient.getCityName();
-                //根据cityName查找saas
+        //查询患者的地址,根据患者的地址显示广告
+        BasePatient patient = patientService.findByCode(patientCode);
+        if(patient!=null){//patient为空时,查找默认广告
+            String cityName = patient.getCityName();
+            //根据cityName查找saas
+            if(!StringUtils.isEmpty(cityName)){
                 Saas saas = saasService.findByName(cityName);
-                if(saas==null){
-                    return null;
-                }else{
+                if(saas!=null){
                     String saasCode = saas.getCode();
-                    //通过saasCode查找广告
-                    return getListBySaasCode(saasCode);
+                    advertisements = getListBySaasCode(saasCode);
                 }
             }
         }
-        return null;
+        //如果查询出的广告为空,则查询默认广告
+        if(advertisements==null){
+            advertisements = getDefaultList();
+        }
+        return advertisements;
     }
 
+    /**
+     * 通过saasCode查找广告
+     * @param saasCode
+     * @return
+     */
     public List<WlyyAdvertisement> getListBySaasCode(String saasCode){
         return advertisementDao.getListBySaasCode(saasCode);
+    }
+
+    /**
+     * 查找默认广告
+     * @return
+     */
+    private List<WlyyAdvertisement> getDefaultList(){
+        return advertisementDao.getDefaultList();
     }
 }

@@ -17,7 +17,7 @@ public class WlyyAdvertisement extends IdEntity implements Serializable {
 
     private static final long serialVersionUID = 1497635003375865515L;
     private String code;//业务code
-    private String saasId;
+    private String saasId;//0,为默认广告
     private String name;//名称
     private String picture;//展示的图片
     private String url;//链接

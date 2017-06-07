@@ -17,6 +17,7 @@ public class WlyySignFamily extends IdEntity{
     private static final long serialVersionUID = -6759565631854462880L;
 
     private String code;//业务code
+    private String saasId;
     private int type;//签约类型：1三师签约，2家庭签约
     private String patient;//患者标识
     private String openid;//患者微信公众号openid
@@ -71,6 +72,15 @@ public class WlyySignFamily extends IdEntity{
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Column(name="saas_id")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 
     @Column(name = "type")

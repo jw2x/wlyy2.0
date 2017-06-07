@@ -1,6 +1,9 @@
 package com.yihu.jw.wlyy.service.agreement;
 
+import com.yihu.jw.base.model.Saas;
+import com.yihu.jw.base.service.SaasService;
 import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
@@ -28,6 +31,9 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
     @Autowired
     private WlyyAgreementService wlyyAgreementService;
 
+    @Autowired
+    private SaasService saasService;
+
     @Transient
     public WlyySignFamily create(WlyySignFamily wlyySignFamily) throws ParseException {
         boolean b = canSaveOrUpdate(wlyySignFamily);
@@ -53,6 +59,14 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
     private boolean canSaveOrUpdate(WlyySignFamily wlyySignFamily) throws ParseException {
         if (StringUtils.isEmpty(wlyySignFamily.getCode())) {
             throw new ApiException(WlyyAgreementContants.SignFamily.message_fail_code_is_null, CommonContants.common_error_params_code);
+        }
+        String saasId = wlyySignFamily.getSaasId();
+        if (StringUtils.isEmpty(saasId)) {
+            throw new ApiException(WlyyAgreementContants.Agreement.message_fail_saasId_is_null, CommonContants.common_error_params_code);
+        }
+        Saas saas = saasService.findByCode(saasId);
+        if(saas==null){
+            throw new ApiException(BaseContants.Saas.message_fail_code_no_exist, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wlyySignFamily.getType())) {
             throw new ApiException(WlyyAgreementContants.SignFamily.message_fail_type_is_null, CommonContants.common_error_params_code);

@@ -16,6 +16,7 @@ import java.util.Date;
 @Table(name = "wlyy_agreement_kpi")
 public class WlyyAgreementKpi extends IdEntity {
     private String code;//业务code
+    private String saasId;//saasId
     private String agreementCode;//套餐代码
     private String kpiName;//服务项名称
     private String type;//服务项类型
@@ -27,6 +28,16 @@ public class WlyyAgreementKpi extends IdEntity {
     private String createUser;
     private Date updaateTime;
 
+    @Column(name="saas_id")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
+
+    @Column(name="agreement_code")
     public String getAgreementCode() {
         return agreementCode;
     }

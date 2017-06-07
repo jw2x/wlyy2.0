@@ -14,7 +14,7 @@ public class MWxWechat {
     private String token;//token
     private String encodingAesKey;//加密密钥
     private Integer encType;//加密方式  0:明文模式   1:兼容模式   2:安全模式
-    private String status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
+    private Integer status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
     private String type;//'1：服务号 2 订阅号
     private String appId;//'微信app_id'
     private String appSecret;//'微信app_secret'
@@ -83,11 +83,11 @@ public class MWxWechat {
         this.encType = encType;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

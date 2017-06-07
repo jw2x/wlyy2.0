@@ -18,6 +18,7 @@ public class WlyyAgreementKpiLog extends IdEntity {
     private static final long serialVersionUID = -3196907595969778396L;
 
     private String code;//业务code
+    private String saasId;
     private String patientCode;//患者code
     private String signCode;
     private String kpiCode;
@@ -34,6 +35,15 @@ public class WlyyAgreementKpiLog extends IdEntity {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    @Column(name="saas_id")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 
     @Column(name = "patient_code")
