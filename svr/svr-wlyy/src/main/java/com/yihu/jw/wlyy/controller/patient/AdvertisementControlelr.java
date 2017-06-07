@@ -70,7 +70,7 @@ public class AdvertisementControlelr extends EnvelopRestController {
     }
 
     @GetMapping(value = WlyyPatientContants.Advertisement.api_getByCode)
-    @ApiOperation(value = "根据code查找协议", notes = "根据code查找协议")
+    @ApiOperation(value = "根据code查找广告", notes = "根据code查找广告")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
@@ -83,7 +83,7 @@ public class AdvertisementControlelr extends EnvelopRestController {
     }
 
     @RequestMapping(value = WlyyPatientContants.Advertisement.api_queryPage, method = RequestMethod.GET)
-    @ApiOperation(value = "分页获取协议")
+    @ApiOperation(value = "分页获取广告")
     public Envelop queryPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
             @RequestParam(value = "fields", required = false) String fields,
@@ -111,7 +111,7 @@ public class AdvertisementControlelr extends EnvelopRestController {
 
 
     @GetMapping(value = WlyyPatientContants.Advertisement.api_getList)
-    @ApiOperation(value = "获取协议列表(不分页)")
+    @ApiOperation(value = "获取广告列表(不分页)")
     public Envelop getList(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
             @RequestParam(value = "fields", required = false) String fields,

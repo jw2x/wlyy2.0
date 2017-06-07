@@ -14,11 +14,11 @@ public class WlyyPatientContants {
         public static final String api_getList="getList";
         public static final String api_getListByPatientCode="getListByPatientCode";
 
-        public static final String message_success_update="agreement update success";
-        public static final String message_success_delete="agreement delete success";
-        public static final String message_success_find="agreement find success";
-        public static final String message_success_create="agreement create success";
-        public static final String message_success_find_functions="agreement find success";
+        public static final String message_success_update="advertisement update success";
+        public static final String message_success_delete="advertisement delete success";
+        public static final String message_success_find="advertisement find success";
+        public static final String message_success_create="advertisement create success";
+        public static final String message_success_find_functions="advertisement find success";
 
         public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="name is null";
