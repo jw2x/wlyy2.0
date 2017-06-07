@@ -4,6 +4,7 @@ import com.yihu.jw.commnon.wlyy.PatientContants;
 import com.yihu.jw.fegin.wlyy.patient.AdvertisementFegin;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
@@ -19,6 +20,9 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by Administrator on 2017/6/6 0006.
  */
+@RestController
+@RequestMapping(PatientContants.Advertisement.api_common)
+@Api(value = "签约相关操作", description = "签约相关操作")
 public class AdvertisementControlelr extends EnvelopRestController {
 
     private Logger logger = LoggerFactory.getLogger(AdvertisementControlelr.class);

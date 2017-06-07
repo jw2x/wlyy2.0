@@ -5,7 +5,7 @@ package com.yihu.jw.restmodel.wlyy.patient;
  */
 public class WlyyPatientContants {
     public static class Advertisement{
-        public static final String api_common="wlyyAdvertisement";
+        public static final String api_common="advertisement";
         public static final String api_create="create";
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";
