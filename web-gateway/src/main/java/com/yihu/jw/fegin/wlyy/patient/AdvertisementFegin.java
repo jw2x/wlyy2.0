@@ -3,7 +3,6 @@ package com.yihu.jw.fegin.wlyy.patient;
 import com.yihu.jw.fegin.fallbackfactory.wlyy.patient.AdvertisementFeginFallbackFactory;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
 import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
         name = CommonContants.svr_wlyy // name值是eurika的实例名字
         ,fallbackFactory  = AdvertisementFeginFallbackFactory.class
 )
-@RequestMapping(WlyyAgreementContants.Agreement.api_common)
+@RequestMapping(WlyyPatientContants.Advertisement.api_common)
 public interface AdvertisementFegin {
 
     @PostMapping(value = WlyyPatientContants.Advertisement.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
