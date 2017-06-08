@@ -211,7 +211,6 @@ public class IDCard {
         // String IDCardNum="210102198208264114";
         String IDCardNum = "350583199301130079";
         IDCard cc = new IDCard();
-        System.out.println(cc.IDCardValidate(IDCardNum));
         // System.out.println(cc.isDate("1996-02-29"));
     }
     /*********************************** 身份证验证结束 ****************************************/

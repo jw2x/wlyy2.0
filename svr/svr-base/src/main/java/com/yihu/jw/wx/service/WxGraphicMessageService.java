@@ -131,10 +131,8 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
             Map<String, String> requestMap = MessageUtil.parseXml(request);
             //用户openid
             String fromUserName = requestMap.get("FromUserName");
-            System.out.println("fromUserName+=   "+fromUserName);
             //微信公众号
             String toUserName = requestMap.get("ToUserName");
-            System.out.println("ToUserName+=   "+toUserName);
             // 图文信息
             List<Map<String,String>> articles =  new ArrayList<>();
             if(codes!=null){
