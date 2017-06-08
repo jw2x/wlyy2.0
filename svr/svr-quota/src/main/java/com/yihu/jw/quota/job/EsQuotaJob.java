@@ -5,7 +5,6 @@ import com.yihu.jw.quota.etl.Contant;
 import com.yihu.jw.quota.etl.extract.ExtractHelper;
 import com.yihu.jw.quota.etl.save.SaveHelper;
 import com.yihu.jw.quota.model.jpa.TjQuotaLog;
-import com.yihu.jw.quota.service.compute.TjComputeService;
 import com.yihu.jw.quota.util.SpringUtil;
 import com.yihu.jw.quota.vo.QuotaVO;
 import com.yihu.jw.quota.vo.SaveModel;
@@ -40,8 +39,6 @@ public class EsQuotaJob implements Job {
     private String timeLevel;//时间
     @Autowired
     private TjQuotaLogDao tjQuotaLogDao;
-    @Autowired
-    private TjComputeService computeService;
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
@@ -115,8 +112,9 @@ public class EsQuotaJob implements Job {
         }
 
         this.startTime = map.getString("startTime");
+
         if (StringUtils.isEmpty(startTime)) {
-            startTime = new LocalDate(new DateTime().minusDays(1)).toString("yyyy-MM-dd"); //默认昨天
+            startTime = Contant.main_dimension_timeLevel.getStartTime(timeLevel);
         }
 
         this.quotaVO = (QuotaVO) map.get("quota");

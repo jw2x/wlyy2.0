@@ -1,7 +1,6 @@
 package com.yihu.jw.quota.dao.jpa;
 
 import com.yihu.jw.quota.model.jpa.TjQuota;
-import com.yihu.jw.quota.model.jpa.compute.TjCompute;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
