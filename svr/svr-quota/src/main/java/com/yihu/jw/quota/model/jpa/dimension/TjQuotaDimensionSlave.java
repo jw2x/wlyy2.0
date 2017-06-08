@@ -23,13 +23,9 @@ public class TjQuotaDimensionSlave implements java.io.Serializable {
     private String quotaCode;
     private String slaveCode;
     private String dictSql;//字典的sql
-    private String convertClazz;//转换的类
+    private String key;
     private String type;
 
-    private String getOneDictSql;//得到分子的
-    private String getTwoDictSql;//得到分母的
-    private String getOneConvertClazz;//得到分子的
-    private String getTwoConvertClazz;//得到分母的
 
 
     // Constructors
@@ -95,67 +91,11 @@ public class TjQuotaDimensionSlave implements java.io.Serializable {
         this.type = type;
     }
 
-    public String getConvertClazz() {
-        return convertClazz;
+    public String getKey() {
+        return key;
     }
 
-    public void setConvertClazz(String convertClazz) {
-        this.convertClazz = convertClazz;
-    }
-
-    @Transient
-    public String getGetOneDictSql() {
-        try {
-            return JSONObject.fromObject(dictSql).getString(Contant.slave_dimension_key.one);
-        } catch (Exception e) {
-            logger.warn("OneDictSql error");
-        }
-        return null;
-    }
-
-    public void setGetOneDictSql(String getOneDictSql) {
-        this.getOneDictSql = getOneDictSql;
-    }
-
-    @Transient
-    public String getGetTwoDictSql() {
-        try {
-            return JSONObject.fromObject(dictSql).getString(Contant.slave_dimension_key.two);
-        } catch (Exception e) {
-            logger.warn("GetTwoDictSql error");
-        }
-        return null;
-    }
-
-    public void setGetTwoDictSql(String getTwoDictSql) {
-        this.getTwoDictSql = getTwoDictSql;
-    }
-
-    @Transient
-    public String getGetOneConvertClazz() {
-        try {
-            return JSONObject.fromObject(convertClazz).getString(Contant.slave_dimension_key.one);
-        } catch (Exception e) {
-            logger.warn("GetOneConvertClazz error");
-        }
-        return null;
-    }
-
-    public void setGetOneConvertClazz(String getOneConvertClazz) {
-        this.getOneConvertClazz = getOneConvertClazz;
-    }
-
-    @Transient
-    public String getGetTwoConvertClazz() {
-        try {
-            return JSONObject.fromObject(convertClazz).getString(Contant.slave_dimension_key.two);
-        } catch (Exception e) {
-            logger.warn("TwoConvertClazz error");
-        }
-        return null;
-    }
-
-    public void setGetTwoConvertClazz(String getTwoConvertClazz) {
-        this.getTwoConvertClazz = getTwoConvertClazz;
+    public void setKey(String key) {
+        this.key = key;
     }
 }

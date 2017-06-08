@@ -16,7 +16,8 @@ public class TjQuotaDimensionMain implements java.io.Serializable {
 	private Integer id;
 	private String quotaCode;
 	private String mainCode;
-	private String ditcSql;
+	private String dictSql;
+	private String key;
 	private String type;
 
 	// Constructors
@@ -55,13 +56,22 @@ public class TjQuotaDimensionMain implements java.io.Serializable {
 		this.mainCode = mainCode;
 	}
 
-	public String getDitcSql() {
-		return ditcSql;
+	public String getDictSql() {
+		return dictSql;
 	}
 
-	public void setDitcSql(String ditcSql) {
-		this.ditcSql = ditcSql;
+	public void setDictSql(String dictSql) {
+		this.dictSql = dictSql;
 	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
 	@Transient
 	public String getType() {
 		return type;
