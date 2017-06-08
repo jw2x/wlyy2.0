@@ -205,14 +205,14 @@ public class IDCard {
      * @param args
      * @throws ParseException
      */
-    @SuppressWarnings("static-access")
-    public static void main(String[] args) throws ParseException {
-        // String IDCardNum="210102820826411";
-        // String IDCardNum="210102198208264114";
-        String IDCardNum = "350583199301130079";
-        IDCard cc = new IDCard();
-        // System.out.println(cc.isDate("1996-02-29"));
-    }
+    //@SuppressWarnings("static-access")
+    //public static void main(String[] args) throws ParseException {
+    //    // String IDCardNum="210102820826411";
+    //    // String IDCardNum="210102198208264114";
+    //    String IDCardNum = "350583199301130079";
+    //    IDCard cc = new IDCard();
+    //    // System.out.println(cc.isDate("1996-02-29"));
+    //}
     /*********************************** 身份证验证结束 ****************************************/
 
 }
