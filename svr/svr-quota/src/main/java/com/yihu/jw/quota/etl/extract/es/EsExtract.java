@@ -86,7 +86,7 @@ public class EsExtract {
 
     }
 
-    private Map<String, SaveModel> setAllSlaveData(Map<String, SaveModel> allData, List<DictModel> dictData) {
+    private Map<String, SaveModel> setAllSlaveData(Map<String, SaveModel> allData, List<DictModel> dictData,Integer key) {
         try {
             Map<String, SaveModel> returnAllData = new HashMap<>();
             for (Map.Entry<String, SaveModel> one : allData.entrySet()) {
@@ -98,8 +98,8 @@ public class EsExtract {
                     SaveModel saveModelTemp = new SaveModel();
                     BeanUtils.copyProperties(one.getValue(), saveModelTemp);
 
-                    StringBuffer keyMethodName = new StringBuffer("setSlaveKey" + (i + 1));
-                    StringBuffer nameMethodName = new StringBuffer("setSlaveKey" + (i + 1) + "Name");
+                    StringBuffer keyMethodName = new StringBuffer("setSlaveKey" + (key + 1));
+                    StringBuffer nameMethodName = new StringBuffer("setSlaveKey" + (key + 1) + "Name");
 
                     SaveModel.class.getMethod(keyMethodName.toString(), String.class).invoke(saveModelTemp, dictOne.getCode());
                     SaveModel.class.getMethod(nameMethodName.toString(), String.class).invoke(saveModelTemp, dictOne.getName());
@@ -120,7 +120,7 @@ public class EsExtract {
      */
     private void setAllData(Map<String, SaveModel> allData, List<SaveModel> dictData, String dictType) {
         switch (dictType) {
-            case Contant.main_dimension_areaLevel.area_province: {
+            case Contant.main_dimension.area_province: {
                 //设置省的全部的值
                 dictData.stream().forEach(one -> {
                     //StringBuffer key = new StringBuffer(one.getProvince());
@@ -128,7 +128,7 @@ public class EsExtract {
                 });
                 break;
             }
-            case Contant.main_dimension_areaLevel.area_city: {
+            case Contant.main_dimension.area_city: {
                 //设置市的全部的值
                 dictData.stream().forEach(one -> {
                     //StringBuffer key = new StringBuffer(one.getProvince() + "-" + one.getCity());
@@ -136,7 +136,7 @@ public class EsExtract {
                 });
                 break;
             }
-            case Contant.main_dimension_areaLevel.area_town: {
+            case Contant.main_dimension.area_town: {
                 //设置区的全部的值
                 dictData.stream().forEach(one -> {
                     //StringBuffer key = new StringBuffer(one.getProvince() + "-" + one.getCity() + "-" + one.getTown());
@@ -144,7 +144,7 @@ public class EsExtract {
                 });
                 break;
             }
-            case Contant.main_dimension_areaLevel.area_org: {
+            case Contant.main_dimension.area_org: {
                 //设置机构
                 dictData.stream().forEach(one -> {
                     // StringBuffer key = new StringBuffer(one.getProvince() + "-" + one.getCity() + "-" + one.getTown() + "-" + one.getHospital());
@@ -152,7 +152,7 @@ public class EsExtract {
                 });
                 break;
             }
-            case Contant.main_dimension_areaLevel.area_team: {
+            case Contant.main_dimension.area_team: {
                 //设置团队
                 dictData.stream().forEach(one -> {
                     // StringBuffer key = new StringBuffer(one.getProvince() + "-" + one.getCity() + "-" + one.getTown() + "-" + one.getHospital() + "-" + one.getTeam());
@@ -230,12 +230,12 @@ public class EsExtract {
         //初始化主细维度
         allData= initDimension(tjQuotaDimensionSlaves, one, allData);
 
-        for(Map.Entry<String,Integer> oneMap:map.entrySet()){
+        for(Map.Entry<String,SaveModel> oneMap:allData.entrySet()){
             String key=oneMap.getKey();
-            Integer value=oneMap.getValue();
-            SaveModel saveModel=allData.get(key);
+            SaveModel saveModel=oneMap.getValue();
+            Integer num=map.get(key);
             if(saveModel!=null){
-                saveModel.setResult(value);
+                saveModel.setResult(num);
                 returnList.add(saveModel);
             }
         }
@@ -254,7 +254,7 @@ public class EsExtract {
 
         for (int i = 0; i < tjQuotaDimensionSlaves.size(); i++) {
            List<DictModel> dictDataSlave = jdbcTemplate.query(tjQuotaDimensionSlaves.get(i).getDictSql(), new BeanPropertyRowMapper(DictModel.class));
-            allData = setAllSlaveData(allData, dictDataSlave);
+            allData = setAllSlaveData(allData, dictDataSlave,i);
         }
         return allData;
     }

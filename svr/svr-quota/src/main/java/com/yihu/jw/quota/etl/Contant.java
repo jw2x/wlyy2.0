@@ -1,6 +1,7 @@
 package com.yihu.jw.quota.etl;
 
 import org.joda.time.DateTime;
+import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -68,11 +69,11 @@ public class Contant {
      * areaLevel 具体的值
      */
     public static class main_dimension_areaLevel {
-        public static final String area_province = "5";//行政区划 省
-        public static final String area_city = "6";//行政区划 市
-        public static final String area_town = "7";//行政区划 区县
-        public static final String area_org = "8";//行政区划 机构
-        public static final String area_team = "9";//行政区划  团队
+        public static final String area_province = "1";//行政区划 省
+        public static final String area_city = "2";//行政区划 市
+        public static final String area_town = "3";//行政区划 区县
+        public static final String area_org = "4";//行政区划 机构
+        public static final String area_team = "5";//行政区划  团队
 
         public static String getAreaLevelByMainDimension(String key) {
             switch (key) {
@@ -111,6 +112,9 @@ public class Contant {
 
         public static String getStartTime(String key) {
             LocalDate today = LocalDate.now();
+            if (StringUtils.isEmpty(key)) {
+                key = day;
+            }
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             switch (key) {
                 case year: {
