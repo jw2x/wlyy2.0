@@ -167,6 +167,8 @@ public class EsExtract {
         one.setAreaLevel(areaLevel);
         one.setResult(0);
         one.setCreateTime(new Date());
+        one.setQuotaDate(startTime);
+        one.setQuotaCode(quotaVO.getCode());
         one.setTimeLevel(timeLevel);
         one.setSaasId(saasid);
         allData.put(key, one);

@@ -78,7 +78,6 @@ public class EsQuotaJob implements Job {
             Boolean success = saveDate(dataModels);
 
 
-
             tjQuotaLog.setStatus(success ? Contant.save_status.success : Contant.save_status.fail);
             tjQuotaLog.setEndTime(new Date());
             saveLog(tjQuotaLog);
