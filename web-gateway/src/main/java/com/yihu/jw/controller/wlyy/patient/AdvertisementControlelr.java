@@ -4,6 +4,7 @@ import com.yihu.jw.commnon.wlyy.PatientContants;
 import com.yihu.jw.fegin.wlyy.patient.AdvertisementFegin;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.util.CusAccessObjectUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -101,7 +102,18 @@ public class AdvertisementControlelr extends EnvelopRestController {
     @ApiOperation(value = "根据患者code获取广告")
     public Envelop getListByPatientCode(
             @ApiParam(name="patientCode")
-            @RequestParam(value="") String patientCode){
+            @RequestParam(value="patientCode") String patientCode,
+            HttpServletRequest request
+    ){
         return advertisementFegin.getListByPatientCode(patientCode);
+    }
+
+    @GetMapping(value =PatientContants.Advertisement.api_getListByHttp)
+    @ApiOperation(value = "根据患者http获取广告")
+    public Envelop getListByHttp(
+            HttpServletRequest request
+    ){
+        String ipAddress = CusAccessObjectUtil.getIpAddress(request);
+        return advertisementFegin.getListByIp(ipAddress);
     }
 }

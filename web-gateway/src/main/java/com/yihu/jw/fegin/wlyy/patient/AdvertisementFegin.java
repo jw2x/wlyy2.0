@@ -45,5 +45,9 @@ public interface AdvertisementFegin {
             @RequestParam(value = "sorts", required = false) String sorts);
 
     @GetMapping(value= WlyyPatientContants.Advertisement.api_getListByPatientCode)
-    Envelop getListByPatientCode(String patientCode);
+    Envelop getListByPatientCode(@RequestParam(value="patientCode")String patientCode);
+
+    @GetMapping(value= WlyyPatientContants.Advertisement.api_getListByIp)
+    Envelop getListByIp(@RequestParam(value="ipAddress") String ipAddress);
+
 }

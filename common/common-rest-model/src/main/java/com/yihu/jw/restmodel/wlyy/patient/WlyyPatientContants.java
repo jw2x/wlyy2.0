@@ -13,6 +13,8 @@ public class WlyyPatientContants {
         public static final String api_queryPage="queryPage";
         public static final String api_getList="getList";
         public static final String api_getListByPatientCode="getListByPatientCode";
+        public static final String api_getListByHttp="getListByHttp";
+        public static final String api_getListByIp="getListByIp";
 
         public static final String message_success_update="advertisement update success";
         public static final String message_success_delete="advertisement delete success";

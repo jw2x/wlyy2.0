@@ -13,5 +13,7 @@ public class PatientContants {
         public static final String api_queryPage="queryPage";
         public static final String api_getList="getList";
         public static final String api_getListByPatientCode="getListByPatientCode";
+        public static final String api_getListByHttp="getListByHttp";
+        public static final String api_getListByIp="getListByIp";
     }
 }

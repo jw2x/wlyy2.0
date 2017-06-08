@@ -130,9 +130,30 @@ public class AdvertisementControlelr extends EnvelopRestController {
     @ApiOperation(value = "根据患者code获取广告")
     public Envelop getListByPatientCode(
             @ApiParam(name="patientCode")
-            @RequestParam(value="") String patientCode){
-        List<WlyyAdvertisement> advertisements = advertisementService.getListByPatientCode(patientCode);
+            @RequestParam(value="patientCode") String patientCode,
+            HttpServletRequest request
+            ){
+        List<WlyyAdvertisement> advertisements = advertisementService.getListByPatientCode(patientCode,request);
         return Envelop.getSuccessList(WlyyPatientContants.Advertisement.message_success_find_functions,advertisements);
+    }
+
+    @GetMapping(value= WlyyPatientContants.Advertisement.api_getListByHttp)
+    @ApiOperation(value = "根据患者code地区(通过http判断)获取广告")
+    public Envelop getListByHttp(HttpServletRequest request){
+        List<WlyyAdvertisement> advertisements = advertisementService.getByHttp(request);
+        return Envelop.getSuccess(WlyyPatientContants.Advertisement.message_success_find_functions,advertisements);
+    }
+
+    /**
+     * 供网关调用
+     * @param ipAddress
+     * @return
+     */
+    @GetMapping(value= WlyyPatientContants.Advertisement.api_getListByIp)
+    @ApiOperation(value = "根据患者ip地址(供网关调用)")
+    public Envelop getListByIp(@RequestParam(value="ipAddress") String ipAddress){
+        List<WlyyAdvertisement> advertisements = advertisementService.getListByIp(ipAddress);
+        return Envelop.getSuccess(WlyyPatientContants.Advertisement.message_success_find_functions,advertisements);
     }
 
 }

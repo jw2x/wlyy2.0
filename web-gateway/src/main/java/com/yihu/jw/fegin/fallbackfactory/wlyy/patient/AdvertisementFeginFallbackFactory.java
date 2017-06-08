@@ -48,9 +48,16 @@ public class AdvertisementFeginFallbackFactory implements FallbackFactory<Advert
             }
 
             @Override
-            public Envelop getListByPatientCode(String patientCode) {
+            public Envelop getListByPatientCode(@RequestParam(value = "patientCode") String patientCode) {
                 return null;
             }
+
+            @Override
+            public Envelop getListByIp(@RequestParam(value = "ipAddress") String ipAddress) {
+                return null;
+            }
+
+
         };
     }
 }

@@ -4,10 +4,11 @@ import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
+import com.yihu.jw.util.AddressUtils;
+import com.yihu.jw.util.CusAccessObjectUtil;
 import com.yihu.jw.wlyy.dao.patient.AdvertisementDao;
 import com.yihu.jw.wlyy.entity.BaseSaas;
 import com.yihu.jw.wlyy.entity.agreement.WlyySignFamily;
-import com.yihu.jw.wlyy.entity.patient.BasePatient;
 import com.yihu.jw.wlyy.entity.patient.WlyyAdvertisement;
 import com.yihu.jw.wlyy.service.BaseSaasService;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
+import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -113,7 +116,13 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
         advertisementDao.save(advertisement);
     }
 
-    public List<WlyyAdvertisement> getListByPatientCode(String patientCode) {
+    /**
+     * 根据患者code查找广告
+     * @param patientCode
+     * @param request
+     * @return
+     */
+    public List<WlyyAdvertisement> getListByPatientCode(String patientCode, HttpServletRequest request) {
         List<WlyyAdvertisement> advertisements = null;
         //查找已签约的,根据签约的saasId查找地区,获得广告
         List<WlyySignFamily> signs =  signFamilyService.findByPatientCode(patientCode,1);
@@ -128,24 +137,8 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                 }
             }
         }
-
-        //如果广告为空,则查询患者的地址,根据患者的地址显示广告
-        BasePatient patient = patientService.findByCode(patientCode);
-        if(patient!=null){//patient为空时,查找默认广告
-            String cityName = patient.getCityName();
-            //根据cityName查找saas
-            if(!StringUtils.isEmpty(cityName)){
-                BaseSaas saas = saasService.findByName(cityName);
-                if(saas!=null){
-                    String saasCode = saas.getCode();
-                    advertisements = getListBySaasCode(saasCode);
-                }
-            }
-        }
-        //如果查询出的广告为空,则查询默认广告
-        if(advertisements==null){
-            advertisements = getDefaultList();
-        }
+        //如果未签约或者通过签约未获取到广告,则根据http获取广告
+        advertisements = getByHttp(request);
         return advertisements;
     }
 
@@ -164,5 +157,70 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      */
     private List<WlyyAdvertisement> getDefaultList(){
         return advertisementDao.getDefaultList();
+    }
+
+    /**
+     * 通过用户的HttpServletRequest,判断显示的广告
+     * @param request
+     * @return
+     */
+    public  List<WlyyAdvertisement> getByHttp(HttpServletRequest request){
+        String ipAddress = CusAccessObjectUtil.getIpAddress(request);
+        AddressUtils addressUtils = new AddressUtils();
+        try {
+            String address = addressUtils.getAddresses(ipAddress);//"中国-西南-四川省-成都市- -电信"  (没有值,中间用空格隔开  country-area-region-city-county-isp)或者返回0
+            String[] addresses = address.split("-");
+            if(addresses.length<6){
+                return  getDefaultList();
+            }else{
+                String cityName = addresses[3];
+                BaseSaas saas = saasService.findByName(cityName);//成都市
+                if(saas ==null){
+                    cityName = cityName.substring(0,cityName.length()-1);//成都
+                    saas = saasService.findByName(cityName);
+                }
+                if(saas==null){//如果还是为空,则展示默认广告
+                    return  getDefaultList();
+                }
+                String saasCode = saas.getCode();
+                return getListBySaasCode(saasCode);
+            }
+
+        } catch (UnsupportedEncodingException e) {//解析ip失败,展示默认广告
+            return  getDefaultList();
+        }
+
+    }
+
+    /**
+     * 通过ip定位地址,展示广告的广告(供网关调用)
+     * @param ipaddress
+     * @return
+     */
+    public  List<WlyyAdvertisement> getListByIp(String ipaddress){
+        try {
+            AddressUtils addressUtils = new AddressUtils();
+            String address = addressUtils.getAddresses(ipaddress);
+            String[] addresses = address.split("-");
+            if(addresses.length<6){
+                return  getDefaultList();
+            }else{
+                String cityName = addresses[3];
+                BaseSaas saas = saasService.findByName(cityName);//成都市
+                if(saas ==null){
+                    cityName = cityName.substring(0,cityName.length()-1);//成都
+                    saas = saasService.findByName(cityName);
+                }
+                if(saas==null){//如果还是为空,则展示默认广告
+                    return  getDefaultList();
+                }
+                String saasCode = saas.getCode();
+                return getListBySaasCode(saasCode);
+            }
+
+        } catch (UnsupportedEncodingException e) {//解析ip失败,展示默认广告
+            return  getDefaultList();
+        }
+
     }
 }

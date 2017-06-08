@@ -11,6 +11,12 @@ import java.net.URL;
  */
 public class AddressUtils {
 
+
+    public String getAddresses(String ip)
+            throws UnsupportedEncodingException {
+        return getAddresses(ip,"utf-8");
+    }
+
     /**
      * 返回"0" 为无效ip,局域网测试
      * "中国-西南-四川省-成都市- -电信"  (没有值,中间用空格隔开  country-area-region-city-county-isp)
@@ -24,6 +30,7 @@ public class AddressUtils {
         // 这里调用pconline的接口
         String urlStr = "http://ip.taobao.com/service/getIpInfo.php";
         // 从http://whois.pconline.com.cn取得IP所在的省市区信息
+        content = "ip="+content;
         String returnStr = this.getResult(urlStr, content, encodingString);
         if (returnStr != null) {
             // 处理返回的省市区信息
@@ -203,7 +210,7 @@ public class AddressUtils {
         String ip = "219.136.134.157";
         String address = "";
         try {
-            address = addressUtils.getAddresses("ip=" + ip, "utf-8");
+            address = addressUtils.getAddresses(ip);
         } catch (UnsupportedEncodingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
