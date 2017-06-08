@@ -6,8 +6,10 @@ package com.yihu.jw.quota.etl.model;
 public class EsConfig {
 
     private String host;//地址
+    private Integer port;//端口
     private String index;// 索引 es相当与数据库
     private String type;// 类型 es 相当于表
+    private String timekey;//根据sql去查询的key
 
     public String getHost() {
         return host;
@@ -34,4 +36,19 @@ public class EsConfig {
     }
 
 
+    public String getTimekey() {
+        return timekey;
+    }
+
+    public void setTimekey(String timekey) {
+        this.timekey = timekey;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
 }

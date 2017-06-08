@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenweida on 2017/6/2.
@@ -29,16 +30,15 @@ public class ElastricSearchSave {
 
     private EsConfig esConfig;
 
-    public Boolean save(List<SaveModel> sms, String jsonConfig) {
+    public Boolean save(List<SaveModel> smss, String jsonConfig) {
         try {
             //初始化参数
             esConfig = (EsConfig) JSONObject.toBean(JSONObject.fromObject(jsonConfig), EsConfig.class);
             //得到链接
-            JestClient jestClient = elasticFactory.getClient(esConfig.getHost());
+            JestClient jestClient = elasticFactory.getJestClient(esConfig.getHost(),esConfig.getPort());
 
             Bulk.Builder bulk = new Bulk.Builder().defaultIndex(esConfig.getIndex()).defaultType(esConfig.getType());
-            for (SaveModel obj : sms) {
-                obj.setCreateTime(new Date());
+            for (SaveModel obj : smss) {
                 Index index = new Index.Builder(obj).build();
                 bulk.addAction(index);
             }

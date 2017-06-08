@@ -16,7 +16,7 @@ public class TjQuotaDataSave implements java.io.Serializable {
 	private Integer id;
 	private String quotaCode;
 	private String saveCode;
-	private String jsonConfig;
+	private String configJson;
 	private String type;//1:mysql数据库 2:redis 3ES
 
 	// Constructors
@@ -25,12 +25,6 @@ public class TjQuotaDataSave implements java.io.Serializable {
 	public TjQuotaDataSave() {
 	}
 
-	/** full constructor */
-	public TjQuotaDataSave(String quotaCode, String saveCode, String jsonConfig) {
-		this.quotaCode = quotaCode;
-		this.saveCode = saveCode;
-		this.jsonConfig = jsonConfig;
-	}
 
 	// Property accessors
 	@Id
@@ -62,14 +56,15 @@ public class TjQuotaDataSave implements java.io.Serializable {
 		this.saveCode = saveCode;
 	}
 
-	@Column(name = "json_config", length = 1500)
-	public String getJsonConfig() {
-		return this.jsonConfig;
+	@Column(name = "config_json", length = 1500)
+	public String getConfigJson() {
+		return configJson;
 	}
 
-	public void setJsonConfig(String jsonConfig) {
-		this.jsonConfig = jsonConfig;
+	public void setConfigJson(String configJson) {
+		this.configJson = configJson;
 	}
+
 	@Transient
 	public String getType() {
 		return type;

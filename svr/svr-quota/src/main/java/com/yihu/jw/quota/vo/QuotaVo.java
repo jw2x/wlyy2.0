@@ -10,9 +10,9 @@ public class QuotaVO implements Serializable{
     private Integer id;
     private String code;
     private String compute;
-    private String computeType;//计算类型
     private String name;
     private String cron;//quartz时间表达式
+    private String dataLevel;//1 全量  2增量
     private String jobClazz;
     private Date createTime;
     private String createUser;
@@ -120,13 +120,6 @@ public class QuotaVO implements Serializable{
         this.remark = remark;
     }
 
-    public String getComputeType() {
-        return computeType;
-    }
-
-    public void setComputeType(String computeType) {
-        this.computeType = computeType;
-    }
 
     public String getCompute() {
         return compute;
@@ -142,7 +135,6 @@ public class QuotaVO implements Serializable{
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", compute='" + compute + '\'' +
-                ", computeType='" + computeType + '\'' +
                 ", name='" + name + '\'' +
                 ", jobClazz='" + jobClazz + '\'' +
                 ", createTime=" + createTime +
@@ -162,5 +154,13 @@ public class QuotaVO implements Serializable{
 
     public void setCron(String cron) {
         this.cron = cron;
+    }
+
+    public String getDataLevel() {
+        return dataLevel;
+    }
+
+    public void setDataLevel(String dataLevel) {
+        this.dataLevel = dataLevel;
     }
 }
