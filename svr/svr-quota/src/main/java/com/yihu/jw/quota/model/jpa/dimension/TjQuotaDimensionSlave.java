@@ -1,8 +1,5 @@
 package com.yihu.jw.quota.model.jpa.dimension;// default package
 
-import com.sun.xml.internal.ws.api.message.ExceptionHasMessage;
-import com.yihu.jw.quota.etl.Contant;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
