@@ -94,15 +94,16 @@ public class WxContants {
         public static final String message_success_delete="wechat delete success";
 
         public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_code_no_exist="code not exist";
         public static final String message_fail_appSecret_is_null="appSecret is null";
         public static final String message_fail_appId_exist="wechat appId exist";
         public static final String message_fail_status_is_null="status is null";
         public static final String message_fail_type_is_null="type is null";
         public static final String message_fail_appId_is_null="appId is null";
         public static final String message_fail_name_is_null="name is null";
-        public static final String message_fail_wxWechat_is_no_exist="wxWechat is no exist";//微信配置不存在
+        public static final String message_fail_wxWechat_is_no_exist="wxWechat is not exist";//微信配置不存在
         public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_saasId_is_null="saasId is null";
     }
     //微信图文消息
     public static class WxGraphicMessage {
@@ -122,10 +123,10 @@ public class WxContants {
         public static final String message_success_find_functions="wxGraphicMessage find success";
         public static final String message_success_delete="wxGraphicMessage delete success";
         public static final String message_fail_code_is_null="code is null";
-        public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_code_no_exist="code not exist";
         public static final String message_fail_code_exist="code exist";
         public static final String message_fail_status_is_null="status is null";
         public static final String message_fail_title_is_null="title is null";
-        public static final String message_fail_wxGraphicMessage_is_no_exist="wxGraphicMessage is no exist";
+        public static final String message_fail_wxGraphicMessage_is_no_exist="wxGraphicMessage is not exist";
     }
 }
