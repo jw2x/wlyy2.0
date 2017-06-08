@@ -7,7 +7,6 @@
     <artifactId>svr-lib-parent-pom</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-
     <developers>
         <developer>
             <id>cwd</id>
@@ -19,7 +18,19 @@
             </roles>
         </developer>
     </developers>
-
+    <!--deploy 的时候发布到这个服务器-->
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Releases</name>
+            <url>http://172.19.103.43:8081/nexus/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Snapshots</name>
+            <url>http://172.19.103.43:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
     <modules>
 
         <module>../svr-configuration</module> <!--配置服务-->
@@ -30,10 +41,12 @@
         <!--业务微服务-->
         <module>../svr/svr-base</module><!--基础微服务-->
         <module>../svr/svr-quota</module><!--统计微服务-->
+        <module>../svr/svr-wlyy</module><!--i健康微服务-->
 
 
         <!--网关-->
         <module>../web-gateway</module><!--web网关-->
+        <module>../manage-gateway</module><!--后台管理系统网关-->
     </modules>
 
     <properties>
@@ -54,6 +67,13 @@
         <version.swagger-ui>2.4.0</version.swagger-ui>
         <version.quartz>2.3.0</version.quartz>
         <version.logback>1.2.3</version.logback>
+        <version.spring-elasticsearch>2.1.3.RELEASE</version.spring-elasticsearch>
+        <version.jest>2.4.0</version.jest>
+        <version.json>20160212</version.json>
+        <version.net-json>2.4</version.net-json>
+        <version.springside>4.2.3-GA</version.springside>
+        <version.common.lang3>3.1</version.common.lang3>
+        <version.elasticsearch>2.4.4</version.elasticsearch>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -73,6 +93,11 @@
             <dependency>
                 <groupId>com.yihu.jw</groupId>
                 <artifactId>common-rest-model</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>svr-base</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
             <dependency>
@@ -254,6 +279,12 @@
                 <artifactId>spring-boot-starter-aop</artifactId>
                 <version>${version.springBoot}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+                <version>${version.springBoot}</version>
+            </dependency>
+
             <!--springBoot end-->
 
             <!--spring start-->
@@ -269,6 +300,11 @@
                 <version>${version.spring}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
+                <version>${version.spring}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
@@ -298,6 +334,11 @@
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
                 <version>${version.spring-data-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-elasticsearch</artifactId>
+                <version>${version.spring-elasticsearch}</version>
             </dependency>
             <!--spring end-->
 
@@ -400,7 +441,41 @@
                 <version>${version.logback}</version>
             </dependency>
             <!--log end-->
+            <!-- json start-->
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${version.json}</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.json-lib</groupId>
+                <artifactId>json-lib</artifactId>
+                <version>${version.net-json}</version>
+            </dependency>
+
+            <!--json end -->
+            <!-- es 客户端 start-->
+            <dependency>
+                <groupId>io.searchbox</groupId>
+                <artifactId>jest</artifactId>
+                <version>${version.jest}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${version.elasticsearch}</version>
+            </dependency>
+            <!-- es 客户端 end-->
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${version.common.lang3}</version>
+            </dependency>
+
         </dependencies>
+
+
     </dependencyManagement>
 
     <build>

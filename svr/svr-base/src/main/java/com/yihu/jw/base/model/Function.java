@@ -19,7 +19,7 @@ public class Function extends IdEntity implements java.io.Serializable {
 	private String name; //功能名称
 	private String saasId; // saasid
 	private String parentCode; //父功能code
-	private Integer status; //状态 -1 已删除 0可用
+	private Integer status; //状态 -1 删除 0 禁用 可用
 	private String createUser;
 	private String createUserName;
 	private Date createTime;
@@ -129,6 +129,7 @@ public class Function extends IdEntity implements java.io.Serializable {
 		this.createUserName = createUserName;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "create_time", nullable = false, length = 0)
 	public Date getCreateTime() {
 		return this.createTime;
@@ -156,6 +157,7 @@ public class Function extends IdEntity implements java.io.Serializable {
 		this.modifyUserName = modifyUserName;
 	}
 
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "modify_time", nullable = false, length = 0)
 	public Date getModifyTime() {
 		return this.modifyTime;

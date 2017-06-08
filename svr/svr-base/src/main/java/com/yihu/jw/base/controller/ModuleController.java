@@ -1,6 +1,7 @@
 package com.yihu.jw.base.controller;
 
 import com.yihu.jw.base.model.Module;
+import com.yihu.jw.base.model.SaasModule;
 import com.yihu.jw.base.service.ModuleService;
 import com.yihu.jw.base.service.ModuleService;
 import com.yihu.jw.restmodel.base.BaseContants;
@@ -125,5 +126,33 @@ public class ModuleController extends EnvelopRestController {
         //封装返回格式
         List<MModule> mModules = convertToModels(list, new ArrayList<>(list.size()), MModule.class, fields);
         return Envelop.getSuccessList(BaseContants.Module.message_success_find_Modules,mModules);
+    }
+
+
+    @PutMapping(value = BaseContants.Module.api_assignModule, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "分配模块", notes = "给对应的saas分配模块")
+    public Envelop assignModule(
+            @ApiParam(name = "saas_code", value = "saas_code", defaultValue = "")
+            @RequestParam String saasCode,
+            @ApiParam(name = "moduleCodes", value = "模块的code，可以传多个，逗号分割", defaultValue = "")
+            @RequestParam String moduleCodes) {
+        try {
+            moduleService.assignModule(saasCode,moduleCodes);
+            return Envelop.getSuccess(BaseContants.Module.message_success_assign_module);
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
+    @GetMapping(value = BaseContants.Module.api_getSaasModules, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "查询saas的模块", notes = "查询saas已经分配的模块")
+    public Envelop getSaasModules(
+            @ApiParam(name = "saas_code", value = "saas_code", defaultValue = "")
+            @RequestParam String saasCode) {
+        try {
+            return Envelop.getSuccess(BaseContants.Module.message_success_assign_module,moduleService.getSaasModules(saasCode));
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
     }
 }

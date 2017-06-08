@@ -18,7 +18,7 @@ public class Module extends IdEntity implements java.io.Serializable {
 	private String name; //模块名称
 	private String saasId; //关联 Saas code
 	private String parentCode;//父id
-	private Integer status;
+	private Integer status; //-1 删除 0 禁用 可用
 	private String createUser;
 	private String createUserName;
 	private Date createTime;

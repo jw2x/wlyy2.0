@@ -20,6 +20,7 @@ zuul:
   ignored-services: '*'  ##忽略全部的代理  忽略单个微服务   ignored-services: svr-base 多个逗号分割
   routes:
     svr-base: /base/**  ##svr-base方向代理到/base下多层级的路径
+    svr-wlyy: /wlyy/**
 #    svr-base:    这种方式和  svr-base: /base/**  一样  svr-base可以随便写 唯一即可
 #      path: /base/**  path是代理后的路径
 #      serviceId: svr-base  serviceId是微服务name

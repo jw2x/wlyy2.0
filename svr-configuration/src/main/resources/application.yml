@@ -2,6 +2,17 @@ server:
   port: 1221
 
 
+eureka:
+  client:
+    healthcheck:
+      enabled: true #启动监控检查
+  instance:
+    #eurika使用IP不使用host
+    prefer-ip-address: true
+    #定制化在eurika中显示的名称
+    ##instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instance-id: 127.0.0.1:${server.port}
+
 
 ---
 spring:

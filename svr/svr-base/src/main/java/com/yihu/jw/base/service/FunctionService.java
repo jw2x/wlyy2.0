@@ -1,16 +1,23 @@
 package com.yihu.jw.base.service;
 
 import com.yihu.jw.base.dao.FunctionDao;
+import com.yihu.jw.base.dao.ModuleFunctionDao;
 import com.yihu.jw.base.model.Function;
+import com.yihu.jw.base.model.ModuleFunction;
+import com.yihu.jw.base.model.SaasModule;
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.base.BaseContants;
+import com.yihu.jw.restmodel.base.MFunction;
+import com.yihu.jw.restmodel.base.MModule;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,6 +27,10 @@ import java.util.List;
 public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     @Autowired
     private FunctionDao functionDao;
+    @Autowired
+    private ModuleFunctionDao moduleFunctionDao;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Transactional
     public Function createFunction(Function function) throws ApiException {
@@ -70,4 +81,25 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
         }
         function.setStatus(-1);
     }
+    @Transactional
+    public void assignFunction(String moduleCode, String functionCodes) {
+        //先删除原来已经分配好的功能
+        moduleFunctionDao.deleteByModuleCode(moduleCode);
+        //分配新的功能
+        String [] functionCodeArr=functionCodes.split(",");
+        List<ModuleFunction> saasModuleList=new ArrayList<>();
+        for(String functionCode:functionCodeArr){
+            ModuleFunction saasModule=new ModuleFunction();
+            saasModule.setModuleId(moduleCode);
+            saasModule.setFunctionId(functionCode);
+            saasModuleList.add(saasModule);
+        }
+        moduleFunctionDao.save(saasModuleList);
+    }
+
+    public List<MFunction> getModuleFunctions(String saasCode) {
+        String sql=" select m.code,m.parent_code,m.name from base_function f,base_module_function mf where f.code=mf.function_id and f.status=1 and mf.module_id=?";
+        return jdbcTemplate.queryForList(sql,MFunction.class,saasCode);
+    }
+
 }

@@ -3,7 +3,6 @@ spring:
   application:
     name:  svr-quota  ##注册到发现服务的id 如果id一样 eurika会自动做负载
 
-
 ---
 spring:
   profiles: dev

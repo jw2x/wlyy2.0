@@ -1,6 +1,9 @@
 package com.yihu.jw.config;
 
 import com.yihu.jw.restmodel.base.BaseContants;
+import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
+import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
+import com.yihu.jw.restmodel.wx.WxContants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +17,11 @@ import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
-@ComponentScan("com.yihu.jw.*.controller")
+@ComponentScan("com.yihu.jw.**")
 public class SwaggerConfig {
     public static final String PUBLIC_API = "Default";
     public static final String Base_API = "JwBase";
+    public static final String Wlyy_API = "Wlyy";
 
 
     @Bean
@@ -30,7 +34,12 @@ public class SwaggerConfig {
                 .select()
                 .paths(or(
                         regex("/patient/.*")
-                     //   , regex("/"+ BaseContants.Function.api_common+"/.*")
+                        , regex("/"+ BaseContants.Function.api_common+"/.*")
+                        ,regex("/"+ WxContants.Wechat.api_common+"/.*")
+                        ,regex("/"+WxContants.WxAccessToken.api_common+"/.*")
+                        ,regex("/"+WxContants.WxMenu.api_common+"/.*")
+                        ,regex("/"+WxContants.WxTemplate.api_common+"/.*")
+                        ,regex("/"+WxContants.WxGraphicMessage.api_common+"/.*")
                         ))
                 .build()
                 .apiInfo(publicApiInfo());
@@ -47,6 +56,38 @@ public class SwaggerConfig {
         );
 
         return apiInfo;
+    }
+
+    @Bean
+    public Docket wlyyAPI() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName(Wlyy_API)
+                .useDefaultResponseMessages(false)
+                .forCodeGeneration(false)
+                .pathMapping("/")
+                .select()
+                .paths(or(
+                        regex("/" + WlyyAgreementContants.Agreement.api_common + "/.*")
+                        , regex("/" + WlyyAgreementContants.AgreementKpi.api_common + "/.*")
+                        , regex("/" + WlyyAgreementContants.AgreementKpiLog.api_common + "/.*")
+                        , regex("/" + WlyyAgreementContants.SignFamily.api_common + "/.*")
+                        , regex("/" + WlyyPatientContants.Advertisement.api_common + "/.*")
+                ))
+                .build()
+                .apiInfo(wlyyApiInfo());
+    }
+
+    private ApiInfo wlyyApiInfo() {
+        ApiInfo wlyyInfo = new ApiInfo("基卫2.0API",
+                "基卫2.0API，提供基础卫生相关服务。",
+                "1.0",
+                "No terms of service",
+                "wenfujian@jkzl.com",
+                "The Apache License, Version 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0.html"
+        );
+
+        return wlyyInfo;
     }
 
 

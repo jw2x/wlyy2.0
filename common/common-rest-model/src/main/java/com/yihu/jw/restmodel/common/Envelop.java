@@ -1,7 +1,5 @@
 package com.yihu.jw.restmodel.common;
 
-import com.yihu.jw.restmodel.base.MFunction;
-
 import java.io.Serializable;
 import java.util.List;
 

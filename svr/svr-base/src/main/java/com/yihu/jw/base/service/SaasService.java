@@ -68,4 +68,8 @@ public class SaasService extends BaseJpaService<Saas, SaasDao> {
         }
         saas.setStatus(-1);
     }
+
+    public Saas findByName(String cityName) {
+        return saasDao.findByName(cityName);
+    }
 }
