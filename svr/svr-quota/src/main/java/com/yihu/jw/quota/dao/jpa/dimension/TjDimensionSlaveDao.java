@@ -1,6 +1,5 @@
 package com.yihu.jw.quota.dao.jpa.dimension;
 
-import com.yihu.jw.quota.model.jpa.compute.TjCompute;
 import com.yihu.jw.quota.model.jpa.dimension.TjDimensionSlave;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;

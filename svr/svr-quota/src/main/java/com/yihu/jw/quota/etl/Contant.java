@@ -1,7 +1,15 @@
 package com.yihu.jw.quota.etl;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.joda.time.DateTime;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
+import java.util.*;
 
 /**
  * Created by chenweida on 2017/6/1.
@@ -50,9 +58,9 @@ public class Contant {
         public static final String area_team = "9";//行政区划  团队
     }
 
-    public static class quota{
-        public static final String dataLeval_all="1";
-        public static final String dataLeval_oneDay="2";
+    public static class quota {
+        public static final String dataLeval_all = "1";
+        public static final String dataLeval_oneDay = "2";
 
     }
 
@@ -88,6 +96,10 @@ public class Contant {
         }
     }
 
+    public static void main(String[] args) {
+        System.out.println(main_dimension_timeLevel.getStartTime("1"));
+    }
+
     /**
      * 主维度 时间维度
      */
@@ -96,52 +108,129 @@ public class Contant {
         public static final String month = "2";
         public static final String week = "3";
         public static final String day = "4";
+
+        public static String getStartTime(String key) {
+            LocalDate today = LocalDate.now();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            switch (key) {
+                case year: {
+                    //去年度第一天
+                    return simpleDateFormat.format(getCurrYearFirst(-1));
+                }
+                case month: {
+                    //上个月第一天
+                    return getYesterMonthDay(simpleDateFormat, -1);
+                }
+                case week: {
+                    //上周周第一天
+                    return getStartDayOfWeek(simpleDateFormat, -1);
+                }
+                case day: {
+                    //昨天
+                    return getYesterday();
+                }
+            }
+            return getYesterday();
+        }
+
+        /**
+         * 获取这个月第一天
+         *
+         * @param today
+         * @return
+         */
+        private static String getCurrentMonthDay(LocalDate today) {
+            LocalDate firstday = LocalDate.of(today.getYear(), today.getMonth(), 1);
+            return firstday.format(DateTimeFormatter.ISO_DATE);
+        }
+
+        /**
+         * 获取上个月第一天
+         *
+         * @return
+         */
+        private static String getYesterMonthDay(SimpleDateFormat simpleDateFormat, Integer n) {
+            Calendar calendar = Calendar.getInstance();
+            int month = calendar.get(Calendar.MONTH);
+            calendar.set(Calendar.MONTH, month + n);
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+            Date strDateTo = calendar.getTime();
+            return simpleDateFormat.format(strDateTo);
+        }
+
+        /**
+         * 获取本周第一天
+         *
+         * @param simpleDateFormat
+         * @param n                为推迟的周数，1本周，-1向前推迟一周，2下周，依次类推
+         * @return
+         */
+        private static String getStartDayOfWeek(SimpleDateFormat simpleDateFormat, Integer n) {
+            Calendar cal = Calendar.getInstance();
+            cal.add(Calendar.DATE, n * 7);
+            cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            Date date = cal.getTime();
+            return simpleDateFormat.format(date);
+        }
+
+        /**
+         * 获取去年的第一天
+         *
+         * @return
+         */
+        private static Date getCurrYearFirst(Integer n) {
+            Calendar currCal = Calendar.getInstance();
+            int currentYear = currCal.get(Calendar.YEAR) + n;
+            return getYearFirst(currentYear);
+        }
+
+        /**
+         * 获取某年第一天日期
+         *
+         * @param year 年份
+         * @return Date
+         */
+        private static Date getYearFirst(int year) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.clear();
+            calendar.set(Calendar.YEAR, year);
+            Date currYearFirst = calendar.getTime();
+            return currYearFirst;
+        }
+
+        /**
+         * 获取昨天
+         *
+         * @return
+         */
+        private static String getYesterday() {
+            return new org.joda.time.LocalDate(new DateTime().minusDays(1)).toString("yyyy-MM-dd");
+        }
     }
 
-    /**
-     * 从维度常量
-     */
-    public static class slave_dimension {
-        public static final String sex = "1";//性别
-        public static final String age = "2";//年龄段
-    }
-
-    public static class slave_dimension_key {
-        public static final String one = "one";
-        public static final String two = "two";
-    }
 
     public static class save_status {
         public static final String success = "1";
         public static final String fail = "0";
     }
 
-    /**
-     * 数据过滤用到的参量
-     */
-
-    public static class role {
-        public static final String not_null = "1";//非空
-    }
 
     public static class save {
         public static final String es = "1";
         public static final String mysql = "2";
     }
 
-    public static class convert {
-        public static String level_age_1 = "1";
-        public static String level_age_2 = "2";
-        public static String level_age_3 = "3";
-        public static String level_age_4 = "4";
-        public static String level_age_5 = "5";
-        public static String level_age_6 = "6";
-        public static String level_age_1_name = "0~6";
-        public static String level_age_2_name = "7~18";
-        public static String level_age_3_name = "19~30";
-        public static String level_age_4_name = "31~50";
-        public static String level_age_5_name = "51~65";
-        public static String level_age_6_name = ">65";
+    public static class quartz_cron {
+        //每年 1月1号 0点 0点0秒触发
+        public static final String everyYearFirstDay = "0 0 0 1 1 ? *";
+        //每个月1号 0点 0点0秒触发
+        public static final String everyMonthFirstDay = "0 0 0 1 * ?";
+        //每周一 0点 0点0秒触发
+        public static final String everyWeekFirstDay = "0 0 0 ? * MON";
+        //每天0点0分 0秒触发
+        public static final String everyDay = "0 0 0 * * ?";
     }
-
 }
