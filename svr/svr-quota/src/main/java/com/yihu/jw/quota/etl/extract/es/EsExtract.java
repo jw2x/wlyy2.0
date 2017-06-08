@@ -214,25 +214,33 @@ public class EsExtract {
                 //递归解析json
                 expainJson(gradeBucketIt, map, null);
 
-                Map<String, SaveModel> allData = new HashMap<>();
-                //初始化主细维度
-                allData= initDimension(tjQuotaDimensionSlaves, one, allData);
-
-                for(Map.Entry<String,Integer> oneMap:map.entrySet()){
-                    String key=oneMap.getKey();
-                    Integer value=oneMap.getValue();
-                    SaveModel saveModel=allData.get(key);
-                    if(saveModel!=null){
-                        saveModel.setResult(value);
-                        returnList.add(saveModel);
-                    }
-                }
+                compute(tjQuotaDimensionSlaves,
+                        returnList,
+                        one,
+                        map);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return returnList;
     }
+
+    private void compute(List<TjQuotaDimensionSlave> tjQuotaDimensionSlaves, List<SaveModel> returnList, Map.Entry<String, TjQuotaDimensionMain> one, Map<String, Integer> map) {
+        Map<String, SaveModel> allData = new HashMap<>();
+        //初始化主细维度
+        allData= initDimension(tjQuotaDimensionSlaves, one, allData);
+
+        for(Map.Entry<String,Integer> oneMap:map.entrySet()){
+            String key=oneMap.getKey();
+            Integer value=oneMap.getValue();
+            SaveModel saveModel=allData.get(key);
+            if(saveModel!=null){
+                saveModel.setResult(value);
+                returnList.add(saveModel);
+            }
+        }
+    }
+
     /**
      * 初始化主细维度
      */

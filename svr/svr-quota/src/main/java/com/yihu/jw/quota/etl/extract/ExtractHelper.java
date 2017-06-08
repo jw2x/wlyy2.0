@@ -10,16 +10,20 @@ import com.yihu.jw.quota.service.dimension.TjDimensionMainService;
 import com.yihu.jw.quota.service.dimension.TjDimensionSlaveService;
 import com.yihu.jw.quota.service.source.TjDataSourceService;
 import com.yihu.jw.quota.util.SpringUtil;
+import com.yihu.jw.quota.vo.DictModel;
 import com.yihu.jw.quota.vo.QuotaVO;
 import com.yihu.jw.quota.vo.SaveModel;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenweida on 2017/6/1.
@@ -72,6 +76,31 @@ public class ExtractHelper {
         return null;
     }
 
+    private Map<String, SaveModel> setAllSlaveData(Map<String, SaveModel> allData, List<DictModel> dictData) {
+        try {
+            Map<String, SaveModel> returnAllData = new HashMap<>();
+            for (Map.Entry<String, SaveModel> one : allData.entrySet()) {
+                for (int i = 0; i < dictData.size(); i++) {
+                    DictModel dictOne = dictData.get(i);
+                    //设置新key
+                    StringBuffer newKey = new StringBuffer(one.getKey() + "-" + dictOne.getCode());
+                    //设置新的value
+                    SaveModel saveModelTemp = new SaveModel();
+                    BeanUtils.copyProperties(one.getValue(), saveModelTemp);
 
+                    StringBuffer keyMethodName = new StringBuffer("setSlaveKey" + (i + 1));
+                    StringBuffer nameMethodName = new StringBuffer("setSlaveKey" + (i + 1) + "Name");
+
+                    SaveModel.class.getMethod(keyMethodName.toString(), String.class).invoke(saveModelTemp, dictOne.getCode());
+                    SaveModel.class.getMethod(nameMethodName.toString(), String.class).invoke(saveModelTemp, dictOne.getName());
+                    returnAllData.put(newKey.toString(), saveModelTemp);
+                }
+            }
+            return returnAllData;
+        } catch (Exception e) {
+
+        }
+        return null;
+    }
 
 }
