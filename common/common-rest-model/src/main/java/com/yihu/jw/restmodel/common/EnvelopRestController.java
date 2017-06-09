@@ -4,7 +4,11 @@ package com.yihu.jw.restmodel.common;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.util.date.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,8 +31,19 @@ import java.util.*;
  * @author Sand
  */
 public class EnvelopRestController {
+    private Logger logger = LoggerFactory.getLogger(EnvelopRestController.class);
+    @Value("${spring.profiles}")
+    private String profile;
+
     protected final static String ResourceCount = "X-Total-Count";
     protected final static String ResourceLink = "Link";
+
+    protected void error(Exception e) {
+        logger.error(e.getMessage());
+        if (!"prod".equals(profile)) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 返回一个信封对象。信封对象的返回场景参见 Envelop.
@@ -45,15 +60,16 @@ public class EnvelopRestController {
 
         return envelop;
     }
+
     //Json转实体类
     public <T> T toEntity(String json, Class<T> entityCls) {
         try {
-            ObjectMapper objectMapper=new ObjectMapper();
+            ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.setDateFormat(new SimpleDateFormat(DateUtil.yyyy_MM_dd_HH_mm_ss));
             T entity = objectMapper.readValue(json, entityCls);
             return entity;
         } catch (IOException ex) {
-            throw new ApiException( "Unable to parse json, " + ex.getMessage(),CommonContants.common_error_params_code);
+            throw new ApiException("Unable to parse json, " + ex.getMessage(), CommonContants.common_error_params_code);
         }
     }
 
@@ -64,7 +80,7 @@ public class EnvelopRestController {
      * @param sources
      * @param targets
      * @param targetCls
-     *@param properties  @return
+     * @param properties @return
      */
     public <T> List<T> convertToModels(Collection sources, List<T> targets, Class<T> targetCls, String properties) {
         if (sources == null) {
@@ -81,6 +97,7 @@ public class EnvelopRestController {
 
         return targets;
     }
+
     /**
      * 计算不在类中的属性。
      *
@@ -102,6 +119,7 @@ public class EnvelopRestController {
 
         return arrayList.toArray(new String[arrayList.size()]);
     }
+
     /**
      * 客户端调用REST接口时，若返回的是分页结果，则需要在响应头中添加资源的总数量及其他资源的分页导航。
      * EHR平台使用响应头中的 X-Total-Count 字段记录资源的总数量，link header作为其他资源的分页导航。
@@ -139,6 +157,7 @@ public class EnvelopRestController {
 
         response.setHeader(ResourceLink, linkMap(map));
     }
+
     private String linkMap(Map<String, String> map) {
         StringBuffer links = new StringBuffer("");
         for (String key : map.keySet()) {
