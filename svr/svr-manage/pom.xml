@@ -88,6 +88,11 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>svr-manage</finalName>
