@@ -20,6 +20,7 @@ public class Function extends IdEntity implements java.io.Serializable {
 	private String saasId; // saasid
 	private String parentCode; //父功能code
 	private Integer status; //状态 -1 删除 0 禁用 可用
+	private String url;//功能对应的后台url路径
 	private String createUser;
 	private String createUserName;
 	private Date createTime;
@@ -176,4 +177,11 @@ public class Function extends IdEntity implements java.io.Serializable {
 		this.remark = remark;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }
