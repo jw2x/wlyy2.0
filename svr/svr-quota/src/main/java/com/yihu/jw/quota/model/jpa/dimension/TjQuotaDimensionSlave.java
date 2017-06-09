@@ -13,7 +13,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "tj_quota_dimension_slave")
 public class TjQuotaDimensionSlave implements java.io.Serializable {
-    private Logger logger= LoggerFactory.getLogger(TjQuotaDimensionSlave.class);
     // Fields
 
     private Integer id;
@@ -22,6 +21,7 @@ public class TjQuotaDimensionSlave implements java.io.Serializable {
     private String dictSql;//字典的sql
     private String key;
     private String type;
+    private String groupByKey;//group by用的key
 
 
 
@@ -94,5 +94,13 @@ public class TjQuotaDimensionSlave implements java.io.Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getGroupByKey() {
+        return groupByKey;
+    }
+
+    public void setGroupByKey(String groupByKey) {
+        this.groupByKey = groupByKey;
     }
 }
