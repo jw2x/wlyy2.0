@@ -46,7 +46,6 @@
 
         <!--网关-->
         <module>../web-gateway</module><!--web网关-->
-        <module>../manage-gateway</module><!--后台管理系统网关-->
     </modules>
 
     <properties>
