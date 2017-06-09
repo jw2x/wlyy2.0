@@ -70,10 +70,8 @@ public class EsQuotaJob implements Job {
 
             //抽取数据 如果是累加就是 List<DataModel>  如果是相除 Map<String,List<DataModel>>
             List<SaveModel> dataModels = extract();
-
             //保存数据
             Boolean success = saveDate(dataModels);
-
 
             tjQuotaLog.setStatus(success ? Contant.save_status.success : Contant.save_status.fail);
             tjQuotaLog.setEndTime(new Date());
