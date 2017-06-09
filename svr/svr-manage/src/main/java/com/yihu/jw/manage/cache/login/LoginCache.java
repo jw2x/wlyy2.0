@@ -1,7 +1,6 @@
 package com.yihu.jw.manage.cache.login;
 
-import com.yihu.jw.manage.model.system.ManageUser;
-import com.yihu.jw.restmodel.manage.ManageUserVO;
+import com.yihu.jw.restmodel.manage.system.ManageUserVO;
 
 import java.util.HashMap;
 import java.util.Map;

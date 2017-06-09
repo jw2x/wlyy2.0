@@ -1,4 +1,4 @@
-package com.yihu.jw.restmodel.manage;
+package com.yihu.jw.restmodel.manage.system;
 
 import java.util.Date;
 
