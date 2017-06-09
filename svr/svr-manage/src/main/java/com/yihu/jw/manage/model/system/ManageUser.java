@@ -1,5 +1,7 @@
 package com.yihu.jw.manage.model.system;// default package
 
+import com.yihu.jw.manage.model.IdEntity;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -8,11 +10,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "manage_user")
-public class ManageUser implements java.io.Serializable {
+public class ManageUser  extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;
 	private String code;
 	private String name;
 	private String password;//密码  密码是 密码+salt MD5加密
@@ -36,7 +37,6 @@ public class ManageUser implements java.io.Serializable {
 
 	/** minimal constructor */
 	public ManageUser(Integer id, Date createTime, Date updateTime) {
-		this.id = id;
 		this.createTime = createTime;
 		this.updateTime = updateTime;
 	}
@@ -47,7 +47,6 @@ public class ManageUser implements java.io.Serializable {
 			Date createTime, String createUser, String createUserName,
 			Date updateTime, String updateUser, String updateUserName,
 			String remark) {
-		this.id = id;
 		this.code = code;
 		this.name = name;
 		this.password = password;
@@ -64,16 +63,6 @@ public class ManageUser implements java.io.Serializable {
 		this.remark = remark;
 	}
 
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "code", length = 100)
 	public String getCode() {

@@ -1,5 +1,7 @@
 package com.yihu.jw.manage.model.login;// default package
 
+import com.yihu.jw.manage.model.IdEntity;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.Column;
@@ -14,12 +16,11 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "manage_login_log")
-public class ManageLoginLog implements java.io.Serializable {
+public class ManageLoginLog extends IdEntity implements java.io.Serializable {
 	public static Integer type_error=0;
 	public static Integer type_success=1;
 	// Fields
 
-	private Integer id;
 	private Date loginTime;
 	private String loginAccount;
 	private String loginUser;
@@ -48,17 +49,6 @@ public class ManageLoginLog implements java.io.Serializable {
 		this.errorMessage = errorMessage;
 	}
 
-	// Property accessors
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "login_time", nullable = false, length = 0)
 	public Date getLoginTime() {

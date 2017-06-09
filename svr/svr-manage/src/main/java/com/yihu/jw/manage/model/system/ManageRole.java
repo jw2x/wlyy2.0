@@ -1,5 +1,7 @@
 package com.yihu.jw.manage.model.system;// default package
 
+import com.yihu.jw.manage.model.IdEntity;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.*;
@@ -11,11 +13,10 @@ import static javax.persistence.GenerationType.IDENTITY;
  */
 @Entity
 @Table(name = "manage_role")
-public class ManageRole implements java.io.Serializable {
+public class ManageRole extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;
 	private String code;
 	private String name;
 	private Integer status;
@@ -56,17 +57,6 @@ public class ManageRole implements java.io.Serializable {
 		this.remark = remark;
 	}
 
-	// Property accessors
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "code", length = 100)
 	public String getCode() {
