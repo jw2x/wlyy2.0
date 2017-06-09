@@ -117,11 +117,22 @@ function getUserCode() {
     var code = window.localStorage.getItem("userCode");
     if (!code) {
         alert("请重新登陆")
-        window.location.href = '/login/login.jsp';
+        window.location.href = server+'/login/login.html';
     }
     return code
 }
 
 function setUserCode(code) {
     window.localStorage.setItem("userCode", code);
+}
+
+/**
+ * 判断是否有登陆
+ * @param data
+ */
+function isLogin(data){
+    if(data.errorCode==not_login){
+         alert("请重新登陆")
+         window.location.href = server+'/login/login.html';
+    }
 }

@@ -54,7 +54,7 @@
         var password=$("#password").val();
         $.ajax({
             type: "GET",
-            url: "/login",
+            url: server+"/login",
             data: {
                 "username":username,
                 "password":password
@@ -65,7 +65,7 @@
                     //保存用户信息到缓存中
                     window.localStorage.setItem("usercode",data.obj.code);//用户code
                     console.info(data)
-                    window.location.href='/index/index.html?u='+data.obj.id;
+                    window.location.href=server+'/index/index.html?u='+data.obj.id;
                 }else{
                     alert("账号或密码错误")
                 }
