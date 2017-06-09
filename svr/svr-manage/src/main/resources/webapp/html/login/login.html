@@ -61,10 +61,11 @@
             },
             dataType: "json",
             success: function(data){
-                if(data.status==200){
+                if(data.successFlg){
                     //保存用户信息到缓存中
                     window.localStorage.setItem("usercode",data.obj.code);//用户code
-                    window.location.href='/index/index.jsp?u='+data.user.id;
+                    console.info(data)
+                    window.location.href='/index/index.html?u='+data.obj.id;
                 }else{
                     alert("账号或密码错误")
                 }
