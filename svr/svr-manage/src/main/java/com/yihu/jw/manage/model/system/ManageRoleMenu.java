@@ -1,5 +1,7 @@
 package com.yihu.jw.manage.model.system;// default package
 
+import com.yihu.jw.manage.model.IdEntity;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,7 +14,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "manage_role_menu")
-public class ManageRoleMenu implements java.io.Serializable {
+public class ManageRoleMenu  extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
@@ -32,17 +34,6 @@ public class ManageRoleMenu implements java.io.Serializable {
 		this.menuCode = menuCode;
 	}
 
-	// Property accessors
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	@Column(name = "role_code", length = 100)
 	public String getRoleCode() {

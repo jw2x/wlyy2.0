@@ -117,7 +117,7 @@ function getUserCode() {
     var code = window.localStorage.getItem("userCode");
     if (!code) {
         alert("请重新登陆")
-        window.location.href = server+'/login/login.html';
+        window.location.href = '/login/login.html';
     }
     return code
 }
@@ -133,6 +133,6 @@ function setUserCode(code) {
 function isLogin(data){
     if(data.errorCode==not_login){
          alert("请重新登陆")
-         window.location.href = server+'/login/login.html';
+         window.location.href = '/login/login.html';
     }
 }

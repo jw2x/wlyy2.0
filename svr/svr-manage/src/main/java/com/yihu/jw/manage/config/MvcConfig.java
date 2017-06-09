@@ -2,11 +2,12 @@ package com.yihu.jw.manage.config;
 
 import com.yihu.jw.manage.interceptors.UserInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.*;
 
 /**
  * Created by chenweida on 2017/6/8.
@@ -36,7 +37,9 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
      * 判断是否登陆的拦截器
      * @param registry
      */
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(userInterceptor).addPathPatterns("/**");
     }
+
 }
