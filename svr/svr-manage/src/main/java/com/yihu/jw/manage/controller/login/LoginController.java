@@ -29,9 +29,12 @@ public class LoginController extends EnvelopRestController {
             ManageUser data = loginService.login(username, password);
             return Envelop.getSuccess("登陆成功", data);
         }catch (Exception e){
+            error(e);
             return Envelop.getError("登陆失败:"+e.getMessage(), -1);
-        }
     }
+}
+
+
 
     @GetMapping("/index")
     public Envelop index(
