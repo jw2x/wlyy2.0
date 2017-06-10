@@ -5,7 +5,6 @@ import com.yihu.jw.manage.service.login.LoginService;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,10 +37,10 @@ public class LoginController extends EnvelopRestController {
 
     @GetMapping("/index")
     public Envelop index(
-            @RequestParam(required = true, name = "usercode") String usercode
+            @RequestParam(required = true, name = "userCode") String userCode
     ) {
         try {
-            Map<String, List> data = loginService.index(usercode);
+            Map<String, List> data = loginService.index(userCode);
             return Envelop.getSuccess("获取信息成功", data);
         }catch (Exception e){
             return Envelop.getError("获取信息成功:"+e.getMessage(), -1);

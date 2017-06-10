@@ -63,7 +63,7 @@
             success: function(data){
                 if(data.successFlg){
                     //保存用户信息到缓存中
-                    window.localStorage.setItem("usercode",data.obj.code);//用户code
+                    window.localStorage.setItem("userCode",data.obj.code);//用户code
                     window.location.href='/index/index.html?u='+data.obj.id;
                 }else{
                     alert("账号或密码错误")
