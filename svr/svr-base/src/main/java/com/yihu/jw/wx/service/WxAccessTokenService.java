@@ -10,6 +10,8 @@ import com.yihu.jw.wx.dao.WxAccessTokenDao;
 import com.yihu.jw.wx.model.WxAccessToken;
 import com.yihu.jw.wx.model.WxWechat;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -23,6 +25,9 @@ import java.util.UUID;
  */
 @Service
 public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccessTokenDao> {
+
+
+    private Logger logger= LoggerFactory.getLogger(WxAccessTokenService.class);
 
     @Autowired
     private WxAccessTokenDao wxAccessTokenDao;
@@ -66,6 +71,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
             }
             String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
             String result = HttpUtil.sendGet(token_url, params);
+            logger.info("--------------微信返回结果:"+result+"---------------");
             JSONObject json = new JSONObject(result);
             if (json.has("access_token")) {
                 String token = json.get("access_token").toString();

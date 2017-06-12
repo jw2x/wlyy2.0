@@ -34,7 +34,6 @@ public class AddressUtils {
         String returnStr = this.getResult(urlStr, content, encodingString);
         if (returnStr != null) {
             // 处理返回的省市区信息
-            System.out.println(returnStr);
             String[] temp = returnStr.split(",");
             if (temp.length < 3) {
                 return "0";//无效IP，局域网测试
@@ -204,18 +203,18 @@ public class AddressUtils {
     }
 
     // 测试
-    public static void main(String[] args) {
-        AddressUtils addressUtils = new AddressUtils();
-        // 测试ip 219.136.134.157 中国-华南-广东省-广州市-越秀区-电信
-        String ip = "219.136.134.157";
-        String address = "";
-        try {
-            address = addressUtils.getAddresses(ip);
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        System.out.println(address);
-        // 输出结果为：广东省,广州市,越秀区
-    }
+    //public static void main(String[] args) {
+    //    AddressUtils addressUtils = new AddressUtils();
+    //    // 测试ip 219.136.134.157 中国-华南-广东省-广州市-越秀区-电信
+    //    String ip = "219.136.134.157";
+    //    String address = "";
+    //    try {
+    //        address = addressUtils.getAddresses(ip);
+    //    } catch (UnsupportedEncodingException e) {
+    //        // TODO Auto-generated catch block
+    //        e.printStackTrace();
+    //    }
+    //    System.out.println(address);
+    //    // 输出结果为：广东省,广州市,越秀区
+    //}
 }

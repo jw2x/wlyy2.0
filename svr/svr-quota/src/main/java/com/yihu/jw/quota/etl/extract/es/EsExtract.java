@@ -300,7 +300,7 @@ public class EsExtract {
             StringBuffer AllGroupBy = new StringBuffer(one.getKey() + ",");// 例如区  town,sex,age
             for (int i = 0; i < tjQuotaDimensionSlaves.size(); i++) {
                 allField.append(tjQuotaDimensionSlaves.get(i).getKey());
-                AllGroupBy.append(tjQuotaDimensionSlaves.get(i).getKey());
+                AllGroupBy.append(tjQuotaDimensionSlaves.get(i).getGroupByKey());
                 if (i != (tjQuotaDimensionSlaves.size() - 1)) {
                     allField.append(",");
                     AllGroupBy.append(",");

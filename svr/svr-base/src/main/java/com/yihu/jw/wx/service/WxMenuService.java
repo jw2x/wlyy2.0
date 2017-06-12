@@ -10,6 +10,8 @@ import com.yihu.jw.wx.model.WxAccessToken;
 import com.yihu.jw.wx.model.WxMenu;
 import com.yihu.jw.wx.model.WxWechat;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,6 +27,8 @@ import java.util.List;
 @Service
 public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
 
+    private Logger logger= LoggerFactory.getLogger(WxMenuService.class);
+
     @Autowired
     private WxMenuDao wxMenuDao;
 
@@ -35,7 +39,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     private WxAccessTokenService wxAccessTokenService;
 
     /**
-     * 将菜单保存至数据库(微信未创建)
+     * 将菜单保存至数据库
      * @param wxMenu
      * @return
      */
@@ -120,18 +124,19 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
         if(wechat==null){
             throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
         }
-
         //首先根据wechatCode获取菜单,然后封装成json字符串
         List<WxMenu> menus = wxMenuDao.findByWechatCode(wechatCode);
         if(menus==null){
             throw new ApiException(WxContants.WxMenu.message_fail_WxMenu_is_no_exist, CommonContants.common_error_params_code);
         }
         String menuJsonString = getMenuToString(menus, wechatCode);
+        logger.info("-----------------微信菜单json字符串:"+ menuJsonString+"--------------------");
         WxAccessToken wxAccessTokenByCode = wxAccessTokenService.getWxAccessTokenByCode(wechatCode);
         String token = wxAccessTokenByCode.getAccessToken();
         // 请求微信接口创建菜单
         String url = " https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + token;
         String jsonStr = HttpUtil.sendPost(url, menuJsonString);
+        logger.info("------------------创建微信菜单,微信返回结果:"+jsonStr+"---------------------");
         JSONObject result = new JSONObject(jsonStr);
         return result;
     }

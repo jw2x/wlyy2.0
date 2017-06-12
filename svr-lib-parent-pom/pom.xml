@@ -42,11 +42,10 @@
         <module>../svr/svr-base</module><!--基础微服务-->
         <module>../svr/svr-quota</module><!--统计微服务-->
         <module>../svr/svr-wlyy</module><!--i健康微服务-->
-
+        <module>../svr/svr-manage</module><!--基卫后台管理系统-->
 
         <!--网关-->
         <module>../web-gateway</module><!--web网关-->
-        <module>../manage-gateway</module><!--后台管理系统网关-->
     </modules>
 
     <properties>
@@ -359,6 +358,11 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
+                <version>${version.jackson}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-jaxb-annotations</artifactId>
                 <version>${version.jackson}</version>
             </dependency>
             <dependency>
