@@ -27,7 +27,7 @@ public abstract class IdEntity implements Serializable {
 	protected Long id;  // 非业务主键
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long getId() {
 		return id;
 	}
