@@ -12,4 +12,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface UserDao extends PagingAndSortingRepository<ManageUser, Integer>, JpaSpecificationExecutor<ManageUser> {
    @Query("from ManageUser u where u.loginAccount=?1 and u.status=1 ")
     ManageUser findByAccount(String username);
+
+    @Query("from ManageUser u where u.code=?1 and u.status=1 ")
+    ManageUser findByCode(String usercode);
 }

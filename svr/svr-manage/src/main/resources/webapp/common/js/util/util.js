@@ -126,6 +126,10 @@ function setUserCode(code) {
     window.localStorage.setItem("userCode", code);
 }
 
+function cleanUserCode(){
+    window.localStorage.setItem("userCode", null);
+}
+
 /**
  * 判断是否有登陆
  * @param data

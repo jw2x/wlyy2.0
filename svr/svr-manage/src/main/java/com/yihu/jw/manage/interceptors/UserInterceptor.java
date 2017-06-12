@@ -1,7 +1,11 @@
 package com.yihu.jw.manage.interceptors;
 
+import com.yihu.jw.manage.model.system.ManageUser;
+import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.exception.ManageException;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +24,8 @@ import java.util.List;
 public class UserInterceptor implements HandlerInterceptor {
     private static Integer NOT_LOGIN=-1000;
     List<String> unFilters=new ArrayList<>();
+    @Autowired
+    private UserService userService;
     @PostConstruct
     public void addUnFilterURI(){
         //添加不需要过滤的路径
@@ -35,8 +41,14 @@ public class UserInterceptor implements HandlerInterceptor {
             if (unFilters.contains(uri)){
                 return true;
             }
-            Object obj= requset.getParameterMap().get("userCode");
+            String obj= requset.getParameter("userCode");
             if(org.springframework.util.StringUtils.isEmpty(obj)){
+                // 未登录
+                response.getOutputStream().write(JSONObject.fromObject(Envelop.getError("请登录后再操作！",NOT_LOGIN)).toString().getBytes());
+            }
+            //判断usercode是否存在
+            ManageUser manageUser= userService.findByCode(obj);
+            if(manageUser==null){
                 // 未登录
                 response.getOutputStream().write(JSONObject.fromObject(Envelop.getError("请登录后再操作！",NOT_LOGIN)).toString().getBytes());
             }

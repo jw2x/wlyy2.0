@@ -20,4 +20,8 @@ public class LoginCache {
     public static void addCache(String key,ManageUserVO manageUserVO) {
         user.put(key,manageUserVO);
     }
+
+    public static void cleanUser(String key){
+        user.remove(key);
+    }
 }

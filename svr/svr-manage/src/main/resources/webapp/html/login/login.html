@@ -27,17 +27,19 @@
         </div>
         <h3>欢迎</h3>
 
-        <form class="m-t" role="form"  id="loginForm" onsubmit="return login()">
+        <form class="m-t" role="form" id="loginForm" onsubmit="return login()">
             <div class="form-group">
                 <input id="username" name="username" type="text" class="form-control" placeholder="用户名" required="">
             </div>
             <div class="form-group">
-                <input id="password" name="password"  type="password" class="form-control" placeholder="密码" required="">
+                <input id="password" name="password" type="password" class="form-control" placeholder="密码" required="">
             </div>
             <button id="loginBtn" type="submit" class="btn btn-primary block full-width m-b">登 录</button>
 
             <p class="text-muted text-center">
-                <a href="login.html#"><small>忘记密码了？</small></a> |
+                <a href="login.html#">
+                    <small>忘记密码了？</small>
+                </a> |
                 <a href="register.html">注册一个新账号</a>
             </p>
 
@@ -48,24 +50,26 @@
 <!-- 全局js -->
 <script src="/common/js/jquery/jquery-2.1.1.min.js"></script>
 <script src="/common/js/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" >
-    function login(){
-        var username=$("#username").val();
-        var password=$("#password").val();
+<script src="/common/js/common.js"></script>
+<script src="/common/js/util/util.js"></script>
+<script type="text/javascript">
+    function login() {
+        var username = $("#username").val();
+        var password = $("#password").val();
         $.ajax({
             type: "GET",
             url: "/login",
             data: {
-                "username":username,
-                "password":password
+                "username": username,
+                "password": password
             },
             dataType: "json",
-            success: function(data){
-                if(data.successFlg){
+            success: function (data) {
+                if (data.successFlg) {
                     //保存用户信息到缓存中
-                    window.localStorage.setItem("userCode",data.obj.code);//用户code
-                    window.location.href='/index/index.html?u='+data.obj.id;
-                }else{
+                    setUserCode(data.obj.code)
+                    window.location.href = '/index/index.html?u=' + data.obj.id;
+                } else {
                     alert("账号或密码错误")
                 }
             }

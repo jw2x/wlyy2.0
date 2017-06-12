@@ -1,5 +1,6 @@
 package com.yihu.jw.manage.controller.login;
 
+import com.yihu.jw.manage.cache.login.LoginCache;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.login.LoginService;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -27,13 +28,23 @@ public class LoginController extends EnvelopRestController {
         try {
             ManageUser data = loginService.login(username, password);
             return Envelop.getSuccess("登陆成功", data);
-        }catch (Exception e){
+        } catch (Exception e) {
             error(e);
-            return Envelop.getError("登陆失败:"+e.getMessage(), -1);
+            return Envelop.getError("登陆失败:" + e.getMessage(), -1);
+        }
     }
-}
 
-
+    @GetMapping("/loginout")
+    public Envelop loginout(@RequestParam(required = true, name = "userCode") String userCode) {
+        try {
+            //从缓存清空
+            LoginCache.cleanUser(userCode);
+            return Envelop.getSuccess("登出成功");
+        } catch (Exception e) {
+            error(e);
+            return Envelop.getError("登出成功:" + e.getMessage(), -1);
+        }
+    }
 
     @GetMapping("/index")
     public Envelop index(
@@ -42,8 +53,8 @@ public class LoginController extends EnvelopRestController {
         try {
             Map<String, List> data = loginService.index(userCode);
             return Envelop.getSuccess("获取信息成功", data);
-        }catch (Exception e){
-            return Envelop.getError("获取信息成功:"+e.getMessage(), -1);
+        } catch (Exception e) {
+            return Envelop.getError("获取信息成功:" + e.getMessage(), -1);
         }
     }
 }

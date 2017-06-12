@@ -79,7 +79,7 @@ public class LoginService {
         return user;
     }
 
-    public Map<String, List> index(String usercode) {
+    public Map<String, List> index(String usercode) throws ManageException {
         Map<String, List> data = new HashMap<>();
         //得到角色
         List<ManageRole> roles = roleService.findByUserCode(usercode);

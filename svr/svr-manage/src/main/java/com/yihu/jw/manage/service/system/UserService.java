@@ -19,4 +19,8 @@ public class UserService {
     public ManageUser findByAccount(String username) {
         return userDao.findByAccount(username);
     }
+
+    public ManageUser findByCode(String usercode) {
+        return userDao.findByCode(usercode);
+    }
 }
