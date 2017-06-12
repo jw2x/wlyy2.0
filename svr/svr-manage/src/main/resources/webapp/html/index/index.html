@@ -6,14 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="renderer" content="webkit">
 
-
     <title>基卫后台管理系统</title>
 
-    <!--[if lt IE 8]>
-    <script>
-        alert('已不支持IE6-8，请使用谷歌、火狐等浏览器\n或360、QQ等国产浏览器的极速模式浏览本页面！');
-    </script>
-    <![endif]-->
     <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
 
@@ -58,14 +52,14 @@
                 </li>
                 <!--循环遍历出菜单-->
                 <li v-for="menu in menus">
-                    <a href="#">
+                    <a href="javascript:void(0)">
                         <i class="fa fa-home"></i>
                         <span class="nav-label">{{menu.parentMenu.name}}</span>
                         <span class="fa arrow"></span>
                     </a>
                     <ul class="nav nav-second-level" v-for="childMenu in menu.childMenus">
                         <li>
-                            <a class="J_menuItem" :href="childMenu.url" data-index="0">{{childMenu.name}}</a>
+                                <a class="J_menuItem" :href="childMenu.url" >{{childMenu.name}}</a>
                         </li>
                     </ul>
                 </li>
@@ -116,8 +110,8 @@
             <a href="javascript:void(0)" onclick="loginout()" class="roll-nav roll-right J_tabExit"><i class="fa fa fa-sign-out"></i> 退出</a>
         </div>
         <div class="row J_mainContent" id="content-main">
-            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="" frameborder="0"
-                    data-id="index_v1.html" seamless></iframe>
+            <iframe class="J_iframe" name="iframe0" width="100%" height="100%" src="/index/index_v1.html" frameborder="0"
+                    data-id="/index/index_v1.html" ></iframe>
         </div>
         <div class="footer">
 
