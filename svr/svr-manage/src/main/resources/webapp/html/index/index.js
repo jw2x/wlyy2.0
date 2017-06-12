@@ -11,10 +11,15 @@ do_get(
                     role: '',
                     menus:'',
                     aaa:'aaa'
+                },
+                updated: function() {
+                    //渲染结束之后调用菜单初始化
+                    $('#side-menu').metisMenu();
                 }
             });
             contentVM.role = data.obj.role;
             contentVM.menus = data.obj.menus;
+
         }else{
             alert("获取角色,菜单失败")
         }
