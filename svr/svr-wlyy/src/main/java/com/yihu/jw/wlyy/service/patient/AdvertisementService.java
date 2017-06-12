@@ -12,6 +12,8 @@ import com.yihu.jw.wlyy.entity.agreement.WlyySignFamily;
 import com.yihu.jw.wlyy.entity.patient.WlyyAdvertisement;
 import com.yihu.jw.wlyy.service.BaseSaasService;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,6 +29,8 @@ import java.util.List;
  */
 @Service
 public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, AdvertisementDao> {
+
+    private Logger logger= LoggerFactory.getLogger(AdvertisementService.class);
 
     @Autowired
     private AdvertisementDao advertisementDao;
@@ -166,9 +170,11 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      */
     public  List<WlyyAdvertisement> getByHttp(HttpServletRequest request){
         String ipAddress = CusAccessObjectUtil.getIpAddress(request);
+        logger.info("-------------请求的ip地址为:"+ipAddress+"--------------");
         AddressUtils addressUtils = new AddressUtils();
         try {
             String address = addressUtils.getAddresses(ipAddress);//"中国-西南-四川省-成都市- -电信"  (没有值,中间用空格隔开  country-area-region-city-county-isp)或者返回0
+            logger.info("ip地址:"+ipAddress+"解析为:"+address);
             String[] addresses = address.split("-");
             if(addresses.length<6){
                 return  getDefaultList();
@@ -187,6 +193,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
             }
 
         } catch (UnsupportedEncodingException e) {//解析ip失败,展示默认广告
+            logger.warn("解析ip:"+ipAddress+"解析失败,失败原因:"+e.getMessage());
             return  getDefaultList();
         }
 
@@ -199,8 +206,10 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      */
     public  List<WlyyAdvertisement> getListByIp(String ipaddress){
         try {
+            logger.info("-------------请求的ip地址为:"+ipaddress+"--------------");
             AddressUtils addressUtils = new AddressUtils();
             String address = addressUtils.getAddresses(ipaddress);
+            logger.info("ip地址:"+ipaddress+"解析为:"+address);
             String[] addresses = address.split("-");
             if(addresses.length<6){
                 return  getDefaultList();
@@ -219,6 +228,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
             }
 
         } catch (UnsupportedEncodingException e) {//解析ip失败,展示默认广告
+            logger.warn("解析ip:"+ipaddress+"解析失败,失败原因:"+e.getMessage());
             return  getDefaultList();
         }
 

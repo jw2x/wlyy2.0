@@ -6,6 +6,7 @@ import com.yihu.jw.manage.model.login.ManageLoginLog;
 import com.yihu.jw.manage.model.system.ManageMenu;
 import com.yihu.jw.manage.model.system.ManageRole;
 import com.yihu.jw.manage.model.system.ManageUser;
+import com.yihu.jw.manage.model.system.MenuItems;
 import com.yihu.jw.manage.service.system.MenuService;
 import com.yihu.jw.manage.service.system.RoleService;
 import com.yihu.jw.manage.service.system.UserService;
@@ -17,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by chenweida on 2017/6/8.
@@ -85,10 +83,24 @@ public class LoginService {
         Map<String, List> data = new HashMap<>();
         //得到角色
         List<ManageRole> roles = roleService.findByUserCode(usercode);
-        //得到用户所有菜单
-        List<ManageMenu> menus = menuService.findByUserCode(usercode);
+
+        List<MenuItems> menuItemses = new ArrayList<>();
+
+        //查询所有父菜单
+        List<ManageMenu> parentMenus = menuService.findParentMenus(usercode);
+        //查询所有子菜单
+        if(parentMenus!=null){
+            for(ManageMenu parentMenu:parentMenus){
+                //通过父菜单查找对应的子菜单
+                List<ManageMenu> childMenus = menuService.findChildMenus(usercode,parentMenu.getCode());
+                MenuItems menuItem = new MenuItems();
+                menuItem.setParentMenu(parentMenu);
+                menuItem.setChildMenus(childMenus);
+                menuItemses.add(menuItem);
+            }
+        }
         data.put("role", roles);
-        data.put("menus", menus);
+        data.put("menus", menuItemses);
         return data;
     }
 }

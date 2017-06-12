@@ -10,6 +10,8 @@ import com.yihu.jw.util.HttpUtil;
 import com.yihu.jw.wx.dao.WxTemplateDao;
 import com.yihu.jw.wx.model.*;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -21,6 +23,8 @@ import java.util.*;
  */
 @Service
 public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao> {
+
+    private Logger logger= LoggerFactory.getLogger(WxTemplateService.class);
 
     @Autowired
     private WxTemplateDao wxTemplateDao;
@@ -148,11 +152,14 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             wechatTemplate.setData(newDataMap);
 
             String params = mapper.writeValueAsString(wechatTemplate);
+            logger.info("----------------------模版消息json字符串:"+params+"------------------");
 
             WxAccessToken wxAccessTokenByCode = wxAccessTokenService.getWxAccessTokenByCode(wechatCode);
             String token = wxAccessTokenByCode.getAccessToken();
             String token_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + token;
             String result = HttpUtil.sendPost(token_url, params);
+            logger.info("------------------------发送模板消息,微信返回结果:"+result+"-----------------------");
+
             JSONObject jsonResult = new JSONObject(result);
             return jsonResult;
         } catch (Exception e) {

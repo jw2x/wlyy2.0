@@ -17,10 +17,6 @@
     <dependencies>
         <dependency>
             <groupId>com.yihu.jw</groupId>
-            <artifactId>svr-base</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
             <artifactId>common-swagger</artifactId>
         </dependency>
         <dependency>
