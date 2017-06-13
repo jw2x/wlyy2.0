@@ -7,5 +7,5 @@ public class WlyyContant {
 
     public static Integer status_del=-1;
     public static Integer status_lock=0;
-    public static Integer status_normal=-1;
+    public static Integer status_normal=1;
 }
