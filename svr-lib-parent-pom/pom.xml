@@ -384,6 +384,13 @@
             </dependency>
 
             <!--zipkin  end-->
+            <!---->
+
+            <dependency>
+                <groupId>org.springside</groupId>
+                <artifactId>springside-core</artifactId>
+                <version>${version.springside}</version>
+            </dependency>
             <!--hibernate start-->
             <dependency>
                 <groupId>org.hibernate</groupId>
