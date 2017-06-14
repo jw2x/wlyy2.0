@@ -32,8 +32,8 @@ public class UserController {
     @ApiOperation(value = "用户列表")
     public Envelop userList(
             @ApiParam(name = "name", value = "用户名称", required = false) @RequestParam(required = false, name = "name") String name,
-            @ApiParam(name = "page", value = "当前页", required = false) @RequestParam(required = false, name = "page", defaultValue = "1") Integer page,
-            @ApiParam(name = "pageSize", value = "每页显示条数", required = false) @RequestParam(required = false, name = "pageSize", defaultValue = "10") Integer pageSize
+            @ApiParam(name = "start", value = "当前页(0开始)", required = false) @RequestParam(required = false, name = "start", defaultValue = "0") Integer page,
+            @ApiParam(name = "length", value = "每页显示条数", required = false) @RequestParam(required = false, name = "length", defaultValue = "10") Integer pageSize
     ) {
         try {
             Page<ManageUser> users = userService.userList(name,page, pageSize);
@@ -46,7 +46,7 @@ public class UserController {
             );
 
         } catch (Exception e) {
-            return Envelop.getError("获取信息成功:" + e.getMessage(), -1);
+            return Envelop.getError("获取信息失败:" + e.getMessage(), -1);
         }
     }
 }

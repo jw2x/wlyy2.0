@@ -41,11 +41,10 @@ public class UserService {
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
         // 分页信息
         PageRequest pageRequest = new PageRequest(page, pageSize, sort);
-
         // 设置查询条件
         Map<String, SearchFilter> filters = new HashMap<String, SearchFilter>();
         // 用户名称
-        if (!StringUtils.isEmpty(name)) {
+        if (!StringUtils.isEmpty(name)&&!("null".equals(name))) {
             name="%"+name+"%";
             filters.put("name", new SearchFilter("name", SearchFilter.Operator.LIKE, name));
         }

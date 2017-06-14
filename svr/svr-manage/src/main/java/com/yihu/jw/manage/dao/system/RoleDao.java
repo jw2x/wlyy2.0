@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by chenweida on 2017/6/9.
  */
-public interface RoleDao extends PagingAndSortingRepository<ManageRole, Integer>, JpaSpecificationExecutor<ManageRole> {
+public interface RoleDao extends PagingAndSortingRepository<ManageRole, Long>, JpaSpecificationExecutor<ManageRole> {
 }

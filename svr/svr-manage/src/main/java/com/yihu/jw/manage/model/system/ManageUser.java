@@ -190,4 +190,23 @@ public class ManageUser  extends IdEntity implements java.io.Serializable {
 		this.remark = remark;
 	}
 
+	@Override
+	public String toString() {
+		return "ManageUser{" +
+				"code='" + code + '\'' +
+				", name='" + name + '\'' +
+				", password='" + password + '\'' +
+				", salt='" + salt + '\'' +
+				", loginAccount='" + loginAccount + '\'' +
+				", mobile='" + mobile + '\'' +
+				", status=" + status +
+				", createTime=" + createTime +
+				", createUser='" + createUser + '\'' +
+				", createUserName='" + createUserName + '\'' +
+				", updateTime=" + updateTime +
+				", updateUser='" + updateUser + '\'' +
+				", updateUserName='" + updateUserName + '\'' +
+				", remark='" + remark + '\'' +
+				'}';
+	}
 }

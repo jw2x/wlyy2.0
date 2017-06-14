@@ -2448,16 +2448,20 @@
 		var compat = function ( old, modern ) {
 			return json[old] !== undefined ? json[old] : json[modern];
 		};
-	
-		var draw            = compat( 'sEcho',                'draw' );
-		var recordsTotal    = compat( 'iTotalRecords',        'recordsTotal' );
-		var rocordsFiltered = compat( 'iTotalDisplayRecords', 'recordsFiltered' );
-	
+
+		//var draw            = compat( 'sEcho',                'draw' );
+		//var recordsTotal    = compat( 'iTotalRecords',        'recordsTotal' );
+		//var rocordsFiltered = compat( 'iTotalDisplayRecords', 'recordsFiltered' );
+		//因为基卫后台是当前页和每页显示条数的key和框架不一样 所以修改下
+		var draw            = compat( 'sEcho',                'currPage' );
+		var recordsTotal    = compat( 'iTotalRecords',        'totalCount' );
+		var rocordsFiltered = compat( 'iTotalDisplayRecords', 'totalCount' );
+
 		if ( draw ) {
 			// Protect against out of sequence returns
-			if ( draw*1 < settings.iDraw ) {
-				return;
-			}
+			//if ( draw*1 < settings.iDraw ) {
+			//	return;
+			//}
 			settings.iDraw = draw * 1;
 		}
 	
