@@ -3,6 +3,7 @@ package com.yihu.jw.controller;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.fegin.PatientFegin;
+import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -17,11 +18,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.annotation.SessionScope;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by chenweida on 2017/5/10.
  */
 @RestController
-@RequestMapping("/rest/patient")
+@RequestMapping("/{version}/patient")
 @Api(description = "患者")
 public class PatientController {
     private Logger logger= LoggerFactory.getLogger(PatientController.class);
@@ -56,4 +59,21 @@ public class PatientController {
 //    public String findByCodeFallback(String code) {
 //        return "启动断路器";
 //    }
+
+    @GetMapping("/hello")
+    @ApiVersion(1)
+    @ResponseBody
+    public String hello1(HttpServletRequest request){
+        System.out.println("haha1..........");
+
+        return "hello";
+    }
+
+    @GetMapping("/hello")
+    @ApiVersion(2)
+    @ResponseBody
+    public String hello2(HttpServletRequest request){
+        System.out.println("haha2.........");
+        return "hello";
+    }
 }
