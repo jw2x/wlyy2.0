@@ -66,7 +66,7 @@ public class PatientController {
     public String hello1(HttpServletRequest request){
         System.out.println("haha1..........");
 
-        return "hello";
+        return "hello1";
     }
 
     @GetMapping("/hello")
@@ -74,6 +74,6 @@ public class PatientController {
     @ResponseBody
     public String hello2(HttpServletRequest request){
         System.out.println("haha2.........");
-        return "hello";
+        return "hello2";
     }
 }
