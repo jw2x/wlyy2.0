@@ -27,12 +27,29 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/{version}/patient")
 @Api(description = "患者")
 public class PatientController {
-    private Logger logger= LoggerFactory.getLogger(PatientController.class);
+    private Logger logger = LoggerFactory.getLogger(PatientController.class);
     @Autowired
     private PatientFegin patientFegin;
 
     @Autowired
     private Tracer tracer;
+
+    @GetMapping("/hello")
+    @ApiVersion(1)
+    @ResponseBody
+    public String hello1(HttpServletRequest request) {
+        System.out.println("haha1..........");
+
+        return "hello1";
+    }
+
+    @GetMapping("/hello")
+    @ApiVersion(2)
+    @ResponseBody
+    public String hello2(HttpServletRequest request) {
+        System.out.println("haha2.........");
+        return "hello2";
+    }
 
     @ApiOperation(value = "根据code查找患者")
     @GetMapping(value = "findByCode")
@@ -41,11 +58,11 @@ public class PatientController {
 //   @HystrixCommand(fallbackMethod = "findByCodeFallback" )
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
-            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false")})
     public String findByCode(
             @ApiParam(name = "code", value = "患者code", required = true) @RequestParam(value = "code", required = true) String code) {
         tracer.getCurrentSpan().logEvent("开始调用微服务查询患者");
-        String text1 =patientFegin.findByCode(code);
+        String text1 = patientFegin.findByCode(code);
         tracer.getCurrentSpan().logEvent("查询调用微服务找患者结束");
         return text1;
     }
@@ -60,20 +77,5 @@ public class PatientController {
 //        return "启动断路器";
 //    }
 
-    @GetMapping("/hello")
-    @ApiVersion(1)
-    @ResponseBody
-    public String hello1(HttpServletRequest request){
-        System.out.println("haha1..........");
 
-        return "hello1";
-    }
-
-    @GetMapping("/hello")
-    @ApiVersion(2)
-    @ResponseBody
-    public String hello2(HttpServletRequest request){
-        System.out.println("haha2.........");
-        return "hello2";
-    }
 }
