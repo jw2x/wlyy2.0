@@ -90,8 +90,9 @@ function do_put(url, data, success) {
     //获取用户的code
     var usercode = getUserCode();
     data.userCode = usercode;
+    data._method="PUT";
     $.ajax({
-        type: 'PUT',
+        type: 'POST',
         url: url,
         data: data,
         success: success,
@@ -104,8 +105,9 @@ function do_delete(url, data, success) {
     //获取用户的code
     var usercode = getUserCode();
     data.userCode = usercode;
+    data._method="DELETE";
     $.ajax({
-        type: 'DELETE',
+        type: 'POST',
         url: url,
         data: data,
         success: success,
