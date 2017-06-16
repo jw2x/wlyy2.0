@@ -2,6 +2,7 @@ package com.yihu.jw.config.mvc;
 
 import com.yihu.jw.restmodel.exception.SecurityException;
 import com.yihu.jw.restmodel.exception.SystemException;
+import com.yihu.jw.restmodel.exception.business.JiWeiException;
 import com.yihu.jw.restmodel.exception.business.ManageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,10 @@ import java.io.PrintWriter;
 @Component
 public class GlobalHandlerExceptionResolver implements HandlerExceptionResolver {
     private Logger logger = LoggerFactory.getLogger(GlobalHandlerExceptionResolver.class);
-    private static Integer status_500 = 500;//后台异常
-    private static Integer status_510 = 510;//后台管理系统异常
     private static Integer status_403 = 403;//没权限 未登录 等权限异常
+    private static Integer status_500 = 500;//后台异常
+    private static Integer status_510 = 510;//基卫系统异常
+    private static Integer status_511 = 511;//后台管理系统异常
 
 
     /**
@@ -34,11 +36,14 @@ public class GlobalHandlerExceptionResolver implements HandlerExceptionResolver 
         logger.error(error);
         if (ex instanceof ManageException) {
             //后台管理系统异常
-            printWrite(status_510, error, resp);
+            printWrite(status_511, error, resp);
         } else if (ex instanceof SecurityException) {
             //权限异常
             printWrite(status_403, error, resp);
-        } else {
+        } else if (ex instanceof JiWeiException) {
+            //基卫系统异常
+            printWrite(status_510, error, resp);
+        }else{
             //系统异常
             printWrite(status_500, error, resp);
         }
