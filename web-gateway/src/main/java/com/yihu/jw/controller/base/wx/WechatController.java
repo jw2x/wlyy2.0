@@ -45,14 +45,18 @@ public class WechatController{
     }
 
     @ApiOperation(value = "更新微信配置")
-    @PutMapping(value = WechatContants.Config.api_update)
+    @PutMapping(value = WechatContants.Config.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop updateWechat(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
-        Envelop wechat =wechatFegin.updateWechat(jsonData);
+        JSONObject json = new JSONObject(jsonData);
+        String data = json.get("jsonData").toString();
+        data = data.substring(2,data.length() - 2);
+        data = data.replaceAll("\\\\\"","\"");
+        Envelop wechat =wechatFegin.updateWechat(data);
         return wechat;
     }
 
@@ -62,9 +66,9 @@ public class WechatController{
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop deleteWechat(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
-        Envelop wechat =wechatFegin.deleteWechat(code);
+            @ApiParam(name = "codes", value = "codes")
+            @RequestParam(value = "codes", required = true) String codes) {
+        Envelop wechat =wechatFegin.deleteWechat(codes);
         return wechat;
     }
 

@@ -4,14 +4,12 @@ import com.yihu.jw.restmodel.base.version.BaseVersionContants;
 import com.yihu.jw.restmodel.base.version.MBaseServerVersionLog;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.version.model.BaseServerVersionLog;
 import com.yihu.jw.version.service.ServerVersionLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +27,7 @@ public class ServerVersionLogController extends EnvelopRestController {
     @Autowired
     private ServerVersionLogService serverVersionLogService;
 
-    @PostMapping(value = BaseVersionContants.BaseServerVersionLog.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    /*@PostMapping(value = BaseVersionContants.BaseServerVersionLog.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建服务器版本日志", notes = "创建单个服务器版本日志")
     public Envelop createBaseServerVersionLog(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
@@ -66,7 +64,7 @@ public class ServerVersionLogController extends EnvelopRestController {
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
-    }
+    }*/
 
 
     @RequestMapping(value = BaseVersionContants.BaseServerVersionLog.api_getBaseServerVersionLog, method = RequestMethod.GET)

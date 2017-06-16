@@ -63,16 +63,8 @@ public class WechatConfigController {
     @PostMapping(value = "/wechat")
     @ApiOperation(value = "保存微信配置", notes = "保存微信配置")
     public Envelop save(@ModelAttribute @Valid WechatConfig wechatConfig) throws JsonProcessingException {
-        return wechatConfigService.save(wechatConfig);
+        return wechatConfigService.saveOrUpdate(wechatConfig);
     }
-
-    @PutMapping(value = "/wechat")
-    @ApiOperation(value = "更新微信配置", notes = "更新微信配置")
-    public Envelop Update(@ModelAttribute @Valid WechatConfig wechatConfig){
-        return wechatConfigService.update(wechatConfig);
-    }
-
-
 
     /*@GetMapping("/getByCode")
     @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")

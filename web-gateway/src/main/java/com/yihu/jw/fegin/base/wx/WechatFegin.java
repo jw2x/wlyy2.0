@@ -22,11 +22,11 @@ public interface WechatFegin {
     @RequestMapping(value = WxContants.Wechat.api_create, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop createWechat( @RequestBody String jsonData);
 
-    @RequestMapping(value = WxContants.Wechat.api_update, method = RequestMethod.PUT)
+    @RequestMapping(value = WxContants.Wechat.api_update, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop updateWechat(String jsonData);
 
     @RequestMapping(value = WxContants.Wechat.api_delete,method = RequestMethod.DELETE)
-    Envelop deleteWechat(@RequestParam(value = "code") String code);
+    Envelop deleteWechat(@RequestParam(value = "codes") String codes);
 
     @RequestMapping(value = WxContants.Wechat.api_getByCode,method = RequestMethod.GET)
     Envelop findByCode(@RequestParam(value = "code") String code);

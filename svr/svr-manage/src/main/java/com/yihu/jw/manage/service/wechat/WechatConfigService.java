@@ -64,25 +64,25 @@ public class WechatConfigService {
         return envelop;
     }
 
-    public Envelop save(WechatConfig wechatConfig) throws JsonProcessingException {
+    public Envelop saveOrUpdate(WechatConfig wechatConfig) throws JsonProcessingException {
         HttpHeaders headers = new HttpHeaders();
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
         headers.add("Accept", MediaType.APPLICATION_JSON.toString());
         JSONObject jsonObj = JSONObject.fromObject(wechatConfig);
         HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
-        ResponseEntity<Envelop> responseEntity = template.postForEntity(url + "/wechatConfig/create", formEntity, Envelop.class);
-        Envelop envelop = responseEntity.getBody();
-        return envelop;
-    }
-    public Envelop update(WechatConfig wechatConfig) {
-       /* ResponseEntity<Envelop> responseEntity = template.PUT(url + "/wechatConfig/create?jsonData={jsonData}", wechatConfig, Envelop.class);
-        Envelop envelop = responseEntity.getBody();
-        return envelop;*/
+        Envelop envelop =null;
+        if(wechatConfig.getId()==null){//说明是保存
+            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + "/wechatConfig/create", formEntity, Envelop.class);
+            envelop = responseEntity.getBody();
+            return envelop;
+        }
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        String urlRequest = url + "/wechatConfig/update?jsonData={jsonData}";
+        map.add("jsonData",jsonObj.toString());
+        String urlRequest = url + "/wechatConfig/update";
         RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,map);
-        Envelop envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.PUT, Envelop.class);
+        envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.PUT, Envelop.class);
+
         return envelop;
     }
 }

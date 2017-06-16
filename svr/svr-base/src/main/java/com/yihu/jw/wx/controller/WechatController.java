@@ -48,8 +48,8 @@ public class WechatController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxWechat Wechat = toEntity(jsonData, WxWechat.class);
-            return Envelop.getSuccess(WxContants.Wechat.message_success_update, wechatService.updateWxchat(Wechat));
+            WxWechat wechat = toEntity(jsonData, WxWechat.class);
+            return Envelop.getSuccess(WxContants.Wechat.message_success_update, wechatService.updateWxchat(wechat));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

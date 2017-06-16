@@ -312,19 +312,13 @@ function show(code){
 }
 
 function del(codes){
-    $.ajax({
-        url: "/wechatConfig/deleteByCodes?codes="+codes+"&userCode="+usercode,
-        type: 'DELETE',
-        success: function(data){
-            if(data.successFlg==true){
-                alert("删除成功");
-                table.ajax.reload();
-            }else{
-                alert("删除失败")
-            }
-        },
-        error:function(data){
-            console.log(data);
+    var url = "/wechatConfig/wechat/"+codes+"?userCode="+usercode;
+    do_delete(url,{},function(data){
+        if(data.successFlg==true){
+            alert("删除成功");
+            table.ajax.reload();
+        }else{
+            alert("删除失败")
         }
     })
 }
@@ -336,7 +330,6 @@ $("#btnsubmit").click(function(){
     if(id==''){//说明是保存
         url = "/wechatConfig/wechat"
         do_post(url,data,function(data){
-            console.log(data);
             if(data.successFlg){
                 alert("保存成功");
                 $('#myModal-add-info').modal('hide');
@@ -347,9 +340,8 @@ $("#btnsubmit").click(function(){
 
         })
     }else{//说明是修改
-        url="/wechatConfig/wechat"
+        url="/wechatConfig/wechat?userCode="+usercode;
         do_put(url,data,function(data){
-            debugger
             console.log(data);
             if(data.successFlg){
                 alert("修改成功");

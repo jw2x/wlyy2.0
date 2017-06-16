@@ -45,4 +45,11 @@ public class WechatFeginFallbackFactory implements FallbackFactory<WechatFegin> 
             }
         };
     }
+
+    public static void main(String[] args) {
+        String a ="{\\\"appId\\\":\\\"aaa\\\",\\\"appSecret\\\":\\\"aaa\\\",\\\"baseUrl\\\":\\\"\\\",\\\"code\\\":\\\"d\\\",\\\"createTime\\\":null,\\\"createUser\\\":\\\"\\\",\\\"createUserName\\\":\\\"\\\",\\\"encType\\\":0,\\\"encodingAesKey\\\":\\\"\\\",\\\"id\\\":7,\\\"name\\\":\\\"健康之路i健康awef\\\",\\\"remark\\\":\\\"\\\",\\\"saasId\\\":\\\"1\\\",\\\"status\\\":2,\\\"token\\\":\\\"\\\",\\\"type\\\":\\\"2\\\",\\\"updateTime\\\":null,\\\"updateUser\\\":\\\"\\\",\\\"updateUserName\\\":\\\"\\\"}";
+        System.out.println(a);
+        a=a.replaceAll("\\\\\"","\"");
+        System.out.println(a);
+    }
 }
