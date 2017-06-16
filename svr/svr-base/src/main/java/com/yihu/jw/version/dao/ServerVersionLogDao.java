@@ -13,6 +13,6 @@ public interface ServerVersionLogDao extends PagingAndSortingRepository<BaseServ
     @Query("from BaseServerVersionLog f where f.name=?1 and f.status=1")
     BaseServerVersionLog findByName(String name);
 
-    @Query("from BaseServerVersionLog f where f.code=?1 and f.status=1")
+    @Query("from BaseServerVersionLog f where f.id=?1 and f.status=1")
     BaseServerVersionLog findByCode(String code);
 }
