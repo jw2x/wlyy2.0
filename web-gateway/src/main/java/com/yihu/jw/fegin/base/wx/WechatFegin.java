@@ -5,6 +5,7 @@ import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.wx.WxContants;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,14 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(value = WxContants.Wechat.api_common)
 public interface WechatFegin {
 
-    @RequestMapping(value = WxContants.Wechat.api_create, method = RequestMethod.POST)
+    @RequestMapping(value = WxContants.Wechat.api_create, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop createWechat( @RequestBody String jsonData);
 
-    @RequestMapping(value = WxContants.Wechat.api_update, method = RequestMethod.PUT)
+    @RequestMapping(value = WxContants.Wechat.api_update, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop updateWechat(String jsonData);
 
     @RequestMapping(value = WxContants.Wechat.api_delete,method = RequestMethod.DELETE)
-    Envelop deleteWechat(@RequestParam(value = "code") String code);
+    Envelop deleteWechat(@RequestParam(value = "codes") String codes);
 
     @RequestMapping(value = WxContants.Wechat.api_getByCode,method = RequestMethod.GET)
     Envelop findByCode(@RequestParam(value = "code") String code);

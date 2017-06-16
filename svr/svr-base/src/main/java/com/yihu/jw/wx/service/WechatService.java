@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -24,9 +25,8 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
 
     @Transient
     public WxWechat createWechat(WxWechat wechat) {
-        if (StringUtils.isEmpty(wechat.getCode())) {
-            throw new ApiException(WxContants.Wechat.message_fail_code_is_null, CommonContants.common_error_params_code);
-        }
+        String code = UUID.randomUUID().toString().replaceAll("-", "");
+        wechat.setCode(code);
         if (StringUtils.isEmpty(wechat.getSaasId())) {
             throw new ApiException(WxContants.Wechat.message_fail_saasId_is_null, CommonContants.common_error_params_code);
         }
@@ -108,12 +108,17 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     }
 
     @Transient
-    public void deleteWechat(String code) {
-        WxWechat wxWechat = wechatDao.findByCode(code);
-        if (wxWechat == null) {
-            throw new ApiException(WxContants.Wechat.message_fail_code_no_exist, CommonContants.common_error_params_code);
+    public void deleteWechat(String codes) {
+        if(!StringUtils.isEmpty(codes)){
+            String[] codeArray = codes.split(",");
+            for(String code:codeArray){
+                WxWechat wxWechat = wechatDao.findByCode(code);
+                if (wxWechat == null) {
+                    throw new ApiException(WxContants.Wechat.message_fail_code_no_exist, CommonContants.common_error_params_code);
+                }
+                wxWechat.setStatus(-1);
+                wechatDao.save(wxWechat);
+            }
         }
-        wxWechat.setStatus("-1");
-        wechatDao.save(wxWechat);
     }
 }
