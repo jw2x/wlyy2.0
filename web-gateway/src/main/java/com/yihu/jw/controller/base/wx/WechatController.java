@@ -8,10 +8,13 @@ import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -28,13 +31,14 @@ public class WechatController{
     private Tracer tracer;
 
     @ApiOperation(value = "创建微信配置")
-    @PostMapping(value = WechatContants.Config.api_create)
+    @PostMapping(value = WechatContants.Config.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop createWechat(
             @ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
         tracer.getCurrentSpan().logEvent("开始调用微服务创建微信配置");
+        System.out.println(jsonData);//{"id":null,"code":"","saasId":"1","name":"aaaawefr","token":"","encodingAesKey":"","encType":null,"status":0,"type":"1","appId":"","appSecret":"","baseUrl":"","createUser":"","createUserName":"","createTime":null,"updateUser":null,"updateUserName":null,"updateTime":null,"remark":""}
         Envelop wechat =wechatFegin.createWechat(jsonData);
         tracer.getCurrentSpan().logEvent("创建微信配置微服务结束");
         return wechat;
@@ -92,7 +96,15 @@ public class WechatController{
             @RequestParam(value = "size", required = false) int size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) int page) throws Exception {
-        Envelop envelop = wechatFegin.getWechats(fields,filters,sorts,size,page);
+        String filterStr = "";
+        if(StringUtils.isNotBlank(filters)){
+            filters = filters.replaceAll("=", ":");
+            JSONObject jsonResult = new JSONObject(filters);
+            if(jsonResult.has("name")){
+                filterStr+="name?"+jsonResult.get("name")+";";
+            }
+        }
+        Envelop envelop = wechatFegin.getWechats(fields,filterStr,sorts,size,page);
         return envelop;
     }
 

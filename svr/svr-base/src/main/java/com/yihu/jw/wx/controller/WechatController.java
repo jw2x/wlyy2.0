@@ -59,10 +59,10 @@ public class WechatController extends EnvelopRestController {
     @DeleteMapping(value = WxContants.Wechat.api_delete)
     @ApiOperation(value = "删除微信配置", notes = "删除微信配置")
     public Envelop deleteWechat(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "codes", value = "codes")
+            @RequestParam(value = "codes", required = true) String codes) {
         try {
-            wechatService.deleteWechat(code);
+            wechatService.deleteWechat(codes);
             return Envelop.getSuccess(WxContants.Wechat.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -85,11 +85,11 @@ public class WechatController extends EnvelopRestController {
     @RequestMapping(value = WxContants.Wechat.api_getWechats, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信配置列表(分页)")
     public Envelop getWechats(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
             @RequestParam(value = "size", required = false) int size,

@@ -1,16 +1,17 @@
-package com.yihu.jw.wx.model;// default package
+package com.yihu.jw.manage.model.wechat;// default package
 
-import com.yihu.jw.base.model.base.IdEntity;
+
+import com.yihu.jw.manage.model.IdEntity;
 
 import javax.persistence.*;
 import java.util.Date;
 
 /**
- * WxWechat entity. @author MyEclipse Persistence Tools
+ * WechatConfig entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "wx_wechat")
-public class WxWechat extends IdEntity implements java.io.Serializable {
+public class WechatConfig extends IdEntity implements java.io.Serializable {
 
     // Fields
     private String code;//业务code
@@ -31,7 +32,7 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private String updateUserName;//'修改人名'
     private Date updateTime;//'修改时间'
     private String remark;//'备注'
-    public WxWechat(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, Integer status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
+    public WechatConfig(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, Integer status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
         this.code = code;
         this.saasId = saasId;
         this.name = name;
@@ -54,7 +55,7 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     /**
      * default constructor
      */
-    public WxWechat() {
+    public WechatConfig() {
     }
     @Column(name = "enc_type")
     public Integer getEncType() {
@@ -110,7 +111,7 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "status", precision = 2, scale = 0)
+    @Column(name = "status")
     public Integer getStatus() {
         return this.status;
     }
