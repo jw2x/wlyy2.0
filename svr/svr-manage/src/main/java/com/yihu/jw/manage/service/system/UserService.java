@@ -3,7 +3,7 @@ package com.yihu.jw.manage.service.system;
 import com.yihu.jw.manage.dao.system.UserDao;
 import com.yihu.jw.manage.dao.system.UserRoleDao;
 import com.yihu.jw.manage.model.system.ManageUser;
-import com.yihu.jw.restmodel.exception.ManageException;
+import com.yihu.jw.restmodel.exception.business.ManageException;
 import com.yihu.jw.restmodel.wlyy.WlyyContant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

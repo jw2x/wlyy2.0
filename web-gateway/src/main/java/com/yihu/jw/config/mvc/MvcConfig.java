@@ -1,4 +1,4 @@
-package com.yihu.jw.config;
+package com.yihu.jw.config.mvc;
 
 import com.yihu.jw.version.JWRequestMappingHandlerMapping;
 import org.springframework.context.annotation.Bean;
@@ -19,5 +19,10 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         handlerMapping.setOrder(0);//顺序是第一
         handlerMapping.setInterceptors(getInterceptors());
         return handlerMapping;
+    }
+
+    @Bean
+    public GlobalHandlerExceptionResolver globalHandlerExceptionResolver() {
+        return new GlobalHandlerExceptionResolver();
     }
 }

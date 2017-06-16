@@ -1,4 +1,4 @@
-package com.yihu.jw.restmodel.exception;
+package com.yihu.jw.restmodel.exception.business;
 
 /**
  * Created by chenweida on 2017/6/9.
