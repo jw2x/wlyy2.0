@@ -46,6 +46,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
-        return new HiddenHttpMethodFilter();
+        HiddenHttpMethodFilter hiddenHttpMethodFilter= new HiddenHttpMethodFilter();
+        return hiddenHttpMethodFilter;
     }
 }
