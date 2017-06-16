@@ -1,6 +1,6 @@
 package com.yihu.jw.wx.model;// default package
 
-import com.yihu.jw.base.model.base.IdEntity;
+import com.yihu.jw.base.model.IdEntity;
 
 import javax.persistence.*;
 import java.util.Date;

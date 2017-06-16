@@ -10,7 +10,7 @@ import com.yihu.jw.manage.model.system.MenuItems;
 import com.yihu.jw.manage.service.system.MenuService;
 import com.yihu.jw.manage.service.system.RoleService;
 import com.yihu.jw.manage.service.system.UserService;
-import com.yihu.jw.restmodel.exception.ManageException;
+import com.yihu.jw.restmodel.exception.business.ManageException;
 import com.yihu.jw.restmodel.manage.system.ManageUserVO;
 import com.yihu.jw.util.security.MD5;
 import org.springframework.beans.BeanUtils;

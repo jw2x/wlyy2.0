@@ -3,7 +3,6 @@ package com.yihu.jw.base.service.sms;
 import com.yihu.jw.base.dao.sms.SmsGatewayDao;
 import com.yihu.jw.base.model.sms.BaseSmsGateway;
 import com.yihu.jw.mysql.query.BaseJpaService;
-import com.yihu.jw.restmodel.base.BaseContants;
 import com.yihu.jw.restmodel.base.sms.BaseSmsContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;

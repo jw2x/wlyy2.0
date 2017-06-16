@@ -21,7 +21,6 @@ public class WlyyAgreement extends IdEntity implements Serializable{
     private static final long serialVersionUID = -4343130835307199266L;
 
     private String code;//业务code
-    private String parentCode;//
     private String saasId;
     private String name;//套餐名称
     private BigDecimal price;//套餐价格
@@ -35,7 +34,6 @@ public class WlyyAgreement extends IdEntity implements Serializable{
 
     public WlyyAgreement(String code, String parentCode, String saasId, String name, BigDecimal price, String posterPic, String remark, String type, Date createTime, Date updateTime, Integer status, String createUser) {
         this.code = code;
-        this.parentCode = parentCode;
         this.saasId = saasId;
         this.name = name;
         this.price = price;
@@ -59,15 +57,6 @@ public class WlyyAgreement extends IdEntity implements Serializable{
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    @Column(name = "parent_code")
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
     }
 
     @Column(name = "saas_id")
