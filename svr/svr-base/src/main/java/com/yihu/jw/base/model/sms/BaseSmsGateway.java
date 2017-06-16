@@ -1,10 +1,9 @@
 package com.yihu.jw.base.model.sms;// default package
 
-import com.yihu.jw.base.model.base.IdEntity;
+import com.yihu.jw.base.model.IdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**

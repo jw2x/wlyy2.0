@@ -1,12 +1,10 @@
 package com.yihu.jw.wx.dao;
 
-import com.yihu.jw.base.model.Function;
 import com.yihu.jw.wx.model.WxAccessToken;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.Date;
 import java.util.List;
 
 /**

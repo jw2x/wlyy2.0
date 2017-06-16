@@ -1,12 +1,10 @@
 package com.yihu.jw.base.model.sms;// default package
 
-import com.yihu.jw.base.model.base.IdEntity;
+import com.yihu.jw.base.model.IdEntity;
 
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
 
 /**
  * BaseSms entity. @author MyEclipse Persistence Tools
