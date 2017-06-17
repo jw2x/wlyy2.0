@@ -66,17 +66,16 @@ spring:
   profiles:
     active: native
 
-##git配置
   cloud:
     config:
       failFast: true ##启动快速失败 即链接不到配置服务就启动失败
       server:
         native:
           search-locations: file:G:\idea_workspace\jkzl_git\jw.config  ##本地的got配置路径
-
-    stream:
-      kafka:
-        binder:
-          brokers: 172.17.110.201:9092
-          zkNodes: 172.17.110.201:2181
+#配置服务动态刷新
+#    stream:
+#      kafka:
+#        binder:
+#          brokers: 172.17.110.201:9092
+#          zkNodes: 172.17.110.201:2181
 

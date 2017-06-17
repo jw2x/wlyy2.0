@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/{version}/patient")
 @Api(description = "患者")
-//@RefreshScope
+@RefreshScope
 public class PatientController {
     private Logger logger = LoggerFactory.getLogger(PatientController.class);
     @Autowired
@@ -37,9 +37,9 @@ public class PatientController {
     private Tracer tracer;
 
 
-//
-//    @Value("${test.aaa}")
-//    private String aaaa;
+
+    @Value("${test.aaa}")
+    private String aaaa;
 
     @GetMapping("/hello")
     @ApiVersion(1)
@@ -68,12 +68,12 @@ public class PatientController {
         return "hello2";
     }
 
-//    @GetMapping("/refresh")
-//    @ApiVersion(0)
-//    @ResponseBody
-//    public String refresh(HttpServletRequest request) throws Exception {
-//        return aaaa;
-//    }
+    @GetMapping("/refresh")
+    @ApiVersion(0)
+    @ResponseBody
+    public String refresh(HttpServletRequest request) throws Exception {
+        return aaaa;
+    }
 
 
     @ApiOperation(value = "根据code查找患者")
