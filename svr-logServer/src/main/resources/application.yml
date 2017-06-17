@@ -5,6 +5,16 @@ spring:
 ---
 spring:
   profiles: jwdev
+##分布式日志存在es里面
+zipkin:
+  storage:
+    type: elasticsearch
+    elasticsearch:
+      hosts: 172.19.103.68:9300
+      cluster:  jkzl
+      index: zipkin
+      index-shards: 5
+      index-replicas: 0
 
 ---
 spring:

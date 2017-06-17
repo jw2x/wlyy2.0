@@ -382,7 +382,11 @@
                 <artifactId>zipkin-autoconfigure-ui</artifactId>
                 <version>${version.zipkin}</version>
             </dependency>
-
+            <dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-autoconfigure-storage-elasticsearch-http</artifactId>
+                <version>${version.zipkin}</version>
+            </dependency>
             <!--zipkin  end-->
             <!---->
 
