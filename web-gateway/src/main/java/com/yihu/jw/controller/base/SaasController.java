@@ -2,8 +2,8 @@ package com.yihu.jw.controller.base;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yihu.jw.commnon.base.BaseContants;
 import com.yihu.jw.fegin.base.SaasFegin;
+import com.yihu.jw.restmodel.base.base.BaseContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(BaseContants.base_common)
+@RequestMapping(BaseContants.Saas.api_common)
 @Api(description = "saas相关")
 public class SaasController {
 
@@ -31,7 +31,7 @@ public class SaasController {
     private Tracer tracer;
 
 
-    @GetMapping(value = BaseContants.Saas.api_getList)
+    @GetMapping(value = BaseContants.Saas.api_getSaass)
     @ApiOperation(value = "获取saas，不分页")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间

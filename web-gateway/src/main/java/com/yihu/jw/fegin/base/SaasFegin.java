@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.base;
 
 import com.yihu.jw.fegin.fallbackfactory.base.SaasFeginFallbackFactory;
-import com.yihu.jw.restmodel.base.BaseContants;
+import com.yihu.jw.restmodel.base.base.BaseContants;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import org.springframework.cloud.netflix.feign.FeignClient;

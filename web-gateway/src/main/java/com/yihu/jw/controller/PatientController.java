@@ -13,7 +13,10 @@ import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/{version}/patient")
 @Api(description = "患者")
+//@RefreshScope
 public class PatientController {
     private Logger logger = LoggerFactory.getLogger(PatientController.class);
     @Autowired
@@ -31,6 +35,11 @@ public class PatientController {
 
     @Autowired
     private Tracer tracer;
+
+
+//
+//    @Value("${test.aaa}")
+//    private String aaaa;
 
     @GetMapping("/hello")
     @ApiVersion(1)
@@ -58,6 +67,14 @@ public class PatientController {
         System.out.println("haha2.........");
         return "hello2";
     }
+
+//    @GetMapping("/refresh")
+//    @ApiVersion(0)
+//    @ResponseBody
+//    public String refresh(HttpServletRequest request) throws Exception {
+//        return aaaa;
+//    }
+
 
     @ApiOperation(value = "根据code查找患者")
     @GetMapping(value = "findByCode")

@@ -73,3 +73,10 @@ spring:
       server:
         native:
           search-locations: file:G:\idea_workspace\jkzl_git\jw.config  ##本地的got配置路径
+
+    stream:
+      kafka:
+        binder:
+          brokers: 172.17.110.201:9092
+          zkNodes: 172.17.110.201:2181
+
