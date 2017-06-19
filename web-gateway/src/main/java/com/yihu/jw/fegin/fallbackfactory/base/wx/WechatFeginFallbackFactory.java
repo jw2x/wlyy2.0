@@ -2,6 +2,7 @@ package com.yihu.jw.fegin.fallbackfactory.base.wx;
 
 import com.yihu.jw.fegin.base.wx.WechatFegin;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.exception.business.JiWeiException;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -10,46 +11,39 @@ public class WechatFeginFallbackFactory implements FallbackFactory<WechatFegin> 
     @Override
     public WechatFegin create(Throwable e) {
         return new WechatFegin() {
-            public Envelop createWechat(String jsonData) {
+            public Envelop createWechat(String jsonData) throws JiWeiException {
                 Envelop envelop = new Envelop();
                 envelop.getError(e.getMessage(),-1);
-                return envelop;
+                throw new JiWeiException(e);
             }
-            public Envelop updateWechat(String jsonData) {
+            public Envelop updateWechat(String jsonData) throws JiWeiException {
                 Envelop envelop = new Envelop();
                 envelop.getError(e.getMessage(),-1);
-                return envelop;
+                throw new JiWeiException(e);
             }
-            public Envelop deleteWechat(String code){
+            public Envelop deleteWechat(String code) throws JiWeiException {
                 Envelop envelop = new Envelop();
                 envelop.getError(e.getMessage(),-1);
-                return envelop;
-            }
-
-            public Envelop findByCode(String code){
-                Envelop envelop = new Envelop();
-                envelop.getError(e.getMessage(),-1);
-                return envelop;
+                throw new JiWeiException(e);
             }
 
-            public Envelop getWechats(String fields, String filters, String sorts, int size, int page){
+            public Envelop findByCode(String code) throws JiWeiException {
                 Envelop envelop = new Envelop();
                 envelop.getError(e.getMessage(),-1);
-                return envelop;
+                throw new JiWeiException(e);
             }
 
-            public Envelop getWechatNoPage(String fields, String filters, String sorts){
+            public Envelop getWechats(String fields, String filters, String sorts, int size, int page) throws JiWeiException {
                 Envelop envelop = new Envelop();
                 envelop.getError(e.getMessage(),-1);
-                return envelop;
+                throw new JiWeiException(e);
+            }
+
+            public Envelop getWechatNoPage(String fields, String filters, String sorts) throws JiWeiException {
+                Envelop envelop = new Envelop();
+                envelop.getError(e.getMessage(),-1);
+                throw new JiWeiException(e);
             }
         };
-    }
-
-    public static void main(String[] args) {
-        String a ="{\\\"appId\\\":\\\"aaa\\\",\\\"appSecret\\\":\\\"aaa\\\",\\\"baseUrl\\\":\\\"\\\",\\\"code\\\":\\\"d\\\",\\\"createTime\\\":null,\\\"createUser\\\":\\\"\\\",\\\"createUserName\\\":\\\"\\\",\\\"encType\\\":0,\\\"encodingAesKey\\\":\\\"\\\",\\\"id\\\":7,\\\"name\\\":\\\"健康之路i健康awef\\\",\\\"remark\\\":\\\"\\\",\\\"saasId\\\":\\\"1\\\",\\\"status\\\":2,\\\"token\\\":\\\"\\\",\\\"type\\\":\\\"2\\\",\\\"updateTime\\\":null,\\\"updateUser\\\":\\\"\\\",\\\"updateUserName\\\":\\\"\\\"}";
-        System.out.println(a);
-        a=a.replaceAll("\\\\\"","\"");
-        System.out.println(a);
     }
 }

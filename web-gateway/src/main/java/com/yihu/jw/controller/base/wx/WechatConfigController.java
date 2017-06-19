@@ -5,6 +5,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.fegin.base.wx.WechatFegin;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.exception.business.JiWeiException;
+import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,24 +21,25 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping(WechatContants.Config.api_common)
+@RequestMapping("{version}/"+WechatContants.api_common)
 @Api(description = "微信配置")
-public class WechatController{
+public class WechatConfigController {
 
-    private Logger logger= LoggerFactory.getLogger(WechatController.class);
+    private Logger logger= LoggerFactory.getLogger(WechatConfigController.class);
     @Autowired
     private WechatFegin wechatFegin;
 
     @Autowired
     private Tracer tracer;
 
+    @ApiVersion(1)
     @ApiOperation(value = "创建微信配置")
     @PostMapping(value = WechatContants.Config.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop createWechat(
-            @ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
+            @ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) throws JiWeiException {
         tracer.getCurrentSpan().logEvent("开始调用微服务创建微信配置");
         System.out.println(jsonData);//{"id":null,"code":"","saasId":"1","name":"aaaawefr","token":"","encodingAesKey":"","encType":null,"status":0,"type":"1","appId":"","appSecret":"","baseUrl":"","createUser":"","createUserName":"","createTime":null,"updateUser":null,"updateUserName":null,"updateTime":null,"remark":""}
         Envelop wechat =wechatFegin.createWechat(jsonData);
@@ -44,6 +47,7 @@ public class WechatController{
         return wechat;
     }
 
+    @ApiVersion(1)
     @ApiOperation(value = "更新微信配置")
     @PutMapping(value = WechatContants.Config.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @HystrixCommand(commandProperties = {
@@ -51,7 +55,7 @@ public class WechatController{
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop updateWechat(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
+            @RequestBody String jsonData) throws JiWeiException {
         JSONObject json = new JSONObject(jsonData);
         String data = json.get("jsonData").toString();
         data = data.substring(2,data.length() - 2);
@@ -60,6 +64,7 @@ public class WechatController{
         return wechat;
     }
 
+    @ApiVersion(1)
     @DeleteMapping(value = WechatContants.Config.api_delete)
     @ApiOperation(value = "删除微信配置", notes = "删除微信配置")
     @HystrixCommand(commandProperties = {
@@ -67,11 +72,12 @@ public class WechatController{
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop deleteWechat(
             @ApiParam(name = "codes", value = "codes")
-            @RequestParam(value = "codes", required = true) String codes) {
+            @PathVariable(value = "codes", required = true) String codes) throws JiWeiException {
         Envelop wechat =wechatFegin.deleteWechat(codes);
         return wechat;
     }
 
+    @ApiVersion(1)
     @GetMapping(value = WechatContants.Config.api_getByCode)
     @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
     @HystrixCommand(commandProperties = {
@@ -79,11 +85,12 @@ public class WechatController{
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
-    ) {
+            @PathVariable(value = "code", required = true) String code
+    ) throws JiWeiException {
        return wechatFegin.findByCode(code);
     }
 
+    @ApiVersion(1)
     @RequestMapping(value = WechatContants.Config.api_getWechats, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信配置列表(分页)")
     @HystrixCommand(commandProperties = {
@@ -112,6 +119,7 @@ public class WechatController{
         return envelop;
     }
 
+    @ApiVersion(1)
     @GetMapping(value = WechatContants.Config.api_getWechatNoPage)
     @ApiOperation(value = "获取微信列表配置，不分页")
     @HystrixCommand(commandProperties = {
@@ -125,5 +133,10 @@ public class WechatController{
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         return wechatFegin.getWechatNoPage(fields,filters,sorts);
+    }
+
+    @GetMapping(value = "b/{code}")
+    public String a(){
+        return "a";
     }
 }
