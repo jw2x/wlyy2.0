@@ -21,13 +21,13 @@ public class Envelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
 
-    private int pageSize = 10;
+    private Integer pageSize = 10;
 
-    private int currPage;
+    private Integer currPage;
 
-    private int totalPage;
+    private Integer totalPage;
 
-    private int totalCount;
+    private Integer totalCount;
 
     private List detailModelList;
 
@@ -36,8 +36,6 @@ public class Envelop implements Serializable {
     private String errorMsg;
 
     private String successMsg;
-
-    private int errorCode;
 
     public Object getObj() {
         return obj;
@@ -71,13 +69,6 @@ public class Envelop implements Serializable {
         this.errorMsg = errorMsg;
     }
 
-    public int getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
 
     public int getPageSize() {
         return pageSize;
@@ -141,7 +132,6 @@ public class Envelop implements Serializable {
     public static Envelop getError(String message,int errorCode) {
         Envelop envelop = new Envelop();
         envelop.setErrorMsg(message);
-        envelop.setErrorCode(errorCode);
         return envelop;
     }
 

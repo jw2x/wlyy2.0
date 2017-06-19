@@ -4,8 +4,12 @@ import com.yihu.jw.restmodel.exception.SecurityException;
 import com.yihu.jw.restmodel.exception.SystemException;
 import com.yihu.jw.restmodel.exception.business.JiWeiException;
 import com.yihu.jw.restmodel.exception.business.ManageException;
+import com.yihu.jw.restmodel.gateway.GatewayContanrts;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,7 +29,8 @@ public class GlobalHandlerExceptionResolver implements HandlerExceptionResolver 
     private static Integer status_500 = 500;//后台异常
     private static Integer status_510 = 510;//基卫系统异常
     private static Integer status_511 = 511;//后台管理系统异常
-
+    @Autowired
+    private Tracer tracer;
 
     /**
      * 在这里处理所有得异常信息
@@ -43,7 +48,7 @@ public class GlobalHandlerExceptionResolver implements HandlerExceptionResolver 
         } else if (ex instanceof JiWeiException) {
             //基卫系统异常
             printWrite(status_510, error, resp);
-        }else{
+        } else {
             //系统异常
             printWrite(status_500, error, resp);
         }
@@ -53,8 +58,14 @@ public class GlobalHandlerExceptionResolver implements HandlerExceptionResolver 
     /**
      * 将错误信息添加到response中
      */
-    public static void printWrite(int status, String msg, HttpServletResponse response) {
+    public  void printWrite(int status, String msg, HttpServletResponse response) {
         try {
+            JSONObject jo=new JSONObject();
+            jo.put("status",status);
+            jo.put("msg",msg);
+
+            tracer.getCurrentSpan().tag(GatewayContanrts.ZipkinElasticKey.gateway_error_params,jo.toString());
+
             response.setStatus(status);
             response.setCharacterEncoding("UTF-8");//设置编码
             response.setHeader("Cache-Control", "no-store");
