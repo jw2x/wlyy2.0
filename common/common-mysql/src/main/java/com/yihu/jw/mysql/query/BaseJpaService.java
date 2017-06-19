@@ -81,7 +81,11 @@ public class BaseJpaService<T, R> {
     }
 
     public List search(String fields, String filters, String sorts, Integer page, Integer size) throws ParseException {
-        filters += "status<>-1;";
+        if(filters!=null){
+            filters += ";status<>-1;";
+        }else{
+            filters="status<>-1;";
+        }
         URLQueryParser queryParser = createQueryParser(fields, filters, sorts);
         CriteriaQuery query = queryParser.makeCriteriaQuery();
 
@@ -95,6 +99,11 @@ public class BaseJpaService<T, R> {
                 .getResultList();
     }
     public List search(String fields, String filters, String sorts) throws ParseException {
+        if(filters!=null){
+            filters += ";status<>-1;";
+        }else{
+            filters="status<>-1;";
+        }
         URLQueryParser queryParser = createQueryParser(fields, filters, sorts);
         CriteriaQuery query = queryParser.makeCriteriaQuery();
 
