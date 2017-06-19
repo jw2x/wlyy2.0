@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping(WxContants.Wechat.api_common)
 @Api(value = "微信相关操作", description = "微信相关操作")
-public class WechatController extends EnvelopRestController {
+public class WechatConfigController extends EnvelopRestController {
     @Autowired
     private WechatService wechatService;
 

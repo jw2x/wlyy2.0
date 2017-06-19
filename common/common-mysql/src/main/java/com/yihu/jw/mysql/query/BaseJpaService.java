@@ -81,6 +81,7 @@ public class BaseJpaService<T, R> {
     }
 
     public List search(String fields, String filters, String sorts, Integer page, Integer size) throws ParseException {
+        filters += "status<>-1;";
         URLQueryParser queryParser = createQueryParser(fields, filters, sorts);
         CriteriaQuery query = queryParser.makeCriteriaQuery();
 
