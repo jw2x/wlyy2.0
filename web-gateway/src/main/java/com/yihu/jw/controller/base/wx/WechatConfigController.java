@@ -40,8 +40,8 @@ public class WechatConfigController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop createWechat(
             @ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) throws JiWeiException {
-        tracer.getCurrentSpan().logEvent("开始调用微服务创建微信配置");
-        System.out.println(jsonData);//{"id":null,"code":"","saasId":"1","name":"aaaawefr","token":"","encodingAesKey":"","encType":null,"status":0,"type":"1","appId":"","appSecret":"","baseUrl":"","createUser":"","createUserName":"","createTime":null,"updateUser":null,"updateUserName":null,"updateTime":null,"remark":""}
+        tracer.getCurrentSpan().logEvent("创建微信配置:jsonData="+jsonData);
+        //{"id":null,"code":"","saasId":"1","name":"aaaawefr","token":"","encodingAesKey":"","encType":null,"status":0,"type":"1","appId":"","appSecret":"","baseUrl":"","createUser":"","createUserName":"","createTime":null,"updateUser":null,"updateUserName":null,"updateTime":null,"remark":""}
         Envelop wechat =wechatFegin.createWechat(jsonData);
         tracer.getCurrentSpan().logEvent("创建微信配置微服务结束");
         return wechat;
@@ -60,6 +60,7 @@ public class WechatConfigController {
         String data = json.get("jsonData").toString();
         data = data.substring(2,data.length() - 2);
         data = data.replaceAll("\\\\\"","\"");
+        tracer.getCurrentSpan().logEvent("更新微信配置:jsonData="+data);
         Envelop wechat =wechatFegin.updateWechat(data);
         return wechat;
     }
@@ -135,8 +136,4 @@ public class WechatConfigController {
         return wechatFegin.getWechatNoPage(fields,filters,sorts);
     }
 
-    @GetMapping(value = "b/{code}")
-    public String a(){
-        return "a";
-    }
 }

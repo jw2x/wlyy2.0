@@ -51,14 +51,12 @@ public class WechatContants {
 
     //微信图文消息
     public static class GraphicMessage {
-        public static final String api_common="graphicMessage";
-        public static final String api_create="create";
-        public static final String api_update="update";
-        public static final String api_delete="delete";
-        public static final String api_getWxGraphicMessageNoPage="getWxGraphicMessageNoPage";
+        public static final String api_create="graphicMessage";
+        public static final String api_update="graphicMessage";
+        public static final String api_delete="graphicMessage/{codes}";
+        public static final String api_getWxGraphicMessageNoPage="graphicMessage/listNoPage";
+        public static final String api_getWxGraphicMessages="graphicMessage/list";
+        public static final String api_getByCode="graphicMessage/{code}";
         public static final String api_sendGraphicMessages="sendGraphicMessages";
-        public static final String api_getWxGraphicMessages="getWxGraphicMessages";
-        public static final String api_getByCode="getByCode";
-
     }
 }

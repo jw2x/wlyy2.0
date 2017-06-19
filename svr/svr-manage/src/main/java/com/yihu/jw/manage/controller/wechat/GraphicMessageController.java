@@ -1,67 +1,68 @@
 package com.yihu.jw.manage.controller.wechat;
 
-import com.yihu.jw.manage.model.system.ManageUser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.manage.model.wechat.GraphicMessage;
 import com.yihu.jw.manage.service.wechat.GraphicMessageService;
 import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * Created by Administrator on 2017/6/13 0013.
  */
 @RestController
-@RequestMapping("/graphicMessage")
+@RequestMapping("/wechat")
 @Api(description = "微信图文消息管理")
 public class GraphicMessageController {
 
     @Autowired
     private GraphicMessageService graphicMessageService;
 
-    @GetMapping("/list")
-    @ApiOperation(value = "图文消息列表")
+    @GetMapping("graphicMessage/list")
+    @ApiOperation(value = "分页获取微信图文列表")
     public Envelop list(
             @ApiParam(name = "title", value = "标题", required = false) @RequestParam(required = false, name = "title") String title,
-            @ApiParam(name = "description", value = "描述", required = false) @RequestParam(required = false, name = "description") String description,
-            @ApiParam(name = "page", value = "当前页", required = false) @RequestParam(required = false, name = "page", defaultValue = "1") Integer page,
-            @ApiParam(name = "pageSize", value = "每页显示条数", required = false) @RequestParam(required = false, name = "pageSize", defaultValue = "10") Integer pageSize
+            @ApiParam(name = "sorts", value = "排序", required = false) @RequestParam(required = false, name = "sorts") String sorts,
+            @ApiParam(name = "start", value = "当前页", required = false) @RequestParam(required = false, name = "start", defaultValue = "1") Integer start,
+            @ApiParam(name = "length", value = "每页显示条数", required = false) @RequestParam(required = false, name = "length", defaultValue = "10") Integer length
     ) {
         try {
-            Page<ManageUser> users = graphicMessageService.list(title, description , pageSize, page);
-            return Envelop.getSuccessListWithPage(
-                    "获取信息成功",
-                    users.getContent(),//数据内容
-                    page, //当前页
-                    pageSize,//每个显示条数
-                    users.getTotalElements()//总数
-            );
-
+            Envelop envelop = graphicMessageService.list(title, sorts,length, start);
+            return envelop;
         } catch (Exception e) {
-            return Envelop.getError("获取信息成功:" + e.getMessage(), -1);
+            return Envelop.getError("获取信息失败:" + e.getMessage(), -1);
         }
     }
 
-    @GetMapping("/getByCode")
-    @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
-    public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+
+    @DeleteMapping(value = "/graphicMessage/{codes}")
+    @ApiOperation(value = "通过codes删除,多个code用,分割", notes = "通过codes删除")
+    public Envelop deleteByCodes(
+            @ApiParam(name = "codes", value = "codes")
+            @PathVariable String codes
     ) {
-        return graphicMessageService.findByCode(code);
-    }
-    @GetMapping("/getByCodea")
-    @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
-    public Envelop findByCodea(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
-    ) {
-        return graphicMessageService.findByCodea(code);
+        Envelop envelop = graphicMessageService.deleteByCode(codes);
+        return envelop;
     }
 
+    @GetMapping(value = "/graphicMessage/{code}")
+    @ApiOperation(value = "根据code查找图文消息", notes = "根据code查找图文消息")
+    public Envelop findByCode(
+            @ApiParam(name = "code", value = "code")
+            @PathVariable String code
+    ) {
+        Envelop envelop = graphicMessageService.findByCode(code);
+        return envelop;
+    }
+
+    @PostMapping(value = "/graphicMessage")
+    @ApiOperation(value = "保存或者修改微信图文消息", notes = "保存或者修改微信图文消息")
+    public Envelop saveOrUpdate(@ModelAttribute @Valid GraphicMessage graphicMessage) throws JsonProcessingException {
+        return graphicMessageService.saveOrUpdate(graphicMessage);
+    }
 }

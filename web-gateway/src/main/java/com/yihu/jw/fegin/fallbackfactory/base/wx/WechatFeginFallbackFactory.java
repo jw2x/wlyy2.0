@@ -4,44 +4,60 @@ import com.yihu.jw.fegin.base.wx.WechatFegin;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.exception.business.JiWeiException;
 import feign.hystrix.FallbackFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Component;
 
 @Component
 public class WechatFeginFallbackFactory implements FallbackFactory<WechatFegin> {
+
+
+    @Autowired
+    private Tracer tracer;
+
     @Override
     public WechatFegin create(Throwable e) {
         return new WechatFegin() {
+
             public Envelop createWechat(String jsonData) throws JiWeiException {
-                Envelop envelop = new Envelop();
-                envelop.getError(e.getMessage(),-1);
+                tracer.getCurrentSpan().logEvent("创建微信配置失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
+
             public Envelop updateWechat(String jsonData) throws JiWeiException {
-                Envelop envelop = new Envelop();
-                envelop.getError(e.getMessage(),-1);
+                tracer.getCurrentSpan().logEvent("更新微信配置失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
-            public Envelop deleteWechat(String code) throws JiWeiException {
-                Envelop envelop = new Envelop();
-                envelop.getError(e.getMessage(),-1);
+
+            public Envelop deleteWechat(String codes) throws JiWeiException {
+                tracer.getCurrentSpan().logEvent("删除微信配置失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("codes:"+codes);
                 throw new JiWeiException(e);
             }
 
             public Envelop findByCode(String code) throws JiWeiException {
-                Envelop envelop = new Envelop();
-                envelop.getError(e.getMessage(),-1);
+                tracer.getCurrentSpan().logEvent("查找微信配置失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("code:"+code);
                 throw new JiWeiException(e);
             }
 
             public Envelop getWechats(String fields, String filters, String sorts, int size, int page) throws JiWeiException {
-                Envelop envelop = new Envelop();
-                envelop.getError(e.getMessage(),-1);
+                tracer.getCurrentSpan().logEvent("分页查找微信配置失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("fields:" + fields);
+                tracer.getCurrentSpan().logEvent("filters:" + filters);
+                tracer.getCurrentSpan().logEvent("sorts:" + sorts);
+                tracer.getCurrentSpan().logEvent("size:" + size);
+                tracer.getCurrentSpan().logEvent("page:" + page);
                 throw new JiWeiException(e);
             }
 
             public Envelop getWechatNoPage(String fields, String filters, String sorts) throws JiWeiException {
-                Envelop envelop = new Envelop();
-                envelop.getError(e.getMessage(),-1);
+                tracer.getCurrentSpan().logEvent("查找微信配置列表失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("fields:" + fields);
+                tracer.getCurrentSpan().logEvent("filters:" + filters);
+                tracer.getCurrentSpan().logEvent("sorts:" + sorts);
                 throw new JiWeiException(e);
             }
         };

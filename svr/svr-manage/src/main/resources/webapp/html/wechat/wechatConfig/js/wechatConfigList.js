@@ -17,7 +17,7 @@ $(function () {
             "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
             "ordering": false,//全局禁用排序
             "ajax": {
-                url: '/wechatConfig/list',
+                url: '/wechat/wechatConfig/list',
                 data: function (d) {
                     d.name = $("#name").val();
                     d.userCode = usercode;
@@ -218,14 +218,6 @@ $(function () {
     }
 
 
-//   function exp1(){
-//	   $("#exp").attr("src",contextPath+"/department/export.do?t=" + new Date().getTime());
-//   }
-    $(document).delegate('#expCsv','click',function() {
-
-        $("#exp").attr("src",contextPath+"/department/export.do?t=" + new Date().getTime());
-    });
-
     $(document).delegate('.addBtn','click',function() {
         contentVM.wechatConfig='';
         $('#myModal-add-info').modal('show');
@@ -275,11 +267,7 @@ $(function () {
     $(document).delegate('.search', 'click', function () {
         table.ajax.reload();
     });
-
-
-
 });
-
 
 var contentVM = new Vue({
     el: '#category_add',
@@ -289,7 +277,6 @@ var contentVM = new Vue({
     },
     replace:false
 });
-
 
 do_get("/base/saases",{},function(data){
     contentVM.saasList = data.detailModelList;
@@ -302,7 +289,7 @@ do_get("/base/saases",{},function(data){
 function show(code){
     $("#myModal-add-info").removeData("modal");
     var data={};
-    do_get("/wechatConfig/wechat/"+code,data,function(data){
+    do_get("/wechat/wechatConfig/"+code,data,function(data){
         contentVM.wechatConfig = data.obj;
         $('#myModal-add-info').modal('show');
         $("#myModalLabel").html("查看");
@@ -312,7 +299,7 @@ function show(code){
 }
 
 function del(codes){
-    var url = "/wechatConfig/wechat/"+codes+"?userCode="+usercode;
+    var url = "/wechat/wechatConfig/"+codes+"?userCode="+usercode;
     do_delete(url,{},function(data){
         if(data.successFlg==true){
             alert("删除成功");
@@ -328,7 +315,7 @@ $("#btnsubmit").click(function(){
     var id = $("#id").val();
     var data = $("#category_add").serialize();
     if(id==''){//说明是保存
-        url = "/wechatConfig/wechat"
+        url = "/wechat/wechatConfig"
         do_post(url,data,function(data){
             if(data.successFlg){
                 alert("保存成功");
@@ -340,7 +327,7 @@ $("#btnsubmit").click(function(){
 
         })
     }else{//说明是修改
-        url="/wechatConfig/wechat?userCode="+usercode;
+        url="/wechat/wechatConfig?userCode="+usercode;
         do_put(url,data,function(data){
             console.log(data);
             if(data.successFlg){
