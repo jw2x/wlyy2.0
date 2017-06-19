@@ -1,5 +1,7 @@
 package com.yihu.jw.restmodel.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,17 +19,17 @@ import java.util.List;
  *
  * @author llh
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Envelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
+    private int pageSize = 10;
 
-    private Integer pageSize = 10;
+    private int currPage;
 
-    private Integer currPage;
+    private int totalPage;
 
-    private Integer totalPage;
-
-    private Integer totalCount;
+    private int totalCount;
 
     private List detailModelList;
 
@@ -112,14 +114,15 @@ public class Envelop implements Serializable {
         envelop.setSuccessMsg(message);
         return envelop;
     }
-    public static Envelop getSuccess(String message,Object obj) {
+
+    public static Envelop getSuccess(String message, Object obj) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
         envelop.setObj(obj);
         return envelop;
     }
 
-    public static Envelop getSuccessListWithPage(String message,List detailModelList,Integer page,Integer size,Long count) {
+    public static Envelop getSuccessListWithPage(String message, List detailModelList, int page, int size, Long count) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
         envelop.setPageSize(size);
@@ -129,7 +132,7 @@ public class Envelop implements Serializable {
         return envelop;
     }
 
-    public static Envelop getError(String message,int errorCode) {
+    public static Envelop getError(String message, int errorCode) {
         Envelop envelop = new Envelop();
         envelop.setErrorMsg(message);
         return envelop;
