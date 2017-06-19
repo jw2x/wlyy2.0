@@ -12,7 +12,7 @@ zipkin:
     elasticsearch:
       hosts: 172.19.103.68:9300
       cluster:  jkzl
-      index: zipkin
+      index: jwlog
       index-shards: 5
       index-replicas: 0
 

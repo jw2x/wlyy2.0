@@ -10,6 +10,7 @@ import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,22 +38,26 @@ public class PatientController {
     private Tracer tracer;
 
 
-
     @Value("${test.aaa}")
     private String aaaa;
 
     @GetMapping("/hello")
     @ApiVersion(1)
     @ResponseBody
-    public String hello1(Integer id) throws Exception {
-        switch (id){
-            case 1:{
+    public String hello1(@RequestParam(name = "id") Integer id,
+                         @RequestParam(name = "name") String name,
+                         HttpServletRequest request
+    ) throws Exception {
+
+        tracer.getCurrentSpan().logEvent(new JSONObject(request.getParameterMap()).toString());
+        switch (id) {
+            case 1: {
                 throw new ManageException("后台管理系统异常");
             }
-            case 2:{
+            case 2: {
                 throw new SecurityException("权限异常");
             }
-            case 3:{
+            case 3: {
                 throw new SystemException("后台系统异常");
             }
         }
@@ -63,7 +68,7 @@ public class PatientController {
     @GetMapping("/hello")
     @ApiVersion(2)
     @ResponseBody
-    public String hello2(HttpServletRequest request) throws Exception {
+    public String hello2(String id) throws Exception {
         System.out.println("haha2.........");
         return "hello2";
     }
