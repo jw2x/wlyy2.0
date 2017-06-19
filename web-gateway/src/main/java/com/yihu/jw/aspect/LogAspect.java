@@ -39,7 +39,6 @@ public class LogAspect {
             o = point.proceed();
             //访问后日志
             tracer.getCurrentSpan().tag(GatewayContanrts.ZipkinElasticKey.gateway_out_params,new JSONObject(o).toString());
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }

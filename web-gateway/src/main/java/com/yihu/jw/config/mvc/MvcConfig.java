@@ -11,7 +11,10 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  */
 @Configuration
 public class MvcConfig extends WebMvcConfigurationSupport {
-
+    /**
+     * 重写springMVC的Mapping 版本控制用
+     * @return
+     */
     @Override
     @Bean
     public RequestMappingHandlerMapping requestMappingHandlerMapping() {
@@ -21,6 +24,10 @@ public class MvcConfig extends WebMvcConfigurationSupport {
         return handlerMapping;
     }
 
+    /**
+     * 全局异常定义
+     * @return
+     */
     @Bean
     public GlobalHandlerExceptionResolver globalHandlerExceptionResolver() {
         return new GlobalHandlerExceptionResolver();
