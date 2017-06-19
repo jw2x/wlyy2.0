@@ -3,6 +3,7 @@ package com.yihu.jw.controller;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.fegin.PatientFegin;
+import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.exception.SystemException;
 import com.yihu.jw.restmodel.exception.SecurityException;
 import com.yihu.jw.restmodel.exception.business.ManageException;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -33,23 +35,22 @@ public class PatientController {
     private Logger logger = LoggerFactory.getLogger(PatientController.class);
     @Autowired
     private PatientFegin patientFegin;
-
     @Autowired
     private Tracer tracer;
-
-
     @Value("${test.aaa}")
     private String aaaa;
 
     @GetMapping("/hello")
     @ApiVersion(1)
     @ResponseBody
-    public String hello1(@RequestParam(name = "id") Integer id,
-                         @RequestParam(name = "name") String name,
-                         HttpServletRequest request
+    public Envelop hello1(@RequestParam(name = "id") Integer id,
+                          @RequestParam(name = "name") String name,
+                          HttpServletRequest request
     ) throws Exception {
+        tracer.getCurrentSpan().logEvent("logEvent");
+        tracer.getCurrentSpan().tag("test","tag");
+        tracer.getCurrentSpan().setBaggageItem("test","BaggageItem");
 
-        tracer.getCurrentSpan().logEvent(new JSONObject(request.getParameterMap()).toString());
         switch (id) {
             case 1: {
                 throw new ManageException("后台管理系统异常");
@@ -62,7 +63,7 @@ public class PatientController {
             }
         }
 
-        return "hello1";
+        return Envelop.getSuccess("请求成功");
     }
 
     @GetMapping("/hello")

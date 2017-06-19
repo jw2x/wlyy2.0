@@ -30,7 +30,6 @@ public class AdvertisementControlelr extends EnvelopRestController {
 
     @Autowired
     private AdvertisementFegin advertisementFegin;
-
     @Autowired
     private Tracer tracer;
 

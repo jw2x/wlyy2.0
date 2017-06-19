@@ -1,5 +1,8 @@
 package com.yihu.jw.version;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.condition.RequestCondition;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +14,7 @@ import java.util.regex.Pattern;
  * Created by chenweida on 2017/6/15.
  */
 public class ApiVesrsionCondition implements RequestCondition<ApiVesrsionCondition> {
+
     // 路径中版本的前缀， 这里用 /v[1-9]/的形式
     private final static Pattern VERSION_PREFIX_PATTERN = Pattern.compile("v(\\d+)/");
 

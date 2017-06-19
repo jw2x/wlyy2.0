@@ -54,7 +54,6 @@ public class EnvelopRestController {
      */
     protected Envelop getResult(List modelList, int totalCount) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessFlg(true);
         envelop.setDetailModelList(modelList);
         envelop.setTotalCount(totalCount);
 

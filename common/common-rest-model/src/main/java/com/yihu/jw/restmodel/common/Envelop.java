@@ -21,8 +21,6 @@ public class Envelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
 
-    private boolean successFlg=true;
-
     private int pageSize = 10;
 
     private int currPage;
@@ -55,14 +53,6 @@ public class Envelop implements Serializable {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public boolean isSuccessFlg() {
-        return successFlg;
-    }
-
-    public void setSuccessFlg(boolean successFlg) {
-        this.successFlg = successFlg;
     }
 
     public List getDetailModelList() {
@@ -150,7 +140,6 @@ public class Envelop implements Serializable {
 
     public static Envelop getError(String message,int errorCode) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessFlg(false);
         envelop.setErrorMsg(message);
         envelop.setErrorCode(errorCode);
         return envelop;
