@@ -37,12 +37,11 @@ public class WechatConfigService {
        map.put("sorts",sorts);
        map.put("filters","");
        if(StringUtils.isNotBlank(name)){
-           name = name.replaceAll(" ","");
            filters.put("name",name);
            map.put("filters",filters);
        }
 
-       Envelop forObject = template.getForObject(url + "/wechatConfig/getWechats?size={size}&page={page}&sorts={sorts}&filters={filters}",
+       Envelop forObject = template.getForObject(url + "/wechat/wechatConfig/list?size={size}&page={page}&sorts={sorts}&filters={filters}",
                Envelop.class,map);
        return forObject;
 
@@ -53,14 +52,14 @@ public class WechatConfigService {
         //template.delete(url + "/wechatConfig/delete?codes={codes}", codes);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("codes", codes);
-        String urlRequest = url + "/wechatConfig/delete?codes="+codes;
+        String urlRequest = url + "/wechat/wechatConfig/"+codes;
         RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,map);
         Envelop envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.DELETE, Envelop.class);
         return envelop;
     }
 
     public Envelop findByCode(String code) {
-        Envelop envelop = template.getForObject(url + "/wechatConfig/getByCode?code={code}", Envelop.class,code);
+        Envelop envelop = template.getForObject(url + "/wechat/wechatConfig/"+code, Envelop.class);
         return envelop;
     }
 
@@ -73,13 +72,13 @@ public class WechatConfigService {
         HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
         Envelop envelop =null;
         if(wechatConfig.getId()==null){//说明是保存
-            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + "/wechatConfig/create", formEntity, Envelop.class);
+            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + "/wechat/wechatConfig", formEntity, Envelop.class);
             envelop = responseEntity.getBody();
             return envelop;
         }
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("jsonData",jsonObj.toString());
-        String urlRequest = url + "/wechatConfig/update";
+        String urlRequest = url + "/wechat/wechatConfig";
         RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,map);
         envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.PUT, Envelop.class);
 

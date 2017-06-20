@@ -16,14 +16,14 @@ import javax.validation.Valid;
  * Created by Administrator on 2017/6/13 0013.
  */
 @RestController
-@RequestMapping("/wechatConfig")
+@RequestMapping("/wechat")
 @Api(description = "微信配置管理")
 public class WechatConfigController {
 
     @Autowired
     private WechatConfigService wechatConfigService;
 
-    @GetMapping("/list")
+    @GetMapping("wechatConfig/list")
     @ApiOperation(value = "分页获取微信配置列表")
     public Envelop list(
             @ApiParam(name = "name", value = "微信名", required = false) @RequestParam(required = false, name = "name") String name,
@@ -40,7 +40,7 @@ public class WechatConfigController {
     }
 
 
-    @DeleteMapping(value = "/wechat/{codes}")
+    @DeleteMapping(value = "/wechatConfig/{codes}")
     @ApiOperation(value = "通过codes删除,多个code用,分割", notes = "通过codes删除")
     public Envelop deleteByCodes(
             @ApiParam(name = "codes", value = "codes")
@@ -50,7 +50,7 @@ public class WechatConfigController {
         return envelop;
     }
 
-    @GetMapping(value = "/wechat/{code}")
+    @GetMapping(value = "/wechatConfig/{code}")
     @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -60,27 +60,9 @@ public class WechatConfigController {
         return envelop;
     }
 
-    @PostMapping(value = "/wechat")
+    @PostMapping(value = "/wechatConfig")
     @ApiOperation(value = "保存微信配置", notes = "保存微信配置")
     public Envelop save(@ModelAttribute @Valid WechatConfig wechatConfig) throws JsonProcessingException {
         return wechatConfigService.saveOrUpdate(wechatConfig);
     }
-
-    /*@GetMapping("/getByCode")
-    @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
-    public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
-    ) {
-        return wechatConfigService.findByCode(code);
-    }
-    @GetMapping("/getByCodea")
-    @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
-    public Envelop findByCodea(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
-    ) {
-        return wechatConfigService.findByCodea(code);
-    }*/
-
 }

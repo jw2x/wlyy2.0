@@ -32,6 +32,7 @@ spring:
 ---
 spring:
   profiles: dev
+  gateway: http://localhost:8088/v1
 
   datasource:
     url: jdbc:mysql://172.19.103.77/jw2?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
