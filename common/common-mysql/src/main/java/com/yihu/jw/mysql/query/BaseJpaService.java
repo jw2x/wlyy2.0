@@ -141,6 +141,11 @@ public class BaseJpaService<T, R> {
     }
 
     public long getCount(String filters) throws ParseException {
+        if(filters!=null){
+            filters = "status<>-1;"+filters;
+        }else{
+            filters="status<>-1;";
+        }
         URLQueryParser queryParser = createQueryParser(filters);
         CriteriaQuery query = queryParser.makeCriteriaCountQuery();
 

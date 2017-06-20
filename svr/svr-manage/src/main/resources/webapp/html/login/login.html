@@ -65,13 +65,12 @@
             },
             dataType: "json",
             success: function (data) {
-                if (data.successFlg) {
-                    //保存用户信息到缓存中
-                    setUserCode(data.obj.code)
-                    window.location.href = '/index/index.html?u=' + data.obj.id;
-                } else {
-                    alert("账号或密码错误")
-                }
+                //保存用户信息到缓存中
+                setUserCode(data.obj.code)
+                window.location.href = '/index/index.html?u=' + data.obj.id;
+            },
+            error:function(data){
+                alert("账号或密码错误")
             }
         });
         return false;

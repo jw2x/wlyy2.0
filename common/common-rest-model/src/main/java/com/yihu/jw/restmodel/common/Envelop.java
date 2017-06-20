@@ -23,13 +23,13 @@ import java.util.List;
 public class Envelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
-    private Integer pageSize ;
+    private int pageSize = 10;
 
-    private Integer currPage;
+    private int currPage;
 
-    private Integer totalPage;
+    private int totalPage;
 
-    private Integer totalCount;
+    private int totalCount;
 
     private List detailModelList;
 
@@ -47,11 +47,11 @@ public class Envelop implements Serializable {
         this.obj = obj;
     }
 
-    public Integer getTotalCount() {
+    public int getTotalCount() {
         return totalCount;
     }
 
-    public void setTotalCount(Integer totalCount) {
+    public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
     }
 
@@ -72,34 +72,32 @@ public class Envelop implements Serializable {
     }
 
 
-    public Integer getPageSize() {
+    public int getPageSize() {
         return pageSize;
     }
 
-    public void setPageSize(Integer pageSize) {
+    public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
 
-    public Integer getCurrPage() {
+    public int getCurrPage() {
         return currPage;
     }
 
-    public void setCurrPage(Integer currPage) {
+    public void setCurrPage(int currPage) {
         this.currPage = currPage;
     }
 
-    public Integer getTotalPage() {
-        if (totalCount != null && pageSize != null) {
-            if (totalCount % pageSize == 0) {
-                totalPage = totalCount / pageSize;
-            } else {
-                totalPage = totalCount / pageSize + 1;
-            }
+    public int getTotalPage() {
+        if (totalCount % pageSize == 0) {
+            totalPage = totalCount / pageSize;
+        } else {
+            totalPage = totalCount / pageSize + 1;
         }
         return totalPage;
     }
 
-    public void setTotalPage(Integer totalPage) {
+    public void setTotalPage(int totalPage) {
         this.totalPage = totalPage;
     }
 
@@ -124,7 +122,7 @@ public class Envelop implements Serializable {
         return envelop;
     }
 
-    public static Envelop getSuccessListWithPage(String message, List detailModelList, Integer page, Integer size, Long count) {
+    public static Envelop getSuccessListWithPage(String message, List detailModelList, int page, int size, Long count) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
         envelop.setPageSize(size);
@@ -134,7 +132,7 @@ public class Envelop implements Serializable {
         return envelop;
     }
 
-    public static Envelop getError(String message, Integer errorCode) {
+    public static Envelop getError(String message, int errorCode) {
         Envelop envelop = new Envelop();
         envelop.setErrorMsg(message);
         return envelop;

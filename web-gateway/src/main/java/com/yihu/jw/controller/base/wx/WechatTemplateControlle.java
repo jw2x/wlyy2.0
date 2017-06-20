@@ -5,9 +5,13 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.fegin.base.wx.WechatTemplateFegin;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.exception.business.JiWeiException;
+import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping(WechatContants.Template.api_common)
+@RequestMapping("{version}/"+WechatContants.api_common)
 @Api(description = "微信模板消息相关")
 public class WechatTemplateControlle {
 
@@ -31,6 +35,7 @@ public class WechatTemplateControlle {
     @Autowired
     private Tracer tracer;
 
+    @ApiVersion(1)
     @PostMapping(value = WechatContants.Template.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信模版", notes = "创建微信模版")
     @HystrixCommand(commandProperties = {
@@ -38,10 +43,13 @@ public class WechatTemplateControlle {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop createWxTemplate(
             @ApiParam(name = "json_data", value = "微信模版json字符串")
-            @RequestBody String jsonData) {
+            @RequestBody String jsonData) throws JiWeiException {
+        tracer.getCurrentSpan().logEvent("创建微信模板:jsonData="+jsonData);
+        //{"id":null,"code":"","saasId":"1","name":"aaaawefr","token":"","encodingAesKey":"","encType":null,"status":0,"type":"1","appId":"","appSecret":"","baseUrl":"","createUser":"","createUserName":"","createTime":null,"updateUser":null,"updateUserName":null,"updateTime":null,"remark":""}
         return wechatTemplateFegin.createWxTemplate(jsonData);
     }
 
+    @ApiVersion(1)
     @PutMapping(value = WechatContants.Template.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信模版", notes = "修改微信模版")
     @HystrixCommand(commandProperties = {
@@ -49,22 +57,29 @@ public class WechatTemplateControlle {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop updateWxTemplate(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
-        return wechatTemplateFegin.updateWxTemplate(jsonData);
+            @RequestBody String jsonData) throws JiWeiException {
+        JSONObject json = new JSONObject(jsonData);
+        String data = json.get("jsonData").toString();
+        data = data.substring(2,data.length() - 2);
+        data = data.replaceAll("\\\\\"","\"");
+        tracer.getCurrentSpan().logEvent("更新模板配置:jsonData="+data);
+        return wechatTemplateFegin.updateWxTemplate(data);
     }
 
 
+    @ApiVersion(1)
     @DeleteMapping(value = WechatContants.Template.api_delete)
     @ApiOperation(value = "删除微信模版", notes = "删除微信模版")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop deleteWxTemplate(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
-        return wechatTemplateFegin.deleteWxTemplate(code);
+            @ApiParam(name = "codes", value = "codes")
+            @PathVariable(value = "codes", required = true) String codes) throws JiWeiException {
+        return wechatTemplateFegin.deleteWxTemplate(codes);
     }
 
+    @ApiVersion(1)
     @GetMapping(value = WechatContants.Template.api_getByCode)
     @ApiOperation(value = "根据code查找微信模版", notes = "根据code查找微信模版")
     @HystrixCommand(commandProperties = {
@@ -72,14 +87,18 @@ public class WechatTemplateControlle {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
-    ) {
+            @PathVariable(value = "code", required = true) String code
+    ) throws JiWeiException {
         return wechatTemplateFegin.findByCode(code);
     }
 
+    @ApiVersion(1)
     @RequestMapping(value = WechatContants.Template.api_getWxTemplates, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信模版列表(分页)")
-    public Envelop getWechats(
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    public Envelop getTemplates(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,wechatCode,templateId,content,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -90,16 +109,24 @@ public class WechatTemplateControlle {
             @RequestParam(value = "size", required = false) int size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) int page) throws Exception {
-        return wechatTemplateFegin.getWechats(fields,filters,sorts,size,page);
+        String filterStr = "";
+        if(StringUtils.isNotBlank(filters)){
+            filters = filters.replaceAll("=", ":");
+            JSONObject jsonResult = new JSONObject(filters);
+            if(jsonResult.has("name")){
+                filterStr+="name?"+jsonResult.get("name")+";";
+            }
+        }
+        return wechatTemplateFegin.getWechats(fields,filterStr,sorts,size,page);
     }
 
-
+    @ApiVersion(1)
     @GetMapping(value = WechatContants.Template.api_getWxTemplatesNoPage)
     @ApiOperation(value = "获取微信模版列表(不分页)")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop getWechatNoPage(
+    public Envelop getTemplateNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,wechatCode,templateId,content,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -109,6 +136,7 @@ public class WechatTemplateControlle {
         return wechatTemplateFegin.getWechatNoPage(fields,filters,sorts);
     }
 
+    @ApiVersion(1)
     @GetMapping(value = WechatContants.Template.api_sendTemplateMessage)
     @ApiOperation(value = "发送微信模板消息")
     @HystrixCommand(commandProperties = {
