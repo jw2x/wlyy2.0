@@ -1,13 +1,10 @@
 package com.yihu.jw.restmodel.wx;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.Date;
 
 /**
  * Created by Administrator on 2017/5/21 0021.
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MWxGraphicMessage {
     private Long id;
     private String code;//业务code

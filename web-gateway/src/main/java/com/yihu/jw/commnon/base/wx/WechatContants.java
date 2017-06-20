@@ -29,13 +29,12 @@ public class WechatContants {
 
     //微信模板消息
     public static class Template {
-        public static final String api_common="template";
-        public static final String api_create="create";
-        public static final String api_update="update";
-        public static final String api_delete="delete";
-        public static final String api_getByCode="getByCode";
-        public static final String api_getWxTemplates="getWxTemplates";
-        public static final String api_getWxTemplatesNoPage="getWxTemplatesNoPage";
+        public static final String api_create="template";
+        public static final String api_update="template";
+        public static final String api_delete="template/{codes}";
+        public static final String api_getWxTemplatesNoPage="template/listNoPage";
+        public static final String api_getWxTemplates="template/list";
+        public static final String api_getByCode="template/{code}";
         public static final String api_sendTemplateMessage="sendTemplateMessage";
     }
 

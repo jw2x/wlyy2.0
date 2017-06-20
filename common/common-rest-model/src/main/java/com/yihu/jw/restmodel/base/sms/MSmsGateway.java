@@ -1,11 +1,8 @@
 package com.yihu.jw.restmodel.base.sms;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 /**
  * Created by chenweida on 2017/5/22.
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MSmsGateway {
     private Long id;
     private String code; //业务code
