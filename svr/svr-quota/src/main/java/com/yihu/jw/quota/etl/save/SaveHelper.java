@@ -5,7 +5,7 @@ import com.yihu.jw.quota.etl.save.es.ElastricSearchSave;
 import com.yihu.jw.quota.model.jpa.save.TjQuotaDataSave;
 import com.yihu.jw.quota.service.save.TjDataSaveService;
 import com.yihu.jw.quota.util.SpringUtil;
-import com.yihu.jw.quota.vo.QuotaVO;
+import com.yihu.jw.quota.vo.QuotaVo;
 import com.yihu.jw.quota.vo.SaveModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,7 +22,7 @@ public class SaveHelper {
     @Autowired
     private TjDataSaveService datsSaveService;
 
-    public Boolean save(List<SaveModel> dataModels, QuotaVO quotaVO) {
+    public Boolean save(List<SaveModel> dataModels, QuotaVo quotaVO) {
         //查看指标保存的数据源
         TjQuotaDataSave quotaDataSave = datsSaveService.findByQuota(quotaVO.getCode());
         switch (quotaDataSave.getType()) {

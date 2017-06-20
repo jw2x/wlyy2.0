@@ -11,7 +11,7 @@ import com.yihu.jw.quota.service.dimension.TjDimensionSlaveService;
 import com.yihu.jw.quota.service.source.TjDataSourceService;
 import com.yihu.jw.quota.util.SpringUtil;
 import com.yihu.jw.quota.vo.DictModel;
-import com.yihu.jw.quota.vo.QuotaVO;
+import com.yihu.jw.quota.vo.QuotaVo;
 import com.yihu.jw.quota.vo.SaveModel;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
@@ -47,7 +47,7 @@ public class ExtractHelper {
      * @return
      * @throws Exception
      */
-    public List<SaveModel> extractData(QuotaVO quotaVO, String startTime, String endTime,String timeLevel,String saasid) throws Exception {
+    public List<SaveModel> extractData(QuotaVo quotaVO, String startTime, String endTime, String timeLevel, String saasid) throws Exception {
         try {
             //得到该指标的数据来源
             TjQuotaDataSource quotaDataSource = dataSourceService.findSourceByQuotaCode(quotaVO.getCode());

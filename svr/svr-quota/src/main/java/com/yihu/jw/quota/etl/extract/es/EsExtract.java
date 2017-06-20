@@ -11,7 +11,7 @@ import com.yihu.jw.quota.etl.save.es.ElasticFactory;
 import com.yihu.jw.quota.model.jpa.dimension.TjQuotaDimensionMain;
 import com.yihu.jw.quota.model.jpa.dimension.TjQuotaDimensionSlave;
 import com.yihu.jw.quota.vo.DictModel;
-import com.yihu.jw.quota.vo.QuotaVO;
+import com.yihu.jw.quota.vo.QuotaVo;
 import com.yihu.jw.quota.vo.SaveModel;
 import net.sf.json.JSONObject;
 import org.elasticsearch.action.search.SearchResponse;
@@ -59,7 +59,7 @@ public class EsExtract {
     private String endTime;
     private String timeLevel;
     private String saasid;
-    private QuotaVO quotaVO;
+    private QuotaVo quotaVO;
     private EsConfig esConfig;
 
 
@@ -69,7 +69,7 @@ public class EsExtract {
                                    String endTime, //结束时间
                                    String timeLevel, //时间维度  1日,2 周, 3 月,4 年
                                    String saasid,//saasid
-                                   QuotaVO quotaVO,//指标code
+                                   QuotaVo quotaVO,//指标code
                                    EsConfig esConfig //es配置
     ) {
         this.startTime = startTime;

@@ -3,7 +3,7 @@ package com.yihu.jw.quota.service.job;
 import com.yihu.jw.quota.dao.jpa.TjQuotaDao;
 import com.yihu.jw.quota.model.jpa.TjQuota;
 import com.yihu.jw.quota.util.QuartzHelper;
-import com.yihu.jw.quota.vo.QuotaVO;
+import com.yihu.jw.quota.vo.QuotaVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +28,7 @@ public class JobService {
 
     public void startNowById(String id) throws Exception {
         TjQuota tjQuota= quotaDao.findByCode(id);
-        QuotaVO quotaVO =new QuotaVO();
+        QuotaVo quotaVO =new QuotaVo();
         BeanUtils.copyProperties(tjQuota,quotaVO);
 
         Map<String, Object> params = new HashMap<String, Object>();
