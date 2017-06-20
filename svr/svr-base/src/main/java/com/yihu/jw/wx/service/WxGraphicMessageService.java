@@ -26,9 +26,8 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
 
     @Transient
     public WxGraphicMessage createWxGraphicMessage(WxGraphicMessage wxGraphicMessage) {
-        if (StringUtils.isEmpty(wxGraphicMessage.getCode())) {
-            throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_is_null, CommonContants.common_error_params_code);
-        }
+        String code = UUID.randomUUID().toString().replaceAll("-", "");
+        wxGraphicMessage.setCode(code);
         if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
         }

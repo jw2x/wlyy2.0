@@ -1,5 +1,7 @@
 package com.yihu.jw.restmodel.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -17,12 +19,10 @@ import java.util.List;
  *
  * @author llh
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Envelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
-
-    private boolean successFlg=true;
-
     private int pageSize = 10;
 
     private int currPage;
@@ -39,8 +39,6 @@ public class Envelop implements Serializable {
 
     private String successMsg;
 
-    private int errorCode;
-
     public Object getObj() {
         return obj;
     }
@@ -55,14 +53,6 @@ public class Envelop implements Serializable {
 
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
-    }
-
-    public boolean isSuccessFlg() {
-        return successFlg;
-    }
-
-    public void setSuccessFlg(boolean successFlg) {
-        this.successFlg = successFlg;
     }
 
     public List getDetailModelList() {
@@ -81,13 +71,6 @@ public class Envelop implements Serializable {
         this.errorMsg = errorMsg;
     }
 
-    public int getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
 
     public int getPageSize() {
         return pageSize;
@@ -131,14 +114,15 @@ public class Envelop implements Serializable {
         envelop.setSuccessMsg(message);
         return envelop;
     }
-    public static Envelop getSuccess(String message,Object obj) {
+
+    public static Envelop getSuccess(String message, Object obj) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
         envelop.setObj(obj);
         return envelop;
     }
 
-    public static Envelop getSuccessListWithPage(String message,List detailModelList,Integer page,Integer size,Long count) {
+    public static Envelop getSuccessListWithPage(String message, List detailModelList, int page, int size, Long count) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
         envelop.setPageSize(size);
@@ -148,11 +132,9 @@ public class Envelop implements Serializable {
         return envelop;
     }
 
-    public static Envelop getError(String message,int errorCode) {
+    public static Envelop getError(String message, int errorCode) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessFlg(false);
         envelop.setErrorMsg(message);
-        envelop.setErrorCode(errorCode);
         return envelop;
     }
 

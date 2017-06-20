@@ -3,7 +3,6 @@ package com.yihu.jw.manage.interceptors;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.exception.ManageException;
 import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,6 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**

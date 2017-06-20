@@ -59,7 +59,7 @@ UrlParm = function () { // url参数
 }();
 
 //get方法
-function do_get(url, data, success) {
+function do_get(url, data, success,error) {
     //获取用户的code
     var usercode = getUserCode();
     data.userCode = usercode;
@@ -68,6 +68,7 @@ function do_get(url, data, success) {
         url: url,
         data: data,
         success: success,
+        error:error,
         dataType: "json"
     });
 }
@@ -75,7 +76,12 @@ function do_get(url, data, success) {
 function do_post(url, data, success) {
     //获取用户的code
     var usercode = getUserCode();
-    data.userCode = usercode;
+    //data.userCode = usercode;
+    if(data==''){
+        data="userCode="+usercode;
+    }else{
+        data+="&userCode="+usercode;
+    }
     $.ajax({
         type: 'POST',
         url: url,
@@ -90,8 +96,9 @@ function do_put(url, data, success) {
     //获取用户的code
     var usercode = getUserCode();
     data.userCode = usercode;
+    data._method="PUT";
     $.ajax({
-        type: 'PUT',
+        type: 'POST',
         url: url,
         data: data,
         success: success,
@@ -104,8 +111,9 @@ function do_delete(url, data, success) {
     //获取用户的code
     var usercode = getUserCode();
     data.userCode = usercode;
+    data._method="DELETE";
     $.ajax({
-        type: 'DELETE',
+        type: 'POST',
         url: url,
         data: data,
         success: success,

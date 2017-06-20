@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.config.annotation.*;
 
 /**
@@ -35,6 +36,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
     /**
      * 判断是否登陆的拦截器
+     *
      * @param registry
      */
     @Override
@@ -42,4 +44,9 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(userInterceptor).addPathPatterns("/**");
     }
 
+    @Bean
+    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
+        HiddenHttpMethodFilter hiddenHttpMethodFilter= new HiddenHttpMethodFilter();
+        return hiddenHttpMethodFilter;
+    }
 }

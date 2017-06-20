@@ -5,9 +5,13 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.fegin.base.wx.GraphicMessageFegin;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.exception.business.JiWeiException;
+import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping(WechatContants.GraphicMessage.api_common)
+@RequestMapping("{version}/"+WechatContants.api_common)
 @Api(description = "微信图文相关")
 public class WechatGraphicMessageController {
     private Logger logger= LoggerFactory.getLogger(WechatGraphicMessageController.class);
@@ -33,6 +37,7 @@ public class WechatGraphicMessageController {
     @Autowired
     private Tracer tracer;
 
+    @ApiVersion(1)
     @PostMapping(value = WechatContants.GraphicMessage.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信图文消息", notes = "创建微信图文消息")
     @HystrixCommand(commandProperties = {
@@ -40,11 +45,14 @@ public class WechatGraphicMessageController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop createWxGraphicMessage(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
-        return graphicMessageFegin.createWxGraphicMessage(jsonData);
+            @RequestBody String jsonData) throws JiWeiException {
+        tracer.getCurrentSpan().logEvent("创建微信配置:jsonData="+jsonData);
+        Envelop graphicMessage =graphicMessageFegin.createWxGraphicMessage(jsonData);
+        return graphicMessage;
     }
 
 
+    @ApiVersion(1)
     @PutMapping(value = WechatContants.GraphicMessage.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信图文消息", notes = "修改微信图文消息")
     @HystrixCommand(commandProperties = {
@@ -52,22 +60,28 @@ public class WechatGraphicMessageController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop updateWxGraphicMessage(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
-        return graphicMessageFegin.updateWxGraphicMessage(jsonData);
+            @RequestBody String jsonData) throws JiWeiException {
+        JSONObject json = new JSONObject(jsonData);
+        String data = json.get("jsonData").toString();
+        data = data.substring(2,data.length() - 2);
+        data = data.replaceAll("\\\\\"","\"");
+        tracer.getCurrentSpan().logEvent("更新图文消息:jsonData="+data);
+        return graphicMessageFegin.updateWxGraphicMessage(data);
     }
 
-
+    @ApiVersion(1)
     @DeleteMapping(value = WechatContants.GraphicMessage.api_delete)
     @ApiOperation(value = "删除微信图文消息", notes = "删除微信图文消息")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop deleteWxGraphicMessage(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
-        return graphicMessageFegin.deleteWxGraphicMessage(code);
+            @ApiParam(name = "codes", value = "codes")
+            @PathVariable(value = "codes", required = true) String codes) throws JiWeiException {
+        return graphicMessageFegin.deleteWxGraphicMessage(codes);
     }
 
+    @ApiVersion(1)
     @GetMapping(value = WechatContants.GraphicMessage.api_getByCode)
     @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
     @HystrixCommand(commandProperties = {
@@ -75,11 +89,12 @@ public class WechatGraphicMessageController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
-    ) {
+            @PathVariable(value = "code", required = true) String code
+    ) throws JiWeiException {
         return graphicMessageFegin.findByCode(code);
     }
 
+    @ApiVersion(1)
     @RequestMapping(value = WechatContants.GraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信图文消息列表(分页)")
     public Envelop getWxGraphicMessages(
@@ -95,10 +110,20 @@ public class WechatGraphicMessageController {
             @RequestParam(value = "page", required = false) int page,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
-        return graphicMessageFegin.getWxGraphicMessages(fields,filters,sorts,size,page);
+
+        String filterStr = "";
+        if(StringUtils.isNotBlank(filters)){
+            filters = filters.replaceAll("=", ":");
+            JSONObject jsonResult = new JSONObject(filters);
+            if(jsonResult.has("title")){
+                filterStr+="title?"+jsonResult.get("title")+";";
+            }
+        }
+        tracer.getCurrentSpan().logEvent("过滤:"+filterStr);
+        return graphicMessageFegin.getWxGraphicMessages(fields,filterStr,sorts,size,page);
     }
 
-
+    @ApiVersion(1)
     @GetMapping(value = WechatContants.GraphicMessage.api_getWxGraphicMessageNoPage)
     @ApiOperation(value = "获取图文消息列表，不分页")
     @HystrixCommand(commandProperties = {
@@ -114,6 +139,7 @@ public class WechatGraphicMessageController {
         return graphicMessageFegin.getWxGraphicMessageNoPage(fields,filters,sorts);
     }
 
+    @ApiVersion(1)
     @GetMapping(value = WechatContants.GraphicMessage.api_sendGraphicMessages)
     @ApiOperation(value = "发送图文消息")
     @HystrixCommand(commandProperties = {

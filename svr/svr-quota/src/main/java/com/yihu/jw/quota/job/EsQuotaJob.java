@@ -88,7 +88,7 @@ public class EsQuotaJob implements Job {
      */
     private List<SaveModel> extract() {
         try {
-            return SpringUtil.getBean(ExtractHelper.class).extractData(quotaVO, startTime, endTime,timeLevel,saasid);
+            return SpringUtil.getBean(ExtractHelper.class).extractData(null, startTime, endTime,timeLevel,saasid);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用户管理页面</title>
+
+
+    <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+
+    <link href="/common/css/bootstrap/animate.min.css" rel="stylesheet">
+    <link href="/common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="/common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        <small>用户列表</small>
+                    </h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="table_data_tables.html#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="table_data_tables.html#">选项1</a>
+                            </li>
+                            <li><a href="table_data_tables.html#">选项2</a>
+                            </li>
+                        </ul>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <table id="userlist" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" name="allChecked" /></th>
+                            <th>code</th>
+                            <th>名称</th>
+                            <th>电话号码</th>
+                            <th>状态</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script type="text/javascript" src="/common/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/common/js/bootstrap/bootstrap.min.js"></script>
+
+
+<script type="text/javascript" src="/common/js/plugins/jeditable/jquery.jeditable.js"></script>
+
+<!-- Data Tables -->
+<script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
+
+<!-- 自定义js -->
+<script type="text/javascript" src="/common/js/content.min.js?v=1.0.0"></script>
+<script type="text/javascript" src="/system/user/js/userList.js"></script>
+
+
+</body>
+</html>

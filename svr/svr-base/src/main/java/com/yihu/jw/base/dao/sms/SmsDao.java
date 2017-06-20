@@ -1,6 +1,5 @@
 package com.yihu.jw.base.dao.sms;
 
-import com.yihu.jw.base.model.Function;
 import com.yihu.jw.base.model.sms.BaseSms;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,6 @@
 package com.yihu.jw.wx.model;// default package
 
-import com.yihu.jw.base.model.base.IdEntity;
+import com.yihu.jw.base.model.IdEntity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,7 +19,7 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private String token;//token
     private String encodingAesKey;//加密密钥
     private Integer encType;//加密方式  0:明文模式   1:兼容模式   2:安全模式
-    private String status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
+    private Integer status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
     private String type;//'1：服务号 2 订阅号
     private String appId;//'微信app_id'
     private String appSecret;//'微信app_secret'
@@ -31,7 +31,7 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private String updateUserName;//'修改人名'
     private Date updateTime;//'修改时间'
     private String remark;//'备注'
-    public WxWechat(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, String status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
+    public WxWechat(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, Integer status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
         this.code = code;
         this.saasId = saasId;
         this.name = name;
@@ -111,11 +111,11 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     }
 
     @Column(name = "status", precision = 2, scale = 0)
-    public String getStatus() {
+    public Integer getStatus() {
         return this.status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

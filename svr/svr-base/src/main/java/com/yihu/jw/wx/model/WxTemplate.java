@@ -1,6 +1,6 @@
 package com.yihu.jw.wx.model;// default package
 
-import com.yihu.jw.base.model.base.IdEntity;
+import com.yihu.jw.base.model.IdEntity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,6 +16,7 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
     private String code;//模板code
     private String title;//模板标题
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+    private String wechatName;//关联的微信名
     private String templateId;//微信模板id
     private String content;//模板内容
     private String createUser;//创建人
@@ -65,6 +66,15 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
 
     public void setWechatCode(String wechatCode) {
         this.wechatCode = wechatCode;
+    }
+
+    @Column(name="wechat_name")
+    public String getWechatName() {
+        return wechatName;
+    }
+
+    public void setWechatName(String wechatName) {
+        this.wechatName = wechatName;
     }
 
     @Column(name="template_id")

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>微信配置管理页面</title>
+
+    <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+
+    <link href="/common/css/bootstrap/animate.min.css" rel="stylesheet">
+    <link href="/common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="/common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <style>
+        .m-form-group:after { display: table; content: " "; clear: both; }
+        .m-form-group{
+            margin-top: 18px;;
+        }
+        select{
+            width:250px !important;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-12">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">微信名：</label>
+
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" id="name" name="name" style="width: 250px">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-success search" style="float: right;">查 询</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>
+                            <small>用户列表</small>
+                        </h5>
+                    </div>
+                    <div class="ibox-content">
+
+                        <table id="wechatList" class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" name="checkAllWechat" /></th>
+                                <th>微信名</th>
+                                <th>appid</th>
+                                <th>公众号类型</th>
+                                <th>状态</th>
+                                <th>创建时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal-add-info" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:1200px;height: 800px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        新 增
+                    </h4>
+                </div>
+                <form class="form-horizontal" role="form" action="" method="post"  id="category_add" >
+                    <input  id="id" type="hidden" name="id" :value="wechatConfig.id" />
+                    <input  type="hidden" name="code" :value="wechatConfig.code" />
+                    <input  type="hidden" name="createUser" :value="wechatConfig.createUser" />
+                    <input  type="hidden" name="createUserName" :value="wechatConfig.createUserName" />
+                    <!--<input  type="hidden" name="createTime" :value="wechatConfig.createTime" />-->
+                    <!--<input  type="hidden" name="updateUser" :value="wechatConfig.updateUser" />
+                    <input  type="hidden" name="updateUserName" :value="wechatConfig.updateUserName" />
+                    <input  type="hidden" name="updateTime" :value="wechatConfig.updateTime" />-->
+                    <div class="m-form-group">
+                        <label class="col-sm-3 control-label no-padding-right" >saasId： </label>
+                        <div class="col-sm-2">
+                            <select class="form-control m-b" name="saasId" id="saasList">
+                               <!-- <option>&#45;&#45;请选择&#45;&#45;</option>-->
+                                <option v-for="saas in saasList"  :value="saas.code" :selected="saas.code==wechatConfig.saasId ">{{saas.name}}</option>
+                            </select>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right" >公众号名： </label>
+                        <div class="col-sm-5">
+                            <input type="text"  class="form-control"  name="name" style="width: 250px" required="true" :value="wechatConfig.name" />
+                        </div>
+                    </div>
+
+                    <div class="m-form-group">
+                        <label class="col-sm-3 control-label no-padding-right" >token： </label>
+                        <div class="col-sm-2">
+                            <input type="text"  class="form-control"  name="token" style="width: 250px"   :value="wechatConfig.token"/>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right" >加密密钥： </label>
+                        <div class="col-sm-5">
+                            <input type="text"  class="form-control"  name="encodingAesKey" style="width: 250px" required="true" :value="wechatConfig.encodingAesKey"/>
+                        </div>
+                    </div>
+
+                    <div class="m-form-group">
+                        <label class="col-sm-3 control-label no-padding-right" >加密类型： </label>
+                        <div class="col-sm-2">
+                            <input type="text"  class="form-control"  name="encType" style="width: 250px"   :value="wechatConfig.encType"/>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right" >状态： </label>
+                        <div class="col-sm-5">
+                            <select class="form-control m-b" name="status">
+                                <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
+                                <option value="0" :selected="wechatConfig.status==0">待审核</option>
+                                <option value="1" :selected="wechatConfig.status==1">审核通过</option>
+                                <option value="2" :selected="wechatConfig.status==2">审核不通过</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="m-form-group">
+                        <label class="col-sm-3 control-label no-padding-right" >appId：</label>
+                        <div class="col-sm-2">
+                            <input type="text"  class="form-control"  name="appId" style="width: 250px" :value="wechatConfig.appId"/>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right" >appSecret：</label>
+                        <div class="col-sm-5">
+                            <input type="text"  class="form-control"  name="appSecret" style="width: 250px"  :value="wechatConfig.appSecret"/>
+                        </div>
+                    </div>
+
+                    <div class="m-form-group">
+                        <label class="col-sm-3 control-label no-padding-right" >baseUrl：</label>
+                        <div class="col-sm-2">
+                            <input type="text"  class="form-control"  name="baseUrl" style="width: 250px" :value="wechatConfig.baseUrl"/>
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right" >备注：</label>
+                        <div class="col-sm-5">
+                            <input type="text"  class="form-control"  name="remark" style="width: 250px"  :value="wechatConfig.remark"/>
+                        </div>
+                    </div>
+                    <div class="m-form-group">
+                        <label class="col-sm-3 control-label no-padding-right" >公众号类型</label>
+                        <div class="col-sm-2">
+                            <select class="form-control m-b" name="type">
+                                <option value="1" :selected="wechatConfig.type==1">服务号</option>
+                                <option value="2" :selected="wechatConfig.status==2">订阅号</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">关闭
+                        </button>
+                        <button type="button" class="btn btn-primary" id="btnsubmit">
+                            提交
+                        </button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div>
+    </div>
+
+<!-- 全局js -->
+<script type="text/javascript" src="/common/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/common/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/common/js/util/util.js"></script>
+
+<!--<script type="text/javascript" src="/common/js/vue/vue.js"></script>--><!--2.0-->
+<script type="text/javascript" src="/common/js/vue.js"></script><!--1.0-->
+
+<script type="text/javascript" src="/common/js/layer/layer.min.js"></script>
+
+<script type="text/javascript" src="/common/js/plugins/jeditable/jquery.jeditable.js"></script>
+
+<script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
+<!-- Data Tables -->
+<script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
+
+<script type="text/javascript" src="/wechat/wechatConfig/js/wechatConfigList.js"></script>
+
+
+</body>
+</html>

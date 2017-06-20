@@ -382,8 +382,19 @@
                 <artifactId>zipkin-autoconfigure-ui</artifactId>
                 <version>${version.zipkin}</version>
             </dependency>
-
+            <dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-autoconfigure-storage-elasticsearch-http</artifactId>
+                <version>${version.zipkin}</version>
+            </dependency>
             <!--zipkin  end-->
+            <!---->
+
+            <dependency>
+                <groupId>org.springside</groupId>
+                <artifactId>springside-core</artifactId>
+                <version>${version.springside}</version>
+            </dependency>
             <!--hibernate start-->
             <dependency>
                 <groupId>org.hibernate</groupId>

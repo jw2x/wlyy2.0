@@ -28,6 +28,7 @@ public class ManageMenu extends IdEntity implements java.io.Serializable {
 	private Date updateTime;
 	private String updateUser;
 	private String updateUserName;
+	private Integer sort;
 	private String remark;
 
 	// Constructors
@@ -170,4 +171,11 @@ public class ManageMenu extends IdEntity implements java.io.Serializable {
 		this.remark = remark;
 	}
 
+	public Integer getSort() {
+		return sort;
+	}
+
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
 }

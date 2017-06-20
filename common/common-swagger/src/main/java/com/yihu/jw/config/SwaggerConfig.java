@@ -1,6 +1,6 @@
 package com.yihu.jw.config;
 
-import com.yihu.jw.restmodel.base.BaseContants;
+import com.yihu.jw.restmodel.base.base.BaseContants;
 import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
 import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
 import com.yihu.jw.restmodel.wx.WxContants;
