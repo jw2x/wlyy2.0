@@ -6,7 +6,7 @@ import com.yihu.jw.quota.etl.extract.ExtractHelper;
 import com.yihu.jw.quota.etl.save.SaveHelper;
 import com.yihu.jw.quota.model.jpa.TjQuotaLog;
 import com.yihu.jw.quota.util.SpringUtil;
-import com.yihu.jw.quota.vo.QuotaVo;
+import com.yihu.jw.quota.vo.QuotaVO;
 import com.yihu.jw.quota.vo.SaveModel;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
@@ -33,7 +33,7 @@ public class EsQuotaJob implements Job {
     private Logger logger = LoggerFactory.getLogger(EsQuotaJob.class);
 
     private String saasid;//saasid
-    private QuotaVo quotaVO;//指标对象
+    private QuotaVO quotaVO;//指标对象
     private String endTime;//结束时间
     private String startTime;//开始时间
     private String timeLevel;//时间
@@ -115,7 +115,7 @@ public class EsQuotaJob implements Job {
             startTime = Contant.main_dimension_timeLevel.getStartTime(timeLevel);
         }
 
-        this.quotaVO = (QuotaVo) map.get("quota");
+        this.quotaVO = (QuotaVO) map.get("quota");
         this.timeLevel = (String) map.get("timeLevel");
         if (StringUtils.isEmpty(this.timeLevel)) {
             this.timeLevel = Contant.main_dimension_timeLevel.day;

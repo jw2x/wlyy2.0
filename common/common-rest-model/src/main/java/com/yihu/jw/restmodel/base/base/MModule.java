@@ -1,10 +1,13 @@
 package com.yihu.jw.restmodel.base.base;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 
 /**
  * Created by chenweida on 2017/5/19.
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MModule {
     private Long id;
     private String code; //业务code

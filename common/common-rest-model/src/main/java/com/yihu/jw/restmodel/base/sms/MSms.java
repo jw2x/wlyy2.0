@@ -1,10 +1,13 @@
 package com.yihu.jw.restmodel.base.sms;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 
 /**
  * Created by chenweida on 2017/5/22.
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MSms {
 
     private Long id;

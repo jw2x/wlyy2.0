@@ -1,10 +1,13 @@
 package com.yihu.jw.restmodel.base.version;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.Date;
 
 /**
  * Created by chenweida on 2017/6/16.
  */
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class MBaseServerVersion {
     private String code; //业务code
     private String saasId;//关联base_saas code

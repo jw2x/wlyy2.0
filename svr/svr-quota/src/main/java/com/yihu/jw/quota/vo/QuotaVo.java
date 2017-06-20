@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by chenweida on 2017/6/1.
  */
-public class QuotaVo implements Serializable{
+public class QuotaVO implements Serializable{
     private Integer id;
     private String code;
     private String compute;
