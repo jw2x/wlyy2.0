@@ -47,7 +47,7 @@ public class ExtractHelper {
      * @return
      * @throws Exception
      */
-    public List<SaveModel> extractData(QuotaVo quotaVO, String startTime, String endTime, String timeLevel, String saasid) throws Exception {
+    public List<SaveModel> extractData(QuotaVo quotaVO, String startTime, String endTime,String timeLevel,String saasid) throws Exception {
         try {
             //得到该指标的数据来源
             TjQuotaDataSource quotaDataSource = dataSourceService.findSourceByQuotaCode(quotaVO.getCode());

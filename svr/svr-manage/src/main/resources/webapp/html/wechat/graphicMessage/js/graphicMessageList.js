@@ -13,7 +13,7 @@ $(function () {
             "deferRender": true,//延迟渲染
             "bStateSave": false, //在第三页刷新页面，会自动到第一页
             "iDisplayLength": 10,//每页显示条数
-            "iDisplayStart": 1, //当前页
+            "iDisplayStart": 0, //当前页
             "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
             "ordering": false,//全局禁用排序
             "ajax": {
@@ -109,8 +109,8 @@ $(function () {
     /**
      * 多选选中和取消选中,同时选中第一个单元格单选框,并联动全选单选框
      */
-    $('#wechatList tbody').on('click', 'tr', function(event) {
-        var checkAllWechat=$('input[name=checkAllWechat]')[0];//关联全选单选框
+    $('#list tbody').on('click', 'tr', function(event) {
+        var checkAll=$('input[name=checkAll]')[0];//关联全选单选框
         $($(this).children()[0]).children().each(function(){
             if(this.type=="checkbox" && (!$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click"))){
                 if(!this.checked){
@@ -121,12 +121,12 @@ $(function () {
                     var recordsDisplay=table.page.info().recordsDisplay;//搜索条件过滤后的总行数
                     var iDisplayStart=table.page.info().start;// 起始行数
                     if(selected === table.page.len()||selected === recordsDisplay||selected === (recordsDisplay - iDisplayStart)){
-                        checkAllWechat.checked = true;
+                        checkAll.checked = true;
                     }
                 }else{
                     this.checked = false;
                     cancelValue(this);
-                    checkAllWechat.checked = false;
+                    checkAll.checked = false;
                 }
             }
         });
@@ -137,15 +137,15 @@ $(function () {
     /**
      * 全选按钮被点击事件
      */
-    $('input[name=checkAllWechat]').click(function(){
+    $('input[name=checkAll]').click(function(){
         if(this.checked){
-            $('#wechatList tbody tr').each(function(){
+            $('#list tbody tr').each(function(){
                 if(!$(this).hasClass('selected')){
                     $(this).click();
                 }
             });
         }else{
-            $('#wechatList tbody tr').click();
+            $('#list tbody tr').click();
         }
     });
 
@@ -153,11 +153,11 @@ $(function () {
      * 单选框被选中时将它的value放入隐藏域
      */
     function addValue(para) {
-        var wechatCodes = $("input[name=wechatCodes]");
-        if(wechatCodes.val() === ""){
-            wechatCodes.val($(para).val());
+        var codes = $("input[name=codes]");
+        if(codes.val() === ""){
+            codes.val($(para).val());
         }else{
-            wechatCodes.val(wechatCodes.val()+","+$(para).val());
+            codes.val(codes.val()+","+$(para).val());
         }
     }
 
@@ -166,37 +166,31 @@ $(function () {
      */
     function cancelValue(para){
         //取消选中checkbox要做的操作
-        var wechatCodes = $("input[name=checkAllWechat]");
-        var array = wechatCodes.val().split(",");
-        wechatCodes.val("");
+        var codes = $("input[name=checkAll]");
+        var array = codes.val().split(",");
+        codes.val("");
         for (var i = 0; i < array.length; i++) {
             if (array[i] === $(para).val()) {
                 continue;
             }
-            if (wechatCodes.val() === "") {
-                wechatCodes.val(array[i]);
+            if (codes.val() === "") {
+                codes.val(array[i]);
             } else {
-                wechatCodes.val(wechatCodes.val() + "," + array[i]);
+                codes.val(codes.val() + "," + array[i]);
             }
         }
     }
 
 
     $(document).delegate('.addBtn','click',function() {
-        contentVM.wechatConfig='';
+        contentVM.graphicMessage='';
         $('#myModal-add-info').modal('show');
-
         setTimeout(function(){
-            console.log($(':input','#myModal-add-info')
-                .not(':button, :submit, :reset, :hidden').length)
-            console.log("---------------------")
             $(':input','#myModal-add-info')
                 .not(':button, :submit, :reset, :hidden')
                 .val('')
                 .removeAttr('checked');
         },200);
-
-
     });
 
 
@@ -213,13 +207,6 @@ $(function () {
             del(codes);
         }
 
-    });
-
-    $(document).delegate('.upOrderStatus','click',function() {
-        var id=$(this).data("id");
-        //alert(id);
-        $("#titleId").html(id);
-        $('#editOrderStatus').modal("show");
     });
 
     //清空查询条件
@@ -263,33 +250,28 @@ function show(code){
 }
 
 function del(codes){
-    var url = "/wechat/graphicMessage/"+codes+"?userCode="+usercode;
+    var url = "/wechat/graphicMessage/"+codes;
     do_delete(url,{},function(data){
-        if(data.successFlg==true){
-            alert("删除成功");
-            table.ajax.reload();
-        }else{
-            alert("删除失败")
-        }
+        alert("删除成功");
+        table.ajax.reload();
     })
 }
 
-$("#btnsubmit").click(function(){
+$("#category_add").submit(function(){
+    debugger
     var url = "";
     var id = $("#id").val();
     var data = $("#category_add").serialize();
     url = "/wechat/graphicMessage"
     do_post(url,data,function(data){
-        if(data.successFlg){
-            if(id==''){
-                alert("保存成功");
-            }else{
-                alert("修改成功");
-            }
-            $('#myModal-add-info').modal('hide');
-            table.ajax.reload();
-            return;
+        debugger
+        if(id==''){
+            alert("保存成功");
+        }else{
+            alert("修改成功");
         }
-        alert(data.errorMsg);
+        $('#myModal-add-info').modal('hide');
+        table.ajax.reload();
     })
+    return false;
 })

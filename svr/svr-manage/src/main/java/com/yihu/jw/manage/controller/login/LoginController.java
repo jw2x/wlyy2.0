@@ -1,5 +1,6 @@
 package com.yihu.jw.manage.controller.login;
 
+import com.yihu.jw.manage.aop.annotation.ManageLog;
 import com.yihu.jw.manage.cache.login.LoginCache;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.login.LoginService;
@@ -28,6 +29,7 @@ public class LoginController extends EnvelopRestController {
 
     @GetMapping("/login")
     @ApiOperation(value = "登陆")
+    @ManageLog
     public Envelop login(
             @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
             @ApiParam(name = "password", value = "密码", required = true)@RequestParam(required = true, name = "password") String password) throws ManageException {

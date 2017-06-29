@@ -35,7 +35,7 @@ public class WechatTemplateFeginFallbackFactory implements FallbackFactory<Wecha
             }
 
             @Override
-            public Envelop deleteWxTemplate(String codes) throws JiWeiException {
+            public Envelop deleteWxTemplate(String codes,String userCode,String userName) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("删除微信模板消息失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("codes:"+codes);
                 throw new JiWeiException(e);

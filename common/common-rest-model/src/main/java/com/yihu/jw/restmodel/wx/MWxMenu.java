@@ -10,53 +10,24 @@ public class MWxMenu {
 
     private String code;//业务code
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+    private String wechatName;//关联的微信名 关联表 Wx_Wechat
     private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
     private String type;//菜单类型
     private String name;//菜单名称
-    private String key;//click等点击类型必须
+    private String menuKey;//click等点击类型必须
     private Integer sort;//菜单排序 父菜单排序 不包含子菜单那
     private String url;//url
     private String mediaId;//点用新增永久素材接口返回的合法media_id
     private String appid;//小程序的appid
     private String pagepath;//小程序的页面程序
     private String updateUser;//更新人
+    private String updateUserName;//更新人
     private Date updateTime;//更新时间
     private Date createTime;//创建时间
     private String createUser;//创建人
+    private String createUserName;//创建人
     private String remark;//备注
-    private Integer status; //状态 -1 已删除 0可用
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getMediaId() {
-        return mediaId;
-    }
-
-    public void setMediaId(String mediaId) {
-        this.mediaId = mediaId;
-    }
-
-    public String getAppid() {
-        return appid;
-    }
-
-    public void setAppid(String appid) {
-        this.appid = appid;
-    }
-
-    public String getPagepath() {
-        return pagepath;
-    }
-
-    public void setPagepath(String pagepath) {
-        this.pagepath = pagepath;
-    }
+    private Integer status; //状态 -1删除 0 冻结 1可用
 
     public Long getId() {
         return id;
@@ -106,6 +77,14 @@ public class MWxMenu {
         this.name = name;
     }
 
+    public String getMenuKey() {
+        return menuKey;
+    }
+
+    public void setMenuKey(String menuKey) {
+        this.menuKey = menuKey;
+    }
+
     public Integer getSort() {
         return sort;
     }
@@ -122,12 +101,44 @@ public class MWxMenu {
         this.url = url;
     }
 
+    public String getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public String getPagepath() {
+        return pagepath;
+    }
+
+    public void setPagepath(String pagepath) {
+        this.pagepath = pagepath;
+    }
+
     public String getUpdateUser() {
         return updateUser;
     }
 
     public void setUpdateUser(String updateUser) {
         this.updateUser = updateUser;
+    }
+
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
     }
 
     public Date getUpdateTime() {
@@ -154,6 +165,14 @@ public class MWxMenu {
         this.createUser = createUser;
     }
 
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -170,4 +189,11 @@ public class MWxMenu {
         this.status = status;
     }
 
+    public String getWechatName() {
+        return wechatName;
+    }
+
+    public void setWechatName(String wechatName) {
+        this.wechatName = wechatName;
+    }
 }

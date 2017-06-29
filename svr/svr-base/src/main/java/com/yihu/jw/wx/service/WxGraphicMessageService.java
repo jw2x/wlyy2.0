@@ -38,12 +38,6 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         if (wxGraphicMessageTem != null) {
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_exist, CommonContants.common_error_params_code);
         }
-
-        //设置创建时间和修改时间
-        Date date = new Date();
-        wxGraphicMessage.setCreateTime(date);
-        wxGraphicMessage.setUpdateTime(date);
-
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
 
@@ -64,10 +58,6 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         if(wxGraphicMessage1==null){
             throw new ApiException(WxContants.WxGraphicMessage.message_fail_wxGraphicMessage_is_no_exist, CommonContants.common_error_params_code);
         }
-        //设置创建时间和修改时间
-        Date date = new Date();
-        wxGraphicMessage.setCreateTime(wxGraphicMessage1.getCreateTime());
-        wxGraphicMessage.setUpdateTime(date);
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
 
@@ -81,10 +71,17 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
     }
 
     @Transient
-    public void deleteWxGraphicMessage(String code) {
-        WxGraphicMessage WxGraphicMessage = findByCode(code);
-        WxGraphicMessage.setStatus(-1);
-        wxGraphicMessageDao.save(WxGraphicMessage);
+    public void deleteWxGraphicMessage(String codes, String userCode, String userName) {
+        if(!StringUtils.isEmpty(codes)){
+            String[] codeArray = codes.split(",");
+            for(String code:codeArray){
+                WxGraphicMessage wxGraphicMessage = findByCode(code);
+                wxGraphicMessage.setStatus(-1);
+                wxGraphicMessage.setUpdateUser(userCode);
+                wxGraphicMessage.setUpdateUserName(userName);
+                wxGraphicMessageDao.save(wxGraphicMessage);
+            }
+        }
     }
 
 

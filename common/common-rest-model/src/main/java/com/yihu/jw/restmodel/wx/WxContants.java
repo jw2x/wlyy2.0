@@ -19,6 +19,8 @@ public class WxContants {
         public static final String api_create="create";
         public static final String api_delete="delete";
         public static final String api_getByCode="getByCode";
+        public static final String api_getParentMenu="parentMenu/{wechatCode}";
+        public static final String api_getChildMenus="childMenu/list/{parentCode}";
         public static final String api_update="update";
         public static final String api_getWxMenus="getWxMenus";
         public static final String api_getWxMenuNoPage="getWxMenuNoPage";

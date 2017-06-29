@@ -22,6 +22,7 @@ import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.InternalAggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.bucket.terms.TermsBuilder;
@@ -86,7 +87,7 @@ public class EsExtract {
 
     }
 
-    private Map<String, SaveModel> setAllSlaveData(Map<String, SaveModel> allData, List<DictModel> dictData,Integer key) {
+    private Map<String, SaveModel> setAllSlaveData(Map<String, SaveModel> allData, List<DictModel> dictData, Integer key) {
         try {
             Map<String, SaveModel> returnAllData = new HashMap<>();
             for (Map.Entry<String, SaveModel> one : allData.entrySet()) {
@@ -174,7 +175,7 @@ public class EsExtract {
         allData.put(key, one);
     }
 
-    private  List<SaveModel> queryEsBySql(Map<String, TjQuotaDimensionMain> sqls, List<TjQuotaDimensionSlave> tjQuotaDimensionSlaves) {
+    private List<SaveModel> queryEsBySql(Map<String, TjQuotaDimensionMain> sqls, List<TjQuotaDimensionSlave> tjQuotaDimensionSlaves) {
         List<SaveModel> returnList = new ArrayList<>();
         //初始化es链接
         esConfig = (EsConfig) JSONObject.toBean(JSONObject.fromObject(esConfig), EsConfig.class);
@@ -210,7 +211,7 @@ public class EsExtract {
                 StringTerms stringTerms = (StringTerms) response.getAggregations().asList().get(0);
                 Iterator<Terms.Bucket> gradeBucketIt = stringTerms.getBuckets().iterator();
                 //里面存放的数据 例  350200-5-2-2    主维度  细维度1  细维度2  值
-                Map<String,Integer> map = new HashMap<>();
+                Map<String, Integer> map = new HashMap<>();
                 //递归解析json
                 expainJson(gradeBucketIt, map, null);
 
@@ -228,13 +229,13 @@ public class EsExtract {
     private void compute(List<TjQuotaDimensionSlave> tjQuotaDimensionSlaves, List<SaveModel> returnList, Map.Entry<String, TjQuotaDimensionMain> one, Map<String, Integer> map) {
         Map<String, SaveModel> allData = new HashMap<>();
         //初始化主细维度
-        allData= initDimension(tjQuotaDimensionSlaves, one, allData);
+        allData = initDimension(tjQuotaDimensionSlaves, one, allData);
 
-        for(Map.Entry<String,SaveModel> oneMap:allData.entrySet()){
-            String key=oneMap.getKey();
-            SaveModel saveModel=oneMap.getValue();
-            Integer num=map.get(key);
-            if(saveModel!=null){
+        for (Map.Entry<String, SaveModel> oneMap : allData.entrySet()) {
+            String key = oneMap.getKey();
+            SaveModel saveModel = oneMap.getValue();
+            Integer num = map.get(key);
+            if (saveModel != null) {
                 saveModel.setResult(num);
                 returnList.add(saveModel);
             }
@@ -244,7 +245,7 @@ public class EsExtract {
     /**
      * 初始化主细维度
      */
-    private  Map<String, SaveModel>  initDimension(List<TjQuotaDimensionSlave> tjQuotaDimensionSlaves, Map.Entry<String, TjQuotaDimensionMain> one, Map<String, SaveModel> allData) {
+    private Map<String, SaveModel> initDimension(List<TjQuotaDimensionSlave> tjQuotaDimensionSlaves, Map.Entry<String, TjQuotaDimensionMain> one, Map<String, SaveModel> allData) {
         TjQuotaDimensionMain quotaDimensionMain = one.getValue();
         //查询字典数据
         List<SaveModel> dictData = jdbcTemplate.query(quotaDimensionMain.getDictSql(), new BeanPropertyRowMapper(SaveModel.class));
@@ -253,8 +254,8 @@ public class EsExtract {
 
 
         for (int i = 0; i < tjQuotaDimensionSlaves.size(); i++) {
-           List<DictModel> dictDataSlave = jdbcTemplate.query(tjQuotaDimensionSlaves.get(i).getDictSql(), new BeanPropertyRowMapper(DictModel.class));
-            allData = setAllSlaveData(allData, dictDataSlave,i);
+            List<DictModel> dictDataSlave = jdbcTemplate.query(tjQuotaDimensionSlaves.get(i).getDictSql(), new BeanPropertyRowMapper(DictModel.class));
+            allData = setAllSlaveData(allData, dictDataSlave, i);
         }
         return allData;
     }
@@ -266,7 +267,7 @@ public class EsExtract {
      * @param map
      * @param sb
      */
-    private void expainJson(Iterator<Terms.Bucket> gradeBucketIt,Map<String,Integer>map, StringBuffer sb) {
+    private void expainJson(Iterator<Terms.Bucket> gradeBucketIt, Map<String, Integer> map, StringBuffer sb) {
         while (gradeBucketIt.hasNext()) {
             StringTerms.Bucket b = (StringTerms.Bucket) gradeBucketIt.next();
             if (b.getAggregations().asList().get(0) instanceof StringTerms) {
@@ -276,9 +277,16 @@ public class EsExtract {
                     StringBuffer sbTemp = new StringBuffer((sb == null ? "" : (sb.toString() + "-")) + b.getKey());
                     expainJson(gradeBucketItCh, map, sbTemp);
                 }
+            } else if (b.getAggregations().asList().get(0) instanceof LongTerms) {
+                LongTerms stringTermsCh = (LongTerms) b.getAggregations().asList().get(0);
+                Iterator<Terms.Bucket> gradeBucketItCh = stringTermsCh.getBuckets().iterator();
+                while (gradeBucketItCh.hasNext()) {
+                    StringBuffer sbTemp = new StringBuffer((sb == null ? "" : (sb.toString() + "-")) + b.getKey());
+                    expainJson(gradeBucketItCh, map, sbTemp);
+                }
             } else {
                 InternalValueCount count = (InternalValueCount) b.getAggregations().asList().get(0);
-                map.put(new StringBuffer(sb.toString() + "-" + b.getKey()).toString() , (int)count.getValue());
+                map.put(new StringBuffer(sb.toString() + "-" + b.getKey()).toString(), (int) count.getValue());
             }
         }
     }

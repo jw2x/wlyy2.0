@@ -58,12 +58,8 @@ public class WechatTemplateControlle {
     public Envelop updateWxTemplate(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws JiWeiException {
-        JSONObject json = new JSONObject(jsonData);
-        String data = json.get("jsonData").toString();
-        data = data.substring(2,data.length() - 2);
-        data = data.replaceAll("\\\\\"","\"");
-        tracer.getCurrentSpan().logEvent("更新模板配置:jsonData="+data);
-        return wechatTemplateFegin.updateWxTemplate(data);
+        tracer.getCurrentSpan().logEvent("更新模板配置:jsonData="+jsonData);
+        return wechatTemplateFegin.updateWxTemplate(jsonData);
     }
 
 
@@ -75,8 +71,12 @@ public class WechatTemplateControlle {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop deleteWxTemplate(
             @ApiParam(name = "codes", value = "codes")
-            @PathVariable(value = "codes", required = true) String codes) throws JiWeiException {
-        return wechatTemplateFegin.deleteWxTemplate(codes);
+            @PathVariable(value = "codes", required = true) String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "userName", value = "userName")
+            @RequestParam(value = "userName", required = true) String userName) throws JiWeiException {
+        return wechatTemplateFegin.deleteWxTemplate(codes,userCode,userName);
     }
 
     @ApiVersion(1)

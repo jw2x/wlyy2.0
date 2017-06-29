@@ -73,7 +73,7 @@ function do_get(url, data, success,error) {
     });
 }
 //post方法
-function do_post(url, data, success) {
+function do_post(url, data, success ,error) {
     //获取用户的code
     var usercode = getUserCode();
     //data.userCode = usercode;
@@ -87,11 +87,12 @@ function do_post(url, data, success) {
         url: url,
         data: data,
         success: success,
+        error:error,
         dataType: "json"
     });
 }
 //put方法
-function do_put(url, data, success) {
+function do_put(url, data, success ,error) {
 
     //获取用户的code
     var usercode = getUserCode();
@@ -102,11 +103,12 @@ function do_put(url, data, success) {
         url: url,
         data: data,
         success: success,
+        error:error,
         dataType: "json"
     });
 }
 //delete方法
-function do_delete(url, data, success) {
+function do_delete(url, data, success,error) {
 
     //获取用户的code
     var usercode = getUserCode();
@@ -117,6 +119,7 @@ function do_delete(url, data, success) {
         url: url,
         data: data,
         success: success,
+        error:error,
         dataType: "json"
     });
 }

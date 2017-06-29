@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.Transient;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -39,21 +38,10 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getName())) {
             throw new ApiException(WxContants.Wechat.message_fail_name_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wechat.getAppId())) {
-            throw new ApiException(WxContants.Wechat.message_fail_appId_is_null, CommonContants.common_error_params_code);
-        }
-        if (StringUtils.isEmpty(wechat.getAppSecret())) {
-            throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);
-        }
         WxWechat wechatTem = wechatDao.findByAppId(wechat.getAppId());
         if (wechatTem != null) {
             throw new ApiException(WxContants.Wechat.message_fail_appId_exist, CommonContants.common_error_params_code);
         }
-        //设置创建时间和修改时间
-        Date date = new Date();
-        wechat.setCreateTime(date);
-        wechat.setUpdateTime(date);
-
         return wechatDao.save(wechat);
     }
 
@@ -74,12 +62,6 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getName())) {
             throw new ApiException(WxContants.Wechat.message_fail_name_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wechat.getAppId())) {
-            throw new ApiException(WxContants.Wechat.message_fail_appId_is_null, CommonContants.common_error_params_code);
-        }
-        if (StringUtils.isEmpty(wechat.getAppSecret())) {
-            throw new ApiException(WxContants.Wechat.message_fail_appSecret_is_null, CommonContants.common_error_params_code);
-        }
         Long id = wechat.getId();
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
@@ -88,9 +70,6 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if(wechat1 == null){
             throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
         }
-        //设置修改时间创建时间
-        wechat.setCreateTime(wechat1.getCreateTime());
-        wechat.setUpdateTime(new Date());
         WxWechat wechatTem = wechatDao.findByAppIdExcludeCode(wechat.getAppId(),wechat.getCode());
         if(wechatTem!=null){
             throw new ApiException(WxContants.Wechat.message_fail_appId_exist, CommonContants.common_error_params_code);
@@ -108,7 +87,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     }
 
     @Transient
-    public void deleteWechat(String codes) {
+    public void deleteWechat(String codes,String userCode,String userName) {
         if(!StringUtils.isEmpty(codes)){
             String[] codeArray = codes.split(",");
             for(String code:codeArray){
@@ -117,8 +96,29 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
                     throw new ApiException(WxContants.Wechat.message_fail_code_no_exist, CommonContants.common_error_params_code);
                 }
                 wxWechat.setStatus(-1);
+                wxWechat.setUpdateUser(userCode);
+                wxWechat.setUpdateUserName(userName);
                 wechatDao.save(wxWechat);
             }
         }
+    }
+
+    public List<WxWechat> findAll(){
+        return wechatDao.findAll();
+    }
+
+    /**
+     * key为code ,value为微信名字
+     * @return
+     */
+    public Map<String,String> getAllWechatConfig(){
+        List<WxWechat> wechats = findAll();
+        Map<String, String> map = new HashMap<>();
+        if(null!=wechats){
+            for(WxWechat wx: wechats){
+                map.put(wx.getCode(),wx.getName());
+            }
+        }
+        return map;
     }
 }

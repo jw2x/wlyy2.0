@@ -2,8 +2,9 @@ package com.yihu.jw.wx.model;// default package
 
 import com.yihu.jw.base.model.IdEntity;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * 微信 菜单表
@@ -13,7 +14,6 @@ import java.util.Date;
 public class WxMenu extends IdEntity implements java.io.Serializable {
 
 
-    private String code;//业务code
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
     private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
     private String type;//菜单类型
@@ -24,10 +24,6 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     private String mediaId;//点用新增永久素材接口返回的合法media_id
     private String appid;//小程序的appid
     private String pagepath;//小程序的页面程序
-    private String updateUser;//更新人
-    private Date updateTime;//更新时间
-    private Date createTime;//创建时间
-    private String createUser;//创建人
     private String remark;//备注
     private Integer status; //状态 -1删除 0 冻结 1可用
 
@@ -39,25 +35,6 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     public WxMenu() {
     }
 
-    public WxMenu(String code, String wechatCode, String supMenucode, String type, String name, String menuKey, Integer sort, String url, String mediaId, String appid, String pagepath, String updateUser, Date updateTime, Date createTime, String createUser, String remark, Integer status) {
-        this.code = code;
-        this.wechatCode = wechatCode;
-        this.supMenucode = supMenucode;
-        this.type = type;
-        this.name = name;
-        this.menuKey = menuKey;
-        this.sort = sort;
-        this.url = url;
-        this.mediaId = mediaId;
-        this.appid = appid;
-        this.pagepath = pagepath;
-        this.updateUser = updateUser;
-        this.updateTime = updateTime;
-        this.createTime = createTime;
-        this.createUser = createUser;
-        this.remark = remark;
-        this.status = status;
-    }
 
     @Column(name="menu_key")
     public String getMenuKey() {
@@ -91,14 +68,6 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
 
     public void setPagepath(String pagepath) {
         this.pagepath = pagepath;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public Integer getStatus() {
@@ -162,44 +131,6 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    @Column(name = "update_user", length = 50)
-    public String getUpdateUser() {
-        return this.updateUser;
-    }
-
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "update_time", length = 0)
-    public Date getUpdateTime() {
-        return this.updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "create_time", length = 0)
-    public Date getCreateTime() {
-        return this.createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    @Column(name = "create_user", length = 50)
-    public String getCreateUser() {
-        return this.createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
     }
 
     @Column(name = "remark", length = 1000)

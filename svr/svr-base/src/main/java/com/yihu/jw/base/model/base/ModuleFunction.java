@@ -12,7 +12,9 @@ import javax.persistence.*;
 public class ModuleFunction extends IdEntity implements java.io.Serializable {
 
 	// Fields
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	private String functionId;//关联 WlyyFunction    code
 	private String moduleId;//关联 WlyyModule code
 
@@ -40,4 +42,13 @@ public class ModuleFunction extends IdEntity implements java.io.Serializable {
 		this.moduleId = moduleId;
 	}
 
+	@Override
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

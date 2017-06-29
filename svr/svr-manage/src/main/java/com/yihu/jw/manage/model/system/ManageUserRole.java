@@ -1,23 +1,23 @@
 package com.yihu.jw.manage.model.system;// default package
 
-import com.yihu.jw.manage.model.IdEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * ManageUserRole entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "manage_user_role")
-public class ManageUserRole  extends IdEntity implements java.io.Serializable {
+@Access(value = AccessType.PROPERTY)
+public class ManageUserRole  implements Serializable {
 
 	// Fields
 
+	private Long id;
+
 	private String roleCode;
 	private String userCode;
+	private String userName;
 
 	// Constructors
 
@@ -25,6 +25,17 @@ public class ManageUserRole  extends IdEntity implements java.io.Serializable {
 	public ManageUserRole() {
 	}
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	@Column(name = "role_code", length = 100)
 	public String getRoleCode() {
 		return this.roleCode;
@@ -43,4 +54,12 @@ public class ManageUserRole  extends IdEntity implements java.io.Serializable {
 		this.userCode = userCode;
 	}
 
+	@Transient
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }

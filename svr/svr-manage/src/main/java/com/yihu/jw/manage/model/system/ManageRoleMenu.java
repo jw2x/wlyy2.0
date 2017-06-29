@@ -1,24 +1,19 @@
 package com.yihu.jw.manage.model.system;// default package
 
-import com.yihu.jw.manage.model.IdEntity;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * ManageRoleMenu entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "manage_role_menu")
-public class ManageRoleMenu  extends IdEntity implements java.io.Serializable {
+public class ManageRoleMenu  implements java.io.Serializable {
 
 	// Fields
 
-	private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 	private String roleCode;
 	private String menuCode;
 
@@ -34,6 +29,13 @@ public class ManageRoleMenu  extends IdEntity implements java.io.Serializable {
 		this.menuCode = menuCode;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	@Column(name = "role_code", length = 100)
 	public String getRoleCode() {

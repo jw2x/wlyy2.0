@@ -11,4 +11,11 @@
         wxGraphicMessage    微信图文管理
         wxMenu  微信菜单管理
         wxTemplate  微信模版
+    version: 
+       ServerVersion 后台接口版本
+       WlyyVersion i健康app的版本
+    login:
+       loginAccout 用户登陆 
+    util：
+        工具类
     

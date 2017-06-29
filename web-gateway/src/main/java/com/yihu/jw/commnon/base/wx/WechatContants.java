@@ -16,15 +16,15 @@ public class WechatContants {
 
     //微信按钮模块常量
     public static class Menu{
-        public static final String api_common="menu";
-        public static final String api_create="create";
-        public static final String api_delete="delete";
-        public static final String api_getByCode="getByCode";
-        public static final String api_update="update";
-        public static final String api_getWxMenus="getWxMenus";
-        public static final String api_getWxMenuNoPage="getWxMenuNoPage";
+        public static final String api_create="wxMenu";
+        public static final String api_update="wxMenu";
+        public static final String api_delete="wxMenu/{codes}/{userCode}";
+        public static final String api_getWxMenuNoPage="wxMenu/listNoPage";
+        public static final String api_getWxMenus="wxMenu/list";
+        public static final String api_getByCode="wxMenu/{code}";
+        public static final String api_getParentMenu="parentMenu/{wechatCode}";
         public static final String api_createMenu="createMenu";
-
+        public static final String api_getChildMenus="childMenu/list/{parentCode}";
     }
 
     //微信模板消息

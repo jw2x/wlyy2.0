@@ -13,7 +13,7 @@ $(function () {
             "deferRender": true,//延迟渲染
             "bStateSave": false, //在第三页刷新页面，会自动到第一页
             "iDisplayLength": 10,//每页显示条数
-            "iDisplayStart": 1, //当前页
+            "iDisplayStart": 0, //当前页
             "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
             "ordering": false,//全局禁用排序
             "ajax": {
@@ -109,8 +109,8 @@ $(function () {
     /**
      * 多选选中和取消选中,同时选中第一个单元格单选框,并联动全选单选框
      */
-    $('#template tbody').on('click', 'tr', function(event) {
-        var checkAllWechat=$('input[name=checkAll]')[0];//关联全选单选框
+    $('#list tbody').on('click', 'tr', function(event) {
+        var checkAll=$('input[name=checkAll]')[0];//关联全选单选框
         $($(this).children()[0]).children().each(function(){
             if(this.type=="checkbox" && (!$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click"))){
                 if(!this.checked){
@@ -121,12 +121,12 @@ $(function () {
                     var recordsDisplay=table.page.info().recordsDisplay;//搜索条件过滤后的总行数
                     var iDisplayStart=table.page.info().start;// 起始行数
                     if(selected === table.page.len()||selected === recordsDisplay||selected === (recordsDisplay - iDisplayStart)){
-                        checkAllWechat.checked = true;
+                        checkAll.checked = true;
                     }
                 }else{
                     this.checked = false;
                     cancelValue(this);
-                    checkAllWechat.checked = false;
+                    checkAll.checked = false;
                 }
             }
         });
@@ -183,19 +183,14 @@ $(function () {
 
 
     $(document).delegate('.addBtn','click',function() {
-        contentVM.wechatConfig='';
+        contentVM.template='';
         $('#myModal-add-info').modal('show');
-
         setTimeout(function(){
-            console.log($(':input','#myModal-add-info')
-                .not(':button, :submit, :reset, :hidden').length)
             $(':input','#myModal-add-info')
                 .not(':button, :submit, :reset, :hidden')
                 .val('')
                 .removeAttr('checked');
         },200);
-
-
     });
 
 
@@ -214,13 +209,6 @@ $(function () {
 
     });
 
-    $(document).delegate('.upOrderStatus','click',function() {
-        var id=$(this).data("id");
-        //alert(id);
-        $("#titleId").html(id);
-        $('#editOrderStatus').modal("show");
-    });
-
     //清空查询条件
     $(document).delegate('#reset','click',function() {
         $("#title").val("");
@@ -236,19 +224,19 @@ var contentVM = new Vue({
     el: '#category_add',
     data: {
         template: '',//记录详情信息
-        saasList:''//记录saas列表
+        wechatConfigs:''//记录saas列表
     },
     replace:false
 });
 
-do_get("/base/saases",{},function(data){
-    contentVM.saasList = data.detailModelList;
+do_get("/wechat/wechatConfig/listNoPage",{},function(data){
+    contentVM.wechatConfigs = data.detailModelList;
     console.log( data.detailModelList);
 },function(data){
 
 })
 
-//查看配置
+//查看
 function show(code){
     $("#myModal-add-info").removeData("modal");
     var data={};
@@ -262,23 +250,23 @@ function show(code){
 }
 
 function del(codes){
-    var url = "/wechat/template/"+codes+"?userCode="+usercode;
+    var url = "/wechat/template/"+codes;
     do_delete(url,{},function(data){
-        if(data.successFlg==true){
-            alert("删除成功");
-            table.ajax.reload();
-        }else{
-            alert("删除失败")
-        }
+        alert("删除成功");
+        table.ajax.reload();
     })
 }
 
-$("#btnsubmit").click(function(){
+$("#category_add").submit(function(){
     var url = "";
     var id = $("#id").val();
     var data = $("#category_add").serialize();
     url = "/wechat/template"
     do_post(url,data,function(data){
+        if(data.errorMsg!=undefined){
+            alert(data.errorMsg);
+            return
+        }
         if(id==''){
             alert("保存成功");
         }else{
@@ -288,4 +276,5 @@ $("#btnsubmit").click(function(){
         table.ajax.reload();
         return;
     })
+    return false;
 })

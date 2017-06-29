@@ -19,10 +19,11 @@ div.dataTables_filter input {
 
 div.dataTables_info {
     padding-top: 8px;
+    float:right
 }
 
 div.dataTables_paginate {
-    float: right;
+    /*float: right;*/
     margin: 0;
 }
 

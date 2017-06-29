@@ -2,12 +2,23 @@ package com.yihu.jw.manage.service.system;
 
 import com.yihu.jw.manage.dao.system.MenuDao;
 import com.yihu.jw.manage.model.system.ManageMenu;
+import com.yihu.jw.manage.model.system.ManageUser;
+import com.yihu.jw.manage.model.system.MenuItems;
+import com.yihu.jw.restmodel.exception.business.ManageException;
+import com.yihu.jw.restmodel.wlyy.WlyyContant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springside.modules.persistence.DynamicSpecifications;
+import org.springside.modules.persistence.SearchFilter;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by chenweida on 2017/6/9.
@@ -18,6 +29,8 @@ public class MenuService {
     private MenuDao menuDao;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private UserService userService;
 
     public List<ManageMenu> findByUserCode(String code) {
         String sql="SELECT DISTINCT " +
@@ -53,6 +66,95 @@ public class MenuService {
         String sql = "SELECT * FROM (SELECT DISTINCT  m.* FROM manage_menu m,manage_role_menu rm WHERE m.code = rm.menu_code and m.status=1 AND rm.role_code IN (SELECT r.CODE FROM manage_role r, manage_user_role ur WHERE r.code = ur.role_code AND ur.user_code = ?   AND r.status = 1 ) ORDER BY m.sort asc) A WHERE A.parent_code = ?  ";
         List<ManageMenu> mr = jdbcTemplate.query(sql, new BeanPropertyRowMapper(ManageMenu.class), usercode,code);
         return mr;
+    }
+
+    public Page<ManageMenu> list(String name, Integer page, Integer pageSize) {
+        // 排序
+        Sort sort = new Sort(Sort.Direction.DESC, "createTime");
+        // 分页信息
+        PageRequest pageRequest = new PageRequest(page, pageSize, sort);
+        // 设置查询条件
+        Map<String, SearchFilter> filters = new HashMap<String, SearchFilter>();
+        // 用户名称
+        if (!StringUtils.isEmpty(name)&&!("null".equals(name))) {
+            filters.put("name", new SearchFilter("name", SearchFilter.Operator.LIKE, name));
+        }
+        // 未作废
+        filters.put("status", new SearchFilter("status", SearchFilter.Operator.EQ, WlyyContant.status_normal));
+        Specification<ManageMenu> spec = DynamicSpecifications.bySearchFilter(filters.values(), ManageMenu.class);
+        return menuDao.findAll(spec, pageRequest);
+    }
+
+    public ManageMenu findByCode(String code) {
+        return menuDao.findByCode(code);
+    }
+
+    public List<ManageMenu> getChildMenus(String parentCode) {
+       return menuDao.getChildMenus(parentCode);
+    }
+
+    public List<ManageMenu> getParentMenus() {
+        return menuDao.getParentMenus();
+    }
+
+    public void delete(String codes,String userCode) {
+        ManageUser user = userService.findByCode(userCode);
+        String userName = user.getName();
+        for(String code:codes.split(",")){
+            ManageMenu menu = menuDao.findByCode(code);
+            if (menu == null) {
+                continue;
+            }
+            if ("0".equals(menu.getParentCode())) {//如果为0,说明是为父菜单
+                List<ManageMenu> childMenus = getChildMenus(menu.getCode());
+                if (childMenus != null) {
+                    for (ManageMenu childMenu : childMenus) {
+                        childMenu.setStatus(-1);
+                        childMenu.setUpdateUser(userCode);
+                        childMenu.setUpdateUserName(userName);
+                        menuDao.save(childMenu);
+                    }
+                }
+            }
+            menu.setStatus(-1);
+            menu.setUpdateUser(userCode);
+            menu.setUpdateUserName(userName);
+            menuDao.save(menu);
+        }
+    }
+
+    public void saveOrUpdate(ManageMenu menu,String userCode) {
+        ManageUser user = userService.findByCode(userCode);
+        String userName = user.getName();
+        if(null==menu.getId()){
+            String code = UUID.randomUUID().toString().replaceAll("-","");
+            menu.setCode(code);
+            menu.setCreateUser(userCode);
+            menu.setCreateUserName(userName);
+        }
+        menu.setUpdateUser(userCode);
+        menu.setUpdateUserName(userName);
+        menuDao.save(menu);
+    }
+
+    public Map<String, List> getMenuTree() throws ManageException {
+        List<MenuItems> menuItemses = new ArrayList<>();
+        Map<String, List> data = new HashMap<>();
+        //查询所有父菜单
+        List<ManageMenu> parentMenus = getParentMenus();
+        //查询所有子菜单
+        if(parentMenus!=null){
+            for(ManageMenu parentMenu:parentMenus){
+                //通过父菜单查找对应的子菜单
+                List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());
+                MenuItems menuItem = new MenuItems();
+                menuItem.setParentMenu(parentMenu);
+                menuItem.setChildMenus(childMenus);
+                menuItemses.add(menuItem);
+            }
+        }
+        data.put("menus", menuItemses);
+        return data;
     }
 }
 

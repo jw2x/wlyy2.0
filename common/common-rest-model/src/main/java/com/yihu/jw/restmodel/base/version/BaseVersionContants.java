@@ -29,7 +29,30 @@ public class BaseVersionContants {
 
     }
 
+    public static class BaseServerUrlVersion {
+        public static final String message_success_create = "ServerUrlVersion create success";
+        public static final String message_success_update = "ServerUrlVersion update success";
+        public static final String message_success_find = "ServerUrlVersion find success";
+        public static final String message_success_find_BaseServerUrlVersions = "ServerUrlVersion find success";
+        public static final String message_success_delete = "ServerUrlVersion delete success";
 
+
+        public static final String message_fail_name_exist = "ServerUrlVersion name exist";
+        public static final String message_fail_code_is_null = "code is null";
+        public static final String message_fail_name_is_null = "ServerUrlVersion is null";
+        public static final String message_fail_id_is_null = "id is null";
+
+
+        public static final String message_fail_code_no_exist = "code no exist";
+        public static final String api_common = "serverUrlVerion";
+        public static final String api_create = "create";
+        public static final String api_update = "update";
+        public static final String api_delete = "delete";
+        public static final String api_getByCode = "getByCode";
+        public static final String api_getServerUrlVersions="getServerUrlVersions";
+        public static final String api_getServerUrlVersionNoPage="getServerUrlVersionNoPage";
+
+    }
 
     public static class BaseServerVersionLog {
         public static final String message_success_create = "BaseServerVersionLog create success";

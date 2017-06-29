@@ -29,7 +29,7 @@ public interface GraphicMessageFegin {
     Envelop updateWxGraphicMessage( @RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WxContants.WxGraphicMessage.api_delete,method = RequestMethod.DELETE)
-    Envelop deleteWxGraphicMessage(@RequestParam(value = "code") String codes) throws JiWeiException;
+    Envelop deleteWxGraphicMessage(@RequestParam(value = "codes") String codes,@RequestParam(value = "userCode") String userCode,@RequestParam(value = "userName") String userName) throws JiWeiException;
 
     @RequestMapping(value = WxContants.WxGraphicMessage.api_getByCode,method = RequestMethod.GET)
     Envelop findByCode(@RequestParam(value = "code") String code) throws JiWeiException;

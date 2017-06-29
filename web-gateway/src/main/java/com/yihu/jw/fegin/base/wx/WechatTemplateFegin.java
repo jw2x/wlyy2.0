@@ -26,7 +26,7 @@ public interface WechatTemplateFegin {
     Envelop updateWxTemplate(@RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WxContants.WxTemplate.api_delete ,method = RequestMethod.DELETE)
-    Envelop deleteWxTemplate( @RequestParam(value = "code", required = true) String code) throws JiWeiException;
+    Envelop deleteWxTemplate( @RequestParam(value = "codes", required = true) String codes,@RequestParam(value = "userCode") String userCode,@RequestParam(value = "userName") String userName) throws JiWeiException;
 
     @RequestMapping(value = WxContants.WxTemplate.api_getByCode ,method = RequestMethod.GET)
     Envelop findByCode( @RequestParam(value = "code", required = true) String code) throws JiWeiException;

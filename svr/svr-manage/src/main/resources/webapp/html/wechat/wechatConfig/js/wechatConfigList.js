@@ -2,7 +2,7 @@ var table;
 var usercode = window.localStorage.getItem("userCode");
 $(function () {
     table = $("#wechatList").DataTable({
-            "aLengthMenu": [1, 2, 30, 40],
+            "aLengthMenu": [1, 2, 3, 40],
             "searching": false,//禁用搜索
             "lengthChange": true,
             "paging": true,//开启表格分页
@@ -12,8 +12,8 @@ $(function () {
             "sort": "position",
             "deferRender": true,//延迟渲染
             "bStateSave": false, //在第三页刷新页面，会自动到第一页
-            "iDisplayLength": 10,//每页显示条数
-            "iDisplayStart": 1, //当前页
+            "iDisplayLength": 1,//每页显示条数
+            "iDisplayStart": 0, //当前页
             "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
             "ordering": false,//全局禁用排序
             "ajax": {
@@ -48,9 +48,9 @@ $(function () {
                     "orderable": false, // 禁用排序
                     "render": function (data, type, full, meta) {
                         if (data == 1) {
-                            data = "<a href='#' class='upOrderStatus' >服务号</a>";
+                            data = "服务号";
                         } else {
-                            data = "<a href='#' class='upOrderStatus' >订阅号</a>";
+                            data = "订阅号";
                         }
                         return data;
                     }
@@ -61,13 +61,13 @@ $(function () {
                     "orderable": false, // 禁用排序
                     "render": function (data, type, full, meta) {
                         if (data == -1) {//类型 -1 已删除 0待审核 1审核通过 2 审核不通过
-                            data = "<a href='#' class='upOrderStatus' >已删除</a>";
+                            data = "已删除";
                         } else if (data == 0) {
-                            data = "<a href='#' class='upOrderStatus' >待审核</a>";
+                            data = "待审核";
                         } else if (data == 1) {
-                            data = "<a href='#' class='upOrderStatus'>审核通过</a>";
+                            data = "审核通过";
                         } else if (data == 2) {
-                            data = "<a href='#' class='upOrderStatus' >审核不通过</a>";
+                            data = "审核不通过";
                         }
                         return data;
                     }
@@ -221,11 +221,7 @@ $(function () {
     $(document).delegate('.addBtn','click',function() {
         contentVM.wechatConfig='';
         $('#myModal-add-info').modal('show');
-
        setTimeout(function(){
-           console.log($(':input','#myModal-add-info')
-               .not(':button, :submit, :reset, :hidden').length)
-           console.log("---------------------")
            $(':input','#myModal-add-info')
                .not(':button, :submit, :reset, :hidden')
                .val('')
@@ -249,13 +245,6 @@ $(function () {
             del(codes);
         }
 
-    });
-
-    $(document).delegate('.upOrderStatus','click',function() {
-        var id=$(this).data("id");
-        //alert(id);
-        $("#titleId").html(id);
-        $('#editOrderStatus').modal("show");
     });
 
     //清空查询条件
@@ -299,45 +288,35 @@ function show(code){
 }
 
 function del(codes){
-    var url = "/wechat/wechatConfig/"+codes+"?userCode="+usercode;
+    var url = "/wechat/wechatConfig/"+codes;
     do_delete(url,{},function(data){
-        if(data.successFlg==true){
-            alert("删除成功");
-            table.ajax.reload();
-        }else{
-            alert("删除失败")
-        }
+        alert("删除成功");
+        table.ajax.reload();
     })
 }
 
-$("#btnsubmit").click(function(){
+$("#category_add").submit(function(){
     var url = "";
     var id = $("#id").val();
     var data = $("#category_add").serialize();
     if(id==''){//说明是保存
         url = "/wechat/wechatConfig"
         do_post(url,data,function(data){
-            if(data.successFlg){
-                alert("保存成功");
-                $('#myModal-add-info').modal('hide');
-                table.ajax.reload();
-                return;
-            }
-            alert(data.errorMsg);
+            alert("保存成功");
+            $('#myModal-add-info').modal('hide');
+            table.ajax.reload();
+            return;
 
         })
     }else{//说明是修改
         url="/wechat/wechatConfig?userCode="+usercode;
         do_put(url,data,function(data){
-            console.log(data);
-            if(data.successFlg){
-                alert("修改成功");
-                $('#myModal-add-info').modal('hide');
-                table.ajax.reload();
-                return;
-            }
-            alert(data.errorMsg);
+            alert("修改成功");
+            $('#myModal-add-info').modal('hide');
+            table.ajax.reload();
+            return;
         })
     }
+    return false;
 })
 

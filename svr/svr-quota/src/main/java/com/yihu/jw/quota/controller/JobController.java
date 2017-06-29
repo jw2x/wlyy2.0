@@ -54,4 +54,14 @@ public class JobController extends BaseController {
         System.out.println(file.getSize()+"");
         return null;
     }
+
+    /**
+     *
+     * @return
+     */
+    @GetMapping("/hello")
+    public String hello() {
+        System.out.println("hello");
+        return null;
+    }
 }

@@ -8,10 +8,12 @@ import com.yihu.jw.restmodel.wx.WxContants;
 import com.yihu.jw.wx.WechatResponse;
 import com.yihu.jw.wx.model.WxMenu;
 import com.yihu.jw.wx.model.WxWechat;
+import com.yihu.jw.wx.service.WechatService;
 import com.yihu.jw.wx.service.WxMenuService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -32,6 +35,9 @@ public class WxMenuController extends EnvelopRestController {
 
     @Autowired
     private WxMenuService wxMenuService;
+
+    @Autowired
+    private WechatService wechatService;
 
     @PostMapping(value = WxContants.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
@@ -63,10 +69,15 @@ public class WxMenuController extends EnvelopRestController {
     @DeleteMapping(value = WxContants.WxMenu.api_delete)
     @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
     public Envelop deleteWxMenu(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "codes", value = "codes")
+            @RequestParam(value = "codes", required = true) String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "userName", value = "userName")
+            @RequestParam(value = "userName", required = true) String userName
+    ) {
         try {
-            wxMenuService.deleteWxMenu(code);
+            wxMenuService.deleteWxMenu(codes, userCode, userName);
             return Envelop.getSuccess(WxContants.WxMenu.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -101,6 +112,9 @@ public class WxMenuController extends EnvelopRestController {
             @RequestParam(value = "page", required = false) int page,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+        if(StringUtils.isBlank(sorts)){
+            sorts = "-updateTime";
+        }
         //得到list数据
         List<WxWechat> list = wxMenuService.search(fields, filters, sorts, page, size);
         //获取总数
@@ -109,7 +123,10 @@ public class WxMenuController extends EnvelopRestController {
         pagedResponse(request, response, count, page, size);
         //封装返回格式
         List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
-
+        Map<String, String> map = wechatService.getAllWechatConfig();
+        for(MWxMenu menu:mWxMenus){
+            menu.setWechatName(map.get(menu.getWechatCode()));
+        }
         return Envelop.getSuccessListWithPage(WxContants.WxMenu.message_success_find_functions,mWxMenus, page, size,count);
     }
 
@@ -127,6 +144,10 @@ public class WxMenuController extends EnvelopRestController {
         List<WxMenu> list = wxMenuService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
+        Map<String, String> map = wechatService.getAllWechatConfig();
+        for(MWxMenu menu:mWxMenus){
+            menu.setWechatName(map.get(menu.getWechatCode()));
+        }
         return Envelop.getSuccessList(WxContants.WxMenu.message_success_find_functions,mWxMenus);
     }
 
@@ -148,6 +169,43 @@ public class WxMenuController extends EnvelopRestController {
             return Envelop.getSuccess("成功",msg);
         }catch (Exception e){
             return Envelop.getSuccess("创建失败",e );
+        }
+    }
+
+    /**
+     * 根据微信code查找父菜单
+     * @param wechatCode
+     * @return
+     */
+    @GetMapping(value = WxContants.WxMenu.api_getParentMenu)
+    @ApiOperation(value = "根据微信code查找父菜单", notes = "根据微信code查找父菜单")
+    public Envelop getParentMenu(
+            @ApiParam(name = "wechatCode", value = "wechatCode")
+            @PathVariable(value = "wechatCode", required = true) String wechatCode
+    ) {
+        try {
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_find, wxMenuService.findParentMenuByWechatCode(wechatCode));
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
+
+    /**
+     * 根据父级菜单code查找子菜单
+     * @param parentCode
+     * @return
+     */
+    @GetMapping(value = WxContants.WxMenu.api_getChildMenus)
+    @ApiOperation(value = "根据父级菜单code查找子菜单", notes = "根据父级菜单code查找子菜单")
+    public Envelop getChildMenus(
+            @ApiParam(name = "parentCode", value = "parentCode")
+            @PathVariable(value = "parentCode", required = true) String parentCode
+    ) {
+        try {
+            return Envelop.getSuccess(WxContants.WxMenu.message_success_find, wxMenuService.findChildMenus(parentCode));
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 

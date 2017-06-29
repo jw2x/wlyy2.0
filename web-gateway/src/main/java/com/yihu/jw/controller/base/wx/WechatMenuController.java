@@ -5,9 +5,13 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.fegin.base.wx.WechatMenuFegin;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.exception.business.JiWeiException;
+import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping(WechatContants.Menu.api_common)
+@RequestMapping("{version}/"+WechatContants.api_common)
 @Api(description = "微信菜单配置")
 public class WechatMenuController {
 
@@ -31,6 +35,7 @@ public class WechatMenuController {
     @Autowired
     private Tracer tracer;
 
+    @ApiVersion(1)
     @PostMapping(value = WechatContants.Menu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
     @HystrixCommand(commandProperties = {
@@ -38,9 +43,12 @@ public class WechatMenuController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop createWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
+            @RequestBody String jsonData) throws JiWeiException {
+        tracer.getCurrentSpan().logEvent("创建微信菜单:jsonData="+jsonData);
+        //{"id":null,"code":"","saasId":"1","name":"aaaawefr","token":"","encodingAesKey":"","encType":null,"status":0,"type":"1","appId":"","appSecret":"","baseUrl":"","createUser":"","createUserName":"","createTime":null,"updateUser":null,"updateUserName":null,"updateTime":null,"remark":""}
         return wechatMenuFegin.createWxMenu(jsonData);
     }
+
 
     @PutMapping(value = WechatContants.Menu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信菜单", notes = "修改微信菜单")
@@ -49,31 +57,36 @@ public class WechatMenuController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop updateWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
+            @RequestBody String jsonData) throws JiWeiException {
+        tracer.getCurrentSpan().logEvent("更新微信菜单:jsonData="+jsonData);
         return wechatMenuFegin.updateWxMenu(jsonData);
     }
 
-
+    @ApiVersion(1)
     @DeleteMapping(value = WechatContants.Menu.api_delete)
     @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop deleteWxMenu(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
-        return wechatMenuFegin.deleteWxMenu(code);
+    public Envelop delete(
+            @ApiParam(name = "codes", value = "codes")
+            @PathVariable(value = "codes", required = true) String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "userName", value = "userName")
+            @RequestParam(value = "userName", required = true) String userName) throws JiWeiException {
+        return wechatMenuFegin.deleteWxMenu(codes,userCode,userName);
     }
 
     @GetMapping(value = WechatContants.Menu.api_getByCode)
-    @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
-    @HystrixCommand(commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
-            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop findByCode(
+     @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
+     @HystrixCommand(commandProperties = {
+             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
-    ) {
+            @PathVariable(value = "code", required = true) String code
+    ) throws JiWeiException {
         return wechatMenuFegin.findByCode(code);
     }
 
@@ -90,7 +103,15 @@ public class WechatMenuController {
             @RequestParam(value = "size", required = false) int size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) int page) throws Exception {
-        return wechatMenuFegin.getWxMenus(fields,filters,sorts,size,page);
+        String filterStr = "";
+        if(StringUtils.isNotBlank(filters)){
+            filters = filters.replaceAll("=", ":");
+            JSONObject jsonResult = new JSONObject(filters);
+            if(jsonResult.has("name")){
+                filterStr+="name?"+jsonResult.get("name")+";";
+            }
+        }
+        return wechatMenuFegin.getWxMenus(fields,filterStr,sorts,size,page);
     }
 
 
@@ -123,5 +144,29 @@ public class WechatMenuController {
             @ApiParam(name = "wechatCode", value = "", defaultValue = "")
             @RequestParam(value = "wechatCode", required = true)String wechatCode){
         return wechatMenuFegin.createWechatMenu(wechatCode);
+    }
+
+    @GetMapping(value = WechatContants.Menu.api_getParentMenu)
+    @ApiOperation(value = "根据微信code查找父菜单", notes = "根据微信code查找父菜单")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    public Envelop getParentMenu(
+            @ApiParam(name = "wechatCode", value = "wechatCode")
+            @PathVariable(value = "wechatCode", required = true) String wechatCode
+    ) throws JiWeiException {
+        return wechatMenuFegin.getParentMenu(wechatCode);
+    }
+
+    @GetMapping(value = WechatContants.Menu.api_getChildMenus)
+    @ApiOperation(value = "根据微信code查找父菜单", notes = "根据微信code查找父菜单")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    public Envelop getChildMenus(
+            @ApiParam(name = "parentCode", value = "parentCode")
+            @PathVariable(value = "parentCode", required = true) String parentCode
+    ) throws JiWeiException {
+        return wechatMenuFegin.getChildMenus(parentCode);
     }
 }

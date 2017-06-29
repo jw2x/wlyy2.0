@@ -24,6 +24,9 @@ public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, Jp
     @Query("from WxMenu m where m.wechatCode = ?1 and  m.supMenucode= ?2 and m.status =1 order by m.sort")
     List<WxMenu> findChildMenus(String wechatCode, String sup_menucode);
 
+    @Query("from WxMenu m where  m.supMenucode= ?1 and m.status =1 order by m.sort")
+    List<WxMenu> findChildMenus( String parentCode);
+
     /**
      * 根据wechatCode判断父菜单的sort是否重复
      * @param wechatCode
@@ -40,7 +43,7 @@ public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, Jp
     @Query("from WxMenu m where m.wechatCode = ?1 and m.status =1 and m.sort =?2 and m.supMenucode =?3 and m.code != ?4")
     WxMenu findByWechatCodeExcludeSortFromChild(String wechatCode, Integer sort,String supMenucode,String code);
 
-    @Query("from WxMenu m where m.wechatCode =?1 and m.status = 1 and m.supMenucode is null order by m.supMenucode ,m.sort")
+    @Query("from WxMenu m where m.wechatCode =?1 and m.status = 1 and (m.supMenucode is null or m.supMenucode = '') order by m.supMenucode ,m.sort")
     List<WxMenu> findParentMenuByWechatCode(String wechatCode);
 
 }

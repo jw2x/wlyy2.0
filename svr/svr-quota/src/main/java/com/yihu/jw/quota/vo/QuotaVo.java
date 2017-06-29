@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by chenweida on 2017/6/1. test
+ * Created by chenweida on 2017/6/1.
  */
 public class QuotaVo implements Serializable{
     private Integer id;

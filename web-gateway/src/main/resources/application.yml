@@ -27,8 +27,9 @@ zuul:
     svr-base: /v1/base/**  ##svr-base方向代理到/base下多层级的路径
     svr-wlyy: /v1/wlyy/**
     api-esb-url:
-      path: /zuul/job/**
-      url: http://localhost:10030/
+      path: /job/**
+      url: http://192.168.131.131:10030/
+      stripPrefix: false ##如果是物理服务器要设置成false
 #    svr-base:    这种方式和  svr-base: /base/**  一样  svr-base可以随便写 唯一即可
 #      path: /base/**  path是代理后的路径
 #      serviceId: svr-base  serviceId是微服务name

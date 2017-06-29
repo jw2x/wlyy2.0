@@ -31,7 +31,7 @@ public class WechatFeginFallbackFactory implements FallbackFactory<WechatFegin> 
                 throw new JiWeiException(e);
             }
 
-            public Envelop deleteWechat(String codes) throws JiWeiException {
+            public Envelop deleteWechat(String codes,String userCode,String userName) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("删除微信配置失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("codes:"+codes);
                 throw new JiWeiException(e);

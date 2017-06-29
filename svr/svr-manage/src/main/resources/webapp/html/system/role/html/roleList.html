@@ -3,8 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <title>角色管理页面</title>
+
+    <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+
+    <link href="/common/css/bootstrap/animate.min.css" rel="stylesheet">
+    <link href="/common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="/common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <style>
+        .m-form-group:after { display: table; content: " "; clear: both; }
+        .m-form-group{
+            margin-top: 18px;;
+        }
+        select{
+            width:250px !important;
+        }
+    </style>
 </head>
-<body>
-角色管理页面
+<body class="gray-bg">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-12">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">角色名称：</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="name" name="name" style="width: 250px">
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-success search" style="float: right;">查 询</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        <small>角色列表</small>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+                    <table id="list" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" name="checkAll" /></th>
+                            <th>角色名称</th>
+                            <th>描述</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal-add-info" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:500px;height: 450px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    新 增
+                </h4>
+            </div>
+            <form class="form-horizontal" role="form" action="" method="post"  id="category_add" >
+                <input  id="id" type="hidden" name="id" :value="detail.id" />
+                <input  type="hidden" name="code" :value="detail.code" />
+                <input type="hidden" name="status" value="1"/>
+                <div class="m-form-group">
+                    <label class="col-sm-4 control-label no-padding-right" >角色名称: </label>
+                    <div class="col-sm-6">
+                        <input type="text"  class="form-control"  name="name" style="width: 250px"  required="true"  :value="detail.name"/>
+                    </div>
+                </div>
+                <div class="m-form-group">
+                    <label class="col-sm-4 control-label no-padding-right" >描&#12288;&#12288;述: </label>
+                    <div class="col-sm-6">
+                     <textarea style="width:115%;height:150px;" :value="detail.remark" name="remark"></textarea>
+                    </div>
+                </div>
+
+                <!--<div style="margin:0 auto; text-align: center;margin-top: 15px">
+
+                </div>-->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btnsubmit">
+                        提交
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div>
+</div>
+
+<!-- 从远程加载  用于人员配置,权限配置-->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true" data-code="">
+    <div class="modal-dialog" style="width:1000px;height: 750px;" id="myModalDialog">
+        <div class="modal-content">
+        </div>
+     </div>
+</div>
+
+<!-- 全局js -->
+<script type="text/javascript" src="/common/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/common/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/common/js/util/util.js"></script>
+
+<!--<script type="text/javascript" src="/common/js/vue/vue.js"></script>--><!--2.0-->
+<script type="text/javascript" src="/common/js/vue.js"></script><!--1.0-->
+
+<script type="text/javascript" src="/common/js/layer/layer.min.js"></script>
+
+<script type="text/javascript" src="/common/js/plugins/jeditable/jquery.jeditable.js"></script>
+
+<script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
+<!-- Data Tables -->
+<script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="/system/role/js/roleList.js"></script>
+
 </body>
 </html>

@@ -32,6 +32,7 @@ public class GraphicMessageController {
             @ApiParam(name = "length", value = "每页显示条数", required = false) @RequestParam(required = false, name = "length", defaultValue = "10") Integer length
     ) {
         try {
+            start=start/length+1;
             Envelop envelop = graphicMessageService.list(title, sorts,length, start);
             return envelop;
         } catch (Exception e) {
@@ -44,9 +45,11 @@ public class GraphicMessageController {
     @ApiOperation(value = "通过codes删除,多个code用,分割", notes = "通过codes删除")
     public Envelop deleteByCodes(
             @ApiParam(name = "codes", value = "codes")
-            @PathVariable String codes
+            @PathVariable String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam String userCode
     ) {
-        Envelop envelop = graphicMessageService.deleteByCode(codes);
+        Envelop envelop = graphicMessageService.deleteByCode(codes,userCode);
         return envelop;
     }
 
@@ -62,7 +65,7 @@ public class GraphicMessageController {
 
     @PostMapping(value = "/graphicMessage")
     @ApiOperation(value = "保存或者修改微信图文消息", notes = "保存或者修改微信图文消息")
-    public Envelop saveOrUpdate(@ModelAttribute @Valid GraphicMessage graphicMessage) throws JsonProcessingException {
-        return graphicMessageService.saveOrUpdate(graphicMessage);
+    public Envelop saveOrUpdate(@ModelAttribute @Valid GraphicMessage graphicMessage,@RequestParam String userCode) throws JsonProcessingException {
+        return graphicMessageService.saveOrUpdate(graphicMessage,userCode);
     }
 }

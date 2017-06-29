@@ -2470,6 +2470,9 @@
 		settings._iRecordsDisplay = parseInt(rocordsFiltered, 10);
 	
 		var data = _fnAjaxDataSrc( settings, json );
+		if(data==undefined){
+			data = [];
+		}
 		for ( var i=0, ien=data.length ; i<ien ; i++ ) {
 			_fnAddData( settings, data[i] );
 		}

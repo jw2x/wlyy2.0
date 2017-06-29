@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.charset.Charset;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/6/15 0015.
@@ -85,7 +86,7 @@ public class RestTemplateUtil {
         ObjectMapper mapper = new ObjectMapper();
         String str = null;
         try {
-            if (!params.isEmpty()) {
+            if (params!=null&&!params.isEmpty()) {
                 str = mapper.writeValueAsString(params);
             }
         } catch (JsonProcessingException e) {
@@ -95,6 +96,31 @@ public class RestTemplateUtil {
         HttpEntity<String> entity = new HttpEntity<>(str, headers);
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<T> resultEntity = restTemplate.exchange(url, method, entity, bodyType);
+
+        return resultEntity.getBody();
+    }
+
+    public <T> T exchange(String url, HttpMethod method, Class<T> bodyType,Map<String ,?> map) {
+        // 请求头
+        HttpHeaders headers = new HttpHeaders();
+        MimeType mimeType = MimeTypeUtils.parseMimeType("application/json");
+        MediaType mediaType = new MediaType(mimeType.getType(), mimeType.getSubtype(), Charset.forName("UTF-8"));
+        // 请求体
+        headers.setContentType(mediaType);
+        //提供json转化功能
+        ObjectMapper mapper = new ObjectMapper();
+        String str = null;
+        try {
+            if (params!=null&&!params.isEmpty()) {
+                str = mapper.writeValueAsString(params);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        // 发送请求
+        HttpEntity<String> entity = new HttpEntity<>(str, headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<T> resultEntity = restTemplate.exchange(url, method, entity, bodyType,map);
 
         return resultEntity.getBody();
     }

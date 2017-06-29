@@ -91,21 +91,18 @@
                     <input  type="hidden" name="code" :value="wechatConfig.code" />
                     <input  type="hidden" name="createUser" :value="wechatConfig.createUser" />
                     <input  type="hidden" name="createUserName" :value="wechatConfig.createUserName" />
-                    <!--<input  type="hidden" name="createTime" :value="wechatConfig.createTime" />-->
-                    <!--<input  type="hidden" name="updateUser" :value="wechatConfig.updateUser" />
-                    <input  type="hidden" name="updateUserName" :value="wechatConfig.updateUserName" />
-                    <input  type="hidden" name="updateTime" :value="wechatConfig.updateTime" />-->
+                    <input  type="hidden" name="saasId" value="1" />
                     <div class="m-form-group">
-                        <label class="col-sm-3 control-label no-padding-right" >saasId： </label>
+                        <label class="col-sm-3 control-label no-padding-right" >微信名: </label>
                         <div class="col-sm-2">
-                            <select class="form-control m-b" name="saasId" id="saasList">
-                               <!-- <option>&#45;&#45;请选择&#45;&#45;</option>-->
-                                <option v-for="saas in saasList"  :value="saas.code" :selected="saas.code==wechatConfig.saasId ">{{saas.name}}</option>
-                            </select>
-                        </div>
-                        <label class="col-sm-2 control-label no-padding-right" >公众号名： </label>
-                        <div class="col-sm-5">
                             <input type="text"  class="form-control"  name="name" style="width: 250px" required="true" :value="wechatConfig.name" />
+                        </div>
+                        <label class="col-sm-2 control-label no-padding-right" >公众号类型: </label>
+                        <div class="col-sm-5">
+                            <select class="form-control m-b" name="type" required="true">
+                                <option value="1" :selected="wechatConfig.type==1">服务号</option>
+                                <option value="2" :selected="wechatConfig.status==2">订阅号</option>
+                            </select>
                         </div>
                     </div>
 
@@ -116,7 +113,7 @@
                         </div>
                         <label class="col-sm-2 control-label no-padding-right" >加密密钥： </label>
                         <div class="col-sm-5">
-                            <input type="text"  class="form-control"  name="encodingAesKey" style="width: 250px" required="true" :value="wechatConfig.encodingAesKey"/>
+                            <input type="text"  class="form-control"  name="encodingAesKey" style="width: 250px"  :value="wechatConfig.encodingAesKey"/>
                         </div>
                     </div>
 
@@ -127,7 +124,7 @@
                         </div>
                         <label class="col-sm-2 control-label no-padding-right" >状态： </label>
                         <div class="col-sm-5">
-                            <select class="form-control m-b" name="status">
+                            <select class="form-control m-b" name="status" required="true">
                                 <!--<option value="">&#45;&#45;请选择&#45;&#45;</option>-->
                                 <option value="0" :selected="wechatConfig.status==0">待审核</option>
                                 <option value="1" :selected="wechatConfig.status==1">审核通过</option>
@@ -148,7 +145,7 @@
                     </div>
 
                     <div class="m-form-group">
-                        <label class="col-sm-3 control-label no-padding-right" >baseUrl：</label>
+                        <label class="col-sm-3 control-label no-padding-right" >服务器地址：</label>
                         <div class="col-sm-2">
                             <input type="text"  class="form-control"  name="baseUrl" style="width: 250px" :value="wechatConfig.baseUrl"/>
                         </div>
@@ -157,22 +154,12 @@
                             <input type="text"  class="form-control"  name="remark" style="width: 250px"  :value="wechatConfig.remark"/>
                         </div>
                     </div>
-                    <div class="m-form-group">
-                        <label class="col-sm-3 control-label no-padding-right" >公众号类型</label>
-                        <div class="col-sm-2">
-                            <select class="form-control m-b" name="type">
-                                <option value="1" :selected="wechatConfig.type==1">服务号</option>
-                                <option value="2" :selected="wechatConfig.status==2">订阅号</option>
-                            </select>
-                        </div>
-                    </div>
-
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default"
                                 data-dismiss="modal">关闭
                         </button>
-                        <button type="button" class="btn btn-primary" id="btnsubmit">
+                        <button type="submit" class="btn btn-primary" id="btnsubmit">
                             提交
                         </button>
                     </div>
@@ -196,6 +183,7 @@
 <script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
 <!-- Data Tables -->
 <script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
 <script type="text/javascript" src="/wechat/wechatConfig/js/wechatConfigList.js"></script>
 

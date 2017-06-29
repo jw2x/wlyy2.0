@@ -3,8 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <title>菜单管理页面</title>
+
+    <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+
+    <link href="/common/css/bootstrap/animate.min.css" rel="stylesheet">
+    <link href="/common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="/common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <style>
+        .m-form-group:after { display: table; content: " "; clear: both; }
+        .m-form-group{
+            margin-top: 18px;;
+        }
+        select{
+            width:250px !important;
+        }
+    </style>
 </head>
-<body>
-菜单管理页面
+<body class="gray-bg">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="col-md-12">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label">菜单名:</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="name" name="name" style="width: 250px">
+                    </div>
+
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-success search" style="float: right;">查 询</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>
+                        <small>菜单列表</small>
+                    </h5>
+                </div>
+                <div class="ibox-content">
+
+                    <table id="list" class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" name="checkAll" /></th>
+                            <th>菜单名</th>
+                            <th>路径</th>
+                            <th>菜单类型</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal-add-info" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:1200px;height: 800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    新 增
+                </h4>
+            </div>
+            <form class="form-horizontal" role="form" action="" method="post"  id="category_add" >
+                <input  id="id" type="hidden" name="id" :value="menu.id" />
+                <input  type="hidden" name="code" :value="menu.code" />
+                <input  type="hidden" name="createUser" :value="menu.createUser" />
+                <input  type="hidden" name="createUserName" :value="menu.createUserName" />
+                <input type="hidden" name="status" value="1"/>
+                <!--<input  type="hidden" name="createTime" :value="menu.createTime" />-->
+                <div class="m-form-group">
+                    <label class="col-sm-3 control-label no-padding-right" >菜单名: </label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control"  name="name" style="width: 250px"   :value="menu.name"/>
+                    </div>
+                    <label class="col-sm-2 control-label no-padding-right" >父级菜单</label>
+                    <div class="col-sm-5">
+                        <select class="form-control m-b" name="parentCode" id="parentCode" >
+                            <option value="">--请选择--</option>
+                            <option v-for="parentMenu in parentMenus"  :value="parentMenu.code" :selected="menu.parentCode==parentMenu.code" >{{parentMenu.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="m-form-group">
+                    <label class="col-sm-3 control-label no-padding-right" >路径: </label>
+                    <div class="col-sm-2">
+                        <input type="text"  class="form-control"  name="url" style="width: 250px"   :value="menu.url"/>
+                    </div>
+                    <label class="col-sm-2 control-label no-padding-right" >排序:</label>
+                    <div class="col-sm-5">
+                        <input type="text"  class="form-control"  name="sort" style="width: 250px"   :value="menu.sort"/>
+                    </div>
+                </div>
+                <div class="m-form-group">
+                    <label class="col-sm-3 control-label no-padding-right" >备注:</label>
+                    <div class="col-sm-2">
+                        <input type="text" name="remark" :value="menu.remark" style="width: 250px" class="form-control" />
+                    </div>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                    <button type="submit" class="btn btn-primary" id="btnsubmit">
+                        提交
+                    </button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div>
+</div>
+
+<!-- 全局js -->
+<script type="text/javascript" src="/common/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="/common/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="/common/js/util/util.js"></script>
+
+<!--<script type="text/javascript" src="/common/js/vue/vue.js"></script>--><!--2.0-->
+<script type="text/javascript" src="/common/js/vue.js"></script><!--1.0-->
+
+<script type="text/javascript" src="/common/js/layer/layer.min.js"></script>
+
+<script type="text/javascript" src="/common/js/plugins/jeditable/jquery.jeditable.js"></script>
+
+<script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
+<!-- Data Tables -->
+<script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<script type="text/javascript" src="/system/menu/js/menuList.js"></script>
+
 </body>
 </html>

@@ -36,9 +36,8 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     private WechatService wechatService;
 
     public WxTemplate createWxTemplate(WxTemplate wxTemplate) {
-        if (StringUtils.isEmpty(wxTemplate.getCode())) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_code_is_null, CommonContants.common_error_params_code);
-        }
+        String code = UUID.randomUUID().toString().replaceAll("-", "");
+        wxTemplate.setCode(code);
         if (StringUtils.isEmpty(wxTemplate.getWechatCode())) {
             throw new ApiException(WxContants.WxTemplate.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
         }
@@ -57,10 +56,6 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if(!content.matches("\\{\\{.+\\.DATA\\}\\}")){//content必须还有 "{{.DATA}}"
             throw new ApiException(WxContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
         }
-        //设置创建时间和修改时间
-        Date date = new Date();
-        wxTemplate.setCreateTime(date);
-        wxTemplate.setUpdateTime(date);
         return wxTemplateDao.save(wxTemplate);
     }
 
@@ -94,13 +89,20 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         return wxTemplateDao.save(wxTemplate);
     }
 
-    public void deleteWxTemplate(String code) {
-        WxTemplate wxTemplate = wxTemplateDao.findByCode(code);
-        if (wxTemplate == null) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_code_no_exist, CommonContants.common_error_params_code);
+    public void deleteWxTemplate(String codes, String userCode, String userName) {
+        if(!StringUtils.isEmpty(codes)) {
+            String[] codeArray = codes.split(",");
+            for (String code : codeArray) {
+                WxTemplate wxTemplate = wxTemplateDao.findByCode(code);
+                if (wxTemplate == null) {
+                    throw new ApiException(WxContants.WxTemplate.message_fail_code_no_exist, CommonContants.common_error_params_code);
+                }
+                wxTemplate.setStatus(-1);
+                wxTemplate.setUpdateUser(userCode);
+                wxTemplate.setUpdateUserName(userName);
+                wxTemplateDao.save(wxTemplate);
+            }
         }
-        wxTemplate.setStatus(-1);
-        wxTemplateDao.save(wxTemplate);
     }
 
     public WxTemplate findByCode(String code) {

@@ -32,6 +32,7 @@ public class WechatConfigController {
             @ApiParam(name = "length", value = "每页显示条数", required = false) @RequestParam(required = false, name = "length", defaultValue = "10") Integer length
     ) {
         try {
+            start=start/length+1;
             Envelop envelop = wechatConfigService.list(name, sorts,length, start);
             return envelop;
         } catch (Exception e) {
@@ -44,9 +45,12 @@ public class WechatConfigController {
     @ApiOperation(value = "通过codes删除,多个code用,分割", notes = "通过codes删除")
     public Envelop deleteByCodes(
             @ApiParam(name = "codes", value = "codes")
-            @PathVariable String codes
+            @PathVariable String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam String userCode
+
     ) {
-        Envelop envelop = wechatConfigService.deleteByCode(codes);
+        Envelop envelop = wechatConfigService.deleteByCode(codes,userCode);
         return envelop;
     }
 
@@ -62,7 +66,17 @@ public class WechatConfigController {
 
     @PostMapping(value = "/wechatConfig")
     @ApiOperation(value = "保存微信配置", notes = "保存微信配置")
-    public Envelop save(@ModelAttribute @Valid WechatConfig wechatConfig) throws JsonProcessingException {
-        return wechatConfigService.saveOrUpdate(wechatConfig);
+    public Envelop save(@ModelAttribute @Valid WechatConfig wechatConfig,@RequestParam String userCode) throws JsonProcessingException {
+        return wechatConfigService.saveOrUpdate(wechatConfig, userCode);
+    }
+
+    @GetMapping("wechatConfig/listNoPage")
+    @ApiOperation(value = "获取微信配置列表")
+    public Envelop listNoPage(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
+            @RequestParam(value = "sorts", required = false) String sorts){
+        return wechatConfigService.getListNoPage(fields,null,sorts);
     }
 }

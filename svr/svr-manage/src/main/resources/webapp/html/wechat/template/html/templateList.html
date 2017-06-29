@@ -57,7 +57,7 @@
                         <tr>
                             <th><input type="checkbox" name="checkAll" /></th>
                             <th>标题</th>
-                            <th>公众号名</th>
+                            <th>微信名</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -89,37 +89,35 @@
                 <input  type="hidden" name="code" :value="template.code" />
                 <input  type="hidden" name="createUser" :value="template.createUser" />
                 <input  type="hidden" name="createUserName" :value="template.createUserName" />
-                <!--<input  type="hidden" name="createTime" :value="template.createTime" />-->
+                <input type="hidden" name="status" value="1"/>
                 <div class="m-form-group">
                     <label class="col-sm-3 control-label no-padding-right" >标题: </label>
                     <div class="col-sm-2">
                         <input type="text"  class="form-control"  name="title" style="width: 250px"   :value="template.title"/>
                     </div>
-                    <label class="col-sm-2 control-label no-padding-right" >公众号名:</label>
+                    <label class="col-sm-2 control-label no-padding-right" >微信名:</label>
                     <div class="col-sm-5">
-                        <input type="url"  class="form-control"  name="wechatName" style="width: 250px" required="true" :value="template.wechatName"/>
+                        <select class="form-control m-b" name="wechatCode" id="wechatCode" required="true">
+                            <option v-for="wechatConfig in wechatConfigs"  :value="wechatConfig.code" :selected="wechatConfig.code==template.wechatCode ">{{wechatConfig.name}}</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="m-form-group">
                     <label class="col-sm-3 control-label no-padding-right" >模板id:</label>
                     <div class="col-sm-2">
-                        <input type="text"  class="form-control"  name="templateId" style="width: 250px"   :value="template.templateId"/>
+                        <input type="text"  class="form-control"  name="templateId" style="width: 250px"  required="true"  :value="template.templateId"/>
                     </div>
-                   <!-- <label class="col-sm-2 control-label no-padding-right" >模板格式:</label>
-                    <div class="col-sm-5">
-                        <input type="text"  class="form-control"  name="content" style="width: 250px" required="true" :value="template.content"/>
-                    </div>-->
                 </div>
                 <div style="margin:0 auto; text-align: center;margin-top: 15px">
                     <label class="col-sm-3 control-label no-padding-right" >模板格式:</label>
-                    <textarea style="width:54%;height:150px;margin-left: -211px;" :value="template.content" name="content"></textarea>
+                    <textarea style="width:54%;height:150px;margin-left: -211px;" :value="template.content" name="content" required="true"></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭
                     </button>
-                    <button type="button" class="btn btn-primary" id="btnsubmit">
+                    <button type="submit" class="btn btn-primary" id="btnsubmit">
                         提交
                     </button>
                 </div>
@@ -143,6 +141,7 @@
 <script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
 <!-- Data Tables -->
 <script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
 <script type="text/javascript" src="/wechat/template/js/templateList.js"></script>
 

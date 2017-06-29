@@ -89,15 +89,15 @@
                 <input  type="hidden" name="code" :value="graphicMessage.code" />
                 <input  type="hidden" name="createUser" :value="graphicMessage.createUser" />
                 <input  type="hidden" name="createUserName" :value="graphicMessage.createUserName" />
-                <!--<input  type="hidden" name="createTime" :value="graphicMessage.createTime" />-->
+                <input type="hidden" name="status" value="1"/>
                 <div class="m-form-group">
                     <label class="col-sm-3 control-label no-padding-right" >标题: </label>
                     <div class="col-sm-2">
-                        <input type="text"  class="form-control"  name="title" style="width: 250px"   :value="graphicMessage.title"/>
+                        <input type="text"  class="form-control"  name="title" style="width: 250px"  required="true"  :value="graphicMessage.title"/>
                     </div>
-                    <label class="col-sm-2 control-label no-padding-right" >url:</label>
+                    <label class="col-sm-2 control-label no-padding-right" >跳转地址:</label>
                     <div class="col-sm-5">
-                        <input type="url"  class="form-control"  name="url" style="width: 250px" required="true" :value="graphicMessage.url"/>
+                        <input type="url"  class="form-control"  name="url" style="width: 250px"  :value="graphicMessage.url"/>
                     </div>
                 </div>
 
@@ -108,7 +108,7 @@
                     </div>
                     <label class="col-sm-2 control-label no-padding-right" >备注:</label>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control"  name="remark" style="width: 250px" required="true" :value="graphicMessage.remark"/>
+                        <input type="text"  class="form-control"  name="remark" style="width: 250px"  :value="graphicMessage.remark"/>
                     </div>
                 </div>
                 <div style="margin:0 auto; text-align: center;margin-top: 15px">
@@ -119,7 +119,7 @@
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭
                     </button>
-                    <button type="button" class="btn btn-primary" id="btnsubmit">
+                    <button type="submit" class="btn btn-primary" id="btnsubmit">
                         提交
                     </button>
                 </div>
@@ -143,6 +143,7 @@
 <script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
 <!-- Data Tables -->
 <script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
 <script type="text/javascript" src="/wechat/graphicMessage/js/graphicMessageList.js"></script>
 

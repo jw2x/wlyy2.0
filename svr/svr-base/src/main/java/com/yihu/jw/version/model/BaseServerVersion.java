@@ -16,7 +16,6 @@ public class BaseServerVersion  extends IdEntity implements java.io.Serializable
  
 	private String code; //业务code
 	private String saasId;//关联base_saas code
-	private String userCode;//用户表code 医生
 	private String name; //版本名称
 	private Integer versionInt;//版本号
 	private Date createTime;
@@ -51,7 +50,6 @@ public class BaseServerVersion  extends IdEntity implements java.io.Serializable
 			String remark) {
 		this.code = code;
 		this.saasId = saasId;
-		this.userCode = userCode;
 		this.name = name;
 		this.versionInt = versionInt;
 		this.createTime = createTime;
@@ -80,15 +78,6 @@ public class BaseServerVersion  extends IdEntity implements java.io.Serializable
 
 	public void setSaasId(String saasId) {
 		this.saasId = saasId;
-	}
-
-	@Column(name = "user_code", length = 100)
-	public String getUserCode() {
-		return this.userCode;
-	}
-
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
 	}
 
 	@Column(name = "name", nullable = false, length = 10)

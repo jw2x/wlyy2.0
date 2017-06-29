@@ -1,7 +1,9 @@
 package com.yihu.jw.manage.service.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.model.wechat.GraphicMessage;
+import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.common.Envelop;
 import net.sf.json.JSONObject;
@@ -29,6 +31,9 @@ public class GraphicMessageService {
     @Autowired
     private RestTemplate template;
 
+    @Autowired
+    private UserService userService;
+
     public Envelop list(String title, String sorts ,Integer size, Integer page) {
         Map<String, Object> map = new HashMap<>();
         Map<String, Object> filters = new HashMap<>();
@@ -47,14 +52,18 @@ public class GraphicMessageService {
 
     }
 
-    public Envelop deleteByCode(String codes) {
+    public Envelop deleteByCode(String codes,String userCode) {
         //delete 没有返回值....
         //template.delete(url + "/graphicMessage/delete?codes={codes}", codes);
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("codes", codes);
-        String urlRequest = url + "/wechat/graphicMessage/"+codes;
+        ManageUser user = userService.findByCode(userCode);
+        String userName = user.getName();
+        Map<String, String> par = new HashMap<>();
+        par.put("userCode", userCode);
+        par.put("userName", userName);
+        String urlRequest = url + "/wechat/graphicMessage/"+codes+"?userCode={userCode}&userName={userName}";
         RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,map);
-        Envelop envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.DELETE, Envelop.class);
+        Envelop envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.DELETE, Envelop.class,par);
         return envelop;
     }
 
@@ -63,7 +72,18 @@ public class GraphicMessageService {
         return envelop;
     }
 
-    public Envelop saveOrUpdate(GraphicMessage graphicMessage) throws JsonProcessingException {
+    public Envelop saveOrUpdate(GraphicMessage graphicMessage, String userCode) throws JsonProcessingException {
+        ManageUser user = userService.findByCode(userCode);
+        String userName = user.getName();
+
+        //设置值
+        if(graphicMessage.getId()==null){
+            graphicMessage.setCreateUser(userCode);
+            graphicMessage.setCreateUserName(userName);
+        }
+        graphicMessage.setUpdateUserName(userName);
+        graphicMessage.setUpdateUser(userCode);
+
         HttpHeaders headers = new HttpHeaders();
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
@@ -76,11 +96,8 @@ public class GraphicMessageService {
             envelop = responseEntity.getBody();
             return envelop;
         }
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("jsonData",jsonObj.toString());
-        String urlRequest = url + "/wechat/graphicMessage";
-        RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,map);
-        envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.PUT, Envelop.class);
+        ResponseEntity<Envelop> resp = template.exchange(url + "/wechat/graphicMessage",HttpMethod.PUT,formEntity,Envelop.class);
+        envelop = resp.getBody();
 
         return envelop;
     }

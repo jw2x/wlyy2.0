@@ -23,13 +23,13 @@ import java.util.List;
  * Created by chenweida on 2017/5/19.
  */
 @RestController
-@RequestMapping(BaseVersionContants.WlyyVersion.api_common)
+@RequestMapping(BaseVersionContants.BaseServerVersion.api_common)
 @Api(value = "服务器版本模块", description = "服务器版本模块接口管理")
 public class ServerVersionController extends EnvelopRestController {
     @Autowired
     private WlyyVersionService wlyyVersionService;
 
-    @PostMapping(value = BaseVersionContants.WlyyVersion.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseVersionContants.BaseServerVersion.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建服务器版本", notes = "创建单个服务器版本")
     public Envelop createWlyyVersion(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
@@ -42,7 +42,7 @@ public class ServerVersionController extends EnvelopRestController {
         }
     }
 
-    @PutMapping(value = BaseVersionContants.WlyyVersion.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = BaseVersionContants.BaseServerVersion.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改服务器版本", notes = "修改服务器版本")
     public Envelop updateWlyyVersion(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
@@ -54,7 +54,7 @@ public class ServerVersionController extends EnvelopRestController {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
-    @DeleteMapping(value = BaseVersionContants.WlyyVersion.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = BaseVersionContants.BaseServerVersion.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "删除服务器版本", notes = "删除服务器版本")
     public Envelop deleteWlyyVersion(
             @ApiParam(name = "code", value = "code")
@@ -67,7 +67,7 @@ public class ServerVersionController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = BaseVersionContants.WlyyVersion.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseVersionContants.BaseServerVersion.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据code查找服务器版本", notes = "根据code查找服务器版本")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -81,7 +81,7 @@ public class ServerVersionController extends EnvelopRestController {
     }
 
 
-    @RequestMapping(value = BaseVersionContants.WlyyVersion.api_getWlyyVersion, method = RequestMethod.GET)
+    @RequestMapping(value = BaseVersionContants.BaseServerVersion.api_getBaseServerVersion, method = RequestMethod.GET)
     @ApiOperation(value = "获取服务器版本列表(分页)")
     public Envelop getWlyyVersions(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
@@ -110,7 +110,7 @@ public class ServerVersionController extends EnvelopRestController {
     }
 
 
-    @GetMapping(value = BaseVersionContants.WlyyVersion.api_getWlyyVersionNoPage)
+    @GetMapping(value = BaseVersionContants.BaseServerVersion.api_getBaseServerVersionNoPage)
     @ApiOperation(value = "获取服务器版本列表，不分页")
     public Envelop getAppsNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")

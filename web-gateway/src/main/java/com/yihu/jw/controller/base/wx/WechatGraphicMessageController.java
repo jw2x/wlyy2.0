@@ -61,12 +61,8 @@ public class WechatGraphicMessageController {
     public Envelop updateWxGraphicMessage(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws JiWeiException {
-        JSONObject json = new JSONObject(jsonData);
-        String data = json.get("jsonData").toString();
-        data = data.substring(2,data.length() - 2);
-        data = data.replaceAll("\\\\\"","\"");
-        tracer.getCurrentSpan().logEvent("更新图文消息:jsonData="+data);
-        return graphicMessageFegin.updateWxGraphicMessage(data);
+        tracer.getCurrentSpan().logEvent("更新图文消息:jsonData="+jsonData);
+        return graphicMessageFegin.updateWxGraphicMessage(jsonData);
     }
 
     @ApiVersion(1)
@@ -77,8 +73,12 @@ public class WechatGraphicMessageController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop deleteWxGraphicMessage(
             @ApiParam(name = "codes", value = "codes")
-            @PathVariable(value = "codes", required = true) String codes) throws JiWeiException {
-        return graphicMessageFegin.deleteWxGraphicMessage(codes);
+            @PathVariable(value = "codes", required = true) String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "userName", value = "userName")
+            @RequestParam(value = "userName", required = true) String userName) throws JiWeiException {
+        return graphicMessageFegin.deleteWxGraphicMessage(codes,userCode,userName);
     }
 
     @ApiVersion(1)

@@ -1,137 +1,129 @@
-$(document).ready(function () {
-    //初始化用户列表
-    $("#userlist").DataTable({
-        "aLengthMenu": [1, 2, 3, 4],
-        "searching": false,//禁用搜索
-        "lengthChange": true,
-        "paging": true,//开启表格分页
-        "bProcessing": true,
-        "bServerSide": true,
-        "bAutoWidth": false,
-        "sort": "position",
-        "deferRender": true,//延迟渲染
-        "bStateSave": false, //在第三页刷新页面，会自动到第一页
-        "iDisplayLength": 1,//每页显示条数
-        "iDisplayStart": 0, //当前页
-        "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
-        "ordering": false,//全局禁用排序
-        "ajax": {
-            "url": '/user/list',
-            "type": 'GET',
-            "dataSrc": "detailModelList",
-            "data": function (d) {
-                d.userCode = window.parent.getUserCode();
-                d.name ="";
-            }
-        },
-        "aoColumns": [{
-            "mData": "id",
-            "orderable": false, // 禁用排序
-            "sDefaultContent": "",
-            "sWidth": "2%"
-        },  {
-            "mData": "code",
-            "orderable": false, // 禁用排序
-            "sDefaultContent": "",
-            "sWidth": "10%"
-        },  {
-            "mData": "name",
-            "orderable": false, // 禁用排序
-            "sDefaultContent": "",
-            "sWidth": "10%"
-        }, {
-            "mData": "mobile",
-            "orderable": false, // 禁用排序
-            "sDefaultContent": "",
-            "sWidth": "10%"
-        },{
-            "mData": "status",
-            "orderable": false, // 禁用排序
-            "sDefaultContent": "",
-            "sWidth": "3%",
-            "render": function (data, type, full, meta) {
-                if (data == 1) {
-                    data = "<a href='#' class='upOrderStatus' data-id=" + full.id + ">有效</a>";
-                } else {
-                    data = "<a href='#' class='upOrderStatus' data-id=" + full.id + "><font color='red'>无效</font></a>";
-                }
-                return data;
-            }
-        } ,
-            {
-                "mData": "createTime",
-                "orderable": false, // 禁用排序
-                "sDefaultContent": "",
-                "sWidth": "10%",
-                "render": function (data, type, full, meta) {
-                    //时间格式化
-                    return moment(data).format("YYYY-MM-DD HH:mm:ss");
+var table;
+var usercode = window.localStorage.getItem("userCode");
+$(function () {
+    table = $("#list").DataTable({
+            "aLengthMenu": [1, 2, 3, 4],
+            "searching": false,//禁用搜索
+            "lengthChange": true,
+            "paging": true,//开启表格分页
+            "bProcessing": true,
+            "bServerSide": true,
+            "bAutoWidth": false,
+            "sort": "position",
+            "deferRender": true,//延迟渲染
+            "bStateSave": false, //在第三页刷新页面，会自动到第一页
+            "iDisplayLength": 10,//每页显示条数
+            "iDisplayStart": 0, //当前页
+            "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
+            "ordering": false,//全局禁用排序
+            "ajax": {
+                "url": '/manage/user/list',
+                "type": 'GET',
+                "dataSrc": "detailModelList",
+                "data": function (d) {
+                    d.userCode = window.parent.getUserCode();
+                    d.name =$("#name").val();
+                    d.mobile=$("#mobile").val();
                 }
             },
-            {
-                "mData": "id",
+            "aoColumns": [ {
+                "mData": "code",
                 "orderable": false, // 禁用排序
-                "sDefaultContent": '',
-                "sWidth": "10%",
+                "sDefaultContent": "",
+                "sWidth": "2%"
+            },  {
+                "mData": "name",
+                "orderable": false, // 禁用排序
+                "sDefaultContent": "",
+                "sWidth": "10%"
+            }, {
+                "mData": "mobile",
+                "orderable": false, // 禁用排序
+                "sDefaultContent": "",
+                "sWidth": "10%"
+            },{
+                "mData": "status",
+                "orderable": false, // 禁用排序
+                "sDefaultContent": "",
+                "sWidth": "3%",
                 "render": function (data, type, full, meta) {
-                    return data = '<button id="deleteOne" class="btn btn-danger btn-sm" data-id=' + data + '>删 除</button>';
+                    if (data == 1) {
+                        data = "有效";
+                    } else {
+                        data = "无效";
+                    }
+                    return data;
+                }
+            } ,
+                {
+                    "mData": "createTime",
+                    "orderable": false, // 禁用排序
+                    "sDefaultContent": "",
+                    "sWidth": "10%",
+                    "render": function (data, type, full, meta) {
+                        //时间格式化
+                        return moment(data).format("YYYY-MM-DD HH:mm:ss");
+                    }
+                },
+                {
+                    "mData": "code",
+                    "orderable": false, // 禁用排序
+                    "sDefaultContent": '',
+                    "sWidth": "10%",
+                    "render": function (data, type, full, meta) {
+                        return data = '<button id="findOne" class="btn btn-primary  btn-sm" data-id=' + data + ' onclick="show(\''+data+'\')">查 看</button>';/*<button id="deleteOne" class="btn btn-danger btn-sm" style="margin-left: 7px;" data-id=' + data + '>删 除</button>*/
 
+                    }
+                }],
+            "columnDefs": [{
+                "orderable": false, // 禁用排序
+                "targets": [0], // 指定的列
+                "data": "code",
+                "render": function (data, type, full, meta) {
+                    return '<input type="checkbox" value="' + data + '" name="code"/>';
                 }
             }],
-        "columnDefs": [{
-            "orderable": false, // 禁用排序
-            "targets": [0], // 指定的列
-            "data": "id",
-            "render": function (data, type, full, meta) {
-                return '<input type="checkbox" value="' + data + '" name="id"/>';
+            "oLanguage": { // 国际化配置
+                "sProcessing": "正在获取数据，请稍后...",
+                "sLengthMenu": "显示 _MENU_ 条",
+                "sZeroRecords": "没有找到数据",
+                "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
+                "sInfoEmpty": "记录数为0",
+                "sInfoFiltered": "(全部记录数 _MAX_ 条)",
+                "sInfoPostFix": "",
+                "sSearch": "搜索",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "第一页",
+                    "sPrevious": "上一页",
+                    "sNext": "下一页",
+                    "sLast": "最后一页"
+                }
+            },
+            initComplete: initComplete,
+            drawCallback: function (settings) {
+                $('input[name=checkAll]')[0].checked = false;//取消全选状态
             }
-        }],
-        "oLanguage": { // 国际化配置
-            "sProcessing": "正在获取数据，请稍后...",
-            "sLengthMenu": "显示 _MENU_ 条",
-            "sZeroRecords": "没有找到数据",
-            "sInfo": "从 _START_ 到  _END_ 条记录 总记录数为 _TOTAL_ 条",
-            "sInfoEmpty": "记录数为0",
-            "sInfoFiltered": "(全部记录数 _MAX_ 条)",
-            "sInfoPostFix": "",
-            "sSearch": "搜索",
-            "sUrl": "",
-            "oPaginate": {
-                "sFirst": "第一页",
-                "sPrevious": "上一页",
-                "sNext": "下一页",
-                "sLast": "最后一页"
-            }
-        },
-        initComplete: initComplete,
-        drawCallback: function (settings) {
-            $('input[name=allChecked]')[0].checked = false;//取消全选状态
         }
-    });
+    );
 
     /**
      * 表格加载渲染完毕后执行的方法
      * @param data
      */
     function initComplete(data){
-        //上方topPlugin DIV中追加HTML
-        //var topPlugin='<button id="addButton" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser" style="display:block;">' +
-        // '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加用户</button>';
-
         //删除用户按钮的HTMLDOM
-        var topPlugin='<button   class="btn btn-danger btn-sm" id="deleteAll">批量删除</button> <button   class="btn btn-primary btn-sm addBtn" >新 增</button>             <iframe id="exp" style="display:none;"></iframe><button  class="btn btn-info btn-sm" id="expCsv">导 出全部</button>             <button  class="btn btn-warning btn-sm" id="reset">重置搜索条件</button>' ;
+        var topPlugin='<button   class="btn btn-danger btn-sm" id="deleteAll">批量删除</button> <button   class="btn btn-primary btn-sm addBtn" >新 增</button>       <button  class="btn btn-warning btn-sm" id="reset">重置搜索条件</button>' ;
 
         $("#topPlugin").append(topPlugin);//在表格上方topPlugin DIV中追加HTML
-
-        //$("#expCsv").on("click", exp1);//给下方按钮绑定事件
 
     }
 
     /**
      * 多选选中和取消选中,同时选中第一个单元格单选框,并联动全选单选框
      */
-    $('#userlist tbody').on('click', 'tr', function(event) {
-        var allChecked=$('input[name=allChecked]')[0];//关联全选单选框
+    $('#list tbody').on('click', 'tr', function(event) {
+        var checkAll=$('input[name=checkAll]')[0];//关联全选单选框
         $($(this).children()[0]).children().each(function(){
             if(this.type=="checkbox" && (!$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click"))){
                 if(!this.checked){
@@ -142,12 +134,12 @@ $(document).ready(function () {
                     var recordsDisplay=table.page.info().recordsDisplay;//搜索条件过滤后的总行数
                     var iDisplayStart=table.page.info().start;// 起始行数
                     if(selected === table.page.len()||selected === recordsDisplay||selected === (recordsDisplay - iDisplayStart)){
-                        allChecked.checked = true;
+                        checkAll.checked = true;
                     }
                 }else{
                     this.checked = false;
                     cancelValue(this);
-                    allChecked.checked = false;
+                    checkAll.checked = false;
                 }
             }
         });
@@ -155,19 +147,18 @@ $(document).ready(function () {
     });
 
 
-
     /**
      * 全选按钮被点击事件
      */
-    $('input[name=allChecked]').click(function(){
+    $('input[name=checkAll]').click(function(){
         if(this.checked){
-            $('#userlist tbody tr').each(function(){
+            $('#list tbody tr').each(function(){
                 if(!$(this).hasClass('selected')){
                     $(this).click();
                 }
             });
         }else{
-            $('#userlist tbody tr').click();
+            $('#list tbody tr').click();
         }
     });
 
@@ -175,11 +166,11 @@ $(document).ready(function () {
      * 单选框被选中时将它的value放入隐藏域
      */
     function addValue(para) {
-        var userIds = $("input[name=userIds]");
-        if(userIds.val() === ""){
-            userIds.val($(para).val());
+        var codes = $("input[name=codes]");
+        if(codes.val() === ""){
+            codes.val($(para).val());
         }else{
-            userIds.val(userIds.val()+","+$(para).val());
+            codes.val(codes.val()+","+$(para).val());
         }
     }
 
@@ -188,65 +179,125 @@ $(document).ready(function () {
      */
     function cancelValue(para){
         //取消选中checkbox要做的操作
-        var userIds = $("input[name=allChecked]");
-        var array = userIds.val().split(",");
-        userIds.val("");
+        var codes = $("input[name=checkAll]");
+        var array = codes.val().split(",");
+        codes.val("");
         for (var i = 0; i < array.length; i++) {
             if (array[i] === $(para).val()) {
                 continue;
             }
-            if (userIds.val() === "") {
-                userIds.val(array[i]);
+            if (codes.val() === "") {
+                codes.val(array[i]);
             } else {
-                userIds.val(userIds.val() + "," + array[i]);
+                codes.val(codes.val() + "," + array[i]);
             }
         }
     }
 
 
-//   function exp1(){
-//	   $("#exp").attr("src",contextPath+"/department/export.do?t=" + new Date().getTime());
-//   }
-    $(document).delegate('#expCsv','click',function() {
-
-        $("#exp").attr("src",contextPath+"/department/export.do?t=" + new Date().getTime());
-    });
-
     $(document).delegate('.addBtn','click',function() {
-
+        contentVM.user='';
         $('#myModal-add-info').modal('show');
+        $("#oldPsd").removeAttr("required");
+        $("#oldPsdDiv").css('display','none');
+        setTimeout(function(){
+            $(':input','#myModal-add-info')
+                .not(':button, :submit, :reset, :hidden')
+                .val('')
+                .removeAttr('checked');
+        },200);
+
+
     });
+
+
+    //批量删除
     $(document).delegate('#deleteAll','click',function() {
         var theArray=[];
-        $("input[name=id]:checked").each(function() {
+        $("input[name=code]:checked").each(function() {
             theArray.push($(this).val());
         });
         if(theArray.length<1){
             alert("请至少选择一个");
         }else{
-            alert(theArray);
+            var codes = theArray.join(",");
+            del(codes);
         }
+    });
 
-    });
-    $(document).delegate('.upOrderStatus','click',function() {
-        var id=$(this).data("id");
-        //alert(id);
-        $("#titleId").html(id);
-        $('#editOrderStatus').modal("show");
-    });
+    //清空查询条件
     $(document).delegate('#reset','click',function() {
-        $("#state").val("");
-        $("#deptname").val("");
-        $("#startTime").val("");
-        $("#endTime").val("");
+        $("#name").val("");
+        $("#mobile").val("");
     });
-    $(document).delegate('.search','click',function() {
+
+    //重新查询
+    $(document).delegate('.search', 'click', function () {
         table.ajax.reload();
-        // $("#example").dataTable().api().ajax.reload();
-//		   table.search(
-//				   "state="+$('#state').val()
-//			    ).draw();
-//		  var 	    state=$("#state").val();
-//		   table.column(1).search(state, false, false).draw();
     });
 });
+
+var contentVM = new Vue({
+    el: '#category_add',
+    data: {
+        user: ''//记录详情信息
+    },
+    replace:false,
+});
+
+
+//查看配置
+function show(code){
+    $("#oldPsd").attr("required","true");
+    $("#oldPsdDiv").css('display','block');
+    $("#myModal-add-info").removeData("modal");
+    $("#password").val("");
+    $("#rePassword").val("");
+    var data={};
+    do_get("/manage/user/"+code,data,function(data){
+        contentVM.user = data.obj;
+        $('#myModal-add-info').modal('show');
+        $("#myModalLabel").html("查看");
+    },function(data){
+
+    });
+}
+
+function del(codes){
+    var url = "/manage/user/"+codes+"?userCode="+usercode;
+    do_delete(url,{},function(data){
+        if(data.errorMsg!=undefined){
+            alert(data.errorMsg);
+            return
+        }
+        alert("删除成功");
+        table.ajax.reload();
+    })
+}
+
+$("#category_add").submit(function(){
+    var psd = $("#password").val();
+    var rePsd = $("#rePassword").val();
+    if(psd!=rePsd){
+        alert("两次密码不一样");
+        return false;
+    }
+
+    var id = $("#id").val();
+    var data = $("#category_add").serialize();
+    var url = "/manage/user"
+    do_post(url,data,function(data){
+        if(id==''){
+            alert("保存成功");
+        }else{
+            alert("修改成功");
+        }
+        $('#myModal-add-info').modal('hide');
+        table.ajax.reload();
+        return;
+    },function(data){
+        alert(data.responseJSON.message)
+    })
+    return false
+})
+

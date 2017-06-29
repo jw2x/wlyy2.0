@@ -8,6 +8,7 @@ import com.yihu.jw.restmodel.wx.WxContants;
 import com.yihu.jw.wx.WechatResponse;
 import com.yihu.jw.wx.model.Miniprogram;
 import com.yihu.jw.wx.model.WxTemplate;
+import com.yihu.jw.wx.service.WechatService;
 import com.yihu.jw.wx.service.WxTemplateService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -32,6 +34,9 @@ import java.util.List;
 public class WxTemplateController extends EnvelopRestController {
     @Autowired
     private WxTemplateService wxTemplateService;
+
+    @Autowired
+    private WechatService wechatService;
 
     @PostMapping(value = WxContants.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信模版", notes = "创建微信模版")
@@ -59,14 +64,18 @@ public class WxTemplateController extends EnvelopRestController {
         }
     }
 
-
     @DeleteMapping(value = WxContants.WxTemplate.api_delete)
     @ApiOperation(value = "删除微信模版", notes = "删除微信模版")
     public Envelop deleteWxTemplate(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "codes", value = "codes")
+            @RequestParam(value = "codes", required = true) String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "userName", value = "userName")
+            @RequestParam(value = "userName", required = true) String userName
+    ) {
         try {
-            wxTemplateService.deleteWxTemplate(code);
+            wxTemplateService.deleteWxTemplate(codes, userCode, userName);
             return Envelop.getSuccess(WxContants.WxTemplate.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -101,6 +110,9 @@ public class WxTemplateController extends EnvelopRestController {
             @RequestParam(value = "page", required = false) int page,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+        if(StringUtils.isBlank(sorts)){
+            sorts = "-updateTime";
+        }
         //得到list数据
         List<WxTemplate> list = wxTemplateService.search(fields, filters, sorts, page, size);
         //获取总数
@@ -108,9 +120,13 @@ public class WxTemplateController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MWxTemplate> mWxWechats = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
+        List<MWxTemplate> templates = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
+        Map<String, String> map = wechatService.getAllWechatConfig();
+        for(MWxTemplate template:templates){
+            template.setWechatName(map.get(template.getWechatCode()));
+        }
 
-        return Envelop.getSuccessListWithPage(WxContants.WxTemplate.message_success_find_functions,mWxWechats, page, size,count);
+        return Envelop.getSuccessListWithPage(WxContants.WxTemplate.message_success_find_functions,templates, page, size,count);
     }
 
 
@@ -127,6 +143,10 @@ public class WxTemplateController extends EnvelopRestController {
         List<WxTemplate> list = wxTemplateService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxTemplate> mMWxTemplates = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
+        Map<String, String> map = wechatService.getAllWechatConfig();
+        for(MWxTemplate template:mMWxTemplates){
+            template.setWechatName(map.get(template.getWechatCode()));
+        }
         return Envelop.getSuccessList(WxContants.WxTemplate.message_success_find_functions,mMWxTemplates);
     }
 

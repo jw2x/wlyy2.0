@@ -10,6 +10,7 @@ import com.yihu.jw.wx.service.WxGraphicMessageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -60,10 +61,15 @@ public class WxGraphicMessageController extends EnvelopRestController {
     @DeleteMapping(value = WxContants.WxGraphicMessage.api_delete)
     @ApiOperation(value = "删除微信图文消息", notes = "删除微信图文消息")
     public Envelop deleteWxGraphicMessage(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "codes", value = "codes")
+            @RequestParam(value = "codes", required = true) String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "userName", value = "userName")
+            @RequestParam(value = "userName", required = true) String userName
+    ) {
         try {
-            wxGraphicMessageService.deleteWxGraphicMessage(code);
+            wxGraphicMessageService.deleteWxGraphicMessage(codes, userCode, userName);
             return Envelop.getSuccess(WxContants.WxGraphicMessage.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -98,6 +104,9 @@ public class WxGraphicMessageController extends EnvelopRestController {
             @RequestParam(value = "page", required = false) int page,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+        if(StringUtils.isBlank(sorts)){
+            sorts = "-updateTime";
+        }
         //得到list数据
         List<WxGraphicMessage> list = wxGraphicMessageService.search(fields, filters, sorts, page, size);
         //获取总数
