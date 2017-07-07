@@ -1,6 +1,7 @@
 package com.yihu.jw.restmodel.wx;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -28,6 +29,15 @@ public class MWxMenu {
     private String createUserName;//创建人
     private String remark;//备注
     private Integer status; //状态 -1删除 0 冻结 1可用
+    private List<MWxMenu> children;
+
+    public List<MWxMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MWxMenu> children) {
+        this.children = children;
+    }
 
     public Long getId() {
         return id;

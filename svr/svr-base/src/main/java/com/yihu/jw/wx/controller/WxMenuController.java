@@ -4,7 +4,8 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxMenu;
-import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.restmodel.wx.MWxWechat;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.wx.WechatResponse;
 import com.yihu.jw.wx.model.WxMenu;
 import com.yihu.jw.wx.model.WxWechat;
@@ -29,7 +30,7 @@ import java.util.Map;
  * Created by Administrator on 2017/5/19 0019.
  */
 @RestController
-@RequestMapping(WxContants.WxMenu.api_common)
+@RequestMapping(WechatContants.api_common)
 @Api(value = "微信菜单相关操作", description = "微信菜单相关操作")
 public class WxMenuController extends EnvelopRestController {
 
@@ -39,34 +40,34 @@ public class WxMenuController extends EnvelopRestController {
     @Autowired
     private WechatService wechatService;
 
-    @PostMapping(value = WxContants.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WechatContants.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
     public Envelop createWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
-            return Envelop.getSuccess(WxContants.WxMenu.message_success_create, wxMenuService.createWxMenu(wxMenu));
+            return Envelop.getSuccess(WechatContants.WxMenu.message_success_create, wxMenuService.createWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = WxContants.WxMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WechatContants.WxMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信菜单", notes = "修改微信菜单")
     public Envelop updateWxMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
-            return Envelop.getSuccess(WxContants.WxMenu.message_success_update, wxMenuService.updateWxMenu(wxMenu));
+            return Envelop.getSuccess(WechatContants.WxMenu.message_success_update, wxMenuService.updateWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @DeleteMapping(value = WxContants.WxMenu.api_delete)
+    @DeleteMapping(value = WechatContants.WxMenu.api_delete)
     @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
     public Envelop deleteWxMenu(
             @ApiParam(name = "codes", value = "codes")
@@ -78,26 +79,26 @@ public class WxMenuController extends EnvelopRestController {
     ) {
         try {
             wxMenuService.deleteWxMenu(codes, userCode, userName);
-            return Envelop.getSuccess(WxContants.WxMenu.message_success_delete );
+            return Envelop.getSuccess(WechatContants.WxMenu.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WxContants.WxMenu.api_getByCode)
+    @GetMapping(value = WechatContants.WxMenu.api_getByCode)
     @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(WxContants.WxMenu.message_success_find, wxMenuService.findByCode(code));
+            return Envelop.getSuccess(WechatContants.WxMenu.message_success_find, wxMenuService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = WxContants.WxMenu.api_getWxMenus, method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.WxMenu.api_getWxMenus, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信菜单列表(分页)")
     public Envelop getWxMenus(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
@@ -115,23 +116,28 @@ public class WxMenuController extends EnvelopRestController {
         if(StringUtils.isBlank(sorts)){
             sorts = "-updateTime";
         }
-        //得到list数据
-        List<WxWechat> list = wxMenuService.search(fields, filters, sorts, page, size);
+
+        //得到微信列表数据
+        List<WxWechat> wechats = wechatService.search(fields, filters, sorts, page, size);
+        for(WxWechat wechat:wechats){
+            List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechat.getCode());
+            wechat.setChildren(parentMenus);
+            for(WxMenu parentMenu:parentMenus){
+                List<WxMenu> childMenus = wxMenuService.findChildMenus(parentMenu.getCode());
+                parentMenu.setChildren(childMenus);
+            }
+        }
         //获取总数
-        long count=wxMenuService.getCount(filters);
+        long count=wechatService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
-        Map<String, String> map = wechatService.getAllWechatConfig();
-        for(MWxMenu menu:mWxMenus){
-            menu.setWechatName(map.get(menu.getWechatCode()));
-        }
-        return Envelop.getSuccessListWithPage(WxContants.WxMenu.message_success_find_functions,mWxMenus, page, size,count);
+        List<MWxWechat> mwechats = convertToModels(wechats, new ArrayList<>(wechats.size()), MWxWechat.class, fields);
+        return Envelop.getSuccessListWithPage(WechatContants.WxMenu.message_success_find_functions,mwechats, page, size,count);
     }
 
 
-    @GetMapping(value = WxContants.WxMenu.api_getWxMenuNoPage)
+    @GetMapping(value = WechatContants.WxMenu.api_getWxMenuNoPage)
     @ApiOperation(value = "获取微信菜单列表，不分页")
     public Envelop getWxMenuNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
@@ -140,15 +146,24 @@ public class WxMenuController extends EnvelopRestController {
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        if(filters!=null){
+            filters = "supMenucode=0;"+filters;
+        }else{
+            filters = "supMenucode=0;";
+        }
         //得到list数据
         List<WxMenu> list = wxMenuService.search(fields,filters,sorts);
+        for(WxMenu wxMenu:list){
+            List<WxMenu> childMenus = wxMenuService.findChildMenus(wxMenu.getCode());
+            wxMenu.setChildren(childMenus);
+        }
         //封装返回格式
         List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
         Map<String, String> map = wechatService.getAllWechatConfig();
         for(MWxMenu menu:mWxMenus){
             menu.setWechatName(map.get(menu.getWechatCode()));
         }
-        return Envelop.getSuccessList(WxContants.WxMenu.message_success_find_functions,mWxMenus);
+        return Envelop.getSuccessList(WechatContants.WxMenu.message_success_find_functions,mWxMenus);
     }
 
     /**
@@ -157,7 +172,7 @@ public class WxMenuController extends EnvelopRestController {
      * @return
      */
     @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
-    @RequestMapping(value = WxContants.WxMenu.api_createMenu ,method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.WxMenu.api_createMenu ,method = RequestMethod.GET)
     public Envelop createWechatMenu(
             @ApiParam(name = "wechatCode", value = "", defaultValue = "")
             @RequestParam(value = "wechatCode", required = true)String wechatCode){
@@ -177,14 +192,14 @@ public class WxMenuController extends EnvelopRestController {
      * @param wechatCode
      * @return
      */
-    @GetMapping(value = WxContants.WxMenu.api_getParentMenu)
+    @GetMapping(value = WechatContants.WxMenu.api_getParentMenu)
     @ApiOperation(value = "根据微信code查找父菜单", notes = "根据微信code查找父菜单")
     public Envelop getParentMenu(
             @ApiParam(name = "wechatCode", value = "wechatCode")
             @PathVariable(value = "wechatCode", required = true) String wechatCode
     ) {
         try {
-            return Envelop.getSuccess(WxContants.WxMenu.message_success_find, wxMenuService.findParentMenuByWechatCode(wechatCode));
+            return Envelop.getSuccess(WechatContants.WxMenu.message_success_find, wxMenuService.findParentMenuByWechatCode(wechatCode));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -196,14 +211,14 @@ public class WxMenuController extends EnvelopRestController {
      * @param parentCode
      * @return
      */
-    @GetMapping(value = WxContants.WxMenu.api_getChildMenus)
+    @GetMapping(value = WechatContants.WxMenu.api_getChildMenus)
     @ApiOperation(value = "根据父级菜单code查找子菜单", notes = "根据父级菜单code查找子菜单")
     public Envelop getChildMenus(
             @ApiParam(name = "parentCode", value = "parentCode")
             @PathVariable(value = "parentCode", required = true) String parentCode
     ) {
         try {
-            return Envelop.getSuccess(WxContants.WxMenu.message_success_find, wxMenuService.findChildMenus(parentCode));
+            return Envelop.getSuccess(WechatContants.WxMenu.message_success_find, wxMenuService.findChildMenus(parentCode));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

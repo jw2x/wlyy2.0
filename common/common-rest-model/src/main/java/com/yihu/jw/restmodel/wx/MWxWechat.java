@@ -1,6 +1,7 @@
 package com.yihu.jw.restmodel.wx;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -26,6 +27,15 @@ public class MWxWechat {
     private String updateUserName;//'修改人名'
     private Date updateTime;//'修改时间'
     private String remark;//'备注'
+    private List<MWxMenu> children;
+
+    public List<MWxMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MWxMenu> children) {
+        this.children = children;
+    }
 
     public Long getId() {
         return id;

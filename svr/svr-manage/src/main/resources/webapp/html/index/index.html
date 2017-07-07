@@ -59,7 +59,7 @@
                     </a>
                     <ul class="nav nav-second-level" v-for="childMenu in menu.childMenus">
                         <li>
-                                <a class="J_menuItem" :href="childMenu.url" >{{childMenu.name}}</a>
+                            <a class="J_menuItem" :href="childMenu.url[0]" >{{childMenu.name}}</a>
                         </li>
                     </ul>
                 </li>

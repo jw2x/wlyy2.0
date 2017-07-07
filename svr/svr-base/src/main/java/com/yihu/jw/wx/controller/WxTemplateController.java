@@ -4,7 +4,7 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxTemplate;
-import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.wx.WechatResponse;
 import com.yihu.jw.wx.model.Miniprogram;
 import com.yihu.jw.wx.model.WxTemplate;
@@ -29,7 +29,7 @@ import java.util.Map;
  * Created by Administrator on 2017/5/19 0019.
  */
 @RestController
-@RequestMapping(WxContants.WxTemplate.api_common)
+@RequestMapping(WechatContants.api_common)
 @Api(value = "微信模版相关操作", description = "微信模版相关操作")
 public class WxTemplateController extends EnvelopRestController {
     @Autowired
@@ -38,33 +38,33 @@ public class WxTemplateController extends EnvelopRestController {
     @Autowired
     private WechatService wechatService;
 
-    @PostMapping(value = WxContants.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WechatContants.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信模版", notes = "创建微信模版")
     public Envelop createWxTemplate(
             @ApiParam(name = "json_data", value = "微信模版json字符串")
             @RequestBody String jsonData) {
         try {
             WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);
-            return Envelop.getSuccess(WxContants.WxTemplate.message_success_create, wxTemplateService.createWxTemplate(WxTemplate));
+            return Envelop.getSuccess(WechatContants.WxTemplate.message_success_create, wxTemplateService.createWxTemplate(WxTemplate));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = WxContants.WxTemplate.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WechatContants.WxTemplate.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信模版", notes = "修改微信模版")
     public Envelop updateWxTemplate(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);
-            return Envelop.getSuccess(WxContants.WxTemplate.message_success_update, wxTemplateService.updateWxTemplate(WxTemplate));
+            return Envelop.getSuccess(WechatContants.WxTemplate.message_success_update, wxTemplateService.updateWxTemplate(WxTemplate));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @DeleteMapping(value = WxContants.WxTemplate.api_delete)
+    @DeleteMapping(value = WechatContants.WxTemplate.api_delete)
     @ApiOperation(value = "删除微信模版", notes = "删除微信模版")
     public Envelop deleteWxTemplate(
             @ApiParam(name = "codes", value = "codes")
@@ -76,26 +76,26 @@ public class WxTemplateController extends EnvelopRestController {
     ) {
         try {
             wxTemplateService.deleteWxTemplate(codes, userCode, userName);
-            return Envelop.getSuccess(WxContants.WxTemplate.message_success_delete );
+            return Envelop.getSuccess(WechatContants.WxTemplate.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WxContants.WxTemplate.api_getByCode)
+    @GetMapping(value = WechatContants.WxTemplate.api_getByCode)
     @ApiOperation(value = "根据code查找微信模版", notes = "根据code查找微信模版")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(WxContants.WxTemplate.message_success_find, wxTemplateService.findByCode(code));
+            return Envelop.getSuccess(WechatContants.WxTemplate.message_success_find, wxTemplateService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = WxContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信模版列表(分页)")
     public Envelop getWechats(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,wechatCode,templateId,content,remark,status")
@@ -126,11 +126,11 @@ public class WxTemplateController extends EnvelopRestController {
             template.setWechatName(map.get(template.getWechatCode()));
         }
 
-        return Envelop.getSuccessListWithPage(WxContants.WxTemplate.message_success_find_functions,templates, page, size,count);
+        return Envelop.getSuccessListWithPage(WechatContants.WxTemplate.message_success_find_functions,templates, page, size,count);
     }
 
 
-    @GetMapping(value = WxContants.WxTemplate.api_getWxTemplatesNoPage)
+    @GetMapping(value = WechatContants.WxTemplate.api_getWxTemplatesNoPage)
     @ApiOperation(value = "获取微信模版列表(不分页)")
     public Envelop getWechatNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,wechatCode,templateId,content,remark,status")
@@ -147,10 +147,10 @@ public class WxTemplateController extends EnvelopRestController {
         for(MWxTemplate template:mMWxTemplates){
             template.setWechatName(map.get(template.getWechatCode()));
         }
-        return Envelop.getSuccessList(WxContants.WxTemplate.message_success_find_functions,mMWxTemplates);
+        return Envelop.getSuccessList(WechatContants.WxTemplate.message_success_find_functions,mMWxTemplates);
     }
 
-    @GetMapping(value = WxContants.WxTemplate.api_sendTemplateMessage)
+    @GetMapping(value = WechatContants.WxTemplate.api_sendTemplateMessage)
     @ApiOperation(value = "发送微信模板消息")
     @ResponseBody
     public Envelop sendTemplateMessage(

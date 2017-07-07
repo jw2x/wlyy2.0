@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
@@ -31,6 +32,8 @@ public class MenuService {
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ManageMenuUrlService menuUrlService;
 
     public List<ManageMenu> findByUserCode(String code) {
         String sql="SELECT DISTINCT " +
@@ -79,13 +82,43 @@ public class MenuService {
         if (!StringUtils.isEmpty(name)&&!("null".equals(name))) {
             filters.put("name", new SearchFilter("name", SearchFilter.Operator.LIKE, name));
         }
+        //首先查找父菜单
+        filters.put("type",new SearchFilter("type", SearchFilter.Operator.EQ, 1));
+
         // 未作废
         filters.put("status", new SearchFilter("status", SearchFilter.Operator.EQ, WlyyContant.status_normal));
         Specification<ManageMenu> spec = DynamicSpecifications.bySearchFilter(filters.values(), ManageMenu.class);
-        return menuDao.findAll(spec, pageRequest);
+        Page<ManageMenu> manageMenus = menuDao.findAll(spec, pageRequest);
+        List<ManageMenu> parentMenus = manageMenus.getContent();
+        for(ManageMenu parentMenu: parentMenus){
+            List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());//查找子菜单
+            for(ManageMenu childMenu:childMenus){
+                List<ManageMenu> funcMenus = getChildMenus(childMenu.getCode());//查找功能
+                childMenu.setChildren(funcMenus);
+            }
+            parentMenu.setChildren(childMenus);
+        }
+        return manageMenus;
+
+    }
+
+    public List<ManageMenu> list(){
+        List<ManageMenu> parentMenus = getParentMenus();//查找模块/父菜单
+        for(ManageMenu parentMenu: parentMenus){
+            List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());//查找子菜单
+            for(ManageMenu childMenu:childMenus){
+                List<ManageMenu> funcMenus = getChildMenus(childMenu.getCode());//查找功能
+                childMenu.setChildren(funcMenus);
+            }
+            parentMenu.setChildren(childMenus);
+        }
+        return parentMenus;
     }
 
     public ManageMenu findByCode(String code) {
+        ManageMenu menu = menuDao.findByCode(code);
+        List<Map<String, Object>> req = menuUrlService.getUrlByMenuCode(menu.getCode());
+        menu.setReq(req);
         return menuDao.findByCode(code);
     }
 
@@ -123,6 +156,7 @@ public class MenuService {
         }
     }
 
+    @Transactional
     public void saveOrUpdate(ManageMenu menu,String userCode) {
         ManageUser user = userService.findByCode(userCode);
         String userName = user.getName();
@@ -134,18 +168,21 @@ public class MenuService {
         }
         menu.setUpdateUser(userCode);
         menu.setUpdateUserName(userName);
-        menuDao.save(menu);
+        menuDao.save(menu);//保存或更新之后,同步保存manage_menu_url
+        List<String> urls = menu.getUrl();
+        List<String> methods = menu.getMethod();
+        String menuCode = menu.getCode();
+        menuUrlService.saveOrUpdate(menuCode,urls,methods);
     }
 
     public Map<String, List> getMenuTree() throws ManageException {
         List<MenuItems> menuItemses = new ArrayList<>();
         Map<String, List> data = new HashMap<>();
-        //查询所有父菜单
+        //查询所有模块
         List<ManageMenu> parentMenus = getParentMenus();
-        //查询所有子菜单
         if(parentMenus!=null){
             for(ManageMenu parentMenu:parentMenus){
-                //通过父菜单查找对应的子菜单
+                //查询所有菜单
                 List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());
                 MenuItems menuItem = new MenuItems();
                 menuItem.setParentMenu(parentMenu);

@@ -4,7 +4,7 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxGraphicMessage;
-import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.wx.model.WxGraphicMessage;
 import com.yihu.jw.wx.service.WxGraphicMessageService;
 import io.swagger.annotations.Api;
@@ -24,41 +24,41 @@ import java.util.List;
  *   2017/5/11.
  */
 @RestController
-@RequestMapping(WxContants.WxGraphicMessage.api_common)
+@RequestMapping(WechatContants.api_common)
 @Api(value = "微信图文相关操作", description = "微信图文相关操作")
 public class WxGraphicMessageController extends EnvelopRestController {
     @Autowired
     private WxGraphicMessageService wxGraphicMessageService;
 
-    @PostMapping(value = WxContants.WxGraphicMessage.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WechatContants.WxGraphicMessage.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信图文消息", notes = "创建微信图文消息")
     public Envelop createWxGraphicMessage(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxGraphicMessage WxGraphicMessage = toEntity(jsonData, WxGraphicMessage.class);
-            return Envelop.getSuccess(WxContants.WxGraphicMessage.message_success_create, wxGraphicMessageService.createWxGraphicMessage(WxGraphicMessage));
+            return Envelop.getSuccess(WechatContants.WxGraphicMessage.message_success_create, wxGraphicMessageService.createWxGraphicMessage(WxGraphicMessage));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @PutMapping(value = WxContants.WxGraphicMessage.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WechatContants.WxGraphicMessage.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信图文消息", notes = "修改微信图文消息")
     public Envelop updateWxGraphicMessage(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WxGraphicMessage WxGraphicMessage = toEntity(jsonData, WxGraphicMessage.class);
-            return Envelop.getSuccess(WxContants.WxGraphicMessage.message_success_update, wxGraphicMessageService.updateWxGraphicMessage(WxGraphicMessage));
+            return Envelop.getSuccess(WechatContants.WxGraphicMessage.message_success_update, wxGraphicMessageService.updateWxGraphicMessage(WxGraphicMessage));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @DeleteMapping(value = WxContants.WxGraphicMessage.api_delete)
+    @DeleteMapping(value = WechatContants.WxGraphicMessage.api_delete)
     @ApiOperation(value = "删除微信图文消息", notes = "删除微信图文消息")
     public Envelop deleteWxGraphicMessage(
             @ApiParam(name = "codes", value = "codes")
@@ -70,26 +70,26 @@ public class WxGraphicMessageController extends EnvelopRestController {
     ) {
         try {
             wxGraphicMessageService.deleteWxGraphicMessage(codes, userCode, userName);
-            return Envelop.getSuccess(WxContants.WxGraphicMessage.message_success_delete );
+            return Envelop.getSuccess(WechatContants.WxGraphicMessage.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WxContants.WxGraphicMessage.api_getByCode)
+    @GetMapping(value = WechatContants.WxGraphicMessage.api_getByCode)
     @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(WxContants.WxGraphicMessage.message_success_find, wxGraphicMessageService.findByCode(code));
+            return Envelop.getSuccess(WechatContants.WxGraphicMessage.message_success_find, wxGraphicMessageService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.WxGraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信图文消息列表(分页)")
     public Envelop getWxGraphicMessages(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,description,url,pic_url,remark,status")
@@ -116,11 +116,11 @@ public class WxGraphicMessageController extends EnvelopRestController {
         //封装返回格式
         List<MWxGraphicMessage> mWxGraphicMessages = convertToModels(list, new ArrayList<>(list.size()), MWxGraphicMessage.class, fields);
 
-        return Envelop.getSuccessListWithPage(WxContants.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages, page, size,count);
+        return Envelop.getSuccessListWithPage(WechatContants.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages, page, size,count);
     }
 
 
-    @GetMapping(value = WxContants.WxGraphicMessage.api_getWxGraphicMessageNoPage)
+    @GetMapping(value = WechatContants.WxGraphicMessage.api_getWxGraphicMessageNoPage)
     @ApiOperation(value = "获取图文消息列表，不分页")
     public Envelop getWxGraphicMessageNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,description,url,pic_url,remark,status")
@@ -133,7 +133,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
         List<WxGraphicMessage> list = wxGraphicMessageService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxGraphicMessage> mWxGraphicMessages = convertToModels(list, new ArrayList<>(list.size()), MWxGraphicMessage.class, fields);
-        return Envelop.getSuccessList(WxContants.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages);
+        return Envelop.getSuccessList(WechatContants.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages);
     }
 
     //@GetMapping(value = WlyyContants.WxGraphicMessage.api_sendGraphicMessages)
@@ -145,7 +145,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
     //    return Envelop.getSuccess("成功",messages);
     //}
 
-    @GetMapping(value = WxContants.WxGraphicMessage.api_sendGraphicMessages)
+    @GetMapping(value = WechatContants.WxGraphicMessage.api_sendGraphicMessages)
     @ApiOperation(value = "发送图文消息")
     @ResponseBody
     public String sendGraphicMessages(

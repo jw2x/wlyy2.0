@@ -2,8 +2,12 @@ package com.yihu.jw.manage.model.system;// default package
 
 import com.yihu.jw.manage.model.IdEntity;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
+import java.util.Map;
 
 /**
  * ManageMenu entity. @author MyEclipse Persistence Tools
@@ -12,90 +16,122 @@ import java.util.Date;
 @Table(name = "manage_menu")
 public class ManageMenu extends IdEntity implements java.io.Serializable {
 
-	// Fields
-	private String parentCode;
-	private String name;
-	private String url;
-	private Integer status;
-	private Integer sort;
-	private String remark;
+    // Fields
+    private String parentCode;
+    private String name;
+    private Integer status;
+    private Integer sort;
+    private String remark;
+    private Integer type;
+    @Transient
+    private String text;
+    @Transient
+    private List<ManageMenu> children;
+    @Transient
+    private List<String> url;
+    @Transient
+    private List<String> method;
 
-	// Constructors
+    @Transient
+    private List<Map<String,Object>> req;//用于取值
 
-	/** default constructor */
-	public ManageMenu() {
-	}
+    /**
+     * default constructor
+     */
+    public ManageMenu() {
+    }
 
-	/** full constructor */
-	public ManageMenu(String code, String parentCode, String name, String url,
-			Integer status, Date createTime, String createUser,
-			String createUserName, Date updateTime, String updateUser,
-			String updateUserName, String remark) {
-		this.code = code;
-		this.parentCode = parentCode;
-		this.name = name;
-		this.url = url;
-		this.status = status;
-		this.createTime = createTime;
-		this.createUser = createUser;
-		this.createUserName = createUserName;
-		this.updateTime = updateTime;
-		this.updateUser = updateUser;
-		this.updateUserName = updateUserName;
-		this.remark = remark;
-	}
+    public List<Map<String, Object>> getReq() {
+        return req;
+    }
 
+    public void setReq(List<Map<String, Object>> req) {
+        this.req = req;
+    }
 
-	@Column(name = "parent_code", length = 100)
-	public String getParentCode() {
-		return this.parentCode;
-	}
+    public List<String> getMethod() {
+        return method;
+    }
 
-	public void setParentCode(String parentCode) {
-		this.parentCode = parentCode;
-	}
+    public void setMethod(List<String> method) {
+        this.method = method;
+    }
 
-	@Column(name = "name", length = 100)
-	public String getName() {
-		return this.name;
-	}
+    public List<String> getUrl() {
+        return url;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setUrl(List<String> url) {
+        this.url = url;
+    }
 
-	@Column(name = "url", length = 1500)
-	public String getUrl() {
-		return this.url;
-	}
+    public String getText() {
+        return name;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setText(String text) {
+        this.text = text;
+    }
 
-	@Column(name = "status")
-	public Integer getStatus() {
-		return this.status;
-	}
+    public List<ManageMenu> getChildren() {
+        return children;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setChildren(List<ManageMenu> children) {
+        this.children = children;
+    }
 
-	@Column(name = "remark", length = 1500)
-	public String getRemark() {
-		return this.remark;
-	}
+    @Column(name = "type")
+    public Integer getType() {
+        return type;
+    }
 
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
-	public Integer getSort() {
-		return sort;
-	}
+    @Column(name = "parent_code", length = 100)
+    public String getParentCode() {
+        return this.parentCode;
+    }
 
-	public void setSort(Integer sort) {
-		this.sort = sort;
-	}
+    public void setParentCode(String parentCode) {
+        this.parentCode = parentCode;
+    }
+
+    @Column(name = "name", length = 100)
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column(name = "status")
+    public Integer getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    @Column(name = "remark", length = 1500)
+    public String getRemark() {
+        return this.remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @Column(name = "sort")
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
 }

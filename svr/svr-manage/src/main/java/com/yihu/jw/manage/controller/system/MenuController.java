@@ -10,10 +10,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,26 +32,27 @@ public class MenuController {
 
     @GetMapping("menu/list")
     @ApiOperation(value = "用户列表")
-    public Envelop list(
-            @ApiParam(name = "name", value = "用户名称", required = false) @RequestParam(required = false, name = "name") String name,
-            @ApiParam(name = "start", value = "当前页(0开始)", required = false) @RequestParam(required = false, name = "start", defaultValue = "0") Integer page,
-            @ApiParam(name = "length", value = "每页显示条数", required = false) @RequestParam(required = false, name = "length", defaultValue = "10") Integer pageSize
-    ) {
-        try {
-            page=page/pageSize;
-            Page<ManageMenu> menus = menuService.list(name, page, pageSize);
-            return Envelop.getSuccessListWithPage(
-                    "获取信息成功",
-                    menus.getContent(),//数据内容
-                    page, //当前页
-                    pageSize,//每个显示条数
-                    menus.getTotalElements()//总数
-            );
+    public Map<String,Object> list() {
+        //查询结果
+        List<ManageMenu> menus = menuService.list();
 
-        } catch (Exception e) {
-            return Envelop.getError("获取信息失败:" + e.getMessage(), -1);
-        }
+        //添加基卫
+        ArrayList<ManageMenu> manageMenus = new ArrayList<ManageMenu>();
+        ManageMenu manageMenu = new ManageMenu();
+        manageMenu.setChildren(menus);
+        manageMenu.setName("基卫后台管理系统");
+        manageMenu.setParentCode("-1");
+        manageMenu.setId(new Long(0));
+        manageMenu.setCode("0");
+        manageMenu.setType(0);
+        manageMenus.add(manageMenu);
+
+        //数据返回
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("rows",manageMenus);
+        return map;
     }
+
 
     @GetMapping(value = "menu/{code}")
     @ApiOperation(value = "根据code查找用户", notes = "根据code查找用户")
@@ -82,7 +84,7 @@ public class MenuController {
     }
 
     @DeleteMapping(value = "menu/{codes}")
-    @ApiOperation(value = "删除微信模版", notes = "删除微信模版")
+    @ApiOperation(value = "删除菜单", notes = "删除菜单")
     public Envelop delete(
             @ApiParam(name = "codes", value = "codes")
             @PathVariable(value = "codes", required = true) String codes,
@@ -104,10 +106,9 @@ public class MenuController {
         return Envelop.getSuccess("成功");
     }
 
-    @RequestMapping("menu/menuTree")
-    public Envelop getMenus() throws ManageException {
-        Map<String, List> menuTree = menuService.getMenuTree();
-        return Envelop.getSuccess("查询成功",menuTree);
+    @GetMapping("menu/menuTree")
+    public List<ManageMenu> getMenus() throws ManageException {
+        List<ManageMenu> menus = menuService.list();
+        return menus;
     }
-
 }

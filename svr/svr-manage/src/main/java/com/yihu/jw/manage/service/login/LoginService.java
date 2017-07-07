@@ -3,10 +3,8 @@ package com.yihu.jw.manage.service.login;
 import com.yihu.jw.manage.cache.login.LoginCache;
 import com.yihu.jw.manage.dao.login.ManageLoginLogDao;
 import com.yihu.jw.manage.model.login.ManageLoginLog;
-import com.yihu.jw.manage.model.system.ManageMenu;
-import com.yihu.jw.manage.model.system.ManageRole;
-import com.yihu.jw.manage.model.system.ManageUser;
-import com.yihu.jw.manage.model.system.MenuItems;
+import com.yihu.jw.manage.model.system.*;
+import com.yihu.jw.manage.service.system.ManageMenuUrlService;
 import com.yihu.jw.manage.service.system.MenuService;
 import com.yihu.jw.manage.service.system.RoleService;
 import com.yihu.jw.manage.service.system.UserService;
@@ -33,6 +31,8 @@ public class LoginService {
     private RoleService roleService;
     @Autowired
     private ManageLoginLogDao manageLoginLogDao;
+    @Autowired
+    private ManageMenuUrlService menuUrlService;
 
     /**
      * ManageException异常不回滚
@@ -93,6 +93,14 @@ public class LoginService {
             for(ManageMenu parentMenu:parentMenus){
                 //通过父菜单查找对应的子菜单
                 List<ManageMenu> childMenus = menuService.findChildMenus(usercode,parentMenu.getCode());
+                for(ManageMenu childMenu:childMenus){
+                    List<ManageMenuUrl> menuUrls = menuUrlService.getListByMenuCode(childMenu.getCode());
+                    ArrayList<String> urls = new ArrayList<String>();
+                    if(menuUrls.size()>0){
+                        urls.add(menuUrls.get(0).getUrl());
+                    }
+                    childMenu.setUrl(urls);
+                }
                 MenuItems menuItem = new MenuItems();
                 menuItem.setParentMenu(parentMenu);
                 menuItem.setChildMenus(childMenus);

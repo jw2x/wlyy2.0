@@ -1,9 +1,11 @@
 package com.yihu.jw.manage.controller.login;
 
+import com.yihu.jw.manage.adapter.CacheAdapter;
+import com.yihu.jw.manage.adapter.cache.model.LoginCacheModel;
 import com.yihu.jw.manage.aop.annotation.ManageLog;
-import com.yihu.jw.manage.cache.login.LoginCache;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.login.LoginService;
+import com.yihu.jw.manage.service.system.MenuRoleService;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.business.ManageException;
@@ -19,13 +21,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by chenweida on 2017/6/8.
+ * Created by chenweida on 2017/6/6
  */
 @RestController
 @Api(description = "登陆模块")
 public class LoginController extends EnvelopRestController {
     @Autowired
     private LoginService loginService;
+    @Autowired
+    private MenuRoleService menuRoleService;
+    @Autowired
+    private CacheAdapter cacheAdapter;
+
 
     @GetMapping("/login")
     @ApiOperation(value = "登陆")
@@ -34,6 +41,16 @@ public class LoginController extends EnvelopRestController {
             @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
             @ApiParam(name = "password", value = "密码", required = true)@RequestParam(required = true, name = "password") String password) throws ManageException {
         ManageUser data = loginService.login(username, password);
+
+        String userCode = data.getCode();
+        //根据userCode查找用户拥有的权限,放入缓存中
+        List<Map<String, Object>> maps = menuRoleService.findByUserCode(userCode);
+        cacheAdapter.setData(CacheAdapter.ROLE,userCode,maps);
+
+        //登陆用户放入缓存
+        LoginCacheModel loginCacheModel = new LoginCacheModel();
+        loginCacheModel.setCode(userCode);
+        cacheAdapter.setData(CacheAdapter.LOGIN,userCode,loginCacheModel);
         return Envelop.getSuccess("登陆成功", data);
     }
 
@@ -43,7 +60,8 @@ public class LoginController extends EnvelopRestController {
             @ApiParam(name = "userCode", value = "用户code", required = true)@RequestParam(required = true, name = "userCode") String userCode) {
         try {
             //从缓存清空
-            LoginCache.cleanUser(userCode);
+            cacheAdapter.removeData(CacheAdapter.ROLE,userCode);//权限移除
+            cacheAdapter.removeData(CacheAdapter.LOGIN,userCode);//登陆移除
             return Envelop.getSuccess("登出成功");
         } catch (Exception e) {
             error(e);

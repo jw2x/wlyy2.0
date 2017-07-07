@@ -113,7 +113,7 @@ public class SaasController extends EnvelopRestController {
     @GetMapping(value = BaseContants.Saas.api_getSaassNoPage)
     @ApiOperation(value = "获取Saas配置列表，不分页")
     public Envelop getAppsNoPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,id,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,

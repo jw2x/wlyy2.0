@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.util.HttpUtil;
 import com.yihu.jw.wx.dao.WxTemplateDao;
 import com.yihu.jw.wx.model.*;
@@ -39,52 +39,52 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         String code = UUID.randomUUID().toString().replaceAll("-", "");
         wxTemplate.setCode(code);
         if (StringUtils.isEmpty(wxTemplate.getWechatCode())) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
         }
         //根据wechatCode查找是否存在微信配置
         WxWechat wxWechat = wechatService.findByCode(wxTemplate.getWechatCode());
         if(wxWechat==null){
-            throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxConfig.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_templateid_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_templateid_is_null, CommonContants.common_error_params_code);
         }
         String content = wxTemplate.getContent().replace(" ","");
         if (StringUtils.isEmpty(content)) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_content_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_content_is_null, CommonContants.common_error_params_code);
         }
         if(!content.matches("\\{\\{.+\\.DATA\\}\\}")){//content必须还有 "{{.DATA}}"
-            throw new ApiException(WxContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
         }
         return wxTemplateDao.save(wxTemplate);
     }
 
     public WxTemplate updateWxTemplate(WxTemplate wxTemplate) {
         if (StringUtils.isEmpty(wxTemplate.getCode())) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_code_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxTemplate.getWechatCode())) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_templateid_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_templateid_is_null, CommonContants.common_error_params_code);
         }
         String content = wxTemplate.getContent().replace(" ","");
         if (StringUtils.isEmpty(content)) {
-            throw new ApiException(WxContants.WxTemplate.message_fail_content_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_content_is_null, CommonContants.common_error_params_code);
         }
         Long id = wxTemplate.getId();
         if (StringUtils.isEmpty(id)) {
-            throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxConfig.message_fail_id_is_null, CommonContants.common_error_params_code);
         }
         WxTemplate wxTemplate1 = findById(id);
         if(wxTemplate1==null){
-            throw new ApiException(WxContants.WxTemplate.message_fail_template_is_no_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_template_is_no_exist, CommonContants.common_error_params_code);
         }
         wxTemplate.setCreateTime(wxTemplate1.getCreateTime());
         wxTemplate.setUpdateTime(new Date());
         if(!content.matches("\\{\\{.+\\.DATA\\}\\}")){//content必须还有 "{{.DATA}}"
-            throw new ApiException(WxContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxTemplate.message_fail_content_format_is_not_right, CommonContants.common_error_params_code);
         }
         return wxTemplateDao.save(wxTemplate);
     }
@@ -95,7 +95,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             for (String code : codeArray) {
                 WxTemplate wxTemplate = wxTemplateDao.findByCode(code);
                 if (wxTemplate == null) {
-                    throw new ApiException(WxContants.WxTemplate.message_fail_code_no_exist, CommonContants.common_error_params_code);
+                    throw new ApiException(WechatContants.WxTemplate.message_fail_code_no_exist, CommonContants.common_error_params_code);
                 }
                 wxTemplate.setStatus(-1);
                 wxTemplate.setUpdateUser(userCode);
@@ -120,7 +120,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             //首先根据wechatTemplate获取微信模版
             WxTemplate wxTemplate = findByCode(templateCode);
             if(wxTemplate==null){
-                throw new ApiException(WxContants.WxTemplate.message_fail_template_is_no_exist, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxTemplate.message_fail_template_is_no_exist, CommonContants.common_error_params_code);
             }
             String wechatCode =  wxTemplate.getWechatCode();
             String content = wxTemplate.getContent().replaceAll(" ", "");//{{result.DATA}}领奖金额:{{withdrawMoney.DATA}   }领奖  时间:{ {withdrawTime.DATA} }银行信息:{ {cardInfo.DATA} }到账时间:{{arrivedTime.DATA}}{{remark.DATA}}

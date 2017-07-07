@@ -2,6 +2,7 @@ package com.yihu.jw.manage.controller.system;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.model.system.ManageRole;
+import com.yihu.jw.manage.service.base.SaasService;
 import com.yihu.jw.manage.service.system.RoleService;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.exception.ApiException;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -23,6 +26,8 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private SaasService saasService;
 
     @GetMapping("role/list")
     @ApiOperation(value = "用户列表")
@@ -34,6 +39,11 @@ public class RoleController {
         try {
             page=page/pageSize;
             Page<ManageRole> roles = roleService.list(name, page, pageSize);
+            List<ManageRole> list = roles.getContent();
+            Map<String, String> saasMap = saasService.getSaasMap();
+            for(ManageRole manageRole:list){
+                manageRole.setSaasName(saasMap.get(manageRole.getSaasId()));
+            }
             return Envelop.getSuccessListWithPage(
                     "获取信息成功",
                     roles.getContent(),//数据内容

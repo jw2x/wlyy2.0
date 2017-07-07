@@ -73,6 +73,7 @@
         <version.springside>4.2.3-GA</version.springside>
         <version.common.lang3>3.1</version.common.lang3>
         <version.elasticsearch>2.4.4</version.elasticsearch>
+        <version.redis>1.5.3.RELEASE</version.redis>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -486,6 +487,13 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.common.lang3}</version>
+            </dependency>
+
+            <!--  redis -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-redis</artifactId>
+                <version>${version.redis}</version>
             </dependency>
 
         </dependencies>

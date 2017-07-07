@@ -3,7 +3,7 @@ package com.yihu.jw.wx.service;
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.util.HttpUtil;
 import com.yihu.jw.wx.dao.WxMenuDao;
 import com.yihu.jw.wx.model.WxAccessToken;
@@ -56,16 +56,16 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     @Transient
     public WxMenu updateWxMenu(WxMenu wxMenu) {
         if (StringUtils.isEmpty(wxMenu.getCode())) {
-            throw new ApiException(WxContants.WxMenu.message_fail_code_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxMenu.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
         if(canSaveOrUpata(wxMenu)){
             Long id = wxMenu.getId();
             if (StringUtils.isEmpty(id)) {
-                throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxConfig.message_fail_id_is_null, CommonContants.common_error_params_code);
             }
             WxMenu wxMenu1 = findById(id);
             if(wxMenu1==null){
-                throw new ApiException(WxContants.WxMenu.message_fail_WxMenu_is_no_exist, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_WxMenu_is_no_exist, CommonContants.common_error_params_code);
             }
             return wxMenuDao.save(wxMenu);
         }
@@ -164,12 +164,12 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     public JSONObject createWechatMenu(String wechatCode) {
         WxWechat wechat = wechatService.findByCode(wechatCode);
         if(wechat==null){
-            throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxConfig.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
         }
         //首先根据wechatCode获取菜单,然后封装成json字符串
         List<WxMenu> menus = wxMenuDao.findByWechatCode(wechatCode);
         if(menus==null){
-            throw new ApiException(WxContants.WxMenu.message_fail_WxMenu_is_no_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxMenu.message_fail_WxMenu_is_no_exist, CommonContants.common_error_params_code);
         }
         String menuJsonString = getMenuToString(menus, wechatCode);
         logger.info("-----------------微信菜单json字符串:"+ menuJsonString+"--------------------");
@@ -262,56 +262,58 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
 
     private boolean canSaveOrUpata(WxMenu wxMenu){
         String wechatCode = wxMenu.getWechatCode();
-        if (StringUtils.isEmpty(wechatCode)) {
-            throw new ApiException(WxContants.WxMenu.message_fail_wechatCode_is_null, CommonContants.common_error_params_code);
+        String supMenucode = wxMenu.getSupMenucode();
+        if(StringUtils.isEmpty(wechatCode)){
+            WxMenu parentMenuCode = findByCode(supMenucode);
+            wechatCode = parentMenuCode.getWechatCode();
+            wxMenu.setWechatCode(wechatCode);
         }
         String name = wxMenu.getName();
         if (StringUtils.isEmpty(name)) {
-            throw new ApiException(WxContants.WxMenu.message_fail_name_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxMenu.message_fail_name_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxMenu.getStatus())) {
-            throw new ApiException(WxContants.WxMenu.message_fail_status_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxMenu.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
         if(StringUtils.isEmpty(wxMenu.getSort())){
-            throw new ApiException(WxContants.WxMenu.message_fail_sort_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxMenu.message_fail_sort_is_null, CommonContants.common_error_params_code);
         }
         //根据wechatCode查找是否存在微信配置
         WxWechat wxWechat = wechatService.findByCode(wechatCode);
         if(wxWechat==null){
-            throw new ApiException(WxContants.Wechat.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxConfig.message_fail_wxWechat_is_no_exist, CommonContants.common_error_params_code);
         }
-        String supMenucode = wxMenu.getSupMenucode();
-        if (!StringUtils.isEmpty(supMenucode)) {//不为空,说明是子菜单,判断父菜单是否存在
+        if (!"0".equals(supMenucode)) {//不为0,说明是子菜单,判断父菜单是否存在
             //说明是子菜单
             //判断父菜单是否存在
             WxMenu parentMenuCode = findByCode(supMenucode);
             if(parentMenuCode==null){
-                throw new ApiException(WxContants.WxMenu.message_fail_supMenuCode_is_no_exist, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_supMenuCode_is_no_exist, CommonContants.common_error_params_code);
             }
 
             //查询已经存在的子菜单条数
             List<WxMenu> childMenus = findChildMenus(wechatCode, supMenucode);
             if(childMenus.size()==5){
-                throw new ApiException(WxContants.WxMenu.message_fail_childMenu_is_to_much, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_childMenu_is_to_much, CommonContants.common_error_params_code);
             }
             if(name.getBytes().length>60){
-                throw new ApiException(WxContants.WxMenu.message_fail_name_is_to_long, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_name_is_to_long, CommonContants.common_error_params_code);
             }
             if(StringUtils.isEmpty(wxMenu.getType())){
-                throw new ApiException(WxContants.WxMenu.message_fail_type_is_null, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_type_is_null, CommonContants.common_error_params_code);
             }
         }else{
             //查找父菜单
             List<WxMenu> parentMenus = findParentMenuByWechatCode(wechatCode);
             if(parentMenus!=null){
                 if(parentMenus.size()==3){
-                    throw new ApiException(WxContants.WxMenu.message_fail_parentMenu_is_to_much, CommonContants.common_error_params_code);
+                    throw new ApiException(WechatContants.WxMenu.message_fail_parentMenu_is_to_much, CommonContants.common_error_params_code);
                 }
             }
 
             //说明是父菜单
             if(name.getBytes().length>16){
-                throw new ApiException(WxContants.WxMenu.message_fail_name_is_to_long, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_name_is_to_long, CommonContants.common_error_params_code);
             }
 
         }
@@ -323,38 +325,38 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
         if("click".equals(type)){
             String key = wxMenu.getMenuKey();
             if(StringUtils.isEmpty(key)){
-                throw new ApiException(WxContants.WxMenu.message_fail_key_is_null, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_key_is_null, CommonContants.common_error_params_code);
             }
             if(key.getBytes().length>128){
-                throw new ApiException(WxContants.WxMenu.message_fail_key_is_toLong, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_key_is_toLong, CommonContants.common_error_params_code);
             }
         }
         String url = wxMenu.getUrl();
         if("view".equals(type)){
             if(StringUtils.isEmpty(url)){
-                throw new ApiException(WxContants.WxMenu.message_fail_url_is_null, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_url_is_null, CommonContants.common_error_params_code);
             }
             if(url.getBytes().length>128){
-                throw new ApiException(WxContants.WxMenu.message_fail_url_is_toLong, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_url_is_toLong, CommonContants.common_error_params_code);
             }
         }
         if("miniprogram".equals(type)){
             if(StringUtils.isEmpty(url)){
-                throw new ApiException(WxContants.WxMenu.message_fail_url_is_null, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_url_is_null, CommonContants.common_error_params_code);
             }
             if(url.getBytes().length>128){
-                throw new ApiException(WxContants.WxMenu.message_fail_url_is_toLong, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_url_is_toLong, CommonContants.common_error_params_code);
             }
             if(StringUtils.isEmpty(wxMenu.getAppid())){
-                throw new ApiException(WxContants.WxMenu.message_fail_appid_is_null, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_appid_is_null, CommonContants.common_error_params_code);
             }
             if(StringUtils.isEmpty(wxMenu.getPagepath())){
-                throw new ApiException(WxContants.WxMenu.message_fail_pagepath_is_null, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_pagepath_is_null, CommonContants.common_error_params_code);
             }
         }
         if("media_id".equals(type)||"view_limited".equals(type)){
             if(StringUtils.isEmpty(wxMenu.getMediaId())){
-                throw new ApiException(WxContants.WxMenu.message_fail_mediaId_is_null, CommonContants.common_error_params_code);
+                throw new ApiException(WechatContants.WxMenu.message_fail_mediaId_is_null, CommonContants.common_error_params_code);
             }
         }
         WxMenu wxMenuTemp = null;
@@ -365,7 +367,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
             wxMenuTemp = wxMenuDao.findByWechatCodeExcludeSortFromChild(wxMenu.getWechatCode(), wxMenu.getSort(), wxMenu.getSupMenucode(), wxMenu.getCode());
         }
         if(null!=wxMenuTemp){
-            throw new ApiException(WxContants.WxMenu.message_fail_sort_is_repeat, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxMenu.message_fail_sort_is_repeat, CommonContants.common_error_params_code);
         }
         wxMenu.setUpdateTime(new Date());
         return true;

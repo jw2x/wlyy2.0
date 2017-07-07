@@ -3,7 +3,7 @@ package com.yihu.jw.config;
 import com.yihu.jw.restmodel.base.base.BaseContants;
 import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
 import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
-import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -35,11 +35,8 @@ public class SwaggerConfig {
                 .paths(or(
                         regex("/patient/.*")
                         , regex("/"+ BaseContants.Function.api_common+"/.*")
-                        ,regex("/"+ WxContants.Wechat.api_common+"/.*")
-                        ,regex("/"+WxContants.WxAccessToken.api_common+"/.*")
-                        ,regex("/"+WxContants.WxMenu.api_common+"/.*")
-                        ,regex("/"+WxContants.WxTemplate.api_common+"/.*")
-                        ,regex("/"+WxContants.WxGraphicMessage.api_common+"/.*")
+                        ,regex("/"+ WechatContants.api_common+"/.*")
+                        ,regex("/"+ WechatContants.WxAccessToken.api_common+"/.*")
                         ))
                 .build()
                 .apiInfo(publicApiInfo());
@@ -103,11 +100,8 @@ public class SwaggerConfig {
                          regex("/"+ BaseContants.Function.api_common+"/.*")
                         ,regex("/"+ BaseContants.Saas.api_common+"/.*")
                         ,regex("/"+ BaseContants.Module.api_common+"/.*")
-                        ,regex("/"+ WxContants.Wechat.api_common+"/.*")
-                        ,regex("/"+ WxContants.WxTemplate.api_common+"/.*")
-                        ,regex("/"+ WxContants.WxGraphicMessage.api_common+"/.*")
-                        ,regex("/"+ WxContants.WxMenu.api_common+"/.*")
-                        ,regex("/"+ WxContants.WxAccessToken.api_common+"/.*")
+                        ,regex("/"+ WechatContants.api_common+"/.*")
+                        ,regex("/"+ WechatContants.WxAccessToken.api_common+"/.*")
                 ))
                 .build()
                 .apiInfo(jwBaseApiInfo());

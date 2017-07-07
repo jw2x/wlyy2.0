@@ -5,6 +5,8 @@ import com.yihu.jw.base.model.IdEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * 微信 菜单表
@@ -12,7 +14,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "wx_menu")
 public class WxMenu extends IdEntity implements java.io.Serializable {
-
 
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
     private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
@@ -27,6 +28,9 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     private String remark;//备注
     private Integer status; //状态 -1删除 0 冻结 1可用
 
+    @Transient
+    private List<WxMenu> children;
+
 
 
     /**
@@ -35,6 +39,13 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     public WxMenu() {
     }
 
+    public List<WxMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<WxMenu> children) {
+        this.children = children;
+    }
 
     @Column(name="menu_key")
     public String getMenuKey() {

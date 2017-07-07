@@ -16,6 +16,10 @@ public class ManageRole extends IdEntity implements java.io.Serializable {
 	private String name;
 	private Integer status;
 	private String remark;
+	@Column(name="saas_id")
+	private String saasId;
+	@Transient
+	private String saasName;
 
 	// Constructors
 
@@ -41,6 +45,21 @@ public class ManageRole extends IdEntity implements java.io.Serializable {
 		this.remark = remark;
 	}
 
+	public String getSaasId() {
+		return saasId;
+	}
+
+	public void setSaasId(String saasId) {
+		this.saasId = saasId;
+	}
+
+	public String getSaasName() {
+		return saasName;
+	}
+
+	public void setSaasName(String saasName) {
+		this.saasName = saasName;
+	}
 
 	@Column(name = "name", length = 100)
 	public String getName() {

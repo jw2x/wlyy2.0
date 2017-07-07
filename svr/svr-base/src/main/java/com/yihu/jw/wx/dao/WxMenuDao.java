@@ -32,7 +32,7 @@ public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, Jp
      * @param wechatCode
      * @param sort
      */
-    @Query("from WxMenu m where m.wechatCode = ?1 and m.status =1 and m.sort =?2 and m.supMenucode is null and m.code != ?3")
+    @Query("from WxMenu m where m.wechatCode = ?1 and m.status =1 and m.sort =?2 and m.supMenucode ='0' and m.code != ?3")
     WxMenu findByWechatCodeExcludeSortFromParent(String wechatCode, Integer sort,String code);
 
     /**
@@ -43,7 +43,7 @@ public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, Jp
     @Query("from WxMenu m where m.wechatCode = ?1 and m.status =1 and m.sort =?2 and m.supMenucode =?3 and m.code != ?4")
     WxMenu findByWechatCodeExcludeSortFromChild(String wechatCode, Integer sort,String supMenucode,String code);
 
-    @Query("from WxMenu m where m.wechatCode =?1 and m.status = 1 and (m.supMenucode is null or m.supMenucode = '') order by m.supMenucode ,m.sort")
+    @Query("from WxMenu m where m.wechatCode =?1 and m.status = 1 and  m.supMenucode = '0' order by m.supMenucode ,m.sort")
     List<WxMenu> findParentMenuByWechatCode(String wechatCode);
 
 }

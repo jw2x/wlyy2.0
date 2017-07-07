@@ -1,10 +1,16 @@
 package com.yihu.jw.manage.service.base;
 
+import com.yihu.jw.restmodel.base.base.BaseContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/6/13 0013.
@@ -24,5 +30,27 @@ public class SaasService {
                Envelop.class);
        return forObject;
 
+    }
+
+    public List getListNoPage() {
+        Envelop envelop = template.getForObject(url +"/"+ BaseContants.Saas.api_common+"/"+BaseContants.Saas.api_getSaassNoPage,Envelop.class);
+        List list = envelop.getDetailModelList();
+        return list;
+    }
+
+    /**
+     * key为code ,value为微信名字
+     * @return
+     */
+    public Map<String,String> getSaasMap(){
+        List saases = getListNoPage();
+        Map<String, String> map = new HashMap<>();
+        if(null!=saases){
+            for(int i=0;i<saases.size();i++){
+                LinkedHashMap saas = (LinkedHashMap) saases.get(i);
+                map.put(saas.get("code").toString(),saas.get("name").toString());
+            }
+        }
+        return map;
     }
 }

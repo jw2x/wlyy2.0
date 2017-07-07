@@ -2,8 +2,12 @@ package com.yihu.jw.wx.model;// default package
 
 import com.yihu.jw.base.model.IdEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
+import java.util.List;
 
 /**
  * WxWechat entity. @author MyEclipse Persistence Tools
@@ -24,6 +28,9 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private String appSecret;//'微信app_secret'
     private String baseUrl;//'微信base_url'
     private String remark;//'备注'
+
+    @Transient
+    private List<WxMenu> children;
     public WxWechat(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, Integer status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
         this.code = code;
         this.saasId = saasId;
@@ -49,6 +56,15 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
      */
     public WxWechat() {
     }
+
+    public List<WxMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<WxMenu> children) {
+        this.children = children;
+    }
+
     @Column(name = "enc_type")
     public Integer getEncType() {
         return encType;

@@ -3,7 +3,7 @@ package com.yihu.jw.wx.service;
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.util.MessageUtil;
 import com.yihu.jw.wx.dao.WxGraphicMessageDao;
 import com.yihu.jw.wx.model.WxGraphicMessage;
@@ -29,14 +29,14 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         String code = UUID.randomUUID().toString().replaceAll("-", "");
         wxGraphicMessage.setCode(code);
         if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
-            throw new ApiException(WxContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxGraphicMessage.getTitle())) {
-            throw new ApiException(WxContants.WxGraphicMessage.message_fail_title_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxGraphicMessage.message_fail_title_is_null, CommonContants.common_error_params_code);
         }
         WxGraphicMessage wxGraphicMessageTem = wxGraphicMessageDao.findByCode(wxGraphicMessage.getCode());
         if (wxGraphicMessageTem != null) {
-            throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxGraphicMessage.message_fail_code_exist, CommonContants.common_error_params_code);
         }
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
@@ -44,19 +44,19 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
     @Transient
     public WxGraphicMessage updateWxGraphicMessage(WxGraphicMessage wxGraphicMessage) {
         if (StringUtils.isEmpty(wxGraphicMessage.getCode())) {
-            throw new ApiException(WxContants.WxGraphicMessage.message_fail_code_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxGraphicMessage.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
-            throw new ApiException(WxContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxGraphicMessage.message_fail_status_is_null, CommonContants.common_error_params_code);
         }
         Long id = wxGraphicMessage.getId();
         if (StringUtils.isEmpty(id)) {
-            throw new ApiException(WxContants.Wechat.message_fail_id_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxConfig.message_fail_id_is_null, CommonContants.common_error_params_code);
         }
         //根据id查找
         WxGraphicMessage wxGraphicMessage1 = findById(id);
         if(wxGraphicMessage1==null){
-            throw new ApiException(WxContants.WxGraphicMessage.message_fail_wxGraphicMessage_is_no_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WechatContants.WxGraphicMessage.message_fail_wxGraphicMessage_is_no_exist, CommonContants.common_error_params_code);
         }
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }

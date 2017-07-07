@@ -6,6 +6,7 @@ import com.yihu.jw.manage.model.wechat.GraphicMessage;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.Map;
 @Service
 public class GraphicMessageService {
 
-    @Value("${spring.gateway}")
+    @Value("${spring.gateway}"+"/"+ WechatContants.api_common+"/")
     private String url;
 
     @Autowired
@@ -46,8 +47,7 @@ public class GraphicMessageService {
             map.put("filters",filters);
         }
 
-        Envelop forObject = template.getForObject(url + "/wechat/graphicMessage/list?size={size}&page={page}&sorts={sorts}&filters={filters}",
-                Envelop.class,map);
+        Envelop forObject = template.getForObject(url +WechatContants.WxGraphicMessage.api_getWxGraphicMessages+ "?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,map);
         return forObject;
 
     }
@@ -61,14 +61,14 @@ public class GraphicMessageService {
         Map<String, String> par = new HashMap<>();
         par.put("userCode", userCode);
         par.put("userName", userName);
-        String urlRequest = url + "/wechat/graphicMessage/"+codes+"?userCode={userCode}&userName={userName}";
+        String urlRequest = url + "graphicMessage/"+codes+"?userCode={userCode}&userName={userName}";
         RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,map);
         Envelop envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.DELETE, Envelop.class,par);
         return envelop;
     }
 
     public Envelop findByCode(String code) {
-        Envelop envelop = template.getForObject(url + "/wechat/graphicMessage/"+code, Envelop.class);
+        Envelop envelop = template.getForObject(url + "graphicMessage/"+code, Envelop.class);
         return envelop;
     }
 
@@ -92,11 +92,11 @@ public class GraphicMessageService {
         HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
         Envelop envelop =null;
         if(graphicMessage.getId()==null){//说明是保存
-            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + "/wechat/graphicMessage", formEntity, Envelop.class);
+            ResponseEntity<Envelop> responseEntity = template.postForEntity(url +WechatContants.WxGraphicMessage.api_create, formEntity, Envelop.class);
             envelop = responseEntity.getBody();
             return envelop;
         }
-        ResponseEntity<Envelop> resp = template.exchange(url + "/wechat/graphicMessage",HttpMethod.PUT,formEntity,Envelop.class);
+        ResponseEntity<Envelop> resp = template.exchange(url + WechatContants.WxGraphicMessage.api_update,HttpMethod.PUT,formEntity,Envelop.class);
         envelop = resp.getBody();
 
         return envelop;

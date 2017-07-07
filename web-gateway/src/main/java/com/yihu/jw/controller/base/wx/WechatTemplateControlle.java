@@ -2,10 +2,10 @@ package com.yihu.jw.controller.base.wx;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.fegin.base.wx.WechatTemplateFegin;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.exception.business.JiWeiException;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping("{version}/"+WechatContants.api_common)
+@RequestMapping("{version}/"+ WechatContants.api_common)
 @Api(description = "微信模板消息相关")
 public class WechatTemplateControlle {
 
@@ -36,7 +36,7 @@ public class WechatTemplateControlle {
     private Tracer tracer;
 
     @ApiVersion(1)
-    @PostMapping(value = WechatContants.Template.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WechatContants.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信模版", notes = "创建微信模版")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -50,7 +50,7 @@ public class WechatTemplateControlle {
     }
 
     @ApiVersion(1)
-    @PutMapping(value = WechatContants.Template.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WechatContants.WxTemplate.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信模版", notes = "修改微信模版")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -64,7 +64,7 @@ public class WechatTemplateControlle {
 
 
     @ApiVersion(1)
-    @DeleteMapping(value = WechatContants.Template.api_delete)
+    @DeleteMapping(value = WechatContants.WxTemplate.api_delete)
     @ApiOperation(value = "删除微信模版", notes = "删除微信模版")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -80,7 +80,7 @@ public class WechatTemplateControlle {
     }
 
     @ApiVersion(1)
-    @GetMapping(value = WechatContants.Template.api_getByCode)
+    @GetMapping(value = WechatContants.WxTemplate.api_getByCode)
     @ApiOperation(value = "根据code查找微信模版", notes = "根据code查找微信模版")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -93,7 +93,7 @@ public class WechatTemplateControlle {
     }
 
     @ApiVersion(1)
-    @RequestMapping(value = WechatContants.Template.api_getWxTemplates, method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信模版列表(分页)")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -121,7 +121,7 @@ public class WechatTemplateControlle {
     }
 
     @ApiVersion(1)
-    @GetMapping(value = WechatContants.Template.api_getWxTemplatesNoPage)
+    @GetMapping(value = WechatContants.WxTemplate.api_getWxTemplatesNoPage)
     @ApiOperation(value = "获取微信模版列表(不分页)")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -137,7 +137,7 @@ public class WechatTemplateControlle {
     }
 
     @ApiVersion(1)
-    @GetMapping(value = WechatContants.Template.api_sendTemplateMessage)
+    @GetMapping(value = WechatContants.WxTemplate.api_sendTemplateMessage)
     @ApiOperation(value = "发送微信模板消息")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间

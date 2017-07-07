@@ -1,5 +1,7 @@
 package com.yihu.jw.manage.interceptors;
 
+import com.yihu.jw.manage.adapter.CacheAdapter;
+import com.yihu.jw.manage.adapter.cache.model.RoleCacheModel;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -21,18 +23,25 @@ import java.util.List;
 @Component
 public class UserInterceptor implements HandlerInterceptor {
     private static Integer NOT_LOGIN=-1000;
+    private static Integer NO_PRIVILEGE=-2000;
     List<String> unFilters=new ArrayList<>();
     @Autowired
     private UserService userService;
+    @Autowired
+    private CacheAdapter cacheAdapter;
     @PostConstruct
     public void addUnFilterURI(){
         //添加不需要过滤的路径
         unFilters.add("/login");
         unFilters.add("/error");
+        unFilters.add("/index");
+        unFilters.add("/loginout");
+        unFilters.add("/manage/menuRole/reloadPrivilege");//刷新权限缓存
+        unFilters.add("");
     }
     @Override
     public boolean preHandle(HttpServletRequest requset, HttpServletResponse response, Object o) throws Exception {
-        boolean flag = true;
+        boolean flag = false;
         try {
             //判断路径是否要过滤
             String uri=requset.getRequestURI();
@@ -50,6 +59,21 @@ public class UserInterceptor implements HandlerInterceptor {
                 // 未登录
                 response.getOutputStream().write(JSONObject.fromObject(Envelop.getError("请登录后再操作！",NOT_LOGIN)).toString().getBytes());
             }
+
+            String method = requset.getMethod();
+            //判断权限
+            List<RoleCacheModel> privilege = (List<RoleCacheModel>) cacheAdapter.getData(CacheAdapter.ROLE, obj);
+            for(RoleCacheModel roleCacheModel:privilege){
+                String url = roleCacheModel.getUrl();
+                if(url==null)
+                    continue;
+                String pri_method = roleCacheModel.getMethod();
+                if(uri.contains(url) && method.equalsIgnoreCase(pri_method)){//url以及请求方式相同才有权限
+                    return true;
+                }
+            }
+            response.getOutputStream().write(JSONObject.fromObject(Envelop.getError("该用户没有权限！", NO_PRIVILEGE)).toString().getBytes());
+            return flag;
         } catch (Exception e) {
             e.printStackTrace();
         }

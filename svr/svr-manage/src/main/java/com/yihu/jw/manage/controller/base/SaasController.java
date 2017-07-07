@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2017/6/13 0013.
  */
@@ -36,5 +38,11 @@ public class SaasController {
         } catch (Exception e) {
             return Envelop.getError("获取信息失败:" + e.getMessage(), -1);
         }
+    }
+
+    @GetMapping("/saases/list")
+    @ApiOperation(value = "获取微信配置列表(不分页)")
+    public List getListNoPage(){
+        return saasService.getListNoPage();
     }
 }

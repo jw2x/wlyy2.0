@@ -6,6 +6,7 @@ import com.yihu.jw.manage.model.wechat.WechatConfig;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import java.util.Map;
 @Service
 public class WechatConfigService {
 
-    @Value("${spring.gateway}")
+    @Value("${spring.gateway}"+"/"+ WechatContants.api_common+"/")
     private String url;
 
     @Autowired
@@ -45,10 +46,7 @@ public class WechatConfigService {
            filters.put("name",name);
            map.put("filters",filters);
        }
-
-       Envelop forObject = template.getForObject(url + "/wechat/wechatConfig/list?size={size}&page={page}&sorts={sorts}&filters={filters}",
-               Envelop.class,map);
-       return forObject;
+       return template.getForObject(url +WechatContants.WxConfig.api_getWechats+"?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,map);
 
     }
 
@@ -60,7 +58,7 @@ public class WechatConfigService {
         Map<String, String> map = new HashMap<>();
         map.put("userCode", userCode);
         map.put("userName", userName);
-        String urlRequest = url + "/wechat/wechatConfig/"+codes+"?userCode={userCode}&userName={userName}";
+        String urlRequest = url +"wechatConfig/"+codes+"?userCode={userCode}&userName={userName}";
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
         RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,multiValueMap);
         Envelop envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.DELETE, Envelop.class,map);
@@ -68,7 +66,7 @@ public class WechatConfigService {
     }
 
     public Envelop findByCode(String code) {
-        Envelop envelop = template.getForObject(url + "/wechat/wechatConfig/"+code, Envelop.class);
+        Envelop envelop = template.getForObject(url +"wechatConfig/"+code, Envelop.class);
         return envelop;
     }
 
@@ -93,11 +91,11 @@ public class WechatConfigService {
         HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
         Envelop envelop =null;
         if(wechatConfig.getId()==null){//说明是保存
-            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + "/wechat/wechatConfig", formEntity, Envelop.class);
+            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + WechatContants.WxConfig.api_create, formEntity, Envelop.class);
             envelop = responseEntity.getBody();
             return envelop;
         }
-        ResponseEntity<Envelop> resp = template.exchange(url + "/wechat/wechatConfig",HttpMethod.PUT,formEntity,Envelop.class);
+        ResponseEntity<Envelop> resp = template.exchange(url + WechatContants.WxConfig.api_update,HttpMethod.PUT,formEntity,Envelop.class);
         envelop = resp.getBody();
         return envelop;
     }
@@ -107,8 +105,7 @@ public class WechatConfigService {
         map.put("fields",fields);
         map.put("sorts",sorts);
         map.put("filter",filter);
-        Envelop forObject = template.getForObject(url + "/wechat/wechatConfig/listNoPage?fields={fields}&filter={filter}&sorts={sorts}",
-                Envelop.class,map);
+        Envelop forObject = template.getForObject(url + WechatContants.WxConfig.api_getWechatNoPage+"?fields={fields}&filter={filter}&sorts={sorts}", Envelop.class,map);
         return forObject;
     }
 }

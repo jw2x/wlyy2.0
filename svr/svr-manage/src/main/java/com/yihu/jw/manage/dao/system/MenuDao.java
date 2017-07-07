@@ -18,7 +18,7 @@ public interface MenuDao extends PagingAndSortingRepository<ManageMenu, Long>, J
     @Query("from ManageMenu m where m.status!=-1 and m.parentCode = ?1 ")
     List<ManageMenu> getChildMenus(String parentCode);
 
-    @Query("from ManageMenu m where m.status!=-1 and m.parentCode = 0 ")
+    @Query("from ManageMenu m where m.status!=-1 and m.parentCode = '0' ")
     List<ManageMenu> getParentMenus();
 
 }

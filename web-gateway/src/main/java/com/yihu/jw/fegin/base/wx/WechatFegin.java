@@ -4,7 +4,7 @@ import com.yihu.jw.fegin.fallbackfactory.base.wx.WechatFeginFallbackFactory;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.exception.business.JiWeiException;
-import com.yihu.jw.restmodel.wx.WxContants;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,24 +17,24 @@ import org.springframework.web.bind.annotation.RequestParam;
         name = CommonContants.svr_base // name值是eurika的实例名字
         ,fallbackFactory  = WechatFeginFallbackFactory.class
 )
-@RequestMapping(value = WxContants.Wechat.api_common)
+@RequestMapping(value = WechatContants.api_common)
 public interface WechatFegin {
 
-    @RequestMapping(value = WxContants.Wechat.api_create, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = WechatContants.WxConfig.api_create, method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop createWechat( @RequestBody String jsonData) throws JiWeiException;
 
-    @RequestMapping(value = WxContants.Wechat.api_update, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = WechatContants.WxConfig.api_update, method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop updateWechat(String jsonData) throws JiWeiException;
 
-    @RequestMapping(value = WxContants.Wechat.api_delete,method = RequestMethod.DELETE)
+    @RequestMapping(value = WechatContants.WxConfig.api_delete,method = RequestMethod.DELETE)
     Envelop deleteWechat(@RequestParam(value = "codes") String codes,@RequestParam(value = "userCode") String userCode,@RequestParam(value = "userName") String userName) throws JiWeiException;
 
-    @RequestMapping(value = WxContants.Wechat.api_getByCode,method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.WxConfig.api_getByCode,method = RequestMethod.GET)
     Envelop findByCode(@RequestParam(value = "code") String code) throws JiWeiException;
 
-    @RequestMapping(value = WxContants.Wechat.api_getWechats ,method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.WxConfig.api_getWechats ,method = RequestMethod.GET)
     Envelop getWechats(@RequestParam(value = "fields" ,required = false)String fields, @RequestParam(value = "filters",required = false) String filters, @RequestParam(value = "sorts" ,required = false)String sorts, @RequestParam(value = "size" ,required = false) int size,@RequestParam(value = "page" ,required = false)int page) throws JiWeiException;
 
-    @RequestMapping(value = WxContants.Wechat.api_getWechatNoPage,method = RequestMethod.GET )
+    @RequestMapping(value = WechatContants.WxConfig.api_getWechatNoPage,method = RequestMethod.GET )
     Envelop getWechatNoPage(@RequestParam(value = "fields")String fields,@RequestParam(value = "filters") String filters,@RequestParam(value = "sorts") String sorts) throws JiWeiException;
 }

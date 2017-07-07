@@ -2,10 +2,10 @@ package com.yihu.jw.controller.base.wx;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.fegin.base.wx.GraphicMessageFegin;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.exception.business.JiWeiException;
+import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping("{version}/"+WechatContants.api_common)
+@RequestMapping("{version}/"+ WechatContants.api_common)
 @Api(description = "微信图文相关")
 public class WechatGraphicMessageController {
     private Logger logger= LoggerFactory.getLogger(WechatGraphicMessageController.class);
@@ -38,7 +38,7 @@ public class WechatGraphicMessageController {
     private Tracer tracer;
 
     @ApiVersion(1)
-    @PostMapping(value = WechatContants.GraphicMessage.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WechatContants.WxGraphicMessage.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建微信图文消息", notes = "创建微信图文消息")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -53,7 +53,7 @@ public class WechatGraphicMessageController {
 
 
     @ApiVersion(1)
-    @PutMapping(value = WechatContants.GraphicMessage.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WechatContants.WxGraphicMessage.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信图文消息", notes = "修改微信图文消息")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -66,7 +66,7 @@ public class WechatGraphicMessageController {
     }
 
     @ApiVersion(1)
-    @DeleteMapping(value = WechatContants.GraphicMessage.api_delete)
+    @DeleteMapping(value = WechatContants.WxGraphicMessage.api_delete)
     @ApiOperation(value = "删除微信图文消息", notes = "删除微信图文消息")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -82,7 +82,7 @@ public class WechatGraphicMessageController {
     }
 
     @ApiVersion(1)
-    @GetMapping(value = WechatContants.GraphicMessage.api_getByCode)
+    @GetMapping(value = WechatContants.WxGraphicMessage.api_getByCode)
     @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -95,7 +95,7 @@ public class WechatGraphicMessageController {
     }
 
     @ApiVersion(1)
-    @RequestMapping(value = WechatContants.GraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.WxGraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信图文消息列表(分页)")
     public Envelop getWxGraphicMessages(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,description,url,pic_url,remark,status")
@@ -124,7 +124,7 @@ public class WechatGraphicMessageController {
     }
 
     @ApiVersion(1)
-    @GetMapping(value = WechatContants.GraphicMessage.api_getWxGraphicMessageNoPage)
+    @GetMapping(value = WechatContants.WxGraphicMessage.api_getWxGraphicMessageNoPage)
     @ApiOperation(value = "获取图文消息列表，不分页")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -140,7 +140,7 @@ public class WechatGraphicMessageController {
     }
 
     @ApiVersion(1)
-    @GetMapping(value = WechatContants.GraphicMessage.api_sendGraphicMessages)
+    @GetMapping(value = WechatContants.WxGraphicMessage.api_sendGraphicMessages)
     @ApiOperation(value = "发送图文消息")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
