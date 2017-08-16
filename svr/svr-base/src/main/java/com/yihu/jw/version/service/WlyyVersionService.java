@@ -2,19 +2,16 @@ package com.yihu.jw.version.service;
 
 import com.yihu.jw.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.base.version.BaseVersionContants;
-import com.yihu.jw.restmodel.base.version.MWlyyVersion;
 import com.yihu.jw.restmodel.common.CommonContants;
 import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.version.dao.ServerVersionDao;
 import com.yihu.jw.version.dao.WlyyVersionDao;
 import com.yihu.jw.version.model.WlyyVersion;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by chenweida on 2017/5/19.
@@ -26,6 +23,9 @@ public class WlyyVersionService extends BaseJpaService<WlyyVersion, WlyyVersionD
 
     @Transactional
     public WlyyVersion createWlyyVersion(WlyyVersion wlyyVersion) throws ApiException {
+        if (StringUtils.isEmpty(wlyyVersion.getCode())) {
+            wlyyVersion.setCode(UUID.randomUUID().toString().replaceAll("-",""));
+        }
         if (StringUtils.isEmpty(wlyyVersion.getName())) {
             throw new ApiException(BaseVersionContants.WlyyVersion.message_fail_name_is_null, CommonContants.common_error_params_code);
         }
@@ -37,21 +37,21 @@ public class WlyyVersionService extends BaseJpaService<WlyyVersion, WlyyVersionD
     }
 
     @Transactional
-    public WlyyVersion updateWlyyVersion(WlyyVersion WlyyVersion) {
-        if (StringUtils.isEmpty(WlyyVersion.getCode())) {
+    public WlyyVersion updateWlyyVersion(WlyyVersion wlyyVersion) {
+        if (StringUtils.isEmpty(wlyyVersion.getCode())) {
             throw new ApiException(BaseVersionContants.WlyyVersion.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(WlyyVersion.getName())) {
+        if (StringUtils.isEmpty(wlyyVersion.getName())) {
             throw new ApiException(BaseVersionContants.WlyyVersion.message_fail_name_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(WlyyVersion.getId())) {
+        if (StringUtils.isEmpty(wlyyVersion.getId())) {
             throw new ApiException(BaseVersionContants.WlyyVersion.message_fail_id_is_null, CommonContants.common_error_params_code);
         }
-        WlyyVersion wlyyVersionTmp = wlyyVersionDao.findByNameExcludeCode(WlyyVersion.getName(), WlyyVersion.getCode());
+        WlyyVersion wlyyVersionTmp = wlyyVersionDao.findByNameExcludeCode(wlyyVersion.getName(), wlyyVersion.getCode());
         if (wlyyVersionTmp != null) {
             throw new ApiException(BaseVersionContants.WlyyVersion.message_fail_name_exist, CommonContants.common_error_params_code);
         }
-        return wlyyVersionDao.save(WlyyVersion);
+        return wlyyVersionDao.save(wlyyVersion);
     }
 
     public WlyyVersion findByCode(String code) {
@@ -63,11 +63,18 @@ public class WlyyVersionService extends BaseJpaService<WlyyVersion, WlyyVersionD
     }
 
     @Transactional
-    public void deleteWlyyVersion(String code) {
-        WlyyVersion WlyyVersion = wlyyVersionDao.findByCode(code);
-        if (WlyyVersion == null) {
-            throw new ApiException(BaseVersionContants.WlyyVersion.message_fail_code_no_exist, CommonContants.common_error_params_code);
+    public void deleteWlyyVersion(String codes, String userCode, String userName) {
+        if(!StringUtils.isEmpty(codes)){
+            for (String code: codes.split(",")){
+                WlyyVersion wlyyVersion = wlyyVersionDao.findByCode(code);
+                if (wlyyVersion == null) {
+                    continue;
+                }
+                wlyyVersion.setStatus(-1);
+                wlyyVersion.setUpdateUserName(userName);
+                wlyyVersion.setUpdateUser(userCode);
+                wlyyVersionDao.save(wlyyVersion);
+            }
         }
-        WlyyVersion.setStatus(-1);
     }
 }

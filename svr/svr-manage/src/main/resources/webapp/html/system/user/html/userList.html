@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>微信配置管理页面</title>
+    <title>后台用户列表页面</title>
 
-    <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
 
-    <link href="/common/css/bootstrap/animate.min.css" rel="stylesheet">
-    <link href="/common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/animate.min.css" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
 
     <!-- Data Tables -->
-    <link href="/common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="../../../common/css/jw.css" rel="stylesheet">
     <style>
         .m-form-group:after { display: table; content: " "; clear: both; }
         .m-form-group{
@@ -28,13 +29,13 @@
         <div class="col-md-12">
             <div class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">名称：</label>
+                    <label class="col-sm-1 control-label">用户名：</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="name" name="name" style="width: 250px">
+                        <input type="text" class="form-control" id="name" name="name">
                     </div>
                     <label class="col-sm-1 control-label">电话号码：</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" id="mobile" name="mobile" style="width: 250px">
+                        <input type="text" class="form-control" id="mobile" name="mobile" >
                     </div>
                     <div class="col-sm-1">
                         <button type="button" class="btn btn-success search" style="float: right;">查 询</button>
@@ -93,51 +94,45 @@
             <form class="form-horizontal" role="form" action="" method="post"  id="category_add" >
                 <input  id="id" type="hidden" name="id" :value="user.id" />
                 <input  type="hidden" name="code" :value="user.code" />
-                <input  type="hidden" name="createUser" :value="user.createUser" />
-                <input  type="hidden" name="createUserName" :value="user.createUserName" />
                 <input type="hidden" name="salt" :value="user.salt"/>
                 <input type="hidden" name="status" :value="user.status"/>
-                <!--<input  type="hidden" name="createTime" :value="user.createTime" />-->
-                <!--<input  type="hidden" name="updateUser" :value="user.updateUser" />
-                <input  type="hidden" name="updateUserName" :value="user.updateUserName" />
-                <input  type="hidden" name="updateTime" :value="user.updateTime" />-->
                 <div class="m-form-group">
                     <label class="col-sm-3 control-label no-padding-right" >用户名:</label>
                     <div class="col-sm-2">
-                        <input type="text"  class="form-control"  name="name" style="width: 250px"   :value="user.name" required="true"/>
+                        <input type="text"  class="form-control"  name="name"   :value="user.name" required="true"/>
                     </div>
                     <label class="col-sm-2 control-label no-padding-right" >登陆账号:</label>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control"  name="loginAccount" style="width: 250px" required="true" :value="user.loginAccount"  />
+                        <input type="text"  class="form-control"  name="loginAccount" required="true" :value="user.loginAccount"  />
                     </div>
                 </div>
 
                 <div class="m-form-group" style="display: none" id="oldPsdDiv">
                     <label class="col-sm-3 control-label no-padding-right" >原密码:</label>
                     <div class="col-sm-2">
-                        <input type="password"  class="form-control" id="oldPsd"  name="oldPsd" style="width: 250px"  required="true" />
+                        <input type="password"  class="form-control" id="oldPsd"  name="oldPsd"   required="true" />
                     </div>
                 </div>
 
                 <div class="m-form-group">
                     <label class="col-sm-3 control-label no-padding-right" >密码:</label>
                     <div class="col-sm-2">
-                        <input type="password"  class="form-control" id="password"  name="password" style="width: 250px"  required="true" />
+                        <input type="password"  class="form-control" id="password"  name="password"   required="true" />
                     </div>
                     <label class="col-sm-2 control-label no-padding-right" >请重新输入密码:</label>
                     <div class="col-sm-5">
-                        <input type="password"  class="form-control"  id="rePassword"  style="width: 250px" required="true" />
+                        <input type="password"  class="form-control"  id="rePassword"  required="true" />
                     </div>
                 </div>
 
                 <div class="m-form-group">
                     <label class="col-sm-3 control-label no-padding-right" >手机号:</label>
                     <div class="col-sm-2">
-                        <input type="text"  class="form-control" name="mobile" style="width: 250px"   :value="user.mobile" pattern="^1[3-9]\d{9}$" />
+                        <input type="text"  class="form-control" name="mobile"   :value="user.mobile" pattern="^1[3-9]\d{9}$" />
                     </div>
                     <label class="col-sm-2 control-label no-padding-right" >备注</label>
                     <div class="col-sm-5">
-                        <input type="text"  class="form-control"  name="remark" style="width: 250px"  :value="user.remark"/>
+                        <input type="text"  class="form-control"  name="remark"  :value="user.remark"/>
                     </div>
                 </div>
 
@@ -155,24 +150,24 @@
 </div>
 
 <!-- 全局js -->
-<script type="text/javascript" src="/common/js/jquery/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="/common/js/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="/common/js/util/util.js"></script>
+<script type="text/javascript" src="../../../common/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../../common/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../common/js/util/util.js"></script>
 
 <!--<script type="text/javascript" src="/common/js/vue/vue.js"></script>--><!--2.0-->
-<script type="text/javascript" src="/common/js/vue.js"></script><!--1.0-->
+<script type="text/javascript" src="../../../common/js/vue.js"></script><!--1.0-->
 
-<script type="text/javascript" src="/common/js/layer/layer.min.js"></script>
+<script type="text/javascript" src="../../../common/js/layer/layer.min.js"></script>
 
-<script type="text/javascript" src="/common/js/plugins/jeditable/jquery.jeditable.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/jeditable/jquery.jeditable.js"></script>
 
-<script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/moment/moment.js"></script>
 <!-- Data Tables -->
-<script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
 
-
-<script type="text/javascript" src="/system/user/js/userList.js"></script>
+<script type="text/javascript" src="../../../common/js/common.js"></script>
+<script type="text/javascript" src="../js/userList.js"></script>
 
 
 </body>

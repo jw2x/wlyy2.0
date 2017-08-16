@@ -1,7 +1,7 @@
 //获取用户的菜单和角色
 var contentVM;
 do_get(
-    "/index",
+    server+"/index",
     {},
     function (data) {
         contentVM = new Vue({
@@ -31,13 +31,13 @@ do_get(
  */
 function loginout() {
     do_get(
-        "/loginout",
+        server+"/loginout",
         {},
         function (data) {
             //清空用户缓存
             cleanUserCode();
             alert("退出成功")
-            window.location.href = '/login/login.html';
+            window.location.href = server+'/login/login.html';
         }
     )
 }

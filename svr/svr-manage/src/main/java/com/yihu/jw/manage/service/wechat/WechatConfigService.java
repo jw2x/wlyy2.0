@@ -2,10 +2,10 @@ package com.yihu.jw.manage.service.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.model.system.ManageUser;
-import com.yihu.jw.manage.model.wechat.WechatConfig;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.wx.MWxWechat;
 import com.yihu.jw.restmodel.wx.WechatContants;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +26,7 @@ import java.util.Map;
 @Service
 public class WechatConfigService {
 
-    @Value("${spring.gateway}"+"/"+ WechatContants.api_common+"/")
+    @Value("${spring.gateway}"+ WechatContants.api_common)
     private String url;
 
     @Autowired
@@ -35,18 +35,23 @@ public class WechatConfigService {
     @Autowired
     private UserService userService;
 
-   public Envelop list(String name, String sorts ,Integer size, Integer page) {
-       Map<String, Object> map = new HashMap<>();
-       Map<String, Object> filters = new HashMap<>();
-       map.put("size",size);
-       map.put("page",page);
-       map.put("sorts",sorts);
-       map.put("filters","");
-       if(StringUtils.isNotBlank(name)){
-           filters.put("name",name);
-           map.put("filters",filters);
-       }
-       return template.getForObject(url +WechatContants.WxConfig.api_getWechats+"?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,map);
+    public Envelop list(Integer size, Integer page,Map<String,String> map) {
+        Map<String, Object> req = new HashMap<>();
+        Map<String, Object> filters = new HashMap<>();
+        req.put("size", size);
+        req.put("page", page);
+        req.put("sorts", map.get("sorts"));
+        String name = map.get("name");
+        String saasId = map.get("saasId");
+        if (StringUtils.isNotBlank(name)) {
+            filters.put("name", name);
+        }
+        if (StringUtils.isNotBlank(saasId)) {
+            filters.put("saasId", saasId);
+        }
+        String filterStr = JSONObject.fromObject(filters).toString();
+        req.put("filters",filterStr);
+        return template.getForObject(url +WechatContants.WxConfig.api_getWechats+"?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,req);
 
     }
 
@@ -58,7 +63,7 @@ public class WechatConfigService {
         Map<String, String> map = new HashMap<>();
         map.put("userCode", userCode);
         map.put("userName", userName);
-        String urlRequest = url +"wechatConfig/"+codes+"?userCode={userCode}&userName={userName}";
+        String urlRequest = url +"/wechatConfig/"+codes+"?userCode={userCode}&userName={userName}";
         MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
         RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,multiValueMap);
         Envelop envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.DELETE, Envelop.class,map);
@@ -66,11 +71,11 @@ public class WechatConfigService {
     }
 
     public Envelop findByCode(String code) {
-        Envelop envelop = template.getForObject(url +"wechatConfig/"+code, Envelop.class);
+        Envelop envelop = template.getForObject(url +"/wechatConfig/"+code, Envelop.class);
         return envelop;
     }
 
-    public Envelop saveOrUpdate(WechatConfig wechatConfig,String userCode) throws JsonProcessingException {
+    public Envelop saveOrUpdate(MWxWechat wechatConfig,String userCode) throws JsonProcessingException {
         ManageUser user = userService.findByCode(userCode);
         String userName = user.getName();
 

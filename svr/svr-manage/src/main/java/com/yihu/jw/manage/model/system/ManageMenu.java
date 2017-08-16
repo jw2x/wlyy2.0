@@ -31,6 +31,8 @@ public class ManageMenu extends IdEntity implements java.io.Serializable {
     private List<String> url;
     @Transient
     private List<String> method;
+    @Transient
+    private String state;
 
     @Transient
     private List<Map<String,Object>> req;//用于取值
@@ -133,5 +135,13 @@ public class ManageMenu extends IdEntity implements java.io.Serializable {
 
     public void setSort(Integer sort) {
         this.sort = sort;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

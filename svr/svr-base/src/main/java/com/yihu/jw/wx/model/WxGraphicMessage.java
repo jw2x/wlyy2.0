@@ -12,6 +12,7 @@ import java.util.Date;
 @Table(name = "wx_graphic_message")
 public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
 
+    private String saasId;
     private String title;//标题
     private String description;//描述
     private String url;//图文消息url值
@@ -96,5 +97,14 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Column(name = "saas_id", length = 50)
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 }

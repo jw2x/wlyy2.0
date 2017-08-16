@@ -5,7 +5,6 @@ import com.yihu.jw.base.model.IdEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * WlyyVersion entity. @author MyEclipse Persistence Tools
@@ -17,19 +16,12 @@ public class WlyyVersion extends IdEntity implements java.io.Serializable {
 	// Fields
 
 	private String saasId; //saas code
-	private String code;
 	private String name;
 	private Double versionInt;
 	private String versionStr;
 	private String url;//app下载的路径
 	private String info;//app更新的信息
 	private Double size;//大小 MB
-	private Date createTime;
-	private String createUser;
-	private String createUserName;
-	private Date updateTime;
-	private String updateUser;
-	private String updateUserName;
 	private Integer status;////-1 删除 0 禁用 可用
 
 	// Constructors
@@ -66,15 +58,6 @@ public class WlyyVersion extends IdEntity implements java.io.Serializable {
 
 	public void setSaasId(String saasId) {
 		this.saasId = saasId;
-	}
-
-	@Column(name = "code", nullable = false, length = 10)
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	@Column(name = "name", nullable = false, length = 10)
@@ -129,54 +112,6 @@ public class WlyyVersion extends IdEntity implements java.io.Serializable {
 
 	public void setSize(Double size) {
 		this.size = size;
-	}
-
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public String getCreateUser() {
-		return createUser;
-	}
-
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-
-	public String getCreateUserName() {
-		return createUserName;
-	}
-
-	public void setCreateUserName(String createUserName) {
-		this.createUserName = createUserName;
-	}
-
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-
-	public String getUpdateUser() {
-		return updateUser;
-	}
-
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
-
-	public String getUpdateUserName() {
-		return updateUserName;
-	}
-
-	public void setUpdateUserName(String updateUserName) {
-		this.updateUserName = updateUserName;
 	}
 
 	public Integer getStatus() {

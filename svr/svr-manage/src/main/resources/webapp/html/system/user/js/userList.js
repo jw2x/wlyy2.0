@@ -1,8 +1,9 @@
 var table;
-var usercode = window.localStorage.getItem("userCode");
+var userCode = getUserCode();
+var saasId = getSaasId();
 $(function () {
     table = $("#list").DataTable({
-            "aLengthMenu": [1, 2, 3, 4],
+            "aLengthMenu": [10, 15,20],
             "searching": false,//禁用搜索
             "lengthChange": true,
             "paging": true,//开启表格分页
@@ -17,11 +18,12 @@ $(function () {
             "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
             "ordering": false,//全局禁用排序
             "ajax": {
-                "url": '/manage/user/list',
+                "url": server+'/manage/user/list',
                 "type": 'GET',
                 "dataSrc": "detailModelList",
                 "data": function (d) {
-                    d.userCode = window.parent.getUserCode();
+                    d.userCode = userCode;
+                    d.saasId = saasId;
                     d.name =$("#name").val();
                     d.mobile=$("#mobile").val();
                 }
@@ -71,7 +73,7 @@ $(function () {
                     "sDefaultContent": '',
                     "sWidth": "10%",
                     "render": function (data, type, full, meta) {
-                        return data = '<button id="findOne" class="btn btn-primary  btn-sm" data-id=' + data + ' onclick="show(\''+data+'\')">查 看</button>';/*<button id="deleteOne" class="btn btn-danger btn-sm" style="margin-left: 7px;" data-id=' + data + '>删 除</button>*/
+                        return data = '<button class="btn btn-primary  btn-sm" data-id=' + data + ' onclick="show(\''+data+'\')">查 看</button>';/*<button id="deleteOne" class="btn btn-danger btn-sm" style="margin-left: 7px;" data-id=' + data + '>删 除</button>*/
 
                     }
                 }],
@@ -254,17 +256,17 @@ function show(code){
     $("#password").val("");
     $("#rePassword").val("");
     var data={};
-    do_get("/manage/user/"+code,data,function(data){
+    do_get(server+"/manage/user/"+code,data,function(data){
         contentVM.user = data.obj;
         $('#myModal-add-info').modal('show');
         $("#myModalLabel").html("查看");
     },function(data){
-
+        debugger
     });
 }
 
 function del(codes){
-    var url = "/manage/user/"+codes+"?userCode="+usercode;
+    var url = server+"/manage/user/"+codes;
     do_delete(url,{},function(data){
         if(data.errorMsg!=undefined){
             alert(data.errorMsg);
@@ -285,7 +287,7 @@ $("#category_add").submit(function(){
 
     var id = $("#id").val();
     var data = $("#category_add").serialize();
-    var url = "/manage/user"
+    var url =server + "/manage/user";
     do_post(url,data,function(data){
         if(id==''){
             alert("保存成功");

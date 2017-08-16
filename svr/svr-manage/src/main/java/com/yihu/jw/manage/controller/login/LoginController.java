@@ -6,6 +6,7 @@ import com.yihu.jw.manage.aop.annotation.ManageLog;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.login.LoginService;
 import com.yihu.jw.manage.service.system.MenuRoleService;
+import com.yihu.jw.manage.service.system.UserRoleService;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.business.ManageException;
@@ -32,6 +33,8 @@ public class LoginController extends EnvelopRestController {
     private MenuRoleService menuRoleService;
     @Autowired
     private CacheAdapter cacheAdapter;
+    @Autowired
+    private UserRoleService userRoleService;
 
 
     @GetMapping("/login")
@@ -43,6 +46,11 @@ public class LoginController extends EnvelopRestController {
         ManageUser data = loginService.login(username, password);
 
         String userCode = data.getCode();
+
+        //查找saas
+        List<String> saases = userRoleService.getSaasIdByUserCode(userCode);
+
+
         //根据userCode查找用户拥有的权限,放入缓存中
         List<Map<String, Object>> maps = menuRoleService.findByUserCode(userCode);
         cacheAdapter.setData(CacheAdapter.ROLE,userCode,maps);
@@ -50,8 +58,13 @@ public class LoginController extends EnvelopRestController {
         //登陆用户放入缓存
         LoginCacheModel loginCacheModel = new LoginCacheModel();
         loginCacheModel.setCode(userCode);
+
+        //saas有多个时,取出第一个放入缓存
+        if(saases!=null&&saases.size()>0){
+            loginCacheModel.setSaasId(saases.get(0));
+        }
         cacheAdapter.setData(CacheAdapter.LOGIN,userCode,loginCacheModel);
-        return Envelop.getSuccess("登陆成功", data);
+        return Envelop.getSuccess("登陆成功", loginCacheModel);
     }
 
     @GetMapping("/loginout")

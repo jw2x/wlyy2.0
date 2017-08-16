@@ -19,14 +19,11 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping("{version}/"+ WechatContants.api_common)
+@RequestMapping("{version}"+ WechatContants.api_common)
 @Api(description = "微信图文相关")
 public class WechatGraphicMessageController {
     private Logger logger= LoggerFactory.getLogger(WechatGraphicMessageController.class);
@@ -97,6 +94,9 @@ public class WechatGraphicMessageController {
     @ApiVersion(1)
     @RequestMapping(value = WechatContants.WxGraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信图文消息列表(分页)")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop getWxGraphicMessages(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,description,url,pic_url,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
@@ -107,16 +107,16 @@ public class WechatGraphicMessageController {
             @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
             @RequestParam(value = "size", required = false) int size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
-            @RequestParam(value = "page", required = false) int page,
-            HttpServletRequest request,
-            HttpServletResponse response) throws Exception {
+            @RequestParam(value = "page", required = false) int page) throws Exception {
 
         String filterStr = "";
         if(StringUtils.isNotBlank(filters)){
-            filters = filters.replaceAll("=", ":");
             JSONObject jsonResult = new JSONObject(filters);
             if(jsonResult.has("title")){
                 filterStr+="title?"+jsonResult.get("title")+";";
+            }
+            if(jsonResult.has("saasId")){
+                filterStr+="saasId="+jsonResult.get("saasId")+";";
             }
         }
         tracer.getCurrentSpan().logEvent("过滤:"+filterStr);

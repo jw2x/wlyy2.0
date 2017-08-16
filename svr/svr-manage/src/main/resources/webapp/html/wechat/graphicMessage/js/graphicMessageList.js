@@ -1,8 +1,9 @@
 var table;
-var usercode = window.localStorage.getItem("userCode");
+var userCode = getUserCode();
+var saasId = getSaasId();
 $(function () {
     table = $("#list").DataTable({
-            "aLengthMenu": [1, 2, 30, 40],
+            "aLengthMenu": [10, 15, 20],
             "searching": false,//禁用搜索
             "lengthChange": true,
             "paging": true,//开启表格分页
@@ -17,10 +18,11 @@ $(function () {
             "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
             "ordering": false,//全局禁用排序
             "ajax": {
-                url: '/wechat/graphicMessage/list',
+                url: server+'/wechat/graphicMessage/list',
                 data: function (d) {
                     d.title = $("#title").val();
-                    d.userCode = usercode;
+                    d.userCode = userCode;
+                    d.saasId = saasId;
                 },
                 type: 'GET',
                 dataSrc: "detailModelList"
@@ -229,18 +231,12 @@ var contentVM = new Vue({
     replace:false
 });
 
-do_get("/base/saases",{},function(data){
-    contentVM.saasList = data.detailModelList;
-    console.log( data.detailModelList);
-},function(data){
-
-})
 
 //查看配置
 function show(code){
     $("#myModal-add-info").removeData("modal");
     var data={};
-    do_get("/wechat/graphicMessage/"+code,data,function(data){
+    do_get(server+"/wechat/graphicMessage/"+code,data,function(data){
         contentVM.graphicMessage = data.obj;
         $('#myModal-add-info').modal('show');
         $("#myModalLabel").html("查看");
@@ -250,7 +246,7 @@ function show(code){
 }
 
 function del(codes){
-    var url = "/wechat/graphicMessage/"+codes;
+    var url = server+"/wechat/graphicMessage/"+codes;
     do_delete(url,{},function(data){
         alert("删除成功");
         table.ajax.reload();
@@ -258,20 +254,17 @@ function del(codes){
 }
 
 $("#category_add").submit(function(){
-    debugger
-    var url = "";
     var id = $("#id").val();
     var data = $("#category_add").serialize();
-    url = "/wechat/graphicMessage"
+    var url =server+ "/wechat/graphicMessage"
     do_post(url,data,function(data){
-        debugger
         if(id==''){
             alert("保存成功");
         }else{
             alert("修改成功");
         }
-        $('#myModal-add-info').modal('hide');
         table.ajax.reload();
+        $('#myModal-add-info').modal('hide');
     })
     return false;
 })

@@ -6,6 +6,7 @@ package com.yihu.jw.restmodel.base.base;
  */
 public class BaseContants {
 
+    public static final String api_common = "/bases";
 
     //功能模块常量
     public static class Function{
@@ -22,19 +23,18 @@ public class BaseContants {
         public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="function is null";
         public static final String message_fail_id_is_null="id is null";
-
-
         public static final String message_fail_code_no_exist="code no exist";
-        public static final String api_common="function";
-        public static final String api_create="create";
-        public static final String api_update="update";
-        public static final String api_delete="delete";
-        public static final String api_getByCode="getByCode";
-        public static final String api_getFunctions="getFunctions";
-        public static final String api_assignFunction="assignFunction";
-        public static final String api_getModuleFunctions="api_getModuleFunctions";
 
-        public static final String api_getFunctionsNoPage="getFunctionsNoPage";
+
+        public static final String api_create="/function";
+        public static final String api_update="/function";
+        public static final String api_delete="/function/{codes}";
+        public static final String api_getByCode="/function/{code}";
+        public static final String api_getListNoPage="/function/listNoPage";
+        public static final String api_getList="/function/list";
+        public static final String api_assignFunction="/assignFunction";
+        public static final String api_getModuleFunctions="/api_getModuleFunctions";
+        public static final String api_getChildren="/function/children/{code}";
     }
 
     //模块常量
@@ -55,16 +55,21 @@ public class BaseContants {
         public static final String message_fail_code_no_exist="code no exist";
 
 
-        public static final String api_common="module";
-        public static final String api_create="create";
-        public static final String api_update="update";
-        public static final String api_delete="delete";
-        public static final String api_getByCode="getByCode";
-        public static final String api_getModules="getModules";
-        public static final String api_getModulesNoPage="getModulesNoPage";
-        public static final String api_assignModule="assignModule";
-        public static final String api_getSaasModules="api_getSaasModules";
+        public static final String api_create="/module";
+        public static final String api_update="/module";
+        public static final String api_delete="/module/{codes}";
+        public static final String api_getByCode="/module/{code}";
+        public static final String api_getListNoPage="/module/listNoPage";
+        public static final String api_getList="/module/list";
+        public static final String api_getChildren="/module/children/{code}";
 
+    }
+
+    public static class ModuleFun{
+        public static final String api_getExistFun = "/moduleFun/existFunc/{code}";
+        public static final String api_changeFun="/moduleFun/changeFun";
+        public static final String moduleCode_is_null="moduleCode is null";
+        public static final String funCodes_is_null="funCodes is null";
     }
 
     //saas常量
@@ -83,13 +88,13 @@ public class BaseContants {
         public static final String message_fail_code_no_exist="code no exist";
 
 
-        public static final String api_common="saas";
-        public static final String api_create="create";
-        public static final String api_update="update";
-        public static final String api_delete="delete";
-        public static final String api_getByCode="getByCode";
-        public static final String api_getSaass="getSaass";
-        public static final String api_getSaassNoPage="getSaassNoPage";
+        public static final String api_common="/saas";
+        public static final String api_create="/create";
+        public static final String api_update="/update";
+        public static final String api_delete="/delete";
+        public static final String api_getByCode="/getByCode";
+        public static final String api_getSaass="/getSaass";
+        public static final String api_getSaassNoPage="/getSaassNoPage";
 
     }
 }

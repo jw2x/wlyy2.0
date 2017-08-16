@@ -6,7 +6,6 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.version.model.WlyyVersion;
-import com.yihu.jw.version.service.ServerVersionService;
 import com.yihu.jw.version.service.WlyyVersionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +24,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping(BaseVersionContants.WlyyVersion.api_common)
+@RequestMapping(BaseVersionContants.api_common)
 @Api(value = "i健康APP版本模块", description = "i健康APP版本模块接口管理")
 public class WlyyVersionController  extends EnvelopRestController {
     @Autowired
@@ -56,24 +55,28 @@ public class WlyyVersionController  extends EnvelopRestController {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
-    @DeleteMapping(value = BaseVersionContants.WlyyVersion.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = BaseVersionContants.WlyyVersion.api_delete)
     @ApiOperation(value = "删除i健康APP版本", notes = "删除i健康APP版本")
     public Envelop deleteWlyyVersion(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "codes", value = "codes")
+            @PathVariable(value = "codes", required = true) String codes,
+            @ApiParam(name = "userCode", value = "userCode")
+            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "userName", value = "userName")
+            @RequestParam(value = "userName", required = true) String userName) {
         try {
-            wlyyVersionService.deleteWlyyVersion(code);
+            wlyyVersionService.deleteWlyyVersion(codes,userCode,userName);
             return Envelop.getSuccess(BaseVersionContants.WlyyVersion.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseVersionContants.WlyyVersion.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseVersionContants.WlyyVersion.api_getByCode)
     @ApiOperation(value = "根据code查找i健康APP版本", notes = "根据code查找i健康APP版本")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @PathVariable(value = "code", required = true) String code
     ) {
         try {
             return Envelop.getSuccess(BaseVersionContants.WlyyVersion.message_success_find, wlyyVersionService.findByCode(code));
@@ -83,7 +86,7 @@ public class WlyyVersionController  extends EnvelopRestController {
     }
 
 
-    @RequestMapping(value = BaseVersionContants.WlyyVersion.api_getWlyyVersion, method = RequestMethod.GET)
+    @RequestMapping(value = BaseVersionContants.WlyyVersion.api_getList, method = RequestMethod.GET)
     @ApiOperation(value = "获取i健康APP版本列表(分页)")
     public Envelop getWlyyVersions(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
@@ -112,7 +115,7 @@ public class WlyyVersionController  extends EnvelopRestController {
     }
 
 
-    @GetMapping(value = BaseVersionContants.WlyyVersion.api_getWlyyVersionNoPage)
+    @GetMapping(value = BaseVersionContants.WlyyVersion.api_getListNoPage)
     @ApiOperation(value = "获取i健康APP版本列表，不分页")
     public Envelop getAppsNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping("{version}/"+ WechatContants.WxAccessToken.api_common)
+@RequestMapping("{version}"+ WechatContants.WxAccessToken.api_common)
 @Api(description = "微信token相关")
 public class WechatAccessTokenController {
 

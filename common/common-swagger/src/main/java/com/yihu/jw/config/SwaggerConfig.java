@@ -34,7 +34,7 @@ public class SwaggerConfig {
                 .select()
                 .paths(or(
                         regex("/patient/.*")
-                        , regex("/"+ BaseContants.Function.api_common+"/.*")
+                        , regex("/"+ BaseContants.api_common+"/.*")
                         ,regex("/"+ WechatContants.api_common+"/.*")
                         ,regex("/"+ WechatContants.WxAccessToken.api_common+"/.*")
                         ))
@@ -97,9 +97,8 @@ public class SwaggerConfig {
                 .pathMapping("/")
                 .select()
                 .paths(or(
-                         regex("/"+ BaseContants.Function.api_common+"/.*")
+                         regex("/"+ BaseContants.api_common+"/.*")
                         ,regex("/"+ BaseContants.Saas.api_common+"/.*")
-                        ,regex("/"+ BaseContants.Module.api_common+"/.*")
                         ,regex("/"+ WechatContants.api_common+"/.*")
                         ,regex("/"+ WechatContants.WxAccessToken.api_common+"/.*")
                 ))

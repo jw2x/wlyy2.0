@@ -15,7 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -33,17 +33,16 @@ public class RoleController {
     @ApiOperation(value = "用户列表")
     public Envelop list(
             @ApiParam(name = "name", value = "用户名称", required = false) @RequestParam(required = false, name = "name") String name,
+            @ApiParam(name = "saasId", required = false) @RequestParam(required = false, name = "saasId") String saasId,
             @ApiParam(name = "start", value = "当前页(0开始)", required = false) @RequestParam(required = false, name = "start", defaultValue = "0") Integer page,
             @ApiParam(name = "length", value = "每页显示条数", required = false) @RequestParam(required = false, name = "length", defaultValue = "10") Integer pageSize
     ) {
         try {
             page=page/pageSize;
-            Page<ManageRole> roles = roleService.list(name, page, pageSize);
-            List<ManageRole> list = roles.getContent();
-            Map<String, String> saasMap = saasService.getSaasMap();
-            for(ManageRole manageRole:list){
-                manageRole.setSaasName(saasMap.get(manageRole.getSaasId()));
-            }
+            Map<String, String> map = new HashMap<>();
+            map.put("name",name);
+            map.put("saasId",saasId);
+            Page<ManageRole> roles = roleService.list(page, pageSize,map);
             return Envelop.getSuccessListWithPage(
                     "获取信息成功",
                     roles.getContent(),//数据内容

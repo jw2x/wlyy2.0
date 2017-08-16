@@ -60,7 +60,7 @@ public class MenuService {
     }
 
     public List<ManageMenu> findParentMenus(String usercode) {
-        String sql = "SELECT * FROM (SELECT DISTINCT  m.* FROM manage_menu m,manage_role_menu rm WHERE m.code = rm.menu_code and m.status=1 AND rm.role_code IN (SELECT r.CODE FROM manage_role r, manage_user_role ur WHERE r.code = ur.role_code AND ur.user_code = ?   AND r.status = 1 ) ORDER BY m.sort asc ) A WHERE A.parent_code = 0";
+        String sql = "SELECT * FROM (SELECT DISTINCT  m.* FROM manage_menu m,manage_role_menu rm WHERE m.code = rm.menu_code and m.status=1 AND rm.role_code IN (SELECT r.CODE FROM manage_role r, manage_user_role ur WHERE r.code = ur.role_code AND ur.user_code = ?   AND r.status = 1 ) ORDER BY m.sort asc ) A WHERE A.parent_code = '0'";
         List<ManageMenu> mr = jdbcTemplate.query(sql, new BeanPropertyRowMapper(ManageMenu.class), usercode);
         return mr;
     }
@@ -71,15 +71,34 @@ public class MenuService {
         return mr;
     }
 
-    public Page<ManageMenu> list(String name, Integer page, Integer pageSize) {
+    public Map<String, List> getMenuTree() throws ManageException {
+        List<MenuItems> menuItemses = new ArrayList<>();
+        Map<String, List> data = new HashMap<>();
+        //查询所有模块
+        List<ManageMenu> parentMenus = getParentMenus();
+        if(parentMenus!=null){
+            for(ManageMenu parentMenu:parentMenus){
+                //查询所有菜单
+                List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());
+                MenuItems menuItem = new MenuItems();
+                menuItem.setParentMenu(parentMenu);
+                menuItem.setChildMenus(childMenus);
+                menuItemses.add(menuItem);
+            }
+        }
+        data.put("menus", menuItemses);
+        return data;
+    }
+
+    public List<ManageMenu> list(Integer size, Integer page,Map<String,String> map) {
         // 排序
         Sort sort = new Sort(Sort.Direction.DESC, "createTime");
         // 分页信息
-        PageRequest pageRequest = new PageRequest(page, pageSize, sort);
+        PageRequest pageRequest = new PageRequest(page, size, sort);
         // 设置查询条件
         Map<String, SearchFilter> filters = new HashMap<String, SearchFilter>();
-        // 用户名称
-        if (!StringUtils.isEmpty(name)&&!("null".equals(name))) {
+        String name = map.get("name");
+        if (!StringUtils.isEmpty(name)) {
             filters.put("name", new SearchFilter("name", SearchFilter.Operator.LIKE, name));
         }
         //首先查找父菜单
@@ -92,22 +111,18 @@ public class MenuService {
         List<ManageMenu> parentMenus = manageMenus.getContent();
         for(ManageMenu parentMenu: parentMenus){
             List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());//查找子菜单
-            for(ManageMenu childMenu:childMenus){
-                List<ManageMenu> funcMenus = getChildMenus(childMenu.getCode());//查找功能
-                childMenu.setChildren(funcMenus);
+            if(childMenus.size()>0){
+                parentMenu.setState("closed");
+            }else{
+                parentMenu.setState("open");
             }
-            parentMenu.setChildren(childMenus);
-        }
-        return manageMenus;
-
-    }
-
-    public List<ManageMenu> list(){
-        List<ManageMenu> parentMenus = getParentMenus();//查找模块/父菜单
-        for(ManageMenu parentMenu: parentMenus){
-            List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());//查找子菜单
             for(ManageMenu childMenu:childMenus){
                 List<ManageMenu> funcMenus = getChildMenus(childMenu.getCode());//查找功能
+                if(funcMenus.size()>0){
+                    childMenu.setState("closed");
+                }else{
+                    childMenu.setState("open");
+                }
                 childMenu.setChildren(funcMenus);
             }
             parentMenu.setChildren(childMenus);
@@ -175,24 +190,19 @@ public class MenuService {
         menuUrlService.saveOrUpdate(menuCode,urls,methods);
     }
 
-    public Map<String, List> getMenuTree() throws ManageException {
-        List<MenuItems> menuItemses = new ArrayList<>();
-        Map<String, List> data = new HashMap<>();
-        //查询所有模块
-        List<ManageMenu> parentMenus = getParentMenus();
-        if(parentMenus!=null){
-            for(ManageMenu parentMenu:parentMenus){
-                //查询所有菜单
-                List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());
-                MenuItems menuItem = new MenuItems();
-                menuItem.setParentMenu(parentMenu);
-                menuItem.setChildMenus(childMenus);
-                menuItemses.add(menuItem);
+    public List<ManageMenu> list(){
+        List<ManageMenu> parentMenus = getParentMenus();//查找模块/父菜单
+        for(ManageMenu parentMenu: parentMenus){
+            List<ManageMenu> childMenus = getChildMenus(parentMenu.getCode());//查找子菜单
+            for(ManageMenu childMenu:childMenus){
+                List<ManageMenu> funcMenus = getChildMenus(childMenu.getCode());//查找功能
+                childMenu.setChildren(funcMenus);
             }
+            parentMenu.setChildren(childMenus);
         }
-        data.put("menus", menuItemses);
-        return data;
+        return parentMenus;
     }
+
 }
 
 

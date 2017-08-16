@@ -15,7 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenweida on 2017/6/12.
@@ -31,7 +33,7 @@ public class UserController {
     @Autowired
     private UserRoleService userRoleService;
 
-    @GetMapping("user/list")
+    @GetMapping("/user/list")
     @ApiOperation(value = "用户列表")
     public Envelop userList(
             @ApiParam(name = "name", value = "用户名称", required = false) @RequestParam(required = false, name = "name") String name,
@@ -41,11 +43,16 @@ public class UserController {
     ) {
         try {
             page=page/pageSize;
-            Page<ManageUser> users = userService.userList(name, mobile, page, pageSize);
+            Map<String, String> map = new HashMap<>();
+            map.put("name",name);
+            map.put("mobile",mobile);
+            Page<ManageUser> users = userService.userList(page, pageSize,map);
+
             List<ManageUser> content = users.getContent();
             if(content!=null){//查找
                 content = userRoleService.findByManageUser(content);
             }
+
             return Envelop.getSuccessListWithPage("获取信息成功", users.getContent(), page, pageSize, users.getTotalElements());
 
         } catch (Exception e) {
@@ -53,7 +60,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping(value = "user/{codes}")
+    @DeleteMapping(value = "/user/{codes}")
     @ApiOperation(value = "删除用户", notes = "删除用户")
     public Envelop delete(
             @ApiParam(name = "codes", value = "codes")
@@ -68,7 +75,7 @@ public class UserController {
         }
     }
 
-    @GetMapping(value = "user/{code}")
+    @GetMapping(value = "/user/{code}")
     @ApiOperation(value = "根据code查找用户", notes = "根据code查找用户")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -81,7 +88,7 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "user")
+    @PostMapping(value = "/user")
     @ApiOperation(value = "保存或者修改用户", notes = "保存或者修改用户")
     public Envelop saveOrUpdate(@ModelAttribute @Valid ManageUser user,@RequestParam(value="oldPsd" ,required = false)String oldPsd ,@RequestParam(value = "userCode" ,required = true)String userCode) throws JsonProcessingException, ManageException {
         return userService.saveOrUpdate(user,oldPsd,userCode);

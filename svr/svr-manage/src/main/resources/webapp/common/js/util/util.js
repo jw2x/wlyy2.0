@@ -59,28 +59,40 @@ UrlParm = function () { // url参数
 }();
 
 //get方法
-function do_get(url, data, success,error) {
+function do_get(url, data, success,error,bool) {
+    if(bool==undefined){
+        bool=true;
+    }
     //获取用户的code
     var usercode = getUserCode();
     data.userCode = usercode;
+    data.saasId = getSaasId();
     $.ajax({
         type: 'GET',
         url: url,
         data: data,
         success: success,
         error:error,
-        dataType: "json"
+        dataType: "json",
+        async:bool
     });
 }
 //post方法
-function do_post(url, data, success ,error) {
+function do_post(url, data, success ,error,bool) {
+    if(bool==undefined){
+        bool=true;
+    }
+
     //获取用户的code
-    var usercode = getUserCode();
-    //data.userCode = usercode;
-    if(data==''){
-        data="userCode="+usercode;
+    if(typeof (data)=="string"){
+        if(data==''){
+            data="userCode="+getUserCode()+"&saasId="+ getSaasId();
+        }else{
+            data+="&userCode="+getUserCode()+"&saasId="+ getSaasId();
+        }
     }else{
-        data+="&userCode="+usercode;
+        data.userCode =  getUserCode();
+        data.saasId = getSaasId();
     }
     $.ajax({
         type: 'POST',
@@ -88,31 +100,48 @@ function do_post(url, data, success ,error) {
         data: data,
         success: success,
         error:error,
-        dataType: "json"
+        dataType: "json",
+        async:bool
     });
 }
 //put方法
-function do_put(url, data, success ,error) {
-
+function do_put(url, data, success ,error,bool) {
+    if(bool==undefined){
+        bool=true;
+    }
     //获取用户的code
-    var usercode = getUserCode();
-    data.userCode = usercode;
-    data._method="PUT";
+    if(typeof (data)=="string"){
+        if(data==''){
+            data="userCode="+usercode+"&saasId="+ getSaasId()+"&_method=PUT";
+        }else{
+            data+="&userCode="+usercode+"&saasId="+ getSaasId()+"&_method=PUT";
+        }
+    }else{
+        data.userCode =  getUserCode();
+        data.saasId = getSaasId();
+        data._method="PUT";
+    }
     $.ajax({
         type: 'POST',
         url: url,
         data: data,
         success: success,
         error:error,
-        dataType: "json"
+        dataType: "json",
+        async:bool
     });
 }
 //delete方法
-function do_delete(url, data, success,error) {
+function do_delete(url, data, success,error,bool) {
+
+    if(bool==undefined){
+        bool=true;
+    }
 
     //获取用户的code
     var usercode = getUserCode();
     data.userCode = usercode;
+    data.saasId = getSaasId();
     data._method="DELETE";
     $.ajax({
         type: 'POST',
@@ -120,7 +149,8 @@ function do_delete(url, data, success,error) {
         data: data,
         success: success,
         error:error,
-        dataType: "json"
+        dataType: "json",
+        async:bool
     });
 }
 
@@ -128,7 +158,7 @@ function getUserCode() {
     var code = window.localStorage.getItem("userCode");
     if (!code) {
         alert("请重新登陆")
-        window.location.href = '/login/login.html';
+        window.location.href = server+ '/login/login.html';
     }
     return code
 }
@@ -139,6 +169,19 @@ function setUserCode(code) {
 
 function cleanUserCode(){
     window.localStorage.setItem("userCode", null);
+}
+
+function getSaasId() {
+    var code = window.localStorage.getItem("saasId");
+    return code
+}
+
+function setSaasId(code) {
+    window.localStorage.setItem("saasId", code);
+}
+
+function cleanSaasId(){
+    window.localStorage.setItem("saasId", null);
 }
 
 /**

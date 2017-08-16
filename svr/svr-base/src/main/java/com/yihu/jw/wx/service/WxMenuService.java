@@ -153,7 +153,8 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
      * @return
      */
     public List<WxMenu> findParentMenuByWechatCode(String wechatCode){
-        return wxMenuDao.findParentMenuByWechatCode(wechatCode);
+        List<WxMenu> parentMenus = wxMenuDao.findParentMenuByWechatCode(wechatCode);
+        return parentMenus;
     }
 
     /**

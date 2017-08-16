@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("{version}/"+ WechatContants.api_common)
+@RequestMapping("{version}"+ WechatContants.api_common)
 @Api(description = "微信配置")
 public class WechatConfigController {
 
@@ -110,10 +110,12 @@ public class WechatConfigController {
             @RequestParam(value = "page", required = false) int page) throws Exception {
         String filterStr = "";
         if(StringUtils.isNotBlank(filters)){
-            filters = filters.replaceAll("=", ":");
             JSONObject jsonResult = new JSONObject(filters);
             if(jsonResult.has("name")){
                 filterStr+="name?"+jsonResult.get("name")+";";
+            }
+            if(jsonResult.has("saasId")){
+                filterStr+="saasId="+jsonResult.get("saasId")+";";
             }
         }
         Envelop envelop = wechatFegin.getWechats(fields,filterStr,sorts,size,page);

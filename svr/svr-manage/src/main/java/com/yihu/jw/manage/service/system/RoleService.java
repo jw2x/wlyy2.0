@@ -36,23 +36,44 @@ public class RoleService {
     @Autowired
     private UserService userService;
 
+    /**
+     * 通过后台用户code查找权限
+     * @param code
+     * @return
+     */
     public List<ManageRole> findByUserCode(String code) {
-        String sql = " select r.* from manage_role r,manage_user_role ur where r.`code`=ur.role_code and ur.user_code=? ";
+        String sql = " select r.* from manage_role r,manage_user_role ur where r.code=ur.role_code and ur.user_code=? ";
         List<ManageRole> mr = jdbcTemplate.query(sql, new BeanPropertyRowMapper(ManageRole.class), code);
         return mr;
     }
 
-    public Page<ManageRole> list(String name, Integer page, Integer pageSize) {
+    /**
+     * 分页列表展示
+     * @param page
+     * @param pageSize
+     * @param map
+     * @return
+     */
+    public Page<ManageRole> list(Integer page, Integer pageSize,Map<String,String> map) {
         // 排序
         Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
         // 分页信息
         PageRequest pageRequest = new PageRequest(page, pageSize, sort);
         // 设置查询条件
         Map<String, SearchFilter> filters = new HashMap<String, SearchFilter>();
+
         // 用户名称
-        if (!StringUtils.isEmpty(name)&&!("null".equals(name))) {
+        String name = map.get("name");
+        if (!StringUtils.isEmpty(name)) {
             filters.put("name", new SearchFilter("name", SearchFilter.Operator.LIKE, name));
         }
+
+        // saasId
+        String saasId = map.get("saasId");
+        if (!StringUtils.isEmpty(saasId)) {
+            filters.put("saasId", new SearchFilter("saasId", SearchFilter.Operator.EQ, saasId));
+        }
+
         // 未作废
         filters.put("status", new SearchFilter("status", SearchFilter.Operator.EQ, WlyyContant.status_normal));
         Specification<ManageRole> spec = DynamicSpecifications.bySearchFilter(filters.values(), ManageRole.class);
@@ -73,6 +94,7 @@ public class RoleService {
         }
     }
 
+    @Transactional
     public Envelop saveOrUpdate(ManageRole role, String userCode) throws ManageException {
         ManageUser user = userService.findByCode(userCode);
         String userName = user.getName();

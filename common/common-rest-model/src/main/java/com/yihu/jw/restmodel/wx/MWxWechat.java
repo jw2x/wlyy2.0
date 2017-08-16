@@ -1,7 +1,9 @@
 package com.yihu.jw.restmodel.wx;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -27,15 +29,9 @@ public class MWxWechat {
     private String updateUserName;//'修改人名'
     private Date updateTime;//'修改时间'
     private String remark;//'备注'
-    private List<MWxMenu> children;
+    private List<Map<String,Object>> children = new ArrayList<>();
+    private String state;
 
-    public List<MWxMenu> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<MWxMenu> children) {
-        this.children = children;
-    }
 
     public Long getId() {
         return id;
@@ -187,5 +183,21 @@ public class MWxWechat {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<Map<String, Object>> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Map<String, Object>> children) {
+        this.children = children;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

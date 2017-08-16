@@ -44,7 +44,7 @@ public class UserService {
         return userDao.findByCode(usercode);
     }
 
-    public Page<ManageUser> userList(String name,String mobile,Integer page, Integer pageSize)throws ManageException {
+    public Page<ManageUser> userList(Integer page, Integer pageSize,Map<String,String> map)throws ManageException {
         // 排序
         Sort sort = new Sort(Sort.Direction.DESC, "updateTime");
         // 分页信息
@@ -52,21 +52,22 @@ public class UserService {
         // 设置查询条件
         Map<String, SearchFilter> filters = new HashMap<String, SearchFilter>();
         // 用户名称
-        if (!StringUtils.isEmpty(name)&&!("null".equals(name))) {
+        String name = map.get("name");
+        if (!StringUtils.isEmpty(name)) {
             filters.put("name", new SearchFilter("name", SearchFilter.Operator.LIKE, name));
         }
         // 电话号码
-        if (!StringUtils.isEmpty(mobile)&&!("null".equals(mobile))) {
+        String mobile = map.get("mobile");
+        if (!StringUtils.isEmpty(mobile)) {
             filters.put("mobile", new SearchFilter("mobile", SearchFilter.Operator.LIKE, mobile));
         }
-//        filters.put("recordDate1", new SearchFilter("recordDate", Operator.GTE, begin));
-//        filters.put("recordDate2", new SearchFilter("recordDate", Operator.LTE, end));
         // 未作废
         filters.put("status", new SearchFilter("status", SearchFilter.Operator.EQ, WlyyContant.status_normal));
         Specification<ManageUser> spec = DynamicSpecifications.bySearchFilter(filters.values(), ManageUser.class);
 
         return userDao.findAll(spec, pageRequest);
     }
+
 
     @Transactional
     public void delete(String codes, String userCode) {

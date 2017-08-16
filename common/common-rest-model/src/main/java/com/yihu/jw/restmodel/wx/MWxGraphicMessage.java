@@ -8,6 +8,7 @@ import java.util.Date;
 public class MWxGraphicMessage {
     private Long id;
     private String code;//业务code
+    private String saasId;
     private String title;//标题
     private String description;//描述
     private String url;//图文消息url值
@@ -131,5 +132,13 @@ public class MWxGraphicMessage {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 }

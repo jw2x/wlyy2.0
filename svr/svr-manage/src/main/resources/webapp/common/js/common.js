@@ -1,2 +1,2 @@
-var server="localhost:8081/";
+var server="http://localhost:8081/manage";
 var not_login=-1000;

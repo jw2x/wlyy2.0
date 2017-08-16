@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <title>角色管理页面</title>
 
-    <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
 
-    <link href="/common/css/bootstrap/animate.min.css" rel="stylesheet">
-    <link href="/common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/animate.min.css" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
 
     <!-- Data Tables -->
-    <link href="/common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="../../../common/css/jw.css" rel="stylesheet">
     <style>
         .m-form-group:after { display: table; content: " "; clear: both; }
         .m-form-group{
@@ -30,7 +31,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">角色名称：</label>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" id="name" name="name" style="width: 250px">
+                        <input type="text" class="form-control" id="name" name="name" >
                     </div>
                     <div class="col-sm-2">
                         <button type="button" class="btn btn-success search" style="float: right;">查 询</button>
@@ -56,7 +57,6 @@
                         <tr>
                             <th><input type="checkbox" name="checkAll" /></th>
                             <th>角色名称</th>
-                            <th>saasId</th>
                             <th>描述</th>
                             <th>创建时间</th>
                             <th>操作</th>
@@ -91,18 +91,7 @@
                 <div class="m-form-group">
                     <label class="col-sm-4 control-label no-padding-right" >角色名称: </label>
                     <div class="col-sm-6">
-                        <input type="text"  class="form-control"  name="name" style="width: 250px"  required="true"  :value="detail.name"/>
-                    </div>
-                </div>
-                <div style="margin-top:15px;margin-bottom: 15px;" >
-                    <label class="col-sm-4 control-label no-padding-right" > saasId:</label>
-                    <div class="col-sm-6">
-                        <select name="saasId" class="form-control m-b" required="true" :value="detail.saasId">
-                            <option value="">--请选择--</option>
-                            <template v-for="saas in saasList">
-                                <option :value="saas.code">{{saas.name}}</option>
-                            </template>
-                        </select>
+                        <input type="text"  class="form-control"  name="name"  required="true"  :value="detail.name"/>
                     </div>
                 </div>
                 <div class="m-form-group">
@@ -111,10 +100,6 @@
                      <textarea style="width:115%;height:150px;" :value="detail.remark" name="remark"></textarea>
                     </div>
                 </div>
-
-                <!--<div style="margin:0 auto; text-align: center;margin-top: 15px">
-
-                </div>-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default"
                             data-dismiss="modal">关闭
@@ -138,22 +123,24 @@
 </div>
 
 <!-- 全局js -->
-<script type="text/javascript" src="/common/js/jquery/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="/common/js/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="/common/js/util/util.js"></script>
+<script type="text/javascript" src="../../../common/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../../common/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../common/js/util/util.js"></script>
 
 <!--<script type="text/javascript" src="/common/js/vue/vue.js"></script>--><!--2.0-->
-<script type="text/javascript" src="/common/js/vue.js"></script><!--1.0-->
+<script type="text/javascript" src="../../../common/js/vue.js"></script><!--1.0-->
 
-<script type="text/javascript" src="/common/js/layer/layer.min.js"></script>
+<script type="text/javascript" src="../../../common/js/layer/layer.min.js"></script>
 
-<script type="text/javascript" src="/common/js/plugins/jeditable/jquery.jeditable.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/jeditable/jquery.jeditable.js"></script>
 
-<script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/moment/moment.js"></script>
 <!-- Data Tables -->
-<script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script type="text/javascript" src="/system/role/js/roleList.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+<script type="text/javascript" src="../../../common/js/common.js"></script>
+<script type="text/javascript" src="../js/roleList.js"></script>
 
 </body>
 </html>

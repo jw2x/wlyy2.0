@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,28 +30,23 @@ public class MenuController {
     private MenuService menuService;
 
     @GetMapping("menu/list")
-    @ApiOperation(value = "用户列表")
-    public Map<String,Object> list() {
-        //查询结果
-        List<ManageMenu> menus = menuService.list();
-
-        //添加基卫
-        ArrayList<ManageMenu> manageMenus = new ArrayList<ManageMenu>();
-        ManageMenu manageMenu = new ManageMenu();
-        manageMenu.setChildren(menus);
-        manageMenu.setName("基卫后台管理系统");
-        manageMenu.setParentCode("-1");
-        manageMenu.setId(new Long(0));
-        manageMenu.setCode("0");
-        manageMenu.setType(0);
-        manageMenus.add(manageMenu);
+    @ApiOperation(value = "分页获取菜单列表")
+    public Map<String,Object> list(
+            @ApiParam(name = "name", value = "菜单名", required = false) @RequestParam(required = false, name = "name") String name,
+            @ApiParam(name = "page", value = "当前页", required = false) @RequestParam(required = false, name = "page", defaultValue = "1") Integer page,
+            @ApiParam(name = "rows", value = "每页显示条数", required = false) @RequestParam(required = false, name = "rows", defaultValue = "10") Integer rows
+    ) {
+        page = page/rows;
+        Map<String, String> map = new HashMap<>();
+        map.put("name",name);
+        List list = menuService.list(rows, page,map);
 
         //数据返回
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("rows",manageMenus);
-        return map;
+        Map<String, Object> req = new HashMap<String, Object>();
+        req.put("rows",list);
+        req.put("total",list.size());
+        return req;
     }
-
 
     @GetMapping(value = "menu/{code}")
     @ApiOperation(value = "根据code查找用户", notes = "根据code查找用户")
@@ -106,6 +100,11 @@ public class MenuController {
         return Envelop.getSuccess("成功");
     }
 
+    /**
+     * 权限配置   jstree列表
+     * @return
+     * @throws ManageException
+     */
     @GetMapping("menu/menuTree")
     public List<ManageMenu> getMenus() throws ManageException {
         List<ManageMenu> menus = menuService.list();

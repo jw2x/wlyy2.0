@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <title>菜单管理页面</title>
 
-    <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
 
-    <link href="/common/css/bootstrap/animate.min.css" rel="stylesheet">
-    <link href="/common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/animate.min.css" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
 
     <!-- Data Tables -->
-    <link href="/common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="../../../common/css/bootstrap/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="../../../common/css/jw.css" rel="stylesheet">
     <style>
         .m-form-group:after { display: table; content: " "; clear: both; }
         .m-form-group{
@@ -23,17 +24,28 @@
     </style>
 </head>
 <body class="gray-bg">
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="ibox float-e-margins">
+<div class="wrapper wrapper-content animated fadeInRight" style="height: 96%">
+    <div class="row" style="height: 100%">
+        <div class="col-sm-12" style="height: 100%">
+            <div class="ibox float-e-margins" style="height: 100%">
                 <div class="ibox-title">
                     <h5>
                         <small>菜单列表</small>
                     </h5>
                 </div>
-                <div class="ibox-content">
-                    <table id="list" style="width:100%"></table>
+                <div class="searchToolBar" >
+                    <div class="m-form-group">
+                        <label class="col-sm-1 control-label no-padding-right" style="margin-top: 6px;margin-right: -77px;">菜单名称</label>
+                        <div class="col-sm-2">
+                            <input type="text"  class="form-control"  name="name" id="name" />
+                        </div>
+                        <button class="btn btn-success" onclick="search()">查询</button>
+                        <button class="btn btn-success" style="margin-left: 10px;" onclick="clearSearch()">清除条件</button>
+                        <button class="btn btn-success" style="margin-left: 10px;" onclick="add('0','0')">添加</button>
+                    </div>
+                </div>
+                <div class="ibox-content" style="height: 90%;">
+                    <div id="list" style="width:100%"></div>
                 </div>
             </div>
         </div>
@@ -50,25 +62,23 @@
 </div>
 
 <!-- 全局js -->
-<script type="text/javascript" src="/common/js/jquery/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="/common/js/util/util.js"></script>
+<script type="text/javascript" src="../../../common/js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="../../../common/js/util/util.js"></script>
 
 <!--<script type="text/javascript" src="/common/js/vue/vue.js"></script>--><!--2.0-->
-<script type="text/javascript" src="/common/js/vue.js"></script><!--1.0-->
+<script type="text/javascript" src="../../../common/js/vue.js"></script><!--1.0-->
 
-<script type="text/javascript" src="/common/js/layer/layer.min.js"></script>
+<script type="text/javascript" src="../../../common/js/layer/layer.min.js"></script>
 
-<script type="text/javascript" src="/common/js/plugins/jeditable/jquery.jeditable.js"></script>
-<script type="text/javascript" src="/common/js/jquery-easyui-1.5.2/easyloader.js"></script>
-<script type="text/javascript" src="/common/js/jquery-easyui-1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/jeditable/jquery.jeditable.js"></script>
 
-<script type="text/javascript" src="/common/js/bootstrap/bootstrap.min.js"></script>
-<script type="text/javascript" src="/common/js/plugins/moment/moment.js"></script>
-<!-- Data Tables -->
-<script type="text/javascript" src="/common/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script type="text/javascript" src="/common/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-
-<script type="text/javascript" src="/system/menu/js/menuList.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/moment/moment.js"></script>
+<script type="text/javascript" src="../../../common/js/plugins/jeditable/jquery.jeditable.js"></script>
+<script type="text/javascript" src="../../../common/js/jquery-easyui-1.5.2/easyloader.js"></script>
+<script type="text/javascript" src="../../../common/js/jquery-easyui-1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="../../../common/js/bootstrap/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../../common/js/common.js"></script>
+<script type="text/javascript" src="../js/menuList.js"></script>
 
 </body>
 </html>

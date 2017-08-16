@@ -1,6 +1,8 @@
 package com.yihu.jw.restmodel.base.base;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by chenweida on 2017/5/19.
@@ -15,10 +17,12 @@ public class MModule {
     private String createUser;
     private String createUserName;
     private Date createTime;
-    private String modifyUser;
-    private String modifyUserName;
-    private Date modifyTime;
+    private String updateUser;
+    private String updateUserName;
+    private Date updateTime;
     private String remark;
+    private String state ;   //closed:表示有子节点   open:表示没有子节点
+    private List<MModule> children = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -92,28 +96,28 @@ public class MModule {
         this.createTime = createTime;
     }
 
-    public String getModifyUser() {
-        return modifyUser;
+    public String getUpdateUser() {
+        return updateUser;
     }
 
-    public void setModifyUser(String modifyUser) {
-        this.modifyUser = modifyUser;
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
     }
 
-    public String getModifyUserName() {
-        return modifyUserName;
+    public String getUpdateUserName() {
+        return updateUserName;
     }
 
-    public void setModifyUserName(String modifyUserName) {
-        this.modifyUserName = modifyUserName;
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
     }
 
-    public Date getModifyTime() {
-        return modifyTime;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setModifyTime(Date modifyTime) {
-        this.modifyTime = modifyTime;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public String getRemark() {
@@ -122,5 +126,21 @@ public class MModule {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public List<MModule> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MModule> children) {
+        this.children = children;
     }
 }

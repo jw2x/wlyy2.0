@@ -121,10 +121,10 @@ public class WxMenuController extends EnvelopRestController {
         List<WxWechat> wechats = wechatService.search(fields, filters, sorts, page, size);
         for(WxWechat wechat:wechats){
             List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechat.getCode());
-            wechat.setChildren(parentMenus);
-            for(WxMenu parentMenu:parentMenus){
-                List<WxMenu> childMenus = wxMenuService.findChildMenus(parentMenu.getCode());
-                parentMenu.setChildren(childMenus);
+            if (parentMenus.size()>0){
+                wechat.setState("closed");
+            }else{
+                wechat.setState("open");
             }
         }
         //获取总数
@@ -199,7 +199,16 @@ public class WxMenuController extends EnvelopRestController {
             @PathVariable(value = "wechatCode", required = true) String wechatCode
     ) {
         try {
-            return Envelop.getSuccess(WechatContants.WxMenu.message_success_find, wxMenuService.findParentMenuByWechatCode(wechatCode));
+            List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechatCode);
+            for(WxMenu parentMenu:parentMenus){
+                List<WxMenu> childMenus = wxMenuService.findChildMenus(parentMenu.getCode());
+                if (childMenus.size()>0){
+                    parentMenu.setState("closed");
+                }else{
+                    parentMenu.setState("open");
+                }
+            }
+            return Envelop.getSuccess(WechatContants.WxMenu.message_success_find, parentMenus);
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

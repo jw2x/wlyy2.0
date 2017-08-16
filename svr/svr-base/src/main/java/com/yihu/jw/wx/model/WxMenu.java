@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,6 +17,8 @@ import java.util.List;
 public class WxMenu extends IdEntity implements java.io.Serializable {
 
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+    @Transient
+    private String wechatName;
     private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
     private String type;//菜单类型
     private String name;//菜单名称
@@ -29,7 +32,10 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     private Integer status; //状态 -1删除 0 冻结 1可用
 
     @Transient
-    private List<WxMenu> children;
+    private String state;                //children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
+                                         // children长度>0时,    state   “open,closed”表示是节点的打开关闭
+    @Transient
+    private List<WxMenu> children = new ArrayList<>();
 
 
 
@@ -153,4 +159,19 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
         this.remark = remark;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getWechatName() {
+        return wechatName;
+    }
+
+    public void setWechatName(String wechatName) {
+        this.wechatName = wechatName;
+    }
 }

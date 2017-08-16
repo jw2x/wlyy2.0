@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.wx;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,7 +30,8 @@ public class MWxMenu {
     private String createUserName;//创建人
     private String remark;//备注
     private Integer status; //状态 -1删除 0 冻结 1可用
-    private List<MWxMenu> children;
+    private List<MWxMenu> children = new ArrayList<>();
+    private String state;
 
     public List<MWxMenu> getChildren() {
         return children;
@@ -205,5 +207,13 @@ public class MWxMenu {
 
     public void setWechatName(String wechatName) {
         this.wechatName = wechatName;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
