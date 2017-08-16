@@ -6,8 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * WxWechat entity. @author MyEclipse Persistence Tools
@@ -29,8 +31,12 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private String baseUrl;//'微信base_url'
     private String remark;//'备注'
 
+
     @Transient
-    private List<WxMenu> children;
+    private List<Map<String,Object>> children = new ArrayList<>();
+    @Transient
+    private String state;
+
     public WxWechat(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, Integer status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
         this.code = code;
         this.saasId = saasId;
@@ -57,11 +63,11 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     public WxWechat() {
     }
 
-    public List<WxMenu> getChildren() {
+    public List<Map<String, Object>> getChildren() {
         return children;
     }
 
-    public void setChildren(List<WxMenu> children) {
+    public void setChildren(List<Map<String, Object>> children) {
         this.children = children;
     }
 
@@ -164,4 +170,11 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
         this.remark = remark;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 }

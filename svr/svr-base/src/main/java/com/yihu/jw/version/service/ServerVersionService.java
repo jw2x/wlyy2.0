@@ -13,8 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenweida on 2017/5/19.
@@ -22,23 +23,25 @@ import java.util.List;
 @Service
 public class ServerVersionService extends BaseJpaService<BaseServerVersion, ServerVersionDao> {
     @Autowired
-    private ServerVersionDao BaseServerVersionDao;
+    private ServerVersionDao baseServerVersionDao;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private ServerUrlVersionService serverUrlVersionService;
 
     @Transactional
-    public BaseServerVersion createBaseServerVersion(BaseServerVersion BaseServerVersion) throws ApiException {
-        if (StringUtils.isEmpty(BaseServerVersion.getCode())) {
+    public BaseServerVersion createBaseServerVersion(BaseServerVersion baseServerVersion) throws ApiException {
+        if (StringUtils.isEmpty(baseServerVersion.getCode())) {
             throw new ApiException(BaseVersionContants.BaseServerVersion.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
-        if (StringUtils.isEmpty(BaseServerVersion.getName())) {
+        if (StringUtils.isEmpty(baseServerVersion.getName())) {
             throw new ApiException(BaseVersionContants.BaseServerVersion.message_fail_name_is_null, CommonContants.common_error_params_code);
         }
-        BaseServerVersion BaseServerVersionTmp = BaseServerVersionDao.findByName(BaseServerVersion.getName());
+        BaseServerVersion BaseServerVersionTmp = baseServerVersionDao.findByName(baseServerVersion.getName());
         if (BaseServerVersionTmp != null) {
             throw new ApiException(BaseVersionContants.BaseServerVersion.message_fail_name_exist, CommonContants.common_error_params_code);
         }
-        return BaseServerVersionDao.save(BaseServerVersion);
+        return baseServerVersionDao.save(baseServerVersion);
     }
 
     @Transactional
@@ -52,28 +55,40 @@ public class ServerVersionService extends BaseJpaService<BaseServerVersion, Serv
         if (StringUtils.isEmpty(BaseServerVersion.getId())) {
             throw new ApiException(BaseVersionContants.BaseServerVersion.message_fail_id_is_null, CommonContants.common_error_params_code);
         }
-        BaseServerVersion BaseServerVersionTmp = BaseServerVersionDao.findByNameExcludeCode(BaseServerVersion.getName(), BaseServerVersion.getCode());
+        BaseServerVersion BaseServerVersionTmp = baseServerVersionDao.findByNameExcludeCode(BaseServerVersion.getName(), BaseServerVersion.getCode());
         if (BaseServerVersionTmp != null) {
             throw new ApiException(BaseVersionContants.BaseServerVersion.message_fail_name_exist, CommonContants.common_error_params_code);
         }
-        return BaseServerVersionDao.save(BaseServerVersion);
+        return baseServerVersionDao.save(BaseServerVersion);
     }
 
     public BaseServerVersion findByCode(String code) {
-        BaseServerVersion BaseServerVersion = BaseServerVersionDao.findByCode(code);
-        if (BaseServerVersion == null) {
+        BaseServerVersion baseServerVersion = baseServerVersionDao.findByCode(code);
+        if (baseServerVersion == null) {
             throw new ApiException(BaseVersionContants.BaseServerVersion.message_fail_code_no_exist, CommonContants.common_error_params_code);
         }
-        return BaseServerVersion;
+        return baseServerVersion;
     }
 
     @Transactional
-    public void deleteBaseServerVersion(String code) {
-        BaseServerVersion BaseServerVersion = BaseServerVersionDao.findByCode(code);
-        if (BaseServerVersion == null) {
-            throw new ApiException(BaseVersionContants.BaseServerVersion.message_fail_code_no_exist, CommonContants.common_error_params_code);
+    public void deleteBaseServerVersion(String codes,String userCode,String userName) {
+        if(StringUtils.isEmpty(codes)){
+            throw new ApiException(BaseVersionContants.BaseServerVersion.message_fail_code_is_null, CommonContants.common_error_params_code);
         }
-        BaseServerVersion.setStatus(-1);
+        for(String code:codes.split(",")){
+            BaseServerVersion baseServerVersion = baseServerVersionDao.findByCode(code);
+            if (baseServerVersion == null) {
+                continue;
+            }
+            baseServerVersion.setStatus(-1);
+            baseServerVersion.setUpdateUserName(userName);
+            baseServerVersion.setUpdateUser(userCode);
+            baseServerVersionDao.save(baseServerVersion);
+
+            //同时删除后台url版本
+            serverUrlVersionService.deleteByServer(code, userName,userCode);
+
+        }
     }
 
     public List<MBaseServerVersion> getModuleBaseServerVersions(String saasCode) {
@@ -81,4 +96,22 @@ public class ServerVersionService extends BaseJpaService<BaseServerVersion, Serv
         return jdbcTemplate.queryForList(sql,MBaseServerVersion.class,saasCode);
     }
 
+    public List<BaseServerVersion> findAll(){
+        return baseServerVersionDao.findAll();
+    }
+
+    /**
+     * key为code ,value为版本名字
+     * @return
+     */
+    public Map<String,String> getName(){
+        List<BaseServerVersion> baseServerVersion = findAll();
+        Map<String, String> map = new HashMap<>();
+        if(null!=baseServerVersion){
+            for(BaseServerVersion version: baseServerVersion){
+                map.put(version.getCode(),version.getName());
+            }
+        }
+        return map;
+    }
 }

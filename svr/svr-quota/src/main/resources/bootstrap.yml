@@ -13,7 +13,7 @@ spring:
 
 ---
 spring:
-  profiles: dev
+  profiles: jwdev
 
 ##发现服务的地址
 eureka:
@@ -24,19 +24,19 @@ eureka:
 
 ---
 spring:
-  profiles: test
+  profiles: jwtest
 
 
 eureka:
   client:
     serviceUrl:
       #http://账号:密码@127.0.0.1:8761/eureka/
-      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka/
 
 
 ---
 spring:
-  profiles: prod
+  profiles: jwprod
 
 
 eureka:

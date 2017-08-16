@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by chenweida on 2017/5/19.
@@ -104,4 +106,39 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
         String sql=" select m.code,m.parent_code,m.name from base_module m,base_saas_module sm where m.code=sm.module_id and m.status=1 and sm.saas_id=?";
        return jdbcTemplate.queryForList(sql,MModule.class,saasCode);
     }
+
+    public List<Module> getChildren(String code){
+        List<Module> childrens = moduleDao.getChildren(code);
+        for(Module children:childrens){
+            List<Module> children1 = moduleDao.getChildren(children.getCode());//判断子节点是否有孙节点
+            //没有children    state
+            //“open”表示是子节点，“closed”表示为父节点；
+            if (children1.size()>0){
+                children.setState("closed");
+            }else{
+                children.setState("open");
+            }
+        }
+        return childrens;
+    }
+
+    public List<Module> findAll(){
+        return moduleDao.findAll();
+    }
+
+    /**
+     * key为code ,value为模块名称
+     * @return
+     */
+    public Map<String,String> getName(){
+        List<Module> modules = findAll();
+        Map<String, String> map = new HashMap<>();
+        if(null!=modules){
+            for(Module module: modules){
+                map.put(module.getCode(),module.getName());
+            }
+        }
+        return map;
+    }
+
 }

@@ -2,10 +2,10 @@ package com.yihu.jw.manage.service.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.model.system.ManageUser;
-import com.yihu.jw.manage.model.wechat.GraphicMessage;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.wx.MWxGraphicMessage;
 import com.yihu.jw.restmodel.wx.WechatContants;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -26,7 +26,7 @@ import java.util.Map;
 @Service
 public class GraphicMessageService {
 
-    @Value("${spring.gateway}"+"/"+ WechatContants.api_common+"/")
+    @Value("${spring.gateway}"+ WechatContants.api_common)
     private String url;
 
     @Autowired
@@ -35,19 +35,24 @@ public class GraphicMessageService {
     @Autowired
     private UserService userService;
 
-    public Envelop list(String title, String sorts ,Integer size, Integer page) {
-        Map<String, Object> map = new HashMap<>();
+    public Envelop list(Integer size, Integer page,Map<String,String> map) {
+        Map<String, Object> req = new HashMap<>();
         Map<String, Object> filters = new HashMap<>();
-        map.put("size",size);
-        map.put("page",page);
-        map.put("sorts",sorts);
-        map.put("filters","");
+        req.put("size",size);
+        req.put("page",page);
+        req.put("sorts",map.get("sorts"));
+
+        String title = map.get("title");
         if(StringUtils.isNotBlank(title)){
             filters.put("title",title);
-            map.put("filters",filters);
         }
-
-        Envelop forObject = template.getForObject(url +WechatContants.WxGraphicMessage.api_getWxGraphicMessages+ "?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,map);
+        String saasId = map.get("saasId");
+        if(StringUtils.isNotBlank(saasId)){
+            filters.put("saasId",saasId);
+        }
+        String filterStr = JSONObject.fromObject(filters).toString();
+        req.put("filters",filterStr);
+        Envelop forObject = template.getForObject(url +WechatContants.WxGraphicMessage.api_getWxGraphicMessages+ "?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,req);
         return forObject;
 
     }
@@ -61,18 +66,18 @@ public class GraphicMessageService {
         Map<String, String> par = new HashMap<>();
         par.put("userCode", userCode);
         par.put("userName", userName);
-        String urlRequest = url + "graphicMessage/"+codes+"?userCode={userCode}&userName={userName}";
+        String urlRequest = url + "/graphicMessage/"+codes+"?userCode={userCode}&userName={userName}";
         RestTemplateUtil restTemplateUtil = new RestTemplateUtil(urlRequest,map);
         Envelop envelop = restTemplateUtil.exchange(urlRequest, HttpMethod.DELETE, Envelop.class,par);
         return envelop;
     }
 
     public Envelop findByCode(String code) {
-        Envelop envelop = template.getForObject(url + "graphicMessage/"+code, Envelop.class);
+        Envelop envelop = template.getForObject(url + "/graphicMessage/"+code, Envelop.class);
         return envelop;
     }
 
-    public Envelop saveOrUpdate(GraphicMessage graphicMessage, String userCode) throws JsonProcessingException {
+    public Envelop saveOrUpdate(MWxGraphicMessage graphicMessage, String userCode) throws JsonProcessingException {
         ManageUser user = userService.findByCode(userCode);
         String userName = user.getName();
 

@@ -31,9 +31,9 @@ spring:
       failFast: true ##启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
-          uri: http://192.168.1.220:10080/chenweida/jw.config.git
+#          uri: http://192.168.1.220:10080/chenweida/jw.config.git
 #          uri: http://192.168.116.100:10080/chenweida/mini.jw.config.git
-#          uri: http://192.168.1.220:10080/chenyongxing/jw.config.git
+         uri: http://192.168.1.220:10080/chenyongxing/jw.config.git
         default-label: master
 
 
@@ -43,10 +43,12 @@ spring:
 ##git配置
   cloud:
     config:
+      failFast: true ##启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
-          uri: http://192.168.1.220:10080/EHR/ehr.config.git
-        default-label: dev
+#          uri: http://192.168.1.220:10080/EHR/ehr.config.git
+          uri: http://192.168.1.220:10080/chenyongxing/jw.config.git
+        default-label: master
 
 ---
 spring:
@@ -59,23 +61,4 @@ spring:
           uri: http://11.1.2.8:3000/ehr_admin/ehr.config.git
         default-label: master
 
-
----
-##不想用远程的git 可以在环境变量配置native 开启本地配置
-spring:
-  profiles:
-    active: native
-
-  cloud:
-    config:
-      failFast: true ##启动快速失败 即链接不到配置服务就启动失败
-      server:
-        native:
-          search-locations: file:G:\idea_workspace\jkzl_git\jw.config  ##本地的got配置路径
-#配置服务动态刷新
-#    stream:
-#      kafka:
-#        binder:
-#          brokers: 172.17.110.201:9092
-#          zkNodes: 172.17.110.201:2181
 

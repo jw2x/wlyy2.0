@@ -5,6 +5,9 @@ import com.yihu.jw.base.model.IdEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * WlyyModule entity. @author MyEclipse Persistence Tools
@@ -19,6 +22,10 @@ public class Module extends IdEntity implements java.io.Serializable {
 	private String parentCode;//父id
 	private Integer status; //-1 删除 0 禁用 可用
 	private String remark;
+	@Transient
+	private String state ;   //closed:表示有子节点   open:表示没有子节点
+	@Transient
+	private List<Module> children = new ArrayList<>();
 
 	// Constructors
 
@@ -72,4 +79,19 @@ public class Module extends IdEntity implements java.io.Serializable {
 		this.remark = remark;
 	}
 
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	public List<Module> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Module> children) {
+		this.children = children;
+	}
 }

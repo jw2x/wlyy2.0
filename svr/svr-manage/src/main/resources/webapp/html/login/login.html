@@ -8,11 +8,11 @@
     <meta name="renderer" content="webkit">
 
     <title>登录</title>
-    <link href="/common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
-    <link href="/common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
+    <link href="../common/css/bootstrap/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../common/css/bootstrap/font-awesome.min.css?v=4.3.0" rel="stylesheet">
 
-    <link href="/common/css/bootstrap/animate.min.css" rel="stylesheet">
-    <link href="/common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
+    <link href="../common/css/bootstrap/animate.min.css" rel="stylesheet">
+    <link href="../common/css/bootstrap/style.min.css?v=3.0.0" rel="stylesheet">
 
 </head>
 
@@ -48,17 +48,17 @@
 </div>
 
 <!-- 全局js -->
-<script src="/common/js/jquery/jquery-2.1.1.min.js"></script>
-<script src="/common/js/bootstrap/bootstrap.min.js"></script>
-<script src="/common/js/common.js"></script>
-<script src="/common/js/util/util.js"></script>
+<script src="../common/js/jquery/jquery-2.1.1.min.js"></script>
+<script src="../common/js/bootstrap/bootstrap.min.js"></script>
+<script src="../common/js/common.js"></script>
+<script src="../common/js/util/util.js"></script>
 <script type="text/javascript">
     function login() {
         var username = $("#username").val();
         var password = $("#password").val();
         $.ajax({
             type: "GET",
-            url: "/login",
+            url: server+"/login",
             data: {
                 "username": username,
                 "password": password
@@ -66,8 +66,11 @@
             dataType: "json",
             success: function (data) {
                 //保存用户信息到缓存中
-                setUserCode(data.obj.code)
-                window.location.href = '/index/index.html?u=' + data.obj.id;
+                setUserCode(data.obj.code);
+                if(data.obj.saasId!=undefined){
+                    setSaasId(data.obj.saasId)
+                }
+                window.location.href = server+'/index/index.html';
             },
             error:function(data){
                 alert("账号或密码错误")

@@ -1,6 +1,8 @@
 package com.yihu.jw.restmodel.base.version;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by chenweida on 2017/6/16.
@@ -19,6 +21,12 @@ public class MBaseServerVersion {
     private String updateUserName;
     private Integer status;////-1 删除 0 禁用 可用
     private String remark;
+
+    private List<MBaseServerUrlVersion> children = new ArrayList<>();
+
+    //children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
+    // children长度>0时,  state   “open,closed”表示是节点的打开关闭
+    private String state;
 
     public String getCode() {
         return code;
@@ -122,5 +130,21 @@ public class MBaseServerVersion {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<MBaseServerUrlVersion> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MBaseServerUrlVersion> children) {
+        this.children = children;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

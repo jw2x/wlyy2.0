@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping("{version}/"+ WechatContants.api_common)
+@RequestMapping("{version}"+ WechatContants.api_common)
 @Api(description = "微信菜单配置")
 public class WechatMenuController {
 
@@ -92,6 +92,9 @@ public class WechatMenuController {
 
     @RequestMapping(value = WechatContants.WxMenu.api_getWxMenus, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信菜单列表(分页)")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop getWxMenus(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")
             @RequestParam(value = "fields", required = false) String fields,
@@ -105,10 +108,12 @@ public class WechatMenuController {
             @RequestParam(value = "page", required = false) int page) throws Exception {
         String filterStr = "";
         if(StringUtils.isNotBlank(filters)){
-            filters = filters.replaceAll("=", ":");
             JSONObject jsonResult = new JSONObject(filters);
             if(jsonResult.has("name")){
                 filterStr+="name?"+jsonResult.get("name")+";";
+            }
+            if(jsonResult.has("saasId")){
+                filterStr+="saasId="+jsonResult.get("saasId")+";";
             }
         }
         return wechatMenuFegin.getWxMenus(fields,filterStr,sorts,size,page);
@@ -159,7 +164,7 @@ public class WechatMenuController {
     }
 
     @GetMapping(value = WechatContants.WxMenu.api_getChildMenus)
-    @ApiOperation(value = "根据微信code查找父菜单", notes = "根据微信code查找父菜单")
+    @ApiOperation(value = "根据parentCode查找子菜单", notes = "根据parentCode查找子菜单")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })

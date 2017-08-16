@@ -10,6 +10,7 @@ import com.yihu.jw.restmodel.exception.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ import java.util.List;
  * Created by chenweida on 2017/5/19.
  */
 @RestController
-@RequestMapping(BaseContants.Module.api_common)
+@RequestMapping(BaseContants.api_common)
 @Api(value = "模块模块", description = "模块接口管理")
 public class ModuleController extends EnvelopRestController {
     @Autowired
@@ -54,24 +55,25 @@ public class ModuleController extends EnvelopRestController {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
-    @DeleteMapping(value = BaseContants.Module.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+
+    @DeleteMapping(value = BaseContants.Module.api_delete)
     @ApiOperation(value = "删除模块", notes = "删除模块")
     public Envelop deleteModule(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "codes", value = "codes")
+            @PathVariable(value = "codes", required = true) String codes) {
         try {
-            moduleService.deleteModule(code);
+            moduleService.deleteModule(codes);
             return Envelop.getSuccess(BaseContants.Module.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseContants.Module.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseContants.Module.api_getByCode)
     @ApiOperation(value = "根据code查找模块", notes = "根据code查找模块")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @PathVariable(value = "code", required = true) String code
     ) {
         try {
             return Envelop.getSuccess(BaseContants.Module.message_success_find, moduleService.findByCode(code));
@@ -81,8 +83,8 @@ public class ModuleController extends EnvelopRestController {
     }
 
 
-    @RequestMapping(value = BaseContants.Module.api_getModules, method = RequestMethod.GET)
-    @ApiOperation(value = "获取模块列表(分页)")
+    @RequestMapping(value = BaseContants.Module.api_getList, method = RequestMethod.GET)
+    @ApiOperation(value = "获取父模块列表(分页)")
     public Envelop getModules(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
             @RequestParam(value = "fields", required = false) String fields,
@@ -97,8 +99,31 @@ public class ModuleController extends EnvelopRestController {
             @RequestParam(value = "page", required = false) int page,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
+        if(StringUtils.isBlank(sorts)){
+            sorts = "-updateTime";
+        }
+        if(StringUtils.isBlank(filters)){
+            filters = "parentCode=0;";
+        }else{
+            filters="parentCode=0;"+filters;
+        }
+
         //得到list数据
         List<Module> list = moduleService.search(fields, filters, sorts, page, size);
+
+        if(list!=null){
+            for(Module module:list){//循环遍历,设置是否有子节点
+                List<Module> children = moduleService.getChildren(module.getCode());
+                //children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
+                // children长度>0时,  state   “open,closed”表示是节点的打开关闭
+                if (children.size()>0){
+                    module.setState("closed");
+                }else{
+                    module.setState("open");
+                }
+            }
+        }
+
         //获取总数
         long count=moduleService.getCount(filters);
         //封装头信息
@@ -110,9 +135,9 @@ public class ModuleController extends EnvelopRestController {
     }
 
 
-    @GetMapping(value = BaseContants.Module.api_getModulesNoPage)
+    @GetMapping(value = BaseContants.Module.api_getListNoPage)
     @ApiOperation(value = "获取模块列表，不分页")
-    public Envelop getAppsNoPage(
+    public Envelop getListNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -127,30 +152,12 @@ public class ModuleController extends EnvelopRestController {
     }
 
 
-    @PutMapping(value = BaseContants.Module.api_assignModule, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "分配模块", notes = "给对应的saas分配模块")
-    public Envelop assignModule(
-            @ApiParam(name = "saas_code", value = "saas_code", defaultValue = "")
-            @RequestParam String saasCode,
-            @ApiParam(name = "moduleCodes", value = "模块的code，可以传多个，逗号分割", defaultValue = "")
-            @RequestParam String moduleCodes) {
-        try {
-            moduleService.assignModule(saasCode,moduleCodes);
-            return Envelop.getSuccess(BaseContants.Module.message_success_assign_module);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
-        }
+    @GetMapping(value =BaseContants.Module.api_getChildren )
+    @ApiOperation(value="查找子节点")
+    public Envelop getChildren(@PathVariable String code){
+        List<Module> children = moduleService.getChildren(code);
+        return Envelop.getSuccess("查询成功",children);
     }
 
-    @GetMapping(value = BaseContants.Module.api_getSaasModules, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "查询saas的模块", notes = "查询saas已经分配的模块")
-    public Envelop getSaasModules(
-            @ApiParam(name = "saas_code", value = "saas_code", defaultValue = "")
-            @RequestParam String saasCode) {
-        try {
-            return Envelop.getSuccess(BaseContants.Module.message_success_assign_module,moduleService.getSaasModules(saasCode));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
-        }
-    }
+
 }

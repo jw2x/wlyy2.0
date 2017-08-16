@@ -15,6 +15,8 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
     // Fields
     private String title;//模板标题
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+    @Transient
+    private String wechatName;
     private String templateId;//微信模板id
     private String content;//模板内容
     private String remark;
@@ -97,4 +99,11 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
         this.remark = remark;
     }
 
+    public String getWechatName() {
+        return wechatName;
+    }
+
+    public void setWechatName(String wechatName) {
+        this.wechatName = wechatName;
+    }
 }

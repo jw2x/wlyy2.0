@@ -107,6 +107,8 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
 
     public WxTemplate findByCode(String code) {
         WxTemplate wxTemplate = wxTemplateDao.findByCode(code);
+        WxWechat wechat = wechatService.findByCode(wxTemplate.getWechatCode());
+        wxTemplate.setWechatName(wechat.getName());
         return wxTemplate;
     }
 
@@ -169,5 +171,9 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             JSONObject jsonResult = new JSONObject(e);
             return jsonResult;
         }
+    }
+
+    public List<WxTemplate> findByWxCode(String code) {
+        return wxTemplateDao.findByWxCode(code);
     }
 }

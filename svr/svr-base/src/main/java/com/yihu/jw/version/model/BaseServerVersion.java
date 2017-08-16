@@ -2,30 +2,36 @@ package com.yihu.jw.version.model;// default package
 
 import com.yihu.jw.base.model.IdEntity;
 
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * BaseServerVersion entity. @author MyEclipse Persistence Tools
+ * 后台版本model
  */
+
+
 @Entity
 @Table(name = "base_server_version")
 public class BaseServerVersion  extends IdEntity implements java.io.Serializable {
  
-	private String code; //业务code
 	private String saasId;//关联base_saas code
 	private String name; //版本名称
 	private Integer versionInt;//版本号
-	private Date createTime;
-	private String createUser;
-	private String createUserName;
-	private Date updateTime;
-	private String updateUser;
-	private String updateUserName;
 	private Integer status;////-1 删除 0 禁用 可用
 	private String remark;
+	@Transient
+	private List<BaseServerUrlVersion> children = new ArrayList<>();
+
+	//children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
+	// children长度>0时,  state   “open,closed”表示是节点的打开关闭
+	@Transient
+	private String state;
 
 	// Constructors
 
@@ -62,15 +68,6 @@ public class BaseServerVersion  extends IdEntity implements java.io.Serializable
 		this.remark = remark;
 	}
 
-	@Column(name = "code", nullable = false, length = 10)
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
 	@Column(name = "saas_id", length = 100)
 	public String getSaasId() {
 		return this.saasId;
@@ -98,60 +95,6 @@ public class BaseServerVersion  extends IdEntity implements java.io.Serializable
 		this.versionInt = versionInt;
 	}
 
-	@Column(name = "create_time", nullable = false, length = 0)
-	public Date getCreateTime() {
-		return this.createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	@Column(name = "create_user", length = 100)
-	public String getCreateUser() {
-		return this.createUser;
-	}
-
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-
-	@Column(name = "create_user_name", length = 50)
-	public String getCreateUserName() {
-		return this.createUserName;
-	}
-
-	public void setCreateUserName(String createUserName) {
-		this.createUserName = createUserName;
-	}
-
-	@Column(name = "update_time", nullable = false, length = 0)
-	public Date getUpdateTime() {
-		return this.updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-
-	@Column(name = "update_user", length = 100)
-	public String getUpdateUser() {
-		return this.updateUser;
-	}
-
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
-
-	@Column(name = "update_user_name", length = 50)
-	public String getUpdateUserName() {
-		return this.updateUserName;
-	}
-
-	public void setUpdateUserName(String updateUserName) {
-		this.updateUserName = updateUserName;
-	}
-
 	@Column(name = "status", length = 1)
 	public Integer getStatus() {
 		return this.status;
@@ -170,4 +113,19 @@ public class BaseServerVersion  extends IdEntity implements java.io.Serializable
 		this.remark = remark;
 	}
 
+	public List<BaseServerUrlVersion> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<BaseServerUrlVersion> children) {
+		this.children = children;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 }

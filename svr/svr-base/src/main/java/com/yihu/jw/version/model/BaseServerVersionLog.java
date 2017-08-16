@@ -2,10 +2,10 @@ package com.yihu.jw.version.model;// default package
 
 import com.yihu.jw.base.model.IdEntity;
 
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * BaseServerVersionLog entity. @author MyEclipse Persistence Tools
@@ -16,15 +16,10 @@ public class BaseServerVersionLog extends IdEntity implements java.io.Serializab
 
 	private String saasId; //关联saas code
 	private String userCodes;//此次更新的用户 多个逗号分割
+	private String bsvCode;//关联 base_server_version code
 	private String name;//此次更新的版本名称
 	private Integer versionInt;//版本号
 	private Integer type;//1更新 2回滚
-	private Date createTime;
-	private String createUser;
-	private String createUserName;
-	private Date updateTime;
-	private String updateUser;
-	private String updateUserName;
 	private Integer status;////-1 删除 0 禁用 可用
 
 	// Constructors
@@ -89,34 +84,6 @@ public class BaseServerVersionLog extends IdEntity implements java.io.Serializab
 		this.versionInt = versionInt;
 	}
 
-	@Column(name = "create_time", nullable = false, length = 0)
-	public Date getCreateTime() {
-		return this.createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	@Column(name = "create_user", length = 100)
-	public String getCreateUser() {
-		return this.createUser;
-	}
-
-	public void setCreateUser(String createUser) {
-		this.createUser = createUser;
-	}
-
-	@Column(name = "create_user_name", length = 50)
-	public String getCreateUserName() {
-		return this.createUserName;
-	}
-
-	public void setCreateUserName(String createUserName) {
-		this.createUserName = createUserName;
-	}
-
-
 	public Integer getType() {
 		return type;
 	}
@@ -125,35 +92,19 @@ public class BaseServerVersionLog extends IdEntity implements java.io.Serializab
 		this.type = type;
 	}
 
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
-
-	public String getUpdateUser() {
-		return updateUser;
-	}
-
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
-
-	public String getUpdateUserName() {
-		return updateUserName;
-	}
-
-	public void setUpdateUserName(String updateUserName) {
-		this.updateUserName = updateUserName;
-	}
-
 	public Integer getStatus() {
 		return status;
 	}
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getBsvCode() {
+		return bsvCode;
+	}
+
+	public void setBsvCode(String bsvCode) {
+		this.bsvCode = bsvCode;
 	}
 }

@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping("{version}/"+ WechatContants.api_common)
+@RequestMapping("{version}"+ WechatContants.api_common)
 @Api(description = "微信模板消息相关")
 public class WechatTemplateControlle {
 
@@ -111,10 +111,12 @@ public class WechatTemplateControlle {
             @RequestParam(value = "page", required = false) int page) throws Exception {
         String filterStr = "";
         if(StringUtils.isNotBlank(filters)){
-            filters = filters.replaceAll("=", ":");
             JSONObject jsonResult = new JSONObject(filters);
             if(jsonResult.has("name")){
                 filterStr+="name?"+jsonResult.get("name")+";";
+            }
+            if(jsonResult.has("saasId")){
+                filterStr+="saasId="+jsonResult.get("saasId")+";";
             }
         }
         return wechatTemplateFegin.getWechats(fields,filterStr,sorts,size,page);
@@ -133,7 +135,14 @@ public class WechatTemplateControlle {
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        return wechatTemplateFegin.getWechatNoPage(fields,filters,sorts);
+        String filterStr = "";
+        if(StringUtils.isNotBlank(filters)){
+            JSONObject jsonResult = new JSONObject(filters);
+            if(jsonResult.has("wechatCode")){
+                filterStr+="wechatCode="+jsonResult.get("wechatCode")+";";
+            }
+        }
+        return wechatTemplateFegin.getWechatNoPage(fields,filterStr,sorts);
     }
 
     @ApiVersion(1)

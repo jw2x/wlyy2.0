@@ -1,9 +1,12 @@
 package com.yihu.jw.version.dao;
 
 import com.yihu.jw.version.model.BaseServerVersion;
+import com.yihu.jw.wx.model.WxWechat;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.List;
 
 /**
  * Created by chenweida on 2017/5/19.
@@ -18,4 +21,7 @@ public interface ServerVersionDao extends PagingAndSortingRepository<BaseServerV
 
     @Query("from BaseServerVersion f where f.code=?1 and f.status=1")
     BaseServerVersion findByCode(String code);
+
+    @Query("from BaseServerVersion v where v.status!=-1")
+    List<BaseServerVersion> findAll();
 }

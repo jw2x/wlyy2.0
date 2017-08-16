@@ -5,6 +5,9 @@ import com.yihu.jw.base.model.IdEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * WlyyFunction entity. @author MyEclipse Persistence Tools
@@ -21,7 +24,10 @@ public class Function extends IdEntity implements java.io.Serializable {
 	private Integer status; //状态 -1 删除 0 禁用 可用
 	private String url;//功能对应的后台url路径
 	private String remark; //备注
-
+	@Transient
+	private List<Function> children = new ArrayList<>();
+	@Transient
+	private String text;//用于jstree显示
 	// Constructors
 
 	/** default constructor */
@@ -92,5 +98,21 @@ public class Function extends IdEntity implements java.io.Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public List<Function> getChildren() {
+		return children;
+	}
+
+	public void setChildren(List<Function> children) {
+		this.children = children;
+	}
+
+	public String getText() {
+		return name;
+	}
+
+	public void setText(String text) {
+		this.text = text;
 	}
 }

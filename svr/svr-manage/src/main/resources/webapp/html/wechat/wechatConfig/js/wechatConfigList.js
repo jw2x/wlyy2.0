@@ -1,8 +1,9 @@
 var table;
-var usercode = window.localStorage.getItem("userCode");
+var userCode = getUserCode();
+var saasId = getSaasId();
 $(function () {
-    table = $("#wechatList").DataTable({
-            "aLengthMenu": [1, 2, 3, 40],
+    table = $("#list").DataTable({
+            "aLengthMenu": [10,15,20],
             "searching": false,//禁用搜索
             "lengthChange": true,
             "paging": true,//开启表格分页
@@ -12,15 +13,16 @@ $(function () {
             "sort": "position",
             "deferRender": true,//延迟渲染
             "bStateSave": false, //在第三页刷新页面，会自动到第一页
-            "iDisplayLength": 1,//每页显示条数
+            "iDisplayLength": 10,//每页显示条数
             "iDisplayStart": 0, //当前页
             "dom": '<l<\'#topPlugin\'>f>rt<ip><"clear">',
             "ordering": false,//全局禁用排序
             "ajax": {
-                url: '/wechat/wechatConfig/list',
+                url: server+'/wechat/wechatConfig/list',
                 data: function (d) {
                     d.name = $("#name").val();
-                    d.userCode = usercode;
+                    d.userCode = userCode;
+                    d.saasId = saasId;
                 },
                 type: 'GET',
                 dataSrc: "detailModelList"
@@ -87,7 +89,7 @@ $(function () {
                     "sDefaultContent": '',
                     "sWidth": "10%",
                     "render": function (data, type, full, meta) {
-                        return data = '<button id="findOne" class="btn btn-primary  btn-sm" data-id=' + data + ' onclick="show(\''+data+'\')">查 看</button>';/*<button id="deleteOne" class="btn btn-danger btn-sm" style="margin-left: 7px;" data-id=' + data + '>删 除</button>*/
+                        return data = '<button class="btn btn-primary  btn-sm" data-id=' + data + ' onclick="show(\''+data+'\')">查 看</button>';/*<button class="btn btn-danger btn-sm" style="margin-left: 7px;" data-id=' + data + '>删 除</button>*/
 
                     }
                 }
@@ -119,7 +121,7 @@ $(function () {
             },
             initComplete: initComplete,
             drawCallback: function (settings) {
-                $('input[name=checkAllWechat]')[0].checked = false;//取消全选状态
+                $('input[name=checkAll]')[0].checked = false;//取消全选状态
             }
         }
     );
@@ -129,24 +131,17 @@ $(function () {
      * @param data
      */
     function initComplete(data){
-        //上方topPlugin DIV中追加HTML
-        //var topPlugin='<button id="addButton" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addUser" style="display:block;">' +
-        // '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>添加用户</button>';
-
         //删除用户按钮的HTMLDOM
         var topPlugin='<button   class="btn btn-danger btn-sm" id="deleteAll">批量删除</button> <button   class="btn btn-primary btn-sm addBtn" >新 增</button>       <button  class="btn btn-warning btn-sm" id="reset">重置搜索条件</button>' ;
 
         $("#topPlugin").append(topPlugin);//在表格上方topPlugin DIV中追加HTML
-
-        //$("#expCsv").on("click", exp1);//给下方按钮绑定事件
-
     }
 
     /**
      * 多选选中和取消选中,同时选中第一个单元格单选框,并联动全选单选框
      */
-    $('#wechatList tbody').on('click', 'tr', function(event) {
-        var checkAllWechat=$('input[name=checkAllWechat]')[0];//关联全选单选框
+    $('#list tbody').on('click', 'tr', function(event) {
+        var checkAll=$('input[name=checkAll]')[0];//关联全选单选框
         $($(this).children()[0]).children().each(function(){
             if(this.type=="checkbox" && (!$(event.target).is(":checkbox") && $(":checkbox",this).trigger("click"))){
                 if(!this.checked){
@@ -157,12 +152,12 @@ $(function () {
                     var recordsDisplay=table.page.info().recordsDisplay;//搜索条件过滤后的总行数
                     var iDisplayStart=table.page.info().start;// 起始行数
                     if(selected === table.page.len()||selected === recordsDisplay||selected === (recordsDisplay - iDisplayStart)){
-                        checkAllWechat.checked = true;
+                        checkAll.checked = true;
                     }
                 }else{
                     this.checked = false;
                     cancelValue(this);
-                    checkAllWechat.checked = false;
+                    checkAll.checked = false;
                 }
             }
         });
@@ -173,15 +168,15 @@ $(function () {
     /**
      * 全选按钮被点击事件
      */
-    $('input[name=checkAllWechat]').click(function(){
+    $('input[name=checkAll]').click(function(){
         if(this.checked){
-            $('#wechatList tbody tr').each(function(){
+            $('#list tbody tr').each(function(){
                 if(!$(this).hasClass('selected')){
                     $(this).click();
                 }
             });
         }else{
-            $('#wechatList tbody tr').click();
+            $('#list tbody tr').click();
         }
     });
 
@@ -202,7 +197,7 @@ $(function () {
      */
     function cancelValue(para){
         //取消选中checkbox要做的操作
-        var wechatCodes = $("input[name=checkAllWechat]");
+        var wechatCodes = $("input[name=checkAll]");
         var array = wechatCodes.val().split(",");
         wechatCodes.val("");
         for (var i = 0; i < array.length; i++) {
@@ -261,24 +256,16 @@ $(function () {
 var contentVM = new Vue({
     el: '#category_add',
     data: {
-        wechatConfig: '',//记录详情信息
-        saasList:''//记录saas列表
+        wechatConfig: ''//记录详情信息
     },
     replace:false
 });
-
-do_get("/base/saases",{},function(data){
-    contentVM.saasList = data.detailModelList;
-    console.log( data.detailModelList);
-},function(data){
-
-})
 
 //查看配置
 function show(code){
     $("#myModal-add-info").removeData("modal");
     var data={};
-    do_get("/wechat/wechatConfig/"+code,data,function(data){
+    do_get(server+"/wechat/wechatConfig/"+code,data,function(data){
         contentVM.wechatConfig = data.obj;
         $('#myModal-add-info').modal('show');
         $("#myModalLabel").html("查看");
@@ -288,7 +275,7 @@ function show(code){
 }
 
 function del(codes){
-    var url = "/wechat/wechatConfig/"+codes;
+    var url = server+"/wechat/wechatConfig/"+codes;
     do_delete(url,{},function(data){
         alert("删除成功");
         table.ajax.reload();
@@ -296,27 +283,24 @@ function del(codes){
 }
 
 $("#category_add").submit(function(){
-    var url = "";
+    var  url = server+"/wechat/wechatConfig";
     var id = $("#id").val();
     var data = $("#category_add").serialize();
-    if(id==''){//说明是保存
-        url = "/wechat/wechatConfig"
-        do_post(url,data,function(data){
+    do_post(url,data,function(data){
+        if(data.errorMsg!=undefined){
+            alert(data.errorMsg);
+            return;
+        }
+        if(id==''){
             alert("保存成功");
-            $('#myModal-add-info').modal('hide');
-            table.ajax.reload();
-            return;
-
-        })
-    }else{//说明是修改
-        url="/wechat/wechatConfig?userCode="+usercode;
-        do_put(url,data,function(data){
+        }else{
             alert("修改成功");
-            $('#myModal-add-info').modal('hide');
-            table.ajax.reload();
-            return;
-        })
-    }
+        }
+        $('#myModal-add-info').modal('hide');
+        table.ajax.reload();
+        return;
+
+    })
     return false;
 })
 

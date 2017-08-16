@@ -4,10 +4,12 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.exception.ApiException;
 import com.yihu.jw.restmodel.wx.MWxTemplate;
+import com.yihu.jw.restmodel.wx.MWxWechat;
 import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.wx.WechatResponse;
 import com.yihu.jw.wx.model.Miniprogram;
 import com.yihu.jw.wx.model.WxTemplate;
+import com.yihu.jw.wx.model.WxWechat;
 import com.yihu.jw.wx.service.WechatService;
 import com.yihu.jw.wx.service.WxTemplateService;
 import io.swagger.annotations.Api;
@@ -23,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -113,26 +114,31 @@ public class WxTemplateController extends EnvelopRestController {
         if(StringUtils.isBlank(sorts)){
             sorts = "-updateTime";
         }
-        //得到list数据
-        List<WxTemplate> list = wxTemplateService.search(fields, filters, sorts, page, size);
+
+        //得到微信列表数据
+        List<WxWechat> wechats = wechatService.search(fields, filters, sorts, page, size);
+        for(WxWechat wechat:wechats){
+            List<WxTemplate> wxTemplates = wxTemplateService.findByWxCode(wechat.getCode());
+            if (wxTemplates.size()>0){
+                wechat.setState("closed");
+            }else{
+                wechat.setState("open");
+            }
+        }
         //获取总数
-        long count=wxTemplateService.getCount(filters);
+        long count=wechatService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MWxTemplate> templates = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
-        Map<String, String> map = wechatService.getAllWechatConfig();
-        for(MWxTemplate template:templates){
-            template.setWechatName(map.get(template.getWechatCode()));
-        }
+        List<MWxWechat> mwechats = convertToModels(wechats, new ArrayList<>(wechats.size()), MWxWechat.class, fields);
+        return Envelop.getSuccessListWithPage(WechatContants.WxMenu.message_success_find_functions,mwechats, page, size,count);
 
-        return Envelop.getSuccessListWithPage(WechatContants.WxTemplate.message_success_find_functions,templates, page, size,count);
     }
 
 
     @GetMapping(value = WechatContants.WxTemplate.api_getWxTemplatesNoPage)
     @ApiOperation(value = "获取微信模版列表(不分页)")
-    public Envelop getWechatNoPage(
+    public Envelop getList(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,title,wechatCode,templateId,content,remark,status")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -143,10 +149,6 @@ public class WxTemplateController extends EnvelopRestController {
         List<WxTemplate> list = wxTemplateService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxTemplate> mMWxTemplates = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
-        Map<String, String> map = wechatService.getAllWechatConfig();
-        for(MWxTemplate template:mMWxTemplates){
-            template.setWechatName(map.get(template.getWechatCode()));
-        }
         return Envelop.getSuccessList(WechatContants.WxTemplate.message_success_find_functions,mMWxTemplates);
     }
 

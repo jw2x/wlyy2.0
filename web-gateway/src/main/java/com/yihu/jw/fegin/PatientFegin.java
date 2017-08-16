@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @FeignClient(
         name = CommonContants.svr_base // name值是eurika的实例名字
-       // ,fallback = PatientFeginFallback.class// fallback是请求超时或者错误的回调函数
+        // ,fallback = PatientFeginFallback.class// fallback是请求超时或者错误的回调函数
         ,fallbackFactory  =PatientFeginFallbackFactory.class
 //        ,configuration =   //可以配置当个fegin的配置 例如禁用单个feign的hystrix
 )

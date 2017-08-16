@@ -11,7 +11,7 @@ eureka:
     registry-fetch-interval-seconds: 30 #定期的更新客户端的服务清单 30秒更新一次
     fetch-registry: false ##如果是做高可用的发现服务那就要改成true
     service-url:
-      defaultZone: http://jw:jkzl@localhost:8761/eureka
+      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka
 
 
 #eurika界面的账号密码

@@ -1,6 +1,9 @@
 package com.yihu.jw.restmodel.wx;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
@@ -9,6 +12,7 @@ public class MWxTemplate {
     private Long id;
     private String code;//模板code
     private String title;//模板标题
+    private String name;//用于模板列表渲染
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
     private String wechatName;//关联的微信名
     private String templateId;//微信模板id
@@ -20,6 +24,8 @@ public class MWxTemplate {
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
     private String remark;
+    private List<Map<String,Object>> children = new ArrayList<>();
+    private String state;
     private Integer status;  //状态 -1删除 0 冻结 1可用
 
     public String getRemark() {
@@ -140,5 +146,29 @@ public class MWxTemplate {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getName() {
+        return title;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Map<String, Object>> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Map<String, Object>> children) {
+        this.children = children;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }
