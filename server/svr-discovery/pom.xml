@@ -7,7 +7,7 @@
         <groupId>com.yihu.jw</groupId>
         <artifactId>svr-lib-parent-pom</artifactId>
         <version>1.0.0</version>
-        <relativePath>../svr-lib-parent-pom/pom.xml</relativePath>
+        <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>com.yihu.jw</groupId>
