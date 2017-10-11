@@ -33,10 +33,10 @@
     </distributionManagement>
     <modules>
 
-        <module>../svr-configuration</module> <!--配置服务-->
-        <module>../svr-discovery</module><!--发现服务-->
-        <module>../svr-dashboard</module><!--监控服务-->
-        <module>../svr-logServer</module><!--分布式追踪服务-->
+        <module>../server/svr-configuration</module> <!--配置服务-->
+        <module>../server/svr-discovery</module><!--发现服务-->
+        <module>../server/svr-dashboard</module><!--监控服务-->
+        <module>../server/svr-logServer</module><!--分布式追踪服务-->
 
         <!--业务微服务-->
         <module>../svr/svr-base</module><!--基础微服务-->
