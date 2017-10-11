@@ -1,0 +1,82 @@
+<div class="modal-header">
+    <button type="button" class="close"
+            data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        新 增
+    </h4>
+</div>
+<form class="form-horizontal" id="category_add" >
+    <input  id="id" type="hidden" name="id" :value="detail.id" />
+    <input  type="hidden" name="code" :value="detail.code" id="code"/>
+    <input type="hidden" name="status" :value="detail.status"/>
+    <div class="m-form-group">
+        <label class="col-sm-3 control-label no-padding-right" >版本名称: </label>
+        <div class="col-sm-2">
+            <input type="text"  class="form-control"  name="name"  :value="detail.name" required="true"/>
+        </div>
+        <label class="col-sm-2 control-label no-padding-right" >版本号:</label>
+        <div class="col-sm-5">
+            <input type="number" min="0" step="1" class="form-control"  required="true"  name="versionInt"  :value="detail.versionInt"   onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                   onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^0-9]/g,'0')}else{this.value=this.value.replace(/\D/g,'')}"/>
+        </div>
+    </div>
+
+    <div class="m-form-group">
+        <label class="col-sm-3 control-label no-padding-right" >备注:</label>
+        <div class="col-sm-2">
+            <input type="text"  class="form-control"  name="remark"  :value="detail.remark"/>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+                data-dismiss="modal">关闭
+        </button>
+        <button type="submit" class="btn btn-primary" id="btnsubmit">
+            提交
+        </button>
+    </div>
+</form>
+
+<script>
+    var code = $("#myModal-add-info").attr("data-code");//code为空,为添加
+    var contentVM = new Vue({
+        el: '#category_add',
+        data: {
+            detail: '',//记录详情信息
+            functions:''
+        },
+        replace:false
+    });
+    if(code!=""){
+        $("#myModalLabel").html("查看");
+        do_get(server+"/version/serverVersion/" + code, {}, function (data) {
+            contentVM.detail = data.obj;
+        }, function (data) {
+            debugger
+        });
+    }
+
+    $("#category_add").submit(function () {
+        var url =server+ "/version/serverVersion";
+        var id = $("#id").val();
+        var data = $("#category_add").serialize();
+        do_post(url, data, function (data) {
+            if (data.errorMsg != undefined) {
+                alert(data.errorMsg);
+                return;
+            }
+            if (id == "") {
+                alert("保存成功");
+            } else {
+                alert("修改成功");
+            }
+            $("#myModal-add-info").attr("data-reloadCode","#");
+            $('#myModal-add-info').modal('hide');
+            return;
+        })
+        return false;
+    })
+
+</script>

@@ -1,0 +1,203 @@
+<div class="modal-header">
+    <button type="button" class="close"
+            data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        新 增
+    </h4>
+</div>
+<form class="form-horizontal" role="form" action="" method="post"  id="category_add" >
+    <input  id="id" type="hidden" name="id" :value="menu.id" />
+    <input  type="hidden" name="code" :value="menu.code" />
+    <input type="hidden" name="status" value="1"/>
+    <input type="hidden" name="parentCode"  id="parentCode"/>
+    <input type="hidden" name="type" id="type"/>
+    <div id="formContent"></div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+                data-dismiss="modal">关闭
+        </button>
+        <button type="submit" class="btn btn-primary" id="btnsubmit">
+            提交
+        </button>
+    </div>
+</form>
+<script>
+
+    var type = $("#myModal-add-info").attr("data-type");
+    var parentCode = $("#myModal-add-info").attr("data-parentCode");
+    var code = $("#myModal-add-info").attr("data-code");
+    if(parentCode!=""){
+        $("#parentCode").val(parentCode);
+    }
+    getByType(type);
+    var contentVM = new Vue({
+        el: '#category_add',
+        data: {
+            menu: ''//记录详情信息
+        },
+        replace:false
+    });
+    if(code!=""){
+        $("#myModalLabel").html("查看");
+        do_get(server+"/manage/menu/"+code,{},function(data){
+            contentVM.menu = data.obj;
+        });
+    }
+
+    //添加/修改
+    $("#category_add").submit(function(){
+        var url =server+"/manage/menu";
+        var id = $("#id").val();
+        var data = $("#category_add").serialize();
+        do_post(url,data,function(data){
+            if(data.errorMsg!=undefined){
+                alert(data.errorMsg);
+                return
+            }
+            if(id==''){
+                alert("保存成功");
+            }else{
+                alert("修改成功");
+            }
+            $('#myModal-add-info').modal('hide');
+            $('#list').treegrid('reload');
+            return;
+        })
+        return false;
+    })
+
+
+    function getByType(type){
+        var formHtml = '<div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >名称 </label>\
+                     <div class="col-sm-2">\
+                        <input type="text"  class="form-control"  name="name" :value="menu.name" required="true"/>\
+                    </div>';
+        $("#type").val(type);
+        if(type==1){//只能创建模块
+            formHtml+='<label class="col-sm-2 control-label no-padding-right" >排序</label>\
+                    <div class="col-sm-5">\
+                    <input type="number"  class="form-control"  name="sort" style="width: 250px"   :value="menu.sort"/>\
+                    </div>\
+                    </div> <div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >备注</label>\
+                    <div class="col-sm-2">\
+                    <input type="text" name="remark" :value="menu.remark" class="form-control" />\
+                    </div>\
+                    </div>'
+        }
+        if(type==2){//只能创建模块
+            formHtml+='<label class="col-sm-2 control-label no-padding-right" >路径</label>\
+                    <div class="col-sm-5">\
+                    <input type="text"  class="form-control"  name="url" :value="menu.req[0].url" required="true"/>\
+                    </div>\
+                    </div> <div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >排序</label>\
+            <div class="col-sm-2">\
+                    <input type="text"  class="form-control"  name="sort"   :value="menu.sort"/>\
+                    </div>\
+                    <label class="col-sm-2 control-label no-padding-right" >备注</label>\
+                    <div class="col-sm-5">\
+                     <input type="text" name="remark" :value="menu.remark" class="form-control" />\
+                    </div>\
+                    </div>'
+        }if(type==3){
+            if(code==''){
+                formHtml+='<label class="col-sm-2 control-label no-padding-right" >排序</label>\
+                    <div class="col-sm-5">\
+                        <input type="text"  class="form-control"  name="sort"  :value="menu.sort"/>\
+                    </div>\
+                    </div>\
+                     <div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >路径</label>\
+                      <div class="col-sm-2">\
+                    <input type="text"  class="form-control"  name="url"   :value="reqMap.url"/>\
+                    </div>\
+                    <label class="col-sm-2 control-label no-padding-right" >请求方式</label>\
+                    <div class="col-sm-5">\
+                    <select class="form-control m-b"  name="method" required="true" id="method" style="display: inline" >\
+                        <option value="">--请选择--</option> \
+                        <option value="GET" >GET</option> \
+                        <option value="POST">POST</option> \
+                        <option value="PUT" >PUT</option> \
+                        <option value="DELETE">DELETE</option> \
+                    </select>\
+                    <input class="btn btn-primary" style="margin-left: 5px"  type="button" value="添加路径" onclick="addUrl()"/>\
+                    </div>\
+                     </div> \
+                     <div id="moreUrl"></div>\
+                     <div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >备注</label>\
+                    <div class="col-sm-2">\
+                   <input type="text" name="remark" :value="menu.remark" class="form-control" />\
+                    </div>\
+                      </div>\
+                    </div>'
+            }else{
+                formHtml+='<label class="col-sm-2 control-label no-padding-right" >排序</label>\
+                    <div class="col-sm-5">\
+                        <input type="text"  class="form-control"  name="sort"  :value="menu.sort"/>\
+                    </div>\
+                    </div>\
+                    <template v-for="(index,reqMap) in menu.req">\
+                     <div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >路径</label>\
+                      <div class="col-sm-2">\
+                    <input type="text"  class="form-control"  name="url"  :value="reqMap.url"/>\
+                    </div>\
+                    <label class="col-sm-2 control-label no-padding-right" >请求方式</label>\
+                    <div class="col-sm-5">\
+                    <select class="form-control m-b"  name="method" required="true" id="method" style="display: inline" :value="reqMap.method">\
+                        <option value="">--请选择--</option> \
+                        <option value="GET" >GET</option> \
+                        <option value="POST">POST</option> \
+                        <option value="PUT" >PUT</option> \
+                        <option value="DELETE">DELETE</option> \
+                    </select>\
+                    <input class="btn btn-primary" style="margin-left: 5px"  type="button" value="添加路径" onclick="addUrl()" v-if="index==0"/>\
+                   <input class="btn btn-primary" style="margin-left: 5px"  type="button" value="删除路径" onclick="removeUrl(this)"  v-if="index!=0"/>\
+                    </div>\
+                     </div> \
+                     </template>\
+                     <div id="moreUrl"></div>\
+                     <div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >备注</label>\
+                    <div class="col-sm-2">\
+                   <input type="text" name="remark" :value="menu.remark"  class="form-control" />\
+                    </div>\
+                      </div>\
+                    </div>'
+            }
+        }
+        $("#formContent").html(formHtml);
+    }
+
+    function addUrl(){
+        var old = $("#moreUrl").html();
+        var html = ' <div class="m-form-group" id="">\
+                <label class="col-sm-3 control-label no-padding-right" >路径</label>\
+                  <div class="col-sm-2">\
+                <input type="text"  class="form-control"  name="url"   :value="menu.url"  required="true" />\
+                </div>\
+                <label class="col-sm-2 control-label no-padding-right" >请求方式</label>\
+                <div class="col-sm-5">\
+                <select class="form-control m-b"  name="method" required="true" id="method" style="display: inline">\
+                    <option value="">--请选择--</option> \
+                    <option value="GET" >GET</option> \
+                    <option value="POST">POST</option> \
+                    <option value="PUT" >PUT</option> \
+                    <option value="DELETE">DELETE</option> \
+                </select>\
+                <input class="btn btn-primary" style="margin-left: 5px"  type="button" value="删除路径" onclick="removeUrl(this)"/>\
+                </div>\
+                 </div>';
+        var newHtml = old+html;
+        $("#moreUrl").html(newHtml);
+    }
+    function removeUrl(obj){
+        $(obj).parent().parent().remove();
+    }
+
+</script>

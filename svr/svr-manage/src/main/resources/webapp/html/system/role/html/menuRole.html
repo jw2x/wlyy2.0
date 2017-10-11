@@ -1,0 +1,96 @@
+<style>
+    .userRole tr:nth-child(0) {
+        background: #fff
+    }
+</style>
+<link href="../../../common/css/bootstrap/plugins/jsTree/style.min.css" rel="stylesheet">
+<script type="text/javascript" src="../../../common/js/plugins/jsTree/jstree.min.js"></script>
+<div class="modal-header">
+    <button type="button" class="close"
+            data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        权限配置
+    </h4>
+</div>
+<div id="divTree" style="width: 100%;height:500px;background: blanchedalmond; overflow:auto" ></div>
+<div class="modal-footer">
+    <form id="menuRoleForm" >
+        <button type="button" class="btn btn-default"
+                data-dismiss="modal" id="close">关闭
+        </button>
+        <button type="submit" class="btn btn-primary" id="btnsubmit">
+            保存
+        </button>
+    </form>
+</div>
+<script>
+    var roleCode = $("#myModal").attr("data-code");
+    var existMenuCodes = "";
+    getExistMenuCodes();
+    $("#divTree").jstree({
+        "core": {
+            'data' : function (obj, callback) {
+                var jsonarray = [];
+                do_get(server+"/manage/menu/menuTree",{}, function (result) {
+                    changeData(result);
+                    jsonarray = result;
+                },function(data){},false)
+                callback.call(this, jsonarray);
+            }
+        },
+        "checkbox": {
+            "keep_selected_style": false
+        },
+        "plugins": ["wholerow", "checkbox"]
+    })
+
+    $("#menuRoleForm").submit(function(){
+        var codeArr = $('#divTree').jstree().get_checked(); //获取所有选中的节点
+        var menuCodes = codeArr.join(",");
+       var data = {
+            menuCodes:menuCodes,
+            roleCode:roleCode
+        };
+        do_get(server+"/manage/menuRole/change",data,function(data){
+            reloadPrivilege();
+            alert("保存成功");
+            $("#close").click();
+        },function(data){
+        })
+        return false;
+    })
+
+    function getExistMenuCodes(){
+        var url = server+"/manage/menuRole/getMenuRoles";
+        var data={
+            roleCode:roleCode
+        }
+        do_get(url,data,function(data){
+            existMenuCodes = data;
+        },function(data){
+
+        },false)
+    }
+
+    function reloadPrivilege(){
+        do_get(server+"/manage/menuRole/reloadPrivilege",{})
+    }
+
+    /**
+     * 将返回的数据封装成jstree可用的格式
+     */
+    function changeData(data){
+        for(var i=0;i<data.length;i++){
+            data[i].id = data[i].code;
+            data[i].state={};
+            data[i].state.selected=$.inArray(data[i].code,existMenuCodes)>-1;
+        }
+        for(var i=0;i<data.length;i++){
+            if(data[i].children!=undefined && data[i].children.length>0){
+                changeData(data[i].children)
+            }
+        }
+    }
+</script>

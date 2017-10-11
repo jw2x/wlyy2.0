@@ -1,0 +1,79 @@
+<div class="modal-header">
+    <button type="button" class="close"
+            data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        新 增
+    </h4>
+</div>
+<form class="form-horizontal" role="form" action="" method="post"  id="category_add" >
+    <input  id="id" type="hidden" name="id" :value="detail.id" />
+    <input  type="hidden" name="code" :value="detail.code" />
+    <input type="hidden" name="status" value="1"/>
+    <input type="hidden" name="parentCode" id="parentCode"/>
+    <div class="m-form-group">
+        <label class="col-sm-4 control-label no-padding-right" >模块名称: </label>
+        <div class="col-sm-6">
+            <input type="text"  class="form-control"  name="name"  required="true"  :value="detail.name"/>
+        </div>
+    </div>
+    <div class="m-form-group">
+        <label class="col-sm-4 control-label no-padding-right" >描&#12288;&#12288;述: </label>
+        <div class="col-sm-6">
+            <textarea style="width:115%;height:150px;" :value="detail.remark" name="remark"></textarea>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+                data-dismiss="modal">关闭
+        </button>
+        <button type="submit" class="btn btn-primary" id="btnsubmit">
+            提交
+        </button>
+    </div>
+</form>
+<script>
+
+    var parentCode = $("#myModal").attr("data-parentCode");
+    var code = $("#myModal").attr("data-code");//code为空,为添加
+    if(parentCode!=""){
+        $("#parentCode").val(parentCode);
+    }
+    var contentVM = new Vue({
+        el: '#category_add',
+        data: {
+            detail: ''//记录详情信息
+        },
+        replace:false
+    });
+    if(code!=""){
+        $("#myModalLabel").html("查看");
+        do_get(server+"/bases//module/"+code,{},function(data){
+            contentVM.detail = data.obj;
+        });
+    }
+
+    //添加/修改
+    $("#category_add").submit(function(){
+        var url =server+"/bases//module";
+        var id = $("#id").val();
+        var data = $("#category_add").serialize();
+        do_post(url,data,function(data){
+            if(data.errorMsg!=undefined){
+                alert(data.errorMsg);
+                return
+            }
+            if(id==''){
+                alert("保存成功");
+            }else{
+                alert("修改成功");
+            }
+            $('#myModal').modal('hide');
+            $('#list').treegrid('reload');
+            return;
+        })
+        return false;
+    })
+</script>

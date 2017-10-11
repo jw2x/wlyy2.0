@@ -1,0 +1,240 @@
+<div class="modal-header">
+    <button type="button" class="close"
+            data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        新 增
+    </h4>
+</div>
+<form class="form-horizontal" role="form" action="" method="post"  id="category_add" >
+    <input  id="id" type="hidden" name="id" :value="menu.id" />
+    <input  type="hidden" name="code" :value="menu.code" />
+    <input type="hidden" name="status" value="1"/>
+    <input type="hidden" id="haveChildMenus" :value="menu.haveChildMenus"/>
+    <input type="hidden" id="wechatCode" :value="menu.wechatCode" name="wechatCode"/>
+    <input type="hidden" id="supMenucode" name="supMenucode" :value="menu.supMenucode"/>
+    <div class="m-form-group">
+        <label class="col-sm-3 control-label no-padding-right" >菜单名: </label>
+        <div class="col-sm-2">
+            <input type="text"  class="form-control" required="true" name="name"  :value="menu.name"/>
+        </div>
+        <label class="col-sm-2 control-label no-padding-right" >排序:</label>
+        <div class="col-sm-5">
+            <input type="text"  class="form-control"  name="sort"   :value="menu.sort"/>
+        </div>
+    </div>
+
+    <div class="m-form-group" >
+        <label class="col-sm-3 control-label no-padding-right" >类型:</label>
+        <div class="col-sm-2">
+            <select class="form-control m-b" name="type" id="type" onchange="changeInput()">
+                <option value="" :selected="menu.type==''|| menu.type==null ">无事件的一级菜单</option>
+                <option value="click" :selected="menu.type=='click' ">点击推事件</option>
+                <option value="view" :selected="menu.type=='view' ">跳转URL</option>
+                <option value="scancode_push" :selected="menu.type=='scancode_push' ">扫码推事件</option>
+                <option value="scancode_waitmsg"  :selected="menu.type=='scancode_waitmsg' ">扫码带提示</option>
+                <option value="pic_sysphoto" :selected="menu.type=='pic_sysphoto' ">弹出系统拍照发图</option>
+                <option value="pic_photo_or_album" :selected="menu.type=='pic_photo_or_album' ">弹出拍照或者相册发图</option>
+                <option value="pic_weixin" :selected="menu.type=='pic_weixin' ">弹出微信相册发图器</option>
+                <option value="location_select" :selected="menu.type=='location_select' ">弹出地理位置选择器</option>
+                <option value="media_id" :selected="menu.type=='media_id' ">下发消息(除文本消息)</option>
+                <option value="view_limited" :selected="menu.type=='view_limited' ">跳转图文消息URL</option>
+                <option value="miniprogram" :selected="menu.type=='miniprogram' ">跳转到小程序</option>
+            </select>
+        </div>
+        <label class="col-sm-2 control-label no-padding-right" >备注:</label>
+        <div class="col-sm-5">
+            <input type="text" name="remark" :value="menu.remark" class="form-control" />
+        </div>
+    </div>
+
+    <div id="seletDiv"></div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="close"
+                data-dismiss="modal">关闭
+        </button>
+        <button type="submit" class="btn btn-primary" id="btnsubmit">
+            提交
+        </button>
+    </div>
+</form>
+<script>
+    var contentVM = new Vue({
+        el: '#category_add',
+        data: {
+            menu: '',//记录详情信息
+            wechatConfigs:'',
+            parentMenus:''//记录父菜单
+        },
+        replace:false
+    });
+    contentVM.$watch('menu',function(val){
+        changeInput();
+    })
+    contentVM.$watch('parentMenus',function(val){
+        selectParentMenu();
+    })
+    var code = $("#myModal-add-info").attr("data-code");
+    var wechatCode = $("#myModal-add-info").attr("data-wechatCode");
+    var parentCode = $("#myModal-add-info").attr("data-parentCode");
+    $("#supMenucode").val(parentCode);
+    $("#wechatCode").val(wechatCode);
+    if(code!=''){
+        //查找数据(详情)
+        $("#myModalLabel").html("查看");
+        do_get(server+"/wechat/menu/"+code,{},function(data){
+            contentVM.menu = data.obj;
+            getParentMenus(contentVM.menu.wechatCode);
+            if(contentVM.menu.supMenucode==null||contentVM.menu.supMenucode==''){
+                var parentMenuCode = contentVM.menu.code;
+                //判断该父菜单是否存在子菜单
+                var url = server+"/wechat/childMenu/list/"+parentMenuCode;
+                do_get(url,{},function(data){
+                    var list = data.obj;
+                    if(list!=undefined&&list.length>0){
+                        //有子菜单
+                        $("#supMenucode").attr("disabled","disabled");
+                    }else{
+                        $("#supMenucode option[value='"+ parentMenuCode +"']").remove();
+                    }
+                },function(data){
+                })
+            }
+        },function(data){
+
+        });
+    }
+    do_get(server+"/wechat/wechatConfig/listNoPage",{},function(data){
+        contentVM.wechatConfigs = data.detailModelList;
+    },function(data){
+
+    })
+    selectParentMenu();
+
+    function getParentMenus(wechatCode){
+        var url = server+"/wechat/parentMenu/"+wechatCode;
+        do_get(url,{},
+                function(data){
+                    contentVM.parentMenus = data.obj;
+                },
+                function(data){
+                }
+        )
+    }
+
+    function wechatConfigChanged(){
+        var checked = $("#wechatCode").val();//获取wechatConfig的code
+        //通过code查找该微信号下的父菜单
+        getParentMenus(checked);
+    }
+
+    function selectParentMenu(){
+        var supMenucode = $("#supMenucode").val();
+        if(supMenucode!=0){
+            $("#type option[value='']").remove();
+        }else{
+            $("#type").prepend('<option value="" :selected="menu.type==\'\'|| menu.type==null ">无事件的一级菜单</option>');
+        }
+    }
+
+
+    //根据类型设置html
+    function changeInput(){
+        $("#seletDiv").html("");
+        //判断是否有子菜单
+        var haveChildMenus = $("#haveChildMenus").val();
+        if(haveChildMenus=="true"){//有子菜单
+            $("#type").val("");
+            $("#type").attr("disabled","disabled");
+            return;
+        }
+        var type = $("#type").val();
+        if(type==""||type=="scancode_push"||type=="scancode_waitmsg"||type=="pic_sysphoto"||type=="pic_photo_or_album"||type=="pic_weixin"||type=="location_select"){
+            return
+        }else if(type=='click'){
+            var value = contentVM.menu.menuKey;
+            if(value==null||value==undefined){
+                value="";
+            }
+            var html = '<div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >key值:</label>\
+                    <div class="col-sm-2">\
+                     <input type="text" name="menuKey" value="'+value+'" style="width: 250px" class="form-control" required="true" />\
+                    </div>\
+                    </div>';
+            $("#seletDiv").html(html);
+            return
+        }else if(type=='view'){
+            var value = contentVM.menu.url;
+            if(value==null||value==undefined){
+                value="";
+            }
+            var html = '<div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >跳转地址:</label>\
+                    <div class="col-sm-2">\
+                     <input type="text" name="url" value="'+ value +'" style="width: 250px" class="form-control" required="true"/>\
+                    </div>\
+                    </div>';
+            $("#seletDiv").html(html);
+            return
+        }else if(type=='media_id'||type=='view_limited'){
+            var value = contentVM.menu.mediaId;
+            if(value==null||value==undefined){
+                value="";
+            }
+            var html = '<div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >永久素材id:</label>\
+                    <div class="col-sm-2">\
+                     <input type="text" name="mediaId" value="'+ value +'"  style="width: 250px" class="form-control" required="true"/>\
+                    </div>\
+                    </div>';
+            $("#seletDiv").html(html);
+            return
+        }else if(type=='miniprogram'){
+            var appid = contentVM.menu.appid;
+            if(appid==null||appid==undefined){
+                appid="";
+            }
+            var pagepath = contentVM.menu.pagepath;
+            if(pagepath==null||pagepath==undefined){
+                pagepath="";
+            }
+            var html = '<div class="m-form-group">\
+                    <label class="col-sm-3 control-label no-padding-right" >小程序appid:</label>\
+                    <div class="col-sm-2">\
+                     <input type="text" name="appid" value="'+appid+'" style="width: 250px" class="form-control" required="true"/>\
+                    </div>\
+                     <label class="col-sm-2 control-label no-padding-right" >页面路径:</label>\
+                    <div class="col-sm-5">\
+                     <input type="text" name="pagepath" value="'+pagepath+'" style="width: 250px" class="form-control" required="true"/>\
+                    </div>\
+                    </div>';
+            $("#seletDiv").html(html);
+            return
+        }
+    }
+
+    $("#category_add").submit(function(){
+        var id = $("#id").val();
+        var data = $("#category_add").serialize();
+        var url = server+"/wechat/menu"
+        do_post(url,data,function(data){
+            if(data.errorMsg!=undefined){
+                alert(data.errorMsg);
+                return
+            }
+            if(id==''){
+                alert("保存成功");
+            }else{
+                alert("修改成功");
+            }
+            $('#myModal-add-info').modal('hide');
+            $('#list').treegrid('reload');
+            return;
+
+        })
+        return false;
+    })
+</script>

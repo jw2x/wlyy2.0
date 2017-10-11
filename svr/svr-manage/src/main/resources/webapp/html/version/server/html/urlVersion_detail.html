@@ -1,0 +1,104 @@
+<div class="modal-header">
+    <button type="button" class="close"
+            data-dismiss="modal" aria-hidden="true">
+        &times;
+    </button>
+    <h4 class="modal-title" id="myModalLabel">
+        新 增
+    </h4>
+</div>
+
+<form class="form-horizontal" role="form" action="" method="post"  id="category_add" >
+    <input  id="id" type="hidden" name="id" :value="detail.id" />
+    <input  type="hidden" name="code" :value="detail.code" />
+    <input type="hidden" name="status" value="1"/>
+    <input type="hidden" id="serverCode" name="serverCode" :value="detail.serverCode" />
+    <div class="m-form-group">
+        <label class="col-sm-3 control-label no-padding-right" >后台URL版本名称</label>
+        <div class="col-sm-2">
+            <input type="text"  class="form-control" required="true" name="name"  :value="detail.name"/>
+        </div>
+        <label class="col-sm-2 control-label no-padding-right" >功能名称</label>
+        <div class="col-sm-5">
+            <select class="form-control m-b" name="functionCode" required="true">
+                <option value="" :selected="">--请选择--</option>
+                <option v-for="func in functions"  :value="func.code" :selected="detail.functionCode==func.code">{{func.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="m-form-group">
+        <label class="col-sm-3 control-label no-padding-right" >版本号</label>
+        <div class="col-sm-2">
+            <input type="text"  class="form-control"  name="versionInt"  required="true" :value="detail.versionInt" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"/>
+        </div>
+        <label class="col-sm-2 control-label no-padding-right" >备注</label>
+        <div class="col-sm-5">
+            <input type="text"  class="form-control"  name="remark" :value="detail.remark"/>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default"
+                data-dismiss="modal">关闭
+        </button>
+        <button type="submit" class="btn btn-primary" id="btnsubmit">
+            提交
+        </button>
+    </div>
+</form>
+
+<script>
+    var code = $("#myModal-add-info").attr("data-code");//code为空,为添加
+    var serverCode =  $("#myModal-add-info").attr("data-serverCode");//serverCode,判定属于哪个后台版本
+    var contentVM = new Vue({
+        el: '#category_add',
+        data: {
+            detail: {serverCode:serverCode},//记录详情信息
+            functions:''
+        },
+        replace:false
+    });
+    if(code!=""){
+        $("#myModalLabel").html("查看");
+        do_get(server+"/version/serverUrl/"+code,{},function(data){
+            contentVM.detail = data.obj;
+        },function(data){
+        });
+    }
+
+    getFunctions();
+
+
+    //添加/修改
+    $("#category_add").submit(function(){
+        var url = server+"/version/serverUrl";
+        var id = $("#id").val();
+        var data = $("#category_add").serialize();
+        do_post(url,data,function(data){
+            if(data.errorMsg!=undefined){
+                alert(data.errorMsg);
+                return
+            }
+            if(id==''){
+                alert("保存成功");
+            }else{
+                alert("修改成功");
+            }
+            $("#myModal-add-info").attr("data-reloadCode",serverCode);
+            $('#myModal-add-info').modal('hide');
+            return;
+        },function(data){
+
+        })
+        return false;
+    })
+
+
+    //获取功能列表
+    function getFunctions(){
+        do_get(server+"/bases/function/listNoPage",{},function(data){
+            contentVM.functions=data;
+        })
+    }
+
+
+</script>
