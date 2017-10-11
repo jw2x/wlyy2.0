@@ -5,14 +5,15 @@
      svr    业务微服务  
         svr-base 基础微服务
         svr-quota 统计微服务
-     svr-configuration    配置服务 
-        涉及主要技术 git(存储配置文件) 
-     svr-discovery    发现服务 
-        涉及主要技术 euruka ribbon 
-     svr-dashboard    监控服务 
-        涉及主要技术 hystrix,hystrix-dashboard
-     svr-logServer 分布式追踪
-        涉及主要技术 zipkin 
+    server
+         svr-configuration    配置服务 
+            涉及主要技术 git(存储配置文件) 
+         svr-discovery    发现服务 
+            涉及主要技术 euruka ribbon 
+         svr-dashboard    监控服务 
+            涉及主要技术 hystrix,hystrix-dashboard
+         svr-logServer 分布式追踪
+            涉及主要技术 zipkin 
      common-lib-parent-pom    common公共工程的maven父pom
      jw-lib-parent-pom   jw业务公共工程的maven父pom 
      web-gateway 对外的接口网关
