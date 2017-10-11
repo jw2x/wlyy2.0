@@ -17,5 +17,13 @@
               discovery:
                 enabled: true ##使用发现服务
                 service-id: svr-configurations ##配置服务的名字
+                
+                
+                
+查询微服务的配置
+    
+    http://localhost:1221/svr-quota/jwdev         
+        svr-quota:微服务的name   
+        jwdev 环境变量
 
         
