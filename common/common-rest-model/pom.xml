@@ -24,6 +24,10 @@
             <artifactId>common-log</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-exception</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>

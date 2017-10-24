@@ -1,9 +1,7 @@
 package com.yihu.jw.config.mvc;
 
-import com.yihu.jw.restmodel.exception.SecurityException;
-import com.yihu.jw.restmodel.exception.SystemException;
-import com.yihu.jw.restmodel.exception.business.JiWeiException;
-import com.yihu.jw.restmodel.exception.business.ManageException;
+import com.yihu.jw.exception.business.JiWeiException;
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.restmodel.gateway.GatewayContanrts;
 import org.json.JSONObject;
 import org.slf4j.Logger;

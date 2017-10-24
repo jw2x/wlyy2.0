@@ -4,8 +4,8 @@ import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.model.version.BaseServerVersion;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
-import com.yihu.jw.restmodel.base.version.BaseVersionContants;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseVersionRequestMapping;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.UUID;
 @Service
 public class ServerVersionService {
 
-    @Value("${spring.gateway}"+ BaseVersionContants.api_common)
+    @Value("${spring.gateway}"+ BaseVersionRequestMapping.api_common)
     private String url;
     @Autowired
     private RestTemplate template;
@@ -50,7 +50,7 @@ public class ServerVersionService {
         }
         req.put("filters", filters);
 
-        Envelop forObject = template.getForObject(url + BaseVersionContants.BaseServerVersion.api_getList+"?size={size}&page={page}&sorts={sorts}&filters={filters}",
+        Envelop forObject = template.getForObject(url + BaseVersionRequestMapping.BaseServerVersion.api_getList+"?size={size}&page={page}&sorts={sorts}&filters={filters}",
                 Envelop.class, req);
         return forObject;
     }
@@ -78,11 +78,11 @@ public class ServerVersionService {
         HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
         Envelop envelop =null;
         if(baseServerVersion.getId()==null){//说明是保存
-            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + BaseVersionContants.BaseServerVersion.api_create, formEntity, Envelop.class);
+            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + BaseVersionRequestMapping.BaseServerVersion.api_create, formEntity, Envelop.class);
             envelop = responseEntity.getBody();
             return envelop;
         }
-        ResponseEntity<Envelop> resp = template.exchange(url + BaseVersionContants.BaseServerVersion.api_update, HttpMethod.PUT,formEntity,Envelop.class);
+        ResponseEntity<Envelop> resp = template.exchange(url + BaseVersionRequestMapping.BaseServerVersion.api_update, HttpMethod.PUT,formEntity,Envelop.class);
         envelop = resp.getBody();
         return envelop;
     }
@@ -114,6 +114,6 @@ public class ServerVersionService {
             filters.put("saasId", saasId);
         }
         req.put("filters", filters);
-        return template.getForObject(url+ BaseVersionContants.BaseServerVersion.api_getListNoPage+"?filters={filters}",Envelop.class,req);
+        return template.getForObject(url+ BaseVersionRequestMapping.BaseServerVersion.api_getListNoPage+"?filters={filters}",Envelop.class,req);
     }
 }

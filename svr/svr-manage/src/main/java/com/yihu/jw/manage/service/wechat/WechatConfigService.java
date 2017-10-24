@@ -5,8 +5,8 @@ import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.wx.MWxWechat;
-import com.yihu.jw.restmodel.wx.WechatContants;
+import com.yihu.jw.restmodel.base.wx.MWxWechat;
+import com.yihu.jw.rm.wx.WechatRequestMapping;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.Map;
 @Service
 public class WechatConfigService {
 
-    @Value("${spring.gateway}"+ WechatContants.api_common)
+    @Value("${spring.gateway}"+ WechatRequestMapping.api_common)
     private String url;
 
     @Autowired
@@ -51,7 +51,7 @@ public class WechatConfigService {
         }
         String filterStr = JSONObject.fromObject(filters).toString();
         req.put("filters",filterStr);
-        return template.getForObject(url +WechatContants.WxConfig.api_getWechats+"?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,req);
+        return template.getForObject(url +WechatRequestMapping.WxConfig.api_getWechats+"?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,req);
 
     }
 
@@ -96,11 +96,11 @@ public class WechatConfigService {
         HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
         Envelop envelop =null;
         if(wechatConfig.getId()==null){//说明是保存
-            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + WechatContants.WxConfig.api_create, formEntity, Envelop.class);
+            ResponseEntity<Envelop> responseEntity = template.postForEntity(url + WechatRequestMapping.WxConfig.api_create, formEntity, Envelop.class);
             envelop = responseEntity.getBody();
             return envelop;
         }
-        ResponseEntity<Envelop> resp = template.exchange(url + WechatContants.WxConfig.api_update,HttpMethod.PUT,formEntity,Envelop.class);
+        ResponseEntity<Envelop> resp = template.exchange(url + WechatRequestMapping.WxConfig.api_update,HttpMethod.PUT,formEntity,Envelop.class);
         envelop = resp.getBody();
         return envelop;
     }
@@ -110,7 +110,7 @@ public class WechatConfigService {
         map.put("fields",fields);
         map.put("sorts",sorts);
         map.put("filter",filter);
-        Envelop forObject = template.getForObject(url + WechatContants.WxConfig.api_getWechatNoPage+"?fields={fields}&filter={filter}&sorts={sorts}", Envelop.class,map);
+        Envelop forObject = template.getForObject(url + WechatRequestMapping.WxConfig.api_getWechatNoPage+"?fields={fields}&filter={filter}&sorts={sorts}", Envelop.class,map);
         return forObject;
     }
 }

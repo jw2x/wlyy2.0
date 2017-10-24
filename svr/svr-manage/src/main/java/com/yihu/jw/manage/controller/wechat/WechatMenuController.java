@@ -3,8 +3,8 @@ package com.yihu.jw.manage.controller.wechat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.service.wechat.WechatMenuService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.wx.MWxMenu;
-import com.yihu.jw.restmodel.wx.WechatContants;
+import com.yihu.jw.restmodel.base.wx.MWxMenu;
+import com.yihu.jw.rm.wx.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,14 +19,14 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping(WechatContants.api_common)
+@RequestMapping(WechatRequestMapping.api_common)
 @Api(description = "微信菜单管理")
 public class WechatMenuController {
 
     @Autowired
     private WechatMenuService menuService;
 
-    @GetMapping(value=WechatContants.WxMenu.api_getWxMenus)
+    @GetMapping(value=WechatRequestMapping.WxMenu.api_getWxMenus)
     @ApiOperation(value = "分页获取微信菜单列表")
     public Map<String,Object> list(
             @ApiParam(name = "name", value = "菜单名", required = false) @RequestParam(required = false, name = "name") String name,
@@ -59,7 +59,7 @@ public class WechatMenuController {
         return envelop;
     }
 
-    @GetMapping(value = WechatContants.WxMenu.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxMenu.api_getByCode)
     @ApiOperation(value = "根据code查找菜单", notes = "根据code查找菜单")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -80,14 +80,14 @@ public class WechatMenuController {
         return envelop;
     }
 
-    @PostMapping(value = WechatContants.WxMenu.api_create)
+    @PostMapping(value = WechatRequestMapping.WxMenu.api_create)
     @ApiOperation(value = "保存或者修改微信菜单", notes = "保存或者修改微信菜单")
     public Envelop saveOrUpdate(@ModelAttribute @Valid MWxMenu menu,@RequestParam String userCode) throws JsonProcessingException {
         Envelop envelop = menuService.saveOrUpdate(menu,userCode);
         return envelop;
     }
 
-    @GetMapping(value = WechatContants.WxMenu.api_getParentMenu)
+    @GetMapping(value = WechatRequestMapping.WxMenu.api_getParentMenu)
     @ApiOperation(value = "根据微信code查找父菜单", notes = "根据微信code查找父菜单")
     public List getParentMenu(
             @ApiParam(name = "wechatCode", value = "wechatCode")
@@ -101,7 +101,7 @@ public class WechatMenuController {
         return (List)obj;
     }
 
-    @GetMapping(WechatContants.WxMenu.api_getChildMenus)
+    @GetMapping(WechatRequestMapping.WxMenu.api_getChildMenus)
     @ApiOperation(value = "根据父菜单code获取子菜单")
     public List getChildMenus(
             @ApiParam(name = "parentCode", value = "parentCode")

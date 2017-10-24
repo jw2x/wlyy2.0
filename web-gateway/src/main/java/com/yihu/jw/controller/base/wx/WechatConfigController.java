@@ -2,10 +2,10 @@ package com.yihu.jw.controller.base.wx;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.yihu.jw.commnon.base.wx.WechatContants;
+import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.wx.WechatFegin;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.exception.business.JiWeiException;
-import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +34,7 @@ public class WechatConfigController {
 
     @ApiVersion(1)
     @ApiOperation(value = "创建微信配置")
-    @PostMapping(value = WechatContants.WxConfig.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WechatContants.Config.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
@@ -49,7 +49,7 @@ public class WechatConfigController {
 
     @ApiVersion(1)
     @ApiOperation(value = "更新微信配置")
-    @PutMapping(value = WechatContants.WxConfig.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WechatContants.Config.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
@@ -62,7 +62,7 @@ public class WechatConfigController {
     }
 
     @ApiVersion(1)
-    @DeleteMapping(value = WechatContants.WxConfig.api_delete)
+    @DeleteMapping(value = WechatContants.Config.api_delete)
     @ApiOperation(value = "删除微信配置", notes = "删除微信配置")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -79,7 +79,7 @@ public class WechatConfigController {
     }
 
     @ApiVersion(1)
-    @GetMapping(value = WechatContants.WxConfig.api_getByCode)
+    @GetMapping(value = WechatContants.Config.api_getByCode)
     @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -92,7 +92,7 @@ public class WechatConfigController {
     }
 
     @ApiVersion(1)
-    @RequestMapping(value = WechatContants.WxConfig.api_getWechats, method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.Config.api_getWechats, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信配置列表(分页)")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -123,7 +123,7 @@ public class WechatConfigController {
     }
 
     @ApiVersion(1)
-    @GetMapping(value = WechatContants.WxConfig.api_getWechatNoPage)
+    @GetMapping(value = WechatContants.Config.api_getWechatNoPage)
     @ApiOperation(value = "获取微信列表配置，不分页")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间

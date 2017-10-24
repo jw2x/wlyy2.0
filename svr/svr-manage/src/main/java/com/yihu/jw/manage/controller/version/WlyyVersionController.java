@@ -3,8 +3,8 @@ package com.yihu.jw.manage.controller.version;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.model.version.WlyyVersion;
 import com.yihu.jw.manage.service.version.WlyyVersionService;
-import com.yihu.jw.restmodel.base.version.BaseVersionContants;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseVersionRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,13 +19,13 @@ import java.util.Map;
  * Created by chenweida on 2017/6/20.
  */
 @RestController
-@RequestMapping(BaseVersionContants.api_common)
+@RequestMapping(BaseVersionRequestMapping.api_common)
 @Api(description = "app版本管理")
 public class WlyyVersionController {
     @Autowired
     private WlyyVersionService wlyyVersionService;
 
-    @GetMapping(BaseVersionContants.WlyyVersion.api_getList)
+    @GetMapping(BaseVersionRequestMapping.WlyyVersion.api_getList)
     @ApiOperation(value = "分页获取app版本列表")
     public Envelop list(
             @ApiParam(name = "name", value = "版本名称", required = false) @RequestParam(required = false, name = "name") String name,
@@ -69,7 +69,7 @@ public class WlyyVersionController {
         return envelop;
     }
 
-    @PostMapping(BaseVersionContants.WlyyVersion.api_create)
+    @PostMapping(BaseVersionRequestMapping.WlyyVersion.api_create)
     @ApiOperation(value = "保存/更新服务端版本", notes = "保存/更新服务端版本")
     public Envelop saveOrUpdate(@ModelAttribute @Valid WlyyVersion version,String userCode) throws JsonProcessingException {
         return wlyyVersionService.saveOrUpdate(version,userCode);

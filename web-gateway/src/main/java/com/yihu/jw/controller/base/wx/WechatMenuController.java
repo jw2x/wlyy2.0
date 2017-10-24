@@ -2,10 +2,10 @@ package com.yihu.jw.controller.base.wx;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.yihu.jw.commnon.base.wx.WechatContants;
+import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.wx.WechatMenuFegin;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.exception.business.JiWeiException;
-import com.yihu.jw.restmodel.wx.WechatContants;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class WechatMenuController {
     private Tracer tracer;
 
     @ApiVersion(1)
-    @PostMapping(value = WechatContants.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WechatContants.Menu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -50,7 +50,7 @@ public class WechatMenuController {
     }
 
 
-    @PutMapping(value = WechatContants.WxMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WechatContants.Menu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改微信菜单", notes = "修改微信菜单")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -63,7 +63,7 @@ public class WechatMenuController {
     }
 
     @ApiVersion(1)
-    @DeleteMapping(value = WechatContants.WxMenu.api_delete)
+    @DeleteMapping(value = WechatContants.Menu.api_delete)
     @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -78,7 +78,7 @@ public class WechatMenuController {
         return wechatMenuFegin.deleteWxMenu(codes,userCode,userName);
     }
 
-    @GetMapping(value = WechatContants.WxMenu.api_getByCode)
+    @GetMapping(value = WechatContants.Menu.api_getByCode)
      @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
      @HystrixCommand(commandProperties = {
              @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -90,7 +90,7 @@ public class WechatMenuController {
         return wechatMenuFegin.findByCode(code);
     }
 
-    @RequestMapping(value = WechatContants.WxMenu.api_getWxMenus, method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.Menu.api_getWxMenus, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信菜单列表(分页)")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -120,7 +120,7 @@ public class WechatMenuController {
     }
 
 
-    @GetMapping(value = WechatContants.WxMenu.api_getWxMenuNoPage)
+    @GetMapping(value = WechatContants.Menu.api_getWxMenuNoPage)
     @ApiOperation(value = "获取微信菜单列表，不分页")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -141,7 +141,7 @@ public class WechatMenuController {
      * @return
      */
     @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
-    @RequestMapping(value = WechatContants.WxMenu.api_createMenu ,method = RequestMethod.GET)
+    @RequestMapping(value = WechatContants.Menu.api_createMenu ,method = RequestMethod.GET)
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
@@ -151,7 +151,7 @@ public class WechatMenuController {
         return wechatMenuFegin.createWechatMenu(wechatCode);
     }
 
-    @GetMapping(value = WechatContants.WxMenu.api_getParentMenu)
+    @GetMapping(value = WechatContants.Menu.api_getParentMenu)
     @ApiOperation(value = "根据微信code查找父菜单", notes = "根据微信code查找父菜单")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
@@ -163,7 +163,7 @@ public class WechatMenuController {
         return wechatMenuFegin.getParentMenu(wechatCode);
     }
 
-    @GetMapping(value = WechatContants.WxMenu.api_getChildMenus)
+    @GetMapping(value = WechatContants.Menu.api_getChildMenus)
     @ApiOperation(value = "根据parentCode查找子菜单", notes = "根据parentCode查找子菜单")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间

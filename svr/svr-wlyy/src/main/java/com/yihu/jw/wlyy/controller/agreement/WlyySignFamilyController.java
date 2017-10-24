@@ -1,9 +1,9 @@
 package com.yihu.jw.wlyy.controller.agreement;
 
+import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
+import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import com.yihu.jw.wlyy.entity.agreement.WlyySignFamily;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
 import io.swagger.annotations.Api;
@@ -20,53 +20,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(WlyyAgreementContants.SignFamily.api_common)
+@RequestMapping(WlyyRequestMapping.api_common)
 @Api(value = "签约相关操作", description = "签约相关操作")
 public class WlyySignFamilyController extends EnvelopRestController {
 
     @Autowired
     private WlyySignFamilyService wlyySignFamilyService;
 
-    @PostMapping(value = WlyyAgreementContants.SignFamily.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WlyyRequestMapping.SignFamily.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建签约", notes = "创建签约")
     public Envelop create(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws ParseException {
         try {
             WlyySignFamily wlyySignFamily = toEntity(jsonData, WlyySignFamily.class);
-            return Envelop.getSuccess(WlyyAgreementContants.SignFamily.message_success_create, wlyySignFamilyService.create(wlyySignFamily));
+            return Envelop.getSuccess(WlyyRequestMapping.SignFamily.message_success_create, wlyySignFamilyService.create(wlyySignFamily));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = WlyyAgreementContants.SignFamily.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WlyyRequestMapping.SignFamily.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改签约", notes = "修改签约")
     public Envelop update(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws ParseException {
         try {
             WlyySignFamily wlyySignFamily = toEntity(jsonData, WlyySignFamily.class);
-            return Envelop.getSuccess(WlyyAgreementContants.SignFamily.message_success_update, wlyySignFamilyService.update(wlyySignFamily));
+            return Envelop.getSuccess(WlyyRequestMapping.SignFamily.message_success_update, wlyySignFamilyService.update(wlyySignFamily));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WlyyAgreementContants.SignFamily.api_getByCode)
+    @GetMapping(value = WlyyRequestMapping.SignFamily.api_getByCode)
     @ApiOperation(value = "根据code查找协议", notes = "根据code查找协议")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(WlyyAgreementContants.SignFamily.message_success_find, wlyySignFamilyService.findByCode(code));
+            return Envelop.getSuccess(WlyyRequestMapping.SignFamily.message_success_find, wlyySignFamilyService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = WlyyAgreementContants.SignFamily.api_queryPage, method = RequestMethod.GET)
+    @RequestMapping(value = WlyyRequestMapping.SignFamily.api_queryPage, method = RequestMethod.GET)
     @ApiOperation(value = "分页获取协议")
     public Envelop queryPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
@@ -90,11 +90,11 @@ public class WlyySignFamilyController extends EnvelopRestController {
         //封装返回格式
         List<WlyySignFamily> wlyySignFamily = convertToModels(list, new ArrayList<>(list.size()), WlyySignFamily.class, fields);
 
-        return Envelop.getSuccessListWithPage(WlyyAgreementContants.SignFamily.message_success_find_functions,wlyySignFamily, page, size,count);
+        return Envelop.getSuccessListWithPage(WlyyRequestMapping.SignFamily.message_success_find_functions,wlyySignFamily, page, size,count);
     }
 
 
-    @GetMapping(value = WlyyAgreementContants.SignFamily.api_getList)
+    @GetMapping(value = WlyyRequestMapping.SignFamily.api_getList)
     @ApiOperation(value = "获取协议列表(不分页)")
     public Envelop getList(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
@@ -107,7 +107,7 @@ public class WlyySignFamilyController extends EnvelopRestController {
         List<WlyySignFamily> list = wlyySignFamilyService.search(fields,filters,sorts);
         //封装返回格式
         List<WlyySignFamily> wlyySignFamily = convertToModels(list, new ArrayList<>(list.size()), WlyySignFamily.class, fields);
-        return Envelop.getSuccessList(WlyyAgreementContants.SignFamily.message_success_find_functions,wlyySignFamily);
+        return Envelop.getSuccessList(WlyyRequestMapping.SignFamily.message_success_find_functions,wlyySignFamily);
     }
 
 }

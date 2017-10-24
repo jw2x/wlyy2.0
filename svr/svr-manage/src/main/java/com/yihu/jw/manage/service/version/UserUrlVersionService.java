@@ -2,8 +2,8 @@ package com.yihu.jw.manage.service.version;
 
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
-import com.yihu.jw.restmodel.base.version.BaseVersionContants;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseVersionRequestMapping;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @Service
 public class UserUrlVersionService {
-    @Value("${spring.gateway}"+ BaseVersionContants.api_common)
+    @Value("${spring.gateway}"+ BaseVersionRequestMapping.api_common)
     private String url;
     @Autowired
     private RestTemplate template;
@@ -43,7 +43,7 @@ public class UserUrlVersionService {
         req.put("userCode",userCode);
         req.put("userName",userName);
         req.put("saasId",saasId);
-        return template.getForObject(url+ BaseVersionContants.UserUrlVersion.api_changeUserVersion+"?serverCode={serverCode}&userCodes={userCodes}&userCode={userCode}&userName={userName}&saasId={saasId}",Envelop.class,req);
+        return template.getForObject(url+ BaseVersionRequestMapping.UserUrlVersion.api_changeUserVersion+"?serverCode={serverCode}&userCodes={userCodes}&userCode={userCode}&userName={userName}&saasId={saasId}",Envelop.class,req);
 
     }
 
@@ -59,6 +59,6 @@ public class UserUrlVersionService {
             filters.put("bsvCode", bsvCode);
         }
         req.put("filters", filters);
-        return template.getForObject(url+ BaseVersionContants.UserUrlVersion.api_getListNoPage+"?filters={filters}",Envelop.class,req);
+        return template.getForObject(url+ BaseVersionRequestMapping.UserUrlVersion.api_getListNoPage+"?filters={filters}",Envelop.class,req);
     }
 }

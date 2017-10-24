@@ -1,6 +1,6 @@
 package com.yihu.jw.controller.base.version;
 
-import com.yihu.jw.restmodel.base.version.BaseVersionContants;
+import com.yihu.jw.commnon.base.base.BaseVersionContants;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by chenweida on 2017/5/19.
  */
 @RestController
-@RequestMapping("{version}/"+BaseVersionContants.api_common)
+@RequestMapping("{version}/"+ BaseVersionContants.api_common)
 @Api(value = "服务器版本日志模块", description = "服务器版本日志模块接口管理")
 public class ServerVersionLogController extends EnvelopRestController {
     /*@Autowired

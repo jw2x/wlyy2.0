@@ -2,10 +2,10 @@ package com.yihu.jw.controller.base.version;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.yihu.jw.commnon.base.base.BaseVersionContants;
+import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.version.ServerUrlVersionFegin;
-import com.yihu.jw.restmodel.base.version.BaseVersionContants;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.exception.business.JiWeiException;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by chenweida on 2017/6/20.
  */
 @RestController
-@RequestMapping("{version}"+BaseVersionContants.api_common)
+@RequestMapping("{version}"+ BaseVersionContants.api_common)
 @Api(value = "服务器URL版本模块", description = "服务器URL版本模块接口管理")
 public class ServerUrlVersionController {
 

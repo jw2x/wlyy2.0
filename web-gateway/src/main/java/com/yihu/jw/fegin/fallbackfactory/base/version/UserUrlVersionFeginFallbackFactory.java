@@ -1,8 +1,8 @@
 package com.yihu.jw.fegin.fallbackfactory.base.version;
 
+import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.version.UserUrlVersionFegin;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.exception.business.JiWeiException;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;

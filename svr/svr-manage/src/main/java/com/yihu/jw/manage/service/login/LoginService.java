@@ -1,5 +1,6 @@
 package com.yihu.jw.manage.service.login;
 
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.manage.cache.login.LoginCache;
 import com.yihu.jw.manage.dao.login.ManageLoginLogDao;
 import com.yihu.jw.manage.model.login.ManageLoginLog;
@@ -8,7 +9,6 @@ import com.yihu.jw.manage.service.system.ManageMenuUrlService;
 import com.yihu.jw.manage.service.system.MenuService;
 import com.yihu.jw.manage.service.system.RoleService;
 import com.yihu.jw.manage.service.system.UserService;
-import com.yihu.jw.restmodel.exception.business.ManageException;
 import com.yihu.jw.restmodel.manage.system.ManageUserVO;
 import com.yihu.jw.util.security.MD5;
 import org.springframework.beans.BeanUtils;

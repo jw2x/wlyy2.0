@@ -2,6 +2,7 @@ package com.yihu.jw.manage.controller.base;
 
 import com.yihu.jw.manage.service.base.SaasService;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -17,7 +18,7 @@ import java.util.List;
  * Created by Administrator on 2017/6/13 0013.
  */
 @RestController
-@RequestMapping("/base")
+@RequestMapping(BaseRequestMapping.api_common)
 @Api(description = "saas相关")
 public class SaasController {
 

@@ -17,6 +17,14 @@
     <dependencies>
         <dependency>
             <groupId>com.yihu.jw</groupId>
+            <artifactId>common-request-mapping</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-exception</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
         <dependency>

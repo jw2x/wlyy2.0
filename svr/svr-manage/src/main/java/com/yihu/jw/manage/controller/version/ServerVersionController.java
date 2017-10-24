@@ -3,8 +3,8 @@ package com.yihu.jw.manage.controller.version;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.model.version.BaseServerVersion;
 import com.yihu.jw.manage.service.version.ServerVersionService;
-import com.yihu.jw.restmodel.base.version.BaseVersionContants;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseVersionRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,13 +20,13 @@ import java.util.Map;
  * Created by chenweida on 2017/6/20.
  */
 @RestController
-@RequestMapping(BaseVersionContants.api_common)
+@RequestMapping(BaseVersionRequestMapping.api_common)
 @Api(description = "服务端版本管理")
 public class ServerVersionController {
     @Autowired
     private ServerVersionService serverVersionService;
 
-    @GetMapping(BaseVersionContants.BaseServerVersion.api_getList)
+    @GetMapping(BaseVersionRequestMapping.BaseServerVersion.api_getList)
     @ApiOperation(value = "分页获取服务端版本列表")
     public Map<String,Object> list(
             @ApiParam(name = "name", value = "版本名称", required = false) @RequestParam(required = false, name = "name") String name,
@@ -78,13 +78,13 @@ public class ServerVersionController {
         return envelop;
     }
 
-    @PostMapping(BaseVersionContants.BaseServerVersion.api_create)
+    @PostMapping(BaseVersionRequestMapping.BaseServerVersion.api_create)
     @ApiOperation(value = "保存/更新服务端版本", notes = "保存/更新服务端版本")
     public Envelop saveOrUpdate(@ModelAttribute @Valid BaseServerVersion baseServerVersion,String userCode) throws JsonProcessingException {
         return serverVersionService.saveOrUpdate(baseServerVersion,userCode);
     }
 
-    @GetMapping(BaseVersionContants.BaseServerVersion.api_getListNoPage)
+    @GetMapping(BaseVersionRequestMapping.BaseServerVersion.api_getListNoPage)
     @ApiOperation(value = "获取服务端版本列表")
     public List getListNoPage(@ApiParam(name = "saasId", value = "saasId", required = false) @RequestParam(required = false, name = "saasId") String saasId) {
         Map<String, Object> req = new HashMap<String, Object>();
