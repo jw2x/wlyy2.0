@@ -2,11 +2,11 @@ package com.yihu.jw.controller.base;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yihu.jw.fegin.base.ModuleFegin;
-import com.yihu.jw.restmodel.base.base.BaseContants;
+import com.yihu.jw.commnon.base.base.BaseContants;
+import com.yihu.jw.exception.business.JiWeiException;
+import com.yihu.jw.fegin.base.base.ModuleFegin;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.exception.business.JiWeiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

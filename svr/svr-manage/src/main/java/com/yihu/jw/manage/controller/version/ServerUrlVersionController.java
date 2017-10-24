@@ -3,8 +3,8 @@ package com.yihu.jw.manage.controller.version;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.model.version.BaseServerUrlVersion;
 import com.yihu.jw.manage.service.version.ServerUrlVersionService;
-import com.yihu.jw.restmodel.base.version.BaseVersionContants;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseVersionRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,14 +20,14 @@ import java.util.Map;
  * Created by chenweida on 2017/6/20.
  */
 @RestController
-@RequestMapping(BaseVersionContants.api_common)
+@RequestMapping(BaseVersionRequestMapping.api_common)
 @Api(description = "服务端版本管理")
 public class ServerUrlVersionController {
 
     @Autowired
     private ServerUrlVersionService serverUrlVersionService;
 
-    @GetMapping(BaseVersionContants.BaseServerUrlVersion.api_getList)
+    @GetMapping(BaseVersionRequestMapping.BaseServerUrlVersion.api_getList)
     @ApiOperation(value = "分页获取服务端版本列表")
     public Envelop list(
             @ApiParam(name = "name", value = "版本名称", required = false) @RequestParam(required = false, name = "name") String name,
@@ -48,7 +48,7 @@ public class ServerUrlVersionController {
         }
     }
 
-    @GetMapping(BaseVersionContants.BaseServerUrlVersion.api_getListNoPage)
+    @GetMapping(BaseVersionRequestMapping.BaseServerUrlVersion.api_getListNoPage)
     @ApiOperation(value = "获取服务端版本列表(不分页)")
     public List<Map<String,Object>> getListNoPage(
             @ApiParam(name = "serverCode", value = "后台版本code", required = false) @RequestParam(required = false, name = "serverCode") String serverCode,
@@ -86,7 +86,7 @@ public class ServerUrlVersionController {
         return envelop;
     }
 
-    @PostMapping(BaseVersionContants.BaseServerUrlVersion.api_create)
+    @PostMapping(BaseVersionRequestMapping.BaseServerUrlVersion.api_create)
     @ApiOperation(value = "保存/更新服务端版本", notes = "保存/更新服务端版本")
     public Envelop saveOrUpdate(@ModelAttribute @Valid BaseServerUrlVersion version,String userCode) throws JsonProcessingException {
         return serverUrlVersionService.saveOrUpdate(version,userCode);

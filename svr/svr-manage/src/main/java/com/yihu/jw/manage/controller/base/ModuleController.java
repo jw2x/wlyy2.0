@@ -2,9 +2,9 @@ package com.yihu.jw.manage.controller.base;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.service.base.ModuleService;
-import com.yihu.jw.restmodel.base.base.BaseContants;
 import com.yihu.jw.restmodel.base.base.MModule;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,13 +21,13 @@ import java.util.Map;
  * Created by chenweida on 2017/6/20.
  */
 @RestController
-@RequestMapping(BaseContants.api_common)
+@RequestMapping(BaseRequestMapping.api_common)
 @Api(description = "模块管理")
 public class ModuleController {
     @Autowired
     private ModuleService moduleService;
 
-    @GetMapping(BaseContants.Module.api_getList)
+    @GetMapping(BaseRequestMapping.Module.api_getList)
     @ApiOperation(value = "分页获取模块列表")
     public Map list(
             @ApiParam(name = "name", value = "模块名称", required = false) @RequestParam(required = false, name = "name") String name,
@@ -56,7 +56,7 @@ public class ModuleController {
     }
 
 
-    @DeleteMapping(value = BaseContants.Module.api_delete)
+    @DeleteMapping(value = BaseRequestMapping.Module.api_delete)
     @ApiOperation(value = "通过codes删除,多个code用,分割", notes = "通过codes删除")
     public Envelop deleteByCodes(
             @ApiParam(name = "codes", value = "codes")
@@ -68,7 +68,7 @@ public class ModuleController {
         return envelop;
     }
 
-    @GetMapping(value = BaseContants.Module.api_getByCode)
+    @GetMapping(value = BaseRequestMapping.Module.api_getByCode)
     @ApiOperation(value = "根据code查找", notes = "根据code查找")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -78,7 +78,7 @@ public class ModuleController {
         return envelop;
     }
 
-    @GetMapping(value = BaseContants.Module.api_getChildren)
+    @GetMapping(value = BaseRequestMapping.Module.api_getChildren)
     @ApiOperation(value = "查找子节点", notes = "查找子节点")
     public List<Map<String,Object>> getChildren(@PathVariable String code){
         Envelop envelop = moduleService.getChildren(code);
@@ -88,13 +88,13 @@ public class ModuleController {
         return (List)envelop.getObj();
     }
 
-    @PostMapping(BaseContants.Module.api_create)
+    @PostMapping(BaseRequestMapping.Module.api_create)
     @ApiOperation(value = "保存/更新", notes = "保存/更新")
     public Envelop saveOrUpdate(@ModelAttribute @Valid MModule module,String userCode) throws JsonProcessingException {
         return moduleService.saveOrUpdate(module,userCode);
     }
 
-    @GetMapping(BaseContants.Module.api_getListNoPage)
+    @GetMapping(BaseRequestMapping.Module.api_getListNoPage)
     @ApiOperation(value = "获取模块列表")
     public List getListNoPage(@ApiParam(name = "saasId", value = "saasId", required = false) @RequestParam(required = false, name = "saasId") String saasId) {
         Map<String, Object> req = new HashMap<String, Object>();
@@ -106,14 +106,14 @@ public class ModuleController {
         return list;
     }
 
-    @GetMapping(BaseContants.ModuleFun.api_getExistFun)
+    @GetMapping(BaseRequestMapping.ModuleFun.api_getExistFun)
     @ApiOperation(value = "获取已经存在功能")
     public List<String> getExistFun(@ApiParam(name = "code", value = "模块code", required = true) @PathVariable(required = true, name = "code") String code){
         List<String> funcs = moduleService.getExistFun(code);
         return funcs;
     }
 
-    @PutMapping(value = BaseContants.ModuleFun.api_changeFun)
+    @PutMapping(value = BaseRequestMapping.ModuleFun.api_changeFun)
     @ApiOperation(value = "模块更新功能")
     public Envelop changeFun (@RequestParam String funCodes,
                               @RequestParam String moduleCode) {

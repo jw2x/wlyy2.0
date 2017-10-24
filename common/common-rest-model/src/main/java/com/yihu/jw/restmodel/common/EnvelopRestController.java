@@ -2,7 +2,8 @@ package com.yihu.jw.restmodel.common;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.restmodel.exception.ApiException;
+import com.yihu.jw.exception.ApiException;
+import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.util.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,7 +69,7 @@ public class EnvelopRestController {
             T entity = objectMapper.readValue(json, entityCls);
             return entity;
         } catch (IOException ex) {
-            throw new ApiException("Unable to parse json, " + ex.getMessage(), CommonContants.common_error_params_code);
+            throw new ApiException("Unable to parse json, " + ex.getMessage(), ExceptionCode.common_error_params_code);
         }
     }
 

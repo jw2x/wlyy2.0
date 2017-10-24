@@ -1,5 +1,6 @@
 package com.yihu.jw.manage.controller.login;
 
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.manage.adapter.CacheAdapter;
 import com.yihu.jw.manage.adapter.cache.model.LoginCacheModel;
 import com.yihu.jw.manage.aop.annotation.ManageLog;
@@ -9,7 +10,6 @@ import com.yihu.jw.manage.service.system.MenuRoleService;
 import com.yihu.jw.manage.service.system.UserRoleService;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.exception.business.ManageException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

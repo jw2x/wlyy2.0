@@ -2,11 +2,10 @@ package com.yihu.jw.controller;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.yihu.jw.exception.SystemException;
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.fegin.PatientFegin;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.exception.SystemException;
-import com.yihu.jw.restmodel.exception.SecurityException;
-import com.yihu.jw.restmodel.exception.business.ManageException;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +36,7 @@ public class PatientController {
     private PatientFegin patientFegin;
     @Autowired
     private Tracer tracer;
-    @Value("${test.aaa}")
+//    @Value("${test.aaa}")
     private String aaaa;
 
     @GetMapping("/hello")

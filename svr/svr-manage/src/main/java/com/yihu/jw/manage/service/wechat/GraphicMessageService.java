@@ -5,8 +5,8 @@ import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.wx.MWxGraphicMessage;
-import com.yihu.jw.restmodel.wx.WechatContants;
+import com.yihu.jw.restmodel.base.wx.MWxGraphicMessage;
+import com.yihu.jw.rm.wx.WechatRequestMapping;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import java.util.Map;
 @Service
 public class GraphicMessageService {
 
-    @Value("${spring.gateway}"+ WechatContants.api_common)
+    @Value("${spring.gateway}"+ WechatRequestMapping.api_common)
     private String url;
 
     @Autowired
@@ -52,7 +52,7 @@ public class GraphicMessageService {
         }
         String filterStr = JSONObject.fromObject(filters).toString();
         req.put("filters",filterStr);
-        Envelop forObject = template.getForObject(url +WechatContants.WxGraphicMessage.api_getWxGraphicMessages+ "?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,req);
+        Envelop forObject = template.getForObject(url +WechatRequestMapping.WxGraphicMessage.api_getWxGraphicMessages+ "?size={size}&page={page}&sorts={sorts}&filters={filters}", Envelop.class,req);
         return forObject;
 
     }
@@ -97,11 +97,11 @@ public class GraphicMessageService {
         HttpEntity<String> formEntity = new HttpEntity<String>(jsonObj.toString(), headers);
         Envelop envelop =null;
         if(graphicMessage.getId()==null){//说明是保存
-            ResponseEntity<Envelop> responseEntity = template.postForEntity(url +WechatContants.WxGraphicMessage.api_create, formEntity, Envelop.class);
+            ResponseEntity<Envelop> responseEntity = template.postForEntity(url +WechatRequestMapping.WxGraphicMessage.api_create, formEntity, Envelop.class);
             envelop = responseEntity.getBody();
             return envelop;
         }
-        ResponseEntity<Envelop> resp = template.exchange(url + WechatContants.WxGraphicMessage.api_update,HttpMethod.PUT,formEntity,Envelop.class);
+        ResponseEntity<Envelop> resp = template.exchange(url + WechatRequestMapping.WxGraphicMessage.api_update,HttpMethod.PUT,formEntity,Envelop.class);
         envelop = resp.getBody();
 
         return envelop;

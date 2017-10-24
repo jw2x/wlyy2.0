@@ -1,9 +1,10 @@
 package com.yihu.jw.fegin.base.wx;
 
+import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.fegin.fallbackfactory.base.wx.AccessTokenFeginFallbackFactory;
-import com.yihu.jw.restmodel.common.CommonContants;
+import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.wx.WechatContants;
+import com.yihu.jw.rm.wx.WechatRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
         name = CommonContants.svr_base // name值是eurika的实例名字
         ,fallbackFactory  = AccessTokenFeginFallbackFactory.class
 )
-@RequestMapping(value = WechatContants.WxAccessToken.api_common)
+@RequestMapping(value =  WechatRequestMapping.api_common)
 public interface AccessTokenFegin {
 
-    @RequestMapping(value = WechatContants.WxAccessToken.api_get, method = RequestMethod.GET)
+    @RequestMapping(value = WechatRequestMapping.WxAccessToken.api_get, method = RequestMethod.GET)
     Envelop getWxAccessToken(@RequestParam(value = "wechatCode") String wechatCode) ;
 
 }

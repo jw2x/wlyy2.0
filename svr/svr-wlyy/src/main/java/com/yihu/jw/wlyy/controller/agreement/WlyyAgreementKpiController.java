@@ -1,9 +1,9 @@
 package com.yihu.jw.wlyy.controller.agreement;
 
+import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
+import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import com.yihu.jw.wlyy.entity.agreement.WlyyAgreementKpi;
 import com.yihu.jw.wlyy.service.agreement.WlyyAgreementKpiService;
 import io.swagger.annotations.Api;
@@ -19,67 +19,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(WlyyAgreementContants.AgreementKpi.api_common)
+@RequestMapping(WlyyRequestMapping.api_common)
 @Api(value = "套餐指标相关操作", description = "套餐指标相关操作")
 public class WlyyAgreementKpiController extends EnvelopRestController {
 
     @Autowired
     private WlyyAgreementKpiService wlyyAgreementKpiService;
 
-    @PostMapping(value = WlyyAgreementContants.AgreementKpi.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WlyyRequestMapping.AgreementKpi.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建套餐指标", notes = "创建套餐指标")
     public Envelop create(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WlyyAgreementKpi wlyyAgreementKpi = toEntity(jsonData, WlyyAgreementKpi.class);
-            return Envelop.getSuccess(WlyyAgreementContants.AgreementKpi.message_success_create, wlyyAgreementKpiService.create(wlyyAgreementKpi));
+            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpi.message_success_create, wlyyAgreementKpiService.create(wlyyAgreementKpi));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = WlyyAgreementContants.AgreementKpi.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WlyyRequestMapping.AgreementKpi.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改套餐指标", notes = "修改套餐指标")
     public Envelop update(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WlyyAgreementKpi wlyyAgreementKpi = toEntity(jsonData, WlyyAgreementKpi.class);
-            return Envelop.getSuccess(WlyyAgreementContants.AgreementKpi.message_success_update, wlyyAgreementKpiService.update(wlyyAgreementKpi));
+            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpi.message_success_update, wlyyAgreementKpiService.update(wlyyAgreementKpi));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @DeleteMapping(value = WlyyAgreementContants.AgreementKpi.api_delete)
+    @DeleteMapping(value = WlyyRequestMapping.AgreementKpi.api_delete)
     @ApiOperation(value = "删除套餐指标", notes = "删除套餐指标")
     public Envelop delete(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
         try {
             wlyyAgreementKpiService.delete(code);
-            return Envelop.getSuccess(WlyyAgreementContants.AgreementKpi.message_success_delete );
+            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpi.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WlyyAgreementContants.AgreementKpi.api_getByCode)
+    @GetMapping(value = WlyyRequestMapping.AgreementKpi.api_getByCode)
     @ApiOperation(value = "根据code查找套餐指标", notes = "根据code查找套餐指标")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(WlyyAgreementContants.AgreementKpi.message_success_find, wlyyAgreementKpiService.findByCode(code));
+            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpi.message_success_find, wlyyAgreementKpiService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = WlyyAgreementContants.AgreementKpi.api_queryPage, method = RequestMethod.GET)
+    @RequestMapping(value = WlyyRequestMapping.AgreementKpi.api_queryPage, method = RequestMethod.GET)
     @ApiOperation(value = "分页获取套餐指标")
     public Envelop queryPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,agreementCode,kpiName,type,kpiTimes,status,del,kpiContent,keyword")
@@ -103,11 +103,11 @@ public class WlyyAgreementKpiController extends EnvelopRestController {
         //封装返回格式
         List<WlyyAgreementKpi> wlyyAgreementKpi = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementKpi.class, fields);
 
-        return Envelop.getSuccessListWithPage(WlyyAgreementContants.AgreementKpi.message_success_find_functions,wlyyAgreementKpi, page, size,count);
+        return Envelop.getSuccessListWithPage(WlyyRequestMapping.AgreementKpi.message_success_find_functions,wlyyAgreementKpi, page, size,count);
     }
 
 
-    @GetMapping(value = WlyyAgreementContants.AgreementKpi.api_getList)
+    @GetMapping(value = WlyyRequestMapping.AgreementKpi.api_getList)
     @ApiOperation(value = "获取套餐指标列表(不分页)")
     public Envelop getList(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,agreementCode,kpiName,type,kpiTimes,status,del,kpiContent,keyword")
@@ -120,7 +120,7 @@ public class WlyyAgreementKpiController extends EnvelopRestController {
         List<WlyyAgreementKpi> list = wlyyAgreementKpiService.search(fields,filters,sorts);
         //封装返回格式
         List<WlyyAgreementKpi> wlyyAgreementKpi = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementKpi.class, fields);
-        return Envelop.getSuccessList(WlyyAgreementContants.AgreementKpi.message_success_find_functions,wlyyAgreementKpi);
+        return Envelop.getSuccessList(WlyyRequestMapping.AgreementKpi.message_success_find_functions,wlyyAgreementKpi);
     }
 
 }

@@ -1,9 +1,9 @@
 package com.yihu.jw.wlyy.controller.agreement;
 
+import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.restmodel.wlyy.agreement.WlyyAgreementContants;
+import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import com.yihu.jw.wlyy.entity.agreement.WlyyAgreement;
 import com.yihu.jw.wlyy.service.agreement.WlyyAgreementService;
 import io.swagger.annotations.Api;
@@ -19,67 +19,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(WlyyAgreementContants.Agreement.api_common)
+@RequestMapping(WlyyRequestMapping.api_common)
 @Api(value = "协议相关操作", description = "协议相关操作")
 public class WlyyAgreementController extends EnvelopRestController {
 
     @Autowired
     private WlyyAgreementService wlyyAgreementService;
 
-    @PostMapping(value = WlyyAgreementContants.Agreement.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WlyyRequestMapping.Agreement.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建协议", notes = "创建协议")
     public Envelop create(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WlyyAgreement wlyyAgreement = toEntity(jsonData, WlyyAgreement.class);
-            return Envelop.getSuccess(WlyyAgreementContants.Agreement.message_success_create, wlyyAgreementService.create(wlyyAgreement));
+            return Envelop.getSuccess(WlyyRequestMapping.Agreement.message_success_create, wlyyAgreementService.create(wlyyAgreement));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @PutMapping(value = WlyyAgreementContants.Agreement.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = WlyyRequestMapping.Agreement.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改协议", notes = "修改协议")
     public Envelop update(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             WlyyAgreement wlyyAgreement = toEntity(jsonData, WlyyAgreement.class);
-            return Envelop.getSuccess(WlyyAgreementContants.Agreement.message_success_update, wlyyAgreementService.update(wlyyAgreement));
+            return Envelop.getSuccess(WlyyRequestMapping.Agreement.message_success_update, wlyyAgreementService.update(wlyyAgreement));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
 
-    @DeleteMapping(value = WlyyAgreementContants.Agreement.api_delete)
+    @DeleteMapping(value = WlyyRequestMapping.Agreement.api_delete)
     @ApiOperation(value = "删除协议", notes = "删除协议")
     public Envelop delete(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code) {
         try {
             wlyyAgreementService.delete(code);
-            return Envelop.getSuccess(WlyyAgreementContants.Agreement.message_success_delete );
+            return Envelop.getSuccess(WlyyRequestMapping.Agreement.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WlyyAgreementContants.Agreement.api_getByCode)
+    @GetMapping(value = WlyyRequestMapping.Agreement.api_getByCode)
     @ApiOperation(value = "根据code查找协议", notes = "根据code查找协议")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
             @RequestParam(value = "code", required = true) String code
     ) {
         try {
-            return Envelop.getSuccess(WlyyAgreementContants.Agreement.message_success_find, wlyyAgreementService.findByCode(code));
+            return Envelop.getSuccess(WlyyRequestMapping.Agreement.message_success_find, wlyyAgreementService.findByCode(code));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @RequestMapping(value = WlyyAgreementContants.Agreement.api_queryPage, method = RequestMethod.GET)
+    @RequestMapping(value = WlyyRequestMapping.Agreement.api_queryPage, method = RequestMethod.GET)
     @ApiOperation(value = "分页获取协议")
     public Envelop queryPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
@@ -103,11 +103,11 @@ public class WlyyAgreementController extends EnvelopRestController {
         //封装返回格式
         List<WlyyAgreement> wlyyAgreement = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreement.class, fields);
 
-        return Envelop.getSuccessListWithPage(WlyyAgreementContants.Agreement.message_success_find_functions,wlyyAgreement, page, size,count);
+        return Envelop.getSuccessListWithPage(WlyyRequestMapping.Agreement.message_success_find_functions,wlyyAgreement, page, size,count);
     }
 
 
-    @GetMapping(value = WlyyAgreementContants.Agreement.api_getList)
+    @GetMapping(value = WlyyRequestMapping.Agreement.api_getList)
     @ApiOperation(value = "获取协议列表(不分页)")
     public Envelop getList(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,parentCode,saasId,name,price,posterPic,remark,type,status")
@@ -120,7 +120,7 @@ public class WlyyAgreementController extends EnvelopRestController {
         List<WlyyAgreement> list = wlyyAgreementService.search(fields,filters,sorts);
         //封装返回格式
         List<WlyyAgreement> wlyyAgreement = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreement.class, fields);
-        return Envelop.getSuccessList(WlyyAgreementContants.Agreement.message_success_find_functions,wlyyAgreement);
+        return Envelop.getSuccessList(WlyyRequestMapping.Agreement.message_success_find_functions,wlyyAgreement);
     }
 
 }

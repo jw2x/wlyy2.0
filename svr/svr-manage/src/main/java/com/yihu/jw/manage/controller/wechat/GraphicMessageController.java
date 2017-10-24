@@ -3,8 +3,8 @@ package com.yihu.jw.manage.controller.wechat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.service.wechat.GraphicMessageService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.wx.MWxGraphicMessage;
-import com.yihu.jw.restmodel.wx.WechatContants;
+import com.yihu.jw.restmodel.base.wx.MWxGraphicMessage;
+import com.yihu.jw.rm.wx.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,14 +19,14 @@ import java.util.Map;
  * Created by Administrator on 2017/6/13 0013.
  */
 @RestController
-@RequestMapping(WechatContants.api_common)
+@RequestMapping(WechatRequestMapping.api_common)
 @Api(description = "微信图文消息管理")
 public class GraphicMessageController {
 
     @Autowired
     private GraphicMessageService graphicMessageService;
 
-    @GetMapping(WechatContants.WxGraphicMessage.api_getWxGraphicMessages)
+    @GetMapping(WechatRequestMapping.WxGraphicMessage.api_getWxGraphicMessages)
     @ApiOperation(value = "分页获取微信图文列表")
     public Envelop list(
             @ApiParam(name = "title", value = "标题", required = false) @RequestParam(required = false, name = "title") String title,
@@ -49,7 +49,7 @@ public class GraphicMessageController {
     }
 
 
-    @DeleteMapping(value = WechatContants.WxGraphicMessage.api_delete)
+    @DeleteMapping(value = WechatRequestMapping.WxGraphicMessage.api_delete)
     @ApiOperation(value = "通过codes删除,多个code用,分割", notes = "通过codes删除")
     public Envelop deleteByCodes(
             @ApiParam(name = "codes", value = "codes")
@@ -61,7 +61,7 @@ public class GraphicMessageController {
         return envelop;
     }
 
-    @GetMapping(value = WechatContants.WxGraphicMessage.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxGraphicMessage.api_getByCode)
     @ApiOperation(value = "根据code查找图文消息", notes = "根据code查找图文消息")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -71,7 +71,7 @@ public class GraphicMessageController {
         return envelop;
     }
 
-    @PostMapping(value = WechatContants.WxGraphicMessage.api_create)
+    @PostMapping(value = WechatRequestMapping.WxGraphicMessage.api_create)
     @ApiOperation(value = "保存或者修改微信图文消息", notes = "保存或者修改微信图文消息")
     public Envelop saveOrUpdate(@ModelAttribute @Valid MWxGraphicMessage graphicMessage,@RequestParam String userCode) throws JsonProcessingException {
         return graphicMessageService.saveOrUpdate(graphicMessage,userCode);

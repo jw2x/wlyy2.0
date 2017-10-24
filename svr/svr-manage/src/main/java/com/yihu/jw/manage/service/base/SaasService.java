@@ -1,7 +1,7 @@
 package com.yihu.jw.manage.service.base;
 
-import com.yihu.jw.restmodel.base.base.BaseContants;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,7 +33,7 @@ public class SaasService {
     }
 
     public List getListNoPage() {
-        Envelop envelop = template.getForObject(url +"/"+ BaseContants.Saas.api_common+BaseContants.Saas.api_getSaassNoPage,Envelop.class);
+        Envelop envelop = template.getForObject(url +"/"+ BaseRequestMapping.api_common+BaseRequestMapping.Saas.api_getSaassNoPage,Envelop.class);
         List list = envelop.getDetailModelList();
         return list;
     }

@@ -1,9 +1,9 @@
 package com.yihu.jw.wlyy.service.patient;
 
+import com.yihu.jw.exception.ApiException;
+import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.mysql.query.BaseJpaService;
-import com.yihu.jw.restmodel.common.CommonContants;
-import com.yihu.jw.restmodel.exception.ApiException;
-import com.yihu.jw.restmodel.wlyy.patient.WlyyPatientContants;
+import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import com.yihu.jw.util.AddressUtils;
 import com.yihu.jw.util.CusAccessObjectUtil;
 import com.yihu.jw.wlyy.dao.patient.AdvertisementDao;
@@ -47,19 +47,19 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
     @Transient
      public WlyyAdvertisement create(WlyyAdvertisement advertisement) {
         if (StringUtils.isEmpty(advertisement.getCode())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_code_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(advertisement.getSaasId())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_saasid_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(advertisement.getName())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_name_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(advertisement.getPicture())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_picture_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_picture_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(advertisement.getStatus())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_status_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_status_is_null, ExceptionCode.common_error_params_code);
         }
         //设置创建时间和修改时间
         Date date = new Date();
@@ -72,28 +72,28 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
     public WlyyAdvertisement update(WlyyAdvertisement advertisement) {
         String code = advertisement.getCode();
         if (StringUtils.isEmpty(code)) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_code_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(advertisement.getSaasId())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_saasid_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(advertisement.getName())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_name_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(advertisement.getPicture())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_picture_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_picture_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(advertisement.getStatus())) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_status_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_status_is_null, ExceptionCode.common_error_params_code);
         }
         Long id = advertisement.getId();
         if (StringUtils.isEmpty(id)) {
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_picture_is_null, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_picture_is_null, ExceptionCode.common_error_params_code);
         }
         //根据id获取修改前的记录
         WlyyAdvertisement advertisement1 = findById(id);
         if(null == advertisement1){
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_wlyyAdvertisement_is_not_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_wlyyAdvertisement_is_not_exist, ExceptionCode.common_error_params_code);
         }
         //设置创建时间和修改时间
         Date date = new Date();
@@ -114,7 +114,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
     public void delete(String code) {
         WlyyAdvertisement advertisement = findByCode(code);
         if(advertisement==null){
-            throw new ApiException(WlyyPatientContants.Advertisement.message_fail_wlyyAdvertisement_is_not_exist, CommonContants.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_wlyyAdvertisement_is_not_exist, ExceptionCode.common_error_params_code);
         }
         advertisement.setStatus(-1);
         advertisementDao.save(advertisement);

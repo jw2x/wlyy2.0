@@ -3,8 +3,8 @@ package com.yihu.jw.manage.controller.wechat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.service.wechat.WechatConfigService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.wx.MWxWechat;
-import com.yihu.jw.restmodel.wx.WechatContants;
+import com.yihu.jw.restmodel.base.wx.MWxWechat;
+import com.yihu.jw.rm.wx.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,14 +19,14 @@ import java.util.Map;
  * Created by Administrator on 2017/6/13 0013.
  */
 @RestController
-@RequestMapping(WechatContants.api_common)
+@RequestMapping(WechatRequestMapping.api_common)
 @Api(description = "微信配置管理")
 public class WechatConfigController {
 
     @Autowired
     private WechatConfigService wechatConfigService;
 
-    @GetMapping(WechatContants.WxConfig.api_getWechats)
+    @GetMapping(WechatRequestMapping.WxConfig.api_getWechats)
     @ApiOperation(value = "分页获取微信配置列表")
     public Envelop list(
             @ApiParam(name = "name", value = "微信名", required = false) @RequestParam(required = false, name = "name") String name,
@@ -49,7 +49,7 @@ public class WechatConfigController {
     }
 
 
-    @DeleteMapping(value = WechatContants.WxConfig.api_delete)
+    @DeleteMapping(value = WechatRequestMapping.WxConfig.api_delete)
     @ApiOperation(value = "通过codes删除,多个code用,分割", notes = "通过codes删除")
     public Envelop deleteByCodes(
             @ApiParam(name = "codes", value = "codes")
@@ -62,7 +62,7 @@ public class WechatConfigController {
         return envelop;
     }
 
-    @GetMapping(value = WechatContants.WxConfig.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxConfig.api_getByCode)
     @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -72,13 +72,13 @@ public class WechatConfigController {
         return envelop;
     }
 
-    @PostMapping(value = WechatContants.WxConfig.api_create)
+    @PostMapping(value = WechatRequestMapping.WxConfig.api_create)
     @ApiOperation(value = "保存微信配置", notes = "保存微信配置")
     public Envelop save(@ModelAttribute @Valid MWxWechat wechatConfig,@RequestParam String userCode) throws JsonProcessingException {
         return wechatConfigService.saveOrUpdate(wechatConfig, userCode);
     }
 
-    @GetMapping(WechatContants.WxConfig.api_getWechatNoPage)
+    @GetMapping(WechatRequestMapping.WxConfig.api_getWechatNoPage)
     @ApiOperation(value = "获取微信配置列表")
     public Envelop listNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,name,saasId,appId,appSecret,baseUrl,remark")

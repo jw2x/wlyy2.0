@@ -1,10 +1,10 @@
 package com.yihu.jw.controller.base.version;
 
+import com.yihu.jw.commnon.base.base.BaseVersionContants;
+import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.version.WlyyVersionFegin;
-import com.yihu.jw.restmodel.base.version.BaseVersionContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.exception.business.JiWeiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
  */
 
 @RestController
-@RequestMapping("{version}/"+BaseVersionContants.api_common)
+@RequestMapping("{version}/"+ BaseVersionContants.api_common)
 @Api(value = "i健康APP版本模块", description = "i健康APP版本模块接口管理")
 public class WlyyVersionController  extends EnvelopRestController {
 

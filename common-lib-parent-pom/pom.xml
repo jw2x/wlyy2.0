@@ -21,6 +21,8 @@
         <module>../common/common-util</module>
         <module>../common/common-rest-model</module>
         <module>../common/common-mysql</module>
+        <module>../common/common-request-mapping</module>
+        <module>../common/common-exception</module>
     </modules>
 
 </project>

@@ -2,9 +2,9 @@ package com.yihu.jw.manage.controller.base;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.service.base.FunctionService;
-import com.yihu.jw.restmodel.base.base.BaseContants;
 import com.yihu.jw.restmodel.base.base.MFunction;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,13 +21,13 @@ import java.util.Map;
  * Created by chenweida on 2017/6/20.
  */
 @RestController
-@RequestMapping(BaseContants.api_common)
+@RequestMapping(BaseRequestMapping.api_common)
 @Api(description = "功能管理")
 public class FunctionController {
     @Autowired
     private FunctionService functionService;
 
-    @GetMapping(BaseContants.Function.api_getList)
+    @GetMapping(BaseRequestMapping.Function.api_getList)
     @ApiOperation(value = "分页获取功能列表")
     public Map list(
             @ApiParam(name = "name", value = "功能名称", required = false) @RequestParam(required = false, name = "name") String name,
@@ -56,7 +56,7 @@ public class FunctionController {
     }
 
 
-    @DeleteMapping(value = BaseContants.Function.api_delete)
+    @DeleteMapping(value = BaseRequestMapping.Function.api_delete)
     @ApiOperation(value = "通过codes删除,多个code用,分割", notes = "通过codes删除")
     public Envelop deleteByCodes(
             @ApiParam(name = "codes", value = "codes")
@@ -68,7 +68,7 @@ public class FunctionController {
         return envelop;
     }
 
-    @GetMapping(value = BaseContants.Function.api_getByCode)
+    @GetMapping(value = BaseRequestMapping.Function.api_getByCode)
     @ApiOperation(value = "根据code查找", notes = "根据code查找")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -78,7 +78,7 @@ public class FunctionController {
         return envelop;
     }
 
-    @GetMapping(value = BaseContants.Function.api_getChildren)
+    @GetMapping(value = BaseRequestMapping.Function.api_getChildren)
     @ApiOperation(value = "查找子节点", notes = "查找子节点")
     public List<Map<String,Object>> getChildren(@PathVariable String code){
         Envelop envelop = functionService.getChildren(code);
@@ -88,13 +88,13 @@ public class FunctionController {
         return (List)envelop.getObj();
     }
 
-    @PostMapping(BaseContants.Function.api_create)
+    @PostMapping(BaseRequestMapping.Function.api_create)
     @ApiOperation(value = "保存/更新", notes = "保存/更新")
     public Envelop saveOrUpdate(@ModelAttribute @Valid MFunction func,String userCode) throws JsonProcessingException {
         return functionService.saveOrUpdate(func,userCode);
     }
 
-    @GetMapping(BaseContants.Function.api_getListNoPage)
+    @GetMapping(BaseRequestMapping.Function.api_getListNoPage)
     @ApiOperation(value = "获取功能列表")
     public List getListNoPage(@ApiParam(name = "saasId", value = "saasId", required = false) @RequestParam(required = false, name = "saasId") String saasId,
                               @ApiParam(name = "parentCode", value = "parentCode", required = false) @RequestParam(required = false, name = "parentCode") String parentCode
