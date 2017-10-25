@@ -20,23 +20,25 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 @ComponentScan("com.yihu.jw.**")
 public class SwaggerConfig {
-    public static final String gateway_API = "gateway";
+    public static final String base_API = "base";
+    public static final String wlyy_API = "wlyy";
+    public static final String login_API = "login";
 
 
     @Bean
-    public Docket gatewayAPI() {
+    public Docket baseAPI() {
 
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName(gateway_API)
+                .groupName(base_API)
                 .useDefaultResponseMessages(false)
-                .apiInfo(gatewayApiInfo())
+                .apiInfo(baseApiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller.base"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
-    private ApiInfo gatewayApiInfo() {
+    private ApiInfo baseApiInfo() {
         ApiInfo apiInfo = new ApiInfo("基卫2.0API",
                 "基卫2.0API，提供基础卫生相关服务。",
                 "1.0",
@@ -49,4 +51,57 @@ public class SwaggerConfig {
         return apiInfo;
     }
 
+
+    @Bean
+    public Docket wlyyAPI() {
+
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName(wlyy_API)
+                .useDefaultResponseMessages(false)
+                .apiInfo(wlyyApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller.wlyy"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    private ApiInfo wlyyApiInfo() {
+        ApiInfo apiInfo = new ApiInfo("基卫2.0API",
+                "基卫2.0API，提供基础卫生相关服务。",
+                "1.0",
+                "No terms of service",
+                "wenfujian@jkzl.com",
+                "The Apache License, Version 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0.html"
+        );
+
+        return apiInfo;
+    }
+
+
+    @Bean
+    public Docket loginAPI() {
+
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName(login_API)
+                .useDefaultResponseMessages(false)
+                .apiInfo(loginApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller.login"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    private ApiInfo loginApiInfo() {
+        ApiInfo apiInfo = new ApiInfo("基卫2.0API",
+                "基卫2.0API，提供基础卫生相关服务。",
+                "1.0",
+                "No terms of service",
+                "wenfujian@jkzl.com",
+                "The Apache License, Version 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0.html"
+        );
+
+        return apiInfo;
+    }
 }
