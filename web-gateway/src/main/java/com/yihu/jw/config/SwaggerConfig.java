@@ -1,4 +1,4 @@
-package com.yihu.jw.config.mvc;
+package com.yihu.jw.config;
 
 import com.yihu.jw.commnon.base.base.BaseContants;
 import com.yihu.jw.commnon.base.wx.WechatContants;
@@ -6,6 +6,8 @@ import com.yihu.jw.commnon.wlyy.AgreementContants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -23,19 +25,15 @@ public class SwaggerConfig {
 
     @Bean
     public Docket gatewayAPI() {
+
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(gateway_API)
                 .useDefaultResponseMessages(false)
-                .forCodeGeneration(false)
-                .pathMapping("/")
+                .apiInfo(gatewayApiInfo())
                 .select()
-                .paths(or(
-                        regex("/" + AgreementContants.wlyy + "/.*")
-                        , regex("/" + WechatContants.api_common + "/.*")
-                        , regex("/" + BaseContants.api_common + "/.*")
-                ))
-                .build()
-                .apiInfo(gatewayApiInfo());
+                .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller"))
+                .paths(PathSelectors.any())
+                .build();
     }
 
     private ApiInfo gatewayApiInfo() {
