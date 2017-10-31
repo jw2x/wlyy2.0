@@ -9,14 +9,9 @@
         <version>1.0.0</version>
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
-    <groupId>com.yihu.jw</groupId>
-    <artifactId>common-util</artifactId>
+
+    <artifactId>common-redis</artifactId>
     <version>1.0.0</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-    </dependencies>
+
 </project>

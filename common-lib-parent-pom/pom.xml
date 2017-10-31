@@ -15,14 +15,23 @@
     <version>1.0.0</version>
     <packaging>pom</packaging>
     <modules>
+
+        <module>../common/common-entity</module>
+        <module>../common/common-rest-model</module>
+        <module>../common/common-exception</module>
+        <module>../common/common-request-mapping</module>
+
+
         <module>../common/common-swagger</module>
         <module>../common/common-quartz</module>
         <module>../common/common-log</module>
         <module>../common/common-util</module>
-        <module>../common/common-rest-model</module>
         <module>../common/common-mysql</module>
-        <module>../common/common-request-mapping</module>
-        <module>../common/common-exception</module>
+        <module>../common/common-redis</module>
+        <module>../common/common-hbase</module>
+        <module>../common/common-mongodb</module>
+        <module>../common/common-es</module>
+        <module>../common/common-solr</module>
     </modules>
 
 </project>
