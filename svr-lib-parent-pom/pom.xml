@@ -300,6 +300,11 @@
                 <artifactId>spring-boot-starter-data-mongodb</artifactId>
                 <version>${version.springBoot}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-activemq</artifactId>
+                <version>${version.springBoot}</version>
+            </dependency>
 
             <!--springBoot end-->
 
