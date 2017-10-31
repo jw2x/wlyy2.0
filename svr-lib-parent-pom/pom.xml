@@ -73,6 +73,8 @@
         <version.common.lang3>3.1</version.common.lang3>
         <version.elasticsearch>2.4.4</version.elasticsearch>
         <version.redis>1.5.3.RELEASE</version.redis>
+        <version.hbase>1.1.12</version.hbase>
+        <version.hadoop>2.7.4</version.hadoop>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -291,6 +293,11 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+                <version>${version.springBoot}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-mongodb</artifactId>
                 <version>${version.springBoot}</version>
             </dependency>
 
