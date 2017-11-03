@@ -75,6 +75,7 @@
         <version.redis>1.5.3.RELEASE</version.redis>
         <version.hbase>1.1.12</version.hbase>
         <version.hadoop>2.7.4</version.hadoop>
+        <scala.version>2.10.6</scala.version>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -119,6 +120,11 @@
             <dependency>
                 <groupId>com.yihu.jw</groupId>
                 <artifactId>common-log</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-quartz</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
             <!--springCloud start-->
@@ -298,6 +304,11 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-mongodb</artifactId>
+                <version>${version.springBoot}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-activemq</artifactId>
                 <version>${version.springBoot}</version>
             </dependency>
 
@@ -504,14 +515,51 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.common.lang3}</version>
             </dependency>
-
+            <!--hadoop start-->
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-common</artifactId>
+                <version>${version.hadoop}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-client</artifactId>
+                <version>${version.hadoop}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-hdfs</artifactId>
+                <version>${version.hadoop}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-mapreduce-client-core</artifactId>
+                <version>${version.hadoop}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-mapreduce-client-jobclient</artifactId>
+                <version>${version.hadoop}</version>
+            </dependency>
+            <!--hadoop endf-->
             <!--  redis -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-redis</artifactId>
                 <version>${version.redis}</version>
             </dependency>
-
+            <!--scala编译 start-->
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-compiler</artifactId>
+                <version>${scala.version}</version>
+            </dependency>
+            <!--scala编译 end-->
         </dependencies>
 
 

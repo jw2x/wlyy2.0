@@ -9,28 +9,13 @@
         <version>1.0.0</version>
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
-
-    <groupId>com.yihu.jw</groupId>
-    <artifactId>common-quartz</artifactId>
+    <artifactId>common-mq</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.quartz-scheduler</groupId>
-            <artifactId>quartz-jobs</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-activemq</artifactId>
         </dependency>
     </dependencies>
-
 </project>
