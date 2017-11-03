@@ -122,6 +122,11 @@
                 <artifactId>common-log</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-quartz</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
             <!--springCloud start-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
