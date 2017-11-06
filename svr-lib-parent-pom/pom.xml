@@ -68,14 +68,19 @@
         <version.spring-elasticsearch>2.1.3.RELEASE</version.spring-elasticsearch>
         <version.jest>2.4.0</version.jest>
         <version.json>20160212</version.json>
+        <verion.fastJson>1.2.17</verion.fastJson>
         <version.net-json>2.4</version.net-json>
         <version.springside>4.2.3-GA</version.springside>
         <version.common.lang3>3.1</version.common.lang3>
         <version.elasticsearch>2.4.4</version.elasticsearch>
+        <version.elasticsearch-sql>2.4.1.0</version.elasticsearch-sql>
+
         <version.redis>1.5.3.RELEASE</version.redis>
         <version.hbase>1.1.12</version.hbase>
         <version.hadoop>2.7.4</version.hadoop>
-        <scala.version>2.10.6</scala.version>
+        <version.scala>2.10.6</version.scala>
+        <version.elasticsearch>2.4.4</version.elasticsearch>
+        <version.jest>2.4.0</version.jest>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -552,14 +557,38 @@
             <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-library</artifactId>
-                <version>${scala.version}</version>
+                <version>${version.scala}</version>
             </dependency>
             <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-compiler</artifactId>
-                <version>${scala.version}</version>
+                <version>${version.scala}</version>
             </dependency>
             <!--scala编译 end-->
+            <!--elasticsearch start-->
+            <dependency>
+                <groupId>org.nlpcn</groupId>
+                <artifactId>elasticsearch-sql</artifactId>
+                <version>${version.elasticsearch-sql}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${version.elasticsearch}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.searchbox</groupId>
+                <artifactId>jest</artifactId>
+                <version>${version.jest}</version>
+            </dependency>
+            <!--elasticsearch end-->
+            <!--alibaba  json 包-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${verion.fastJson}</version>
+                <!--json 包-->
+            </dependency>
         </dependencies>
 
 
