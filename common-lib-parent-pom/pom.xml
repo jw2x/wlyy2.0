@@ -34,7 +34,6 @@
         <module>../common/common-mysql</module>
         <module>../common/common-redis</module>
         <module>../common/common-hbase</module>
-        <module>../common/common-mongodb</module>
         <module>../common/common-dfs</module>
     </modules>
 
