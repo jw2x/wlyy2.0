@@ -5,34 +5,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.yihu.jw</groupId>
-        <artifactId>common-lib-parent-pom</artifactId>
+        <artifactId>svr-lib-parent-pom</artifactId>
         <version>1.0.0</version>
-        <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
+        <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
-    <artifactId>common-es</artifactId>
+    <artifactId>svr-demo</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.nlpcn</groupId>
-            <artifactId>elasticsearch-sql</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-mysql</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.searchbox</groupId>
-            <artifactId>jest</artifactId>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-quartz</artifactId>
         </dependency>
     </dependencies>
 </project>
