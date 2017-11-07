@@ -19,8 +19,8 @@ import java.net.InetSocketAddress;
  * @author szx
  * @author Sand
  */
-public class FastDFSUtil {
-    private Logger logger= LoggerFactory.getLogger(FastDFSUtil.class);
+public class FastDFSHelper {
+    private Logger logger= LoggerFactory.getLogger(FastDFSHelper.class);
     public final static String GroupField = "groupName";
     public final static String RemoteFileField = "remoteFileName";
     public final static String FileIdField = "fid";
