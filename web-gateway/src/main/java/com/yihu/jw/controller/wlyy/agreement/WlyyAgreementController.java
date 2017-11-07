@@ -3,7 +3,7 @@ package com.yihu.jw.controller.wlyy.agreement;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.wlyy.AgreementContants;
-import com.yihu.jw.fegin.wlyy.agreement.WlyyAgreementFegin;
+import com.yihu.jw.feign.wlyy.agreement.WlyyAgreementFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;
@@ -16,8 +16,6 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping(AgreementContants.Agreement.api_common)
 @Api(value = "协议相关操作", description = "协议相关操作")
@@ -26,7 +24,7 @@ public class WlyyAgreementController extends EnvelopRestController {
     private Logger logger = LoggerFactory.getLogger(WlyyAgreementController.class);
 
     @Autowired
-    private WlyyAgreementFegin wlyyAgreementFegin;
+    private WlyyAgreementFeign wlyyAgreementFegin;
 
     @Autowired
     private Tracer tracer;

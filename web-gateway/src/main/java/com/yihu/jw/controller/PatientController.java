@@ -4,21 +4,17 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.exception.SystemException;
 import com.yihu.jw.exception.business.ManageException;
-import com.yihu.jw.fegin.PatientFegin;
+import com.yihu.jw.feign.PatientFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.cloud.sleuth.Span;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 public class PatientController {
     private Logger logger = LoggerFactory.getLogger(PatientController.class);
     @Autowired
-    private PatientFegin patientFegin;
+    private PatientFeign patientFegin;
     @Autowired
     private Tracer tracer;
 //    @Value("${test.aaa}")

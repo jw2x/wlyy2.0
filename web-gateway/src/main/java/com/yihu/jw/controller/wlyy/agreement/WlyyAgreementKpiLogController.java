@@ -1,7 +1,7 @@
 package com.yihu.jw.controller.wlyy.agreement;
 
 import com.yihu.jw.commnon.wlyy.AgreementContants;
-import com.yihu.jw.fegin.wlyy.agreement.WlyyAgreementKpiLogFegin;
+import com.yihu.jw.feign.wlyy.agreement.WlyyAgreementKpiLogFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;
@@ -14,8 +14,6 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-
 @RestController
 @RequestMapping(AgreementContants.AgreementKpiLog.api_common)
 @Api(value = "套餐指标执行日志相关操作", description = "套餐指标执行日志相关操作")
@@ -24,7 +22,7 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
     private Logger logger= LoggerFactory.getLogger(WlyyAgreementKpiLogController.class);
 
     @Autowired
-    private WlyyAgreementKpiLogFegin wlyyAgreementKpiLogFegin;
+    private WlyyAgreementKpiLogFeign wlyyAgreementKpiLogFegin;
 
     @Autowired
     private Tracer tracer;

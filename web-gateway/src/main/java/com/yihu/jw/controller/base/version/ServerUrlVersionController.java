@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.base.BaseVersionContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.fegin.base.version.ServerUrlVersionFegin;
+import com.yihu.jw.feign.base.version.ServerUrlVersionFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class ServerUrlVersionController {
 
     @Autowired
-    private ServerUrlVersionFegin serverUrlVersionFegin;
+    private ServerUrlVersionFeign serverUrlVersionFegin;
 
     @Autowired
     private Tracer tracer;

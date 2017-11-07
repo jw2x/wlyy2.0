@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.base.BaseVersionContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.fegin.base.version.ServerVersionFegin;
+import com.yihu.jw.feign.base.version.ServerVersionFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;
@@ -29,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 public class ServerVersionController extends EnvelopRestController {
 
     @Autowired
-    private ServerVersionFegin serverVersionFegin;
+    private ServerVersionFeign serverVersionFegin;
     @Autowired
     private Tracer tracer;
 

@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.fegin.base.wx.GraphicMessageFegin;
+import com.yihu.jw.feign.base.wx.GraphicMessageFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
@@ -29,7 +29,7 @@ public class WechatGraphicMessageController {
     private Logger logger= LoggerFactory.getLogger(WechatGraphicMessageController.class);
 
     @Autowired
-    private GraphicMessageFegin graphicMessageFegin;
+    private GraphicMessageFeign graphicMessageFegin;
 
     @Autowired
     private Tracer tracer;

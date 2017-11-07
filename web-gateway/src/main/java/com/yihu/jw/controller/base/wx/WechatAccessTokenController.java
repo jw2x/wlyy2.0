@@ -3,7 +3,7 @@ package com.yihu.jw.controller.base.wx;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.wx.WechatContants;
-import com.yihu.jw.fegin.base.wx.AccessTokenFegin;
+import com.yihu.jw.feign.base.wx.AccessTokenFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +28,7 @@ public class WechatAccessTokenController {
     private Logger logger= LoggerFactory.getLogger(WechatAccessTokenController.class);
 
     @Autowired
-    private AccessTokenFegin accessTokenFegin;
+    private AccessTokenFeign accessTokenFegin;
 
     @Autowired
     private Tracer tracer;
