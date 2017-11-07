@@ -1,4 +1,4 @@
-package com.yihu.jw.mysql.query;
+package com.yihu.base.mysql.query;
 
 import javafx.util.Pair;
 import org.springframework.dao.DataAccessException;

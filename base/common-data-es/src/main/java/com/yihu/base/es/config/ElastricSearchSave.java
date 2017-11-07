@@ -1,7 +1,7 @@
-package com.yihu.jw.es.config;
+package com.yihu.base.es.config;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.jw.es.config.model.SaveModel;
+import com.yihu.base.es.config.model.SaveModel;
 import io.searchbox.client.JestClient;
 import io.searchbox.core.*;
 import org.slf4j.Logger;

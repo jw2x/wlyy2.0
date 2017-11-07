@@ -1,4 +1,4 @@
-package com.yihu.jw.es.config.model;
+package com.yihu.base.es.config.model;
 
 import io.searchbox.annotations.JestId;
 
