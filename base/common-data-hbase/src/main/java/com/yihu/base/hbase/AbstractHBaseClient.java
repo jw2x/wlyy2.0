@@ -1,4 +1,4 @@
-package com.yihu.ehr.hbase;
+package com.yihu.base.hbase;
 
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;

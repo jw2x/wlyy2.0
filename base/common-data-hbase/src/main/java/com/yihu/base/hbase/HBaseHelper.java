@@ -1,4 +1,4 @@
-package com.yihu.ehr.hbase;
+package com.yihu.base.hbase;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.hadoop.hbase.Cell;
@@ -19,7 +19,7 @@ import java.util.*;
  * 数据增删改查
  */
 @Service
-public class HBaseDao extends AbstractHBaseClient {
+public class HBaseHelper extends AbstractHBaseClient {
 
     @Autowired
     ObjectMapper objectMapper;
