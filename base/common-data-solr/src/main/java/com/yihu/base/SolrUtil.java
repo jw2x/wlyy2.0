@@ -1,4 +1,4 @@
-eeepackage com.yihu.base;
+package com.yihu.base;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.solr.client.solrj.SolrClient;
