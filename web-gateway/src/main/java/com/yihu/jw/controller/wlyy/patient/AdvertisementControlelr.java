@@ -1,7 +1,7 @@
 package com.yihu.jw.controller.wlyy.patient;
 
 import com.yihu.jw.commnon.wlyy.PatientContants;
-import com.yihu.jw.fegin.wlyy.patient.AdvertisementFegin;
+import com.yihu.jw.feign.wlyy.patient.AdvertisementFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.util.CusAccessObjectUtil;
@@ -29,7 +29,7 @@ public class AdvertisementControlelr extends EnvelopRestController {
     private Logger logger = LoggerFactory.getLogger(AdvertisementControlelr.class);
 
     @Autowired
-    private AdvertisementFegin advertisementFegin;
+    private AdvertisementFeign advertisementFegin;
     @Autowired
     private Tracer tracer;
 

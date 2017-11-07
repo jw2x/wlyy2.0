@@ -2,7 +2,7 @@ package com.yihu.jw.controller.base.version;
 
 import com.yihu.jw.commnon.base.base.BaseVersionContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.fegin.base.version.WlyyVersionFegin;
+import com.yihu.jw.feign.base.version.WlyyVersionFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class WlyyVersionController  extends EnvelopRestController {
 
     @Autowired
-    private WlyyVersionFegin wlyyVersionFegin;
+    private WlyyVersionFeign wlyyVersionFegin;
     @Autowired
     private Tracer tracer;
 

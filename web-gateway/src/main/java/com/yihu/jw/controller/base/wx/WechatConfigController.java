@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.fegin.base.wx.WechatFegin;
+import com.yihu.jw.feign.base.wx.WechatFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
@@ -27,7 +27,7 @@ public class WechatConfigController {
 
     private Logger logger= LoggerFactory.getLogger(WechatConfigController.class);
     @Autowired
-    private WechatFegin wechatFegin;
+    private WechatFeign wechatFegin;
 
     @Autowired
     private Tracer tracer;

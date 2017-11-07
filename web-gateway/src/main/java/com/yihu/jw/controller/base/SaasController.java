@@ -3,7 +3,7 @@ package com.yihu.jw.controller.base;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.base.BaseContants;
-import com.yihu.jw.fegin.base.base.SaasFegin;
+import com.yihu.jw.feign.base.base.SaasFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
@@ -26,7 +26,7 @@ public class SaasController {
 
     private Logger logger= LoggerFactory.getLogger(SaasController.class);
     @Autowired
-    private SaasFegin saasFegin;
+    private SaasFeign saasFegin;
 
     @Autowired
     private Tracer tracer;
