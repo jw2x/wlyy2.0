@@ -27,15 +27,19 @@
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
-            <artifactId>common-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
             <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.base</groupId>
+            <artifactId>common-swagger</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.base</groupId>
+            <artifactId>common-data-mysql</artifactId>
         </dependency>
         <!-- 使用intellij作为集成开发环境 本地测试时打开 start -->
         <dependency>
@@ -109,10 +113,6 @@
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
             <version>4.5.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-mysql</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

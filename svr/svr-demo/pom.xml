@@ -23,11 +23,11 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-mysql</artifactId>
+            <groupId>com.yihu.base</groupId>
+            <artifactId>common-data-mysql</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
+            <groupId>com.yihu.base</groupId>
             <artifactId>common-quartz</artifactId>
         </dependency>
     </dependencies>

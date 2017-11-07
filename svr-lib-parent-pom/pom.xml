@@ -104,16 +104,6 @@
             </dependency>
             <dependency>
                 <groupId>com.yihu.jw</groupId>
-                <artifactId>common-swagger</artifactId>
-                <version>${version.myCommon}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.yihu.jw</groupId>
-                <artifactId>common-mysql</artifactId>
-                <version>${version.myCommon}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.yihu.jw</groupId>
                 <artifactId>common-rest-model</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
@@ -128,12 +118,22 @@
                 <version>${version.myCommon}</version>
             </dependency>
             <dependency>
-                <groupId>com.yihu.jw</groupId>
+                <groupId>com.yihu.base</groupId>
+                <artifactId>common-swagger</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.base</groupId>
+                <artifactId>common-data-mysql</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.base</groupId>
                 <artifactId>common-log</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
             <dependency>
-                <groupId>com.yihu.jw</groupId>
+                <groupId>com.yihu.base</groupId>
                 <artifactId>common-quartz</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>

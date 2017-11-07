@@ -10,7 +10,6 @@
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
-    <groupId>com.yihu.jw</groupId>
     <artifactId>common-quartz</artifactId>
     <version>1.0.0</version>
 

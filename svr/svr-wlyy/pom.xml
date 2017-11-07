@@ -24,7 +24,7 @@
             <artifactId>common-exception</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
+            <groupId>com.yihu.base</groupId>
             <artifactId>common-swagger</artifactId>
         </dependency>
         <dependency>
@@ -36,11 +36,11 @@
             <artifactId>common-util</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-mysql</artifactId>
+            <groupId>com.yihu.base</groupId>
+            <artifactId>common-data-mysql</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
+            <groupId>com.yihu.base</groupId>
             <artifactId>common-log</artifactId>
         </dependency>
         <dependency>
