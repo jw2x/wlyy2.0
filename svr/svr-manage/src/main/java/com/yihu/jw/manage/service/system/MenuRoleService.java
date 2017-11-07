@@ -4,7 +4,7 @@ import com.yihu.jw.manage.adapter.CacheAdapter;
 import com.yihu.jw.manage.adapter.cache.MapCache;
 import com.yihu.jw.manage.dao.system.RoleMenuDao;
 import com.yihu.jw.manage.model.system.ManageRoleMenu;
-import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.base.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;

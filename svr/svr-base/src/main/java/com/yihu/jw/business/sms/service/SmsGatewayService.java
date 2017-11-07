@@ -4,7 +4,7 @@ import com.yihu.jw.business.sms.dao.SmsGatewayDao;
 import com.yihu.jw.business.sms.model.BaseSmsGateway;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
-import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.rm.base.BaseSmsRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

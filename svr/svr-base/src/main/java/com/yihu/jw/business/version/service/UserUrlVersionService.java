@@ -5,7 +5,7 @@ import com.yihu.jw.business.version.dao.UserUrlVersionDao;
 import com.yihu.jw.business.version.model.BaseServerVersion;
 import com.yihu.jw.business.version.model.BaseServerVersionLog;
 import com.yihu.jw.business.version.model.BaseUserUrlVersion;
-import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.base.mysql.query.BaseJpaService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
