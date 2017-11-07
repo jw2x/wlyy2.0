@@ -12,7 +12,7 @@
     </parent>
 
     <groupId>com.yihu.jw</groupId>
-    <artifactId>common-mysql</artifactId>
+    <artifactId>common-data-mysql</artifactId>
     <version>1.0.0</version>
 
     <dependencies>

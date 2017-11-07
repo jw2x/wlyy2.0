@@ -9,30 +9,29 @@
         <version>1.0.0</version>
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
-
-    <artifactId>common-es</artifactId>
+    <artifactId>common-data-solr</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.nlpcn</groupId>
-            <artifactId>elasticsearch-sql</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-solrj</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.searchbox</groupId>
-            <artifactId>jest</artifactId>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-solr</artifactId>
         </dependency>
     </dependencies>
 </project>
