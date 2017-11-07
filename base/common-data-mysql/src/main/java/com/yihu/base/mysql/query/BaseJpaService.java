@@ -1,4 +1,4 @@
-package com.yihu.jw.mysql.query;
+package com.yihu.base.mysql.query;
 
 import com.yihu.jw.restmodel.common.PageArg;
 import com.yihu.jw.util.spring.SpringContext;

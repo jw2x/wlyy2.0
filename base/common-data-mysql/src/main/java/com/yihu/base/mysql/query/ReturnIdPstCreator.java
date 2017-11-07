@@ -1,4 +1,4 @@
-package com.yihu.jw.mysql.query;
+package com.yihu.base.mysql.query;
 
 import org.springframework.jdbc.core.PreparedStatementCreator;
 

@@ -1,4 +1,4 @@
-package com.yihu.jw.es.config;
+package com.yihu.base.es.config;
 
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
