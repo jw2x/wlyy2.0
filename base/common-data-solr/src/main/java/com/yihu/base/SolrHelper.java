@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Service
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class SolrUtil {
+public class SolrHelper {
     @Autowired
     SolrPool pool;
     private final static String ASC = "asc";
