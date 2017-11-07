@@ -85,7 +85,8 @@
         <version.spring-data-hadoop>2.3.0.RELEASE</version.spring-data-hadoop>
         <version.joda-time>2.8.2</version.joda-time>
         <version.solr>5.5.1</version.solr>
-       <version.spring-data.solr>2.1.8.RELEASE</version.spring-data.solr>
+        <version.spring-data.solr>2.1.8.RELEASE</version.spring-data.solr>
+        <version.fastdfs>1.25</version.fastdfs>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
@@ -450,6 +451,16 @@
                 <version>${version.hibernate-jpa}</version>
             </dependency>
             <!--hibernate end-->
+
+            <!--fastdfs start-->
+
+            <dependency>
+                <groupId>org.csource</groupId>
+                <artifactId>fastdfs_lib</artifactId>
+                <version>${version.fastdfs}</version>
+            </dependency>
+
+            <!--fastdfs end-->
             <!--servlet api-->
 
             <dependency>
