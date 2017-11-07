@@ -6,7 +6,7 @@ import com.yihu.jw.business.base.model.Function;
 import com.yihu.jw.business.base.model.ModuleFunction;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
-import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.base.base.MFunction;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;

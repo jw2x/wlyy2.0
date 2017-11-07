@@ -2,7 +2,7 @@ package com.yihu.jw.business.version.service;
 
 import com.yihu.jw.business.version.dao.ServerVersionLogDao;
 import com.yihu.jw.business.version.model.BaseServerVersionLog;
-import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.base.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;

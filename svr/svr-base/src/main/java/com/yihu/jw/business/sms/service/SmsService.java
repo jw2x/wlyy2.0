@@ -3,7 +3,7 @@ package com.yihu.jw.business.sms.service;
 import com.yihu.jw.business.sms.dao.SmsDao;
 import com.yihu.jw.business.sms.model.BaseSms;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.base.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

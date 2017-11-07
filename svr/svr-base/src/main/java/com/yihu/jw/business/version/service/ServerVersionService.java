@@ -4,7 +4,7 @@ import com.yihu.jw.business.version.dao.ServerVersionDao;
 import com.yihu.jw.business.version.model.BaseServerVersion;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
-import com.yihu.jw.mysql.query.BaseJpaService;
+import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.restmodel.base.version.MBaseServerVersion;
 import com.yihu.jw.rm.base.BaseVersionRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
