@@ -1,7 +1,7 @@
 package com.yihu.base.config;
 
 import com.yihu.base.fastdfs.FastDFSClientPool;
-import com.yihu.base.fastdfs.FastDFSUtil;
+import com.yihu.base.fastdfs.FastDFSHelper;
 import org.csource.common.MyException;
 import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.TrackerGroup;
@@ -110,8 +110,8 @@ public class FastDFSConfig {
     }
 
     @Bean
-    public FastDFSUtil fastDFSUtil(){
-        FastDFSUtil util = new FastDFSUtil();
+    public FastDFSHelper fastDFSUtil(){
+        FastDFSHelper util = new FastDFSHelper();
         return util;
     }
 }

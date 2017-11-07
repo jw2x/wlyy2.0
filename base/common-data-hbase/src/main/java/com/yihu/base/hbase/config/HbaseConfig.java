@@ -1,4 +1,4 @@
-package com.yihu.ehr.hbase.config;
+package com.yihu.base.hbase.config;
 
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.TableName;

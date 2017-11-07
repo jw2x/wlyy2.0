@@ -1,8 +1,8 @@
-package com.yihu.ehr.hbase;
+package com.yihu.base.hbase;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.yihu.ehr.hbase.AbstractHBaseClient;
+import com.yihu.base.hbase.AbstractHBaseClient;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
