@@ -10,7 +10,7 @@
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
-    <artifactId>common-hbase</artifactId>
+    <artifactId>common-data-hbase</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
