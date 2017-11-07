@@ -3,3 +3,4 @@ es:
   port: 9067 #默认是9200
   tPort: 9068 #http端口 默认是9300
   clusterName: jkzl
+
