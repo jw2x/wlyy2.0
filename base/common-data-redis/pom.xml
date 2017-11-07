@@ -9,13 +9,14 @@
         <version>1.0.0</version>
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
-    <artifactId>common-util</artifactId>
+
+    <artifactId>common-data-redis</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 </project>
