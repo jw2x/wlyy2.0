@@ -4,3 +4,24 @@ es:
   tPort: 9068 #http端口 默认是9300
   clusterName: jkzl
 
+
+
+spring:
+  data:
+    elasticsearch: #ElasticsearchProperties
+      cluster-name: jkzl #默认即为elasticsearch  集群名
+      cluster-nodes: 120.25.194.233:9300,120.25.194.233:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      local: false ##是否本地连接
+      properties: # Additional properties used to configure the client.
+
+  # JEST (Elasticsearch HTTP client) (JestProperties)
+  elasticsearch:
+    jest:
+      uris: http://192.168.226.133:9200
+      connection-timeout: # Connection timeout in milliseconds.
+      multi-threaded: true # Enable connection requests from multiple execution threads.
+      username: # Login user.
+      password: # Login password.
+      proxy.port:  # Proxy port the HTTP client should use.
+      proxy.host:  # Proxy host the HTTP client should use.
+
