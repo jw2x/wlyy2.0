@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 @Component
 @Scope("prototype")
 public class ElastricSearchHelper {
+
     private Logger logger = LoggerFactory.getLogger(ElastricSearchHelper.class);
     @Autowired
     private ElasticFactory elasticFactory;
