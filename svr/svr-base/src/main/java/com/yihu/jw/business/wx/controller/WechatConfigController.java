@@ -1,6 +1,6 @@
 package com.yihu.jw.business.wx.controller;
 
-import com.yihu.jw.business.wx.model.WxWechat;
+import com.yihu.jw.base.wx.WxWechat;
 import com.yihu.jw.business.wx.service.WechatService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;

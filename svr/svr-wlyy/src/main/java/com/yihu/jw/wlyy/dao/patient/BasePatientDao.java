@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.dao.patient;
 
-import com.yihu.jw.wlyy.entity.patient.BasePatient;
+import com.yihu.jw.wlyy.patient.BasePatient;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

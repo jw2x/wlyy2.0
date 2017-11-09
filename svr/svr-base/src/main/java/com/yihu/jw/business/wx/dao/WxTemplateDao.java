@@ -1,6 +1,6 @@
 package com.yihu.jw.business.wx.dao;
 
-import com.yihu.jw.business.wx.model.WxTemplate;
+import com.yihu.jw.base.wx.WxTemplate;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

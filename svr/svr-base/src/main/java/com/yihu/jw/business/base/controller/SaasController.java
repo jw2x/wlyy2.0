@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.controller;
 
-import com.yihu.jw.business.base.model.Saas;
+import com.yihu.jw.base.base.Saas;
 import com.yihu.jw.business.base.service.SaasService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.base.MSaas;

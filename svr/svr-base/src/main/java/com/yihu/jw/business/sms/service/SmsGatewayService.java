@@ -1,7 +1,7 @@
 package com.yihu.jw.business.sms.service;
 
+import com.yihu.jw.base.sms.BaseSmsGateway;
 import com.yihu.jw.business.sms.dao.SmsGatewayDao;
-import com.yihu.jw.business.sms.model.BaseSmsGateway;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;

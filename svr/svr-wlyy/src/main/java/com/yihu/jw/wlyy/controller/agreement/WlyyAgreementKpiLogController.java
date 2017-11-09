@@ -4,7 +4,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.wlyy.entity.agreement.WlyyAgreementKpiLog;
+import com.yihu.jw.wlyy.agreement.WlyyAgreementKpiLog;
 import com.yihu.jw.wlyy.service.agreement.WlyyAgreementKpiLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

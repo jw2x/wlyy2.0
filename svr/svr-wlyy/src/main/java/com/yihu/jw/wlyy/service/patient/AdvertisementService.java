@@ -1,15 +1,16 @@
 package com.yihu.jw.wlyy.service.patient;
 
+import com.yihu.jw.base.base.Saas;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import com.yihu.jw.util.AddressUtils;
 import com.yihu.jw.util.CusAccessObjectUtil;
+import com.yihu.jw.wlyy.agreement.WlyySignFamily;
 import com.yihu.jw.wlyy.dao.patient.AdvertisementDao;
-import com.yihu.jw.wlyy.entity.BaseSaas;
-import com.yihu.jw.wlyy.entity.agreement.WlyySignFamily;
-import com.yihu.jw.wlyy.entity.patient.WlyyAdvertisement;
+import com.yihu.jw.wlyy.patient.WlyyAdvertisement;
 import com.yihu.jw.wlyy.service.BaseSaasService;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
 import org.slf4j.Logger;
@@ -180,7 +181,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                 return  getDefaultList();
             }else{
                 String cityName = addresses[3];
-                BaseSaas saas = saasService.findByName(cityName);//成都市
+                Saas saas = saasService.findByName(cityName);//成都市
                 if(saas ==null){
                     cityName = cityName.substring(0,cityName.length()-1);//成都
                     saas = saasService.findByName(cityName);
@@ -215,7 +216,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                 return  getDefaultList();
             }else{
                 String cityName = addresses[3];
-                BaseSaas saas = saasService.findByName(cityName);//成都市
+                Saas saas = saasService.findByName(cityName);//成都市
                 if(saas ==null){
                     cityName = cityName.substring(0,cityName.length()-1);//成都
                     saas = saasService.findByName(cityName);

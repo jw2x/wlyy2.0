@@ -1,6 +1,6 @@
 package com.yihu.jw.business.sms.controller;
 
-import com.yihu.jw.business.sms.model.BaseSms;
+import com.yihu.jw.base.sms.BaseSms;
 import com.yihu.jw.business.sms.service.SmsService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.sms.MSms;

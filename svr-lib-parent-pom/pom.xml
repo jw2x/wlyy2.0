@@ -93,6 +93,12 @@
         <dependencies>
 
             <!--自己的封装 common -->
+
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-entity</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
             <dependency>
                 <groupId>com.yihu.jw</groupId>
                 <artifactId>common-request-mapping</artifactId>

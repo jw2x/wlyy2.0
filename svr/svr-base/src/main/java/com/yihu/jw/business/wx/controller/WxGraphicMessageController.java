@@ -1,6 +1,6 @@
 package com.yihu.jw.business.wx.controller;
 
-import com.yihu.jw.business.wx.model.WxGraphicMessage;
+import com.yihu.jw.base.wx.WxGraphicMessage;
 import com.yihu.jw.business.wx.service.WxGraphicMessageService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;

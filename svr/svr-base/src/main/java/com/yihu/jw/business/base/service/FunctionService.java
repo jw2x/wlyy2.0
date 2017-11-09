@@ -1,9 +1,9 @@
 package com.yihu.jw.business.base.service;
 
+import com.yihu.jw.base.base.ModuleFunction;
 import com.yihu.jw.business.base.dao.FunctionDao;
 import com.yihu.jw.business.base.dao.ModuleFunctionDao;
-import com.yihu.jw.business.base.model.Function;
-import com.yihu.jw.business.base.model.ModuleFunction;
+import com.yihu.jw.base.base.Function;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
