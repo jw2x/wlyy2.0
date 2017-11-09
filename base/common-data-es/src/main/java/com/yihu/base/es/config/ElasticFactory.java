@@ -22,14 +22,12 @@ import java.util.concurrent.TimeUnit;
 public class ElasticFactory {
     private static JestClientFactory factory = null;
 
-    @Value("${es.host}")
-    private String esHost;
-    @Value("${es.port}")
-    private String port;
-    @Value("${es.tPort}")
-    private String tPort;
-    @Value("${es.clusterName}")
-    private String clusterName;
+    @Value("${spring.data.elasticsearch.cluster-name}")
+    private String clusterNames;
+    @Value("${spring.data.elasticsearch.cluster-nodes}")
+    private String clusterNodes; // 120.25.194.233:9300,120.25.194.233:9300,120.25.194.233:9300
+    @Value("${spring.elasticsearch.jest.uris}")
+    private String jestHost; // http://192.168.226.133:9200
 //-----------------------------------jestClient----------------------------------------
 
     /**
@@ -51,20 +49,20 @@ public class ElasticFactory {
         // Construct a new Jest client according to configuration via factory
         factory = new JestClientFactory();
         factory.setHttpClientConfig(new HttpClientConfig
-                .Builder("http://" + esHost + ":" + port)
+                .Builder(jestHost)
                 .multiThreaded(true)
                 .maxTotalConnection(50)// 最大链接
                 .maxConnectionIdleTime(120, TimeUnit.SECONDS)//链接等待时间
-                .connTimeout(60*1000)
-               // .discoveryEnabled(true)
-                .readTimeout(60*1000)//60秒
+                .connTimeout(60 * 1000)
+                // .discoveryEnabled(true)
+                .readTimeout(60 * 1000)//60秒
                 .build());//得到链接
     }
 
     //-----------------------------------TransportClient----------------------------------------
-    private Client transportClient;
+    private TransportClient transportClient;
 
-    public Client getTransportClient() {
+    public TransportClient getTransportClient() {
         try {
             initTranClient();
             return transportClient;
@@ -77,12 +75,17 @@ public class ElasticFactory {
     private synchronized void initTranClient() throws UnknownHostException {
         if (transportClient == null) {
             Settings settings = Settings.settingsBuilder()
-                   // .put("client.transport.sniff", true)//开启嗅探功能
-                    .put("cluster.name", StringUtils.isEmpty(clusterName) ? "jkzl" : clusterName)//默认集群名字是jkzl
+                    // .put("client.transport.sniff", true)//开启嗅探功能
+                    .put("cluster.name", StringUtils.isEmpty(clusterNames) ? "jkzl" : clusterNames)//默认集群名字是jkzl
                     .build();
 
-            transportClient = TransportClient.builder().settings(settings).build()
-                    .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(esHost), Integer.valueOf(tPort)));
+            transportClient = TransportClient.builder().settings(settings).build();
+            String[] ips = clusterNodes.split(",");
+            for (String ip : ips) {
+                String[] ipAndPost = ip.split(":");
+                transportClient.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(ipAndPost[0]), Integer.valueOf(ipAndPost[1])));
+            }
+
         }
     }
 }
