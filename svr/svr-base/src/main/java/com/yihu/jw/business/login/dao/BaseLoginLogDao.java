@@ -1,6 +1,6 @@
 package com.yihu.jw.business.login.dao;
 
-import com.yihu.jw.business.login.model.BaseLoginLog;
+import com.yihu.jw.base.login.BaseLoginLog;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

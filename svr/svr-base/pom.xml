@@ -15,6 +15,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
+        <!--公共的 start-->
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-entity</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-request-mapping</artifactId>
@@ -43,6 +48,8 @@
             <groupId>com.yihu.base</groupId>
             <artifactId>common-data-mysql</artifactId>
         </dependency>
+
+        <!--公共的 end-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>

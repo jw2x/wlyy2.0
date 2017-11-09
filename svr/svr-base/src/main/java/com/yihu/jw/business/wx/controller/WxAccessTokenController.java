@@ -1,6 +1,6 @@
 package com.yihu.jw.business.wx.controller;
 
-import com.yihu.jw.business.wx.model.WxAccessToken;
+import com.yihu.jw.base.wx.WxAccessToken;
 import com.yihu.jw.business.wx.service.WxAccessTokenService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;

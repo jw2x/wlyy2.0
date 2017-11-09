@@ -1,9 +1,9 @@
 package com.yihu.jw.business.wx.service;
 
+import com.yihu.jw.base.wx.WxAccessToken;
+import com.yihu.jw.base.wx.WxMenu;
+import com.yihu.jw.base.wx.WxWechat;
 import com.yihu.jw.business.wx.dao.WxMenuDao;
-import com.yihu.jw.business.wx.model.WxAccessToken;
-import com.yihu.jw.business.wx.model.WxMenu;
-import com.yihu.jw.business.wx.model.WxWechat;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;

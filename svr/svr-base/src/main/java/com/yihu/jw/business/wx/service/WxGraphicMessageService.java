@@ -1,7 +1,7 @@
 package com.yihu.jw.business.wx.service;
 
+import com.yihu.jw.base.wx.WxGraphicMessage;
 import com.yihu.jw.business.wx.dao.WxGraphicMessageDao;
-import com.yihu.jw.business.wx.model.WxGraphicMessage;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;

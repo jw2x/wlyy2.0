@@ -1,7 +1,7 @@
 package com.yihu.jw.business.wx.service;
 
+import com.yihu.jw.base.wx.WxWechat;
 import com.yihu.jw.business.wx.dao.WechatDao;
-import com.yihu.jw.business.wx.model.WxWechat;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;

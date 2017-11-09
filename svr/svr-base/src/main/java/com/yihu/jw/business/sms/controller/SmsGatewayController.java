@@ -1,6 +1,6 @@
 package com.yihu.jw.business.sms.controller;
 
-import com.yihu.jw.business.sms.model.BaseSmsGateway;
+import com.yihu.jw.base.sms.BaseSmsGateway;
 import com.yihu.jw.business.sms.service.SmsGatewayService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.sms.MSmsGateway;

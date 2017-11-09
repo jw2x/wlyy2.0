@@ -2,8 +2,8 @@ package com.yihu.jw.business.wx.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.jw.base.wx.*;
 import com.yihu.jw.business.wx.dao.WxTemplateDao;
-import com.yihu.jw.business.wx.model.*;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;

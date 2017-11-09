@@ -1,8 +1,8 @@
 package com.yihu.jw.wlyy.service;
 
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.jw.base.base.Saas;
 import com.yihu.jw.wlyy.dao.BaseSaasDao;
-import com.yihu.jw.wlyy.entity.BaseSaas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
  * Created by chenweida on 2017/5/19.
  */
 @Service
-public class BaseSaasService extends BaseJpaService<BaseSaas, BaseSaasDao> {
+public class BaseSaasService extends BaseJpaService<Saas, BaseSaasDao> {
     @Autowired
     private BaseSaasDao saasDao;
 
-    public BaseSaas findByCode(String code) {
+    public Saas findByCode(String code) {
         return saasDao.findByCode(code);
     }
 
-    public BaseSaas findByName(String cityName) {
+    public Saas findByName(String cityName) {
         return saasDao.findByName(cityName);
     }
 }

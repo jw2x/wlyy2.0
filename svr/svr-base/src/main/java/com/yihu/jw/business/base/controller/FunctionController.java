@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.controller;
 
-import com.yihu.jw.business.base.model.Function;
+import com.yihu.jw.base.base.Function;
 import com.yihu.jw.business.base.service.FunctionService;
 import com.yihu.jw.business.base.service.ModuleFunService;
 import com.yihu.jw.exception.ApiException;
