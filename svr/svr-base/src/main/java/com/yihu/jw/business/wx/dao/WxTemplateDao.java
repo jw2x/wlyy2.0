@@ -12,12 +12,10 @@ import java.util.List;
  */
 public interface WxTemplateDao extends PagingAndSortingRepository<WxTemplate, Long>, JpaSpecificationExecutor<WxTemplate> {
 
-    @Query("from WxTemplate w where w.code = ?1 and w.status =1")
-    WxTemplate findByCode(String code);
 
     @Query("from WxTemplate w where w.id = ?1 and w.status =1")
-    WxTemplate findById(Long id);
+    WxTemplate findById(String id);
 
-    @Query("from WxTemplate w where w.wechatCode = ?1 and w.status =1")
+    @Query("from WxTemplate w where w.wechatId = ?1 and w.status =1")
     List<WxTemplate> findByWxCode(String code);
 }

@@ -50,13 +50,10 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
     }
 
     public WlyySignFamily findByCode(String code) {
-        return wlyySignFamilyDao.findByCode(code);
+        return wlyySignFamilyDao.findById(code);
     }
 
     private boolean canSaveOrUpdate(WlyySignFamily wlyySignFamily) throws ParseException {
-        if (StringUtils.isEmpty(wlyySignFamily.getCode())) {
-            throw new ApiException(WlyyRequestMapping.SignFamily.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         String saasId = wlyySignFamily.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);

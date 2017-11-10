@@ -17,9 +17,7 @@ public interface WxGraphicMessageDao extends PagingAndSortingRepository<WxGraphi
     @Query("from WxWechat w where w.appId = ?1 and w.code!= ?2 and w.status!=-1")
     WxGraphicMessage findByAppIdExcludeCode(String appId, String code);
 
-    @Query("from WxGraphicMessage w where w.code =?1 and w.status!=-1")
-    WxGraphicMessage findByCode(String code);
 
     @Query("from WxGraphicMessage w where w.id =?1 and w.status!=-1")
-    WxGraphicMessage findById(Long id);
+    WxGraphicMessage findById(String id);
 }

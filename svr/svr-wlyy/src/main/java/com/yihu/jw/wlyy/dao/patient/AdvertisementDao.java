@@ -12,11 +12,9 @@ import java.util.List;
  */
 public interface AdvertisementDao extends PagingAndSortingRepository<WlyyAdvertisement, Long>, JpaSpecificationExecutor<WlyyAdvertisement> {
 
-    @Query("from WlyyAdvertisement w where w.code =?1 and w.status!=-1")
-    WlyyAdvertisement findByCode(String code);
 
     @Query("from WlyyAdvertisement w where w.id=?1 and w.status !=-1")
-    WlyyAdvertisement findById(Long id);
+    WlyyAdvertisement findById(String id);
 
     //根据saasCode查询广告
     @Query("from WlyyAdvertisement w where w.saasId=?1 and w.status !=-1 order by w.sort")

@@ -46,7 +46,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
      */
     public WxMenu createWxMenu(WxMenu wxMenu) {
         String code = UUID.randomUUID().toString().replaceAll("-", "");
-        wxMenu.setCode(code);
+        wxMenu.setId(code);
         if(canSaveOrUpata(wxMenu)){
             return wxMenuDao.save(wxMenu);
         }
@@ -55,15 +55,11 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
 
     @Transient
     public WxMenu updateWxMenu(WxMenu wxMenu) {
-        if (StringUtils.isEmpty(wxMenu.getCode())) {
+        if (StringUtils.isEmpty(wxMenu.getId())) {
             throw new ApiException(WechatRequestMapping.WxMenu.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if(canSaveOrUpata(wxMenu)){
-            Long id = wxMenu.getId();
-            if (StringUtils.isEmpty(id)) {
-                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_id_is_null, ExceptionCode.common_error_params_code);
-            }
-            WxMenu wxMenu1 = findById(id);
+            WxMenu wxMenu1 = findById(wxMenu.getId());
             if(wxMenu1==null){
                 throw new ApiException(WechatRequestMapping.WxMenu.message_fail_WxMenu_is_no_exist, ExceptionCode.common_error_params_code);
             }
@@ -78,13 +74,13 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
             String[] codeArray = codes.split(",");
             Date date = new Date();
             for (String code : codeArray) {
-                WxMenu wxMenu = wxMenuDao.findByCode(code);
+                WxMenu wxMenu = wxMenuDao.findById(code);
                 if (wxMenu == null) {
                     continue;
                 }
-                String supMenucode = wxMenu.getSupMenucode();
+                String supMenucode = wxMenu.getSupMenuid();
                 if (StringUtils.isEmpty(supMenucode)) {//如果是空,则为父菜单
-                    List<WxMenu> childMenus = findChildMenus(wxMenu.getWechatCode(), wxMenu.getCode());
+                    List<WxMenu> childMenus = findChildMenus(wxMenu.getWechatId(), wxMenu.getId());
                     if (childMenus != null) {
                         for (WxMenu wxmenu : childMenus) {
                             wxmenu.setStatus(-1);
@@ -107,13 +103,13 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
         if(!StringUtils.isEmpty(codes)) {
             String[] codeArray = codes.split(",");
             for (String code : codeArray) {
-                WxMenu wxMenu = wxMenuDao.findByCode(code);
+                WxMenu wxMenu = wxMenuDao.findById(code);
                 if (wxMenu == null) {
                     continue;
                 }
-                String supMenucode = wxMenu.getSupMenucode();
+                String supMenucode = wxMenu.getSupMenuid();
                 if (StringUtils.isEmpty(supMenucode)) {//如果是空,则为父菜单
-                    List<WxMenu> childMenus = findChildMenus(wxMenu.getWechatCode(), wxMenu.getCode());
+                    List<WxMenu> childMenus = findChildMenus(wxMenu.getWechatId(), wxMenu.getId());
                     if (childMenus != null) {
                         for (WxMenu wxmenu : childMenus) {
                             wxmenu.setStatus(-1);
@@ -131,10 +127,10 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
 
 
     public WxMenu findByCode(String code) {
-        return wxMenuDao.findByCode(code);
+        return wxMenuDao.findById(code);
     }
 
-    public WxMenu findById(Long id) {
+    public WxMenu findById(String id) {
         return wxMenuDao.findById(id);
     }
 
@@ -163,7 +159,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
      * @return JSONObject
      */
     public JSONObject createWechatMenu(String wechatCode) {
-        WxWechat wechat = wechatService.findByCode(wechatCode);
+        WxWechat wechat = wechatService.findById(wechatCode);
         if(wechat==null){
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -190,7 +186,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
         if(menus!=null){
             menuJsonStr = "{\"button\":[{";
             for(WxMenu wxMenu:menus){
-                if(StringUtils.isEmpty(wxMenu.getSupMenucode())){//说明是父菜单
+                if(StringUtils.isEmpty(wxMenu.getSupMenuid())){//说明是父菜单
                     parentMenus.add(wxMenu);
                 }
             }
@@ -204,7 +200,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
             }
             menuJsonStr = getString(menuJsonStr, menu);
             //查找是否有子菜单
-            List<WxMenu> childMenus = findChildMenus(wechatCode, menu.getCode());
+            List<WxMenu> childMenus = findChildMenus(wechatCode, menu.getId());
             if(childMenus!=null){
                 int i =0;
                 menuJsonStr += ",\"sub_button\":[{";
@@ -262,12 +258,12 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     }
 
     private boolean canSaveOrUpata(WxMenu wxMenu){
-        String wechatCode = wxMenu.getWechatCode();
-        String supMenucode = wxMenu.getSupMenucode();
+        String wechatCode = wxMenu.getWechatId();
+        String supMenucode = wxMenu.getSupMenuid();
         if(StringUtils.isEmpty(wechatCode)){
             WxMenu parentMenuCode = findByCode(supMenucode);
-            wechatCode = parentMenuCode.getWechatCode();
-            wxMenu.setWechatCode(wechatCode);
+            wechatCode = parentMenuCode.getWechatId();
+            wxMenu.setWechatId(wechatCode);
         }
         String name = wxMenu.getName();
         if (StringUtils.isEmpty(name)) {
@@ -280,7 +276,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
             throw new ApiException(WechatRequestMapping.WxMenu.message_fail_sort_is_null, ExceptionCode.common_error_params_code);
         }
         //根据wechatCode查找是否存在微信配置
-        WxWechat wxWechat = wechatService.findByCode(wechatCode);
+        WxWechat wxWechat = wechatService.findById(wechatCode);
         if(wxWechat==null){
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -361,11 +357,11 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
             }
         }
         WxMenu wxMenuTemp = null;
-        if(StringUtils.isEmpty(wxMenu.getSupMenucode())){//如果是空,则为父菜单
+        if(StringUtils.isEmpty(wxMenu.getSupMenuid())){//如果是空,则为父菜单
             //判断sort是否重复
-            wxMenuTemp = wxMenuDao.findByWechatCodeExcludeSortFromParent(wxMenu.getWechatCode(), wxMenu.getSort(),wxMenu.getCode());
+            wxMenuTemp = wxMenuDao.findByWechatCodeExcludeSortFromParent(wxMenu.getWechatId(), wxMenu.getSort(),wxMenu.getId());
         }else{//子菜单
-            wxMenuTemp = wxMenuDao.findByWechatCodeExcludeSortFromChild(wxMenu.getWechatCode(), wxMenu.getSort(), wxMenu.getSupMenucode(), wxMenu.getCode());
+            wxMenuTemp = wxMenuDao.findByWechatCodeExcludeSortFromChild(wxMenu.getWechatId(), wxMenu.getSort(), wxMenu.getSupMenuid(), wxMenu.getId());
         }
         if(null!=wxMenuTemp){
             throw new ApiException(WechatRequestMapping.WxMenu.message_fail_sort_is_repeat, ExceptionCode.common_error_params_code);

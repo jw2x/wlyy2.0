@@ -36,7 +36,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
 
     @Transactional
     public Function createFunction(Function function) throws ApiException {
-        if (StringUtils.isEmpty(function.getCode())) {
+        if (StringUtils.isEmpty(function.getId())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(function.getName())) {
@@ -51,7 +51,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
 
     @Transactional
     public Function updateFunction(Function function) {
-        if (StringUtils.isEmpty(function.getCode())) {
+        if (StringUtils.isEmpty(function.getId())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(function.getName())) {
@@ -60,7 +60,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
         if (StringUtils.isEmpty(function.getId())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        Function functionTmp = functionDao.findByNameExcludeCode(function.getName(), function.getCode());
+        Function functionTmp = functionDao.findByNameExcludeCode(function.getName(), function.getId());
         if (functionTmp != null) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
@@ -113,7 +113,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     public List<Function> getChildren(String code){
         List<Function> childrens = functionDao.getChildren(code);
         for(Function children:childrens){
-            List<Function> children1 = functionDao.getChildren(children.getCode());//判断子节点是否有孙节点
+            List<Function> children1 = functionDao.getChildren(children.getId());//判断子节点是否有孙节点
             children.setChildren(children1);
         }
         return childrens;
@@ -132,7 +132,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
         Map<String, String> map = new HashMap<>();
         if(null!=functions){
             for(Function function: functions){
-                map.put(function.getCode(),function.getName());
+                map.put(function.getId(),function.getName());
             }
         }
         return map;
@@ -147,7 +147,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
         Function function = functionDao.findByCode(code);
         List<Function> childrens = functionDao.getChildren(code);
         for(Function children:childrens){
-            getAllChildren(children.getCode());
+            getAllChildren(children.getId());
         }
         function.setChildren(childrens);
         return function;

@@ -21,7 +21,7 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
 
     @Transactional
     public BaseSmsGateway createSmsGateway(BaseSmsGateway smsGateway) throws ApiException {
-        if (StringUtils.isEmpty(smsGateway.getCode())) {
+        if (StringUtils.isEmpty(smsGateway.getId())) {
             throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(smsGateway.getName())) {
@@ -36,7 +36,7 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
 
     @Transactional
     public BaseSmsGateway updateSmsGateway(BaseSmsGateway smsGateway) {
-        if (StringUtils.isEmpty(smsGateway.getCode())) {
+        if (StringUtils.isEmpty(smsGateway.getId())) {
             throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(smsGateway.getName())) {
@@ -45,7 +45,7 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
         if (StringUtils.isEmpty(smsGateway.getId())) {
             throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        BaseSmsGateway smsGatewayTmp = smsGatewayDao.findByNameExcludeCode(smsGateway.getName(), smsGateway.getCode());
+        BaseSmsGateway smsGatewayTmp = smsGatewayDao.findByNameExcludeCode(smsGateway.getName(), smsGateway.getId());
         if (smsGatewayTmp != null) {
             throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }

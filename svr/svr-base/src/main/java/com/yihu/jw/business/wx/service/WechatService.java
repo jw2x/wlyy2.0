@@ -25,7 +25,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     @Transient
     public WxWechat createWechat(WxWechat wechat) {
         String code = UUID.randomUUID().toString().replaceAll("-", "");
-        wechat.setCode(code);
+        wechat.setId(code);
         if (StringUtils.isEmpty(wechat.getSaasId())) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
         }
@@ -47,7 +47,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
 
     @Transient
     public WxWechat updateWxchat(WxWechat wechat) {
-        if (StringUtils.isEmpty(wechat.getCode())) {
+        if (StringUtils.isEmpty(wechat.getId())) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(wechat.getSaasId())) {
@@ -62,27 +62,19 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getName())) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
-        Long id = wechat.getId();
-        if (StringUtils.isEmpty(id)) {
-            throw new ApiException(WechatRequestMapping.WxConfig.message_fail_id_is_null, ExceptionCode.common_error_params_code);
-        }
-        WxWechat wechat1 = findById(id);
+        WxWechat wechat1 = findById(wechat.getId());
         if (wechat1 == null) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
         }
-        WxWechat wechatTem = wechatDao.findByAppIdExcludeCode(wechat.getAppId(), wechat.getCode());
+        WxWechat wechatTem = wechatDao.findByAppIdExcludeId(wechat.getAppId(), wechat.getId());
         if (wechatTem != null) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appId_exist, ExceptionCode.common_error_params_code);
         }
         return wechatDao.save(wechat);
     }
 
-    public WxWechat findByCode(String code) {
-        WxWechat wxWechat = wechatDao.findByCode(code);
-        return wxWechat;
-    }
 
-    public WxWechat findById(Long id) {
+    public WxWechat findById(String id) {
         return wechatDao.findById(id);
     }
 
@@ -91,7 +83,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (!StringUtils.isEmpty(codes)) {
             String[] codeArray = codes.split(",");
             for (String code : codeArray) {
-                WxWechat wxWechat = wechatDao.findByCode(code);
+                WxWechat wxWechat = wechatDao.findById(code);
                 if (wxWechat == null) {
                     throw new ApiException(WechatRequestMapping.WxConfig.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
                 }
@@ -117,7 +109,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         Map<String, String> map = new HashMap<>();
         if (null != wechats) {
             for (WxWechat wx : wechats) {
-                map.put(wx.getCode(), wx.getName());
+                map.put(wx.getId(), wx.getName());
             }
         }
         return map;

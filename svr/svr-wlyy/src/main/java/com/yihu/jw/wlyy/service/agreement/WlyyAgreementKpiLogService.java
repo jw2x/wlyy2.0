@@ -50,9 +50,6 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
         if (StringUtils.isEmpty(wlyyAgreementKpiLog.getKpiName())) {
             throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_kpiName_is_null, ExceptionCode.common_error_params_code);
         }
-        if (StringUtils.isEmpty(wlyyAgreementKpiLog.getCode())) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         //设置创建时间
         Date date = new Date();
         wlyyAgreementKpiLog.setCreateTime(date);
@@ -61,6 +58,6 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
 
 
     public WlyyAgreementKpiLog findByCode(String code) {
-        return wlyyAgreementKpiLogDao.findByCode(code);
+        return wlyyAgreementKpiLogDao.findById(code);
     }
 }

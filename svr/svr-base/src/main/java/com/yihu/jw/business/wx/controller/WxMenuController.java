@@ -120,7 +120,7 @@ public class WxMenuController extends EnvelopRestController {
         //得到微信列表数据
         List<WxWechat> wechats = wechatService.search(fields, filters, sorts, page, size);
         for(WxWechat wechat:wechats){
-            List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechat.getCode());
+            List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechat.getId());
             if (parentMenus.size()>0){
                 wechat.setState("closed");
             }else{
@@ -154,7 +154,7 @@ public class WxMenuController extends EnvelopRestController {
         //得到list数据
         List<WxMenu> list = wxMenuService.search(fields,filters,sorts);
         for(WxMenu wxMenu:list){
-            List<WxMenu> childMenus = wxMenuService.findChildMenus(wxMenu.getCode());
+            List<WxMenu> childMenus = wxMenuService.findChildMenus(wxMenu.getId());
             wxMenu.setChildren(childMenus);
         }
         //封装返回格式
@@ -174,10 +174,10 @@ public class WxMenuController extends EnvelopRestController {
     @ApiOperation(value = "创建微信公众号菜单", notes = "创建微信公众号菜单")
     @RequestMapping(value = WechatRequestMapping.WxMenu.api_createMenu ,method = RequestMethod.GET)
     public Envelop createWechatMenu(
-            @ApiParam(name = "wechatCode", value = "", defaultValue = "")
-            @RequestParam(value = "wechatCode", required = true)String wechatCode){
+            @ApiParam(name = "wechatId", value = "", defaultValue = "")
+            @RequestParam(value = "wechatId", required = true)String wechatId){
         try{
-            JSONObject result = wxMenuService.createWechatMenu(wechatCode);
+            JSONObject result = wxMenuService.createWechatMenu(wechatId);
             String errcode = result.get("errcode").toString();
             WechatResponse wechatResponse = new WechatResponse(Integer.valueOf(errcode));
             String msg = wechatResponse.getMsg();
@@ -189,19 +189,19 @@ public class WxMenuController extends EnvelopRestController {
 
     /**
      * 根据微信code查找父菜单
-     * @param wechatCode
+     * @param wechatId
      * @return
      */
     @GetMapping(value = WechatRequestMapping.WxMenu.api_getParentMenu)
     @ApiOperation(value = "根据微信code查找父菜单", notes = "根据微信code查找父菜单")
     public Envelop getParentMenu(
-            @ApiParam(name = "wechatCode", value = "wechatCode")
-            @PathVariable(value = "wechatCode", required = true) String wechatCode
+            @ApiParam(name = "wechatId", value = "wechatId")
+            @PathVariable(value = "wechatId", required = true) String wechatId
     ) {
         try {
-            List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechatCode);
+            List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechatId);
             for(WxMenu parentMenu:parentMenus){
-                List<WxMenu> childMenus = wxMenuService.findChildMenus(parentMenu.getCode());
+                List<WxMenu> childMenus = wxMenuService.findChildMenus(parentMenu.getId());
                 if (childMenus.size()>0){
                     parentMenu.setState("closed");
                 }else{

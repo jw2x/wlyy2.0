@@ -113,7 +113,7 @@ public class ModuleController extends EnvelopRestController {
 
         if(list!=null){
             for(Module module:list){//循环遍历,设置是否有子节点
-                List<Module> children = moduleService.getChildren(module.getCode());
+                List<Module> children = moduleService.getChildren(module.getId());
                 //children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
                 // children长度>0时,  state   “open,closed”表示是节点的打开关闭
                 if (children.size()>0){

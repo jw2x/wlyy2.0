@@ -89,7 +89,7 @@ public class WechatRequestMapping {
         public static final String api_delete="/wechatConfig/{codes}";
         public static final String api_getWechatNoPage="/wechatConfig/listNoPage";
         public static final String api_getWechats="/wechatConfig/list";
-        public static final String api_getByCode="/wechatConfig/{code}";
+        public static final String api_getById="/wechatConfig/{id}";
 
         public static final String message_success_create="wechat create success";
         public static final String message_success_update="wechat update success";

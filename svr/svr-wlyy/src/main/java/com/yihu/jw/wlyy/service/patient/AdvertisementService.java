@@ -47,9 +47,6 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
 
     @Transient
      public WlyyAdvertisement create(WlyyAdvertisement advertisement) {
-        if (StringUtils.isEmpty(advertisement.getCode())) {
-            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(advertisement.getSaasId())) {
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
@@ -71,10 +68,6 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
 
     @Transient
     public WlyyAdvertisement update(WlyyAdvertisement advertisement) {
-        String code = advertisement.getCode();
-        if (StringUtils.isEmpty(code)) {
-            throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(advertisement.getSaasId())) {
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
@@ -87,7 +80,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
         if (StringUtils.isEmpty(advertisement.getStatus())) {
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_status_is_null, ExceptionCode.common_error_params_code);
         }
-        Long id = advertisement.getId();
+        String id = advertisement.getId();
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_picture_is_null, ExceptionCode.common_error_params_code);
         }
@@ -103,12 +96,12 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
         return advertisementDao.save(advertisement);
     }
 
-    public WlyyAdvertisement findById(Long id) {
+    public WlyyAdvertisement findById(String id) {
         return advertisementDao.findById(id);
     }
 
     public WlyyAdvertisement findByCode(String code) {
-        return advertisementDao.findByCode(code);
+        return advertisementDao.findById(code);
     }
 
     @Transient
@@ -189,7 +182,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                 if(saas==null){//如果还是为空,则展示默认广告
                     return  getDefaultList();
                 }
-                String saasCode = saas.getCode();
+                String saasCode = saas.getId();
                 return getListBySaasCode(saasCode);
             }
 
@@ -224,7 +217,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                 if(saas==null){//如果还是为空,则展示默认广告
                     return  getDefaultList();
                 }
-                String saasCode = saas.getCode();
+                String saasCode = saas.getId();
                 return getListBySaasCode(saasCode);
             }
 

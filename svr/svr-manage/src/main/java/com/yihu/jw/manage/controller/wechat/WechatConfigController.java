@@ -62,7 +62,7 @@ public class WechatConfigController {
         return envelop;
     }
 
-    @GetMapping(value = WechatRequestMapping.WxConfig.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxConfig.api_getById)
     @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")

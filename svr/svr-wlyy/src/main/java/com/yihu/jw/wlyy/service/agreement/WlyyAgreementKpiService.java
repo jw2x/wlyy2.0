@@ -31,9 +31,6 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
 
     @Transient
     public WlyyAgreementKpi create(WlyyAgreementKpi wlyyAgreementKpi) {
-        if (StringUtils.isEmpty(wlyyAgreementKpi.getCode())) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         String saasId = wlyyAgreementKpi.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
@@ -63,16 +60,11 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
         //设置创建时间和修改时间
         Date date = new Date();
         wlyyAgreementKpi.setCreateTime(date);
-        wlyyAgreementKpi.setUpdaateTime(date);
         return wlyyAgreementKpiDao.save(wlyyAgreementKpi);
     }
 
     @Transient
     public WlyyAgreementKpi update(WlyyAgreementKpi wlyyAgreementKpi) {
-        String code = wlyyAgreementKpi.getCode();
-        if (StringUtils.isEmpty(code)) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         String saasId = wlyyAgreementKpi.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
@@ -99,7 +91,7 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
         if (StringUtils.isEmpty(wlyyAgreementKpi.getStatus())) {
             throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_status_is_null, ExceptionCode.common_error_params_code);
         }
-        Long id = wlyyAgreementKpi.getId();
+        String id = wlyyAgreementKpi.getId();
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
@@ -110,17 +102,12 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
         //设置创建时间和修改时间
         Date date = new Date();
         wlyyAgreementKpi.setCreateTime(wlyyAgreementKpi1.getCreateTime());
-        wlyyAgreementKpi.setUpdaateTime(date);
 
-        wlyyAgreementKpi1 = wlyyAgreementKpiDao.findCodeExcludeId(code,id);
-        if(wlyyAgreementKpi1 !=null){
-            throw new ApiException(WlyyRequestMapping.Agreement.message_fail_code_exist, ExceptionCode.common_error_params_code);
-        }
         return wlyyAgreementKpiDao.save(wlyyAgreementKpi);
     }
 
     public WlyyAgreementKpi findByCode(String code) {
-        return wlyyAgreementKpiDao.findByCode(code);
+        return wlyyAgreementKpiDao.findById(code);
     }
 
     @Transient

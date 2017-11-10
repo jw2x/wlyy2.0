@@ -118,7 +118,7 @@ public class WxTemplateController extends EnvelopRestController {
         //得到微信列表数据
         List<WxWechat> wechats = wechatService.search(fields, filters, sorts, page, size);
         for(WxWechat wechat:wechats){
-            List<WxTemplate> wxTemplates = wxTemplateService.findByWxCode(wechat.getCode());
+            List<WxTemplate> wxTemplates = wxTemplateService.findByWxCode(wechat.getId());
             if (wxTemplates.size()>0){
                 wechat.setState("closed");
             }else{
