@@ -1,7 +1,8 @@
 package com.yihu.jw.base.wx;
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,53 +16,26 @@ public class WxAccessToken extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private String code;//业务code
-	private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+	private String wechatId;//关联的微信code 关联表 Wx_Wechat
 	private String accessToken;//调用微信返回的accesstoken
-	private long addTimestamp;//创建时间
-	private long expiresIn;//凭证有效时间（秒）
+	private Long addTimestamp;//创建时间 秒数
+	private Long expiresIn;//凭证有效时间（秒）
 	private Date czrq;//操作时间
+	private String code;
 	/** default constructor */
 	public WxAccessToken() {
 	}
-	/** minimal constructor */
-	public WxAccessToken(Long id, String accessToken, long addTimestamp,
-			long expiresIn, Date czrq) {
-		this.id = id;
-		this.accessToken = accessToken;
-		this.addTimestamp = addTimestamp;
-		this.expiresIn = expiresIn;
-		this.czrq = czrq;
+
+
+	@Column(name = "wechat_id", length = 64)
+	public String getWechatId() {
+		return wechatId;
 	}
 
-	// Constructors
-
-	public WxAccessToken(Long id, String code, String wechatCode, String accessToken, long addTimestamp, Integer expiresIn, Date czrq) {
-		this.id = id;
-		this.code = code;
-		this.wechatCode = wechatCode;
-		this.accessToken = accessToken;
-		this.addTimestamp = addTimestamp;
-		this.expiresIn = expiresIn;
-		this.czrq = czrq;
+	public void setWechatId(String wechatId) {
+		this.wechatId = wechatId;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	@Column(name = "wechat_code", length = 64)
-	public String getWechatCode() {
-		return this.wechatCode;
-	}
-
-	public void setWechatCode(String wechatCode) {
-		this.wechatCode = wechatCode;
-	}
 
 	@Column(name = "access_token", nullable = false, length = 300)
 	public String getAccessToken() {
@@ -100,4 +74,15 @@ public class WxAccessToken extends IdEntity implements java.io.Serializable {
 		this.czrq = czrq;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public void setExpiresIn(long expiresIn) {
+		this.expiresIn = expiresIn;
+	}
 }

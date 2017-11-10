@@ -1,7 +1,8 @@
 package com.yihu.jw.base.base;// default package
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.*;
 
@@ -12,10 +13,6 @@ import javax.persistence.*;
 @Table(name = "base_saas_module")
 public class SaasModule extends IdEntity implements java.io.Serializable {
 
-	// Fields
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
 	private String saasId; //关联WlyySaas code
 	private String moduleId; //关联 WlyyModule code
 
@@ -37,15 +34,5 @@ public class SaasModule extends IdEntity implements java.io.Serializable {
 
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
-	}
-
-	@Override
-	public Long getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Long id) {
-		this.id = id;
 	}
 }

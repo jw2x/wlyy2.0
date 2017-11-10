@@ -1,6 +1,7 @@
 package com.yihu.jw.base.base;// default package
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,12 +15,12 @@ import java.util.List;
  */
 @Entity
 @Table(name = "base_module")
-public class Module extends IdEntity implements java.io.Serializable {
+public class Module extends IdEntityWithOperation implements java.io.Serializable {
 
 	// Fields
 	private String name; //模块名称
 	private String saasId; //关联 Saas code
-	private String parentCode;//父id
+	private String parentId;//父id
 	private Integer status; //-1 删除 0 禁用 可用
 	private String remark;
 	@Transient
@@ -52,13 +53,13 @@ public class Module extends IdEntity implements java.io.Serializable {
 		this.saasId = saasId;
 	}
 
-	@Column(name = "parent_code", length = 100)
-	public String getParentCode() {
-		return this.parentCode;
+	@Column(name = "parent_id", length = 100)
+	public String getParentId() {
+		return parentId;
 	}
 
-	public void setParentCode(String parentCode) {
-		this.parentCode = parentCode;
+	public void setParentId(String parentId) {
+		this.parentId = parentId;
 	}
 
 	@Column(name = "status", precision = 2, scale = 0)

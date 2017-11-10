@@ -1,5 +1,7 @@
 package com.yihu.jw.base.login;// default package
 
+import com.yihu.jw.IdEntityWithOperation;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,17 +10,12 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_login_account")
-public class WlyyLoginAccount implements java.io.Serializable {
+public class WlyyLoginAccount extends IdEntityWithOperation implements java.io.Serializable {
 
-	// Fields
-	private Integer id;//'主键'
-	private String code;//'业务code'
 	private String userType;//'用户类型 1居民 2医生 或者行政管理员'
 	private String password;//'密码'
 	private String salt;//'盐值'
 	private String accountStatus;//'状态 ( -2  锁定 -1 删除，0可用 )'
-	private Date createTime;//'创建时间'
-	private Date updateTime;//'修改时间'
 	private String saasId;//'saas配置id'
 	private String email;//'邮箱'
 
@@ -29,18 +26,16 @@ public class WlyyLoginAccount implements java.io.Serializable {
 	}
 
 	/** minimal constructor */
-	public WlyyLoginAccount(Integer id, Date createTime, Date updateTime) {
-		this.id = id;
+	public WlyyLoginAccount(Date createTime, Date updateTime) {
+
 		this.createTime = createTime;
 		this.updateTime = updateTime;
 	}
 
 	/** full constructor */
-	public WlyyLoginAccount(Integer id, String code, String userType,
+	public WlyyLoginAccount( String userType,
 			String password, String salt, String accountStatus, Date createTime,
 			Date updateTime, String saasId, String email) {
-		this.id = id;
-		this.code = code;
 		this.userType = userType;
 		this.password = password;
 		this.salt = salt;
@@ -49,27 +44,6 @@ public class WlyyLoginAccount implements java.io.Serializable {
 		this.updateTime = updateTime;
 		this.saasId = saasId;
 		this.email = email;
-	}
-
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	@Column(name = "code", length = 100)
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	@Column(name = "user_type", precision = 2, scale = 0)

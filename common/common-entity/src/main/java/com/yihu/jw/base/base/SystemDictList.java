@@ -1,6 +1,7 @@
 package com.yihu.jw.base.base;// default package
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "system_dict_list")
-public class SystemDictList extends IdEntity implements java.io.Serializable {
+public class SystemDictList extends IdEntityWithOperation implements java.io.Serializable {
 
 	// Fields
 

@@ -1,6 +1,7 @@
 package com.yihu.jw.base.wx;
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "wx_wechat")
-public class WxWechat extends IdEntity implements java.io.Serializable {
+public class WxWechat extends IdEntityWithOperation implements java.io.Serializable {
 
     // Fields
     private String saasId;//'saas配置id'
@@ -38,7 +39,6 @@ public class WxWechat extends IdEntity implements java.io.Serializable {
     private String state;
 
     public WxWechat(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, Integer status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
-        this.code = code;
         this.saasId = saasId;
         this.name = name;
         this.token = token;

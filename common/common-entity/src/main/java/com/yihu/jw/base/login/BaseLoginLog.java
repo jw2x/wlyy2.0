@@ -1,7 +1,8 @@
 package com.yihu.jw.base.login;// default package
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -14,7 +15,7 @@ import java.util.Date;
 public class BaseLoginLog extends IdEntity implements java.io.Serializable {
 
 	private String loginType;//'1 短信登录  2 密码登录'
-	private String userCode;//'登录用户主键 患者code或者医生code'
+	private String userId;//'登录用户主键 患者code或者医生code'
 	private String saasId;//'saas配置id'
 	private String userType;//'1 患者 2医生 '
 	private Date createTime;
@@ -34,20 +35,7 @@ public class BaseLoginLog extends IdEntity implements java.io.Serializable {
 		this.createTime = createTime;
 	}
 
-	/** full constructor */
-	public BaseLoginLog(Integer id, String loginType, String userCode,
-						String saasId, String userType, Date createTime, Integer tokenId,
-						String type, String errorMessage, String phone) {
-		this.loginType = loginType;
-		this.userCode = userCode;
-		this.saasId = saasId;
-		this.userType = userType;
-		this.createTime = createTime;
-		this.tokenId = tokenId;
-		this.type = type;
-		this.errorMessage = errorMessage;
-		this.phone = phone;
-	}
+
 
 
 	@Column(name = "login_type", length = 2)
@@ -59,14 +47,16 @@ public class BaseLoginLog extends IdEntity implements java.io.Serializable {
 		this.loginType = loginType;
 	}
 
-	@Column(name = "user_code", length = 100)
-	public String getUserCode() {
-		return this.userCode;
+	@Column(name = "user_id", length = 100)
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
+
+
 
 	@Column(name = "saas_id", length = 100)
 	public String getSaasId() {

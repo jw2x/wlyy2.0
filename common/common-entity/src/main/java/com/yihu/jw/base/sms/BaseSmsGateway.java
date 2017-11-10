@@ -1,7 +1,8 @@
 package com.yihu.jw.base.sms;// default package
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +17,6 @@ public class BaseSmsGateway  extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private String code; //业务code
 	private String name;//名称
 	private String saasId; //关联 base_saas code
 	private String orgCode; //机构code
@@ -33,17 +33,10 @@ public class BaseSmsGateway  extends IdEntity implements java.io.Serializable {
 	public BaseSmsGateway() {
 	}
 
-	/** minimal constructor */
-	public BaseSmsGateway(Long id) {
-		this.id = id;
-	}
-
 	/** full constructor */
 	public BaseSmsGateway(Long id, String code, String saasId,
 			String orgCode, String ip, String username, String password,
 			String url) {
-		this.id = id;
-		this.code = code;
 		this.saasId = saasId;
 		this.orgCode = orgCode;
 		this.ip = ip;
@@ -52,15 +45,6 @@ public class BaseSmsGateway  extends IdEntity implements java.io.Serializable {
 		this.url = url;
 	}
 
-
-	@Column(name = "code", length = 64)
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
 
 	@Column(name = "saas_id", length = 64)
 	public String getSaasId() {

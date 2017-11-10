@@ -2,7 +2,8 @@ package com.yihu.jw.wlyy.agreement;
 
 
 
-import com.yihu.jw.wlyy.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,8 +15,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_agreement_kpi")
-public class WlyyAgreementKpi extends IdEntity {
-    private String code;//业务code
+public class WlyyAgreementKpi extends IdEntityWithOperation {
     private String saasId;//saasId
     private String agreementCode;//套餐代码
     private String kpiName;//服务项名称
@@ -24,9 +24,6 @@ public class WlyyAgreementKpi extends IdEntity {
     private Integer status;//状态  -1删除 0 冻结 1可用
     private String kpiContent;//服务内容描述
     private String keyword;//关键字
-    private Date createTime;
-    private String createUser;
-    private Date updaateTime;
 
     @Column(name="saas_id")
     public String getSaasId() {
@@ -46,14 +43,6 @@ public class WlyyAgreementKpi extends IdEntity {
         this.agreementCode = agreementCode;
     }
 
-    @Column(name = "code")
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     @Column(name = "kpi_name")
     public String getKpiName() {
@@ -107,32 +96,5 @@ public class WlyyAgreementKpi extends IdEntity {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
-    }
-
-    @Column(name = "create_time")
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    @Column(name = "create_user")
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    @Column(name = "updaate_time")
-    public Date getUpdaateTime() {
-        return updaateTime;
-    }
-
-    public void setUpdaateTime(Date updaateTime) {
-        this.updaateTime = updaateTime;
     }
 }

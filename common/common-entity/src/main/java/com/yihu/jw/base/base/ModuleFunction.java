@@ -1,5 +1,8 @@
 package com.yihu.jw.base.base;// default package
 
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
+
 import javax.persistence.*;
 
 /**
@@ -7,12 +10,8 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "base_module_function")
-public class ModuleFunction implements java.io.Serializable {
+public class ModuleFunction extends IdEntity implements java.io.Serializable {
 
-	// Fields
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
 	private String functionId;//关联 base_function    code
 	private String moduleId;//关联 base_module  code
 
@@ -38,13 +37,5 @@ public class ModuleFunction implements java.io.Serializable {
 
 	public void setModuleId(String moduleId) {
 		this.moduleId = moduleId;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 }

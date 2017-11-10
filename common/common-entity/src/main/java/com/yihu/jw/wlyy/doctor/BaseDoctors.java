@@ -2,22 +2,24 @@ package com.yihu.jw.wlyy.doctor;
 
 
 
-import com.yihu.jw.wlyy.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/7 0007.
  */
 @Entity
-public class Doctors extends IdEntity {
+@Table(name = "base_doctors")
+public class BaseDoctors extends IdEntityWithOperation {
 
     private static final long serialVersionUID = 3138130150854187709L;
 
     private String userId;//云平台用户ID
-    private String code;//业务code
     private String name;//姓名
     private String pyCode;//姓名首字母
     private String sex;//性别(1男,2女)
@@ -35,8 +37,6 @@ public class Doctors extends IdEntity {
     private String xlzc;//学历职称
     private String xzzc;//行政职称
     private Integer status;//状态:-1 删除 0 禁用 1可用
-    private Date createTime;//
-    private Date updateTime;
 
 
     @Column(name = "user_id")
@@ -46,15 +46,6 @@ public class Doctors extends IdEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    @Column(name = "code")
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     
@@ -227,24 +218,5 @@ public class Doctors extends IdEntity {
         this.status = status;
     }
 
-    
-    @Column(name = "create_time")
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    
-    @Column(name = "update_time")
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
 }

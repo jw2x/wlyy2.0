@@ -1,7 +1,8 @@
 package com.yihu.jw.base.base;// default package
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,15 +16,15 @@ import java.util.List;
  */
 @Entity
 @Table(name = "base_function")
-public class Function extends IdEntity implements java.io.Serializable {
+public class Function extends IdEntityWithOperation implements java.io.Serializable {
 
 	// Fields
 
 	private String name; //功能名称
+	private String url;//功能对应的后台url路径
 	private String saasId; // saasid
 	private String parentCode; //父功能code
 	private Integer status; //状态 -1 删除 0 禁用 可用
-	private String url;//功能对应的后台url路径
 	private String remark; //备注
 	@Transient
 	private List<Function> children = new ArrayList<>();
@@ -33,19 +34,6 @@ public class Function extends IdEntity implements java.io.Serializable {
 
 	/** default constructor */
 	public Function() {
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@Column(name = "code", length = 100)
-	public String getCode() {
-		return this.code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	@Column(name = "name", length = 200)

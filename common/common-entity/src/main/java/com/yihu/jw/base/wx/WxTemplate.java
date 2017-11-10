@@ -1,6 +1,7 @@
 package com.yihu.jw.base.wx;
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,33 +14,17 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wx_template")
-public class WxTemplate extends IdEntity implements java.io.Serializable {
+public class WxTemplate extends IdEntityWithOperation implements java.io.Serializable {
 
     // Fields
     private String title;//模板标题
-    private String wechatCode;//关联的微信code 关联表 Wx_Wechat
+    private String wechatId;//关联的微信code 关联表 Wx_Wechat
     @Transient
     private String wechatName;
     private String templateId;//微信模板id
     private String content;//模板内容
     private String remark;
     private Integer status;  //状态 -1删除 0 冻结 1可用
-
-    public WxTemplate(String code, String title, String wechatCode, String templateId, String content, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
-        this.code = code;
-        this.title = title;
-        this.wechatCode = wechatCode;
-        this.templateId = templateId;
-        this.content = content;
-        this.createUser = createUser;
-        this.createUserName = createUserName;
-        this.createTime = createTime;
-        this.updateUser = updateUser;
-        this.updateUserName = updateUserName;
-        this.updateTime = updateTime;
-        this.remark = remark;
-        this.status = status;
-    }
 
     /**
      * default constructor
@@ -56,13 +41,13 @@ public class WxTemplate extends IdEntity implements java.io.Serializable {
         this.title = title;
     }
 
-    @Column(name="wechat_code")
-    public String getWechatCode() {
-        return wechatCode;
+    @Column(name="wechat_id")
+    public String getWechatId() {
+        return wechatId;
     }
 
-    public void setWechatCode(String wechatCode) {
-        this.wechatCode = wechatCode;
+    public void setWechatId(String wechatId) {
+        this.wechatId = wechatId;
     }
 
     @Column(name="template_id")

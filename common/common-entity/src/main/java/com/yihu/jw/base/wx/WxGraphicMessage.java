@@ -1,7 +1,8 @@
 package com.yihu.jw.base.wx;
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wx_graphic_message")
-public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
+public class WxGraphicMessage extends IdEntityWithOperation implements java.io.Serializable {
 
     private String saasId;
     private String title;//标题
@@ -28,7 +29,6 @@ public class WxGraphicMessage extends IdEntity implements java.io.Serializable {
     }
 
     public WxGraphicMessage(String code, String title, String description, String url, String picUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
-        this.code = code;
         this.title = title;
         this.description = description;
         this.url = url;
