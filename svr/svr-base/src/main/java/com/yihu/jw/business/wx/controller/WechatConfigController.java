@@ -75,14 +75,14 @@ public class WechatConfigController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = WechatRequestMapping.WxConfig.api_getByCode)
-    @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
-    public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+    @GetMapping(value = WechatRequestMapping.WxConfig.api_getById)
+    @ApiOperation(value = "根据Id查找微信配置", notes = "根据code查找微信配置")
+    public Envelop findById(
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WechatRequestMapping.WxConfig.message_success_find, wechatService.findByCode(code));
+            return Envelop.getSuccess(WechatRequestMapping.WxConfig.message_success_find, wechatService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

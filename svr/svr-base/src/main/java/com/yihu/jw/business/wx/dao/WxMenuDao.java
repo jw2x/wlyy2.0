@@ -12,11 +12,9 @@ import java.util.List;
  */
 public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, JpaSpecificationExecutor<WxMenu> {
 
-    @Query("from WxMenu m where m.code = ?1 and m.status = 1")
-    WxMenu findByCode(String code);
 
     @Query("from WxMenu m where m.id = ?1 and m.status = 1")
-    WxMenu findById(Long id);
+    WxMenu findById(String id);
 
     @Query("from WxMenu m where m.wechatCode =?1 and m.status = 1 order  by m.supMenucode ,m.sort")
     List<WxMenu> findByWechatCode(String wechatCode);

@@ -16,14 +16,11 @@ public interface WechatDao extends PagingAndSortingRepository<WxWechat, Long>, J
     WxWechat findByAppId(String appId);
 
 
-    @Query("from WxWechat w where w.appId = ?1 and w.code!= ?2 and w.status!=-1")
-    WxWechat findByAppIdExcludeCode(String appId, String code);
-
-    @Query("from WxWechat w where w.code =?1 and w.status!=-1")
-    WxWechat findByCode(String code);
+    @Query("from WxWechat w where w.appId = ?1 and w.id!= ?2 and w.status!=-1")
+    WxWechat findByAppIdExcludeId(String appId, String code);
 
     @Query("from WxWechat w where w.id = ?1 and w.status!=-1")
-    WxWechat findById(Long id);
+    WxWechat findById(String id);
 
     @Query("from WxWechat w where w.status!=-1")
     List<WxWechat> findAll();

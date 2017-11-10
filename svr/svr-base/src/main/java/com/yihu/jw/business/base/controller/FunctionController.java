@@ -115,7 +115,7 @@ public class FunctionController extends EnvelopRestController {
         List<Function> list = functionService.search(fields, filters, sorts, page, size);
         if(list!=null){
             for(Function func:list){//循环遍历,设置是否有子节点
-                List<Function> children = functionService.getChildren(func.getCode());
+                List<Function> children = functionService.getChildren(func.getId());
                 func.setChildren(children);
             }
         }
@@ -145,7 +145,7 @@ public class FunctionController extends EnvelopRestController {
         List<Object> functions = new ArrayList<>();
         if(list!=null){
             for(Function func:list){
-                String code = func.getCode();
+                String code = func.getId();
                 func = functionService.getAllChildren(code);
                 functions.add(func);
             }

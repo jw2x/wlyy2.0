@@ -27,9 +27,6 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
 
     @Transient
     public WlyyAgreement create(WlyyAgreement wlyyAgreement) {
-        if (StringUtils.isEmpty(wlyyAgreement.getCode())) {
-            throw new ApiException(WlyyRequestMapping.Agreement.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         String saasId = wlyyAgreement.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
@@ -56,10 +53,6 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
 
     @Transient
     public WlyyAgreement update(WlyyAgreement wlyyAgreement) {
-        String code = wlyyAgreement.getCode();
-        if (StringUtils.isEmpty(code)) {
-            throw new ApiException(WlyyRequestMapping.Agreement.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         String saasId = wlyyAgreement.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
@@ -77,7 +70,7 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
         if (StringUtils.isEmpty(wlyyAgreement.getStatus())) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_status_is_null, ExceptionCode.common_error_params_code);
         }
-        Long id = wlyyAgreement.getId();
+        String id = wlyyAgreement.getId();
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
@@ -90,15 +83,11 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
         wlyyAgreement.setCreateTime(wlyyAgreement1.getCreateTime());
         wlyyAgreement.setUpdateTime(date);
 
-        wlyyAgreement1 = wlyyAgreementDao.findCodeExcludeId(code,id);
-        if(wlyyAgreement1 !=null){
-            throw new ApiException(WlyyRequestMapping.Agreement.message_fail_code_exist, ExceptionCode.common_error_params_code);
-        }
         return wlyyAgreementDao.save(wlyyAgreement);
     }
 
     public WlyyAgreement findByCode(String code) {
-        WlyyAgreement wlyyAgreement = wlyyAgreementDao.findByCode(code);
+        WlyyAgreement wlyyAgreement = wlyyAgreementDao.findById(code);
         return wlyyAgreement;
     }
 

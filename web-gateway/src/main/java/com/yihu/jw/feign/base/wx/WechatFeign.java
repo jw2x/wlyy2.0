@@ -29,7 +29,7 @@ public interface WechatFeign {
     @RequestMapping(value = WechatRequestMapping.WxConfig.api_delete,method = RequestMethod.DELETE)
     Envelop deleteWechat(@RequestParam(value = "codes") String codes,@RequestParam(value = "userCode") String userCode,@RequestParam(value = "userName") String userName) throws JiWeiException;
 
-    @RequestMapping(value = WechatRequestMapping.WxConfig.api_getByCode,method = RequestMethod.GET)
+    @RequestMapping(value = WechatRequestMapping.WxConfig.api_getById,method = RequestMethod.GET)
     Envelop findByCode(@RequestParam(value = "code") String code) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxConfig.api_getWechats ,method = RequestMethod.GET)

@@ -35,7 +35,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
 
     @Transactional
     public Module createModule(Module module) throws ApiException {
-        if (StringUtils.isEmpty(module.getCode())) {
+        if (StringUtils.isEmpty(module.getId())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(module.getName())) {
@@ -53,7 +53,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
 
     @Transactional
     public Module updateModule(Module module) {
-        if (StringUtils.isEmpty(module.getCode())) {
+        if (StringUtils.isEmpty(module.getId())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_code_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(module.getName())) {
@@ -62,7 +62,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
         if (StringUtils.isEmpty(module.getId())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        Module moduleTmp = moduleDao.findByNameExcludeCode(module.getName(), module.getCode());
+        Module moduleTmp = moduleDao.findByNameExcludeCode(module.getName(), module.getId());
         if (moduleTmp != null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
@@ -110,7 +110,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
     public List<Module> getChildren(String code){
         List<Module> childrens = moduleDao.getChildren(code);
         for(Module children:childrens){
-            List<Module> children1 = moduleDao.getChildren(children.getCode());//判断子节点是否有孙节点
+            List<Module> children1 = moduleDao.getChildren(children.getId());//判断子节点是否有孙节点
             //没有children    state
             //“open”表示是子节点，“closed”表示为父节点；
             if (children1.size()>0){
@@ -135,7 +135,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
         Map<String, String> map = new HashMap<>();
         if(null!=modules){
             for(Module module: modules){
-                map.put(module.getCode(),module.getName());
+                map.put(module.getId(),module.getName());
             }
         }
         return map;

@@ -36,16 +36,6 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     private WechatService wechatService;
 
     public WxTemplate createWxTemplate(WxTemplate wxTemplate) {
-        String code = UUID.randomUUID().toString().replaceAll("-", "");
-        wxTemplate.setCode(code);
-        if (StringUtils.isEmpty(wxTemplate.getWechatCode())) {
-            throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_wechatCode_is_null, ExceptionCode.common_error_params_code);
-        }
-        //根据wechatCode查找是否存在微信配置
-        WxWechat wxWechat = wechatService.findByCode(wxTemplate.getWechatCode());
-        if(wxWechat==null){
-            throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
             throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_templateid_is_null, ExceptionCode.common_error_params_code);
         }
@@ -60,12 +50,6 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     }
 
     public WxTemplate updateWxTemplate(WxTemplate wxTemplate) {
-        if (StringUtils.isEmpty(wxTemplate.getCode())) {
-            throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
-        if (StringUtils.isEmpty(wxTemplate.getWechatCode())) {
-            throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_wechatCode_is_null, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
             throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_templateid_is_null, ExceptionCode.common_error_params_code);
         }
@@ -73,7 +57,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if (StringUtils.isEmpty(content)) {
             throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_content_is_null, ExceptionCode.common_error_params_code);
         }
-        Long id = wxTemplate.getId();
+        String id = wxTemplate.getId();
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
@@ -93,7 +77,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if(!StringUtils.isEmpty(codes)) {
             String[] codeArray = codes.split(",");
             for (String code : codeArray) {
-                WxTemplate wxTemplate = wxTemplateDao.findByCode(code);
+                WxTemplate wxTemplate = wxTemplateDao.findById(code);
                 if (wxTemplate == null) {
                     throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
                 }
@@ -106,13 +90,13 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     }
 
     public WxTemplate findByCode(String code) {
-        WxTemplate wxTemplate = wxTemplateDao.findByCode(code);
-        WxWechat wechat = wechatService.findByCode(wxTemplate.getWechatCode());
+        WxTemplate wxTemplate = wxTemplateDao.findById(code);
+        WxWechat wechat = wechatService.findById(wxTemplate.getWechatId());
         wxTemplate.setWechatName(wechat.getName());
         return wxTemplate;
     }
 
-    public WxTemplate findById(Long id) {
+    public WxTemplate findById(String id) {
         WxTemplate wxTemplate = wxTemplateDao.findById(id);
         return wxTemplate;
     }
@@ -124,7 +108,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             if(wxTemplate==null){
                 throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_template_is_no_exist, ExceptionCode.common_error_params_code);
             }
-            String wechatCode =  wxTemplate.getWechatCode();
+            String wechatCode =  wxTemplate.getWechatId();
             String content = wxTemplate.getContent().replaceAll(" ", "");//{{result.DATA}}领奖金额:{{withdrawMoney.DATA}   }领奖  时间:{ {withdrawTime.DATA} }银行信息:{ {cardInfo.DATA} }到账时间:{{arrivedTime.DATA}}{{remark.DATA}}
             String[] contentArray = content.split("\\{\\{");
 
