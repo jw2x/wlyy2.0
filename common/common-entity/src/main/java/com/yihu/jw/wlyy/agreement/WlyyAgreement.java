@@ -3,7 +3,8 @@ package com.yihu.jw.wlyy.agreement;
 
 
 
-import com.yihu.jw.wlyy.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,47 +18,20 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_agreement")
-public class WlyyAgreement extends IdEntity implements Serializable{
+public class WlyyAgreement extends IdEntityWithOperation implements Serializable{
 
     private static final long serialVersionUID = -4343130835307199266L;
 
-    private String code;//业务code
     private String saasId;
     private String name;//套餐名称
     private BigDecimal price;//套餐价格
     private String posterPic;//海报图
     private String remark;//描述
     private String type;//类型
-    private Date createTime;
-    private Date updateTime;
     private Integer status;//状态 -1删除 0 冻结 1可用
-    private String createUser;
-
-    public WlyyAgreement(String code, String parentCode, String saasId, String name, BigDecimal price, String posterPic, String remark, String type, Date createTime, Date updateTime, Integer status, String createUser) {
-        this.code = code;
-        this.saasId = saasId;
-        this.name = name;
-        this.price = price;
-        this.posterPic = posterPic;
-        this.remark = remark;
-        this.type = type;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-        this.status = status;
-        this.createUser = createUser;
-    }
 
     public WlyyAgreement(){
 
-    }
-
-    @Column(name = "code")
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     @Column(name = "saas_id")
@@ -114,23 +88,6 @@ public class WlyyAgreement extends IdEntity implements Serializable{
         this.type = type;
     }
 
-    @Column(name = "create_time")
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    @Column(name = "update_time")
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 
     @Column(name = "status")
     public Integer getStatus() {
@@ -139,14 +96,5 @@ public class WlyyAgreement extends IdEntity implements Serializable{
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    @Column(name = "create_user")
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
     }
 }

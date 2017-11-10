@@ -1,7 +1,8 @@
 package com.yihu.jw.base.sms;// default package
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "base_sms")
-public class BaseSms extends IdEntity implements java.io.Serializable {
+public class BaseSms extends IdEntityWithOperation implements java.io.Serializable {
 
 	// Fields
 
@@ -24,7 +25,7 @@ public class BaseSms extends IdEntity implements java.io.Serializable {
 	private String content;	// 短信内容
 	private Date deadline;	//过期时间
 	private Integer status;	//短信状态 状态，0未发送，1已发送
-	private Date czrq; //操作时间
+	private Date czrq;//操作日期
 
 	// Constructors
 
@@ -42,7 +43,6 @@ public class BaseSms extends IdEntity implements java.io.Serializable {
 		this.content = content;
 		this.deadline = deadline;
 		this.status = status;
-		this.czrq = czrq;
 	}
 
 	/** full constructor */
@@ -57,7 +57,6 @@ public class BaseSms extends IdEntity implements java.io.Serializable {
 		this.content = content;
 		this.deadline = deadline;
 		this.status = status;
-		this.czrq = czrq;
 	}
 
 
@@ -134,14 +133,12 @@ public class BaseSms extends IdEntity implements java.io.Serializable {
 		this.status = status;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "czrq", nullable = false, length = 0)
+	@Column(name = "czrq")
 	public Date getCzrq() {
-		return this.czrq;
+		return czrq;
 	}
 
 	public void setCzrq(Date czrq) {
 		this.czrq = czrq;
 	}
-
 }

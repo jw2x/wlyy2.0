@@ -1,6 +1,7 @@
 package com.yihu.jw.wlyy.patient;
 
-import com.yihu.jw.wlyy.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,11 +14,10 @@ import java.sql.Date;
  */
 @Entity
 @Table(name = "base_patient")
-public class BasePatient extends IdEntity implements Serializable {
+public class BasePatient extends IdEntityWithOperation implements Serializable {
 
     private static final long serialVersionUID = -5371957917251091855L;
-    private String code;//业务code
-    private String accountCode;//关联wlyy_login_account账号code
+    private String accountId;//关联wlyy_login_account账号id
     private String idcard;//身份证
     private String name;//姓名
     private Date birthday;//生日
@@ -36,32 +36,21 @@ public class BasePatient extends IdEntity implements Serializable {
     private String streetName;//街道名称
     private String address;//详细地址
     private Integer status;//用户状态：1正常，0禁用，-1恶意注册，2审核中
-    private Date updateTime;//更新时间
-    private Date createTime;//创建时间
     private String saasId;//saas配置id
     private String email;//邮箱
     private String nation;//籍贯
     private String spell;//名称拼音首字母
 
-    
-    @Column(name = "code")
-    public String getCode() {
-        return code;
+
+    @Column(name = "account_id")
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
     }
 
-    
-    @Column(name = "account_code")
-    public String getAccountCode() {
-        return accountCode;
-    }
-
-    public void setAccountCode(String accountCode) {
-        this.accountCode = accountCode;
-    }
 
     
     @Column(name = "idcard")
@@ -241,26 +230,6 @@ public class BasePatient extends IdEntity implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    
-    @Column(name = "update_time")
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    
-    @Column(name = "create_time")
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 
     

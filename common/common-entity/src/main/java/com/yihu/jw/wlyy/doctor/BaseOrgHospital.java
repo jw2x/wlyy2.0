@@ -2,7 +2,8 @@ package com.yihu.jw.wlyy.doctor;
 
 
 
-import com.yihu.jw.wlyy.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,38 +14,25 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_org_hospital")
-public class BaseOrgHospital extends IdEntity {
+public class BaseOrgHospital extends IdEntityWithOperation {
 
     private static final long serialVersionUID = 5463913446686402252L;
-
-    private String code;//业务code
-    private String orgCode;//
+    private String orgId;//
     private String roadCode;
     private String centerSite;
     private String ascriptionType;
     private String levelId;
     private String levelName;
-    
 
-    
-    @Column(name = "code")
-    public String getCode() {
-        return code;
+    @Column(name = "org_id")
+    public String getOrgId() {
+        return orgId;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
     }
 
-    
-    @Column(name = "org_code")
-    public String getOrgCode() {
-        return orgCode;
-    }
-
-    public void setOrgCode(String orgCode) {
-        this.orgCode = orgCode;
-    }
 
     
     @Column(name = "road_code")

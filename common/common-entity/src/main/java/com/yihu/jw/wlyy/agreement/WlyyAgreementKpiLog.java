@@ -1,7 +1,10 @@
 package com.yihu.jw.wlyy.agreement;
 
 
-import com.yihu.jw.wlyy.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,26 +19,21 @@ import java.util.Date;
 public class WlyyAgreementKpiLog extends IdEntity {
 
     private static final long serialVersionUID = -3196907595969778396L;
-
-    private String code;//业务code
     private String saasId;
     private String patientCode;//患者code
     private String signCode;
     private String kpiCode;
     private String agreementCode;//套餐代码
     private String kpiName;//服务项名称
-    private Date createTime;
-    private String createUser;
 
+    @CreatedDate
+    @Column(name = "create_time", nullable = false, length = 0,updatable = false)
+    protected Date createTime;
 
-    @Column(name = "code")
-    public String getCode() {
-        return code;
-    }
+    @CreatedBy
+    @Column(name = "create_user",updatable = false)
+    protected String createUser;
 
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     @Column(name="saas_id")
     public String getSaasId() {
@@ -91,7 +89,6 @@ public class WlyyAgreementKpiLog extends IdEntity {
         this.kpiName = kpiName;
     }
 
-    @Column(name = "create_time")
     public Date getCreateTime() {
         return createTime;
     }
@@ -100,7 +97,6 @@ public class WlyyAgreementKpiLog extends IdEntity {
         this.createTime = createTime;
     }
 
-    @Column(name = "create_user")
     public String getCreateUser() {
         return createUser;
     }
@@ -108,5 +104,4 @@ public class WlyyAgreementKpiLog extends IdEntity {
     public void setCreateUser(String createUser) {
         this.createUser = createUser;
     }
-
 }

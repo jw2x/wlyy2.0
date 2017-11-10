@@ -1,7 +1,8 @@
 package com.yihu.jw.wlyy.agreement;
 
 
-import com.yihu.jw.wlyy.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,11 +14,9 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_sign_family")
-public class WlyySignFamily extends IdEntity {
+public class WlyySignFamily extends IdEntityWithOperation {
 
     private static final long serialVersionUID = -6759565631854462880L;
-
-    private String code;//业务code
     private String saasId;
     private int type;//签约类型：1三师签约，2家庭签约
     private String patient;//患者标识
@@ -66,14 +65,6 @@ public class WlyySignFamily extends IdEntity {
     private String criticalPeopleMobile;//紧急联系人电话
     private String criticalPeople;//紧急联系人
 
-    @Column(name = "code")
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     @Column(name="saas_id")
     public String getSaasId() {

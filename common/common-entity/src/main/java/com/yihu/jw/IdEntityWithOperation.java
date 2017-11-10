@@ -3,8 +3,9 @@
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  *******************************************************************************/
-package com.yihu.jw.base;
+package com.yihu.jw;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -25,14 +26,8 @@ import java.util.Date;
 // JPA 基类的标识
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class IdEntity {
+public abstract class IdEntityWithOperation extends IdEntity{
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	protected Long id;  // 非业务主键
-
-	@Column(name="code")
-	protected String code;
 
 	@CreatedDate
 	@Column(name = "create_time", nullable = false, length = 0,updatable = false)
@@ -58,14 +53,6 @@ public abstract class IdEntity {
 	@Column(name = "update_user_name", length = 50)
 	protected String updateUserName;
 
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Date getCreateTime() {
 		return createTime;
@@ -115,11 +102,4 @@ public abstract class IdEntity {
 		this.updateUserName = updateUserName;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
 }

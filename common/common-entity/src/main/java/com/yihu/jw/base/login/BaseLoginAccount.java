@@ -1,7 +1,11 @@
 package com.yihu.jw.base.login;// default package
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +26,16 @@ public class BaseLoginAccount extends IdEntity implements java.io.Serializable {
 	private String saasId;//'saas配置id'
 	private String email;//'邮箱'
 
+
+
+	@CreatedDate
+	@Column(name = "create_time", nullable = false, length = 0,updatable = false)
+	protected Date createTime;
+
+	@LastModifiedDate
+	@Column(name = "update_time", nullable = false, length = 0)
+	protected Date updateTime;
+
 	// Constructors
 
 	/** default constructor */
@@ -33,13 +47,10 @@ public class BaseLoginAccount extends IdEntity implements java.io.Serializable {
 	public BaseLoginAccount(Integer id, String code, String userType,
 							String password, String salt, String accountStatus, Date createTime,
 							Date updateTime, String saasId, String email) {
-		this.code = code;
 		this.userType = userType;
 		this.password = password;
 		this.salt = salt;
 		this.accountStatus = accountStatus;
-		this.createTime = createTime;
-		this.updateTime = updateTime;
 		this.saasId = saasId;
 		this.email = email;
 	}
@@ -99,4 +110,19 @@ public class BaseLoginAccount extends IdEntity implements java.io.Serializable {
 		this.email = email;
 	}
 
+	public Date getCreateTime() {
+		return createTime;
+	}
+
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
 }

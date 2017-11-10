@@ -1,7 +1,8 @@
 package com.yihu.jw.base.wx;
 
 
-import com.yihu.jw.base.IdEntity;
+import com.yihu.jw.IdEntity;
+import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,12 +16,10 @@ import java.util.List;
  */
 @Entity
 @Table(name = "wx_menu")
-public class WxMenu extends IdEntity implements java.io.Serializable {
+public class WxMenu extends IdEntityWithOperation implements java.io.Serializable {
 
-    private String wechatCode;//关联的微信code 关联表 Wx_Wechat
-    @Transient
-    private String wechatName;
-    private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
+    private String wechatId;//关联的微信code 关联表 Wx_Wechat
+    private String supMenuid;//父菜单id 如果是一级菜单 此字段为空
     private String type;//菜单类型
     private String name;//菜单名称
     private String menuKey;//click等点击类型必须
@@ -32,6 +31,8 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
     private String remark;//备注
     private Integer status; //状态 -1删除 0 冻结 1可用
 
+    @Transient
+    private String wechatName;
     @Transient
     private String state;                //children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
                                          // children长度>0时,    state   “open,closed”表示是节点的打开关闭
@@ -97,22 +98,22 @@ public class WxMenu extends IdEntity implements java.io.Serializable {
         this.status = status;
     }
 
-    @Column(name = "wechat_code", length = 200)
-    public String getWechatCode() {
-        return this.wechatCode;
+    @Column(name = "wechat_id", length = 200)
+    public String getWechatId() {
+        return this.wechatId;
     }
 
-    public void setWechatCode(String wechatCode) {
-        this.wechatCode = wechatCode;
+    public void setWechatId(String wechatId) {
+        this.wechatId = wechatId;
     }
 
-    @Column(name = "sup_menucode", length = 200)
-    public String getSupMenucode() {
-        return this.supMenucode;
+    @Column(name = "sup_menuid", length = 200)
+    public String getSupMenuid() {
+        return this.supMenuid;
     }
 
-    public void setSupMenucode(String supMenucode) {
-        this.supMenucode = supMenucode;
+    public void setSupMenuid(String supMenuid) {
+        this.supMenuid = supMenuid;
     }
 
     @Column(name = "type", length = 20)

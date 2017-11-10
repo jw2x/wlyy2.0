@@ -1,5 +1,7 @@
 package com.yihu.jw.base.login;// default package
 
+import com.yihu.jw.IdEntity;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -8,10 +10,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_login_log")
-public class WlyyLoginLog implements java.io.Serializable {
+public class WlyyLoginLog extends IdEntity implements java.io.Serializable {
 
-	// Fields
-	private Integer id;//'主键'
 	private String loginType;//'1 短信登录  2 密码登录'
 	private String userCode;//'登录用户主键 患者code或者医生code'
 	private String saasId;//'saas配置id'
@@ -26,40 +26,6 @@ public class WlyyLoginLog implements java.io.Serializable {
 
 	/** default constructor */
 	public WlyyLoginLog() {
-	}
-
-	/** minimal constructor */
-	public WlyyLoginLog(Integer id, Date createTime) {
-		this.id = id;
-		this.createTime = createTime;
-	}
-
-	/** full constructor */
-	public WlyyLoginLog(Integer id, String loginType, String userCode,
-			String saasId, String userType, Date createTime, Integer tokenId,
-			String type, String errorMessage, String phone) {
-		this.id = id;
-		this.loginType = loginType;
-		this.userCode = userCode;
-		this.saasId = saasId;
-		this.userType = userType;
-		this.createTime = createTime;
-		this.tokenId = tokenId;
-		this.type = type;
-		this.errorMessage = errorMessage;
-		this.phone = phone;
-	}
-
-	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Integer getId() {
-		return this.id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	@Column(name = "login_type", length = 2)
