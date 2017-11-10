@@ -1,8 +1,6 @@
 package com.yihu.jw.controller.login;
 
-import com.yihu.jw.commnon.wlyy.PatientContants;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
