@@ -6,7 +6,6 @@ import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.feign.base.wx.WechatMenuFeign;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by Administrator on 2017/5/31 0031.
  */
 @RestController
-@RequestMapping("{version}"+ WechatContants.api_common)
+@RequestMapping( WechatContants.api_common)
 @Api(description = "微信菜单配置")
 public class WechatMenuController {
 
@@ -35,7 +34,6 @@ public class WechatMenuController {
     @Autowired
     private Tracer tracer;
 
-    @ApiVersion(1)
     @PostMapping(value = WechatContants.Menu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
     @HystrixCommand(commandProperties = {
@@ -62,7 +60,6 @@ public class WechatMenuController {
         return wechatMenuFegin.updateWxMenu(jsonData);
     }
 
-    @ApiVersion(1)
     @DeleteMapping(value = WechatContants.Menu.api_delete)
     @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
     @HystrixCommand(commandProperties = {

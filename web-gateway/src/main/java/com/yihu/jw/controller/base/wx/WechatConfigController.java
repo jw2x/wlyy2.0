@@ -6,7 +6,6 @@ import com.yihu.jw.commnon.base.wx.WechatContants;
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.feign.base.wx.WechatFeign;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -21,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("{version}"+ WechatContants.api_common)
+@RequestMapping(WechatContants.api_common)
 @Api(description = "微信配置")
 public class WechatConfigController {
 
@@ -32,7 +31,6 @@ public class WechatConfigController {
     @Autowired
     private Tracer tracer;
 
-    @ApiVersion(1)
     @ApiOperation(value = "创建微信配置")
     @PostMapping(value = WechatContants.Config.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @HystrixCommand(commandProperties = {
@@ -47,7 +45,6 @@ public class WechatConfigController {
         return wechat;
     }
 
-    @ApiVersion(1)
     @ApiOperation(value = "更新微信配置")
     @PutMapping(value = WechatContants.Config.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @HystrixCommand(commandProperties = {
@@ -61,7 +58,6 @@ public class WechatConfigController {
         return wechat;
     }
 
-    @ApiVersion(1)
     @DeleteMapping(value = WechatContants.Config.api_delete)
     @ApiOperation(value = "删除微信配置", notes = "删除微信配置")
     @HystrixCommand(commandProperties = {
@@ -78,7 +74,6 @@ public class WechatConfigController {
         return wechat;
     }
 
-    @ApiVersion(1)
     @GetMapping(value = WechatContants.Config.api_getByCode)
     @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
     @HystrixCommand(commandProperties = {
@@ -91,7 +86,6 @@ public class WechatConfigController {
        return wechatFegin.findByCode(code);
     }
 
-    @ApiVersion(1)
     @RequestMapping(value = WechatContants.Config.api_getWechats, method = RequestMethod.GET)
     @ApiOperation(value = "获取微信配置列表(分页)")
     @HystrixCommand(commandProperties = {
@@ -122,7 +116,6 @@ public class WechatConfigController {
         return envelop;
     }
 
-    @ApiVersion(1)
     @GetMapping(value = WechatContants.Config.api_getWechatNoPage)
     @ApiOperation(value = "获取微信列表配置，不分页")
     @HystrixCommand(commandProperties = {

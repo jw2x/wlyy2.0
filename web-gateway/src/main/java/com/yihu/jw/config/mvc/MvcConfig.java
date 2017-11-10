@@ -1,6 +1,5 @@
 package com.yihu.jw.config.mvc;
 
-import com.yihu.jw.version.JWRequestMappingHandlerMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -12,19 +11,6 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  */
 @Configuration
 public class MvcConfig extends WebMvcConfigurationSupport {
-    /**
-     * 重写springMVC的Mapping 版本控制用
-     * @return
-     */
-    @Override
-    @Bean
-    public RequestMappingHandlerMapping requestMappingHandlerMapping() {
-        RequestMappingHandlerMapping handlerMapping = new JWRequestMappingHandlerMapping();
-        handlerMapping.setOrder(0);//顺序是第一
-        handlerMapping.setInterceptors(getInterceptors());
-        return handlerMapping;
-    }
-
     /**
      * 全局异常定义
      * @return

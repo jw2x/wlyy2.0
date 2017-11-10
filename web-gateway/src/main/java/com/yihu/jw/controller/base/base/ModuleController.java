@@ -1,10 +1,10 @@
-package com.yihu.jw.controller.base;
+package com.yihu.jw.controller.base.base;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.base.BaseContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.feign.base.base.FunctionFeign;
+import com.yihu.jw.feign.base.base.ModuleFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;
@@ -25,21 +25,21 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @RestController
-@RequestMapping("{version}/"+ BaseContants.api_common)
-@Api(value = "功能管理", description = "功能管理")
-public class FunctionController extends EnvelopRestController {
+@RequestMapping( BaseContants.api_common)
+@Api(value = "模块管理", description = "模块相关接口管理")
+public class ModuleController extends EnvelopRestController {
 
     @Autowired
-    private FunctionFeign fegin;
+    private ModuleFeign fegin;
     @Autowired
     private Tracer tracer;
 
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @PostMapping(value = BaseContants.Function.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseContants.Module.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建功能", notes = "创建功能")
-    public Envelop createFunction(
+    public Envelop createModule(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws JiWeiException {
         return fegin.create(jsonData);
@@ -48,9 +48,9 @@ public class FunctionController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @PutMapping(value = BaseContants.Function.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = BaseContants.Module.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新功能", notes = "更新功能")
-    public Envelop updateFunction(
+    public Envelop updateModule(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws JiWeiException {
         return fegin.update(jsonData);
@@ -59,9 +59,9 @@ public class FunctionController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @DeleteMapping(value = BaseContants.Function.api_delete)
+    @DeleteMapping(value = BaseContants.Module.api_delete)
     @ApiOperation(value = "删除功能", notes = "删除功能")
-    public Envelop deleteFunction(
+    public Envelop deleteModule(
             @ApiParam(name = "codes", value = "codes")
             @PathVariable(value = "codes", required = true) String codes,
             @ApiParam(name = "userCode", value = "userCode")
@@ -74,7 +74,7 @@ public class FunctionController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseContants.Function.api_getByCode)
+    @GetMapping(value = BaseContants.Module.api_getByCode)
     @ApiOperation(value = "根据code查找", notes = "根据code查找")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")
@@ -86,7 +86,7 @@ public class FunctionController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseContants.Function.api_getChildren)
+    @GetMapping(value = BaseContants.Module.api_getChildren)
     @ApiOperation(value = "根据code查找子节点", notes = "根据code查找子节点")
     public Envelop getChildren(
             @ApiParam(name = "code", value = "code")
@@ -98,9 +98,9 @@ public class FunctionController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @RequestMapping(value = BaseContants.Function.api_getList, method = RequestMethod.GET)
+    @RequestMapping(value = BaseContants.Module.api_getList, method = RequestMethod.GET)
     @ApiOperation(value = "获取功能列表(分页)")
-    public Envelop getFunctions(
+    public Envelop getModules(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -128,7 +128,7 @@ public class FunctionController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseContants.Function.api_getListNoPage)
+    @GetMapping(value = BaseContants.Module.api_getListNoPage)
     @ApiOperation(value = "获取功能列表，不分页")
     public Envelop getListNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,saasId,parentCode,remark")
@@ -139,15 +139,36 @@ public class FunctionController extends EnvelopRestController {
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         String filterStr = "";
         if(StringUtils.isNotBlank(filters)){
+            filters = filters.replaceAll("=", ":");
             JSONObject jsonResult = new JSONObject(filters);
             if(jsonResult.has("saasId")){
                 filterStr+="saasId="+jsonResult.get("saasId")+";";
             }
-            if(jsonResult.has("parentCode")){
-                filterStr+="parentCode="+jsonResult.get("parentCode")+";";
-            }
         }
         return fegin.getListNoPage(fields, filterStr, sorts);
+    }
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @GetMapping(value = BaseContants.ModuleFun.api_getExistFun)
+    @ApiOperation(value = "根据模块code查找已有的功能")
+    public Envelop getExistFun(
+            @ApiParam(name = "code", value = "code")
+            @PathVariable(value = "code", required = true) String code
+    ) throws JiWeiException {
+        return fegin.getExistFunc(code);
+    }
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @PutMapping(value = BaseContants.ModuleFun.api_changeFun, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "更新功能", notes = "更新功能")
+    public Envelop changeFun(
+            @ApiParam(name = "jsonData")
+            @RequestBody String jsonData) throws JiWeiException {
+        return fegin.changeFun(jsonData);
     }
 
 }

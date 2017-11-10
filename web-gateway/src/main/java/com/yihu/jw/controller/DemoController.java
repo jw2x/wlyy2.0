@@ -6,7 +6,6 @@ import com.yihu.jw.exception.SystemException;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.feign.PatientFeign;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.version.ApiVersion;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -26,8 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/{version}/patient")
 @Api(description = "患者")
 @RefreshScope
-public class PatientController {
-    private Logger logger = LoggerFactory.getLogger(PatientController.class);
+public class DemoController {
+    private Logger logger = LoggerFactory.getLogger(DemoController.class);
     @Autowired
     private PatientFeign patientFegin;
     @Autowired
@@ -36,7 +35,6 @@ public class PatientController {
     private String aaaa;
 
     @GetMapping("/hello")
-    @ApiVersion(1)
     @ResponseBody
     public Envelop hello1(@RequestParam(name = "id") Integer id,
                           @RequestParam(name = "name") String name,
@@ -62,7 +60,6 @@ public class PatientController {
     }
 
     @GetMapping("/hello")
-    @ApiVersion(2)
     @ResponseBody
     public String hello2(String id) throws Exception {
         System.out.println("haha2.........");
@@ -70,7 +67,6 @@ public class PatientController {
     }
 
     @GetMapping("/refresh")
-    @ApiVersion(0)
     @ResponseBody
     public String refresh(HttpServletRequest request) throws Exception {
         return aaaa;
