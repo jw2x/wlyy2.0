@@ -19,31 +19,9 @@
     
     
 版本控制
-    网关对外的版本控制根据访问路径中的第一个参数决定
-    例如：http://localhost:8088/v2/patient/hello   那个就是访问v2的这个版本
-    对应的代码实现，在方法上添加版本的注解 @ApiVersion() 已经对应的版本号 1
+    nginx根据cookie中的是否是正式版本跳转服务器
     
-    @RestController
-    @RequestMapping("/{version}/patient")
-    public class PatientController {
-    
-        @GetMapping("/hello")
-        @ApiVersion(1)
-        @ResponseBody
-        public String hello1(HttpServletRequest request){
-            System.out.println("haha1..........");
-    
-            return "hello";
-        }
-    
-        @GetMapping("/hello")
-        @ApiVersion(2)
-        @ResponseBody
-        public String hello2(HttpServletRequest request){
-            System.out.println("haha2.........");
-            return "hello";
-        }
+    cookie
+    {
+        "prod":true, ##true正式 false测试
     }
-    
-    如果我们传大于v2的版本那么系统会自动识别到最新的版本 v2
-    例如http://localhost:8088/v5/patient/hello     那么其实还是调用v2版本
