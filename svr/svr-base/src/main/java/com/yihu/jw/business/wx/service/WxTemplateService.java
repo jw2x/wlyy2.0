@@ -79,7 +79,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             for (String code : codeArray) {
                 WxTemplate wxTemplate = wxTemplateDao.findById(code);
                 if (wxTemplate == null) {
-                    throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+                    throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
                 }
                 wxTemplate.setStatus(-1);
                 wxTemplate.setUpdateUser(userCode);

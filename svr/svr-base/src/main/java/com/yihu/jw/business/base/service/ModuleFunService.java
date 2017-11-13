@@ -46,11 +46,11 @@ public class ModuleFunService extends BaseJpaService<ModuleFunction, ModuleFunct
     public void changeFun(String jsonData) {
         JSONObject jsonObject =  new JSONObject(jsonData);
         if(!jsonObject.has("moduleCode")){
-            throw new ApiException(BaseRequestMapping.ModuleFun.moduleCode_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.ModuleFun.moduleId_is_null, ExceptionCode.common_error_params_code);
             //filterStr+="saasId="+jsonObject.get("saasId")+";";
         }
         if(!jsonObject.has("funCodes")){
-            throw new ApiException(BaseRequestMapping.ModuleFun.funCodes_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.ModuleFun.funIds_is_null, ExceptionCode.common_error_params_code);
         }
         String moduleCode = jsonObject.get("moduleCode").toString();//模块code
         String funCodes = jsonObject.get("funCodes").toString();//功能code,多个code  ","  分隔

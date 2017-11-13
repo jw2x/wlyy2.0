@@ -59,24 +59,24 @@ public class AdvertisementControlelr extends EnvelopRestController {
     @DeleteMapping(value = WlyyRequestMapping.Advertisement.api_delete)
     @ApiOperation(value = "删除广告", notes = "删除广告")
     public Envelop delete(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id) {
         try {
-            advertisementService.delete(code);
+            advertisementService.delete(id);
             return Envelop.getSuccess(WlyyRequestMapping.Advertisement.message_success_delete);
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WlyyRequestMapping.Advertisement.api_getByCode)
-    @ApiOperation(value = "根据code查找广告", notes = "根据code查找广告")
+    @GetMapping(value = WlyyRequestMapping.Advertisement.api_getById)
+    @ApiOperation(value = "根据id查找广告", notes = "根据id查找广告")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WlyyRequestMapping.Advertisement.message_success_find, advertisementService.findByCode(code));
+            return Envelop.getSuccess(WlyyRequestMapping.Advertisement.message_success_find, advertisementService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -126,14 +126,14 @@ public class AdvertisementControlelr extends EnvelopRestController {
         return Envelop.getSuccessList(WlyyRequestMapping.Advertisement.message_success_find_functions, advertisement);
     }
 
-    @GetMapping(value = WlyyRequestMapping.Advertisement.api_getListByPatientCode)
+    @GetMapping(value = WlyyRequestMapping.Advertisement.api_getListByPatientId)
     @ApiOperation(value = "根据患者code获取广告")
     public Envelop getListByPatientCode(
-            @ApiParam(name = "patientCode")
-            @RequestParam(value = "patientCode") String patientCode,
+            @ApiParam(name = "patientId")
+            @RequestParam(value = "patientId") String patientId,
             HttpServletRequest request
     ) {
-        List<WlyyAdvertisement> advertisements = advertisementService.getListByPatientCode(patientCode, request);
+        List<WlyyAdvertisement> advertisements = advertisementService.getListByPatientId(patientId, request);
         return Envelop.getSuccessList(WlyyRequestMapping.Advertisement.message_success_find_functions, advertisements);
     }
 

@@ -22,7 +22,7 @@ public class SaasService extends BaseJpaService<Saas, SaasDao> {
     @Transactional
     public Saas createSaas(Saas saas) throws ApiException {
         if (StringUtils.isEmpty(saas.getId())) {
-            throw new ApiException(BaseRequestMapping.Saas.message_fail_code_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Saas.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(saas.getName())) {
             throw new ApiException(BaseRequestMapping.Saas.message_fail_name_is_null, ExceptionCode.common_error_params_code);
@@ -36,9 +36,6 @@ public class SaasService extends BaseJpaService<Saas, SaasDao> {
 
     @Transactional
     public Saas updateSaas(Saas saas) {
-        if (StringUtils.isEmpty(saas.getId())) {
-            throw new ApiException(BaseRequestMapping.Saas.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(saas.getName())) {
             throw new ApiException(BaseRequestMapping.Saas.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
@@ -55,7 +52,7 @@ public class SaasService extends BaseJpaService<Saas, SaasDao> {
     public Saas findById(String id) {
         Saas saas = saasDao.findById(id);
         if (saas == null) {
-            throw new ApiException(BaseRequestMapping.Saas.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Saas.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
         return saas;
     }
@@ -64,7 +61,7 @@ public class SaasService extends BaseJpaService<Saas, SaasDao> {
     public void deleteSaas(String id) {
         Saas saas = saasDao.findById(id);
         if (saas == null) {
-            throw new ApiException(BaseRequestMapping.Saas.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Saas.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
         saas.setStatus(-1);
     }

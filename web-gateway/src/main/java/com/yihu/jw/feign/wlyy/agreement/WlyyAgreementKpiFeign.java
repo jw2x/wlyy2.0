@@ -23,10 +23,10 @@ public interface WlyyAgreementKpiFeign {
     Envelop update(@RequestBody String jsonData);
 
     @DeleteMapping(value = WlyyRequestMapping.AgreementKpi.api_delete)
-    Envelop delete(@RequestParam(value = "code" ) String code);
+    Envelop delete(@RequestParam(value = "id" ) String id);
 
-    @GetMapping(value = WlyyRequestMapping.AgreementKpi.api_getByCode)
-    Envelop findByCode(@RequestParam(value = "code" ) String code);
+    @GetMapping(value = WlyyRequestMapping.AgreementKpi.api_getById)
+    Envelop findByCode(@RequestParam(value = "id" ) String id);
 
     @RequestMapping(value = WlyyRequestMapping.AgreementKpi.api_queryPage, method = RequestMethod.GET)
     Envelop queryPage(

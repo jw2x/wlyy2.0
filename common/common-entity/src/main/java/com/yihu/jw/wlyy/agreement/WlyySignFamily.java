@@ -61,7 +61,7 @@ public class WlyySignFamily extends IdEntityWithOperation {
     private String agentDoctorLevel;//代签的健康管理师
     private Integer adminTeamCode;//行政团队
     private Date expensesTime;//缴费时间
-    private String agreementCode;//协议code
+    private String agreementId;//协议code
     private String criticalPeopleMobile;//紧急联系人电话
     private String criticalPeople;//紧急联系人
 
@@ -484,16 +484,16 @@ public class WlyySignFamily extends IdEntityWithOperation {
         this.expensesTime = expensesTime;
     }
 
-    
-    @Column(name = "agreement_code")
-    public String getAgreementCode() {
-        return agreementCode;
+
+
+    @Column(name = "agreement_id")
+    public String getAgreementId() {
+        return agreementId;
     }
 
-    public void setAgreementCode(String agreementCode) {
-        this.agreementCode = agreementCode;
+    public void setAgreementId(String agreementId) {
+        this.agreementId = agreementId;
     }
-
     
     @Column(name = "critical_people_mobile")
     public String getCriticalPeopleMobile() {

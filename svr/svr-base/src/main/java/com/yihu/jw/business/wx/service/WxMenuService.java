@@ -56,7 +56,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
     @Transient
     public WxMenu updateWxMenu(WxMenu wxMenu) {
         if (StringUtils.isEmpty(wxMenu.getId())) {
-            throw new ApiException(WechatRequestMapping.WxMenu.message_fail_code_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WechatRequestMapping.WxMenu.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
         if(canSaveOrUpata(wxMenu)){
             WxMenu wxMenu1 = findById(wxMenu.getId());
@@ -270,7 +270,7 @@ public class WxMenuService extends BaseJpaService<WxMenu, WxMenuDao> {
             //判断父菜单是否存在
             WxMenu parentMenuCode = findById(supMenucode);
             if(parentMenuCode==null){
-                throw new ApiException(WechatRequestMapping.WxMenu.message_fail_supMenuCode_is_no_exist, ExceptionCode.common_error_params_code);
+                throw new ApiException(WechatRequestMapping.WxMenu.message_fail_supMenuId_is_no_exist, ExceptionCode.common_error_params_code);
             }
 
             //查询已经存在的子菜单条数

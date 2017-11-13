@@ -86,14 +86,14 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
         return wlyyAgreementDao.save(wlyyAgreement);
     }
 
-    public WlyyAgreement findByCode(String code) {
-        WlyyAgreement wlyyAgreement = wlyyAgreementDao.findById(code);
+    public WlyyAgreement findById(String id) {
+        WlyyAgreement wlyyAgreement = wlyyAgreementDao.findById(id);
         return wlyyAgreement;
     }
 
     @Transient
-    public void delete(String code) {
-        WlyyAgreement wlyyAgreement = findByCode(code);
+    public void delete(String id) {
+        WlyyAgreement wlyyAgreement = findById(id);
         if(wlyyAgreement==null){
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_wlyyAgreement_is_no_exist, ExceptionCode.common_error_params_code);
         }

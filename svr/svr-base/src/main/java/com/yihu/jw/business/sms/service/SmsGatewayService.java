@@ -22,7 +22,7 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
     @Transactional
     public BaseSmsGateway createSmsGateway(BaseSmsGateway smsGateway) throws ApiException {
         if (StringUtils.isEmpty(smsGateway.getId())) {
-            throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_code_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(smsGateway.getName())) {
             throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_name_is_null, ExceptionCode.common_error_params_code);
@@ -36,9 +36,6 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
 
     @Transactional
     public BaseSmsGateway updateSmsGateway(BaseSmsGateway smsGateway) {
-        if (StringUtils.isEmpty(smsGateway.getId())) {
-            throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(smsGateway.getName())) {
             throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
@@ -55,7 +52,7 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
     public BaseSmsGateway findById(String id) {
         BaseSmsGateway smsGateway = smsGatewayDao.findById(id);
         if (smsGateway == null) {
-            throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
         return smsGateway;
     }
@@ -64,7 +61,7 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
     public void deleteSmsGateway(String id) {
         BaseSmsGateway smsGateway = smsGatewayDao.findById(id);
         if (smsGateway == null) {
-            throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
         smsGateway.setStatus(-1);
     }

@@ -37,7 +37,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     @Transactional
     public Function createFunction(Function function) throws ApiException {
         if (StringUtils.isEmpty(function.getId())) {
-            throw new ApiException(BaseRequestMapping.Function.message_fail_code_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Function.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(function.getName())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_name_is_null, ExceptionCode.common_error_params_code);
@@ -51,9 +51,6 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
 
     @Transactional
     public Function updateFunction(Function function) {
-        if (StringUtils.isEmpty(function.getId())) {
-            throw new ApiException(BaseRequestMapping.Function.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(function.getName())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
@@ -70,7 +67,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     public Function findById(String id) {
         Function function = functionDao.findById(id);
         if (function == null) {
-            throw new ApiException(BaseRequestMapping.Function.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Function.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
         return function;
     }
@@ -79,7 +76,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     public void deleteFunction(String id) {
         Function function = functionDao.findById(id);
         if (function == null) {
-            throw new ApiException(BaseRequestMapping.Function.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Function.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
         function.setStatus(-1);
         functionDao.save(function);

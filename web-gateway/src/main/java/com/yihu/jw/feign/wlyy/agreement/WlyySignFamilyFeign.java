@@ -22,8 +22,8 @@ public interface WlyySignFamilyFeign {
     @PutMapping(value = WlyyRequestMapping.SignFamily.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop update(@RequestBody String jsonData);
 
-    @RequestMapping(value= WlyyRequestMapping.SignFamily.api_getByCode,method = RequestMethod.GET)
-    Envelop findByCode(@RequestParam(value = "code") String code);
+    @RequestMapping(value= WlyyRequestMapping.SignFamily.api_getById,method = RequestMethod.GET)
+    Envelop findByCode(@RequestParam(value = "id") String id);
 
     @RequestMapping(value = WlyyRequestMapping.SignFamily.api_queryPage, method = RequestMethod.GET)
     Envelop queryPage(

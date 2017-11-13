@@ -53,14 +53,14 @@ public class WlyySignFamilyController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = WlyyRequestMapping.SignFamily.api_getByCode)
+    @GetMapping(value = WlyyRequestMapping.SignFamily.api_getById)
     @ApiOperation(value = "根据code查找协议", notes = "根据code查找协议")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WlyyRequestMapping.SignFamily.message_success_find, wlyySignFamilyService.findByCode(code));
+            return Envelop.getSuccess(WlyyRequestMapping.SignFamily.message_success_find, wlyySignFamilyService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

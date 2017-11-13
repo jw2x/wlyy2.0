@@ -17,7 +17,6 @@ public class BaseSmsRequestMapping {
 
 
         public static final String message_fail_name_exist="sms name exist";
-        public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="sms is null";
         public static final String message_fail_id_is_null="id is null";
 
@@ -40,12 +39,11 @@ public class BaseSmsRequestMapping {
 
 
         public static final String message_fail_name_exist="SmsGateway name exist";
-        public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="SmsGateway is null";
         public static final String message_fail_id_is_null="id is null";
 
 
-        public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_id_no_exist="id no exist";
         public static final String api_create="smsGateway";
         public static final String api_update="smsGateway";
         public static final String api_delete="smsGateway";

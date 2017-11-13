@@ -36,7 +36,7 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         }
         WxGraphicMessage wxGraphicMessageTem = wxGraphicMessageDao.findById(wxGraphicMessage.getId());
         if (wxGraphicMessageTem != null) {
-            throw new ApiException(WechatRequestMapping.WxGraphicMessage.message_fail_code_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(WechatRequestMapping.WxGraphicMessage.message_fail_id_exist, ExceptionCode.common_error_params_code);
         }
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
@@ -44,7 +44,7 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
     @Transient
     public WxGraphicMessage updateWxGraphicMessage(WxGraphicMessage wxGraphicMessage) {
         if (StringUtils.isEmpty(wxGraphicMessage.getId())) {
-            throw new ApiException(WechatRequestMapping.WxGraphicMessage.message_fail_code_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WechatRequestMapping.WxGraphicMessage.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(wxGraphicMessage.getStatus())) {
             throw new ApiException(WechatRequestMapping.WxGraphicMessage.message_fail_status_is_null, ExceptionCode.common_error_params_code);
