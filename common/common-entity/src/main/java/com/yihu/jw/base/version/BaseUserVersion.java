@@ -1,8 +1,12 @@
 package com.yihu.jw.base.version;// default package
 
+import com.yihu.jw.IdEntity;
 import com.yihu.jw.IdEntityWithOperation;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,17 +14,17 @@ import javax.persistence.Table;
 
 /**
  * BaseUserVersion entity. @author MyEclipse Persistence Tools
+ * 灰度发布表 用户在这个表有数据 说明是属于灰度发布的用户 没有数据就说明没有
  */
 @Entity
 @Table(name = "base_user_version")
-public class BaseUserVersion  extends IdEntityWithOperation implements java.io.Serializable {
+public class BaseUserVersion  extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
 	private String saasId;
 	private String userCode;
 	private String version;
-	private Integer status;
 
 	// Constructors
 
@@ -56,14 +60,39 @@ public class BaseUserVersion  extends IdEntityWithOperation implements java.io.S
 		this.version = version;
 	}
 
-	@Column(name = "status")
-	public Integer getStatus() {
-		return this.status;
+	@CreatedDate
+	@Column(name = "create_time", nullable = false, length = 0,updatable = false)
+	protected Date createTime;
+
+	@CreatedBy
+	@Column(name = "create_user",updatable = false)
+	protected String createUser;
+
+	@CreatedBy
+	@Column(name = "create_user_name",updatable = false)
+	protected String createUserName;
+
+	public Date getCreateTime() {
+		return createTime;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
 	}
 
+	public String getCreateUser() {
+		return createUser;
+	}
 
+	public void setCreateUser(String createUser) {
+		this.createUser = createUser;
+	}
+
+	public String getCreateUserName() {
+		return createUserName;
+	}
+
+	public void setCreateUserName(String createUserName) {
+		this.createUserName = createUserName;
+	}
 }

@@ -28,7 +28,7 @@ public class UserUrlVersionController {
     private UserUrlVersionService userUrlVersionService;
 
 
-    @GetMapping(BaseVersionRequestMapping.UserUrlVersion.api_getListNoPage)
+    @GetMapping(BaseVersionRequestMapping.UserVersion.api_getListNoPage)
     @ApiOperation(value = "获取后台用户版本列表")
     public List getListNoPage(@ApiParam(name = "saasId", value = "saasId", required = false) @RequestParam(required = false, name = "saasId") String saasId,
                               @ApiParam(name = "bsvCode", value = "bsvCode", required = false) @RequestParam(required = false, name = "bsvCode") String bsvCode) {
@@ -46,11 +46,4 @@ public class UserUrlVersionController {
     }
 
 
-
-    @GetMapping(BaseVersionRequestMapping.UserUrlVersion.api_changeUserVersion)
-    @ApiOperation(value = "更改后台用户版本")
-    public Envelop changeUserVersion(@RequestParam(value="serverCode") String serverCode,@RequestParam(value="userCodes")String userCodes,@RequestParam(value="userCode")String userCode,@RequestParam(value="saasId")String saasId){
-        Envelop envelop = userUrlVersionService.changeUserVersion(serverCode,userCodes,userCode,saasId);
-        return envelop;
-    }
 }
