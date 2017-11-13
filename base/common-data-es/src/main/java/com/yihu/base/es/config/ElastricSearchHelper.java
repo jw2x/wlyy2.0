@@ -27,9 +27,9 @@ public class ElastricSearchHelper {
     private ElasticFactory elasticFactory;
 
     public Boolean save(String index, String type, List<SaveModel> sms) {
+        JestClient jestClient = null;
         try {
-            //得到链接
-            JestClient jestClient = elasticFactory.getJestClient();
+            //得到链接elasticFactory.getJestClient();
 
             int success = 0;
             int error = 0;
@@ -51,15 +51,20 @@ public class ElastricSearchHelper {
             return br.isSucceeded();
         } catch (Exception e) {
             logger.error(" save error ：" + e.getMessage());
+        } finally {
+            if (jestClient != null) {
+                jestClient.shutdownClient();
+            }
         }
         return null;
     }
 
 
     public Boolean update(String index, String type, List<SaveModel> sms) {
+        JestClient jestClient = null;
         try {
             //得到链接
-            JestClient jestClient = elasticFactory.getJestClient();
+            jestClient = elasticFactory.getJestClient();
 
             int success = 0;
             int error = 0;
@@ -85,6 +90,10 @@ public class ElastricSearchHelper {
             return isSuccessed;
         } catch (Exception e) {
             logger.error(" update error ：" + e.getMessage());
+        } finally {
+            if (jestClient != null) {
+                jestClient.shutdownClient();
+            }
         }
         return null;
     }
@@ -93,8 +102,9 @@ public class ElastricSearchHelper {
      * 删除
      */
     private void deleteData(String index, String type, List<SaveModel> saveModels) {
+        JestClient jestClient = null;
         try {
-            JestClient jestClient = elasticFactory.getJestClient();
+            jestClient = elasticFactory.getJestClient();
 
             //根据id批量删除
             Bulk.Builder bulk = new Bulk.Builder().defaultIndex(index).defaultType(type);
@@ -108,6 +118,10 @@ public class ElastricSearchHelper {
             logger.info("delete flag:" + br.isSucceeded());
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (jestClient != null) {
+                jestClient.shutdownClient();
+            }
         }
     }
 }
