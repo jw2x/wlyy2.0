@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
-public interface WxTemplateDao extends PagingAndSortingRepository<WxTemplate, Long>, JpaSpecificationExecutor<WxTemplate> {
+public interface WxTemplateDao extends PagingAndSortingRepository<WxTemplate, String>, JpaSpecificationExecutor<WxTemplate> {
 
 
     @Query("from WxTemplate w where w.id = ?1 and w.status =1")

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/6/2 0002.
  */
-public interface WlyySignFamilyDao  extends PagingAndSortingRepository<WlyySignFamily, Long>, JpaSpecificationExecutor<WlyySignFamily> {
+public interface WlyySignFamilyDao  extends PagingAndSortingRepository<WlyySignFamily, String>, JpaSpecificationExecutor<WlyySignFamily> {
 
     @Query("from WlyySignFamily w where w.id = ?1")
     WlyySignFamily findById(String code);

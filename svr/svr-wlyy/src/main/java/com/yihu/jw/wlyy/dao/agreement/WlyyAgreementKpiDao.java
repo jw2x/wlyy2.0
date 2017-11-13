@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by Administrator on 2017/6/1 0001.
  */
-public interface WlyyAgreementKpiDao extends PagingAndSortingRepository<WlyyAgreementKpi, Long>, JpaSpecificationExecutor<WlyyAgreementKpi> {
+public interface WlyyAgreementKpiDao extends PagingAndSortingRepository<WlyyAgreementKpi, String>, JpaSpecificationExecutor<WlyyAgreementKpi> {
 
 
     @Query("from WlyyAgreementKpi w where w.id=?1 and w.status !=-1")
