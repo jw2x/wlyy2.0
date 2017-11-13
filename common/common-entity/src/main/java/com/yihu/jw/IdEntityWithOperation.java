@@ -17,10 +17,8 @@ import java.util.Date;
 
 /**
  * 统一定义id的entity基类.
- * 
- * 基类统一定义id的属性名称、数据类型、列名映射及生成策略.
- * Oracle需要每个Entity独立定义id的SEQUCENCE时，不继承于本类而改为实现一个Idable的接口。
- * 
+ * 主键生成策略是UUID
+ * 还包含业务表用的 创建人，创建时间 创建人名  修改人，修改时间 修改人名
  * @author calvin
  */
 // JPA 基类的标识
