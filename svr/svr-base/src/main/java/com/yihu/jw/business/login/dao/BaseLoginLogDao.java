@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by chenweida on 2017/6/20.
  */
-public interface BaseLoginLogDao extends PagingAndSortingRepository<BaseLoginLog, Long>, JpaSpecificationExecutor<BaseLoginLog> {
+public interface BaseLoginLogDao extends PagingAndSortingRepository<BaseLoginLog, String>, JpaSpecificationExecutor<BaseLoginLog> {
 }

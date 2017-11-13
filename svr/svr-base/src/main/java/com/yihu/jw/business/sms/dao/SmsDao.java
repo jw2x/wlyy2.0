@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface SmsDao extends PagingAndSortingRepository<BaseSms, Long>, JpaSpecificationExecutor<BaseSms> {
+public interface SmsDao extends PagingAndSortingRepository<BaseSms, String>, JpaSpecificationExecutor<BaseSms> {
 
     @Query("from Function f where f.name=?1 and f.status=1")
     BaseSms findByName(String name);

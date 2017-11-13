@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by chenweida on 2017/5/22.
  */
-public interface SaasModuleDao extends PagingAndSortingRepository<SaasModule, Long>, JpaSpecificationExecutor<SaasModule> {
+public interface SaasModuleDao extends PagingAndSortingRepository<SaasModule, String>, JpaSpecificationExecutor<SaasModule> {
     @Modifying
     @Query("delete from SaasModule es where es.saasId = ?1")
     int deleteBySaasCode(String saasCode);

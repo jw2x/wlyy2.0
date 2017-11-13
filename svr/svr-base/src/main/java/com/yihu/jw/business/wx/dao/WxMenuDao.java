@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/5/19 0019.
  */
-public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, Long>, JpaSpecificationExecutor<WxMenu> {
+public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, String>, JpaSpecificationExecutor<WxMenu> {
 
 
     @Query("from WxMenu m where m.id = ?1 and m.status = 1")

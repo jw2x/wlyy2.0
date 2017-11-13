@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by Administrator on 2017/6/6 0006.
  */
-public interface BasePatientDao extends PagingAndSortingRepository<BasePatient, Long>, JpaSpecificationExecutor<BasePatient> {
+public interface BasePatientDao extends PagingAndSortingRepository<BasePatient, String>, JpaSpecificationExecutor<BasePatient> {
 
     @Query("from BasePatient w where w.code =?1")
     BasePatient findByCode(String code);

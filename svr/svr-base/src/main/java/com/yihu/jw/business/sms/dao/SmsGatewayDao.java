@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by chenweida on 2017/5/22.
  */
-public interface SmsGatewayDao extends PagingAndSortingRepository<BaseSmsGateway, Long>, JpaSpecificationExecutor<BaseSmsGateway> {
+public interface SmsGatewayDao extends PagingAndSortingRepository<BaseSmsGateway, String>, JpaSpecificationExecutor<BaseSmsGateway> {
     @Query("from BaseSmsGateway f where f.name=?1 and f.status=1")
     BaseSmsGateway findByName(String name);
 

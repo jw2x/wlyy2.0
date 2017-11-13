@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
-public interface WxGraphicMessageDao extends PagingAndSortingRepository<WxGraphicMessage, Long>, JpaSpecificationExecutor<WxGraphicMessage> {
+public interface WxGraphicMessageDao extends PagingAndSortingRepository<WxGraphicMessage, String>, JpaSpecificationExecutor<WxGraphicMessage> {
 
     @Query("from WxWechat w where w.appId = ?1 and w.status!=-1")
     WxGraphicMessage findByAppId(String appId);

@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/5/18 0018.
  */
-public interface WxAccessTokenDao extends PagingAndSortingRepository<WxAccessToken, Long>, JpaSpecificationExecutor<WxAccessToken> {
+public interface WxAccessTokenDao extends PagingAndSortingRepository<WxAccessToken, String>, JpaSpecificationExecutor<WxAccessToken> {
 
     @Query("from WxAccessToken w where w.wechatCode =?1 order by w.addTimestamp desc")
     List<WxAccessToken> getWxAccessTokenByCode(String wechatCode);

@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by Administrator on 2017/6/7 0007.
  */
-public interface DoctorDao extends PagingAndSortingRepository<BaseDoctors, Long>, JpaSpecificationExecutor<BaseDoctors> {
+public interface DoctorDao extends PagingAndSortingRepository<BaseDoctors, String>, JpaSpecificationExecutor<BaseDoctors> {
 
     @Query("from BaseDoctors d where d.id = ?1 and d.status !=-1")
     BaseDoctors findById(String code);

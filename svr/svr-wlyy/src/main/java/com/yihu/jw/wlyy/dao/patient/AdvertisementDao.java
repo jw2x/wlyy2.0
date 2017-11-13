@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/6/6 0006.
  */
-public interface AdvertisementDao extends PagingAndSortingRepository<WlyyAdvertisement, Long>, JpaSpecificationExecutor<WlyyAdvertisement> {
+public interface AdvertisementDao extends PagingAndSortingRepository<WlyyAdvertisement, String>, JpaSpecificationExecutor<WlyyAdvertisement> {
 
 
     @Query("from WlyyAdvertisement w where w.id=?1 and w.status !=-1")

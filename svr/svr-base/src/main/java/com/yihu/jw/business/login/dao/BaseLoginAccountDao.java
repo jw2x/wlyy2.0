@@ -7,5 +7,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by chenweida on 2017/6/20.
  */
-public interface BaseLoginAccountDao extends PagingAndSortingRepository<BaseLoginAccount, Long>, JpaSpecificationExecutor<BaseLoginAccount> {
+public interface BaseLoginAccountDao extends PagingAndSortingRepository<BaseLoginAccount, String>, JpaSpecificationExecutor<BaseLoginAccount> {
 }

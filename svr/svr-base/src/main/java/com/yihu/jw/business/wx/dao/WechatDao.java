@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
-public interface WechatDao extends PagingAndSortingRepository<WxWechat, Long>, JpaSpecificationExecutor<WxWechat> {
+public interface WechatDao extends PagingAndSortingRepository<WxWechat, String>, JpaSpecificationExecutor<WxWechat> {
 
     @Query("from WxWechat w where w.appId = ?1 and w.status!=-1")
     WxWechat findByAppId(String appId);
