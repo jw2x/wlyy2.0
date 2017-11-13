@@ -69,14 +69,14 @@ public class ModuleController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = BaseRequestMapping.Module.api_getByCode)
+    @GetMapping(value = BaseRequestMapping.Module.api_getById)
     @ApiOperation(value = "根据code查找模块", notes = "根据code查找模块")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(BaseRequestMapping.Module.message_success_find, moduleService.findByCode(code));
+            return Envelop.getSuccess(BaseRequestMapping.Module.message_success_find, moduleService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

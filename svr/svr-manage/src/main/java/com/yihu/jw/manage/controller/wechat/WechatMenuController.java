@@ -59,7 +59,7 @@ public class WechatMenuController {
         return envelop;
     }
 
-    @GetMapping(value = WechatRequestMapping.WxMenu.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxMenu.api_getById)
     @ApiOperation(value = "根据code查找菜单", notes = "根据code查找菜单")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")

@@ -62,25 +62,25 @@ public class ModuleController extends EnvelopRestController {
     @DeleteMapping(value = BaseContants.Module.api_delete)
     @ApiOperation(value = "删除功能", notes = "删除功能")
     public Envelop deleteModule(
-            @ApiParam(name = "codes", value = "codes")
-            @PathVariable(value = "codes", required = true) String codes,
-            @ApiParam(name = "userCode", value = "userCode")
-            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "ids", value = "ids")
+            @PathVariable(value = "ids", required = true) String ids,
+            @ApiParam(name = "userId", value = "userId")
+            @RequestParam(value = "userId", required = true) String userId,
             @ApiParam(name = "userName", value = "userName")
             @RequestParam(value = "userName", required = true) String userName) throws JiWeiException {
-        return fegin.delete(codes,userCode,userName);
+        return fegin.delete(ids,userId,userName);
     }
 
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseContants.Module.api_getByCode)
-    @ApiOperation(value = "根据code查找", notes = "根据code查找")
-    public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+    @GetMapping(value = BaseContants.Module.api_getById)
+    @ApiOperation(value = "根据id查找", notes = "根据id查找")
+    public Envelop findById(
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-        return fegin.findByCode(code);
+        return fegin.findById(id);
     }
 
     @HystrixCommand(commandProperties = {
@@ -89,10 +89,10 @@ public class ModuleController extends EnvelopRestController {
     @GetMapping(value = BaseContants.Module.api_getChildren)
     @ApiOperation(value = "根据code查找子节点", notes = "根据code查找子节点")
     public Envelop getChildren(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-        return fegin.getChildren(code);
+        return fegin.getChildren(id);
     }
 
     @HystrixCommand(commandProperties = {
@@ -154,10 +154,10 @@ public class ModuleController extends EnvelopRestController {
     @GetMapping(value = BaseContants.ModuleFun.api_getExistFun)
     @ApiOperation(value = "根据模块code查找已有的功能")
     public Envelop getExistFun(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-        return fegin.getExistFunc(code);
+        return fegin.getExistFunc(id);
     }
 
     @HystrixCommand(commandProperties = {

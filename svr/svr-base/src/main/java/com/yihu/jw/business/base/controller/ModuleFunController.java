@@ -24,8 +24,8 @@ public class ModuleFunController extends EnvelopRestController {
 
     @GetMapping(value = BaseRequestMapping.ModuleFun.api_getExistFun)
     @ApiOperation(value="查找已存在的功能")
-    public Envelop getExistFunc(@PathVariable String code){
-        List<String> funcs = moduleFunService.getExistFun(code);
+    public Envelop getExistFunc(@PathVariable String id){
+        List<String> funcs = moduleFunService.getExistFun(id);
         return Envelop.getSuccess("查询成功",funcs);
     }
 

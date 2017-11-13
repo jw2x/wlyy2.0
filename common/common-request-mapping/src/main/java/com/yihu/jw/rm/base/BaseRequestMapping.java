@@ -28,8 +28,8 @@ public class BaseRequestMapping {
 
         public static final String api_create="/function";
         public static final String api_update="/function";
-        public static final String api_delete="/function/{codes}";
-        public static final String api_getByCode="/function/{code}";
+        public static final String api_delete="/function/{ids}";
+        public static final String api_getById="/function/{id}";
         public static final String api_getListNoPage="/function/listNoPage";
         public static final String api_getList="/function/list";
         public static final String api_assignFunction="/assignFunction";
@@ -58,7 +58,7 @@ public class BaseRequestMapping {
         public static final String api_create="/module";
         public static final String api_update="/module";
         public static final String api_delete="/module/{codes}";
-        public static final String api_getByCode="/module/{code}";
+        public static final String api_getById="/module/{id}";
         public static final String api_getListNoPage="/module/listNoPage";
         public static final String api_getList="/module/list";
         public static final String api_getChildren="/module/children/{code}";
@@ -66,7 +66,7 @@ public class BaseRequestMapping {
     }
 
     public static class ModuleFun{
-        public static final String api_getExistFun = "/moduleFun/existFunc/{code}";
+        public static final String api_getExistFun = "/moduleFun/existFunc/{id}";
         public static final String api_changeFun="/moduleFun/changeFun";
 
 
@@ -93,7 +93,7 @@ public class BaseRequestMapping {
         public static final String api_create="/saas";
         public static final String api_update="/saas";
         public static final String api_delete="/saas";
-        public static final String api_getByCode="/getByCode";
+        public static final String api_getById="/getById";
         public static final String api_getSaass="/getSaass";
         public static final String api_getSaassNoPage="/getSaassNoPage";
 

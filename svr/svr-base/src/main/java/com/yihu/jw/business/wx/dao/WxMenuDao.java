@@ -16,32 +16,32 @@ public interface WxMenuDao  extends PagingAndSortingRepository<WxMenu, String>, 
     @Query("from WxMenu m where m.id = ?1 and m.status = 1")
     WxMenu findById(String id);
 
-    @Query("from WxMenu m where m.wechatCode =?1 and m.status = 1 order  by m.supMenucode ,m.sort")
-    List<WxMenu> findByWechatCode(String wechatCode);
+    @Query("from WxMenu m where m.wechatId =?1 and m.status = 1 order  by m.supMenuid ,m.sort")
+    List<WxMenu> findByWechatId(String wechatId);
 
-    @Query("from WxMenu m where m.wechatCode = ?1 and  m.supMenucode= ?2 and m.status =1 order by m.sort")
-    List<WxMenu> findChildMenus(String wechatCode, String sup_menucode);
+    @Query("from WxMenu m where m.wechatId = ?1 and  m.supMenuid= ?2 and m.status =1 order by m.sort")
+    List<WxMenu> findChildMenus(String wechatId, String supMenuid);
 
-    @Query("from WxMenu m where  m.supMenucode= ?1 and m.status =1 order by m.sort")
-    List<WxMenu> findChildMenus( String parentCode);
-
-    /**
-     * 根据wechatCode判断父菜单的sort是否重复
-     * @param wechatCode
-     * @param sort
-     */
-    @Query("from WxMenu m where m.wechatCode = ?1 and m.status =1 and m.sort =?2 and m.supMenucode ='0' and m.code != ?3")
-    WxMenu findByWechatCodeExcludeSortFromParent(String wechatCode, Integer sort,String code);
+    @Query("from WxMenu m where  m.supMenuid= ?1 and m.status =1 order by m.sort")
+    List<WxMenu> findChildMenus( String supMenuid);
 
     /**
-     * 根据wechatCode,supMenucode判断子菜单的sort是否重复
-     * @param wechatCode
+     * 根据wechatId判断父菜单的sort是否重复
+     * @param wechatId
      * @param sort
      */
-    @Query("from WxMenu m where m.wechatCode = ?1 and m.status =1 and m.sort =?2 and m.supMenucode =?3 and m.code != ?4")
-    WxMenu findByWechatCodeExcludeSortFromChild(String wechatCode, Integer sort,String supMenucode,String code);
+    @Query("from WxMenu m where m.wechatId = ?1 and m.status =1 and m.sort =?2 and m.supMenuid ='0' and m.id != ?3")
+    WxMenu findByWechatIdExcludeSortFromParent(String wechatId, Integer sort,String id);
 
-    @Query("from WxMenu m where m.wechatCode =?1 and m.status = 1 and  m.supMenucode = '0' order by m.supMenucode ,m.sort")
-    List<WxMenu> findParentMenuByWechatCode(String wechatCode);
+    /**
+     * 根据wechatId,supMenucode判断子菜单的sort是否重复
+     * @param wechatId
+     * @param sort
+     */
+    @Query("from WxMenu m where m.wechatId = ?1 and m.status =1 and m.sort =?2 and m.supMenuid =?3 and m.id != ?4")
+    WxMenu findByWechatIdExcludeSortFromChild(String wechatId, Integer sort,String supMenuid,String id);
+
+    @Query("from WxMenu m where m.wechatId =?1 and m.status = 1 and  m.supMenuid = '0' order by m.supMenuid ,m.sort")
+    List<WxMenu> findParentMenuByWechatId(String wechatId);
 
 }

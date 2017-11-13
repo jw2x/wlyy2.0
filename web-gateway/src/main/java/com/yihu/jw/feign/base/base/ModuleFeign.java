@@ -24,10 +24,10 @@ public interface ModuleFeign {
     Envelop update(@RequestBody String jsonData) throws JiWeiException;
 
     @DeleteMapping(value =BaseRequestMapping.Module.api_delete)
-    Envelop delete(@PathVariable(value = "codes", required = true) String codes, @RequestParam(value = "userCode") String userCode, @RequestParam(value = "userName") String userName) throws JiWeiException;
+    Envelop delete(@PathVariable(value = "ids", required = true) String ids, @RequestParam(value = "userId") String userId, @RequestParam(value = "userName") String userName) throws JiWeiException;
 
-    @GetMapping(value = BaseRequestMapping.Module.api_getByCode)
-    Envelop findByCode(@PathVariable(value = "code", required = true) String code) throws JiWeiException;
+    @GetMapping(value = BaseRequestMapping.Module.api_getById)
+    Envelop findById(@PathVariable(value = "id", required = true) String id) throws JiWeiException;
 
     @RequestMapping(value = BaseRequestMapping.Module.api_getList, method = RequestMethod.GET)
     Envelop getList(
@@ -44,10 +44,10 @@ public interface ModuleFeign {
             @RequestParam(value = "sorts", required = false) String sorts) throws JiWeiException;
 
     @GetMapping(value = BaseRequestMapping.Module.api_getChildren)
-    Envelop getChildren(@PathVariable(value = "code") String code) throws JiWeiException;
+    Envelop getChildren(@PathVariable(value = "id") String id) throws JiWeiException;
 
     @GetMapping(value = BaseRequestMapping.ModuleFun.api_getExistFun)
-    Envelop getExistFunc(@PathVariable(value = "code") String code) throws JiWeiException;
+    Envelop getExistFunc(@PathVariable(value = "id") String id) throws JiWeiException;
 
     @PutMapping(value =  BaseRequestMapping.ModuleFun.api_changeFun,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop changeFun(@RequestBody String jsonData) throws JiWeiException;

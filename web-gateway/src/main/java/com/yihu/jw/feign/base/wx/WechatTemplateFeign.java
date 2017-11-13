@@ -26,10 +26,10 @@ public interface WechatTemplateFeign {
     Envelop updateWxTemplate(@RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_delete ,method = RequestMethod.DELETE)
-    Envelop deleteWxTemplate( @RequestParam(value = "codes", required = true) String codes,@RequestParam(value = "userCode") String userCode,@RequestParam(value = "userName") String userName) throws JiWeiException;
+    Envelop deleteWxTemplate( @RequestParam(value = "ids", required = true) String ids,@RequestParam(value = "userId") String userId,@RequestParam(value = "userName") String userName) throws JiWeiException;
 
-    @RequestMapping(value = WechatRequestMapping.WxTemplate.api_getByCode ,method = RequestMethod.GET)
-    Envelop findByCode( @RequestParam(value = "code", required = true) String code) throws JiWeiException;
+    @RequestMapping(value = WechatRequestMapping.WxTemplate.api_getById ,method = RequestMethod.GET)
+    Envelop findById( @RequestParam(value = "id", required = true) String id) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_getWxTemplatesNoPage ,method = RequestMethod.GET)
     Envelop getWechatNoPage(
@@ -49,7 +49,7 @@ public interface WechatTemplateFeign {
     @ResponseBody
     Envelop sendTemplateMessage(
             @RequestParam(value="openid") String openid,
-            @RequestParam(value="templateCode") String templateCode,
+            @RequestParam(value="templateId") String templateId,
             @RequestParam(value="url",required = false) String url,
             @RequestParam(value="appid",required = false) String appid,
             @RequestParam(value="pagepath",required = false) String pagepath,

@@ -17,10 +17,10 @@ public interface ModuleFunctionDao extends PagingAndSortingRepository<ModuleFunc
     @Transactional
     @Modifying
     @Query("delete from ModuleFunction es where es.moduleId = ?1")
-    int deleteByModuleCode(String moduleId);
+    int deleteByModuleId(String moduleId);
 
     @Query("from ModuleFunction mf where mf.moduleId = ?1")
-    List<ModuleFunction> findByModuleCode(String code);
+    List<ModuleFunction> findByModuleId(String id);
 
     @Transactional
     @Modifying

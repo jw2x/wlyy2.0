@@ -39,8 +39,8 @@ public class WechatAccessTokenController {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop getWxAccessToken(
-            @ApiParam(name = "wechatCode", value = "wechatCode")
-            @RequestParam(value = "wechatCode") String wechatCode) {
-        return accessTokenFegin.getWxAccessToken(wechatCode);
+            @ApiParam(name = "wechatId", value = "wechatId")
+            @RequestParam(value = "wechatId") String wechatId) {
+        return accessTokenFegin.getWxAccessToken(wechatId);
     }
 }

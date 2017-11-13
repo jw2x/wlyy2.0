@@ -17,5 +17,5 @@ public interface WxTemplateDao extends PagingAndSortingRepository<WxTemplate, St
     WxTemplate findById(String id);
 
     @Query("from WxTemplate w where w.wechatId = ?1 and w.status =1")
-    List<WxTemplate> findByWxCode(String code);
+    List<WxTemplate> findByWxId(String wechatId);
 }

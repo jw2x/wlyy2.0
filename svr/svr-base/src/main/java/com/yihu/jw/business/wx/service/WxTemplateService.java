@@ -89,22 +89,16 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         }
     }
 
-    public WxTemplate findByCode(String code) {
-        WxTemplate wxTemplate = wxTemplateDao.findById(code);
-        WxWechat wechat = wechatService.findById(wxTemplate.getWechatId());
-        wxTemplate.setWechatName(wechat.getName());
-        return wxTemplate;
-    }
 
     public WxTemplate findById(String id) {
         WxTemplate wxTemplate = wxTemplateDao.findById(id);
         return wxTemplate;
     }
 
-    public JSONObject sendTemplateMessage(String openid, String templateCode, String url, String data,Miniprogram miniprogram) {
+    public JSONObject sendTemplateMessage(String openid, String templateId, String url, String data,Miniprogram miniprogram) {
         try {
             //首先根据wechatTemplate获取微信模版
-            WxTemplate wxTemplate = findByCode(templateCode);
+            WxTemplate wxTemplate = findById(templateId);
             if(wxTemplate==null){
                 throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_template_is_no_exist, ExceptionCode.common_error_params_code);
             }
@@ -142,7 +136,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             String params = mapper.writeValueAsString(wechatTemplate);
             logger.info("----------------------模版消息json字符串:"+params+"------------------");
 
-            WxAccessToken wxAccessTokenByCode = wxAccessTokenService.getWxAccessTokenByCode(wechatCode);
+            WxAccessToken wxAccessTokenByCode = wxAccessTokenService.getWxAccessTokenById(wechatCode);
             String token = wxAccessTokenByCode.getAccessToken();
             String token_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + token;
             String result = HttpUtil.sendPost(token_url, params);
@@ -157,7 +151,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         }
     }
 
-    public List<WxTemplate> findByWxCode(String code) {
-        return wxTemplateDao.findByWxCode(code);
+    public List<WxTemplate> findByWxId(String code) {
+        return wxTemplateDao.findByWxId(code);
     }
 }

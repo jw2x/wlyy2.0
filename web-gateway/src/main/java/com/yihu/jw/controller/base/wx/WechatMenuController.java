@@ -75,16 +75,16 @@ public class WechatMenuController {
         return wechatMenuFegin.deleteWxMenu(codes,userCode,userName);
     }
 
-    @GetMapping(value = WechatContants.Menu.api_getByCode)
+    @GetMapping(value = WechatContants.Menu.api_getById)
      @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
      @HystrixCommand(commandProperties = {
              @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
              @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
      public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-        return wechatMenuFegin.findByCode(code);
+        return wechatMenuFegin.findById(id);
     }
 
     @RequestMapping(value = WechatContants.Menu.api_getWxMenus, method = RequestMethod.GET)

@@ -58,24 +58,24 @@ public class SaasController extends EnvelopRestController {
     @DeleteMapping(value = BaseRequestMapping.Saas.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "删除Saas配置", notes = "删除Saas配置")
     public Envelop deleteSaas(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id) {
         try {
-            saasService.deleteSaas(code);
+            saasService.deleteSaas(id);
             return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_delete);
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseRequestMapping.Saas.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseRequestMapping.Saas.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据code查找Saas配置", notes = "根据code查找Saas配置")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_find, saasService.findByCode(code));
+            return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_find, saasService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

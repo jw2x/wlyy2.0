@@ -61,13 +61,13 @@ public class GraphicMessageController {
         return envelop;
     }
 
-    @GetMapping(value = WechatRequestMapping.WxGraphicMessage.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxGraphicMessage.api_getById)
     @ApiOperation(value = "根据code查找图文消息", notes = "根据code查找图文消息")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable String id
     ) {
-        Envelop envelop = graphicMessageService.findByCode(code);
+        Envelop envelop = graphicMessageService.findByCode(id);
         return envelop;
     }
 

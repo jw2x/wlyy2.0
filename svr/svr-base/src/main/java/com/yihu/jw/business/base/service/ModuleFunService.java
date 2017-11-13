@@ -25,11 +25,11 @@ public class ModuleFunService extends BaseJpaService<ModuleFunction, ModuleFunct
 
     /**
      * 根据模块code,获取已存在的功能code
-     * @param code
+     * @param id
      * @return
      */
-    public List<String> getExistFun(String code) {
-        List<ModuleFunction> moduleFuns = moduleFunctionDao.findByModuleCode(code);
+    public List<String> getExistFun(String id) {
+        List<ModuleFunction> moduleFuns = moduleFunctionDao.findByModuleId(id);
         List<String> list = new ArrayList<>();
         for(ModuleFunction moduleFun:moduleFuns){
             list.add(moduleFun.getFunctionId());

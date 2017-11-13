@@ -12,9 +12,9 @@ public interface SaasDao extends PagingAndSortingRepository<Saas, String>, JpaSp
     @Query("from Saas f where f.name=?1 and f.status=1")
     Saas findByName(String name);
 
-    @Query("from Saas f where f.name=?1 and f.status=1 and f.code != ?2")
-    Saas findByNameExcludeCode(String name, String code);
+    @Query("from Saas f where f.name=?1 and f.status=1 and f.id != ?2")
+    Saas findByNameExcludeId(String name, String id);
 
-    @Query("from Saas f where f.code=?1 and f.status=1")
-    Saas findByCode(String code);
+    @Query("from Saas f where f.id=?1 and f.status=1")
+    Saas findById(String id);
 }

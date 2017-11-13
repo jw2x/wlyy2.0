@@ -79,16 +79,16 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     }
 
     @Transient
-    public void deleteWechat(String codes, String userCode, String userName) {
-        if (!StringUtils.isEmpty(codes)) {
-            String[] codeArray = codes.split(",");
+    public void deleteWechat(String ids, String userId, String userName) {
+        if (!StringUtils.isEmpty(ids)) {
+            String[] codeArray = ids.split(",");
             for (String code : codeArray) {
                 WxWechat wxWechat = wechatDao.findById(code);
                 if (wxWechat == null) {
                     throw new ApiException(WechatRequestMapping.WxConfig.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
                 }
                 wxWechat.setStatus(-1);
-                wxWechat.setUpdateUser(userCode);
+                wxWechat.setUpdateUser(userId);
                 wxWechat.setUpdateUserName(userName);
                 wechatDao.save(wxWechat);
             }

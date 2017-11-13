@@ -70,29 +70,29 @@ public class WxMenuController extends EnvelopRestController {
     @DeleteMapping(value = WechatRequestMapping.WxMenu.api_delete)
     @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
     public Envelop deleteWxMenu(
-            @ApiParam(name = "codes", value = "codes")
-            @RequestParam(value = "codes", required = true) String codes,
-            @ApiParam(name = "userCode", value = "userCode")
-            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "ids", value = "ids")
+            @RequestParam(value = "ids", required = true) String ids,
+            @ApiParam(name = "userId", value = "userId")
+            @RequestParam(value = "userId", required = true) String userId,
             @ApiParam(name = "userName", value = "userName")
             @RequestParam(value = "userName", required = true) String userName
     ) {
         try {
-            wxMenuService.deleteWxMenu(codes, userCode, userName);
+            wxMenuService.deleteWxMenu(ids, userId, userName);
             return Envelop.getSuccess(WechatRequestMapping.WxMenu.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WechatRequestMapping.WxMenu.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxMenu.api_getById)
     @ApiOperation(value = "根据code查找微信菜单", notes = "根据code查找微信菜单")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WechatRequestMapping.WxMenu.message_success_find, wxMenuService.findByCode(code));
+            return Envelop.getSuccess(WechatRequestMapping.WxMenu.message_success_find, wxMenuService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

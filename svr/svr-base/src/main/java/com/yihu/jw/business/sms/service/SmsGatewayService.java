@@ -52,8 +52,8 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
         return smsGatewayDao.save(smsGateway);
     }
 
-    public BaseSmsGateway findByCode(String code) {
-        BaseSmsGateway smsGateway = smsGatewayDao.findByCode(code);
+    public BaseSmsGateway findById(String id) {
+        BaseSmsGateway smsGateway = smsGatewayDao.findById(id);
         if (smsGateway == null) {
             throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -61,8 +61,8 @@ public class SmsGatewayService extends BaseJpaService<BaseSmsGateway, SmsGateway
     }
 
     @Transactional
-    public void deleteSmsGateway(String code) {
-        BaseSmsGateway smsGateway = smsGatewayDao.findByCode(code);
+    public void deleteSmsGateway(String id) {
+        BaseSmsGateway smsGateway = smsGatewayDao.findById(id);
         if (smsGateway == null) {
             throw new ApiException(BaseSmsRequestMapping.SmsGateway.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         }

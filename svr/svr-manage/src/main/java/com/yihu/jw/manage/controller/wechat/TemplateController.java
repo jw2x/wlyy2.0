@@ -61,7 +61,7 @@ public class TemplateController {
         return envelop;
     }
 
-    @GetMapping(value = WechatRequestMapping.WxTemplate.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxTemplate.api_getById)
     @ApiOperation(value = "根据code查找模板消息", notes = "根据code查找模板消息")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")

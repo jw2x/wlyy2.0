@@ -60,15 +60,15 @@ public class WechatConfigController extends EnvelopRestController {
     @DeleteMapping(value = WechatRequestMapping.WxConfig.api_delete)
     @ApiOperation(value = "删除微信配置", notes = "删除微信配置")
     public Envelop deleteWechat(
-            @ApiParam(name = "codes", value = "codes")
-            @RequestParam(value = "codes", required = true) String codes,
-            @ApiParam(name = "userCode", value = "userCode")
-            @RequestParam(value = "userCode", required = true) String userCode,
+            @ApiParam(name = "ids", value = "ids")
+            @RequestParam(value = "ids", required = true) String ids,
+            @ApiParam(name = "userId", value = "userId")
+            @RequestParam(value = "userId", required = true) String userId,
             @ApiParam(name = "userName", value = "userName")
             @RequestParam(value = "userName", required = true) String userName
             ) {
         try {
-            wechatService.deleteWechat(codes,userCode,userName);
+            wechatService.deleteWechat(ids,userId,userName);
             return Envelop.getSuccess(WechatRequestMapping.WxConfig.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());

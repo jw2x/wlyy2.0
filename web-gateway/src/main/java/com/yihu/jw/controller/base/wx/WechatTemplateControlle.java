@@ -77,16 +77,16 @@ public class WechatTemplateControlle {
         return wechatTemplateFegin.deleteWxTemplate(codes,userCode,userName);
     }
 
-    @GetMapping(value = WechatContants.Template.api_getByCode)
+    @GetMapping(value = WechatContants.Template.api_getById)
     @ApiOperation(value = "根据code查找微信模版", notes = "根据code查找微信模版")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-        return wechatTemplateFegin.findByCode(code);
+        return wechatTemplateFegin.findById(id);
     }
 
     @RequestMapping(value = WechatContants.Template.api_getWxTemplates, method = RequestMethod.GET)
