@@ -49,8 +49,8 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
         return null;
     }
 
-    public WlyySignFamily findByCode(String code) {
-        return wlyySignFamilyDao.findById(code);
+    public WlyySignFamily findById(String id) {
+        return wlyySignFamilyDao.findById(id);
     }
 
     private boolean canSaveOrUpdate(WlyySignFamily wlyySignFamily) throws ParseException {
@@ -94,12 +94,12 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
         if (StringUtils.isEmpty(wlyySignFamily.getExpensesStatus())) {
             throw new ApiException(WlyyRequestMapping.SignFamily.message_fail_expenseStatus_is_null, ExceptionCode.common_error_params_code);
         }
-        String agreementCode = wlyySignFamily.getAgreementCode();
+        String agreementCode = wlyySignFamily.getAgreementId();
         if (StringUtils.isEmpty(agreementCode)) {
-            throw new ApiException(WlyyRequestMapping.SignFamily.message_fail_agreementCode_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.SignFamily.message_fail_agreementId_is_null, ExceptionCode.common_error_params_code);
         }
         //根据agreementCode查找协议是否存在
-        WlyyAgreement agreement = wlyyAgreementService.findByCode(agreementCode);
+        WlyyAgreement agreement = wlyyAgreementService.findById(agreementCode);
         if(agreement==null){
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_wlyyAgreement_is_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -113,6 +113,6 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
      * @return
      */
     public List<WlyySignFamily> findByPatientCode(String patientCode,Integer status) {
-        return wlyySignFamilyDao.findByPatientCode(patientCode,status);
+        return wlyySignFamilyDao.findByPatientId(patientCode,status);
     }
 }

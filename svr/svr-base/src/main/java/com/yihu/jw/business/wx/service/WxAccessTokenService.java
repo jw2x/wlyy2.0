@@ -45,7 +45,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
             //根据wechatCode查找出appid和appSecret
             WxWechat wxWechat = wechatDao.findById(wechatId);
             if(wxWechat==null){
-                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
+                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_id);
             }
             List<WxAccessToken> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenById(wechatId);
             if(wxAccessTokens!=null&&wxAccessTokens.size()>0){
@@ -64,10 +64,10 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
             appId = wxWechat.getAppId();
             appSecret = wxWechat.getAppSecret();
             if (StringUtils.isEmpty(appId)){
-                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appId_is_null, ExceptionCode.common_error_params_code);
+                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appId_is_null, ExceptionCode.common_error_params_id);
             }
             if (StringUtils.isEmpty(appSecret)){
-                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appSecret_is_null, ExceptionCode.common_error_params_code);
+                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appSecret_is_null, ExceptionCode.common_error_params_id);
             }
             String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
             String result = HttpUtil.sendGet(token_url, params);

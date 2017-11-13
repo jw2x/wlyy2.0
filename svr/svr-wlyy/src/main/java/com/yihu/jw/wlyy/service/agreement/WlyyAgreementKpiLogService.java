@@ -36,16 +36,16 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
         //    throw new ApiException(BaseContants.Saas.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         //}
         if (StringUtils.isEmpty(wlyyAgreementKpiLog.getPatientCode())) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_patientCode_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_patientId_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(wlyyAgreementKpiLog.getSignCode())) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_signCode_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_signId_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(wlyyAgreementKpiLog.getKpiCode())) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_kpiCode_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_kpiId_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(wlyyAgreementKpiLog.getAgreementCode())) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_agreementCode_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_agreementId_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(wlyyAgreementKpiLog.getKpiName())) {
             throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_kpiName_is_null, ExceptionCode.common_error_params_code);
@@ -57,7 +57,7 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
     }
 
 
-    public WlyyAgreementKpiLog findByCode(String code) {
-        return wlyyAgreementKpiLogDao.findById(code);
+    public WlyyAgreementKpiLog findById(String id) {
+        return wlyyAgreementKpiLogDao.findById(id);
     }
 }

@@ -36,7 +36,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
     @Transactional
     public Module createModule(Module module) throws ApiException {
         if (StringUtils.isEmpty(module.getId())) {
-            throw new ApiException(BaseRequestMapping.Module.message_fail_code_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Module.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(module.getName())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_name_is_null, ExceptionCode.common_error_params_code);
@@ -53,9 +53,6 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
 
     @Transactional
     public Module updateModule(Module module) {
-        if (StringUtils.isEmpty(module.getId())) {
-            throw new ApiException(BaseRequestMapping.Module.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(module.getName())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
@@ -72,7 +69,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
     public Module findById(String Id) {
         Module module = moduleDao.findById(Id);
         if (module == null) {
-            throw new ApiException(BaseRequestMapping.Module.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Module.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
         return module;
     }
@@ -81,7 +78,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
     public void deleteModule(String Id) {
         Module module = moduleDao.findById(Id);
         if (module == null) {
-            throw new ApiException(BaseRequestMapping.Module.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseRequestMapping.Module.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
         module.setStatus(-1);
     }

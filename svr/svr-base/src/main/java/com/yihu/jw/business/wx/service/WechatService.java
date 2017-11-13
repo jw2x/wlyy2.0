@@ -47,9 +47,6 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
 
     @Transient
     public WxWechat updateWxchat(WxWechat wechat) {
-        if (StringUtils.isEmpty(wechat.getId())) {
-            throw new ApiException(WechatRequestMapping.WxConfig.message_fail_code_is_null, ExceptionCode.common_error_params_code);
-        }
         if (StringUtils.isEmpty(wechat.getSaasId())) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
         }
@@ -85,7 +82,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
             for (String code : codeArray) {
                 WxWechat wxWechat = wechatDao.findById(code);
                 if (wxWechat == null) {
-                    throw new ApiException(WechatRequestMapping.WxConfig.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
+                    throw new ApiException(WechatRequestMapping.WxConfig.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
                 }
                 wxWechat.setStatus(-1);
                 wxWechat.setUpdateUser(userId);

@@ -18,8 +18,8 @@ public interface WlyyAgreementKpiLogFeign {
     @PostMapping(value = WlyyRequestMapping.AgreementKpiLog.api_create)
     Envelop create(@RequestBody String jsonData);
 
-    @GetMapping(value = WlyyRequestMapping.AgreementKpiLog.api_getByCode)
-    Envelop findByCode(@RequestParam(value = "code")String code);
+    @GetMapping(value = WlyyRequestMapping.AgreementKpiLog.api_getById)
+    Envelop findByCode(@RequestParam(value = "id")String id);
 
     @RequestMapping(value = WlyyRequestMapping.AgreementKpiLog.api_queryPage, method = RequestMethod.GET)
     Envelop queryPage(

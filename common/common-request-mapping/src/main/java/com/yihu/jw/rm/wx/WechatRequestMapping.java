@@ -30,7 +30,7 @@ public class WechatRequestMapping {
         public static final String api_createMenu="/createMenu";
         public static final String api_getChildMenus="/childMenu/list/{parentId}";
 
-        public static final String message_fail_code_is_null="id is null";
+        public static final String message_fail_id_is_null="id is null";
         public static final String message_fail_name_is_null="name is null";
         public static final String message_fail_type_is_null="type is null";
         public static final String message_fail_key_is_null="key is null";
@@ -41,8 +41,8 @@ public class WechatRequestMapping {
         public static final String message_fail_url_is_toLong="url is to long";
         public static final String message_fail_sort_is_null="sort is null";
         public static final String message_fail_sort_is_repeat="sort is repeat";
-        public static final String message_fail_code_no_exist="id no exist";
-        public static final String message_fail_supMenuCode_is_no_exist="supMenuId is no exist";
+        public static final String message_fail_id_no_exist="id no exist";
+        public static final String message_fail_supMenuId_is_no_exist="supMenuId is no exist";
         public static final String message_fail_mediaId_is_null="mediaId is null";
         public static final String message_fail_childMenu_is_to_much="childMenu is to much";//子菜单数目过多
         public static final String message_fail_parentMenu_is_to_much="parentMenu is to much";//子菜单数目过多
@@ -73,9 +73,9 @@ public class WechatRequestMapping {
         public static final String message_success_find_functions="wxTemplate find success";
         public static final String message_success_delete="wxTemplate delete success";
 
-        public static final String message_fail_code_is_null="id is null";
-        public static final String message_fail_code_no_exist="id no exist";
-        public static final String message_fail_wechatCode_is_null="wechatId is null";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_id_no_exist="id no exist";
+        public static final String message_fail_wechatId_is_null="wechatId is null";
         public static final String message_fail_templateid_is_null="templateid is null";
         public static final String message_fail_content_is_null="content is null";
         public static final String message_fail_content_format_is_not_right="content format is not right";
@@ -97,8 +97,7 @@ public class WechatRequestMapping {
         public static final String message_success_find_functions="wechat find success";
         public static final String message_success_delete="wechat delete success";
 
-        public static final String message_fail_code_is_null="id is null";
-        public static final String message_fail_code_no_exist="id not exist";
+        public static final String message_fail_id_no_exist="id not exist";
         public static final String message_fail_appSecret_is_null="appSecret is null";
         public static final String message_fail_appId_exist="wechat appId exist";
         public static final String message_fail_status_is_null="status is null";
@@ -125,9 +124,9 @@ public class WechatRequestMapping {
 
         public static final String message_success_find_functions="wxGraphicMessage find success";
         public static final String message_success_delete="wxGraphicMessage delete success";
-        public static final String message_fail_code_is_null="id is null";
-        public static final String message_fail_code_no_exist="id not exist";
-        public static final String message_fail_code_exist="id exist";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_id_no_exist="id not exist";
+        public static final String message_fail_id_exist="id exist";
         public static final String message_fail_status_is_null="status is null";
         public static final String message_fail_title_is_null="title is null";
         public static final String message_fail_wxGraphicMessage_is_no_exist="wxGraphicMessage is not exist";

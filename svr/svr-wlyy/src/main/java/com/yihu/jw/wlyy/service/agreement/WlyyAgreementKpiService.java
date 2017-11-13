@@ -42,9 +42,9 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
         //判断agreement是否存在
         String agreementCode = wlyyAgreementKpi.getAgreementCode();
         if (StringUtils.isEmpty(agreementCode)) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_agreementCode_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_agreementId_is_null, ExceptionCode.common_error_params_code);
         }
-        WlyyAgreement agreement = wlyyAgreementService.findByCode(agreementCode);
+        WlyyAgreement agreement = wlyyAgreementService.findById(agreementCode);
         if(agreement == null){
             throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_agreement_is_null, ExceptionCode.common_error_params_code);
         }
@@ -76,9 +76,9 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
         //判断agreement是否存在
         String agreementCode = wlyyAgreementKpi.getAgreementCode();
         if (StringUtils.isEmpty(agreementCode)) {
-            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_agreementCode_is_null, ExceptionCode.common_error_params_code);
+            throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_agreementId_is_null, ExceptionCode.common_error_params_code);
         }
-        WlyyAgreement agreement = wlyyAgreementService.findByCode(agreementCode);
+        WlyyAgreement agreement = wlyyAgreementService.findById(agreementCode);
         if(agreement == null){
             throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_agreement_is_null, ExceptionCode.common_error_params_code);
         }
@@ -106,13 +106,13 @@ public class WlyyAgreementKpiService extends BaseJpaService<WlyyAgreementKpi, Wl
         return wlyyAgreementKpiDao.save(wlyyAgreementKpi);
     }
 
-    public WlyyAgreementKpi findByCode(String code) {
-        return wlyyAgreementKpiDao.findById(code);
+    public WlyyAgreementKpi findById(String id) {
+        return wlyyAgreementKpiDao.findById(id);
     }
 
     @Transient
-    public void delete(String code) {
-        WlyyAgreementKpi wlyyAgreementKpi = findByCode(code);
+    public void delete(String id) {
+        WlyyAgreementKpi wlyyAgreementKpi = findById(id);
         if(wlyyAgreementKpi==null){
             throw new ApiException(WlyyRequestMapping.AgreementKpi.message_fail_wlyyAgreementKpi_is_no_exist, ExceptionCode.common_error_params_code);
         }

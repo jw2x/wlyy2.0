@@ -20,10 +20,9 @@ public class BaseRequestMapping {
 
 
         public static final String message_fail_name_exist="function name exist";
-        public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="function is null";
         public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_id_no_exist=" no exist";
 
 
         public static final String api_create="/function";
@@ -34,7 +33,7 @@ public class BaseRequestMapping {
         public static final String api_getList="/function/list";
         public static final String api_assignFunction="/assignFunction";
         public static final String api_getModuleFunctions="/api_getModuleFunctions";
-        public static final String api_getChildren="/function/children/{code}";
+        public static final String api_getChildren="/function/children/{id}";
     }
 
     //模块常量
@@ -48,20 +47,19 @@ public class BaseRequestMapping {
 
 
         public static final String message_fail_name_exist=" name exist";
-        public static final String message_fail_code_is_null=" code is null";
         public static final String message_fail_name_is_null="name is null";
         public static final String message_fail_saasid_is_null="saasid is null";
         public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_id_no_exist="id no exist";
 
 
         public static final String api_create="/module";
         public static final String api_update="/module";
-        public static final String api_delete="/module/{codes}";
+        public static final String api_delete="/module/{ids}";
         public static final String api_getById="/module/{id}";
         public static final String api_getListNoPage="/module/listNoPage";
         public static final String api_getList="/module/list";
-        public static final String api_getChildren="/module/children/{code}";
+        public static final String api_getChildren="/module/children/{id}";
 
     }
 
@@ -70,8 +68,8 @@ public class BaseRequestMapping {
         public static final String api_changeFun="/moduleFun/changeFun";
 
 
-        public static final String moduleCode_is_null="moduleCode is null";
-        public static final String funCodes_is_null="funCodes is null";
+        public static final String moduleId_is_null="moduleId is null";
+        public static final String funIds_is_null="funIds is null";
     }
 
     //saas常量
@@ -84,10 +82,9 @@ public class BaseRequestMapping {
 
 
         public static final String message_fail_name_exist="saas name exist";
-        public static final String message_fail_code_is_null="code is null";
         public static final String message_fail_name_is_null="name is null";
         public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_code_no_exist="code no exist";
+        public static final String message_fail_id_no_exist="id no exist";
 
 
         public static final String api_create="/saas";

@@ -100,13 +100,9 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
         return advertisementDao.findById(id);
     }
 
-    public WlyyAdvertisement findByCode(String code) {
-        return advertisementDao.findById(code);
-    }
-
     @Transient
-    public void delete(String code) {
-        WlyyAdvertisement advertisement = findByCode(code);
+    public void delete(String id) {
+        WlyyAdvertisement advertisement = findById(id);
         if(advertisement==null){
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_wlyyAdvertisement_is_not_exist, ExceptionCode.common_error_params_code);
         }
@@ -120,7 +116,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      * @param request
      * @return
      */
-    public List<WlyyAdvertisement> getListByPatientCode(String patientCode, HttpServletRequest request) {
+    public List<WlyyAdvertisement> getListByPatientId(String patientCode, HttpServletRequest request) {
         List<WlyyAdvertisement> advertisements = null;
         //查找已签约的,根据签约的saasId查找地区,获得广告
         List<WlyySignFamily> signs =  signFamilyService.findByPatientCode(patientCode,1);
@@ -128,7 +124,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
             for(WlyySignFamily sign:signs){
                 String saasCode = sign.getSaasId();
                 if(!StringUtils.isEmpty(sign.getSaasId())){
-                    advertisements = getListBySaasCode(saasCode);
+                    advertisements = getListBySaasId(saasCode);
                     if(advertisements!=null){
                         return advertisements;
                     }
@@ -145,8 +141,8 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      * @param saasCode
      * @return
      */
-    public List<WlyyAdvertisement> getListBySaasCode(String saasCode){
-        return advertisementDao.getListBySaasCode(saasCode);
+    public List<WlyyAdvertisement> getListBySaasId(String saasCode){
+        return advertisementDao.getListBySaasId(saasCode);
     }
 
     /**
@@ -183,7 +179,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                     return  getDefaultList();
                 }
                 String saasCode = saas.getId();
-                return getListBySaasCode(saasCode);
+                return getListBySaasId(saasCode);
             }
 
         } catch (UnsupportedEncodingException e) {//解析ip失败,展示默认广告
@@ -218,7 +214,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                     return  getDefaultList();
                 }
                 String saasCode = saas.getId();
-                return getListBySaasCode(saasCode);
+                return getListBySaasId(saasCode);
             }
 
         } catch (UnsupportedEncodingException e) {//解析ip失败,展示默认广告

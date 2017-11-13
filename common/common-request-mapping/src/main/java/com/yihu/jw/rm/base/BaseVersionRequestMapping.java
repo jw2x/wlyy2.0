@@ -16,15 +16,14 @@ public class BaseVersionRequestMapping {
 
 
         public static final String message_fail_name_exist = "ServerVersion name exist";
-        public static final String message_fail_code_is_null = "code is null";
         public static final String message_fail_name_is_null = "ServerVersion is null";
         public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_code_no_exist = "code no exist";
+        public static final String message_fail_id_no_exist = "id no exist";
 
         public static final String api_create = "/serverVersion";
         public static final String api_update = "/serverVersion";
-        public static final String api_delete = "/serverVersion/{codes}";
-        public static final String api_getByCode = "/serverVersion/{code}";
+        public static final String api_delete = "/serverVersion/{ids}";
+        public static final String api_getById = "/serverVersion/{id}";
         public static final String api_getList="/serverVersion/list";
         public static final String api_getListNoPage="/serverVersion/listNoPage";
 
@@ -38,15 +37,14 @@ public class BaseVersionRequestMapping {
         public static final String message_success_delete = "ServerUrlVersion delete success";
 
         public static final String message_fail_name_exist = "ServerUrlVersion name exist";
-        public static final String message_fail_code_is_null = "code is null";
         public static final String message_fail_name_is_null = "ServerUrlVersion is null";
         public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_code_no_exist = "code no exist";
+        public static final String message_fail_id_no_exist = "id no exist";
 
         public static final String api_create = "/serverUrl";
         public static final String api_update = "/serverUrl";
-        public static final String api_delete = "/serverUrl/{codes}";
-        public static final String api_getByCode = "/serverUrl/{code}";
+        public static final String api_delete = "/serverUrl/{ids}";
+        public static final String api_getById = "/serverUrl/{id}";
         public static final String api_getList="/serverUrl/list";
         public static final String api_getListNoPage="/serverUrl/listNoPage";
 
@@ -59,15 +57,14 @@ public class BaseVersionRequestMapping {
         public static final String message_success_find_BaseServerVersionLog = "BaseServerVersionLog find success";
         public static final String message_success_delete = "BaseServerVersionLog delete success";
 
-        public static final String message_fail_code_is_null = "code is null";
         public static final String message_fail_name_is_null = "ServerVersion is null";
         public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_code_no_exist = "code no exist";
+        public static final String message_fail_id_no_exist = "id no exist";
 
         public static final String api_create = "/serverVersionLog";
         public static final String api_update = "/serverVersionLog";
-        public static final String api_delete = "/serverVersionLog/{codes}";
-        public static final String api_getByCode = "/serverVersionLog/{code}";
+        public static final String api_delete = "/serverVersionLog/{ids}";
+        public static final String api_getById = "/serverVersionLog/{id}";
         public static final String api_getList="/serverVersionLog/list";
         public static final String api_getListNoPage="/serverVersionLog/listNoPage";
 
@@ -83,15 +80,14 @@ public class BaseVersionRequestMapping {
 
 
         public static final String message_fail_name_exist = "WlyyVersion name exist";
-        public static final String message_fail_code_is_null = "code is null";
         public static final String message_fail_name_is_null = "ServerVersion is null";
         public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_code_no_exist = "code no exist";
+        public static final String message_fail_id_no_exist = "id no exist";
 
         public static final String api_create = "/wlyyVersion";
         public static final String api_update = "/wlyyVersion";
-        public static final String api_delete = "/wlyyVersion/{codes}";
-        public static final String api_getByCode = "/wlyyVersion/{code}";
+        public static final String api_delete = "/wlyyVersion/{ids}";
+        public static final String api_getById = "/wlyyVersion/{id}";
         public static final String api_getList="/wlyyVersion/list";
         public static final String api_getListNoPage="/wlyyVersion/listNoPage";
 
@@ -100,8 +96,8 @@ public class BaseVersionRequestMapping {
     public class UserUrlVersion {
         public static final String api_create = "/userUrlVersion";
         public static final String api_update = "/userUrlVersion";
-        public static final String api_delete = "/userUrlVersion/{codes}";
-        public static final String api_getByCode = "/userUrlVersion/{code}";
+        public static final String api_delete = "/userUrlVersion/{ids}";
+        public static final String api_getById = "/userUrlVersion/{id}";
         public static final String api_getList="/userUrlVersion/list";
         public static final String api_getListNoPage="/userUrlVersion/listNoPage";
         public static final String api_changeUserVersion="/userUrlVersion/userVersion";

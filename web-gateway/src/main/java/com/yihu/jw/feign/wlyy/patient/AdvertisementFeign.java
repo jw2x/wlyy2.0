@@ -25,10 +25,10 @@ public interface AdvertisementFeign {
     Envelop update(@RequestBody String jsonData);
 
     @DeleteMapping(value = WlyyRequestMapping.Advertisement.api_delete)
-    Envelop delete( @RequestParam(value = "code") String code);
+    Envelop delete( @RequestParam(value = "id") String id);
 
-    @RequestMapping(value= WlyyRequestMapping.Advertisement.api_getByCode,method = RequestMethod.GET)
-    Envelop findByCode( @RequestParam(value = "code" ) String code);
+    @RequestMapping(value= WlyyRequestMapping.Advertisement.api_getById,method = RequestMethod.GET)
+    Envelop findByCode( @RequestParam(value = "id" ) String id);
 
     @RequestMapping(value = WlyyRequestMapping.Advertisement.api_queryPage, method = RequestMethod.GET)
     Envelop queryPage(
@@ -44,8 +44,8 @@ public interface AdvertisementFeign {
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts);
 
-    @GetMapping(value= WlyyRequestMapping.Advertisement.api_getListByPatientCode)
-    Envelop getListByPatientCode(@RequestParam(value="patientCode")String patientCode);
+    @GetMapping(value= WlyyRequestMapping.Advertisement.api_getListByPatientId)
+    Envelop getListByPatientCode(@RequestParam(value="patientId")String patientId);
 
     @GetMapping(value= WlyyRequestMapping.Advertisement.api_getListByIp)
     Envelop getListByIp(@RequestParam(value="ipAddress") String ipAddress);

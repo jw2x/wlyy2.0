@@ -56,24 +56,24 @@ public class WlyyAgreementKpiController extends EnvelopRestController {
     @DeleteMapping(value = WlyyRequestMapping.AgreementKpi.api_delete)
     @ApiOperation(value = "删除套餐指标", notes = "删除套餐指标")
     public Envelop delete(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id) {
         try {
-            wlyyAgreementKpiService.delete(code);
+            wlyyAgreementKpiService.delete(id);
             return Envelop.getSuccess(WlyyRequestMapping.AgreementKpi.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = WlyyRequestMapping.AgreementKpi.api_getByCode)
-    @ApiOperation(value = "根据code查找套餐指标", notes = "根据code查找套餐指标")
+    @GetMapping(value = WlyyRequestMapping.AgreementKpi.api_getById)
+    @ApiOperation(value = "根据id查找套餐指标", notes = "根据id查找套餐指标")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpi.message_success_find, wlyyAgreementKpiService.findByCode(code));
+            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpi.message_success_find, wlyyAgreementKpiService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

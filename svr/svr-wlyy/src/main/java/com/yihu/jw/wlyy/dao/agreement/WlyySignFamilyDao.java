@@ -13,8 +13,8 @@ import java.util.List;
 public interface WlyySignFamilyDao  extends PagingAndSortingRepository<WlyySignFamily, String>, JpaSpecificationExecutor<WlyySignFamily> {
 
     @Query("from WlyySignFamily w where w.id = ?1")
-    WlyySignFamily findById(String code);
+    WlyySignFamily findById(String id);
 
     @Query("from WlyySignFamily w where w.patient = ?1 and w.status = ?2")
-    List<WlyySignFamily> findByPatientCode(String patientCode, Integer status);
+    List<WlyySignFamily> findByPatientId(String patientId, Integer status);
 }

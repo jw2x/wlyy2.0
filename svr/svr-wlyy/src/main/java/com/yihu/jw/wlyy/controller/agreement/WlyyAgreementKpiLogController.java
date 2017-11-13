@@ -39,14 +39,14 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = WlyyRequestMapping.AgreementKpiLog.api_getByCode)
+    @GetMapping(value = WlyyRequestMapping.AgreementKpiLog.api_getById)
     @ApiOperation(value = "根据code查找套餐指标日志", notes = "根据code查找套餐指标日志")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpiLog.message_success_find, wlyyAgreementKpiLogService.findByCode(code));
+            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpiLog.message_success_find, wlyyAgreementKpiLogService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

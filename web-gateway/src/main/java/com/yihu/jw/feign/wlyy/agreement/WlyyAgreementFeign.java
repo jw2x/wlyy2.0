@@ -23,10 +23,10 @@ public interface WlyyAgreementFeign {
     Envelop update(@RequestBody String jsonData);
 
     @DeleteMapping(value = WlyyRequestMapping.Agreement.api_delete)
-    Envelop delete( @RequestParam(value = "code") String code);
+    Envelop delete( @RequestParam(value = "id") String id);
 
-    @RequestMapping(value= WlyyRequestMapping.Agreement.api_getByCode,method = RequestMethod.GET)
-    Envelop findByCode( @RequestParam(value = "code" ) String code);
+    @RequestMapping(value= WlyyRequestMapping.Agreement.api_getById,method = RequestMethod.GET)
+    Envelop findByCode( @RequestParam(value = "id" ) String id);
 
     @RequestMapping(value = WlyyRequestMapping.Agreement.api_queryPage, method = RequestMethod.GET)
     Envelop queryPage(
