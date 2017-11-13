@@ -23,5 +23,5 @@
     
     cookie
     {
-        "prod":true, ##true正式 false测试
+        "prod":0, #  0跳转到灰度服务器  1跳转到正式的服务器
     }

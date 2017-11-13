@@ -22,7 +22,6 @@ public class BaseUserVersion  extends IdEntity implements java.io.Serializable {
 
 	// Fields
 
-	private String saasId;
 	private String userId;
 	private String version;
 
@@ -32,15 +31,6 @@ public class BaseUserVersion  extends IdEntity implements java.io.Serializable {
 	public BaseUserVersion() {
 	}
 
-
-	@Column(name = "saas_id", length = 100)
-	public String getSaasId() {
-		return this.saasId;
-	}
-
-	public void setSaasId(String saasId) {
-		this.saasId = saasId;
-	}
 
 	@Column(name = "user_id", length = 100)
 	public String getUserId() {

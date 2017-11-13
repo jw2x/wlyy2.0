@@ -1,6 +1,6 @@
 package com.yihu.jw.feign.fallbackfactory;
 
-import com.yihu.jw.feign.PatientFeign;
+import com.yihu.jw.feign.DemoFeign;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
  * Created by chenweida on 2017/5/15.
  */
 @Component
-public class PatientFeignFallbackFactory implements FallbackFactory<PatientFeign> {
+public class DemoFeignFallbackFactory implements FallbackFactory<DemoFeign> {
     @Override
-    public PatientFeign create(Throwable e) {
-        return new PatientFeign() {
+    public DemoFeign create(Throwable e) {
+        return new DemoFeign() {
             public String findByCode(String code) {
                 return "启动断路器"+e.getMessage() ;
             }

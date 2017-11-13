@@ -62,13 +62,11 @@ public class UserVersionController extends EnvelopRestController {
 
     @GetMapping(value = BaseVersionRequestMapping.UserVersion.api_getByUserId, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据用户和saadId获取用户的灰度发布版本信息", notes = "根据用户获取用户的灰度发布版本信息")
-    public Envelop getUserVersionBySaasIdAndUserId(
-            @ApiParam(name = "saasId", value = "saasId")
-            @PathParam(value = "saasId") String saasId,
+    public Envelop getUserVersionByUserId(
             @ApiParam(name = "userId", value = "userId")
             @PathParam(value = "userId") String userId) {
         try {
-            return Envelop.getSuccess(BaseVersionRequestMapping.UserVersion.message_success_find, userVersionService.getUserVersionBySaasIdAndUserId(saasId,userId));
+            return Envelop.getSuccess(BaseVersionRequestMapping.UserVersion.message_success_find, userVersionService.getUserVersionByUserId(userId));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

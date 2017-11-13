@@ -32,8 +32,8 @@ public class UserVersionService extends BaseJpaService<BaseUserVersion, UserVers
         }
     }
 
-    public BaseUserVersion getUserVersionBySaasIdAndUserId(String saasId, String userId) {
-      return  userVersionDao.findBySaasIdAndUserId(saasId,userId);
+    public BaseUserVersion getUserVersionByUserId(String userId) {
+      return  userVersionDao.getUserVersionByUserId(userId);
     }
 
     public BaseUserVersion getUserVersion(String id) {
