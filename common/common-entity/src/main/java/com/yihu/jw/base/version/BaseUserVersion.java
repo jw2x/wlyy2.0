@@ -23,7 +23,7 @@ public class BaseUserVersion  extends IdEntity implements java.io.Serializable {
 	// Fields
 
 	private String saasId;
-	private String userCode;
+	private String userId;
 	private String version;
 
 	// Constructors
@@ -42,14 +42,15 @@ public class BaseUserVersion  extends IdEntity implements java.io.Serializable {
 		this.saasId = saasId;
 	}
 
-	@Column(name = "user_code", length = 100)
-	public String getUserCode() {
-		return this.userCode;
+	@Column(name = "user_id", length = 100)
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUserCode(String userCode) {
-		this.userCode = userCode;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
+
 
 	@Column(name = "version", length = 100)
 	public String getVersion() {

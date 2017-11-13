@@ -7,6 +7,14 @@ public class BaseVersionRequestMapping {
 
     public static final String api_common = "/version";
     public static class WlyyVersion {
+        public static final String api_create = "/wlyyVersion";
+        public static final String api_update = "/wlyyVersion";
+        public static final String api_delete = "/wlyyVersion/{ids}";
+        public static final String api_getById = "/wlyyVersion/{id}";
+        public static final String api_getList="/wlyyVersion/list";
+        public static final String api_getListNoPage="/wlyyVersion/listNoPage";
+
+
         public static final String message_success_create = "WlyyVersion create success";
         public static final String message_success_update = "WlyyVersion update success";
         public static final String message_success_find = "WlyyVersion find success";
@@ -19,19 +27,14 @@ public class BaseVersionRequestMapping {
         public static final String message_fail_id_is_null = "id is null";
         public static final String message_fail_id_no_exist = "id no exist";
 
-        public static final String api_create = "/wlyyVersion";
-        public static final String api_update = "/wlyyVersion";
-        public static final String api_delete = "/wlyyVersion/{ids}";
-        public static final String api_getById = "/wlyyVersion/{id}";
-        public static final String api_getList="/wlyyVersion/list";
-        public static final String api_getListNoPage="/wlyyVersion/listNoPage";
 
     }
 
     public class UserVersion {
         public static final String api_create = "/userVersion";
-        public static final String api_delete = "/userVersion/{ids}";
+        public static final String api_delete = "/usersVersion/{ids}";
         public static final String api_getById = "/userVersion/{id}";
+        public static final String api_getByUserId = "/userVersion/{saasId}/{userId}";
         public static final String api_getList="/userVersion/list";
         public static final String api_getListNoPage="/userVersion/listNoPage";
 
