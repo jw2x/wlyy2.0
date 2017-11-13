@@ -14,10 +14,13 @@ public interface ModuleDao extends PagingAndSortingRepository<Module, String>, J
     @Query("from Module f where f.name=?1 and f.status=1")
     Module findByName(String name);
 
-    @Query("from Module f where f.name=?1 and f.status=1 and f.code != ?2")
-    Module findByNameExcludeCode(String name, String code);
+    @Query("from Module f where f.id=?1 and f.status=1")
+    Module findById(String id);
 
-    @Query("from Module f where f.parentCode=?1 and f.status=1")
+    @Query("from Module f where f.name=?1 and f.status=1 and f.id != ?2")
+    Module findByNameExcludeId(String name, String code);
+
+    @Query("from Module f where f.parentId=?1 and f.status=1")
     List<Module> getChildren(String code);
 
     @Query("from Module f where f.status=1")

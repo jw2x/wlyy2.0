@@ -37,17 +37,17 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
 
     /**
      * 根据wechatCode查找最新一条
-     * @param wechatCode
+     * @param wechatId
      * @return
      */
-    public WxAccessToken getWxAccessTokenByCode(String wechatCode) {
+    public WxAccessToken getWxAccessTokenById(String wechatId) {
         try {
             //根据wechatCode查找出appid和appSecret
-            WxWechat wxWechat = wechatDao.findById(wechatCode);
+            WxWechat wxWechat = wechatDao.findById(wechatId);
             if(wxWechat==null){
                 throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
             }
-            List<WxAccessToken> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenByCode(wechatCode);
+            List<WxAccessToken> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenById(wechatId);
             if(wxAccessTokens!=null&&wxAccessTokens.size()>0){
                 for (WxAccessToken accessToken : wxAccessTokens) {
                     if ((System.currentTimeMillis() - accessToken.getAddTimestamp()) < (accessToken.getExpiresIn() * 1000)) {
@@ -82,7 +82,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
                 newaccessToken.setAddTimestamp(System.currentTimeMillis());
                 newaccessToken.setCzrq(new Date());
                 newaccessToken.setCode(UUID.randomUUID().toString().replace("-",""));
-                newaccessToken.setWechatId(wechatCode);
+                newaccessToken.setWechatId(wechatId);
                 wxAccessTokenDao.save(newaccessToken);
                 return newaccessToken;
             } else {

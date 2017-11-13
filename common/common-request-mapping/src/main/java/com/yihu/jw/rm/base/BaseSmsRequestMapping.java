@@ -49,7 +49,7 @@ public class BaseSmsRequestMapping {
         public static final String api_create="smsGateway";
         public static final String api_update="smsGateway";
         public static final String api_delete="smsGateway";
-        public static final String api_getByCode="getSmsGatewayByCode";
+        public static final String api_getById="getSmsGatewayById";
         public static final String api_getSmsGateways="getSmsGateways";
 
         public static final String api_getSmsGatewaysNoPage="getSmsGatewaysNoPage";

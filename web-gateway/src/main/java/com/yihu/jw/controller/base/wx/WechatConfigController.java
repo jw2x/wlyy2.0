@@ -74,16 +74,16 @@ public class WechatConfigController {
         return wechat;
     }
 
-    @GetMapping(value = WechatContants.Config.api_getByCode)
+    @GetMapping(value = WechatContants.Config.api_getById)
     @ApiOperation(value = "根据code查找微信配置", notes = "根据code查找微信配置")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-       return wechatFegin.findByCode(code);
+       return wechatFegin.findById(id);
     }
 
     @RequestMapping(value = WechatContants.Config.api_getWechats, method = RequestMethod.GET)

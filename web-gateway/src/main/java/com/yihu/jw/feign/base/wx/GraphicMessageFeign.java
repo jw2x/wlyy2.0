@@ -29,10 +29,10 @@ public interface GraphicMessageFeign {
     Envelop updateWxGraphicMessage( @RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_delete,method = RequestMethod.DELETE)
-    Envelop deleteWxGraphicMessage(@RequestParam(value = "codes") String codes,@RequestParam(value = "userCode") String userCode,@RequestParam(value = "userName") String userName) throws JiWeiException;
+    Envelop deleteWxGraphicMessage(@RequestParam(value = "ids") String ids,@RequestParam(value = "userId") String userId,@RequestParam(value = "userName") String userName) throws JiWeiException;
 
-    @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_getByCode,method = RequestMethod.GET)
-    Envelop findByCode(@RequestParam(value = "code") String code) throws JiWeiException;
+    @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_getById,method = RequestMethod.GET)
+    Envelop findById(@RequestParam(value = "id") String id) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_getWxGraphicMessages,method = RequestMethod.GET)
     Envelop getWxGraphicMessages(
@@ -50,7 +50,7 @@ public interface GraphicMessageFeign {
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_sendGraphicMessages,method = RequestMethod.GET)
     String sendGraphicMessages(
-            @RequestParam(value = "codes", required = true) String codes,
+            @RequestParam(value = "ids", required = true) String ids,
             @RequestParam(value = "fromUserName", required = true) String fromUserName,
             @RequestParam(value = "toUserName", required = true) String toUserName
     );

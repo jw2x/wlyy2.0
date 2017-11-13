@@ -74,16 +74,16 @@ public class WechatGraphicMessageController {
         return graphicMessageFegin.deleteWxGraphicMessage(codes,userCode,userName);
     }
 
-    @GetMapping(value = WechatContants.GraphicMessage.api_getByCode)
+    @GetMapping(value = WechatContants.GraphicMessage.api_getById)
     @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+    public Envelop findById(
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-        return graphicMessageFegin.findByCode(code);
+        return graphicMessageFegin.findById(id);
     }
 
     @RequestMapping(value = WechatContants.GraphicMessage.api_getWxGraphicMessages, method = RequestMethod.GET)
@@ -139,13 +139,13 @@ public class WechatGraphicMessageController {
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     @ResponseBody
     public String sendGraphicMessages(
-            @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
-            @RequestParam(value = "codes", required = true) String codes,
+            @ApiParam(name = "ids", value = "根据id发送微信图文消息,多个id用,分割")
+            @RequestParam(value = "ids", required = true) String ids,
             @ApiParam(name = "fromUserName", value = "用户openid")
             @RequestParam(value = "fromUserName", required = true) String fromUserName,
             @ApiParam(name = "toUserName", value = "公众号")
             @RequestParam(value = "toUserName", required = true) String toUserName
     ) throws Exception {
-        return graphicMessageFegin.sendGraphicMessages(codes,fromUserName,toUserName);
+        return graphicMessageFegin.sendGraphicMessages(ids,fromUserName,toUserName);
     }
 }

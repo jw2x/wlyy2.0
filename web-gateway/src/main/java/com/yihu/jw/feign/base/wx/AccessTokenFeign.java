@@ -20,6 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AccessTokenFeign {
 
     @RequestMapping(value = WechatRequestMapping.WxAccessToken.api_get, method = RequestMethod.GET)
-    Envelop getWxAccessToken(@RequestParam(value = "wechatCode") String wechatCode) ;
+    Envelop getWxAccessToken(@RequestParam(value = "wechatId") String wechatId) ;
 
 }

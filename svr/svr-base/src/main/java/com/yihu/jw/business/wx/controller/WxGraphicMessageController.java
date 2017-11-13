@@ -76,14 +76,14 @@ public class WxGraphicMessageController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = WechatRequestMapping.WxGraphicMessage.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxGraphicMessage.api_getById)
     @ApiOperation(value = "根据code查找微信图文消息", notes = "根据code查找微信图文消息")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WechatRequestMapping.WxGraphicMessage.message_success_find, wxGraphicMessageService.findByCode(code));
+            return Envelop.getSuccess(WechatRequestMapping.WxGraphicMessage.message_success_find, wxGraphicMessageService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -149,14 +149,14 @@ public class WxGraphicMessageController extends EnvelopRestController {
     @ApiOperation(value = "发送图文消息")
     @ResponseBody
     public String sendGraphicMessages(
-            @ApiParam(name = "codes", value = "根据code发送微信图文消息,多个code用,分割")
-            @RequestParam(value = "codes", required = true) String codes,
+            @ApiParam(name = "ids", value = "根据code发送微信图文消息,多个code用,分割")
+            @RequestParam(value = "ids", required = true) String ids,
             @ApiParam(name = "fromUserName", value = "用户openid")
             @RequestParam(value = "fromUserName", required = true) String fromUserName,
             @ApiParam(name = "toUserName", value = "公众号")
             @RequestParam(value = "toUserName", required = true) String toUserName
             ) throws Exception {
-        String messages = wxGraphicMessageService.sendGraphicMessages(codes, fromUserName,toUserName);
+        String messages = wxGraphicMessageService.sendGraphicMessages(ids, fromUserName,toUserName);
         return messages;
     }
 

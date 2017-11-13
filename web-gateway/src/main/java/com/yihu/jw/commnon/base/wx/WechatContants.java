@@ -18,23 +18,23 @@ public class WechatContants {
     public static class Menu{
         public static final String api_create="wxMenu";
         public static final String api_update="wxMenu";
-        public static final String api_delete="wxMenu/{codes}/{userCode}";
+        public static final String api_delete="wxMenu/{ids}/{userId}";
         public static final String api_getWxMenuNoPage="wxMenu/listNoPage";
         public static final String api_getWxMenus="wxMenu/list";
-        public static final String api_getByCode="wxMenu/{code}";
-        public static final String api_getParentMenu="parentMenu/{wechatCode}";
+        public static final String api_getById="wxMenu/{id}";
+        public static final String api_getParentMenu="parentMenu/{wechatId}";
         public static final String api_createMenu="createMenu";
-        public static final String api_getChildMenus="childMenu/list/{parentCode}";
+        public static final String api_getChildMenus="childMenu/list/{parentId}";
     }
 
     //微信模板消息
     public static class Template {
         public static final String api_create="template";
         public static final String api_update="template";
-        public static final String api_delete="template/{codes}";
+        public static final String api_delete="template/{ids}";
         public static final String api_getWxTemplatesNoPage="template/listNoPage";
         public static final String api_getWxTemplates="template/list";
-        public static final String api_getByCode="template/{code}";
+        public static final String api_getById="template/{id}";
         public static final String api_sendTemplateMessage="sendTemplateMessage";
     }
 
@@ -42,20 +42,20 @@ public class WechatContants {
     public static class Config {
         public static final String api_create="wechatConfig";
         public static final String api_update="wechatConfig";
-        public static final String api_delete="wechatConfig/{codes}";
+        public static final String api_delete="wechatConfig/{ids}";
         public static final String api_getWechatNoPage="wechatConfig/listNoPage";
         public static final String api_getWechats="wechatConfig/list";
-        public static final String api_getByCode="wechatConfig/{code}";
+        public static final String api_getById="wechatConfig/{id}";
     }
 
     //微信图文消息
     public static class GraphicMessage {
         public static final String api_create="graphicMessage";
         public static final String api_update="graphicMessage";
-        public static final String api_delete="graphicMessage/{codes}";
+        public static final String api_delete="graphicMessage/{ids}";
         public static final String api_getWxGraphicMessageNoPage="graphicMessage/listNoPage";
         public static final String api_getWxGraphicMessages="graphicMessage/list";
-        public static final String api_getByCode="graphicMessage/{code}";
+        public static final String api_getById="graphicMessage/{id}";
         public static final String api_sendGraphicMessages="sendGraphicMessages";
     }
 }

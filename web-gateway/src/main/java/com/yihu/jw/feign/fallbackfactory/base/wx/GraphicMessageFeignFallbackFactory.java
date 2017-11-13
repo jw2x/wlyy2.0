@@ -44,9 +44,9 @@ public class GraphicMessageFeignFallbackFactory implements FallbackFactory<Graph
             }
 
             @Override
-            public Envelop findByCode(String code) throws JiWeiException {
+            public Envelop findById(String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("根据code查找微信图文消息失败:原因:"+e.getMessage());
-                tracer.getCurrentSpan().logEvent("code:"+code);
+                tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 

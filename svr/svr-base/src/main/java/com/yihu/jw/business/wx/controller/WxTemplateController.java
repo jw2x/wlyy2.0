@@ -83,14 +83,14 @@ public class WxTemplateController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = WechatRequestMapping.WxTemplate.api_getByCode)
+    @GetMapping(value = WechatRequestMapping.WxTemplate.api_getById)
     @ApiOperation(value = "根据code查找微信模版", notes = "根据code查找微信模版")
-    public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+    public Envelop findById(
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WechatRequestMapping.WxTemplate.message_success_find, wxTemplateService.findByCode(code));
+            return Envelop.getSuccess(WechatRequestMapping.WxTemplate.message_success_find, wxTemplateService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -118,7 +118,7 @@ public class WxTemplateController extends EnvelopRestController {
         //得到微信列表数据
         List<WxWechat> wechats = wechatService.search(fields, filters, sorts, page, size);
         for(WxWechat wechat:wechats){
-            List<WxTemplate> wxTemplates = wxTemplateService.findByWxCode(wechat.getId());
+            List<WxTemplate> wxTemplates = wxTemplateService.findByWxId(wechat.getId());
             if (wxTemplates.size()>0){
                 wechat.setState("closed");
             }else{

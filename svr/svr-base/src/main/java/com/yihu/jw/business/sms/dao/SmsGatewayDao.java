@@ -15,6 +15,6 @@ public interface SmsGatewayDao extends PagingAndSortingRepository<BaseSmsGateway
     @Query("from BaseSmsGateway f where f.name=?1 and f.status=1 and f.code != ?2")
     BaseSmsGateway findByNameExcludeCode(String name, String code);
 
-    @Query("from BaseSmsGateway f where f.code=?1 and f.status=1")
-    BaseSmsGateway findByCode(String code);
+    @Query("from BaseSmsGateway f where f.id=?1 and f.status=1")
+    BaseSmsGateway findById(String id);
 }

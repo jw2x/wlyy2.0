@@ -27,10 +27,10 @@ public interface WechatFeign {
     Envelop updateWechat(String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxConfig.api_delete,method = RequestMethod.DELETE)
-    Envelop deleteWechat(@RequestParam(value = "codes") String codes,@RequestParam(value = "userCode") String userCode,@RequestParam(value = "userName") String userName) throws JiWeiException;
+    Envelop deleteWechat(@RequestParam(value = "ids") String ids,@RequestParam(value = "userId") String userId,@RequestParam(value = "userName") String userName) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxConfig.api_getById,method = RequestMethod.GET)
-    Envelop findByCode(@RequestParam(value = "code") String code) throws JiWeiException;
+    Envelop findById(@RequestParam(value = "id") String id) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxConfig.api_getWechats ,method = RequestMethod.GET)
     Envelop getWechats(@RequestParam(value = "fields" ,required = false)String fields, @RequestParam(value = "filters",required = false) String filters, @RequestParam(value = "sorts" ,required = false)String sorts, @RequestParam(value = "size" ,required = false) int size,@RequestParam(value = "page" ,required = false)int page) throws JiWeiException;

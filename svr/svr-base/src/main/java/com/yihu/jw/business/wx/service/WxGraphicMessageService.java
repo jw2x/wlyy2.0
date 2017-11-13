@@ -58,11 +58,6 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         return wxGraphicMessageDao.save(wxGraphicMessage);
     }
 
-    public WxGraphicMessage findByCode(String code) {
-        WxGraphicMessage WxGraphicMessage = wxGraphicMessageDao.findById(code);
-        return WxGraphicMessage;
-    }
-
     public WxGraphicMessage findById(String id) {
       return wxGraphicMessageDao.findById(id);
     }
@@ -72,7 +67,7 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
         if(!StringUtils.isEmpty(codes)){
             String[] codeArray = codes.split(",");
             for(String code:codeArray){
-                WxGraphicMessage wxGraphicMessage = findByCode(code);
+                WxGraphicMessage wxGraphicMessage = findById(code);
                 wxGraphicMessage.setStatus(-1);
                 wxGraphicMessage.setUpdateUser(userCode);
                 wxGraphicMessage.setUpdateUserName(userName);
@@ -131,7 +126,7 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
             if(codes!=null){
                 String[] codeArray = codes.split(",");
                 for(String code: codeArray){
-                    WxGraphicMessage graphicMessage = findByCode(code);
+                    WxGraphicMessage graphicMessage = findById(code);
                     Map<String,String> article = new HashMap<>();
                     article.put("Url",graphicMessage.getUrl());
                     article.put("Title", graphicMessage.getTitle());
@@ -150,19 +145,19 @@ public class WxGraphicMessageService extends BaseJpaService<WxGraphicMessage, Wx
 
     /**
      * 发送图文消息
-     * @param codes
+     * @param ids
      * @param fromUserName   用户的openId
      * @param toUserName
      * @return
      */
-    public String sendGraphicMessages(String codes, String fromUserName,String toUserName) {
+    public String sendGraphicMessages(String ids, String fromUserName,String toUserName) {
         try {
         // 图文信息
             List<Map<String,String>> articles =  new ArrayList<>();
-            if(codes!=null){
-                String[] codeArray = codes.split(",");
-                for(String code: codeArray){
-                    WxGraphicMessage graphicMessage = findByCode(code);
+            if(ids!=null){
+                String[] codeArray = ids.split(",");
+                for(String id: codeArray){
+                    WxGraphicMessage graphicMessage = findById(id);
                     Map<String,String> article = new HashMap<>();
                     article.put("Url",graphicMessage.getUrl());
                     article.put("Title", graphicMessage.getTitle());

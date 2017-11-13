@@ -74,25 +74,25 @@ public class FunctionController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseContants.Function.api_getByCode)
-    @ApiOperation(value = "根据code查找", notes = "根据code查找")
-    public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+    @GetMapping(value = BaseContants.Function.api_getById)
+    @ApiOperation(value = "根据Id查找", notes = "根据code查找")
+    public Envelop findById(
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-        return fegin.findByCode(code);
+        return fegin.findById(id);
     }
 
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     @GetMapping(value = BaseContants.Function.api_getChildren)
-    @ApiOperation(value = "根据code查找子节点", notes = "根据code查找子节点")
+    @ApiOperation(value = "根据id查找子节点", notes = "根据id查找子节点")
     public Envelop getChildren(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) throws JiWeiException {
-        return fegin.getChildren(code);
+        return fegin.getChildren(id);
     }
 
     @HystrixCommand(commandProperties = {

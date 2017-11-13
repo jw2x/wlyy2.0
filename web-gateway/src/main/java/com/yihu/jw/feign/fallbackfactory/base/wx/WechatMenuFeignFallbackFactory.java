@@ -45,9 +45,9 @@ public class WechatMenuFeignFallbackFactory implements FallbackFactory<WechatMen
 
 
             @Override
-            public Envelop findByCode(String code) throws JiWeiException {
+            public Envelop findById(String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找微信菜单失败:原因:"+e.getMessage());
-                tracer.getCurrentSpan().logEvent("code:"+code);
+                tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 

@@ -57,24 +57,24 @@ public class SmsGatewayController extends EnvelopRestController {
     @DeleteMapping(value = BaseSmsRequestMapping.SmsGateway.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "删除功能", notes = "删除功能")
     public Envelop deleteSmsGateway(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code) {
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id) {
         try {
-            smsGatewayService.deleteSmsGateway(code);
+            smsGatewayService.deleteSmsGateway(id);
             return Envelop.getSuccess(BaseSmsRequestMapping.SmsGateway.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseSmsRequestMapping.SmsGateway.api_getByCode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(value = BaseSmsRequestMapping.SmsGateway.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据code查找功能", notes = "根据code查找功能")
-    public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @RequestParam(value = "code", required = true) String code
+    public Envelop findById(
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(BaseSmsRequestMapping.SmsGateway.message_success_find, smsGatewayService.findByCode(code));
+            return Envelop.getSuccess(BaseSmsRequestMapping.SmsGateway.message_success_find, smsGatewayService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

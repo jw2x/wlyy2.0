@@ -60,15 +60,15 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
         if (StringUtils.isEmpty(function.getId())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        Function functionTmp = functionDao.findByNameExcludeCode(function.getName(), function.getId());
+        Function functionTmp = functionDao.findByNameExcludeId(function.getName(), function.getId());
         if (functionTmp != null) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
         return functionDao.save(function);
     }
 
-    public Function findByCode(String code) {
-        Function function = functionDao.findByCode(code);
+    public Function findById(String id) {
+        Function function = functionDao.findById(id);
         if (function == null) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -76,8 +76,8 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     }
 
     @Transactional
-    public void deleteFunction(String code) {
-        Function function = functionDao.findByCode(code);
+    public void deleteFunction(String id) {
+        Function function = functionDao.findById(id);
         if (function == null) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -85,24 +85,24 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
         functionDao.save(function);
     }
     @Transactional
-    public void assignFunction(String moduleCode, String functionCodes) {
+    public void assignFunction(String moduleId, String functionIds) {
         //先删除原来已经分配好的功能
-        moduleFunctionDao.deleteByModuleCode(moduleCode);
+        moduleFunctionDao.deleteByModuleId(moduleId);
         //分配新的功能
-        String [] functionCodeArr=functionCodes.split(",");
+        String [] functionCodeArr=functionIds.split(",");
         List<ModuleFunction> saasModuleList=new ArrayList<>();
-        for(String functionCode:functionCodeArr){
+        for(String functionId:functionCodeArr){
             ModuleFunction saasModule=new ModuleFunction();
-            saasModule.setModuleId(moduleCode);
-            saasModule.setFunctionId(functionCode);
+            saasModule.setModuleId(moduleId);
+            saasModule.setFunctionId(functionId);
             saasModuleList.add(saasModule);
         }
         moduleFunctionDao.save(saasModuleList);
     }
 
-    public List<MFunction> getModuleFunctions(String saasCode) {
+    public List<MFunction> getModuleFunctions(String saasId) {
         String sql=" select m.code,m.parent_code,m.name from base_function f,base_module_function mf where f.code=mf.function_id and f.status=1 and mf.module_id=?";
-        return jdbcTemplate.queryForList(sql,MFunction.class,saasCode);
+        return jdbcTemplate.queryForList(sql,MFunction.class,saasId);
     }
 
     /**
@@ -140,12 +140,12 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
 
     /**
      * 根据code获取所有子节点(包括孙节点,曾孙节点....)
-     * @param code
+     * @param id
      * @return
      */
-    public Function getAllChildren(String code){
-        Function function = functionDao.findByCode(code);
-        List<Function> childrens = functionDao.getChildren(code);
+    public Function getAllChildren(String id){
+        Function function = functionDao.findById(id);
+        List<Function> childrens = functionDao.getChildren(id);
         for(Function children:childrens){
             getAllChildren(children.getId());
         }

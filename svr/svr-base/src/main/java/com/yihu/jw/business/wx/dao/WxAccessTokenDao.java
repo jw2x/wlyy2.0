@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface WxAccessTokenDao extends PagingAndSortingRepository<WxAccessToken, String>, JpaSpecificationExecutor<WxAccessToken> {
 
-    @Query("from WxAccessToken w where w.wechatCode =?1 order by w.addTimestamp desc")
-    List<WxAccessToken> getWxAccessTokenByCode(String wechatCode);
+    @Query("from WxAccessToken w where w.wechatId =?1 order by w.addTimestamp desc")
+    List<WxAccessToken> getWxAccessTokenById(String wechatId);
 }

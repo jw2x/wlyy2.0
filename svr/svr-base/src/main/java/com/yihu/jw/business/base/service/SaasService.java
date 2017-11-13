@@ -45,15 +45,15 @@ public class SaasService extends BaseJpaService<Saas, SaasDao> {
         if (StringUtils.isEmpty(saas.getId())) {
             throw new ApiException(BaseRequestMapping.Saas.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        Saas saasTmp = saasDao.findByNameExcludeCode(saas.getName(), saas.getId());
+        Saas saasTmp = saasDao.findByNameExcludeId(saas.getName(), saas.getId());
         if (saasTmp != null) {
             throw new ApiException(BaseRequestMapping.Saas.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
         return saasDao.save(saas);
     }
 
-    public Saas findByCode(String code) {
-        Saas saas = saasDao.findByCode(code);
+    public Saas findById(String id) {
+        Saas saas = saasDao.findById(id);
         if (saas == null) {
             throw new ApiException(BaseRequestMapping.Saas.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -61,8 +61,8 @@ public class SaasService extends BaseJpaService<Saas, SaasDao> {
     }
 
     @Transactional
-    public void deleteSaas(String code) {
-        Saas saas = saasDao.findByCode(code);
+    public void deleteSaas(String id) {
+        Saas saas = saasDao.findById(id);
         if (saas == null) {
             throw new ApiException(BaseRequestMapping.Saas.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         }

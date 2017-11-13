@@ -43,7 +43,7 @@ public class FunctionFeignFallbackFactory implements FallbackFactory<FunctionFei
             }
 
             @Override
-            public Envelop findByCode(String code) throws JiWeiException {
+            public Envelop findById(String code) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找功能失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("code:"+code);
                 throw new JiWeiException(e);

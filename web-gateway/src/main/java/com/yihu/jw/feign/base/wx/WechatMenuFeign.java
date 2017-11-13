@@ -26,10 +26,10 @@ public interface WechatMenuFeign {
     Envelop updateWxMenu( @RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxMenu.api_delete,method = RequestMethod.DELETE)
-    Envelop deleteWxMenu(@RequestParam(value="codes")String codes,@RequestParam(value = "userCode") String userCode,@RequestParam(value = "userName") String userName) throws JiWeiException;
+    Envelop deleteWxMenu(@RequestParam(value="ids")String ids,@RequestParam(value = "userId") String userId,@RequestParam(value = "userName") String userName) throws JiWeiException;
 
-    @RequestMapping(value = WechatRequestMapping.WxMenu.api_getByCode,method = RequestMethod.GET)
-    Envelop findByCode(@RequestParam(value="code")String code) throws JiWeiException;
+    @RequestMapping(value = WechatRequestMapping.WxMenu.api_getById,method = RequestMethod.GET)
+    Envelop findById(@RequestParam(value="id")String id) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxMenu.api_getWxMenuNoPage,method = RequestMethod.GET)
     Envelop getWxMenuNoPage(
@@ -46,11 +46,11 @@ public interface WechatMenuFeign {
             @RequestParam(value = "page", required = false) int page) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxMenu.api_createMenu ,method = RequestMethod.GET)
-    Envelop createWechatMenu(@RequestParam(value = "wechatCode", required = true)String wechatCode);
+    Envelop createWechatMenu(@RequestParam(value = "wechatId", required = true)String wechatId);
 
     @RequestMapping(value = WechatRequestMapping.WxMenu.api_getParentMenu,method = RequestMethod.GET)
-    Envelop getParentMenu(@PathVariable(value = "wechatCode", required = true) String wechatCode) throws JiWeiException;
+    Envelop getParentMenu(@PathVariable(value = "wechatId", required = true) String wechatId) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxMenu.api_getChildMenus,method = RequestMethod.GET)
-    Envelop getChildMenus(@PathVariable(value = "parentCode", required = true) String parentCode) throws JiWeiException;
+    Envelop getChildMenus(@PathVariable(value = "parentId", required = true) String parentId) throws JiWeiException;
 }

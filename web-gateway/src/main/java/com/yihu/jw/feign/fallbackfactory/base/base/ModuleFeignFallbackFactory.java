@@ -43,9 +43,9 @@ public class ModuleFeignFallbackFactory implements FallbackFactory<ModuleFeign> 
             }
 
             @Override
-            public Envelop findByCode(String code) throws JiWeiException {
+            public Envelop findById(String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找模块失败:原因:"+e.getMessage());
-                tracer.getCurrentSpan().logEvent("code:"+code);
+                tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 

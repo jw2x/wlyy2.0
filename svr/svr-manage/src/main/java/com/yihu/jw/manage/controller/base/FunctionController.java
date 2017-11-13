@@ -68,7 +68,7 @@ public class FunctionController {
         return envelop;
     }
 
-    @GetMapping(value = BaseRequestMapping.Function.api_getByCode)
+    @GetMapping(value = BaseRequestMapping.Function.api_getById)
     @ApiOperation(value = "根据code查找", notes = "根据code查找")
     public Envelop findByCode(
             @ApiParam(name = "code", value = "code")

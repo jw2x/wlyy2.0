@@ -62,15 +62,15 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
         if (StringUtils.isEmpty(module.getId())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        Module moduleTmp = moduleDao.findByNameExcludeCode(module.getName(), module.getId());
+        Module moduleTmp = moduleDao.findByNameExcludeId(module.getName(), module.getId());
         if (moduleTmp != null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
         return moduleDao.save(module);
     }
 
-    public Module findByCode(String code) {
-        Module module = moduleDao.findByCode(code);
+    public Module findById(String Id) {
+        Module module = moduleDao.findById(Id);
         if (module == null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -78,8 +78,8 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
     }
 
     @Transactional
-    public void deleteModule(String code) {
-        Module module = moduleDao.findByCode(code);
+    public void deleteModule(String Id) {
+        Module module = moduleDao.findById(Id);
         if (module == null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_code_no_exist, ExceptionCode.common_error_params_code);
         }

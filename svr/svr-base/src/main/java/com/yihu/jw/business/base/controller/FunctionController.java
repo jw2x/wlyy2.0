@@ -61,24 +61,24 @@ public class FunctionController extends EnvelopRestController {
     @DeleteMapping(value = BaseRequestMapping.Function.api_delete)
     @ApiOperation(value = "删除功能", notes = "删除功能")
     public Envelop deleteFunction(
-            @ApiParam(name = "codes", value = "codes")
-            @PathVariable(value = "codes", required = true) String codes) {
+            @ApiParam(name = "ids", value = "ids")
+            @PathVariable(value = "ids", required = true) String ids) {
         try {
-            functionService.deleteFunction(codes);
+            functionService.deleteFunction(ids);
             return Envelop.getSuccess(BaseRequestMapping.Function.message_success_delete );
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
-    @GetMapping(value = BaseRequestMapping.Function.api_getByCode)
+    @GetMapping(value = BaseRequestMapping.Function.api_getById)
     @ApiOperation(value = "根据code查找功能", notes = "根据code查找功能")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "code")
-            @PathVariable(value = "code", required = true) String code
+            @ApiParam(name = "id", value = "id")
+            @PathVariable(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(BaseRequestMapping.Function.message_success_find, functionService.findByCode(code));
+            return Envelop.getSuccess(BaseRequestMapping.Function.message_success_find, functionService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -158,12 +158,12 @@ public class FunctionController extends EnvelopRestController {
     @PutMapping(value = BaseRequestMapping.Function.api_assignFunction, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "给对应的模块分配功能")
     public Envelop assignModule(
-            @ApiParam(name = "module_code", value = "module_code", defaultValue = "")
-            @RequestParam String moduleCode,
-            @ApiParam(name = "functionCodes", value = "功能的code，可以传多个，逗号分割", defaultValue = "")
-            @RequestParam String functionCodes) {
+            @ApiParam(name = "moduleId", value = "moduleId", defaultValue = "")
+            @RequestParam String moduleId,
+            @ApiParam(name = "functionIds", value = "功能的code，可以传多个，逗号分割", defaultValue = "")
+            @RequestParam String functionIds) {
         try {
-            functionService.assignFunction(moduleCode,functionCodes);
+            functionService.assignFunction(moduleId,functionIds);
             return Envelop.getSuccess(BaseRequestMapping.Function.message_success_assign_function);
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -173,10 +173,10 @@ public class FunctionController extends EnvelopRestController {
     @GetMapping(value = BaseRequestMapping.Function.api_getModuleFunctions, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询saas的模块")
     public Envelop getModuleFunctions(
-            @ApiParam(name = "saas_code", value = "saas_code", defaultValue = "")
-            @RequestParam String saasCode) {
+            @ApiParam(name = "saasId", value = "saasId", defaultValue = "")
+            @RequestParam String saasId) {
         try {
-            return Envelop.getSuccess(BaseRequestMapping.Function.message_success_find_functions_module,functionService.getModuleFunctions(saasCode));
+            return Envelop.getSuccess(BaseRequestMapping.Function.message_success_find_functions_module,functionService.getModuleFunctions(saasId));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
