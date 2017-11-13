@@ -16,9 +16,7 @@ public class BaseContants {
         public static final String api_getById="/function/{id}";
         public static final String api_getListNoPage="/function/listNoPage";
         public static final String api_getList="/function/list";
-        public static final String api_assignFunction="/assignFunction";
-        public static final String api_getModuleFunctions="/api_getModuleFunctions";
-        public static final String api_getChildren="/function/children/{code}";
+        public static final String api_getChildren="/function/children/{id}";
     }
 
     //模块常量
@@ -44,8 +42,6 @@ public class BaseContants {
         public static final String api_create="/create";
         public static final String api_update="/update";
         public static final String api_delete="/delete";
-        public static final String api_getByCode="/getByCode";
-        public static final String api_getSaass="/getSaass";
         public static final String api_getSaassNoPage="/getSaassNoPage";
 
     }

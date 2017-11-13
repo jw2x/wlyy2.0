@@ -32,9 +32,10 @@ public class BaseVersionRequestMapping {
 
     public class UserVersion {
         public static final String api_create = "/userVersion";
+        public static final String api_update = "/userVersion";
         public static final String api_delete = "/usersVersion/{ids}";
         public static final String api_getById = "/userVersion/{id}";
-        public static final String api_getByUserId = "/userVersion/{saasId}/{userId}";
+        public static final String api_getByUserId = "/userVersionByUserId/{userId}";
         public static final String api_getList="/userVersion/list";
         public static final String api_getListNoPage="/userVersion/listNoPage";
 
@@ -42,6 +43,6 @@ public class BaseVersionRequestMapping {
         public static final String message_success_update="update UserVersion success";
         public static final String message_success_delete="userVersion delete success";
         public static final String message_success_find="userVersion find success";
-                ;
+        ;
     }
 }

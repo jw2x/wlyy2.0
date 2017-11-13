@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.exception.SystemException;
 import com.yihu.jw.exception.business.ManageException;
-import com.yihu.jw.feign.PatientFeign;
+import com.yihu.jw.feign.DemoFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,13 +22,13 @@ import javax.servlet.http.HttpServletRequest;
  * Created by chenweida on 2017/5/10.
  */
 @RestController
-@RequestMapping("/patient")
-@Api(description = "患者")
+@RequestMapping("/demo")
+@Api(description = "demo例子")
 @RefreshScope
 public class DemoController {
     private Logger logger = LoggerFactory.getLogger(DemoController.class);
     @Autowired
-    private PatientFeign patientFegin;
+    private DemoFeign patientFegin;
     @Autowired
     private Tracer tracer;
 //    @Value("${test.aaa}")
