@@ -21,15 +21,10 @@
     <!--deploy 的时候发布到这个服务器-->
     <distributionManagement>
         <repository>
-            <id>releases</id>
-            <name>Releases</name>
-            <url>http://172.19.103.43:8081/nexus/content/repositories/releases/</url>
+            <id>test</id>
+            <name>testRespository</name>
+            <url>http://172.19.103.43:8081/nexus/content/repositories/test/</url>
         </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>Snapshots</name>
-            <url>http://172.19.103.43:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
     <modules>
 
