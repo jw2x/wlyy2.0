@@ -9,6 +9,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * Created by chenweida on 2017/5/10.
@@ -20,6 +21,7 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 //@EnableZuulProxy //启动zuul代理 路由
 @EnableFeignClients //声名式的客户端
 @EnableCircuitBreaker
+@ComponentScan(basePackages={"com"})
 public class WebGateWayAppliaction {
 
     public static void main(String[] args) {
