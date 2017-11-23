@@ -15,12 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DemoController {
     @Autowired
-    @Qualifier("SchedulerFactoryBean")
     SchedulerFactoryBean schedulerFactoryBean;
-
-    @Autowired
-    ApplicationContextAware f;
-
     @Autowired
     private QuartzHelper quartzHelper;
 

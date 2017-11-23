@@ -162,6 +162,11 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-zuul</artifactId>
+                <version>${version.springCloud}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-bus-amqp</artifactId>
                 <version>${version.springCloud}</version>
             </dependency>
@@ -266,6 +271,11 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <version>${version.springBoot}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
                 <version>${version.springBoot}</version>
             </dependency>
             <dependency>
@@ -521,16 +531,16 @@
 
             <!--json end -->
             <!-- es 客户端 start-->
-            <!--<dependency>
+            <dependency>
                 <groupId>io.searchbox</groupId>
                 <artifactId>jest</artifactId>
                 <version>${version.jest}</version>
-            </dependency>-->
-            <!--<dependency>
+            </dependency>
+            <dependency>
                 <groupId>org.elasticsearch</groupId>
                 <artifactId>elasticsearch</artifactId>
                 <version>${version.elasticsearch}</version>
-            </dependency>-->
+            </dependency>
             <!-- es 客户端 end-->
 
             <dependency>
@@ -608,7 +618,13 @@
                 <!--json 包-->
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-hadoop-hbase</artifactId>
+                <version>${version.spring-data-hadoop}</version>
+            </dependency>
             <!-- hbase start-->
+
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-hadoop-hbase</artifactId>
