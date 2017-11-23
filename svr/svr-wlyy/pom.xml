@@ -36,7 +36,7 @@
             <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
+            <groupId>com.yihu.base</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
         <dependency>

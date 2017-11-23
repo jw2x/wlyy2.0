@@ -30,7 +30,7 @@
             <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
+            <groupId>com.yihu.base</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
         <dependency>
@@ -108,6 +108,8 @@
         <dependency>
             <groupId>org.springside</groupId>
             <artifactId>springside-core</artifactId>
+            <version>4.2.3-GA</version>
+            <!--<classifier>GA</classifier>-->
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

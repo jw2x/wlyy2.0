@@ -1,7 +1,8 @@
-package com.yihu.jw.config.quartz;
+package com.yihu.base.config.quartz;
 
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 

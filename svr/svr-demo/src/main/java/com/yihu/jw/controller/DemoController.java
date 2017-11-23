@@ -1,17 +1,13 @@
 package com.yihu.jw.controller;
 
-import com.yihu.jw.config.quartz.QuartzHelper;
-import com.yihu.jw.restmodel.common.Envelop;
-import org.quartz.SchedulerException;
+import com.yihu.base.config.quartz.QuartzHelper;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by chenweida on 2017/11/3.
@@ -19,7 +15,12 @@ import java.util.Map;
 @RestController
 public class DemoController {
     @Autowired
+    @Qualifier("SchedulerFactoryBean")
     SchedulerFactoryBean schedulerFactoryBean;
+
+    @Autowired
+    ApplicationContextAware f;
+
     @Autowired
     private QuartzHelper quartzHelper;
 
