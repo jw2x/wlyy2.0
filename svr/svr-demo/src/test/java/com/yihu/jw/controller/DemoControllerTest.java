@@ -1,4 +1,4 @@
-package com.yihu.jw.controller;
+package com.yihu.jw.controller;  //目录要和web的目录一致
 
 import com.yihu.jw.common.BaseTest;
 import org.junit.Before;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * @author chenweida
- *
+ * 目录要和web的目录一致
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
