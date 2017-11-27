@@ -1,6 +1,6 @@
 package com.yihu.jw.controller;
 
-import com.yihu.jw.config.quartz.QuartzHelper;
+import com.yihu.base.config.quartz.QuartzHelper;
 import com.yihu.jw.restmodel.common.Envelop;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.annotation.Autowired;

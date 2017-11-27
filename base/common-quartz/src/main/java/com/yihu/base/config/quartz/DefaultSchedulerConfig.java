@@ -1,4 +1,4 @@
-package com.yihu.jw.config.quartz;
+package com.yihu.base.config.quartz;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
