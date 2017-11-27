@@ -1,6 +1,6 @@
 package com.yihu.jw.business.sms.controller;
 
-import com.yihu.jw.base.sms.BaseSmsGateway;
+import com.yihu.jw.base.sms.BaseSmsGatewayDO;
 import com.yihu.jw.business.sms.service.SmsGatewayService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.sms.MSmsGateway;
@@ -35,7 +35,7 @@ public class SmsGatewayController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            BaseSmsGateway smsGateway = toEntity(jsonData, BaseSmsGateway.class);
+            BaseSmsGatewayDO smsGateway = toEntity(jsonData, BaseSmsGatewayDO.class);
             return Envelop.getSuccess(BaseSmsRequestMapping.SmsGateway.message_success_create, smsGatewayService.createSmsGateway(smsGateway));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -48,7 +48,7 @@ public class SmsGatewayController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            BaseSmsGateway smsGateway = toEntity(jsonData, BaseSmsGateway.class);
+            BaseSmsGatewayDO smsGateway = toEntity(jsonData, BaseSmsGatewayDO.class);
             return Envelop.getSuccess(BaseSmsRequestMapping.SmsGateway.message_success_update, smsGatewayService.updateSmsGateway(smsGateway));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -98,7 +98,7 @@ public class SmsGatewayController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<BaseSmsGateway> list = smsGatewayService.search(fields, filters, sorts, page, size);
+        List<BaseSmsGatewayDO> list = smsGatewayService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=smsGatewayService.getCount(filters);
         //封装头信息
@@ -120,7 +120,7 @@ public class SmsGatewayController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<BaseSmsGateway> list = smsGatewayService.search(fields,filters,sorts);
+        List<BaseSmsGatewayDO> list = smsGatewayService.search(fields,filters,sorts);
         //封装返回格式
         List<MSmsGateway> mSmsGateways = convertToModels(list, new ArrayList<>(list.size()), MSmsGateway.class, fields);
         return Envelop.getSuccessList(BaseSmsRequestMapping.SmsGateway.message_success_find_SmsGateways,mSmsGateways);

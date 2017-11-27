@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.service;
 
-import com.yihu.jw.base.base.ModuleFunction;
+import com.yihu.jw.base.base.ModuleFunctionDO;
 import com.yihu.jw.business.base.dao.ModuleFunctionDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
@@ -18,7 +18,7 @@ import java.util.List;
  * Created by chenweida on 2017/5/19.
  */
 @Service
-public class ModuleFunService extends BaseJpaService<ModuleFunction, ModuleFunctionDao> {
+public class ModuleFunService extends BaseJpaService<ModuleFunctionDO, ModuleFunctionDao> {
 
     @Autowired
     private ModuleFunctionDao moduleFunctionDao;
@@ -29,9 +29,9 @@ public class ModuleFunService extends BaseJpaService<ModuleFunction, ModuleFunct
      * @return
      */
     public List<String> getExistFun(String id) {
-        List<ModuleFunction> moduleFuns = moduleFunctionDao.findByModuleId(id);
+        List<ModuleFunctionDO> moduleFuns = moduleFunctionDao.findByModuleId(id);
         List<String> list = new ArrayList<>();
-        for(ModuleFunction moduleFun:moduleFuns){
+        for(ModuleFunctionDO moduleFun:moduleFuns){
             list.add(moduleFun.getFunctionId());
         }
         return list;
@@ -69,7 +69,7 @@ public class ModuleFunService extends BaseJpaService<ModuleFunction, ModuleFunct
             moduleFunctionDao.delete(delCode, moduleCode);
         }
         for(String addCode:newFunCodes){
-            ModuleFunction moduleFunction = new ModuleFunction();
+            ModuleFunctionDO moduleFunction = new ModuleFunctionDO();
             moduleFunction.setFunctionId(addCode);
             moduleFunction.setModuleId(moduleCode);
             moduleFunctionDao.save(moduleFunction);

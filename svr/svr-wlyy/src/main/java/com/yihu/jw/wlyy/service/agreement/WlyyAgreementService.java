@@ -4,7 +4,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.wlyy.agreement.WlyyAgreement;
+import com.yihu.jw.wlyy.agreement.WlyyAgreementDO;
 import com.yihu.jw.wlyy.dao.agreement.WlyyAgreementDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.Date;
  * Created by Administrator on 2017/6/1 0001.
  */
 @Service
-public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgreementDao> {
+public class WlyyAgreementService extends BaseJpaService<WlyyAgreementDO, WlyyAgreementDao> {
 
     @Autowired
     private WlyyAgreementDao wlyyAgreementDao;
@@ -26,7 +26,7 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
     //private SaasService saasService;
 
     @Transient
-    public WlyyAgreement create(WlyyAgreement wlyyAgreement) {
+    public WlyyAgreementDO create(WlyyAgreementDO wlyyAgreement) {
         String saasId = wlyyAgreement.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
@@ -52,7 +52,7 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
     }
 
     @Transient
-    public WlyyAgreement update(WlyyAgreement wlyyAgreement) {
+    public WlyyAgreementDO update(WlyyAgreementDO wlyyAgreement) {
         String saasId = wlyyAgreement.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
@@ -74,7 +74,7 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        WlyyAgreement wlyyAgreement1 = wlyyAgreementDao.findById(id);
+        WlyyAgreementDO wlyyAgreement1 = wlyyAgreementDao.findById(id);
         if(wlyyAgreement1==null){
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_wlyyAgreement_is_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -86,14 +86,14 @@ public class WlyyAgreementService extends BaseJpaService<WlyyAgreement, WlyyAgre
         return wlyyAgreementDao.save(wlyyAgreement);
     }
 
-    public WlyyAgreement findById(String id) {
-        WlyyAgreement wlyyAgreement = wlyyAgreementDao.findById(id);
+    public WlyyAgreementDO findById(String id) {
+        WlyyAgreementDO wlyyAgreement = wlyyAgreementDao.findById(id);
         return wlyyAgreement;
     }
 
     @Transient
     public void delete(String id) {
-        WlyyAgreement wlyyAgreement = findById(id);
+        WlyyAgreementDO wlyyAgreement = findById(id);
         if(wlyyAgreement==null){
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_wlyyAgreement_is_no_exist, ExceptionCode.common_error_params_code);
         }

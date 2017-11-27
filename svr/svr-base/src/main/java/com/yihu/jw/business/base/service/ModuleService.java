@@ -1,7 +1,7 @@
 package com.yihu.jw.business.base.service;
 
-import com.yihu.jw.base.base.Module;
-import com.yihu.jw.base.base.SaasModule;
+import com.yihu.jw.base.base.ModuleDO;
+import com.yihu.jw.base.base.SaasModuleDO;
 import com.yihu.jw.business.base.dao.ModuleDao;
 import com.yihu.jw.business.base.dao.SaasModuleDao;
 import com.yihu.jw.exception.ApiException;
@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by chenweida on 2017/5/19.
  */
 @Service
-public class ModuleService extends BaseJpaService<Module, ModuleDao> {
+public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
     @Autowired
     private ModuleDao moduleDao;
     @Autowired
@@ -34,7 +34,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
 
 
     @Transactional
-    public Module createModule(Module module) throws ApiException {
+    public ModuleDO createModule(ModuleDO module) throws ApiException {
         if (StringUtils.isEmpty(module.getId())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
@@ -44,7 +44,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
         if (StringUtils.isEmpty(module.getSaasId())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
-        Module moduleTmp = moduleDao.findByName(module.getName());
+        ModuleDO moduleTmp = moduleDao.findByName(module.getName());
         if (moduleTmp != null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
@@ -52,22 +52,22 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
     }
 
     @Transactional
-    public Module updateModule(Module module) {
+    public ModuleDO updateModule(ModuleDO module) {
         if (StringUtils.isEmpty(module.getName())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(module.getId())) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        Module moduleTmp = moduleDao.findByNameExcludeId(module.getName(), module.getId());
+        ModuleDO moduleTmp = moduleDao.findByNameExcludeId(module.getName(), module.getId());
         if (moduleTmp != null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
         return moduleDao.save(module);
     }
 
-    public Module findById(String Id) {
-        Module module = moduleDao.findById(Id);
+    public ModuleDO findById(String Id) {
+        ModuleDO module = moduleDao.findById(Id);
         if (module == null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -76,7 +76,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
 
     @Transactional
     public void deleteModule(String Id) {
-        Module module = moduleDao.findById(Id);
+        ModuleDO module = moduleDao.findById(Id);
         if (module == null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -89,9 +89,9 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
         saasModuleDao.deleteBySaasCode(saasCode);
         //分配新的模块
         String [] moduleCodeArr=moduleCodes.split(",");
-        List<SaasModule> saasModuleList=new ArrayList<>();
+        List<SaasModuleDO> saasModuleList=new ArrayList<>();
         for(String moduleCode:moduleCodeArr){
-            SaasModule saasModule=new SaasModule();
+            SaasModuleDO saasModule=new SaasModuleDO();
             saasModule.setModuleId(moduleCode);
             saasModule.setSaasId(saasCode);
             saasModuleList.add(saasModule);
@@ -104,10 +104,10 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
        return jdbcTemplate.queryForList(sql,MModule.class,saasCode);
     }
 
-    public List<Module> getChildren(String code){
-        List<Module> childrens = moduleDao.getChildren(code);
-        for(Module children:childrens){
-            List<Module> children1 = moduleDao.getChildren(children.getId());//判断子节点是否有孙节点
+    public List<ModuleDO> getChildren(String code){
+        List<ModuleDO> childrens = moduleDao.getChildren(code);
+        for(ModuleDO children:childrens){
+            List<ModuleDO> children1 = moduleDao.getChildren(children.getId());//判断子节点是否有孙节点
             //没有children    state
             //“open”表示是子节点，“closed”表示为父节点；
             if (children1.size()>0){
@@ -119,7 +119,7 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
         return childrens;
     }
 
-    public List<Module> findAll(){
+    public List<ModuleDO> findAll(){
         return moduleDao.findAll();
     }
 
@@ -128,10 +128,10 @@ public class ModuleService extends BaseJpaService<Module, ModuleDao> {
      * @return
      */
     public Map<String,String> getName(){
-        List<Module> modules = findAll();
+        List<ModuleDO> modules = findAll();
         Map<String, String> map = new HashMap<>();
         if(null!=modules){
-            for(Module module: modules){
+            for(ModuleDO module: modules){
                 map.put(module.getId(),module.getName());
             }
         }

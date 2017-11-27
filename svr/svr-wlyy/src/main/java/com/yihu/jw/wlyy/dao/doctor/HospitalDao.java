@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.dao.doctor;
 
-import com.yihu.jw.wlyy.doctor.BaseOrgHospital;
+import com.yihu.jw.wlyy.doctor.BaseOrgHospitalDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -8,8 +8,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by Administrator on 2017/6/7 0007.
  */
-public interface HospitalDao extends PagingAndSortingRepository<BaseOrgHospital, String>, JpaSpecificationExecutor<BaseOrgHospital> {
+public interface HospitalDao extends PagingAndSortingRepository<BaseOrgHospitalDO, String>, JpaSpecificationExecutor<BaseOrgHospitalDO> {
 
-    @Query("from BaseOrgHospital w where w.code = ?1")
-    BaseOrgHospital findByCode(String code);
+    @Query("from BaseOrgHospitalDO w where w.code = ?1")
+    BaseOrgHospitalDO findByCode(String code);
 }

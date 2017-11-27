@@ -4,7 +4,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.wlyy.agreement.WlyyAgreementKpiLog;
+import com.yihu.jw.wlyy.agreement.WlyyAgreementKpiLogDO;
 import com.yihu.jw.wlyy.dao.agreement.WlyyAgreementKpiLogDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.Date;
  * Created by Administrator on 2017/6/1 0001.
  */
 @Service
-public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiLog, WlyyAgreementKpiLogDao> {
+public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiLogDO, WlyyAgreementKpiLogDao> {
 
     @Autowired
     private WlyyAgreementKpiLogDao wlyyAgreementKpiLogDao;
@@ -26,7 +26,7 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
     //private SaasService saasService;
 
     @Transient
-    public WlyyAgreementKpiLog create(WlyyAgreementKpiLog wlyyAgreementKpiLog) {
+    public WlyyAgreementKpiLogDO create(WlyyAgreementKpiLogDO wlyyAgreementKpiLog) {
         String saasId = wlyyAgreementKpiLog.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
@@ -57,7 +57,7 @@ public class WlyyAgreementKpiLogService extends BaseJpaService<WlyyAgreementKpiL
     }
 
 
-    public WlyyAgreementKpiLog findById(String id) {
+    public WlyyAgreementKpiLogDO findById(String id) {
         return wlyyAgreementKpiLogDao.findById(id);
     }
 }

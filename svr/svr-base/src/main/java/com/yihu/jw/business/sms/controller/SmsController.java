@@ -1,6 +1,6 @@
 package com.yihu.jw.business.sms.controller;
 
-import com.yihu.jw.base.sms.BaseSms;
+import com.yihu.jw.base.sms.BaseSmsDO;
 import com.yihu.jw.business.sms.service.SmsService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.sms.MSms;
@@ -35,7 +35,7 @@ public class SmsController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            BaseSms sms = toEntity(jsonData, BaseSms.class);
+            BaseSmsDO sms = toEntity(jsonData, BaseSmsDO.class);
             return Envelop.getSuccess(BaseSmsRequestMapping.Sms.message_success_create, smsService.createSms(sms));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -48,7 +48,7 @@ public class SmsController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            BaseSms sms = toEntity(jsonData, BaseSms.class);
+            BaseSmsDO sms = toEntity(jsonData, BaseSmsDO.class);
             return Envelop.getSuccess(BaseSmsRequestMapping.Sms.message_success_update, smsService.updateSms(sms));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -73,7 +73,7 @@ public class SmsController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<BaseSms> list = smsService.search(fields, filters, sorts, page, size);
+        List<BaseSmsDO> list = smsService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=smsService.getCount(filters);
         //封装头信息
@@ -95,7 +95,7 @@ public class SmsController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<BaseSms> list = smsService.search(fields,filters,sorts);
+        List<BaseSmsDO> list = smsService.search(fields,filters,sorts);
         //封装返回格式
         List<MSms> mSmss = convertToModels(list, new ArrayList<>(list.size()), MSms.class, fields);
         return Envelop.getSuccessList(BaseSmsRequestMapping.Sms.message_success_find_smss,mSmss);

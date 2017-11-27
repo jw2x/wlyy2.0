@@ -1,6 +1,6 @@
 package com.yihu.jw.business.wx.service;
 
-import com.yihu.jw.base.wx.WxWechat;
+import com.yihu.jw.base.wx.WxWechatDO;
 import com.yihu.jw.business.wx.dao.WechatDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
@@ -17,13 +17,13 @@ import java.util.*;
  * Created by Administrator on 2017/5/20 0020.
  */
 @Service
-public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
+public class WechatService extends BaseJpaService<WxWechatDO, WechatDao> {
 
     @Autowired
     private WechatDao wechatDao;
 
     @Transient
-    public WxWechat createWechat(WxWechat wechat) {
+    public WxWechatDO createWechat(WxWechatDO wechat) {
         String code = UUID.randomUUID().toString().replaceAll("-", "");
         wechat.setId(code);
         if (StringUtils.isEmpty(wechat.getSaasId())) {
@@ -38,7 +38,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getName())) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
-        WxWechat wechatTem = wechatDao.findByAppId(wechat.getAppId());
+        WxWechatDO wechatTem = wechatDao.findByAppId(wechat.getAppId());
         if (wechatTem != null) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appId_exist, ExceptionCode.common_error_params_code);
         }
@@ -46,7 +46,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     }
 
     @Transient
-    public WxWechat updateWxchat(WxWechat wechat) {
+    public WxWechatDO updateWxchat(WxWechatDO wechat) {
         if (StringUtils.isEmpty(wechat.getSaasId())) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
         }
@@ -59,11 +59,11 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (StringUtils.isEmpty(wechat.getName())) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
-        WxWechat wechat1 = findById(wechat.getId());
+        WxWechatDO wechat1 = findById(wechat.getId());
         if (wechat1 == null) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
         }
-        WxWechat wechatTem = wechatDao.findByAppIdExcludeId(wechat.getAppId(), wechat.getId());
+        WxWechatDO wechatTem = wechatDao.findByAppIdExcludeId(wechat.getAppId(), wechat.getId());
         if (wechatTem != null) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appId_exist, ExceptionCode.common_error_params_code);
         }
@@ -71,7 +71,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
     }
 
 
-    public WxWechat findById(String id) {
+    public WxWechatDO findById(String id) {
         return wechatDao.findById(id);
     }
 
@@ -80,7 +80,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         if (!StringUtils.isEmpty(ids)) {
             String[] codeArray = ids.split(",");
             for (String code : codeArray) {
-                WxWechat wxWechat = wechatDao.findById(code);
+                WxWechatDO wxWechat = wechatDao.findById(code);
                 if (wxWechat == null) {
                     throw new ApiException(WechatRequestMapping.WxConfig.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
                 }
@@ -92,7 +92,7 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
         }
     }
 
-    public List<WxWechat> findAll() {
+    public List<WxWechatDO> findAll() {
         return wechatDao.findAll();
     }
 
@@ -102,10 +102,10 @@ public class WechatService extends BaseJpaService<WxWechat, WechatDao> {
      * @return
      */
     public Map<String, String> getAllWechatConfig() {
-        List<WxWechat> wechats = findAll();
+        List<WxWechatDO> wechats = findAll();
         Map<String, String> map = new HashMap<>();
         if (null != wechats) {
-            for (WxWechat wx : wechats) {
+            for (WxWechatDO wx : wechats) {
                 map.put(wx.getId(), wx.getName());
             }
         }

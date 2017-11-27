@@ -36,7 +36,7 @@
         <!--业务微服务-->
         <module>../svr/svr-base</module><!--基础微服务-->
         <module>../svr/svr-wlyy</module><!--i健康微服务-->
-        <module>../svr/svr-manage</module><!--后台管理系统-->
+        <!--<module>../svr/svr-manage</module>&lt;!&ndash;后台管理系统&ndash;&gt;-->
         <module>../svr/svr-iot</module><!--物联网平台-->
 
         <!--网关-->

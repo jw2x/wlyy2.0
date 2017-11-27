@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.controller;
 
-import com.yihu.jw.base.base.Module;
+import com.yihu.jw.base.base.ModuleDO;
 import com.yihu.jw.business.base.service.ModuleService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.base.MModule;
@@ -36,7 +36,7 @@ public class ModuleController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Module module = toEntity(jsonData, Module.class);
+            ModuleDO module = toEntity(jsonData, ModuleDO.class);
             return Envelop.getSuccess(BaseRequestMapping.Module.message_success_create, moduleService.createModule(module));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -49,7 +49,7 @@ public class ModuleController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Module module = toEntity(jsonData, Module.class);
+            ModuleDO module = toEntity(jsonData, ModuleDO.class);
             return Envelop.getSuccess(BaseRequestMapping.Module.message_success_update, moduleService.updateModule(module));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -109,11 +109,11 @@ public class ModuleController extends EnvelopRestController {
         }
 
         //得到list数据
-        List<Module> list = moduleService.search(fields, filters, sorts, page, size);
+        List<ModuleDO> list = moduleService.search(fields, filters, sorts, page, size);
 
         if(list!=null){
-            for(Module module:list){//循环遍历,设置是否有子节点
-                List<Module> children = moduleService.getChildren(module.getId());
+            for(ModuleDO module:list){//循环遍历,设置是否有子节点
+                List<ModuleDO> children = moduleService.getChildren(module.getId());
                 //children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
                 // children长度>0时,  state   “open,closed”表示是节点的打开关闭
                 if (children.size()>0){
@@ -145,7 +145,7 @@ public class ModuleController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<Module> list = moduleService.search(fields,filters,sorts);
+        List<ModuleDO> list = moduleService.search(fields,filters,sorts);
         //封装返回格式
         List<MModule> mModules = convertToModels(list, new ArrayList<>(list.size()), MModule.class, fields);
         return Envelop.getSuccessList(BaseRequestMapping.Module.message_success_find_Modules,mModules);
@@ -155,7 +155,7 @@ public class ModuleController extends EnvelopRestController {
     @GetMapping(value =BaseRequestMapping.Module.api_getChildren )
     @ApiOperation(value="查找子节点")
     public Envelop getChildren(@PathVariable String code){
-        List<Module> children = moduleService.getChildren(code);
+        List<ModuleDO> children = moduleService.getChildren(code);
         return Envelop.getSuccess("查询成功",children);
     }
 

@@ -1,6 +1,6 @@
 package com.yihu.jw.business.wx.controller;
 
-import com.yihu.jw.base.wx.WxWechat;
+import com.yihu.jw.base.wx.WxWechatDO;
 import com.yihu.jw.business.wx.service.WechatService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -36,7 +36,7 @@ public class WechatConfigController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxWechat wechat = toEntity(jsonData, WxWechat.class);
+            WxWechatDO wechat = toEntity(jsonData, WxWechatDO.class);
             return Envelop.getSuccess(WechatRequestMapping.WxConfig.message_success_create, wechatService.createWechat(wechat));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -49,7 +49,7 @@ public class WechatConfigController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxWechat wechat = toEntity(jsonData, WxWechat.class);
+            WxWechatDO wechat = toEntity(jsonData, WxWechatDO.class);
             return Envelop.getSuccess(WechatRequestMapping.WxConfig.message_success_update, wechatService.updateWxchat(wechat));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -107,7 +107,7 @@ public class WechatConfigController extends EnvelopRestController {
             sorts = "-updateTime";
         }
         //得到list数据
-        List<WxWechat> list = wechatService.search(fields, filters, sorts, page, size);
+        List<WxWechatDO> list = wechatService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=wechatService.getCount(filters);
         //封装头信息
@@ -129,7 +129,7 @@ public class WechatConfigController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WxWechat> list = wechatService.search(fields,filters,sorts);
+        List<WxWechatDO> list = wechatService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxWechat> mWxWechats = convertToModels(list, new ArrayList<>(list.size()), MWxWechat.class, fields);
         return Envelop.getSuccessList(WechatRequestMapping.WxConfig.message_success_find_functions,mWxWechats);

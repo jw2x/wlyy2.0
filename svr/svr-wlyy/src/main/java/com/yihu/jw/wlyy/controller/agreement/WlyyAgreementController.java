@@ -4,7 +4,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.wlyy.agreement.WlyyAgreement;
+import com.yihu.jw.wlyy.agreement.WlyyAgreementDO;
 import com.yihu.jw.wlyy.service.agreement.WlyyAgreementService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,7 +32,7 @@ public class WlyyAgreementController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WlyyAgreement wlyyAgreement = toEntity(jsonData, WlyyAgreement.class);
+            WlyyAgreementDO wlyyAgreement = toEntity(jsonData, WlyyAgreementDO.class);
             return Envelop.getSuccess(WlyyRequestMapping.Agreement.message_success_create, wlyyAgreementService.create(wlyyAgreement));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -45,7 +45,7 @@ public class WlyyAgreementController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WlyyAgreement wlyyAgreement = toEntity(jsonData, WlyyAgreement.class);
+            WlyyAgreementDO wlyyAgreement = toEntity(jsonData, WlyyAgreementDO.class);
             return Envelop.getSuccess(WlyyRequestMapping.Agreement.message_success_update, wlyyAgreementService.update(wlyyAgreement));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -95,13 +95,13 @@ public class WlyyAgreementController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<WlyyAgreement> list = wlyyAgreementService.search(fields, filters, sorts, page, size);
+        List<WlyyAgreementDO> list = wlyyAgreementService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=wlyyAgreementService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<WlyyAgreement> wlyyAgreement = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreement.class, fields);
+        List<WlyyAgreementDO> wlyyAgreement = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementDO.class, fields);
 
         return Envelop.getSuccessListWithPage(WlyyRequestMapping.Agreement.message_success_find_functions,wlyyAgreement, page, size,count);
     }
@@ -117,9 +117,9 @@ public class WlyyAgreementController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WlyyAgreement> list = wlyyAgreementService.search(fields,filters,sorts);
+        List<WlyyAgreementDO> list = wlyyAgreementService.search(fields,filters,sorts);
         //封装返回格式
-        List<WlyyAgreement> wlyyAgreement = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreement.class, fields);
+        List<WlyyAgreementDO> wlyyAgreement = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementDO.class, fields);
         return Envelop.getSuccessList(WlyyRequestMapping.Agreement.message_success_find_functions,wlyyAgreement);
     }
 

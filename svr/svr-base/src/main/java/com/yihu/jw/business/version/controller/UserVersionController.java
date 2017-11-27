@@ -1,8 +1,6 @@
 package com.yihu.jw.business.version.controller;
 
-import com.yihu.jw.base.sms.BaseSms;
-import com.yihu.jw.base.sms.BaseSmsGateway;
-import com.yihu.jw.base.version.BaseUserVersion;
+import com.yihu.jw.base.version.BaseUserVersionDO;
 import com.yihu.jw.business.version.service.UserVersionService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.sms.MSmsGateway;
@@ -40,7 +38,7 @@ public class UserVersionController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            BaseUserVersion baseUserVersion = toEntity(jsonData, BaseUserVersion.class);
+            BaseUserVersionDO baseUserVersion = toEntity(jsonData, BaseUserVersionDO.class);
             return Envelop.getSuccess(BaseVersionRequestMapping.UserVersion.message_success_create, userVersionService.createUserVersion(baseUserVersion));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -99,13 +97,13 @@ public class UserVersionController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<BaseUserVersion> list = userVersionService.search(fields, filters, sorts, page, size);
+        List<BaseUserVersionDO> list = userVersionService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=userVersionService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<BaseUserVersion> baseUserVersions = convertToModels(list, new ArrayList<>(list.size()), BaseUserVersion.class, fields);
+        List<BaseUserVersionDO> baseUserVersions = convertToModels(list, new ArrayList<>(list.size()), BaseUserVersionDO.class, fields);
 
         return Envelop.getSuccessListWithPage(BaseVersionRequestMapping.UserVersion.message_success_find,baseUserVersions, page, size,count);
     }
@@ -121,9 +119,9 @@ public class UserVersionController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<BaseUserVersion> list = userVersionService.search(fields,filters,sorts);
+        List<BaseUserVersionDO> list = userVersionService.search(fields,filters,sorts);
         //封装返回格式
-        List<BaseUserVersion> baseUserVersions = convertToModels(list, new ArrayList<>(list.size()), BaseUserVersion.class, fields);
+        List<BaseUserVersionDO> baseUserVersions = convertToModels(list, new ArrayList<>(list.size()), BaseUserVersionDO.class, fields);
         return Envelop.getSuccessList(BaseVersionRequestMapping.UserVersion.message_success_find,baseUserVersions);
     }
 }

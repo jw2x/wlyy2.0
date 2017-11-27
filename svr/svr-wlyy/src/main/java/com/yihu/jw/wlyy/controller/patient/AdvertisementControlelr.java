@@ -4,7 +4,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.wlyy.patient.WlyyAdvertisement;
+import com.yihu.jw.wlyy.patient.WlyyAdvertisementDO;
 import com.yihu.jw.wlyy.service.patient.AdvertisementService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class AdvertisementControlelr extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WlyyAdvertisement advertisement = toEntity(jsonData, WlyyAdvertisement.class);
+            WlyyAdvertisementDO advertisement = toEntity(jsonData, WlyyAdvertisementDO.class);
             return Envelop.getSuccess(WlyyRequestMapping.Advertisement.message_success_create, advertisementService.create(advertisement));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -49,7 +49,7 @@ public class AdvertisementControlelr extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WlyyAdvertisement advertisement = toEntity(jsonData, WlyyAdvertisement.class);
+            WlyyAdvertisementDO advertisement = toEntity(jsonData, WlyyAdvertisementDO.class);
             return Envelop.getSuccess(WlyyRequestMapping.Advertisement.message_success_update, advertisementService.update(advertisement));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -98,13 +98,13 @@ public class AdvertisementControlelr extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<WlyyAdvertisement> list = advertisementService.search(fields, filters, sorts, page, size);
+        List<WlyyAdvertisementDO> list = advertisementService.search(fields, filters, sorts, page, size);
         //获取总数
         long count = advertisementService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<WlyyAdvertisement> advertisement = convertToModels(list, new ArrayList<>(list.size()), WlyyAdvertisement.class, fields);
+        List<WlyyAdvertisementDO> advertisement = convertToModels(list, new ArrayList<>(list.size()), WlyyAdvertisementDO.class, fields);
 
         return Envelop.getSuccessListWithPage(WlyyRequestMapping.Advertisement.message_success_find_functions, advertisement, page, size, count);
     }
@@ -120,9 +120,9 @@ public class AdvertisementControlelr extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WlyyAdvertisement> list = advertisementService.search(fields, filters, sorts);
+        List<WlyyAdvertisementDO> list = advertisementService.search(fields, filters, sorts);
         //封装返回格式
-        List<WlyyAdvertisement> advertisement = convertToModels(list, new ArrayList<>(list.size()), WlyyAdvertisement.class, fields);
+        List<WlyyAdvertisementDO> advertisement = convertToModels(list, new ArrayList<>(list.size()), WlyyAdvertisementDO.class, fields);
         return Envelop.getSuccessList(WlyyRequestMapping.Advertisement.message_success_find_functions, advertisement);
     }
 
@@ -133,14 +133,14 @@ public class AdvertisementControlelr extends EnvelopRestController {
             @RequestParam(value = "patientId") String patientId,
             HttpServletRequest request
     ) {
-        List<WlyyAdvertisement> advertisements = advertisementService.getListByPatientId(patientId, request);
+        List<WlyyAdvertisementDO> advertisements = advertisementService.getListByPatientId(patientId, request);
         return Envelop.getSuccessList(WlyyRequestMapping.Advertisement.message_success_find_functions, advertisements);
     }
 
     @GetMapping(value = WlyyRequestMapping.Advertisement.api_getListByHttp)
     @ApiOperation(value = "根据患者code地区(通过http判断)获取广告")
     public Envelop getListByHttp(HttpServletRequest request) {
-        List<WlyyAdvertisement> advertisements = advertisementService.getByHttp(request);
+        List<WlyyAdvertisementDO> advertisements = advertisementService.getByHttp(request);
         return Envelop.getSuccess(WlyyRequestMapping.Advertisement.message_success_find_functions, advertisements);
     }
 
@@ -153,7 +153,7 @@ public class AdvertisementControlelr extends EnvelopRestController {
     @GetMapping(value = WlyyRequestMapping.Advertisement.api_getListByIp)
     @ApiOperation(value = "根据患者ip地址(供网关调用)")
     public Envelop getListByIp(@RequestParam(value = "ipAddress") String ipAddress) {
-        List<WlyyAdvertisement> advertisements = advertisementService.getListByIp(ipAddress);
+        List<WlyyAdvertisementDO> advertisements = advertisementService.getListByIp(ipAddress);
         return Envelop.getSuccess(WlyyRequestMapping.Advertisement.message_success_find_functions, advertisements);
     }
 
