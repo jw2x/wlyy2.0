@@ -21,8 +21,8 @@ public interface FunctionDao extends PagingAndSortingRepository<Function, String
     @Query("from Function f where f.name=?1 and f.status=1 and f.id!=?2")
     Function findByNameExcludeId(String name,String id);
 
-    @Query("from Function f where f.parentId=?1 and f.status=1")
-    List<Function> getChildren(String parentId);
+    @Query("from Function f where f.parentCode=?1 and f.status=1")
+    List<Function> getChildren(String parentCode);
 
     @Query("from Function f where f.status=1")
     List<Function> findAll();
