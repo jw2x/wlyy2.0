@@ -5,7 +5,7 @@ package com.yihu.jw.rm.wx;
  */
 public class WechatRequestMapping {
 
-    public static final String api_common="/wechat";
+    public static final String api_common="/svr-wechat";
 
 
     //微信token模块常量

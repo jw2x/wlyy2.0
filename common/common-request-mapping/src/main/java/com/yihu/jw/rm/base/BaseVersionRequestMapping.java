@@ -5,7 +5,8 @@ package com.yihu.jw.rm.base;
  */
 public class BaseVersionRequestMapping {
 
-    public static final String api_common = "/version";
+    public static final String api_common = "/svr-version";
+
     public static class WlyyVersion {
         public static final String api_create = "/wlyyVersion";
         public static final String api_update = "/wlyyVersion";
