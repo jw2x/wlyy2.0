@@ -18,7 +18,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
-@ComponentScan("com.yihu.jw.**")
+@ComponentScan("com.yihu.jw.controller.**")
 public class SwaggerConfig {
     public static final String base_API = "base";
     public static final String wlyy_API = "wlyy";

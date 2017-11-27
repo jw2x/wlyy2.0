@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @RestController
-@RequestMapping( BaseContants.api_common)
+@RequestMapping( BaseContants.api_module)
 @Api(value = "模块管理", description = "模块相关接口管理")
 public class ModuleController extends EnvelopRestController {
 
