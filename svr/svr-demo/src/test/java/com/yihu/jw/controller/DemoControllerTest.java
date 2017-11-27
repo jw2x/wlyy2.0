@@ -10,13 +10,14 @@ import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -28,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ComponentScan(basePackages={"com"})
 //@FixMethodOrder(MethodSorters.DEFAULT)   //默认顺序由方法名hashcode值来决定，如果hash值大小一致，则按名字的字典顺序确定 由于hashcode的生成和操作系统相关(以native修饰），所以对于不同操作系统，可能会出现不一样的执行顺序，在某一操作系统上，多次执行的顺序不变
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)   //按照方法名字排序升序
+//单元测试事物回滚
+@Transactional
+@Rollback //默认true即回滚，false不回滚
 public class DemoControllerTest  {
 	@Autowired
 	protected WebApplicationContext wac;
