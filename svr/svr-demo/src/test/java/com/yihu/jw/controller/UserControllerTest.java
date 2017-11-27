@@ -1,4 +1,4 @@
-package com.yihu.test;
+package com.yihu.jw.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
+import com.yihu.jw.common.BaseTest;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,12 +31,12 @@ import org.springframework.web.context.WebApplicationContext;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserControllerTest {
+public class UserControllerTest extends BaseTest {
 
 	@Autowired
-	private WebApplicationContext wac;
+	protected WebApplicationContext wac;
 
-	private MockMvc mockMvc;
+	protected MockMvc mockMvc;
 
 	/**
 	 * 初始化模拟mvc环境
