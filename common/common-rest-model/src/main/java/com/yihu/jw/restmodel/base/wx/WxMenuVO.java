@@ -7,10 +7,9 @@ import java.util.List;
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
-public class MWxMenu {
-    private Long id;//主键id
+public class WxMenuVO {
+    private String id;//主键id
 
-    private String code;//业务code
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
     private String wechatName;//关联的微信名 关联表 Wx_Wechat
     private String supMenucode;//父菜单id 如果是一级菜单 此字段为空
@@ -30,31 +29,23 @@ public class MWxMenu {
     private String createUserName;//创建人
     private String remark;//备注
     private Integer status; //状态 -1删除 0 冻结 1可用
-    private List<MWxMenu> children = new ArrayList<>();
+    private List<WxMenuVO> children = new ArrayList<>();
     private String state;
 
-    public List<MWxMenu> getChildren() {
+    public List<WxMenuVO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<MWxMenu> children) {
+    public void setChildren(List<WxMenuVO> children) {
         this.children = children;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getWechatCode() {

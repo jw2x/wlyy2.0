@@ -3,9 +3,8 @@ package com.yihu.jw.restmodel.base.sms;
 /**
  * Created by chenweida on 2017/5/22.
  */
-public class MSmsGateway {
-    private Long id;
-    private String code; //业务code
+public class SmsGatewayVO {
+    private String id;
     private String name;//名称
     private String saasId; //关联 base_saas code
     private String orgCode; //机构code
@@ -14,12 +13,12 @@ public class MSmsGateway {
     private String password;	//短信接口的密码
     private String url;	//短信接口的url
 
-    public String getCode() {
-        return code;
+    public String getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSaasId() {
@@ -70,13 +69,6 @@ public class MSmsGateway {
         this.url = url;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

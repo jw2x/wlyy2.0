@@ -5,9 +5,9 @@ import java.util.Date;
 /**
  * Created by chenweida on 2017/6/16.
  */
-public class MBaseServerVersionLog {
+public class BaseServerVersionLogVO {
 
-    private Long id;
+    private String id;
     private String saasId; //关联saas code
     private String userCodes;//此次更新的用户 多个逗号分割
     private String name;//此次更新的版本名称
@@ -21,13 +21,11 @@ public class MBaseServerVersionLog {
         return saasId;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
+
 
     public void setSaasId(String saasId) {
         this.saasId = saasId;

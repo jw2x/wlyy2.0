@@ -2,7 +2,7 @@ package com.yihu.jw.manage.controller.base;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.service.base.FunctionService;
-import com.yihu.jw.restmodel.base.base.MFunction;
+import com.yihu.jw.restmodel.base.base.FunctionVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
@@ -90,7 +90,7 @@ public class FunctionController {
 
     @PostMapping(BaseRequestMapping.Function.api_create)
     @ApiOperation(value = "保存/更新", notes = "保存/更新")
-    public Envelop saveOrUpdate(@ModelAttribute @Valid MFunction func,String userCode) throws JsonProcessingException {
+    public Envelop saveOrUpdate(@ModelAttribute @Valid FunctionVO func, String userCode) throws JsonProcessingException {
         return functionService.saveOrUpdate(func,userCode);
     }
 

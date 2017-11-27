@@ -7,7 +7,7 @@ import com.yihu.jw.base.base.FunctionDO;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.restmodel.base.base.MFunction;
+import com.yihu.jw.restmodel.base.base.FunctionVO;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -97,9 +97,9 @@ public class FunctionService extends BaseJpaService<FunctionDO, FunctionDao> {
         moduleFunctionDao.save(saasModuleList);
     }
 
-    public List<MFunction> getModuleFunctions(String saasId) {
+    public List<FunctionVO> getModuleFunctions(String saasId) {
         String sql=" select m.code,m.parent_code,m.name from base_function f,base_module_function mf where f.code=mf.function_id and f.status=1 and mf.module_id=?";
-        return jdbcTemplate.queryForList(sql,MFunction.class,saasId);
+        return jdbcTemplate.queryForList(sql,FunctionVO.class,saasId);
     }
 
     /**
