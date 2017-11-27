@@ -27,7 +27,7 @@ public class SwaggerConfig {
                 .pathMapping("/")
                 .select()
                 .paths(or(
-                        regex("/" + WlyyRequestMapping.api_common + "/.*")
+                        regex("/" + WlyyRequestMapping.api_wlyy_common + "/.*")
                 ))
                 .build()
                 .apiInfo(wlyyApiInfo());

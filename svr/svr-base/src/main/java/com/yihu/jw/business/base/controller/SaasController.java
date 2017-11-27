@@ -23,7 +23,7 @@ import java.util.List;
  * Created by chenweida on 2017/5/19.
  */
 @RestController
-@RequestMapping(BaseRequestMapping.api_common)
+@RequestMapping(BaseRequestMapping.api_base_common)
 @Api(value = "Saas配置模块", description = "Saas配置模块接口管理")
 public class SaasController extends EnvelopRestController {
     @Autowired

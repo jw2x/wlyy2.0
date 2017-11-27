@@ -7,7 +7,7 @@ import com.yihu.jw.business.wx.dao.WxMenuDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.rm.wx.WechatRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import com.yihu.jw.util.HttpUtil;
 import org.json.JSONObject;
 import org.slf4j.Logger;

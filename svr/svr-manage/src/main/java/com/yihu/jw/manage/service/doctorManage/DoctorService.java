@@ -7,7 +7,7 @@ package com.yihu.jw.manage.service.doctorManage;
 @Service
 public class DoctorService {
 
-    @Value("${spring.gateway}"+ DoctorContants.api_common)
+    @Value("${spring.gateway}"+ DoctorContants.api_base_common)
     private String url;
 
     @Autowired

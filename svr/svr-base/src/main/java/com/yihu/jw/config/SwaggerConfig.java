@@ -1,7 +1,7 @@
 package com.yihu.jw.config;
 
 import com.yihu.jw.rm.base.BaseRequestMapping;
-import com.yihu.jw.rm.wx.WechatRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class SwaggerConfig {
                 .pathMapping("/")
                 .select()
                 .paths(or(
-                         regex("/"+ BaseRequestMapping.api_common+"/.*")
+                         regex("/"+ BaseRequestMapping.api_base_common +"/.*")
                         ,regex("/"+ WechatRequestMapping.api_common+"/.*")
                 ))
                 .build()

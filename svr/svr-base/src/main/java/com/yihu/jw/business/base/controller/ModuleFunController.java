@@ -16,7 +16,7 @@ import java.util.List;
  * Created by chenweida on 2017/5/19.
  */
 @RestController
-@RequestMapping(BaseRequestMapping.api_common)
+@RequestMapping(BaseRequestMapping.api_base_common)
 @Api(value = "模块功能模块", description = "模块功能模块")
 public class ModuleFunController extends EnvelopRestController {
     @Autowired

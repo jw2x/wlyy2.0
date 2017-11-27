@@ -1,11 +1,11 @@
-package com.yihu.jw.rm.wx;
+package com.yihu.jw.rm.base;
 
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
 public class WechatRequestMapping {
 
-    public static final String api_common="/svr-wechat";
+    public static final String api_common=BaseRequestMapping.api_base_common+"/wechat";
 
 
     //微信token模块常量

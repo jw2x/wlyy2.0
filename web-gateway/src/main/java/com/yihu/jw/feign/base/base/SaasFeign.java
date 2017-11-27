@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
         name = CommonContants.svr_base // name值是eurika的实例名字
         ,fallbackFactory  = SaasFeignFallbackFactory.class
 )
-@RequestMapping(value = BaseRequestMapping.api_common)
+@RequestMapping(value = BaseRequestMapping.api_base_common)
 public interface SaasFeign {
 
     @GetMapping(value = BaseRequestMapping.Saas.api_getSaassNoPage)
