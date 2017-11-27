@@ -8,10 +8,9 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
-public class MWxWechat {
+public class WxWechatVO {
 
-    private Long id;
-    private String code;//业务code
+    private String id;
     private String saasId;//'saas配置id'
     private String name;//名称
     private String token;//token
@@ -32,21 +31,12 @@ public class MWxWechat {
     private List<Map<String,Object>> children = new ArrayList<>();
     private String state;
 
-
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getSaasId() {

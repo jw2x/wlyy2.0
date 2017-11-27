@@ -1,39 +1,34 @@
 package com.yihu.jw.restmodel.base.version;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by chenweida on 2017/6/16.
  */
-public class MBaseServerVersion {
-    private String code; //业务code
-    private String saasId;//关联base_saas code
-    private String userCode;//用户表code 医生
-    private String name; //版本名称
-    private Integer versionInt;//版本号
+public class BaseServerUrlVersionVO {
+    private String id;
+    private String saasId;
+    private String functionCode;//关联功能表 base_function code
+    private String functionName;//功能名字
+    private String serverCode;//关联 base_server_version code
+    private String serverName;//base_server_version name
+    private String name;//版本名称
+    private Integer versionInt;//数字版本号
     private Date createTime;
     private String createUser;
     private String createUserName;
     private Date updateTime;
     private String updateUser;
     private String updateUserName;
-    private Integer status;////-1 删除 0 禁用 可用
+    private Integer status;//1: 正常 0：不可用  -1删除
     private String remark;
 
-    private List<MBaseServerUrlVersion> children = new ArrayList<>();
-
-    //children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
-    // children长度>0时,  state   “open,closed”表示是节点的打开关闭
-    private String state;
-
-    public String getCode() {
-        return code;
+    public String getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSaasId() {
@@ -44,13 +39,6 @@ public class MBaseServerVersion {
         this.saasId = saasId;
     }
 
-    public String getUserCode() {
-        return userCode;
-    }
-
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
 
     public String getName() {
         return name;
@@ -132,19 +120,35 @@ public class MBaseServerVersion {
         this.remark = remark;
     }
 
-    public List<MBaseServerUrlVersion> getChildren() {
-        return children;
+    public String getFunctionCode() {
+        return functionCode;
     }
 
-    public void setChildren(List<MBaseServerUrlVersion> children) {
-        this.children = children;
+    public void setFunctionCode(String functionCode) {
+        this.functionCode = functionCode;
     }
 
-    public String getState() {
-        return state;
+    public String getFunctionName() {
+        return functionName;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setFunctionName(String functionName) {
+        this.functionName = functionName;
+    }
+
+    public String getServerCode() {
+        return serverCode;
+    }
+
+    public void setServerCode(String serverCode) {
+        this.serverCode = serverCode;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public void setServerName(String serverName) {
+        this.serverName = serverName;
     }
 }

@@ -5,9 +5,8 @@ import java.util.Date;
 /**
  * Created by Administrator on 2017/5/21 0021.
  */
-public class MWxGraphicMessage {
-    private Long id;
-    private String code;//业务code
+public class WxGraphicMessageVO {
+    private String id;
     private String saasId;
     private String title;//标题
     private String description;//描述
@@ -22,20 +21,12 @@ public class MWxGraphicMessage {
     private String remark;//备注
     private Integer status;  //状态 -1删除 0 冻结 1可用
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getTitle() {

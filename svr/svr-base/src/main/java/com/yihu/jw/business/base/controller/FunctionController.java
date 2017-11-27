@@ -4,7 +4,7 @@ import com.yihu.jw.base.base.FunctionDO;
 import com.yihu.jw.business.base.service.FunctionService;
 import com.yihu.jw.business.base.service.ModuleFunService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.base.base.MFunction;
+import com.yihu.jw.restmodel.base.base.FunctionVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.base.BaseRequestMapping;
@@ -125,7 +125,7 @@ public class FunctionController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MFunction> mFunctions = convertToModels(list, new ArrayList<>(list.size()), MFunction.class, fields);
+        List<FunctionVO> mFunctions = convertToModels(list, new ArrayList<>(list.size()), FunctionVO.class, fields);
 
         return Envelop.getSuccessListWithPage(BaseRequestMapping.Function.message_success_find_functions,mFunctions, page, size,count);
     }
@@ -151,7 +151,7 @@ public class FunctionController extends EnvelopRestController {
             }
         }
         //封装返回格式
-        List<MFunction> mFunctions = convertToModels(functions, new ArrayList<>(functions.size()), MFunction.class, fields);
+        List<FunctionVO> mFunctions = convertToModels(functions, new ArrayList<>(functions.size()), FunctionVO.class, fields);
         return Envelop.getSuccessList(BaseRequestMapping.Function.message_success_find_functions,mFunctions);
     }
 

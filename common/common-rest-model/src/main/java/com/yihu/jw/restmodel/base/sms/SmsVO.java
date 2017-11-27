@@ -5,9 +5,8 @@ import java.util.Date;
 /**
  * Created by chenweida on 2017/5/22.
  */
-public class MSms {
-
-    private Long id;
+public class SmsVO {
+    private String id;
     private String saasId;	//saasid 关联base_saas code
     private String mobile;	//电话号码
     private String ip;	//发送短信的ip地址
@@ -18,11 +17,11 @@ public class MSms {
     private Integer status;	//短信状态 状态，0未发送，1已发送
     private Date czrq; //操作时间
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

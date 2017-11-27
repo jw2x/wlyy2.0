@@ -5,9 +5,8 @@ import java.util.Date;
 /**
  * Created by chenweida on 2017/5/19.
  */
-public class MSaas {
-    private Long id;
-    private String code;//业务code、
+public class SaasVO {
+    private String id;
     private String name;//名称
     private Integer status;//状态 -1 已删除 0待审核 1审核通过 2 审核不通过
     private String createUser; //创建人code
@@ -18,20 +17,12 @@ public class MSaas {
     private Date modifyTime;//修改时间
     private String remark;//备注
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {

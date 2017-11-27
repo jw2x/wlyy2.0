@@ -8,9 +8,8 @@ import java.util.Map;
 /**
  * Created by Administrator on 2017/5/20 0020.
  */
-public class MWxTemplate {
-    private Long id;
-    private String code;//模板code
+public class WxTemplateVO {
+    private String id;
     private String title;//模板标题
     private String name;//用于模板列表渲染
     private String wechatCode;//关联的微信code 关联表 Wx_Wechat
@@ -28,6 +27,14 @@ public class MWxTemplate {
     private String state;
     private Integer status;  //状态 -1删除 0 冻结 1可用
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -44,21 +51,6 @@ public class MWxTemplate {
         this.status = status;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
 
     public String getTitle() {
         return title;

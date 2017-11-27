@@ -7,9 +7,8 @@ import java.util.List;
 /**
  * Created by chenweida on 2017/5/19.
  */
-public class MModule {
-    private Long id;
-    private String code; //业务code
+public class ModuleVO{
+    private String id;
     private String name; //模块名称
     private String saasId; //关联 Saas code
     private String parentCode;//父id
@@ -22,22 +21,14 @@ public class MModule {
     private Date updateTime;
     private String remark;
     private String state ;   //closed:表示有子节点   open:表示没有子节点
-    private List<MModule> children = new ArrayList<>();
+    private List<ModuleVO> children = new ArrayList<>();
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -136,11 +127,11 @@ public class MModule {
         this.state = state;
     }
 
-    public List<MModule> getChildren() {
+    public List<ModuleVO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<MModule> children) {
+    public void setChildren(List<ModuleVO> children) {
         this.children = children;
     }
 }

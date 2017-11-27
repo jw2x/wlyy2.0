@@ -3,7 +3,7 @@ package com.yihu.jw.manage.service.base;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
-import com.yihu.jw.restmodel.base.base.MFunction;
+import com.yihu.jw.restmodel.base.base.FunctionVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import net.sf.json.JSONObject;
@@ -112,7 +112,7 @@ public class FunctionService {
         return template.getForObject(url +"/function/children/"+code, Envelop.class);
     }
 
-    public Envelop saveOrUpdate(MFunction func,String userCode) {
+    public Envelop saveOrUpdate(FunctionVO func, String userCode) {
         ManageUser user = userService.findByCode(userCode);
         String userName = user.getName();
 

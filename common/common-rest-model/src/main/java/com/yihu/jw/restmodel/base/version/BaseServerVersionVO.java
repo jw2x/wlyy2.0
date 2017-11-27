@@ -1,20 +1,18 @@
 package com.yihu.jw.restmodel.base.version;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by chenweida on 2017/6/16.
  */
-public class MWlyyVersion {
-    private Long id;
-    private String saasId; //saas code
-    private String code;
-    private String name;
-    private Double versionInt;
-    private String versionStr;
-    private String url;//app下载的路径
-    private String info;//app更新的信息
-    private Double size;//大小 MB
+public class BaseServerVersionVO {
+    private String id;
+    private String saasId;//关联base_saas code
+    private String userCode;//用户表code 医生
+    private String name; //版本名称
+    private Integer versionInt;//版本号
     private Date createTime;
     private String createUser;
     private String createUserName;
@@ -22,12 +20,19 @@ public class MWlyyVersion {
     private String updateUser;
     private String updateUserName;
     private Integer status;////-1 删除 0 禁用 可用
+    private String remark;
 
-    public Long getId() {
+    private List<BaseServerVersionVO> children = new ArrayList<>();
+
+    //children长度为0时    state  “open”表示是子节点，“closed”表示为父节点；
+    // children长度>0时,  state   “open,closed”表示是节点的打开关闭
+    private String state;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -39,12 +44,12 @@ public class MWlyyVersion {
         this.saasId = saasId;
     }
 
-    public String getCode() {
-        return code;
+    public String getUserCode() {
+        return userCode;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     public String getName() {
@@ -55,44 +60,12 @@ public class MWlyyVersion {
         this.name = name;
     }
 
-    public Double getVersionInt() {
+    public Integer getVersionInt() {
         return versionInt;
     }
 
-    public void setVersionInt(Double versionInt) {
+    public void setVersionInt(Integer versionInt) {
         this.versionInt = versionInt;
-    }
-
-    public String getVersionStr() {
-        return versionStr;
-    }
-
-    public void setVersionStr(String versionStr) {
-        this.versionStr = versionStr;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public Double getSize() {
-        return size;
-    }
-
-    public void setSize(Double size) {
-        this.size = size;
     }
 
     public Date getCreateTime() {
@@ -149,5 +122,29 @@ public class MWlyyVersion {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public List<BaseServerVersionVO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<BaseServerVersionVO> children) {
+        this.children = children;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

@@ -5,9 +5,8 @@ import java.util.*;
 /**
  * Created by chenweida on 2017/5/19.
  */
-public class MFunction {
-    private Long id;
-    private String code;//业务code
+public class FunctionVO {
+    private String id;
     private String name; //功能名称
     private String saasId; // saasid
     private String parentCode; //父功能code
@@ -20,23 +19,15 @@ public class MFunction {
     private String updateUserName;
     private Date updateTime;
     private String remark; //备注
-    private List<MFunction> children = new ArrayList<>();
+    private List<FunctionVO> children = new ArrayList<>();
     private String text;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {
@@ -127,11 +118,11 @@ public class MFunction {
         this.remark = remark;
     }
 
-    public List<MFunction> getChildren() {
+    public List<FunctionVO> getChildren() {
         return children;
     }
 
-    public void setChildren(List<MFunction> children) {
+    public void setChildren(List<FunctionVO> children) {
         this.children = children;
     }
 
