@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
         name = CommonContants.svr_base // name值是eurika的实例名字
         ,fallbackFactory  = ModuleFeignFallbackFactory.class
 )
-@RequestMapping(value = BaseRequestMapping.api_common)
+@RequestMapping(value = BaseRequestMapping.api_base_common)
 public interface ModuleFeign {
 
     @PostMapping(value = BaseRequestMapping.Module.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

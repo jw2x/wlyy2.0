@@ -33,7 +33,7 @@ public class SaasService {
     }
 
     public List getListNoPage() {
-        Envelop envelop = template.getForObject(url +"/"+ BaseRequestMapping.api_common+BaseRequestMapping.Saas.api_getSaassNoPage,Envelop.class);
+        Envelop envelop = template.getForObject(url +"/"+ BaseRequestMapping.api_base_common +BaseRequestMapping.Saas.api_getSaassNoPage,Envelop.class);
         List list = envelop.getDetailModelList();
         return list;
     }

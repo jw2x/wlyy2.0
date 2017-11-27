@@ -26,7 +26,7 @@ import java.util.UUID;
 @Service
 public class FunctionService {
 
-    @Value("${spring.gateway}"+ BaseRequestMapping.api_common)
+    @Value("${spring.gateway}"+ BaseRequestMapping.api_base_common)
     private String url;
     @Autowired
     private RestTemplate template;

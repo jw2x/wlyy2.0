@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by chenweida on 2017/6/20.
  */
 @RestController
-@RequestMapping(BaseRequestMapping.api_common)
+@RequestMapping(BaseRequestMapping.api_base_common)
 @Api(description = "功能管理")
 public class FunctionController {
     @Autowired

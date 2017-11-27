@@ -6,7 +6,7 @@ package com.yihu.jw.rm.base;
  */
 public class BaseSmsRequestMapping {
 
-    public static final String api_common="svr-sms";
+    public static final String api_common=BaseRequestMapping.api_base_common+"/sms";
     //短信常量
     public static class Sms{
         public static final String message_success_create="sms create success";

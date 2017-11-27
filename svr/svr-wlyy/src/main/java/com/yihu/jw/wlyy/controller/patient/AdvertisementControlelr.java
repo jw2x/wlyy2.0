@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping(value = WlyyRequestMapping.api_common)
+@RequestMapping(value = WlyyRequestMapping.api_wlyy_common)
 @Api(value = "广告相关操作", description = "广告相关操作")
 public class AdvertisementControlelr extends EnvelopRestController {
 

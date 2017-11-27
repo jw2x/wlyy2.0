@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(WlyyRequestMapping.api_common)
+@RequestMapping(WlyyRequestMapping.api_wlyy_common)
 @Api(value = "签约相关操作", description = "签约相关操作")
 public class WlyySignFamilyController extends EnvelopRestController {
 

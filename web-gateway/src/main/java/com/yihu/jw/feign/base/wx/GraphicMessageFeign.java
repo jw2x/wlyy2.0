@@ -4,7 +4,7 @@ import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.feign.fallbackfactory.base.wx.GraphicMessageFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;;
-import com.yihu.jw.rm.wx.WechatRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;

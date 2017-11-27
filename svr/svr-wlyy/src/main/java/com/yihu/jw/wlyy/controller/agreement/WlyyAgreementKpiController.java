@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(WlyyRequestMapping.api_common)
+@RequestMapping(WlyyRequestMapping.api_wlyy_common)
 @Api(value = "套餐指标相关操作", description = "套餐指标相关操作")
 public class WlyyAgreementKpiController extends EnvelopRestController {
 

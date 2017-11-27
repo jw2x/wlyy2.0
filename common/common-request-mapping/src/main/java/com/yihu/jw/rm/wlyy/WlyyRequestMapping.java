@@ -5,7 +5,7 @@ package com.yihu.jw.rm.wlyy;
  */
 public class WlyyRequestMapping {
 
-    public static final String api_common = "svr-wlyy";
+    public static final String api_wlyy_common = "svr-wlyy";
 
     //协议模块常量
     public static class Agreement {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
         name = CommonContants.svr_wlyy // name值是eurika的实例名字
         ,fallbackFactory  = AdvertisementFeignFallbackFactory.class
 )
-@RequestMapping(WlyyRequestMapping.api_common)
+@RequestMapping(WlyyRequestMapping.api_wlyy_common)
 public interface AdvertisementFeign {
 
     @PostMapping(value = WlyyRequestMapping.Advertisement.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
