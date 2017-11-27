@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.controller;
 
-import com.yihu.jw.base.base.Function;
+import com.yihu.jw.base.base.FunctionDO;
 import com.yihu.jw.business.base.service.FunctionService;
 import com.yihu.jw.business.base.service.ModuleFunService;
 import com.yihu.jw.exception.ApiException;
@@ -39,7 +39,7 @@ public class FunctionController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Function function = toEntity(jsonData, Function.class);
+            FunctionDO function = toEntity(jsonData, FunctionDO.class);
             return Envelop.getSuccess(BaseRequestMapping.Function.message_success_create, functionService.createFunction(function));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -52,7 +52,7 @@ public class FunctionController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Function function = toEntity(jsonData, Function.class);
+            FunctionDO function = toEntity(jsonData, FunctionDO.class);
             return Envelop.getSuccess(BaseRequestMapping.Function.message_success_update, functionService.updateFunction(function));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -112,10 +112,10 @@ public class FunctionController extends EnvelopRestController {
         }
 
         //得到list数据
-        List<Function> list = functionService.search(fields, filters, sorts, page, size);
+        List<FunctionDO> list = functionService.search(fields, filters, sorts, page, size);
         if(list!=null){
-            for(Function func:list){//循环遍历,设置是否有子节点
-                List<Function> children = functionService.getChildren(func.getId());
+            for(FunctionDO func:list){//循环遍历,设置是否有子节点
+                List<FunctionDO> children = functionService.getChildren(func.getId());
                 func.setChildren(children);
             }
         }
@@ -141,10 +141,10 @@ public class FunctionController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<Function> list = functionService.search(fields,filters,sorts);
+        List<FunctionDO> list = functionService.search(fields,filters,sorts);
         List<Object> functions = new ArrayList<>();
         if(list!=null){
-            for(Function func:list){
+            for(FunctionDO func:list){
                 String code = func.getId();
                 func = functionService.getAllChildren(code);
                 functions.add(func);
@@ -185,7 +185,7 @@ public class FunctionController extends EnvelopRestController {
     @GetMapping(value =BaseRequestMapping.Function.api_getChildren )
     @ApiOperation(value="查找子节点")
     public Envelop getChildren(@PathVariable String code){
-        List<Function> children = functionService.getChildren(code);
+        List<FunctionDO> children = functionService.getChildren(code);
         return Envelop.getSuccess("查询成功",children);
     }
 }

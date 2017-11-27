@@ -5,8 +5,8 @@ import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import com.yihu.jw.util.IDCard;
-import com.yihu.jw.wlyy.agreement.WlyyAgreement;
-import com.yihu.jw.wlyy.agreement.WlyySignFamily;
+import com.yihu.jw.wlyy.agreement.WlyyAgreementDO;
+import com.yihu.jw.wlyy.agreement.WlyySignFamilyDO;
 import com.yihu.jw.wlyy.dao.agreement.WlyySignFamilyDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Administrator on 2017/6/2 0002.
  */
 @Service
-public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySignFamilyDao> {
+public class WlyySignFamilyService extends BaseJpaService<WlyySignFamilyDO, WlyySignFamilyDao> {
 
     @Autowired
     private WlyySignFamilyDao wlyySignFamilyDao;
@@ -32,7 +32,7 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
     //private SaasService saasService;
 
     @Transient
-    public WlyySignFamily create(WlyySignFamily wlyySignFamily) throws ParseException {
+    public WlyySignFamilyDO create(WlyySignFamilyDO wlyySignFamily) throws ParseException {
         boolean b = canSaveOrUpdate(wlyySignFamily);
         if(b){
             return wlyySignFamilyDao.save(wlyySignFamily);
@@ -41,7 +41,7 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
     }
 
     @Transient
-    public WlyySignFamily update(WlyySignFamily wlyySignFamily) throws ParseException {
+    public WlyySignFamilyDO update(WlyySignFamilyDO wlyySignFamily) throws ParseException {
         boolean b = canSaveOrUpdate(wlyySignFamily);
         if(b){
             return wlyySignFamilyDao.save(wlyySignFamily);
@@ -49,11 +49,11 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
         return null;
     }
 
-    public WlyySignFamily findById(String id) {
+    public WlyySignFamilyDO findById(String id) {
         return wlyySignFamilyDao.findById(id);
     }
 
-    private boolean canSaveOrUpdate(WlyySignFamily wlyySignFamily) throws ParseException {
+    private boolean canSaveOrUpdate(WlyySignFamilyDO wlyySignFamily) throws ParseException {
         String saasId = wlyySignFamily.getSaasId();
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
@@ -99,7 +99,7 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
             throw new ApiException(WlyyRequestMapping.SignFamily.message_fail_agreementId_is_null, ExceptionCode.common_error_params_code);
         }
         //根据agreementCode查找协议是否存在
-        WlyyAgreement agreement = wlyyAgreementService.findById(agreementCode);
+        WlyyAgreementDO agreement = wlyyAgreementService.findById(agreementCode);
         if(agreement==null){
             throw new ApiException(WlyyRequestMapping.Agreement.message_fail_wlyyAgreement_is_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -112,7 +112,7 @@ public class WlyySignFamilyService extends BaseJpaService<WlyySignFamily, WlyySi
      * @param status
      * @return
      */
-    public List<WlyySignFamily> findByPatientCode(String patientCode,Integer status) {
+    public List<WlyySignFamilyDO> findByPatientCode(String patientCode,Integer status) {
         return wlyySignFamilyDao.findByPatientId(patientCode,status);
     }
 }

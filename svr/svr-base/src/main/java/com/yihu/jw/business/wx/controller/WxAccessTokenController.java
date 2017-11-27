@@ -1,6 +1,6 @@
 package com.yihu.jw.business.wx.controller;
 
-import com.yihu.jw.base.wx.WxAccessToken;
+import com.yihu.jw.base.wx.WxAccessTokenDO;
 import com.yihu.jw.business.wx.service.WxAccessTokenService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -38,7 +38,7 @@ public class WxAccessTokenController extends EnvelopRestController {
             @ApiParam(name = "wechatId", value = "wechatId")
             @RequestParam(value = "wechatId") String wechatId) {
         try {
-            WxAccessToken wxAccessToken = wxAccessTokenService.getWxAccessTokenById(wechatId);
+            WxAccessTokenDO wxAccessToken = wxAccessTokenService.getWxAccessTokenById(wechatId);
             return Envelop.getSuccess(WechatRequestMapping.WxAccessToken.message_success_get, wxAccessToken);
         }catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());

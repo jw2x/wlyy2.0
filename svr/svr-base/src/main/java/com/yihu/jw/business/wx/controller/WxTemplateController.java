@@ -2,8 +2,8 @@ package com.yihu.jw.business.wx.controller;
 
 import com.yihu.jw.business.wx.WechatResponse;
 import com.yihu.jw.base.wx.Miniprogram;
-import com.yihu.jw.base.wx.WxTemplate;
-import com.yihu.jw.base.wx.WxWechat;
+import com.yihu.jw.base.wx.WxTemplateDO;
+import com.yihu.jw.base.wx.WxWechatDO;
 import com.yihu.jw.business.wx.service.WechatService;
 import com.yihu.jw.business.wx.service.WxTemplateService;
 import com.yihu.jw.exception.ApiException;
@@ -45,7 +45,7 @@ public class WxTemplateController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "微信模版json字符串")
             @RequestBody String jsonData) {
         try {
-            WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);
+            WxTemplateDO WxTemplate = toEntity(jsonData, WxTemplateDO.class);
             return Envelop.getSuccess(WechatRequestMapping.WxTemplate.message_success_create, wxTemplateService.createWxTemplate(WxTemplate));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -58,7 +58,7 @@ public class WxTemplateController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxTemplate WxTemplate = toEntity(jsonData, WxTemplate.class);
+            WxTemplateDO WxTemplate = toEntity(jsonData, WxTemplateDO.class);
             return Envelop.getSuccess(WechatRequestMapping.WxTemplate.message_success_update, wxTemplateService.updateWxTemplate(WxTemplate));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -116,9 +116,9 @@ public class WxTemplateController extends EnvelopRestController {
         }
 
         //得到微信列表数据
-        List<WxWechat> wechats = wechatService.search(fields, filters, sorts, page, size);
-        for(WxWechat wechat:wechats){
-            List<WxTemplate> wxTemplates = wxTemplateService.findByWxId(wechat.getId());
+        List<WxWechatDO> wechats = wechatService.search(fields, filters, sorts, page, size);
+        for(WxWechatDO wechat:wechats){
+            List<WxTemplateDO> wxTemplates = wxTemplateService.findByWxId(wechat.getId());
             if (wxTemplates.size()>0){
                 wechat.setState("closed");
             }else{
@@ -146,7 +146,7 @@ public class WxTemplateController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WxTemplate> list = wxTemplateService.search(fields,filters,sorts);
+        List<WxTemplateDO> list = wxTemplateService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxTemplate> mMWxTemplates = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
         return Envelop.getSuccessList(WechatRequestMapping.WxTemplate.message_success_find_functions,mMWxTemplates);

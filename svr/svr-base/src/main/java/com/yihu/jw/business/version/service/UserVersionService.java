@@ -1,8 +1,7 @@
 package com.yihu.jw.business.version.service;
 
 import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.base.sms.BaseSmsGateway;
-import com.yihu.jw.base.version.BaseUserVersion;
+import com.yihu.jw.base.version.BaseUserVersionDO;
 import com.yihu.jw.business.sms.dao.SmsGatewayDao;
 import com.yihu.jw.business.version.dao.UserVersionDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,12 @@ import java.util.Arrays;
  * Created by chenweida on 2017/11/10.
  */
 @Service
-public class UserVersionService extends BaseJpaService<BaseUserVersion, UserVersionDao> {
+public class UserVersionService extends BaseJpaService<BaseUserVersionDO, UserVersionDao> {
     @Autowired
     private UserVersionDao userVersionDao;
 
     @Transactional
-    public BaseUserVersion createUserVersion(BaseUserVersion baseUserVersion) {
+    public BaseUserVersionDO createUserVersion(BaseUserVersionDO baseUserVersion) {
         return userVersionDao.save(baseUserVersion);
     }
 
@@ -32,11 +31,11 @@ public class UserVersionService extends BaseJpaService<BaseUserVersion, UserVers
         }
     }
 
-    public BaseUserVersion getUserVersionByUserId(String userId) {
+    public BaseUserVersionDO getUserVersionByUserId(String userId) {
       return  userVersionDao.getUserVersionByUserId(userId);
     }
 
-    public BaseUserVersion getUserVersion(String id) {
+    public BaseUserVersionDO getUserVersion(String id) {
         return  userVersionDao.findOne(id);
     }
 }

@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.dao.agreement;
 
-import com.yihu.jw.wlyy.agreement.WlyyAgreementKpi;
+import com.yihu.jw.wlyy.agreement.WlyyAgreementKpiDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -8,10 +8,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by Administrator on 2017/6/1 0001.
  */
-public interface WlyyAgreementKpiDao extends PagingAndSortingRepository<WlyyAgreementKpi, String>, JpaSpecificationExecutor<WlyyAgreementKpi> {
+public interface WlyyAgreementKpiDao extends PagingAndSortingRepository<WlyyAgreementKpiDO, String>, JpaSpecificationExecutor<WlyyAgreementKpiDO> {
 
 
-    @Query("from WlyyAgreementKpi w where w.id=?1 and w.status !=-1")
-    WlyyAgreementKpi findById(String id);
+    @Query("from WlyyAgreementKpiDO w where w.id=?1 and w.status !=-1")
+    WlyyAgreementKpiDO findById(String id);
 
 }

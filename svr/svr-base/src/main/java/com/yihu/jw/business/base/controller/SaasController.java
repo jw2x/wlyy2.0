@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.controller;
 
-import com.yihu.jw.base.base.Saas;
+import com.yihu.jw.base.base.SaasDO;
 import com.yihu.jw.business.base.service.SaasService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.base.MSaas;
@@ -35,7 +35,7 @@ public class SaasController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Saas saas = toEntity(jsonData, Saas.class);
+            SaasDO saas = toEntity(jsonData, SaasDO.class);
             return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_create, saasService.createSaas(saas));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -48,7 +48,7 @@ public class SaasController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Saas saas = toEntity(jsonData, Saas.class);
+            SaasDO saas = toEntity(jsonData, SaasDO.class);
             return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_update, saasService.updateSaas(saas));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -99,7 +99,7 @@ public class SaasController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<Saas> list = saasService.search(fields, filters, sorts, page, size);
+        List<SaasDO> list = saasService.search(fields, filters, sorts, page, size);
         //获取总数
         long count = saasService.getCount(filters);
         //封装头信息
@@ -121,7 +121,7 @@ public class SaasController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<Saas> list = saasService.search(fields, filters, sorts);
+        List<SaasDO> list = saasService.search(fields, filters, sorts);
         //封装返回格式
         List<MSaas> mSaass = convertToModels(list, new ArrayList<>(list.size()), MSaas.class, fields);
         return Envelop.getSuccessList(BaseRequestMapping.Saas.message_success_find_saass, mSaass);

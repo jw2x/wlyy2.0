@@ -1,7 +1,7 @@
 package com.yihu.jw.business.wx.service;
 
-import com.yihu.jw.base.wx.WxAccessToken;
-import com.yihu.jw.base.wx.WxWechat;
+import com.yihu.jw.base.wx.WxAccessTokenDO;
+import com.yihu.jw.base.wx.WxWechatDO;
 import com.yihu.jw.business.wx.dao.WechatDao;
 import com.yihu.jw.business.wx.dao.WxAccessTokenDao;
 import com.yihu.jw.exception.ApiException;
@@ -24,7 +24,7 @@ import java.util.UUID;
  * Created by Administrator on 2017/5/18 0018.
  */
 @Service
-public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccessTokenDao> {
+public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAccessTokenDao> {
 
 
     private Logger logger= LoggerFactory.getLogger(WxAccessTokenService.class);
@@ -40,16 +40,16 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
      * @param wechatId
      * @return
      */
-    public WxAccessToken getWxAccessTokenById(String wechatId) {
+    public WxAccessTokenDO getWxAccessTokenById(String wechatId) {
         try {
             //根据wechatCode查找出appid和appSecret
-            WxWechat wxWechat = wechatDao.findById(wechatId);
+            WxWechatDO wxWechat = wechatDao.findById(wechatId);
             if(wxWechat==null){
                 throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
             }
-            List<WxAccessToken> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenById(wechatId);
+            List<WxAccessTokenDO> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenById(wechatId);
             if(wxAccessTokens!=null&&wxAccessTokens.size()>0){
-                for (WxAccessToken accessToken : wxAccessTokens) {
+                for (WxAccessTokenDO accessToken : wxAccessTokens) {
                     if ((System.currentTimeMillis() - accessToken.getAddTimestamp()) < (accessToken.getExpiresIn() * 1000)) {
                         return accessToken;
                     } else {
@@ -76,7 +76,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessToken, WxAccess
             if (json.has("access_token")) {
                 String token = json.get("access_token").toString();
                 String expires_in = json.get("expires_in").toString();
-                WxAccessToken newaccessToken = new WxAccessToken();
+                WxAccessTokenDO newaccessToken = new WxAccessTokenDO();
                 newaccessToken.setAccessToken(token);
                 newaccessToken.setExpiresIn(Long.parseLong(expires_in));
                 newaccessToken.setAddTimestamp(System.currentTimeMillis());
