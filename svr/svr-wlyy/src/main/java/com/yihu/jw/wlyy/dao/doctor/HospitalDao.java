@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.dao.doctor;
 
-import com.yihu.jw.wlyy.doctor.BaseOrgHospitalDO;
+import com.yihu.jw.wlyy.hospital.BaseOrgHospitalDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
