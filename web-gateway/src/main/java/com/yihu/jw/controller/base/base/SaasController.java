@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(BaseContants.api_common)
+@RequestMapping(BaseContants.api_saas)
 @Api(description = "saas相关")
 public class SaasController {
 

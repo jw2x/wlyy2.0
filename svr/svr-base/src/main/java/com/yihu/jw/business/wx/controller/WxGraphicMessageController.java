@@ -1,12 +1,12 @@
 package com.yihu.jw.business.wx.controller;
 
-import com.yihu.jw.base.wx.WxGraphicMessage;
+import com.yihu.jw.base.wx.WxGraphicMessageDO;
 import com.yihu.jw.business.wx.service.WxGraphicMessageService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.base.wx.MWxGraphicMessage;
-import com.yihu.jw.rm.wx.WechatRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -36,7 +36,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxGraphicMessage WxGraphicMessage = toEntity(jsonData, WxGraphicMessage.class);
+            WxGraphicMessageDO WxGraphicMessage = toEntity(jsonData, WxGraphicMessageDO.class);
             return Envelop.getSuccess(WechatRequestMapping.WxGraphicMessage.message_success_create, wxGraphicMessageService.createWxGraphicMessage(WxGraphicMessage));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -50,7 +50,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxGraphicMessage WxGraphicMessage = toEntity(jsonData, WxGraphicMessage.class);
+            WxGraphicMessageDO WxGraphicMessage = toEntity(jsonData, WxGraphicMessageDO.class);
             return Envelop.getSuccess(WechatRequestMapping.WxGraphicMessage.message_success_update, wxGraphicMessageService.updateWxGraphicMessage(WxGraphicMessage));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -108,7 +108,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
             sorts = "-updateTime";
         }
         //得到list数据
-        List<WxGraphicMessage> list = wxGraphicMessageService.search(fields, filters, sorts, page, size);
+        List<WxGraphicMessageDO> list = wxGraphicMessageService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=wxGraphicMessageService.getCount(filters);
         //封装头信息
@@ -130,7 +130,7 @@ public class WxGraphicMessageController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+title,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WxGraphicMessage> list = wxGraphicMessageService.search(fields,filters,sorts);
+        List<WxGraphicMessageDO> list = wxGraphicMessageService.search(fields,filters,sorts);
         //封装返回格式
         List<MWxGraphicMessage> mWxGraphicMessages = convertToModels(list, new ArrayList<>(list.size()), MWxGraphicMessage.class, fields);
         return Envelop.getSuccessList(WechatRequestMapping.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages);

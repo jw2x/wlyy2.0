@@ -3,7 +3,7 @@ package com.yihu.jw.feign.base.wx;
 import com.yihu.jw.feign.fallbackfactory.base.wx.AccessTokenFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.rm.wx.WechatRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

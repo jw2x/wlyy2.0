@@ -6,8 +6,7 @@ import java.util.Date;
  * Created by chenweida on 2017/6/9.
  */
 public class ManageUserVO {
-    private Integer id;
-    private String code;
+    private String id;
     private String name;
     private String password;//密码  密码是 密码+salt MD5加密
     private String salt;//盐值
@@ -22,20 +21,12 @@ public class ManageUserVO {
     private String updateUserName;
     private String remark;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {

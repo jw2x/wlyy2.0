@@ -5,7 +5,11 @@ package com.yihu.jw.rm.base;
  */
 public class BaseVersionRequestMapping {
 
-    public static final String api_common = "/version";
+    public static final String api_common = BaseRequestMapping.api_base_common+"/version";
+
+    /**
+     * wlyy app版本
+     */
     public static class WlyyVersion {
         public static final String api_create = "/wlyyVersion";
         public static final String api_update = "/wlyyVersion";
@@ -30,6 +34,9 @@ public class BaseVersionRequestMapping {
 
     }
 
+    /**
+     * 用户版本 用户灰度发布
+     */
     public class UserVersion {
         public static final String api_create = "/userVersion";
         public static final String api_update = "/userVersion";

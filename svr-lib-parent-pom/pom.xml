@@ -21,15 +21,10 @@
     <!--deploy 的时候发布到这个服务器-->
     <distributionManagement>
         <repository>
-            <id>releases</id>
-            <name>Releases</name>
-            <url>http://172.19.103.43:8081/nexus/content/repositories/releases/</url>
+            <id>test</id>
+            <name>testRespository</name>
+            <url>http://172.19.103.43:8081/nexus/content/repositories/test/</url>
         </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <name>Snapshots</name>
-            <url>http://172.19.103.43:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
     </distributionManagement>
     <modules>
 
@@ -41,7 +36,8 @@
         <!--业务微服务-->
         <module>../svr/svr-base</module><!--基础微服务-->
         <module>../svr/svr-wlyy</module><!--i健康微服务-->
-        <module>../svr/svr-manage</module><!--基卫后台管理系统-->
+        <!--<module>../svr/svr-manage</module>&lt;!&ndash;后台管理系统&ndash;&gt;-->
+        <module>../svr/svr-iot</module><!--物联网平台-->
 
         <!--网关-->
         <module>../web-gateway</module><!--web网关-->
@@ -240,6 +236,11 @@
             <!--springCloud end-->
 
             <!--springBoot start-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${version.springBoot}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot</artifactId>

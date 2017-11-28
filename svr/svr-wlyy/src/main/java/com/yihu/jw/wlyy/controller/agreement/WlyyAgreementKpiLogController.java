@@ -4,7 +4,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.wlyy.agreement.WlyyAgreementKpiLog;
+import com.yihu.jw.wlyy.agreement.WlyyAgreementKpiLogDO;
 import com.yihu.jw.wlyy.service.agreement.WlyyAgreementKpiLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(WlyyRequestMapping.api_common)
+@RequestMapping(WlyyRequestMapping.api_wlyy_common)
 @Api(value = "套餐指标执行日志相关操作", description = "套餐指标执行日志相关操作")
 public class WlyyAgreementKpiLogController extends EnvelopRestController {
 
@@ -32,7 +32,7 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WlyyAgreementKpiLog wlyyAgreementKpiLog = toEntity(jsonData, WlyyAgreementKpiLog.class);
+            WlyyAgreementKpiLogDO wlyyAgreementKpiLog = toEntity(jsonData, WlyyAgreementKpiLogDO.class);
             return Envelop.getSuccess(WlyyRequestMapping.AgreementKpiLog.message_success_create, wlyyAgreementKpiLogService.create(wlyyAgreementKpiLog));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -68,13 +68,13 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<WlyyAgreementKpiLog> list = wlyyAgreementKpiLogService.search(fields, filters, sorts, page, size);
+        List<WlyyAgreementKpiLogDO> list = wlyyAgreementKpiLogService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=wlyyAgreementKpiLogService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<WlyyAgreementKpiLog> wlyyAgreementKpiLog = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementKpiLog.class, fields);
+        List<WlyyAgreementKpiLogDO> wlyyAgreementKpiLog = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementKpiLogDO.class, fields);
 
         return Envelop.getSuccessListWithPage(WlyyRequestMapping.AgreementKpiLog.message_success_find_functions,wlyyAgreementKpiLog, page, size,count);
     }
@@ -90,9 +90,9 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+kpiName,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WlyyAgreementKpiLog> list = wlyyAgreementKpiLogService.search(fields,filters,sorts);
+        List<WlyyAgreementKpiLogDO> list = wlyyAgreementKpiLogService.search(fields,filters,sorts);
         //封装返回格式
-        List<WlyyAgreementKpiLog> wlyyAgreementKpiLog = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementKpiLog.class, fields);
+        List<WlyyAgreementKpiLogDO> wlyyAgreementKpiLog = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementKpiLogDO.class, fields);
         return Envelop.getSuccessList(WlyyRequestMapping.AgreementKpiLog.message_success_find_functions,wlyyAgreementKpiLog);
     }
 

@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.*;
         name = CommonContants.svr_base // name值是eurika的实例名字
         ,fallbackFactory  = FunctionFeignFallbackFactory.class
 )
-@RequestMapping(value = BaseRequestMapping.api_common)
+@RequestMapping(value = BaseRequestMapping.api_base_common)
 public interface FunctionFeign {
 
-    @PostMapping(value = BaseRequestMapping.Function.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = BaseRequestMapping.Function.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
     Envelop create(@RequestBody String jsonData) throws JiWeiException;
 
-    @PutMapping(value =  BaseRequestMapping.Function.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value =  BaseRequestMapping.Function.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.PUT)
     Envelop update(@RequestBody String jsonData) throws JiWeiException;
 
-    @DeleteMapping(value =BaseRequestMapping.Function.api_delete)
+    @RequestMapping(value =  BaseRequestMapping.Function.api_delete,method = RequestMethod.DELETE)
     Envelop delete(@PathVariable(value = "ids", required = true) String ids, @RequestParam(value = "userId") String userId, @RequestParam(value = "userName") String userName) throws JiWeiException;
 
     @GetMapping(value = BaseRequestMapping.Function.api_getById)

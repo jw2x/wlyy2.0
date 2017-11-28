@@ -6,7 +6,7 @@ package com.yihu.jw.rm.base;
  */
 public class BaseRequestMapping {
 
-    public static final String api_common = "/bases";
+    public static final String api_base_common = "/svr-bases";
 
     //功能模块常量
     public static class Function{

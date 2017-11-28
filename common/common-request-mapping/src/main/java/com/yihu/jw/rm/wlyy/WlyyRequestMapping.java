@@ -5,7 +5,7 @@ package com.yihu.jw.rm.wlyy;
  */
 public class WlyyRequestMapping {
 
-    public static final String api_common = "wlyy";
+    public static final String api_wlyy_common = "svr-wlyy";
 
     //协议模块常量
     public static class Agreement {
@@ -115,11 +115,11 @@ public class WlyyRequestMapping {
     广告相关操作
      */
     public static class Advertisement {
-        public static final String api_common = "advertisement";
-        public static final String api_create = "create";
-        public static final String api_delete = "delete";
+
+        public static final String api_create = "advertisement";
+        public static final String api_delete = "advertisement";
         public static final String api_getById = "getById";
-        public static final String api_update = "update";
+        public static final String api_update = "advertisement";
         public static final String api_queryPage = "queryPage";
         public static final String api_getList = "getList";
         public static final String api_getListByPatientId = "getListByPatientId";

@@ -18,7 +18,7 @@ import java.util.List;
  * Created by Administrator on 2017/6/13 0013.
  */
 @RestController
-@RequestMapping(BaseRequestMapping.api_common)
+@RequestMapping(BaseRequestMapping.api_base_common)
 @Api(description = "saas相关")
 public class SaasController {
 

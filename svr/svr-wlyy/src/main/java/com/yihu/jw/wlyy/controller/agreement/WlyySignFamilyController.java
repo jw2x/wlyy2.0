@@ -4,7 +4,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.wlyy.agreement.WlyySignFamily;
+import com.yihu.jw.wlyy.agreement.WlyySignFamilyDO;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(WlyyRequestMapping.api_common)
+@RequestMapping(WlyyRequestMapping.api_wlyy_common)
 @Api(value = "签约相关操作", description = "签约相关操作")
 public class WlyySignFamilyController extends EnvelopRestController {
 
@@ -33,7 +33,7 @@ public class WlyySignFamilyController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws ParseException {
         try {
-            WlyySignFamily wlyySignFamily = toEntity(jsonData, WlyySignFamily.class);
+            WlyySignFamilyDO wlyySignFamily = toEntity(jsonData, WlyySignFamilyDO.class);
             return Envelop.getSuccess(WlyyRequestMapping.SignFamily.message_success_create, wlyySignFamilyService.create(wlyySignFamily));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -46,7 +46,7 @@ public class WlyySignFamilyController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws ParseException {
         try {
-            WlyySignFamily wlyySignFamily = toEntity(jsonData, WlyySignFamily.class);
+            WlyySignFamilyDO wlyySignFamily = toEntity(jsonData, WlyySignFamilyDO.class);
             return Envelop.getSuccess(WlyyRequestMapping.SignFamily.message_success_update, wlyySignFamilyService.update(wlyySignFamily));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -82,13 +82,13 @@ public class WlyySignFamilyController extends EnvelopRestController {
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<WlyySignFamily> list = wlyySignFamilyService.search(fields, filters, sorts, page, size);
+        List<WlyySignFamilyDO> list = wlyySignFamilyService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=wlyySignFamilyService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<WlyySignFamily> wlyySignFamily = convertToModels(list, new ArrayList<>(list.size()), WlyySignFamily.class, fields);
+        List<WlyySignFamilyDO> wlyySignFamily = convertToModels(list, new ArrayList<>(list.size()), WlyySignFamilyDO.class, fields);
 
         return Envelop.getSuccessListWithPage(WlyyRequestMapping.SignFamily.message_success_find_functions,wlyySignFamily, page, size,count);
     }
@@ -104,9 +104,9 @@ public class WlyySignFamilyController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<WlyySignFamily> list = wlyySignFamilyService.search(fields,filters,sorts);
+        List<WlyySignFamilyDO> list = wlyySignFamilyService.search(fields,filters,sorts);
         //封装返回格式
-        List<WlyySignFamily> wlyySignFamily = convertToModels(list, new ArrayList<>(list.size()), WlyySignFamily.class, fields);
+        List<WlyySignFamilyDO> wlyySignFamily = convertToModels(list, new ArrayList<>(list.size()), WlyySignFamilyDO.class, fields);
         return Envelop.getSuccessList(WlyyRequestMapping.SignFamily.message_success_find_functions,wlyySignFamily);
     }
 

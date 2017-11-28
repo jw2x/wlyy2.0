@@ -1,6 +1,6 @@
 package com.yihu.jw.business.sms.service;
 
-import com.yihu.jw.base.sms.BaseSms;
+import com.yihu.jw.base.sms.BaseSmsDO;
 import com.yihu.jw.business.sms.dao.SmsDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.base.mysql.query.BaseJpaService;
@@ -12,17 +12,17 @@ import org.springframework.transaction.annotation.Transactional;
  * Created by chenweida on 2017/5/22.
  */
 @Service
-public class SmsService  extends BaseJpaService<BaseSms, SmsDao> {
+public class SmsService  extends BaseJpaService<BaseSmsDO, SmsDao> {
     @Autowired
     private SmsDao smsDao;
 
     @Transactional
-    public BaseSms createSms(BaseSms sms) throws ApiException {
+    public BaseSmsDO createSms(BaseSmsDO sms) throws ApiException {
         return smsDao.save(sms);
     }
 
     @Transactional
-    public BaseSms updateSms(BaseSms sms) {
+    public BaseSmsDO updateSms(BaseSmsDO sms) {
         return smsDao.save(sms);
     }
 

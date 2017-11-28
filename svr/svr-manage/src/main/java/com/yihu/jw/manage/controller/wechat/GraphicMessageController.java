@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.service.wechat.GraphicMessageService;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.base.wx.MWxGraphicMessage;
-import com.yihu.jw.rm.wx.WechatRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

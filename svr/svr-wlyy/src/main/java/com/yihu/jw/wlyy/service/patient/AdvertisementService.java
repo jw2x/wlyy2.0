@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.service.patient;
 
-import com.yihu.jw.base.base.Saas;
+import com.yihu.jw.base.base.SaasDO;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
@@ -8,9 +8,9 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import com.yihu.jw.util.AddressUtils;
 import com.yihu.jw.util.CusAccessObjectUtil;
-import com.yihu.jw.wlyy.agreement.WlyySignFamily;
+import com.yihu.jw.wlyy.agreement.WlyySignFamilyDO;
 import com.yihu.jw.wlyy.dao.patient.AdvertisementDao;
-import com.yihu.jw.wlyy.patient.WlyyAdvertisement;
+import com.yihu.jw.wlyy.patient.WlyyAdvertisementDO;
 import com.yihu.jw.wlyy.service.BaseSaasService;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ import java.util.List;
  * Created by Administrator on 2017/6/6 0006.
  */
 @Service
-public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, AdvertisementDao> {
+public class AdvertisementService extends BaseJpaService<WlyyAdvertisementDO, AdvertisementDao> {
 
     private Logger logger= LoggerFactory.getLogger(AdvertisementService.class);
 
@@ -46,7 +46,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
     private BaseSaasService saasService;
 
     @Transient
-     public WlyyAdvertisement create(WlyyAdvertisement advertisement) {
+     public WlyyAdvertisementDO create(WlyyAdvertisementDO advertisement) {
         if (StringUtils.isEmpty(advertisement.getSaasId())) {
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
@@ -67,7 +67,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
     }
 
     @Transient
-    public WlyyAdvertisement update(WlyyAdvertisement advertisement) {
+    public WlyyAdvertisementDO update(WlyyAdvertisementDO advertisement) {
         if (StringUtils.isEmpty(advertisement.getSaasId())) {
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
@@ -85,7 +85,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_picture_is_null, ExceptionCode.common_error_params_code);
         }
         //根据id获取修改前的记录
-        WlyyAdvertisement advertisement1 = findById(id);
+        WlyyAdvertisementDO advertisement1 = findById(id);
         if(null == advertisement1){
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_wlyyAdvertisement_is_not_exist, ExceptionCode.common_error_params_code);
         }
@@ -96,13 +96,13 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
         return advertisementDao.save(advertisement);
     }
 
-    public WlyyAdvertisement findById(String id) {
+    public WlyyAdvertisementDO findById(String id) {
         return advertisementDao.findById(id);
     }
 
     @Transient
     public void delete(String id) {
-        WlyyAdvertisement advertisement = findById(id);
+        WlyyAdvertisementDO advertisement = findById(id);
         if(advertisement==null){
             throw new ApiException(WlyyRequestMapping.Advertisement.message_fail_wlyyAdvertisement_is_not_exist, ExceptionCode.common_error_params_code);
         }
@@ -116,12 +116,12 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      * @param request
      * @return
      */
-    public List<WlyyAdvertisement> getListByPatientId(String patientCode, HttpServletRequest request) {
-        List<WlyyAdvertisement> advertisements = null;
+    public List<WlyyAdvertisementDO> getListByPatientId(String patientCode, HttpServletRequest request) {
+        List<WlyyAdvertisementDO> advertisements = null;
         //查找已签约的,根据签约的saasId查找地区,获得广告
-        List<WlyySignFamily> signs =  signFamilyService.findByPatientCode(patientCode,1);
+        List<WlyySignFamilyDO> signs =  signFamilyService.findByPatientCode(patientCode,1);
         if(signs!=null){
-            for(WlyySignFamily sign:signs){
+            for(WlyySignFamilyDO sign:signs){
                 String saasCode = sign.getSaasId();
                 if(!StringUtils.isEmpty(sign.getSaasId())){
                     advertisements = getListBySaasId(saasCode);
@@ -141,7 +141,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      * @param saasCode
      * @return
      */
-    public List<WlyyAdvertisement> getListBySaasId(String saasCode){
+    public List<WlyyAdvertisementDO> getListBySaasId(String saasCode){
         return advertisementDao.getListBySaasId(saasCode);
     }
 
@@ -149,7 +149,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      * 查找默认广告
      * @return
      */
-    private List<WlyyAdvertisement> getDefaultList(){
+    private List<WlyyAdvertisementDO> getDefaultList(){
         return advertisementDao.getDefaultList();
     }
 
@@ -158,7 +158,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      * @param request
      * @return
      */
-    public  List<WlyyAdvertisement> getByHttp(HttpServletRequest request){
+    public  List<WlyyAdvertisementDO> getByHttp(HttpServletRequest request){
         String ipAddress = CusAccessObjectUtil.getIpAddress(request);
         logger.info("-------------请求的ip地址为:"+ipAddress+"--------------");
         AddressUtils addressUtils = new AddressUtils();
@@ -170,7 +170,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                 return  getDefaultList();
             }else{
                 String cityName = addresses[3];
-                Saas saas = saasService.findByName(cityName);//成都市
+                SaasDO saas = saasService.findByName(cityName);//成都市
                 if(saas ==null){
                     cityName = cityName.substring(0,cityName.length()-1);//成都
                     saas = saasService.findByName(cityName);
@@ -194,7 +194,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
      * @param ipaddress
      * @return
      */
-    public  List<WlyyAdvertisement> getListByIp(String ipaddress){
+    public  List<WlyyAdvertisementDO> getListByIp(String ipaddress){
         try {
             logger.info("-------------请求的ip地址为:"+ipaddress+"--------------");
             AddressUtils addressUtils = new AddressUtils();
@@ -205,7 +205,7 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisement, Adve
                 return  getDefaultList();
             }else{
                 String cityName = addresses[3];
-                Saas saas = saasService.findByName(cityName);//成都市
+                SaasDO saas = saasService.findByName(cityName);//成都市
                 if(saas ==null){
                     cityName = cityName.substring(0,cityName.length()-1);//成都
                     saas = saasService.findByName(cityName);

@@ -7,7 +7,7 @@ import com.yihu.jw.business.wx.dao.WxTemplateDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.rm.wx.WechatRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import com.yihu.jw.util.HttpUtil;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -22,7 +22,7 @@ import java.util.*;
  * Created by Administrator on 2017/5/19 0019.
  */
 @Service
-public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao> {
+public class WxTemplateService extends BaseJpaService<WxTemplateDO, WxTemplateDao> {
 
     private Logger logger= LoggerFactory.getLogger(WxTemplateService.class);
 
@@ -35,7 +35,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     @Autowired
     private WechatService wechatService;
 
-    public WxTemplate createWxTemplate(WxTemplate wxTemplate) {
+    public WxTemplateDO createWxTemplate(WxTemplateDO wxTemplate) {
         if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
             throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_templateid_is_null, ExceptionCode.common_error_params_code);
         }
@@ -49,7 +49,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         return wxTemplateDao.save(wxTemplate);
     }
 
-    public WxTemplate updateWxTemplate(WxTemplate wxTemplate) {
+    public WxTemplateDO updateWxTemplate(WxTemplateDO wxTemplate) {
         if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
             throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_templateid_is_null, ExceptionCode.common_error_params_code);
         }
@@ -61,7 +61,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(WechatRequestMapping.WxConfig.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        WxTemplate wxTemplate1 = findById(id);
+        WxTemplateDO wxTemplate1 = findById(id);
         if(wxTemplate1==null){
             throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_template_is_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -77,7 +77,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         if(!StringUtils.isEmpty(codes)) {
             String[] codeArray = codes.split(",");
             for (String code : codeArray) {
-                WxTemplate wxTemplate = wxTemplateDao.findById(code);
+                WxTemplateDO wxTemplate = wxTemplateDao.findById(code);
                 if (wxTemplate == null) {
                     throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
                 }
@@ -90,15 +90,15 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
     }
 
 
-    public WxTemplate findById(String id) {
-        WxTemplate wxTemplate = wxTemplateDao.findById(id);
+    public WxTemplateDO findById(String id) {
+        WxTemplateDO wxTemplate = wxTemplateDao.findById(id);
         return wxTemplate;
     }
 
     public JSONObject sendTemplateMessage(String openid, String templateId, String url, String data,Miniprogram miniprogram) {
         try {
             //首先根据wechatTemplate获取微信模版
-            WxTemplate wxTemplate = findById(templateId);
+            WxTemplateDO wxTemplate = findById(templateId);
             if(wxTemplate==null){
                 throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_template_is_no_exist, ExceptionCode.common_error_params_code);
             }
@@ -114,17 +114,17 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
 
             ObjectMapper mapper = new ObjectMapper();
             ////将data转为对象
-            Map<String, WechatTemplateData> dataMap = mapper.readValue(data, new TypeReference<LinkedHashMap<String, WechatTemplateData>>() {});
-            Map<String, WechatTemplateData> newDataMap = new LinkedHashMap<String, WechatTemplateData>();
+            Map<String, WechatTemplateDataDO> dataMap = mapper.readValue(data, new TypeReference<LinkedHashMap<String, WechatTemplateDataDO>>() {});
+            Map<String, WechatTemplateDataDO> newDataMap = new LinkedHashMap<String, WechatTemplateDataDO>();
             int j = 0;
-            for (Map.Entry<String, WechatTemplateData> entry : dataMap.entrySet()) {//(keyword1,WechatTemplateData)
+            for (Map.Entry<String, WechatTemplateDataDO> entry : dataMap.entrySet()) {//(keyword1,WechatTemplateData)
                 String key = entry.getKey();//keyword1   转为result
                 newDataMap.put(contentList.get(j),entry.getValue());
                 j++;
             }
 
             //将数据封装在WechatTemplate对象中
-            WechatTemplate wechatTemplate = new WechatTemplate();
+            WechatTemplateDO wechatTemplate = new WechatTemplateDO();
             wechatTemplate.setTouser(openid);
             wechatTemplate.setUrl(url);
             wechatTemplate.setTemplate_id(wxTemplate.getTemplateId());
@@ -136,7 +136,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
             String params = mapper.writeValueAsString(wechatTemplate);
             logger.info("----------------------模版消息json字符串:"+params+"------------------");
 
-            WxAccessToken wxAccessTokenByCode = wxAccessTokenService.getWxAccessTokenById(wechatCode);
+            WxAccessTokenDO wxAccessTokenByCode = wxAccessTokenService.getWxAccessTokenById(wechatCode);
             String token = wxAccessTokenByCode.getAccessToken();
             String token_url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" + token;
             String result = HttpUtil.sendPost(token_url, params);
@@ -151,7 +151,7 @@ public class WxTemplateService extends BaseJpaService<WxTemplate, WxTemplateDao>
         }
     }
 
-    public List<WxTemplate> findByWxId(String code) {
+    public List<WxTemplateDO> findByWxId(String code) {
         return wxTemplateDao.findByWxId(code);
     }
 }

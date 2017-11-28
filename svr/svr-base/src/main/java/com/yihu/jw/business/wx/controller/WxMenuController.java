@@ -1,7 +1,7 @@
 package com.yihu.jw.business.wx.controller;
 
-import com.yihu.jw.base.wx.WxMenu;
-import com.yihu.jw.base.wx.WxWechat;
+import com.yihu.jw.base.wx.WxMenuDO;
+import com.yihu.jw.base.wx.WxWechatDO;
 import com.yihu.jw.business.wx.WechatResponse;
 import com.yihu.jw.business.wx.service.WechatService;
 import com.yihu.jw.business.wx.service.WxMenuService;
@@ -10,7 +10,7 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.base.wx.MWxMenu;
 import com.yihu.jw.restmodel.base.wx.MWxWechat;
-import com.yihu.jw.rm.wx.WechatRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -46,7 +46,7 @@ public class WxMenuController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
+            WxMenuDO wxMenu = toEntity(jsonData, WxMenuDO.class);
             return Envelop.getSuccess(WechatRequestMapping.WxMenu.message_success_create, wxMenuService.createWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -59,7 +59,7 @@ public class WxMenuController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            WxMenu wxMenu = toEntity(jsonData, WxMenu.class);
+            WxMenuDO wxMenu = toEntity(jsonData, WxMenuDO.class);
             return Envelop.getSuccess(WechatRequestMapping.WxMenu.message_success_update, wxMenuService.updateWxMenu(wxMenu));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -118,9 +118,9 @@ public class WxMenuController extends EnvelopRestController {
         }
 
         //得到微信列表数据
-        List<WxWechat> wechats = wechatService.search(fields, filters, sorts, page, size);
-        for(WxWechat wechat:wechats){
-            List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechat.getId());
+        List<WxWechatDO> wechats = wechatService.search(fields, filters, sorts, page, size);
+        for(WxWechatDO wechat:wechats){
+            List<WxMenuDO> parentMenus = wxMenuService.findParentMenuByWechatCode(wechat.getId());
             if (parentMenus.size()>0){
                 wechat.setState("closed");
             }else{
@@ -152,9 +152,9 @@ public class WxMenuController extends EnvelopRestController {
             filters = "supMenucode=0;";
         }
         //得到list数据
-        List<WxMenu> list = wxMenuService.search(fields,filters,sorts);
-        for(WxMenu wxMenu:list){
-            List<WxMenu> childMenus = wxMenuService.findChildMenus(wxMenu.getId());
+        List<WxMenuDO> list = wxMenuService.search(fields,filters,sorts);
+        for(WxMenuDO wxMenu:list){
+            List<WxMenuDO> childMenus = wxMenuService.findChildMenus(wxMenu.getId());
             wxMenu.setChildren(childMenus);
         }
         //封装返回格式
@@ -199,9 +199,9 @@ public class WxMenuController extends EnvelopRestController {
             @PathVariable(value = "wechatId", required = true) String wechatId
     ) {
         try {
-            List<WxMenu> parentMenus = wxMenuService.findParentMenuByWechatCode(wechatId);
-            for(WxMenu parentMenu:parentMenus){
-                List<WxMenu> childMenus = wxMenuService.findChildMenus(parentMenu.getId());
+            List<WxMenuDO> parentMenus = wxMenuService.findParentMenuByWechatCode(wechatId);
+            for(WxMenuDO parentMenu:parentMenus){
+                List<WxMenuDO> childMenus = wxMenuService.findChildMenus(parentMenu.getId());
                 if (childMenus.size()>0){
                     parentMenu.setState("closed");
                 }else{

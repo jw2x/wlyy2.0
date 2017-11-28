@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @RestController
-@RequestMapping(BaseContants.api_common)
+@RequestMapping(BaseContants.api_function)
 @Api(value = "功能管理", description = "功能管理")
 public class FunctionController extends EnvelopRestController {
 

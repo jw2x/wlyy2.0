@@ -59,7 +59,7 @@ public class DemoController {
         return Envelop.getSuccess("请求成功");
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/hello2")
     @ResponseBody
     public String hello2(String id) throws Exception {
         System.out.println("haha2.........");

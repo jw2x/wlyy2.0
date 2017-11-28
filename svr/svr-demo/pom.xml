@@ -27,8 +27,8 @@
             <artifactId>common-data-mysql</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-quartz</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
     </dependencies>
 </project>

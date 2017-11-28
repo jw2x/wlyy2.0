@@ -1,13 +1,13 @@
 package com.yihu.jw.business.base.service;
 
-import com.yihu.jw.base.base.ModuleFunction;
+import com.yihu.jw.base.base.ModuleFunctionDO;
 import com.yihu.jw.business.base.dao.FunctionDao;
 import com.yihu.jw.business.base.dao.ModuleFunctionDao;
-import com.yihu.jw.base.base.Function;
+import com.yihu.jw.base.base.FunctionDO;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.restmodel.base.base.MFunction;
+import com.yihu.jw.restmodel.base.base.FunctionVO;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -24,7 +24,7 @@ import java.util.Map;
  * Created by chenweida on 2017/5/19.
  */
 @Service
-public class FunctionService extends BaseJpaService<Function, FunctionDao> {
+public class FunctionService extends BaseJpaService<FunctionDO, FunctionDao> {
     @Autowired
     private FunctionDao functionDao;
     @Autowired
@@ -35,14 +35,14 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     private JdbcTemplate jdbcTemplate;
 
     @Transactional
-    public Function createFunction(Function function) throws ApiException {
+    public FunctionDO createFunction(FunctionDO function) throws ApiException {
         if (StringUtils.isEmpty(function.getId())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(function.getName())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
-        Function functionTmp = functionDao.findByName(function.getName());
+        FunctionDO functionTmp = functionDao.findByName(function.getName());
         if (functionTmp != null) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
@@ -50,22 +50,22 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
     }
 
     @Transactional
-    public Function updateFunction(Function function) {
+    public FunctionDO updateFunction(FunctionDO function) {
         if (StringUtils.isEmpty(function.getName())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_name_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(function.getId())) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
-        Function functionTmp = functionDao.findByNameExcludeId(function.getName(), function.getId());
+        FunctionDO functionTmp = functionDao.findByNameExcludeId(function.getName(), function.getId());
         if (functionTmp != null) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_name_exist, ExceptionCode.common_error_params_code);
         }
         return functionDao.save(function);
     }
 
-    public Function findById(String id) {
-        Function function = functionDao.findById(id);
+    public FunctionDO findById(String id) {
+        FunctionDO function = functionDao.findById(id);
         if (function == null) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -74,7 +74,7 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
 
     @Transactional
     public void deleteFunction(String id) {
-        Function function = functionDao.findById(id);
+        FunctionDO function = functionDao.findById(id);
         if (function == null) {
             throw new ApiException(BaseRequestMapping.Function.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
@@ -87,9 +87,9 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
         moduleFunctionDao.deleteByModuleId(moduleId);
         //分配新的功能
         String [] functionCodeArr=functionIds.split(",");
-        List<ModuleFunction> saasModuleList=new ArrayList<>();
+        List<ModuleFunctionDO> saasModuleList=new ArrayList<>();
         for(String functionId:functionCodeArr){
-            ModuleFunction saasModule=new ModuleFunction();
+            ModuleFunctionDO saasModule=new ModuleFunctionDO();
             saasModule.setModuleId(moduleId);
             saasModule.setFunctionId(functionId);
             saasModuleList.add(saasModule);
@@ -97,9 +97,9 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
         moduleFunctionDao.save(saasModuleList);
     }
 
-    public List<MFunction> getModuleFunctions(String saasId) {
+    public List<FunctionVO> getModuleFunctions(String saasId) {
         String sql=" select m.code,m.parent_code,m.name from base_function f,base_module_function mf where f.code=mf.function_id and f.status=1 and mf.module_id=?";
-        return jdbcTemplate.queryForList(sql,MFunction.class,saasId);
+        return jdbcTemplate.queryForList(sql,FunctionVO.class,saasId);
     }
 
     /**
@@ -107,16 +107,16 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
      * @param code
      * @return
      */
-    public List<Function> getChildren(String code){
-        List<Function> childrens = functionDao.getChildren(code);
-        for(Function children:childrens){
-            List<Function> children1 = functionDao.getChildren(children.getId());//判断子节点是否有孙节点
+    public List<FunctionDO> getChildren(String code){
+        List<FunctionDO> childrens = functionDao.getChildren(code);
+        for(FunctionDO children:childrens){
+            List<FunctionDO> children1 = functionDao.getChildren(children.getId());//判断子节点是否有孙节点
             children.setChildren(children1);
         }
         return childrens;
     }
 
-    public List<Function> findAll(){
+    public List<FunctionDO> findAll(){
         return functionDao.findAll();
     }
 
@@ -125,10 +125,10 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
      * @return
      */
     public Map<String,String> getName(){
-        List<Function> functions = findAll();
+        List<FunctionDO> functions = findAll();
         Map<String, String> map = new HashMap<>();
         if(null!=functions){
-            for(Function function: functions){
+            for(FunctionDO function: functions){
                 map.put(function.getId(),function.getName());
             }
         }
@@ -140,10 +140,10 @@ public class FunctionService extends BaseJpaService<Function, FunctionDao> {
      * @param id
      * @return
      */
-    public Function getAllChildren(String id){
-        Function function = functionDao.findById(id);
-        List<Function> childrens = functionDao.getChildren(id);
-        for(Function children:childrens){
+    public FunctionDO getAllChildren(String id){
+        FunctionDO function = functionDao.findById(id);
+        List<FunctionDO> childrens = functionDao.getChildren(id);
+        for(FunctionDO children:childrens){
             getAllChildren(children.getId());
         }
         function.setChildren(childrens);

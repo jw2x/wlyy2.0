@@ -1,10 +1,10 @@
 package com.yihu.jw.business.base.controller;
 
-import com.yihu.jw.base.base.Function;
+import com.yihu.jw.base.base.FunctionDO;
 import com.yihu.jw.business.base.service.FunctionService;
 import com.yihu.jw.business.base.service.ModuleFunService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.base.base.MFunction;
+import com.yihu.jw.restmodel.base.base.FunctionVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.base.BaseRequestMapping;
@@ -25,7 +25,7 @@ import java.util.List;
  * Created by chenweida on 2017/5/19.
  */
 @RestController
-@RequestMapping(BaseRequestMapping.api_common)
+@RequestMapping(BaseRequestMapping.api_base_common)
 @Api(value = "功能模块", description = "功能模块接口管理")
 public class FunctionController extends EnvelopRestController {
     @Autowired
@@ -39,7 +39,7 @@ public class FunctionController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Function function = toEntity(jsonData, Function.class);
+            FunctionDO function = toEntity(jsonData, FunctionDO.class);
             return Envelop.getSuccess(BaseRequestMapping.Function.message_success_create, functionService.createFunction(function));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -52,7 +52,7 @@ public class FunctionController extends EnvelopRestController {
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
-            Function function = toEntity(jsonData, Function.class);
+            FunctionDO function = toEntity(jsonData, FunctionDO.class);
             return Envelop.getSuccess(BaseRequestMapping.Function.message_success_update, functionService.updateFunction(function));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -112,10 +112,10 @@ public class FunctionController extends EnvelopRestController {
         }
 
         //得到list数据
-        List<Function> list = functionService.search(fields, filters, sorts, page, size);
+        List<FunctionDO> list = functionService.search(fields, filters, sorts, page, size);
         if(list!=null){
-            for(Function func:list){//循环遍历,设置是否有子节点
-                List<Function> children = functionService.getChildren(func.getId());
+            for(FunctionDO func:list){//循环遍历,设置是否有子节点
+                List<FunctionDO> children = functionService.getChildren(func.getId());
                 func.setChildren(children);
             }
         }
@@ -125,7 +125,7 @@ public class FunctionController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MFunction> mFunctions = convertToModels(list, new ArrayList<>(list.size()), MFunction.class, fields);
+        List<FunctionVO> mFunctions = convertToModels(list, new ArrayList<>(list.size()), FunctionVO.class, fields);
 
         return Envelop.getSuccessListWithPage(BaseRequestMapping.Function.message_success_find_functions,mFunctions, page, size,count);
     }
@@ -141,17 +141,17 @@ public class FunctionController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<Function> list = functionService.search(fields,filters,sorts);
+        List<FunctionDO> list = functionService.search(fields,filters,sorts);
         List<Object> functions = new ArrayList<>();
         if(list!=null){
-            for(Function func:list){
+            for(FunctionDO func:list){
                 String code = func.getId();
                 func = functionService.getAllChildren(code);
                 functions.add(func);
             }
         }
         //封装返回格式
-        List<MFunction> mFunctions = convertToModels(functions, new ArrayList<>(functions.size()), MFunction.class, fields);
+        List<FunctionVO> mFunctions = convertToModels(functions, new ArrayList<>(functions.size()), FunctionVO.class, fields);
         return Envelop.getSuccessList(BaseRequestMapping.Function.message_success_find_functions,mFunctions);
     }
 
@@ -185,7 +185,7 @@ public class FunctionController extends EnvelopRestController {
     @GetMapping(value =BaseRequestMapping.Function.api_getChildren )
     @ApiOperation(value="查找子节点")
     public Envelop getChildren(@PathVariable String code){
-        List<Function> children = functionService.getChildren(code);
+        List<FunctionDO> children = functionService.getChildren(code);
         return Envelop.getSuccess("查询成功",children);
     }
 }
