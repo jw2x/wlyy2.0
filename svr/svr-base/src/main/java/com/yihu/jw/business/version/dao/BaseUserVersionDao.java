@@ -8,7 +8,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by chenweida on 2017/11/13.
  */
-public interface UserVersionDao extends PagingAndSortingRepository<BaseUserVersionDO, String>, JpaSpecificationExecutor<BaseUserVersionDO> {
+public interface BaseUserVersionDao extends PagingAndSortingRepository<BaseUserVersionDO, String>, JpaSpecificationExecutor<BaseUserVersionDO> {
     @Query("from BaseUserVersionDO where userId=?1")
     BaseUserVersionDO getUserVersionByUserId(String userId);
 }

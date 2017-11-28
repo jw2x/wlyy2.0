@@ -1,11 +1,9 @@
-package com.yihu.jw.wlyy.doctor;// default package
+package com.yihu.jw.wlyy.hospital;// default package
 
 import com.yihu.jw.IdEntityWithOperation;
 
-import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**

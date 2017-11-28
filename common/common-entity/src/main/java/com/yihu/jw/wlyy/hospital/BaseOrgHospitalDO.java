@@ -1,8 +1,7 @@
-package com.yihu.jw.wlyy.doctor;
+package com.yihu.jw.wlyy.hospital;
 
 
 
-import com.yihu.jw.IdEntity;
 import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
