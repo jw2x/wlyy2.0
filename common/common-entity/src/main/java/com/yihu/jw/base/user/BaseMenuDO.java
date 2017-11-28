@@ -17,7 +17,8 @@ import javax.persistence.Table;
 public class BaseMenuDO extends IdEntityWithOperation implements java.io.Serializable {
 
 	// Fields
-
+	private String url;//请求路径
+	private String method;//请求方式 get post
 	private String saasId;
 	private String parentId;
 	private String name;
@@ -104,4 +105,21 @@ public class BaseMenuDO extends IdEntityWithOperation implements java.io.Seriali
 		this.remark = remark;
 	}
 
+	@Column(name = "url", length = 255)
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	@Column(name = "method", length = 255)
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
 }
