@@ -19,6 +19,7 @@ import java.util.Date;
 @Table(name = "base_login_account")
 public class BaseLoginAccountDO extends IdEntity implements java.io.Serializable {
 
+	private String userName;//'账号
 	private String userType;//'用户类型 1居民 2医生 或者行政管理员'
 	private String password;//'密码'
 	private String salt;//'盐值'
@@ -26,7 +27,14 @@ public class BaseLoginAccountDO extends IdEntity implements java.io.Serializable
 	private String saasId;//'saas配置id'
 	private String email;//'邮箱'
 
+	@Column(name = "user_name", length = 50)
+	public String getUserName() {
+		return userName;
+	}
 
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
 	@CreatedDate
 	@Column(name = "create_time", nullable = false, length = 0,updatable = false)

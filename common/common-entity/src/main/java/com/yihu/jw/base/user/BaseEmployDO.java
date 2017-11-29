@@ -17,24 +17,24 @@ public class BaseEmployDO extends IdEntityWithOperation implements java.io.Seria
 
 	// Fields
 
-	private String saasId;
-	private String name;
-	private String pyCode;
-	private String sex;
-	private String photo;
-	private String skill;
-	private String workPortal;
-	private String email;
-	private String phone;
-	private String secondPhone;
-	private String familyTel;
-	private String officeTel;
-	private String introduction;
-	private String jxzc;
-	private String lczc;
-	private String xlzc;
-	private String xzzc;
-	private Integer status;
+	private String saasId; //saasIDF
+	private String name; //名字
+	private String pyCode; //拼音
+	private String sex; //性别
+	private String photo; //头像
+	private String skill;//专长
+	private String workPortal;//医生门户首页
+	private String email;//邮箱
+	private String phone;//联系电话
+	private String secondPhone;//备用电话
+	private String familyTel;//家庭电话（固）
+	private String officeTel;//办公电话（固）
+	private String introduction;//简介
+	private String jxzc;//教学职称
+	private String lczc;//临床职称
+	private String xlzc;//学历职称
+	private String xzzc;//行政职称
+	private Integer status;//-1 删除 0 禁用 1可用
 
 	// Constructors
 

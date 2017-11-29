@@ -19,47 +19,15 @@ public class LoginController {
     private Tracer tracer;
 
 
-    @GetMapping(value = "/doctorlogin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "医生登陆", notes = "医生登陆")
-    public Envelop doctorlogin(
-            @ApiParam(name = "account", value = "账号", defaultValue = "") @RequestParam(name = "account", required = true) String account,
-            @ApiParam(name = "password", value = "密码", defaultValue = "") @RequestParam(name = "password", required = true) String password,
-            @ApiParam(name = "type", value = "登陆方式(默认1)：1账号密码 2账号验证码", defaultValue = "") @RequestParam(name = "type", required = true, defaultValue = "1") Integer type) throws Exception {
-        //获取用户信息
-
-        //判断用户是否存在
-
-        //判断密码是否正确
-
-        //获取用户的版本信息
-
-        //获取用户的模块信息
-
-        //用户登陆的信息放入缓存中
-
-        //保存登陆日志
-
-        return null;
-    }
-
-
     @GetMapping(value = "/employLogin", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "患者登陆", notes = "患者登陆")
     public Envelop employLogin(
-            @ApiParam(name = "account", value = "账号", defaultValue = "") @RequestParam(name = "account", required = true) String account,
-            @ApiParam(name = "password", value = "密码", defaultValue = "") @RequestParam(name = "password", required = true) String password,
-            @ApiParam(name = "type", value = "登陆方式(默认1)：1账号密码 2账号验证码", defaultValue = "") @RequestParam(name = "type", required = true, defaultValue = "1") Integer type) throws Exception {
-        //获取用户信息
-
-        //判断用户是否存在
-
-        //判断密码是否正确
-
-        //获取用户的版本信息
-
-        //用户登陆的信息放入缓存中
-
-        //保存登陆日志
+            @ApiParam(name = "account", value = "账号", defaultValue = "")
+            @RequestParam(name = "account", required = true) String account,
+            @ApiParam(name = "password", value = "密码", defaultValue = "")
+            @RequestParam(name = "password", required = true) String password,
+            @ApiParam(name = "type", value = "登陆方式(默认1)：1账号密码 2账号验证码", defaultValue = "")
+            @RequestParam(name = "type", required = false, defaultValue = "1") Integer type) throws Exception {
 
         return null;
     }

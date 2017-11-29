@@ -3,7 +3,7 @@ package com.yihu.jw.business.sms.controller;
 import com.yihu.jw.base.sms.BaseSmsDO;
 import com.yihu.jw.business.sms.service.SmsService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.base.sms.MSms;
+import com.yihu.jw.restmodel.base.sms.SmsVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.base.BaseSmsRequestMapping;
@@ -30,15 +30,15 @@ public class SmsController extends EnvelopRestController {
     private SmsService smsService;
 
     @PostMapping(value = BaseSmsRequestMapping.Sms.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建短信", notes = "创建单个短信")
-    public Envelop createSms(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
-        try {
-            BaseSmsDO sms = toEntity(jsonData, BaseSmsDO.class);
-            return Envelop.getSuccess(BaseSmsRequestMapping.Sms.message_success_create, smsService.createSms(sms));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+            @ApiOperation(value = "创建短信", notes = "创建单个短信")
+            public Envelop createSms(
+                    @ApiParam(name = "json_data", value = "", defaultValue = "")
+                    @RequestBody String jsonData) {
+                try {
+                    BaseSmsDO sms = toEntity(jsonData, BaseSmsDO.class);
+                    return Envelop.getSuccess(BaseSmsRequestMapping.Sms.message_success_create, smsService.createSms(sms));
+                } catch (ApiException e) {
+                    return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
@@ -79,7 +79,7 @@ public class SmsController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MSms> mSmss = convertToModels(list, new ArrayList<>(list.size()), MSms.class, fields);
+        List<SmsVO> mSmss = convertToModels(list, new ArrayList<>(list.size()), SmsVO.class, fields);
 
         return Envelop.getSuccessListWithPage(BaseSmsRequestMapping.Sms.message_success_find_smss,mSmss, page, size,count);
     }
@@ -97,7 +97,7 @@ public class SmsController extends EnvelopRestController {
         //得到list数据
         List<BaseSmsDO> list = smsService.search(fields,filters,sorts);
         //封装返回格式
-        List<MSms> mSmss = convertToModels(list, new ArrayList<>(list.size()), MSms.class, fields);
+        List<SmsVO> mSmss = convertToModels(list, new ArrayList<>(list.size()), SmsVO.class, fields);
         return Envelop.getSuccessList(BaseSmsRequestMapping.Sms.message_success_find_smss,mSmss);
     }
 }

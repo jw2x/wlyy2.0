@@ -3,7 +3,7 @@ package com.yihu.jw.business.sms.controller;
 import com.yihu.jw.base.sms.BaseSmsGatewayDO;
 import com.yihu.jw.business.sms.service.SmsGatewayService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.base.sms.MSmsGateway;
+import com.yihu.jw.restmodel.base.sms.SmsGatewayVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.base.BaseSmsRequestMapping;
@@ -104,7 +104,7 @@ public class SmsGatewayController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MSmsGateway> mSmsGateways = convertToModels(list, new ArrayList<>(list.size()), MSmsGateway.class, fields);
+        List<SmsGatewayVO> mSmsGateways = convertToModels(list, new ArrayList<>(list.size()), SmsGatewayVO.class, fields);
 
         return Envelop.getSuccessListWithPage(BaseSmsRequestMapping.SmsGateway.message_success_find_SmsGateways,mSmsGateways, page, size,count);
     }
@@ -122,7 +122,7 @@ public class SmsGatewayController extends EnvelopRestController {
         //得到list数据
         List<BaseSmsGatewayDO> list = smsGatewayService.search(fields,filters,sorts);
         //封装返回格式
-        List<MSmsGateway> mSmsGateways = convertToModels(list, new ArrayList<>(list.size()), MSmsGateway.class, fields);
+        List<SmsGatewayVO> mSmsGateways = convertToModels(list, new ArrayList<>(list.size()), SmsGatewayVO.class, fields);
         return Envelop.getSuccessList(BaseSmsRequestMapping.SmsGateway.message_success_find_SmsGateways,mSmsGateways);
     }
 }
