@@ -3,7 +3,6 @@ package com.yihu.jw.business.base.controller;
 import com.yihu.jw.base.base.SaasDO;
 import com.yihu.jw.business.base.service.SaasService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.base.base.MSaas;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.base.BaseRequestMapping;
@@ -105,7 +104,7 @@ public class SaasController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MSaas> mSaass = convertToModels(list, new ArrayList<>(list.size()), MSaas.class, fields);
+        List<SaasDO> mSaass = convertToModels(list, new ArrayList<>(list.size()), SaasDO.class, fields);
 
         return Envelop.getSuccessListWithPage(BaseRequestMapping.Saas.message_success_find_saass, mSaass, page, size, count);
     }
@@ -123,7 +122,7 @@ public class SaasController extends EnvelopRestController {
         //得到list数据
         List<SaasDO> list = saasService.search(fields, filters, sorts);
         //封装返回格式
-        List<MSaas> mSaass = convertToModels(list, new ArrayList<>(list.size()), MSaas.class, fields);
+        List<SaasDO> mSaass = convertToModels(list, new ArrayList<>(list.size()), SaasDO.class, fields);
         return Envelop.getSuccessList(BaseRequestMapping.Saas.message_success_find_saass, mSaass);
     }
 }
