@@ -36,8 +36,6 @@ public class AdvertisementService extends BaseJpaService<WlyyAdvertisementDO, Ad
     @Autowired
     private AdvertisementDao advertisementDao;
 
-    @Autowired
-    private PatientService patientService;
 
     @Autowired
     private WlyySignFamilyService signFamilyService;
