@@ -95,4 +95,29 @@ public class BaseRequestMapping {
         public static final String api_getSaassNoPage="/getSaassNoPage";
 
     }
+
+    //d行政人员模块
+    public static class Employee{
+        public static final String message_success_create="employee create success";
+        public static final String message_success_update="employee update success";
+        public static final String message_success_find="employee find success";
+        public static final String message_success_find_saass="employee find success";
+        public static final String message_success_delete="employee delete success";
+
+
+        public static final String message_fail_name_exist="employee name exist";
+        public static final String message_fail_name_is_null="name is null";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_id_no_exist="id no exist";
+
+
+        public static final String api_create="/employee";
+        public static final String api_update="/employee";
+        public static final String api_delete="/employee";
+        public static final String api_getById="/getById";
+        public static final String api_getEmployee="/getEmployee";
+        public static final String api_getEmployeeByAccount="/getEmployeeByAccount";
+        public static final String api_getEmployeeNoPage="/getEmployeeNoPage";
+
+    }
 }
