@@ -5,7 +5,7 @@ import com.yihu.jw.business.wx.service.WxGraphicMessageService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.base.wx.MWxGraphicMessage;
+import com.yihu.jw.restmodel.base.wx.WxGraphicMessageVO;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -114,9 +114,9 @@ public class WxGraphicMessageController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MWxGraphicMessage> mWxGraphicMessages = convertToModels(list, new ArrayList<>(list.size()), MWxGraphicMessage.class, fields);
+        List<WxGraphicMessageVO> WxGraphicMessageVOs = convertToModels(list, new ArrayList<>(list.size()), WxGraphicMessageVO.class, fields);
 
-        return Envelop.getSuccessListWithPage(WechatRequestMapping.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages, page, size,count);
+        return Envelop.getSuccessListWithPage(WechatRequestMapping.WxGraphicMessage.message_success_find_functions,WxGraphicMessageVOs, page, size,count);
     }
 
 
@@ -132,8 +132,8 @@ public class WxGraphicMessageController extends EnvelopRestController {
         //得到list数据
         List<WxGraphicMessageDO> list = wxGraphicMessageService.search(fields,filters,sorts);
         //封装返回格式
-        List<MWxGraphicMessage> mWxGraphicMessages = convertToModels(list, new ArrayList<>(list.size()), MWxGraphicMessage.class, fields);
-        return Envelop.getSuccessList(WechatRequestMapping.WxGraphicMessage.message_success_find_functions,mWxGraphicMessages);
+        List<WxGraphicMessageVO> WxGraphicMessageVOs = convertToModels(list, new ArrayList<>(list.size()), WxGraphicMessageVO.class, fields);
+        return Envelop.getSuccessList(WechatRequestMapping.WxGraphicMessage.message_success_find_functions,WxGraphicMessageVOs);
     }
 
     //@GetMapping(value = WlyyContants.WxGraphicMessage.api_sendGraphicMessages)
