@@ -8,8 +8,8 @@ import com.yihu.jw.business.wx.service.WxMenuService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.base.wx.MWxMenu;
-import com.yihu.jw.restmodel.base.wx.MWxWechat;
+import com.yihu.jw.restmodel.base.wx.WxMenuVO;
+import com.yihu.jw.restmodel.base.wx.WxWechatVO;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -132,7 +132,7 @@ public class WxMenuController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MWxWechat> mwechats = convertToModels(wechats, new ArrayList<>(wechats.size()), MWxWechat.class, fields);
+        List<WxWechatVO> mwechats = convertToModels(wechats, new ArrayList<>(wechats.size()), WxWechatVO.class, fields);
         return Envelop.getSuccessListWithPage(WechatRequestMapping.WxMenu.message_success_find_functions,mwechats, page, size,count);
     }
 
@@ -158,12 +158,12 @@ public class WxMenuController extends EnvelopRestController {
             wxMenu.setChildren(childMenus);
         }
         //封装返回格式
-        List<MWxMenu> mWxMenus = convertToModels(list, new ArrayList<>(list.size()), MWxMenu.class, fields);
+        List<WxMenuVO> WxMenuVOs = convertToModels(list, new ArrayList<>(list.size()), WxMenuVO.class, fields);
         Map<String, String> map = wechatService.getAllWechatConfig();
-        for(MWxMenu menu:mWxMenus){
+        for(WxMenuVO menu:WxMenuVOs){
             menu.setWechatName(map.get(menu.getWechatCode()));
         }
-        return Envelop.getSuccessList(WechatRequestMapping.WxMenu.message_success_find_functions,mWxMenus);
+        return Envelop.getSuccessList(WechatRequestMapping.WxMenu.message_success_find_functions,WxMenuVOs);
     }
 
     /**

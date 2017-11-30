@@ -7,7 +7,7 @@ import com.yihu.jw.business.base.dao.SaasModuleDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.restmodel.base.base.MModule;
+import com.yihu.jw.restmodel.base.base.ModuleVO;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -99,9 +99,9 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
         saasModuleDao.save(saasModuleList);
     }
 
-    public List<MModule> getSaasModules(String saasCode) {
+    public List<ModuleVO> getSaasModules(String saasCode) {
         String sql=" select m.code,m.parent_code,m.name from base_module m,base_saas_module sm where m.code=sm.module_id and m.status=1 and sm.saas_id=?";
-       return jdbcTemplate.queryForList(sql,MModule.class,saasCode);
+       return jdbcTemplate.queryForList(sql,ModuleVO.class,saasCode);
     }
 
     public List<ModuleDO> getChildren(String code){
