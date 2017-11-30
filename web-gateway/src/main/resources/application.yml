@@ -14,6 +14,7 @@ feign:
     enabled: true
 
 
+
 management:
   security:
     enabled: false  #关闭 refresh的权限认证
