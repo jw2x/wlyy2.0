@@ -3,7 +3,7 @@ package com.yihu.jw.business.base.controller;
 import com.yihu.jw.base.base.ModuleDO;
 import com.yihu.jw.business.base.service.ModuleService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.base.base.MModule;
+import com.yihu.jw.restmodel.base.base.ModuleVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.base.BaseRequestMapping;
@@ -129,9 +129,9 @@ public class ModuleController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MModule> mModules = convertToModels(list, new ArrayList<>(list.size()), MModule.class, fields);
+        List<ModuleVO> ModuleVOs = convertToModels(list, new ArrayList<>(list.size()), ModuleVO.class, fields);
 
-        return Envelop.getSuccessListWithPage(BaseRequestMapping.Module.message_success_find_Modules,mModules, page, size,count);
+        return Envelop.getSuccessListWithPage(BaseRequestMapping.Module.message_success_find_Modules,ModuleVOs, page, size,count);
     }
 
 
@@ -147,8 +147,8 @@ public class ModuleController extends EnvelopRestController {
         //得到list数据
         List<ModuleDO> list = moduleService.search(fields,filters,sorts);
         //封装返回格式
-        List<MModule> mModules = convertToModels(list, new ArrayList<>(list.size()), MModule.class, fields);
-        return Envelop.getSuccessList(BaseRequestMapping.Module.message_success_find_Modules,mModules);
+        List<ModuleVO> ModuleVOs = convertToModels(list, new ArrayList<>(list.size()), ModuleVO.class, fields);
+        return Envelop.getSuccessList(BaseRequestMapping.Module.message_success_find_Modules,ModuleVOs);
     }
 
 

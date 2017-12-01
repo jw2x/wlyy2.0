@@ -9,8 +9,8 @@ import com.yihu.jw.business.wx.service.WxTemplateService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.base.wx.MWxTemplate;
-import com.yihu.jw.restmodel.base.wx.MWxWechat;
+import com.yihu.jw.restmodel.base.wx.WxTemplateVO;
+import com.yihu.jw.restmodel.base.wx.WxWechatVO;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -130,7 +130,7 @@ public class WxTemplateController extends EnvelopRestController {
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<MWxWechat> mwechats = convertToModels(wechats, new ArrayList<>(wechats.size()), MWxWechat.class, fields);
+        List<WxWechatVO> mwechats = convertToModels(wechats, new ArrayList<>(wechats.size()), WxWechatVO.class, fields);
         return Envelop.getSuccessListWithPage(WechatRequestMapping.WxMenu.message_success_find_functions,mwechats, page, size,count);
 
     }
@@ -148,8 +148,8 @@ public class WxTemplateController extends EnvelopRestController {
         //得到list数据
         List<WxTemplateDO> list = wxTemplateService.search(fields,filters,sorts);
         //封装返回格式
-        List<MWxTemplate> mMWxTemplates = convertToModels(list, new ArrayList<>(list.size()), MWxTemplate.class, fields);
-        return Envelop.getSuccessList(WechatRequestMapping.WxTemplate.message_success_find_functions,mMWxTemplates);
+        List<WxTemplateVO> mWxTemplateVOs = convertToModels(list, new ArrayList<>(list.size()), WxTemplateVO.class, fields);
+        return Envelop.getSuccessList(WechatRequestMapping.WxTemplate.message_success_find_functions,mWxTemplateVOs);
     }
 
     @GetMapping(value = WechatRequestMapping.WxTemplate.api_sendTemplateMessage)

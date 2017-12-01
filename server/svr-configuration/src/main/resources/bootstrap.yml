@@ -28,7 +28,7 @@ spring:
 ##git配置
   cloud:
     config:
-      failFast: true ##启动快速失败 即链接不到配置服务就启动失败
+      failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
 #          uri: http://192.168.1.220:10080/chenweida/jw.config.git
@@ -43,7 +43,7 @@ spring:
 ##git配置
   cloud:
     config:
-      failFast: true ##启动快速失败 即链接不到配置服务就启动失败
+      failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
 #          uri: http://192.168.1.220:10080/EHR/ehr.config.git
@@ -73,7 +73,7 @@ spring:
 ##git配置
   cloud:
     config:
-      failFast: true ##启动快速失败 即链接不到配置服务就启动失败
+      failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         native:
-          search-locations: file:G:\idea_workspace\jkzl_git\jw.config  ##本地的got配置路径
+          search-locations: file:D:\Software\soft\IdeaWorkSpace\jw-project\jw.config  ##本地的got配置路径

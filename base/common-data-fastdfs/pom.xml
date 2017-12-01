@@ -33,6 +33,11 @@
             <groupId>org.csource</groupId>
             <artifactId>fastdfs_lib</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.csource</groupId>
+            <artifactId>fastdfs-client-java</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
 </project>

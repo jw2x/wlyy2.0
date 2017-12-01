@@ -117,7 +117,7 @@
                 <version>${version.myCommon}</version>
             </dependency>
             <dependency>
-                <groupId>com.yihu.jw</groupId>
+                <groupId>com.yihu.base</groupId>
                 <artifactId>common-util</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
@@ -451,6 +451,7 @@
                 <groupId>org.springside</groupId>
                 <artifactId>springside-core</artifactId>
                 <version>${version.springside}</version>
+                <classifier>GA</classifier>
             </dependency>
             <!--hibernate start-->
             <dependency>

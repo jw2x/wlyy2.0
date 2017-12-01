@@ -3,12 +3,12 @@ spring:
   #从发现服务里面取配置服务的信息
   cloud:
     config:
-      failFast: false ##启动快速失败 即链接不到配置服务就启动失败
+      failFast: false #启动快速失败 即链接不到配置服务就启动失败
       username: jw
       password: jkzl
       discovery:
-        enabled: true ##使用发现服务
-        service-id: svr-configurations ##配置服务的名字
+        enabled: true #使用发现服务
+        service-id: svr-configurations #配置服务的名字
 
 
 ---
