@@ -1,7 +1,7 @@
 package com.yihu.jw.feign.fallbackfactory.base.user;
 
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.feign.base.user.EmployFeign;
+import com.yihu.jw.feign.base.user.BaseRoleFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
- * Created by chenweida on 2017/11/29.
+ * Created by LiTaohong on 2017/11/28.
  */
-public class EmployeeFeignFallbackFactory  implements FallbackFactory<EmployFeign> {
+public class BaseRoleFeignFallbackFactory implements FallbackFactory<BaseRoleFeign> {
+
     @Autowired
     private Tracer tracer;
 
     @Override
-    public EmployFeign create(Throwable e) {
-        return new EmployFeign() {
+    public BaseRoleFeign create(Throwable e) {
+        return new BaseRoleFeign() {
             @Override
             public Envelop create(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("创建角色失败:原因:"+e.getMessage());

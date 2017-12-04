@@ -96,6 +96,57 @@ public class BaseRequestMapping {
 
     }
 
+    //SystemDict常量
+    public static class SystemDict{
+        public static final String message_success_create="SystemDict create success";
+        public static final String message_success_update="SystemDict update success";
+        public static final String message_success_find="SystemDict find success";
+        public static final String message_success_find_saass="SystemDict find success";
+        public static final String message_success_delete="SystemDict delete success";
+
+
+        public static final String message_fail_name_exist="SystemDict name exist";
+        public static final String message_fail_name_is_null="name is null";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_id_no_exist="id no exist";
+
+
+        public static final String api_create="/systemDict";
+        public static final String api_update="/systemDict";
+        public static final String api_delete="/systemDict";
+        public static final String api_getById="/getById";
+        public static final String api_getList="/systemDict/list";
+        public static final String api_getListNoPage="/systemDict/listNoPage";
+
+
+    }
+
+    //SystemDictList常量
+    public static class SystemDictList{
+        public static final String message_success_create="SystemDictList create success";
+        public static final String message_success_update="SystemDictList update success";
+        public static final String message_success_find="SystemDictList find success";
+        public static final String message_success_find_saass="SystemDictList find success";
+        public static final String message_success_delete="SystemDictList delete success";
+
+
+        public static final String message_fail_name_exist="SystemDictList name exist";
+        public static final String message_fail_name_is_null="name is null";
+        public static final String message_fail_id_is_null="id is null";
+        public static final String message_fail_id_no_exist="id no exist";
+
+
+        public static final String api_create="/systemDictList";
+        public static final String api_update="/systemDictList";
+        public static final String api_delete="/systemDictList";
+        public static final String api_getById="/getById";
+        public static final String api_getList="/systemDictList/list";
+        public static final String api_getListNoPage="/systemDictList/listNoPage";
+        public static final String api_getChildren="/systemDictList/children/{id}";
+
+
+    }
+/*
     //d行政人员模块
     public static class Employee{
         public static final String message_success_create="employee create success";
@@ -119,5 +170,5 @@ public class BaseRequestMapping {
         public static final String api_getEmployeeByAccount="/getEmployeeByAccount";
         public static final String api_getEmployeeNoPage="/getEmployeeNoPage";
 
-    }
+    }*/
 }

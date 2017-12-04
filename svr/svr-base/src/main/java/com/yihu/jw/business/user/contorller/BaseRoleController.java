@@ -73,7 +73,7 @@ public class BaseRoleController extends EnvelopRestController {
     public Envelop getRoleListBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
             BaseRoleDO baseRoleDO = toEntity(jsonData,BaseRoleDO.class);
-            return Envelop.getSuccess(BaseUserRequestMapping.BaseRole.message_success_find,baseRoleService.getRoleListByName(baseRoleDO.getSaasId()));
+            return Envelop.getSuccess(BaseUserRequestMapping.BaseRole.message_success_find,baseRoleService.findAllBySaasId(baseRoleDO.getSaasId()));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
