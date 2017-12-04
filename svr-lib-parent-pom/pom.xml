@@ -32,7 +32,6 @@
         <module>../server/svr-discovery</module><!--发现服务-->
         <module>../server/svr-dashboard</module><!--监控服务-->
         <module>../server/svr-logServer</module><!--分布式追踪服务-->
-        <module>../server/svr-oauth2</module><!--授权认证服务器-->
 
         <!--业务微服务-->
         <module>../svr/svr-base</module><!--基础微服务-->
@@ -69,6 +68,8 @@
         <version.net-json>2.4</version.net-json>
         <version.springside>4.2.3-GA</version.springside>
         <version.common.lang3>3.2.1</version.common.lang3>
+        <version.commons.collections>3.2.2</version.commons.collections>
+        <version.commons.codec>1.11</version.commons.codec>
         <version.elasticsearch>2.4.4</version.elasticsearch>
         <version.elasticsearch-sql>2.4.1.0</version.elasticsearch-sql>
 
@@ -90,7 +91,11 @@
         <dependencies>
 
             <!--自己的封装 common -->
-
+            <dependency>
+                <groupId>com.yihu.base</groupId>
+                <artifactId>common-security</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
             <dependency>
                 <groupId>com.yihu.jw</groupId>
                 <artifactId>common-entity</artifactId>
@@ -554,6 +559,16 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.common.lang3}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>${version.commons.collections}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${version.commons.codec}</version>
             </dependency>
             <!--hadoop start-->
             <dependency>
