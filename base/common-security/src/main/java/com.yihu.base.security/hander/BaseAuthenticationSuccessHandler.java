@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +40,7 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
     @Autowired
     private ClientDetailsService clientDetailsService;
     @Autowired
-    private AuthorizationServerTokenServices authorizationServerTokenServices;
+    private AuthorizationServerTokenServices defaultTokenServices;
 
     /*
      * (non-Javadoc)
@@ -53,7 +54,7 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Basic ")) {
+        if (org.springframework.util.StringUtils.isEmpty(header) ||(! header.startsWith("Basic "))) {
             throw new UnapprovedClientAuthenticationException("请求头没有client信息");
         }
         //解析头部的basic信息
@@ -77,7 +78,7 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
 
         OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
 
-        OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
+        OAuth2AccessToken token = defaultTokenServices.createAccessToken(oAuth2Authentication);
 
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(token));

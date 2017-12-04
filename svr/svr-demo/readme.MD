@@ -1,1 +1,68 @@
-http://localhost:8080/oauth/authorize?client_id=cwd&redirect_uri=localhost:8080&scope=all
+**授权码模式:(一直开放API用)**
+获取code
+http://localhost:8060/oauth/authorize?response_type=code&client_id=cwd&redirect_uri=http://example.com&scope=all
+获取token post请求
+http://localhost:8060/oauth/token
+header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
+  
+{
+     "grant_type":"authorization_code",  
+     "client_id":"cwd",
+     "code":"第一步请求获取的code",
+     "redirect_uri":"http://example.com",
+     "scope":"all"
+}
+返回值
+{
+    "access_token":"bd677e24-2de5-4862-a5e1-8f90a074db42",
+    "token_type":"bearer",
+    "refresh_token":"1427b997-ef94-4061-8940-c71da6549acd",
+    "expires_in":43199,
+    "scope":"all"
+}
+
+**密码模式（一般自己公司系统用）**
+获取token post请求
+http://localhost:8060/oauth/token
+header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
+  
+{
+     "grant_type":"password",  
+     "username":"jojo",
+     "password":"123456",
+     "scope":"all"
+}
+
+返回值
+{
+    "access_token":"630e2ccc-a5ce-4486-a855-ba755eb3d0d2",
+    "token_type":"bearer",
+    "refresh_token":"bbb36b54-61b2-4d86-aed3-91c5135174c3",
+    "expires_in":43199,
+    "scope":"all"
+}
+
+**访问方式**
+http://localhost:8060/user
+header 
+{
+"Authorization":"bearer 630e2ccc-a5ce-4486-a855-ba755eb3d0d2"      即 bearer accesstoken
+}
+
+
+
+**自定义账号密码登陆**
+POST
+http://localhost:8060/authentication/form
+header
+Authorization  Basic Y3dkOmN3ZA==
+
+body
+{
+    "username":"test",
+    "password":"123456"
+}
+
+
+
+**自定义手机号短信验证码登陆**

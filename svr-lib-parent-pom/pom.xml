@@ -51,6 +51,8 @@
         <version.jackson>2.8.1</version.jackson>
         <version.myCommon>1.0.0</version.myCommon>
         <version.spring>4.3.8.RELEASE</version.spring>
+        <version.spring.security>4.2.3.RELEASE</version.spring.security>
+
         <version.spring-data-jpa>1.11.3.RELEASE</version.spring-data-jpa>
         <version.spring-data-common>1.13.3.RELEASE</version.spring-data-common>
         <version.zipkin>1.24.0</version.zipkin>
@@ -361,6 +363,21 @@
                 <version>${version.spring}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <version>${version.spring.security}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>${version.spring.security}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>${version.spring.security}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>

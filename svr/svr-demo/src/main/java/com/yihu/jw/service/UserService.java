@@ -1,7 +1,6 @@
 package com.yihu.jw.service;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-import com.yihu.jw.model.MyUser;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +33,7 @@ public class UserService implements UserDetailsService {
         if ("admin".equals(userName)) {
             System.out.printf("password:"+passwordEncoder.encode("123456"));
             return new User("admin",
-                    "123456",
+                    passwordEncoder.encode("123456"),
                     true,
                     true,
                     true,
