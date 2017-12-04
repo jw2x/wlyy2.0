@@ -13,6 +13,7 @@
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-discovery</artifactId>
     <version>1.0.0</version>
+    <packaging>war</packaging>
 
     <dependencies>
         <dependency>
@@ -38,7 +39,14 @@
         </dependency>
     </dependencies>
     <build>
+        <finalName>ROOT</finalName>
         <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
