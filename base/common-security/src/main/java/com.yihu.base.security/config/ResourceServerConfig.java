@@ -1,12 +1,11 @@
 package com.yihu.base.security.config;
 
 import com.yihu.base.security.properties.SecurityProperties;
+import com.yihu.base.security.rbas.IRbasService;
+import com.yihu.base.security.rbas.provider.AuthorizeConfigProviderManager;
 import com.yihu.base.security.sms.SmsCodeAuthenticationSecurityConfig;
-import com.yihu.base.security.sms.filter.SmsvalidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -15,7 +14,6 @@ import org.springframework.security.oauth2.provider.authentication.OAuth2Authent
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Created by chenweida on 2017/12/4.
@@ -34,30 +32,24 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     private TokenStore redisTokenStore;
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+    @Autowired
+    private AuthorizeConfigProviderManager authorizeConfigProviderManager;
 
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        //这是账号密码登陆
         http
                 .formLogin()//设置验证码 账号密码登陆
-                .loginPage(SecurityProperties.formLoginPage)
-                .loginProcessingUrl(SecurityProperties.formLogin)
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
+                    .loginPage(SecurityProperties.formLoginPage)
+                    .loginProcessingUrl(SecurityProperties.formLogin)
+                    .successHandler(authenticationSuccessHandler)
+                    .failureHandler(authenticationFailureHandler)
                 .and()
-                .apply(smsCodeAuthenticationSecurityConfig)  //添加自定义短信登陆
+                    .apply(smsCodeAuthenticationSecurityConfig)  //添加自定义短信登陆
                 .and()
-                .authorizeRequests()
-                .antMatchers(
-                        SecurityProperties.formLogin,
-                        SecurityProperties.formLoginPage,
-                        SecurityProperties.mobileLogin,
-                        SecurityProperties.mobileSendSms).permitAll()
-                .anyRequest().authenticated()
-                //.anyRequest().access("@rbasService.hasPerssion(request,authentication)")
-                .and()
-                .csrf().disable();
+                    .csrf().disable();
+        //验证路径
+        authorizeConfigProviderManager.condfig(http.authorizeRequests());
     }
 
     @Override
@@ -66,4 +58,5 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 authenticationManager(authenticationManager).
                 tokenStore(redisTokenStore);
     }
+
 }

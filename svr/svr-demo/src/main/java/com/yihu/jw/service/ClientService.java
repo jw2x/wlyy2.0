@@ -25,10 +25,6 @@ import java.util.Set;
 @Component("baseClientDetailsService")
 public class ClientService implements ClientServiceProvider {
 
-    public ClientService() {
-        System.out.println("初始化");
-    }
-
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
 //        SaasDO saasDO = saasDao.findByAppId(clientId);

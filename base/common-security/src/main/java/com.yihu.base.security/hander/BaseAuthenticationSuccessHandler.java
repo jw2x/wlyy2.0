@@ -46,10 +46,6 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
     @Autowired
     private AuthorizationServerTokenServices defaultTokenServices;
 
-    public BaseAuthenticationSuccessHandler() {
-        System.out.println(clientDetailsService);
-    }
-
     /*
          * (non-Javadoc)
          *
@@ -124,7 +120,4 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
         return new String[]{token.substring(0, delim), token.substring(delim + 1)};
     }
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        System.out.println(new String(Base64.encode("cwd:cwd".getBytes()), "UTF-8"));//   Y3dkOmN3ZA==
-    }
 }

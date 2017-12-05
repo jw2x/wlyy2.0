@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -26,7 +27,7 @@ import java.util.Set;
  * Created by chenweida on 2017/11/29.
  * 处理用户校验
  */
-@Service
+@Component
 public class UserService implements UserDetailsService {
 
     @Autowired
