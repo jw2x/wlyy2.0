@@ -42,6 +42,16 @@ public class EmployRoleService extends BaseJpaService<BaseEmployRoleDO,EmployRol
     }
 
     /**
+     * 批量新增用户角色，一个用户可能有多个角色
+     * @param list
+     * @return
+     */
+    @Transactional
+    public void createBatchBaseEmployRoleDO(List<BaseEmployRoleDO> list){
+        this.employRoleDao.save(list);
+    }
+
+    /**
      * 修改用户角色
      * @param baseEmployRoleDO
      * @return

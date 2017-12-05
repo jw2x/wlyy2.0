@@ -84,4 +84,55 @@ public class BaseUserRequestMapping {
         public static final String message_fail_employeeRole_no_exist = "employeeRole no exist";
 
     }
+
+    /**
+     * 基础菜单
+     */
+    public class BaseMenu {
+        public static final String api_create = "/baseMenu";
+        public static final String api_update = "/baseMenu";
+        public static final String api_delete = "/baseMenu/{ids}";
+        public static final String api_getOne = "/baseMenu/{id}";
+        public static final String api_getchildren = "/baseMenu/{id}";
+        public static final String api_getList="/baseMenu/list";
+        public static final String api_getListNoPage="/baseMenu/listNoPage";
+
+        public static final String message_success_create="baseMenu create success";
+        public static final String message_success_update="update baseMenu success";
+        public static final String message_success_delete="baseMenu delete success";
+        public static final String message_success_find="baseMenu find success";
+
+        public static final String message_fail_saasId_is_null = "saasId is null";
+        public static final String message_fail_menuId_is_null = "menuId is null";
+        public static final String message_fail_id_is_null = "id is null";
+        public static final String message_fail_id_no_exist = "id no exist";
+        public static final String message_fail_saasId_no_exist = "saasId no exist";
+
+        public static final String message_param_saasid_is_null = "baseMenu saasId param cannot be null";
+        public static final String message_param_parentId_is_null = "baseMenu parentId param cannot be null";
+
+    }
+
+    /**
+     * 角色菜单
+     */
+    public class BaseRoleMenu {
+        public static final String api_create = "/baseRoleMenu";
+        public static final String api_update = "/baseRoleMenu";
+        public static final String api_delete = "/baseRoleMenu/{ids}";
+        public static final String api_getList="/baseRoleMenu/list";
+        public static final String api_getListNoPage="/baseRoleMenu/listNoPage";
+
+        public static final String message_success_create="baseRoleMenu create success";
+        public static final String message_success_update="update baseRoleMenu success";
+        public static final String message_success_delete="baseRoleMenu delete success";
+        public static final String message_success_find="baseRoleMenu find success";
+
+        public static final String message_fail_roleId_is_null = "roleId is null";
+        public static final String message_fail_menuId_is_null = "menuId is null";
+        public static final String message_fail_id_is_null = "id is null";
+        public static final String message_fail_same_menuId = "same menuId";
+        public static final String message_fail_baseRoleMenu_no_exist = "baseRoleMenu no exist";
+
+    }
 }

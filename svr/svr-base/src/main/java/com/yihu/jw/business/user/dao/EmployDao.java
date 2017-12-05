@@ -16,9 +16,9 @@ import java.util.List;
  */
 public interface EmployDao extends PagingAndSortingRepository<BaseEmployDO, String>, JpaSpecificationExecutor<BaseEmployDO> {
 
-    @Query("from BaseEmployDO ba where ba.saasId = 1?")
+    @Query("from BaseEmployDO ba where ba.saasId = ?1")
     List<BaseEmployDO> findAllBySaasId(String saasId);
 
-    @Query("from BaseEmployDO ba where ba.name like 2? and ba.saasId = 1?")
+    @Query("from BaseEmployDO ba where ba.name like ?1 and ba.saasId = ?2")
     List<BaseEmployDO> findAllByNameAndSaasId(String name,String saasId);
 }

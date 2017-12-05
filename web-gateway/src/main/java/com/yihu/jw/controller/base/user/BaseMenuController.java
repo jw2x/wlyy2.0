@@ -4,7 +4,8 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.user.BaseUserContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.feign.base.user.EmployFeign;
+import com.yihu.jw.feign.base.user.BaseMenuFeign;
+import com.yihu.jw.feign.base.user.BaseMenuFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;
@@ -21,26 +22,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Created by LiTaohong on 2017/11/30.
+ * Created by LiTaohong on 2017/11/28.
  */
 
 @RestController
-@RequestMapping(BaseUserContants.api_employ)
-@Api(value = "用戶管理", description = "用戶管理")
-public class EmployController extends EnvelopRestController {
+@RequestMapping(BaseUserContants.api_baseMenu)
+@Api(value = "基础菜单管理", description = "基础菜单管理")
+public class BaseMenuController extends EnvelopRestController {
 
     @Autowired
-    private EmployFeign fegin;
-
+    private BaseMenuFeign fegin;
     @Autowired
     private Tracer tracer;
 
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @PostMapping(value = BaseUserContants.Employee.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建用戶", notes = "创建用戶")
-    public Envelop createFunction(
+    @PostMapping(value = BaseUserContants.BaseMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建菜单", notes = "创建菜单")
+    public Envelop createBaseMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws JiWeiException {
         return fegin.create(jsonData);
@@ -49,9 +49,9 @@ public class EmployController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @PutMapping(value = BaseUserContants.Employee.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "更新用戶", notes = "更新用戶")
-    public Envelop updateFunction(
+    @PutMapping(value = BaseUserContants.BaseMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "更新菜单", notes = "更新菜单")
+    public Envelop updateBaseMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws JiWeiException {
         return fegin.update(jsonData);
@@ -60,19 +60,19 @@ public class EmployController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @DeleteMapping(value = BaseUserContants.Employee.api_delete)
-    @ApiOperation(value = "删除用戶", notes = "删除用戶")
-    public Envelop deleteBaseRole(
+    @DeleteMapping(value = BaseUserContants.BaseMenu.api_delete)
+    @ApiOperation(value = "删除菜单", notes = "删除菜单")
+    public Envelop deleteBaseMenu(
             @ApiParam(name = "id", value = "uuid")
             @RequestParam(value = "id", required = true) String id
-            ) throws JiWeiException {
+    ) throws JiWeiException {
         return fegin.delete(id);
     }
 
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseUserContants.Employee.api_getById)
+    @GetMapping(value = BaseUserContants.BaseMenu.api_getById)
     @ApiOperation(value = "根据Id查找", notes = "根据uuid查找")
     public Envelop findById(
             @ApiParam(name = "id", value = "id")
@@ -84,10 +84,21 @@ public class EmployController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @RequestMapping(value = BaseUserContants.Employee.api_getList, method = RequestMethod.GET)
+    @GetMapping(value = BaseUserContants.BaseMenu.api_getById)
+    @ApiOperation(value = "根据Id查找", notes = "根据uuid查找")
+    public Envelop getChildren(@ApiParam(name = "saasId", value = "saasId") @RequestParam(value = "saasId", required = true) String saasId,
+                               @ApiParam(name = "parentId", value = "parentId") @RequestParam(value = "parentId", required = true) String parentId) throws JiWeiException {
+        return fegin.getChildren(saasId,parentId);
+    }
+
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @RequestMapping(value = BaseUserContants.BaseMenu.api_getList, method = RequestMethod.GET)
     @ApiOperation(value = "获取功能列表(分页)")
-    public Envelop getEmployList(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,saasId,sex,phone,email,jxzc,lczcn,xlzc,xzzc,createUser,remark")
+    public Envelop getBaseMenus(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,saasId,createUser,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
@@ -113,10 +124,10 @@ public class EmployController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseUserContants.BaseRole.api_getListNoPage)
+    @GetMapping(value = BaseUserContants.BaseMenu.api_getListNoPage)
     @ApiOperation(value = "获取功能列表，不分页")
     public Envelop getListNoPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,saasId,sex,phone,email,jxzc,lczcn,xlzc,xzzc,createUser,remark")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,saasId,createUser,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
@@ -131,5 +142,6 @@ public class EmployController extends EnvelopRestController {
         }
         return fegin.getListNoPage(fields, filterStr, sorts);
     }
+
 
 }
