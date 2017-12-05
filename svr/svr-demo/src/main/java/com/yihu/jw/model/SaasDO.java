@@ -140,12 +140,18 @@ public class SaasDO implements Serializable, ClientDetails {
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        return null;
+
+        Set<String> strings = new HashSet<>();
+        strings.add("password");
+        strings.add("custom_password");
+        strings.add("authorization_code");
+        strings.add("refresh_token");
+        return strings;
     }
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        Set<String> strings=new HashSet<>();
+        Set<String> strings = new HashSet<>();
         strings.add(url);
         return strings;
     }
@@ -173,5 +179,77 @@ public class SaasDO implements Serializable, ClientDetails {
     @Override
     public Map<String, Object> getAdditionalInformation() {
         return null;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getAppSecret() {
+        return appSecret;
+    }
+
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

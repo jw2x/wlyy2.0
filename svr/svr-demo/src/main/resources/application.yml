@@ -32,7 +32,8 @@ spring:
     port: 6379 # Redis server port.
     database: 1
 
-
+  aop:
+    proxy-target-class: true
 
 
 quartz:

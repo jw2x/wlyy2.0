@@ -42,11 +42,23 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
     "scope":"all"
 }
 
-**访问方式**
-http://localhost:8060/user
-header 
+**刷新token **
+获取token post请求
+http://localhost:8060/oauth/token
+header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
+  
 {
-"Authorization":"bearer 630e2ccc-a5ce-4486-a855-ba755eb3d0d2"      即 bearer accesstoken
+     "grant_type":"refresh_token",
+     "refresh_token":"all"
+}
+
+返回值
+{
+    "access_token":"630e2ccc-a5ce-4486-a855-ba755eb3d0d2",
+    "token_type":"bearer",
+    "refresh_token":"bbb36b54-61b2-4d86-aed3-91c5135174c3",
+    "expires_in":43199,
+    "scope":"all"
 }
 
 
@@ -66,3 +78,11 @@ body
 
 
 **自定义手机号短信验证码登陆**
+
+
+**访问方式**
+http://localhost:8060/user
+header 
+{
+"Authorization":"bearer 5fe6b2c3-f69c-4ddc-a36a-367cdf9479a3"      即 bearer accesstoken
+}
