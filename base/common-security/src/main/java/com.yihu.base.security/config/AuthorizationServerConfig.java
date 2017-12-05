@@ -76,12 +76,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         oAuth2AuthenticationManager.setTokenServices(defaultTokenServices());
         return oAuth2AuthenticationManager;
     }
+
     //==========================token相关配置=================================
     @Bean
     @Primary
     DefaultTokenServices defaultTokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
+        defaultTokenServices.setAccessTokenValiditySeconds(60 * 60 * 2); //默认2小时
+        defaultTokenServices.setRefreshTokenValiditySeconds(60 * 60 * 2);//默认2小时
         return defaultTokenServices;
     }
 
