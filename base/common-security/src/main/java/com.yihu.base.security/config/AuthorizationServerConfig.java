@@ -1,6 +1,7 @@
 package com.yihu.base.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.base.security.properties.AccessTokenPorperties;
 import com.yihu.base.security.rbas.ClientServiceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,6 +42,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private PasswordEncoder passwordEncoder;
     @Autowired
     private DataSource dataSource;
+    @Autowired
+    private AccessTokenPorperties accessTokenPorperties;
 
 
     @Override
@@ -83,8 +86,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     DefaultTokenServices defaultTokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setTokenStore(tokenStore());
-        defaultTokenServices.setAccessTokenValiditySeconds(60 * 60 * 2); //默认2小时
-        defaultTokenServices.setRefreshTokenValiditySeconds(60 * 60 * 2);//默认2小时
+        defaultTokenServices.setAccessTokenValiditySeconds(60 * 60 * accessTokenPorperties.getAccessTokenValiditySeconds()); //默认2小时
+        defaultTokenServices.setRefreshTokenValiditySeconds(60 * 60 * accessTokenPorperties.getRefreshTokenValiditySeconds());//默认2小时
         return defaultTokenServices;
     }
 
