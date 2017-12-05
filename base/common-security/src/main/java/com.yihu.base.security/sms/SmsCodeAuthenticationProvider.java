@@ -11,8 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
- * 短信登陆处理器
- * @author chenweida
+ * @author zhailiang
  *
  */
 public class SmsCodeAuthenticationProvider implements AuthenticationProvider {

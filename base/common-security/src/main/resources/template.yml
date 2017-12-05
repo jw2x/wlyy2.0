@@ -28,8 +28,13 @@ spring:
   aop:
     proxy-target-class: true
 
+
+
 security:
   oauth2:
     token:
-      accessTokenValiditySeconds: 2 # 2小时
-      refreshTokenValiditySeconds: 2 # 2小时
+      accessTokenValidityHours: 2 # 2小时
+      refreshTokenValidityHours: 2 # 2小时
+    sms:
+      expireIn: 1 ##1分钟
+      length: 6 #验证码长度

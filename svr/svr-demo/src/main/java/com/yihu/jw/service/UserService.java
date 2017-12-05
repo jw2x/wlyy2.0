@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +42,16 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         if ("admin".equals(userName)) {
+            System.out.printf("password:" + passwordEncoder.encode("123456"));
+            return new User("admin",
+                    passwordEncoder.encode("123456"),
+                    true,
+                    true,
+                    true,
+                    true
+                    , AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER") //权限
+            );
+        } else if ((!StringUtils.isEmpty(userName))&&userName.length() == 11) {
             System.out.printf("password:" + passwordEncoder.encode("123456"));
             return new User("admin",
                     passwordEncoder.encode("123456"),
