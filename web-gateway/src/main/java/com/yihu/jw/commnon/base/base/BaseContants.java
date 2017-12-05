@@ -10,6 +10,8 @@ public class BaseContants {
     public static final String api_module = api_common+"/module";
     public static final String api_moduleFun = api_common+"/moduleFun";
     public static final String api_saas = api_common+"/saas";
+    public static final String api_systemDict = api_common+"/systemDict";
+    public static final String api_systemDictList = api_common+"/systemDictList";
 
     //功能模块常量
     public static class Function{
@@ -45,6 +47,24 @@ public class BaseContants {
         public static final String api_update="/";
         public static final String api_delete="/{id}";
         public static final String api_getSaassNoPage="/getSaassNoPage";
+
+    }
+
+    //SystemDict常量
+    public static class SystemDict{
+        public static final String api_create="/";
+        public static final String api_update="/";
+        public static final String api_delete="/{id}";
+        public static final String api_getSystemDictNoPage="/getSaassNoPage";
+
+    }
+
+    //SystemDictList常量
+    public static class SystemDictList{
+        public static final String api_create="/";
+        public static final String api_update="/";
+        public static final String api_delete="/{id}";
+        public static final String api_getSystemDictListNoPage="/getSaassNoPage";
 
     }
 }

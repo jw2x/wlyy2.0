@@ -17,6 +17,7 @@ import java.util.List;
 
 /**
  * Created by LiTaohong on 2017/11/28.
+ * 基础角色功能
  */
 @Service
 public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao>{
