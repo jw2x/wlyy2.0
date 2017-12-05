@@ -4,11 +4,13 @@
 package com.yihu.base.security.hander;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.base.security.rbas.ClientServiceProvider;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.codec.Base64;
@@ -16,9 +18,11 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,33 +31,38 @@ import java.io.UnsupportedEncodingException;
 
 /**
  * @author chenweida
- * <p>
- * 账号密码提交需要在 head 中添加 Basic clientID:cliengSecurty
+ *         <p>
+ *         账号密码提交需要在 head 中添加 Basic clientID:cliengSecurty
  */
 @Component("BaseAuthenticationSuccessHandler")
 public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-    private ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
-    private ClientDetailsService clientDetailsService;
+    private ObjectMapper objectMapper;
     @Autowired
-    private AuthorizationServerTokenServices authorizationServerTokenServices;
+    private ClientServiceProvider clientDetailsService;
+    @Autowired
+    private AuthorizationServerTokenServices defaultTokenServices;
+
+    public BaseAuthenticationSuccessHandler() {
+        System.out.println(clientDetailsService);
+    }
 
     /*
-     * (non-Javadoc)
-     *
-     * @see org.springframework.security.web.authentication.
-     * AuthenticationSuccessHandler#onAuthenticationSuccess(javax.servlet.http.
-     * HttpServletRequest, javax.servlet.http.HttpServletResponse,
-     * org.springframework.security.core.Authentication)
-     */
+         * (non-Javadoc)
+         *
+         * @see org.springframework.security.web.authentication.
+         * AuthenticationSuccessHandler#onAuthenticationSuccess(javax.servlet.http.
+         * HttpServletRequest, javax.servlet.http.HttpServletResponse,
+         * org.springframework.security.core.Authentication)
+         */
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         String header = request.getHeader("Authorization");
-        if (header != null && header.startsWith("Basic ")) {
+        if (org.springframework.util.StringUtils.isEmpty(header) || (!header.startsWith("Basic "))) {
             throw new UnapprovedClientAuthenticationException("请求头没有client信息");
         }
         //解析头部的basic信息
@@ -77,7 +86,7 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
 
         OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
 
-        OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
+        OAuth2AccessToken token = defaultTokenServices.createAccessToken(oAuth2Authentication);
 
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(token));

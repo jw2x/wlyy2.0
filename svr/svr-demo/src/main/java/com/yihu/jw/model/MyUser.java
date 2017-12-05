@@ -8,7 +8,8 @@ import java.util.Collection;
 /**
  * Created by chenweida on 2017/11/29.
  */
-public class MyUser implements UserDetails {
+public class MyUser implements UserDetails
+{
     /**
      * 权限
      * @return
