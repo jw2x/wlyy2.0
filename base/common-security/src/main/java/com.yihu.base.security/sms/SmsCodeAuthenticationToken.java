@@ -10,7 +10,7 @@ import org.springframework.security.core.SpringSecurityCoreVersion;
 import java.util.Collection;
 
 /**
- * @author chenweida
+ * @author zhailiang
  *
  */
 public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
@@ -48,7 +48,7 @@ public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 	 * @param authorities
 	 */
 	public SmsCodeAuthenticationToken(Object principal,
-									  Collection<? extends GrantedAuthority> authorities) {
+			Collection<? extends GrantedAuthority> authorities) {
 		super(authorities);
 		this.principal = principal;
 		super.setAuthenticated(true); // must use super, as we override

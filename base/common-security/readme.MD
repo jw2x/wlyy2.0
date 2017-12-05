@@ -85,6 +85,17 @@ body
 
 
 **自定义手机号短信验证码登陆**
+
+获取短信
+GET
+http://localhost:8060/code/sms
+
+body
+{
+    "mobile":"13612345678"
+}
+
+
 POST
 http://localhost:8060/authentication/mobile
 
@@ -93,7 +104,7 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
 body
 {
     "mobile":"test",
-    "sms":"123456"
+    "sms":"246053"
 }
 
 返回值
