@@ -43,6 +43,4 @@ public interface FunctionFeign {
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts) throws JiWeiException;
 
-    @GetMapping(value = BaseRequestMapping.Function.api_getChildren)
-    Envelop getChildren(@PathVariable(value="id") String id) throws JiWeiException;
 }

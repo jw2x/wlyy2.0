@@ -1,6 +1,6 @@
 package com.yihu.jw.config.security.roleService;
 
-import com.yihu.jw.feign.base.user.EmployeeFeign;
+import com.yihu.jw.feign.base.user.EmployFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
     @Autowired
-    private EmployeeFeign employeeFeign;
+    private EmployFeign employeeFeign;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
