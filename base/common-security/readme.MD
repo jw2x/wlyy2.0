@@ -1,4 +1,4 @@
-**授权码模式:(一直开放API用)**
+**授权码模式:(一般开放API用)**
 获取code
 http://localhost:8060/oauth/authorize?response_type=code&client_id=cwd&redirect_uri=http://example.com&scope=all
 获取token post请求
