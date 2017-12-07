@@ -15,7 +15,7 @@ import java.util.Set;
  * Created by chenweida on 2017/12/5.
  * 判断用户是否有权限访问该路径
  */
-@Component("rbasbean")
+@Service("rbasService")
 public class RbasService implements IRbasService {
 
     private AntPathMatcher antPathMatcher = new AntPathMatcher();

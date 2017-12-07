@@ -1,5 +1,6 @@
 package com.yihu.base.security;
 
+import com.yihu.base.security.rbas.provider.DefaultRbasService;
 import com.yihu.base.security.sms.sender.DefaultSmsCodeSender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -21,5 +22,12 @@ public class SercurityConfig {
     @ConditionalOnMissingBean
     public DefaultSmsCodeSender defaultSmsCodeSender() {
         return new DefaultSmsCodeSender();
+    }
+
+
+    @Bean
+    @ConditionalOnMissingBean
+    public DefaultRbasService rasService() {
+        return new DefaultRbasService();
     }
 }

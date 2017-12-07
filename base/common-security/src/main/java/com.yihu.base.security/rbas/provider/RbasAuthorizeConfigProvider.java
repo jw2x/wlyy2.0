@@ -15,6 +15,6 @@ public class RbasAuthorizeConfigProvider implements AuthorizeConfigProvider {
     @Override
     public void condfig(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
         // config.anyRequest().access("@rbasService.hasPerssion(request,authentication)");
-        config.anyRequest().access("@rbasbean.hello()");
+        //config.anyRequest().access("@rbasService.hasPerssion(request,authentication)");
     }
 }
