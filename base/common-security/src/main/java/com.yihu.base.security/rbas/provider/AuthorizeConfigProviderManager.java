@@ -16,9 +16,9 @@ public class AuthorizeConfigProviderManager {
     @Autowired
     Set<AuthorizeConfigProvider> authorizeConfigProviders;
 
-   public void condfig(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
+   public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
         for (AuthorizeConfigProvider authorizeConfigProvider : authorizeConfigProviders) {
-            authorizeConfigProvider.condfig(config);
+            authorizeConfigProvider.config(config);
         }
     }
 }
