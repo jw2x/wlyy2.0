@@ -1,7 +1,6 @@
 package com.yihu.base.security.config;
 
 import com.yihu.base.security.properties.SecurityProperties;
-import com.yihu.base.security.rbas.IRbasService;
 import com.yihu.base.security.rbas.provider.AuthorizeConfigProviderManager;
 import com.yihu.base.security.sms.SmsCodeAuthenticationSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
