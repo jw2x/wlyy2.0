@@ -30,7 +30,7 @@ hibernate:
 
 ---
 spring:
-  profiles: dev
+  profiles: jwdev
 
   datasource:
     url: jdbc:mysql://172.19.103.77:3306/xmiot?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
@@ -39,10 +39,10 @@ spring:
 
 ---
 spring:
-  profiles: test
+  profiles: jwtest
 
 
 ---
 spring:
-  profiles: prod
+  profiles: jwprod
 
