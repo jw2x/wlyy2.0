@@ -47,14 +47,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
+                    .csrf().disable()
                 .formLogin()//设置验证码 账号密码登陆
-                .loginPage(SecurityProperties.formLoginPage)
-                .loginProcessingUrl(SecurityProperties.formLogin)
-                .successHandler(authenticationSuccessHandler)
-                .failureHandler(authenticationFailureHandler)
+                    .loginPage(SecurityProperties.formLoginPage)
+                    .loginProcessingUrl(SecurityProperties.formLogin)
+                    .successHandler(authenticationSuccessHandler)
+                    .failureHandler(authenticationFailureHandler)
                 .and()
-                .apply(smsCodeAuthenticationSecurityConfig) //添加自定义短信登陆;
+                    .apply(smsCodeAuthenticationSecurityConfig) //添加自定义短信登陆;
         ;
 
 
