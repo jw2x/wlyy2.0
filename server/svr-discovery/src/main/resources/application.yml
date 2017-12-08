@@ -14,6 +14,11 @@ eureka:
     registry-fetch-interval-seconds: 30 #定期的更新客户端的服务清单 30秒更新一次
     fetch-registry: false #如果是做高可用的发现服务那就要改成true
 
+  server:
+    enable-self-preservation: true  ##是否开启自我保护模式，默认为true。
+    eviction-interval-timer-in-ms: 60000 ##eureka server清理无效节点的时间间隔，默认60000毫秒，即60秒
+
+
 
 #eurika界面的账号密码
 security:

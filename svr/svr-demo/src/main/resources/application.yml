@@ -41,11 +41,4 @@ quartz:
   overwriteExistingJobs: true ##是否覆盖job
 
 
-security:
-  oauth2:
-    token:
-      accessTokenValidityHours: 2 # 2小时
-      refreshTokenValidityHours: 2 # 2小时
-    sms:
-      expireIn: 1 ##1分钟
-      length: 6 #验证码长度
+
