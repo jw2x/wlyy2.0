@@ -119,7 +119,7 @@ public class SaasDO implements Serializable, ClientDetails {
 
     @Override
     public Set<String> getResourceIds() {
-        return null;
+        return new HashSet<>();
     }
 
     @Override
@@ -127,20 +127,34 @@ public class SaasDO implements Serializable, ClientDetails {
         return false;
     }
 
-
+    /**
+     * 是否在授权范围
+     * @return
+     */
     @Override
     public boolean isScoped() {
         return false;
     }
 
+    /**
+     * 允许的授权范围
+     *
+     * @return
+     */
     @Override
     public Set<String> getScope() {
-        return null;
+        Set<String> set = new HashSet<>();
+        set.add("app");
+        return set;
     }
 
+    /**
+     * 该client允许的授权类型
+     *
+     * @return
+     */
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-
         Set<String> strings = new HashSet<>();
         strings.add("password");
         strings.add("custom_password");
@@ -149,26 +163,31 @@ public class SaasDO implements Serializable, ClientDetails {
         return strings;
     }
 
+    /**
+     * 授权码模式支持的跳转请求
+     * @return
+     */
     @Override
     public Set<String> getRegisteredRedirectUri() {
         Set<String> strings = new HashSet<>();
+        strings.add("http://example.com");
         strings.add(url);
         return strings;
     }
 
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     public Integer getAccessTokenValiditySeconds() {
-        return null;
+        return 0;
     }
 
     @Override
     public Integer getRefreshTokenValiditySeconds() {
-        return null;
+        return 0;
     }
 
     @Override
@@ -178,7 +197,7 @@ public class SaasDO implements Serializable, ClientDetails {
 
     @Override
     public Map<String, Object> getAdditionalInformation() {
-        return null;
+        return new HashMap<>();
     }
 
     public String getCreateUser() {

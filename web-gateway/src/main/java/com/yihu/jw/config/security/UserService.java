@@ -1,4 +1,4 @@
-package com.yihu.jw.config.security.roleService;
+package com.yihu.jw.config.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
