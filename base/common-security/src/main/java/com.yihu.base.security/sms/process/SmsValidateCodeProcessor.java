@@ -34,16 +34,15 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
     private SmsValidateCodeGenerator smsValidateCodeGenerator;
 
     /*
-     * (non-Javadoc)
-     *
-     * @see
-     * com.imooc.security.core.validate.code.ValidateCodeProcessor#create(org.
-     * springframework.web.context.request.ServletWebRequest)
+     *  生成验证码
      */
     @Override
     public void create(ServletWebRequest request) throws Exception {
+        //生成校验码
         ValidateCode validateCode = generate(request);
+        //保存校验码
         save(request, validateCode);
+        //发送校验码到手机号
         send(request, validateCode);
     }
 
@@ -66,8 +65,9 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
      */
     private void save(ServletWebRequest request, ValidateCode validateCode) {
         JSONObject jo = new JSONObject();
-        jo.put("code", validateCode.getCode());
-        jo.put("expireTime", validateCode.getExpireTimeString());
+        jo.put("code", validateCode.getCode());//保存验证码
+        jo.put("expireTime", validateCode.getExpireTimeString()); //保存超时时间
+        jo.put("createTime", validateCode.getCreateTimeString()); //保存超时时间
         redisTemplate.opsForValue().set(key(request), jo.toString());
     }
 
@@ -92,6 +92,7 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
             ValidateCode validateCode = new ValidateCode();
             validateCode.setCode(jo.getString("code"));
             validateCode.setExpireTimeString(jo.getString("expireTime"));
+            validateCode.setCreateTimeString(jo.getString("createTime"));
             return validateCode;
         } else {
             return null;
@@ -99,7 +100,7 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
     }
 
     /**
-     * 拼凑放在redis的key
+     * 拼凑放在redis的key  格式 security:oauth2:smsLogin:{手机号}
      *
      * @param request
      * @return
@@ -122,11 +123,8 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
     @SuppressWarnings("unchecked")
     @Override
     public void validate(ServletWebRequest request) {
-
-        String sessionKey = key(request);
         //获取验证码
         ValidateCode validateCode = get(request);
-
 
         String codeInRequest;
         //获取请求中的验证码

@@ -18,7 +18,10 @@ public class ValidateCode implements Serializable {
 
     private LocalDateTime expireTime;
 
+    private LocalDateTime createTime=LocalDateTime.now();
+
     public ValidateCode() {
+
     }
 
     public ValidateCode(String code, int expireIn) {
@@ -58,5 +61,17 @@ public class ValidateCode implements Serializable {
 
     public void setExpireTimeString(String strTime) {
         expireTime = LocalDateTime.parse(strTime, DateTimeFormatter.ISO_DATE_TIME);
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public String getCreateTimeString() {
+        return createTime.format(DateTimeFormatter.ISO_DATE_TIME);
+    }
+
+    public void setCreateTimeString(String createTime) {
+        this.createTime = LocalDateTime.parse(createTime, DateTimeFormatter.ISO_DATE_TIME);
     }
 }
