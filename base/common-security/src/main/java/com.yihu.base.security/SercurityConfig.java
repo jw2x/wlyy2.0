@@ -1,5 +1,6 @@
 package com.yihu.base.security;
 
+import com.yihu.base.security.sms.mobile.DefaultMobileCheck;
 import com.yihu.base.security.sms.sender.DefaultSmsCodeSender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,13 @@ public class SercurityConfig {
     public DefaultSmsCodeSender defaultSmsCodeSender() {
         logger.info("使用默认的短信发送DefaultSmsCodeSender");
         return new DefaultSmsCodeSender();
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public DefaultMobileCheck defaultMobileCheck() {
+        logger.info("使用默认的手机号验证规则");
+        return new DefaultMobileCheck();
     }
 
 }

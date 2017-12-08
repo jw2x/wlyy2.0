@@ -40,12 +40,7 @@ public class SmsvalidateCodeFilter extends OncePerRequestFilter implements Initi
     private SmsValidateCodeProcessor smsValidateCodeProcessor;
 
     /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.springframework.web.filter.OncePerRequestFilter#doFilterInternal(
-     * javax.servlet.http.HttpServletRequest,
-     * javax.servlet.http.HttpServletResponse, javax.servlet.FilterChain)
+     *   短信验证码登陆过滤器
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
@@ -54,8 +49,7 @@ public class SmsvalidateCodeFilter extends OncePerRequestFilter implements Initi
             if (pathMatcher.match(SecurityProperties.mobileSendSms, request.getRequestURI())) {
                 logger.info("校验请求(" + request.getRequestURI() + ")中的验证码");
                 try {
-                    smsValidateCodeProcessor
-                            .validate(new ServletWebRequest(request, response));
+                    smsValidateCodeProcessor.validate(new ServletWebRequest(request, response));
                     logger.info("验证码校验通过");
                 } catch (ValidateCodeException exception) {
                     authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
