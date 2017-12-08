@@ -1,6 +1,7 @@
-package com.yihu.jw.config.security.roleService;
+package com.yihu.jw.config.security;
 
 import com.yihu.base.security.rbas.ClientServiceProvider;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
@@ -13,6 +14,7 @@ import java.util.Set;
  * Created by chenweida on 2017/12/1.
  */
 @Component("baseClientDetailsService")
+@Primary
 public class ClientService implements ClientServiceProvider {
 
     @Override

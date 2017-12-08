@@ -35,6 +35,7 @@ security:
     token:
       accessTokenValidityHours: 2 # 2小时
       refreshTokenValidityHours: 2 # 2小时
+      tokenType: accessToken
     sms:
-      expireIn: 1 ##1分钟
+      expireIn: 1 ##1分钟过期
       length: 6 #验证码长度

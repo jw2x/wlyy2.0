@@ -10,10 +10,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class SmsValidateProperties {
 
-    @Value("${security.oauth2.sms.expireIn}")
+    @Value("${security.oauth2.sms.expireIn:1}")
     private Integer expireIn = 1; //短信验证码过期时间
 
-    @Value("${security.oauth2.sms.length}")
+    @Value("${security.oauth2.sms.length:6}")
     private Integer length = 6; //短信验证码过期时间
 
     public Integer getExpireIn() {

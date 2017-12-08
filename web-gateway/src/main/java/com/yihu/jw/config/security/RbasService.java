@@ -1,4 +1,4 @@
-package com.yihu.jw.config.security.roleService;
+package com.yihu.jw.config.security;
 
 import com.yihu.base.security.rbas.IRbasService;
 import org.springframework.security.core.Authentication;
