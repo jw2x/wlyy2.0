@@ -18,6 +18,8 @@ public class AccessTokenPorperties {
     @Value("${security.oauth2.token.tokenType:accessToken}")
     private String tokenType;
 
+
+
     public Integer getAccessTokenValidityHours() {
         return accessTokenValidityHours;
     }
@@ -41,4 +43,7 @@ public class AccessTokenPorperties {
     public void setTokenType(String tokenType) {
         this.tokenType = tokenType;
     }
+
+
+
 }

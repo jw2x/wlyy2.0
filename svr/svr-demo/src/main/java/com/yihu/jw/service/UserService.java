@@ -47,7 +47,6 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         if ("admin".equals(userName)) {
-            System.out.printf("password:" + passwordEncoder.encode("123456"));
             return new User("admin",
                     passwordEncoder.encode("123456"),
                     true,
@@ -57,7 +56,6 @@ public class UserService implements UserDetailsService {
                     , AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER") //权限
             );
         } else if ((!StringUtils.isEmpty(userName))&&userName.length() == 11) {
-            System.out.printf("password:" + passwordEncoder.encode("123456"));
             return new User("admin",
                     passwordEncoder.encode("123456"),
                     true,

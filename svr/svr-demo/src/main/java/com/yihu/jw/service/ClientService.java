@@ -1,5 +1,6 @@
 package com.yihu.jw.service;
 
+import com.yihu.base.security.properties.AccessTokenPorperties;
 import com.yihu.base.security.rbas.ClientServiceProvider;
 import com.yihu.jw.model.SaasDO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,6 @@ public class ClientService implements ClientServiceProvider {
         SaasDO baseClientDetails = new SaasDO();
         baseClientDetails.setAppId("cwd");
         baseClientDetails.setAppSecret( passwordEncoder.encode("cwd"));
-
         baseClientDetails.getAuthorizedGrantTypes();
         return baseClientDetails;
     }

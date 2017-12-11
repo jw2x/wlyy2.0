@@ -28,9 +28,9 @@ spring:
 
 
   redis:
-    host: 127.0.0.1 # Redis server host.
+    host: 172.19.103.88 # Redis server host.
     port: 6379 # Redis server port.
-    database: 6
+    database: 3
 
   aop:
     proxy-target-class: true
