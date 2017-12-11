@@ -4,10 +4,10 @@
     1. 获取客户端的实现逻辑结合自己的客户端用户体系实现 （com.yihu.base.security.rbas.ClientServiceProvider）
 第一步
 获取code
-http://localhost:8060/oauth/authorize?response_type=code&client_id=cwd&redirect_uri=http://example.com&scope=all
+http://localhost:8060/oauth/authorize?response_type=code&client_id=cwd&redirect_uri=http://example.com&scope=app
 参数说明：
 response_type=code 固定
-scope=all 固定
+scope=app 固定
 client_id=cwd 根据用户表中自己定义的填写
 redirect_uri=http://example.com 根据用户表中自己定义的填写
 
@@ -21,7 +21,7 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
      "client_id":"cwd",
      "code":"第一步请求获取的code",
      "redirect_uri":"http://example.com",
-     "scope":"all"
+     "scope":"app"
 }
 返回值
 {
@@ -29,7 +29,7 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
     "token_type":"bearer",
     "refresh_token":"1427b997-ef94-4061-8940-c71da6549acd",  默认2小时过期时间 可以配置 
     "expires_in":43199,
-    "scope":"all"
+    "scope":"app"
 }
 
 **密码模式（一般自己公司系统用）**
@@ -43,9 +43,9 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
   
 {
      "grant_type":"password",  
-     "username":"jojo",
+     "username":"admin",
      "password":"123456",
-     "scope":"all"
+     "scope":"app"
 }
 
 返回值
@@ -54,8 +54,9 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
     "token_type":"bearer",
     "refresh_token":"bbb36b54-61b2-4d86-aed3-91c5135174c3",
     "expires_in":43199,
-    "scope":"all"
+    "scope":"app"
 }
+
 
 **刷新token**
 获取token post请求
@@ -64,7 +65,7 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
   
 {
      "grant_type":"refresh_token",
-     "refresh_token":"all"
+     "refresh_token":"bbb36b54-61b2-4d86-aed3-91c5135174c3"
 }
 
 返回值
@@ -73,7 +74,7 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
     "token_type":"bearer",
     "refresh_token":"bbb36b54-61b2-4d86-aed3-91c5135174c3",
     "expires_in":43199,
-    "scope":"all"
+    "scope":"app"
 }
 
 
@@ -87,7 +88,7 @@ header:  Basic {appid}:{appsecuri} 加密  例如 Basic Y3dkOmN3ZA==
 注:  
     1. 获取用户的实现逻辑结合自己的用户体系实现 （org.springframework.security.core.userdetails.UserDetailsService）
 body
-{
+{ 
     "username":"test",
     "password":"123456"
 }
@@ -99,7 +100,12 @@ body
     "expires_in":43199,
     "scope":"all"
 }
-
+{
+    "access_token":"4ce54971-91f9-4c19-bf76-a3c1d3e8c495",
+    "token_type":"bearer",
+    "refresh_token":"37e3e3bc-8897-4eb4-b43b-4b8382f0efdf",
+    "scope":"app"
+}
 
 **自定义手机号短信验证码登陆**
 
@@ -137,7 +143,7 @@ body
     "token_type":"bearer",
     "refresh_token":"bbb36b54-61b2-4d86-aed3-91c5135174c3",
     "expires_in":43199,
-    "scope":"all"
+    "scope":"app"
 }
 
 **访问方式**

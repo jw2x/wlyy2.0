@@ -159,6 +159,7 @@ public class SaasDO implements Serializable, ClientDetails {
         strings.add("password");
         strings.add("custom_password");
         strings.add("authorization_code");
+        strings.add("implicit");
         strings.add("refresh_token");
         return strings;
     }
@@ -190,9 +191,14 @@ public class SaasDO implements Serializable, ClientDetails {
         return 0;
     }
 
+    /**
+     * 是否自动授权
+     * @param scope
+     * @return
+     */
     @Override
     public boolean isAutoApprove(String scope) {
-        return false;
+        return true;
     }
 
     @Override

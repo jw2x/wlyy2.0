@@ -2,6 +2,10 @@ package com.yihu.jw.service;
 
 import com.yihu.base.security.rbas.ClientServiceProvider;
 import com.yihu.jw.model.SaasDO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Component;
@@ -10,7 +14,10 @@ import org.springframework.stereotype.Component;
  * Created by chenweida on 2017/12/1.
  */
 @Component("baseClientDetailsService")
+@Primary
 public class ClientService implements ClientServiceProvider {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     /**
      * 根据自己的业务查询表 返回相关的平台用户信息
      * @param clientId
@@ -27,9 +34,10 @@ public class ClientService implements ClientServiceProvider {
 
         SaasDO baseClientDetails = new SaasDO();
         baseClientDetails.setAppId("cwd");
-        baseClientDetails.setAppSecret("cwd");
+        baseClientDetails.setAppSecret( passwordEncoder.encode("cwd"));
 
         baseClientDetails.getAuthorizedGrantTypes();
         return baseClientDetails;
     }
+
 }

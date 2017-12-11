@@ -44,7 +44,7 @@ public class SmsController {
             response.setHeader("content-type", "text/html;charset=UTF-8");
             response.setStatus(HttpStatus.NOT_IMPLEMENTED.value());//参数错误
             PrintWriter pw = response.getWriter();
-            pw.write(new String("电话号码格式错误"));
+            pw.write(new String("{\"content\":\"电话号码格式错误\"}"));
             pw.flush();
         } else {
             //发送短信验证码并且保存到redis中
