@@ -24,7 +24,7 @@ import java.io.IOException;
 /**
  * @author chenweida
  */
-@Component("smsvalidateCodeFilter")
+@Component
 public class SmsvalidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
     /**
@@ -45,8 +45,8 @@ public class SmsvalidateCodeFilter extends OncePerRequestFilter implements Initi
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        if (!StringUtils.equalsIgnoreCase(request.getMethod(), "get")) {
-            if (pathMatcher.match(SecurityProperties.mobileSendSms, request.getRequestURI())) {
+        if (StringUtils.equalsIgnoreCase(request.getMethod(), "post")) {
+            if (pathMatcher.match(SecurityProperties.mobileLogin, request.getRequestURI())) {
                 logger.info("校验请求(" + request.getRequestURI() + ")中的验证码");
                 try {
                     smsValidateCodeProcessor.validate(new ServletWebRequest(request, response));

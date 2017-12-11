@@ -52,9 +52,12 @@
         <version.myCommon>1.0.0</version.myCommon>
         <version.spring>4.3.10.RELEASE</version.spring>
         <version.spring.security>4.2.3.RELEASE</version.spring.security>
-
         <version.spring-data-jpa>1.11.3.RELEASE</version.spring-data-jpa>
         <version.spring-data-common>1.13.3.RELEASE</version.spring-data-common>
+        <version.spring-data-hadoop>2.3.0.RELEASE</version.spring-data-hadoop>
+        <version.spring-data.solr>2.1.8.RELEASE</version.spring-data.solr>
+        <version.spring.social>1.1.4.RELEASE</version.spring.social>
+
         <version.zipkin>1.24.0</version.zipkin>
         <version.hibernate>5.0.12.Final</version.hibernate>
         <version.hibernate-jpa>1.0.0.Final</version.hibernate-jpa>
@@ -82,10 +85,8 @@
         <version.elasticsearch>2.4.4</version.elasticsearch>
         <version.jest>2.4.0</version.jest>
         <version.hbase-client>1.1.1</version.hbase-client>
-        <version.spring-data-hadoop>2.3.0.RELEASE</version.spring-data-hadoop>
         <version.joda-time>2.8.2</version.joda-time>
         <version.solr>5.5.1</version.solr>
-        <version.spring-data.solr>2.1.8.RELEASE</version.spring-data.solr>
         <version.fastdfs>1.25</version.fastdfs>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
@@ -425,6 +426,28 @@
             </dependency>
             <!--spring end-->
 
+            <!--spring social start-->
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-config</artifactId>
+                <version>${version.spring.social}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-core</artifactId>
+                <version>${version.spring.social}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-security</artifactId>
+                <version>${version.spring.social}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.social</groupId>
+                <artifactId>spring-social-web</artifactId>
+                <version>${version.spring.social}</version>
+            </dependency>
+            <!--spring  social end-->
             <!--数据库驱动 start-->
             <dependency>
                 <groupId>mysql</groupId>

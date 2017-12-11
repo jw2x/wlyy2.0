@@ -53,7 +53,7 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private ValidateCode generate(ServletWebRequest request) {
+    public ValidateCode generate(ServletWebRequest request) {
         return smsValidateCodeGenerator.generate(request);
     }
 
@@ -63,7 +63,7 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
      * @param request
      * @param validateCode
      */
-    private void save(ServletWebRequest request, ValidateCode validateCode) {
+    public void save(ServletWebRequest request, ValidateCode validateCode) {
         JSONObject jo = new JSONObject();
         jo.put("code", validateCode.getCode());//保存验证码
         jo.put("expireTime", validateCode.getExpireTimeString()); //保存超时时间
@@ -76,7 +76,7 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
      *
      * @param request
      */
-    private void reomve(ServletWebRequest request) {
+    public void reomve(ServletWebRequest request) {
         redisTemplate.delete((key(request)));
     }
 
@@ -126,33 +126,31 @@ public class SmsValidateCodeProcessor implements ValidateCodeProcessor {
         //获取验证码
         ValidateCode validateCode = get(request);
 
+        if (validateCode == null) {
+            throw new ValidateCodeException("验证码不存在");
+        }
         String codeInRequest;
         //获取请求中的验证码
         try {
             codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),
-                    SecurityProperties.mobileSendSms);
+                    SecurityProperties.mobileLoginSmsKey);
         } catch (ServletRequestBindingException e) {
             throw new ValidateCodeException("获取验证码的值失败");
         }
+
 
         if (StringUtils.isBlank(codeInRequest)) {
             throw new ValidateCodeException("验证码的值不能为空");
         }
 
-        if (validateCode == null) {
-            throw new ValidateCodeException("验证码不存在");
-        }
 
         if (validateCode.isExpried()) {
-            reomve(request);
             throw new ValidateCodeException("验证码已过期");
         }
 
         if (!StringUtils.equals(validateCode.getCode(), codeInRequest)) {
             throw new ValidateCodeException("验证码不匹配");
         }
-        //验证成功删除验证码
-        reomve(request);
     }
 
 }

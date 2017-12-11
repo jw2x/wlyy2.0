@@ -106,100 +106,6 @@ public class SaasDO implements Serializable, ClientDetails {
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
-    @Override
-    public String getClientId() {
-        return appId;
-    }
-
-    @Override
-    public String getClientSecret() {
-        return appSecret;
-    }
-
-    @Override
-    public Set<String> getResourceIds() {
-        return new HashSet<>();
-    }
-
-    @Override
-    public boolean isSecretRequired() {
-        return false;
-    }
-
-    /**
-     * 是否在授权范围
-     * @return
-     */
-    @Override
-    public boolean isScoped() {
-        return false;
-    }
-
-    /**
-     * 允许的授权范围
-     *
-     * @return
-     */
-    @Override
-    public Set<String> getScope() {
-        Set<String> set = new HashSet<>();
-        set.add("app");
-        return set;
-    }
-
-    /**
-     * 该client允许的授权类型
-     *
-     * @return
-     */
-    @Override
-    public Set<String> getAuthorizedGrantTypes() {
-        Set<String> strings = new HashSet<>();
-        strings.add("password");
-        strings.add("custom_password");
-        strings.add("authorization_code");
-        strings.add("refresh_token");
-        return strings;
-    }
-
-    /**
-     * 授权码模式支持的跳转请求
-     * @return
-     */
-    @Override
-    public Set<String> getRegisteredRedirectUri() {
-        Set<String> strings = new HashSet<>();
-        strings.add("http://example.com");
-        strings.add(url);
-        return strings;
-    }
-
-    @Override
-    public Collection<GrantedAuthority> getAuthorities() {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public Integer getAccessTokenValiditySeconds() {
-        return 0;
-    }
-
-    @Override
-    public Integer getRefreshTokenValiditySeconds() {
-        return 0;
-    }
-
-    @Override
-    public boolean isAutoApprove(String scope) {
-        return false;
-    }
-
-    @Override
-    public Map<String, Object> getAdditionalInformation() {
-        return new HashMap<>();
-    }
-
     public String getCreateUser() {
         return createUser;
     }
@@ -271,4 +177,115 @@ public class SaasDO implements Serializable, ClientDetails {
     public void setId(String id) {
         this.id = id;
     }
+
+    //================================oauth2========================================
+
+
+    @Override
+    public String getClientId() {
+        return appId;
+    }
+
+    @Override
+    public String getClientSecret() {
+        return appSecret;
+    }
+
+    @Override
+    public Set<String> getResourceIds() {
+        return new HashSet<>();
+    }
+
+    @Override
+    public boolean isSecretRequired() {
+        return false;
+    }
+
+    /**
+     * 是否在授权范围
+     * @return
+     */
+    @Override
+    public boolean isScoped() {
+        return false;
+    }
+
+    /**
+     * 允许的授权范围
+     *
+     * @return
+     */
+    @Override
+    public Set<String> getScope() {
+        Set<String> set = new HashSet<>();
+        set.add("app");
+        return set;
+    }
+
+    /**
+     * 该client允许的授权类型
+     *
+     * @return
+     */
+    @Override
+    public Set<String> getAuthorizedGrantTypes() {
+        Set<String> strings = new HashSet<>();
+        strings.add("password");
+        strings.add("custom_password");
+        strings.add("authorization_code");
+        strings.add("implicit");
+        strings.add("refresh_token");
+        return strings;
+    }
+
+    /**
+     * 授权码模式支持的跳转请求
+     * @return
+     */
+    @Override
+    public Set<String> getRegisteredRedirectUri() {
+        Set<String> strings = new HashSet<>();
+        strings.add("http://example.com");
+        strings.add(url);
+        return strings;
+    }
+
+    @Override
+    public Collection<GrantedAuthority> getAuthorities() {
+        return new ArrayList<>();
+    }
+
+    /**
+     * 过期时间
+     * @return
+     */
+    @Override
+    public Integer getAccessTokenValiditySeconds() {
+        return 7200;
+    }
+
+    /**
+     * 过期时间
+     * @return
+     */
+    @Override
+    public Integer getRefreshTokenValiditySeconds() {
+        return 7200;
+    }
+
+    /**
+     * 是否自动授权
+     * @param scope
+     * @return
+     */
+    @Override
+    public boolean isAutoApprove(String scope) {
+        return true;
+    }
+
+    @Override
+    public Map<String, Object> getAdditionalInformation() {
+        return new HashMap<>();
+    }
+
 }

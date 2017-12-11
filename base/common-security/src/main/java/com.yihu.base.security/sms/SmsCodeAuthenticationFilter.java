@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author zhailiang
+ * @author chenweida
  *
  */
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {

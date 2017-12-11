@@ -22,8 +22,8 @@ public class BaseUserVersionDO  extends IdEntity implements java.io.Serializable
 
 	// Fields
 
-	private String employeeId;
-	private String version;
+	private String employeeId; //用户id
+	private String version; //版本
 
 	// Constructors
 

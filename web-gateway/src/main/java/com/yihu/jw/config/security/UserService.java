@@ -1,6 +1,7 @@
 package com.yihu.jw.config.security;
 
 
+import com.yihu.jw.feign.base.user.EmployFeign;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
@@ -20,6 +21,8 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private EmployFeign employFeign;
 
     /**
      * 我们只需要把用户返回给spring-security 密码框架自己帮我们校验
