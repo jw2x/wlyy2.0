@@ -26,7 +26,6 @@ public class EmployController extends EnvelopRestController {
     @Autowired
     private EmployService employService;
 
-
     @PostMapping(value = BaseUserRequestMapping.BaseEmploy.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建用户", notes = "创建单个用户")
     public Envelop createBaseEmployDO(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
@@ -71,9 +70,10 @@ public class EmployController extends EnvelopRestController {
 
     @ApiOperation(value = "根据name模糊查询某saasId平台下的所有用户")
     @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
-    public Envelop getListByNameAndSaasId(@ApiParam(name = "saasId", value = "saasId", required = true) @RequestParam(value = "saasId", required = true) String saasId) {
+    public Envelop getListByNameAndSaasId(@ApiParam(name = "saasId", value = "saasId", required = true) @RequestParam(value = "saasId", required = true) String saasId,
+                                          @ApiParam(name = "name", value = "name", required = true) @RequestParam(value = "name", required = true) String name) {
         try{
-            return Envelop.getSuccess(BaseUserRequestMapping.BaseRole.message_success_find,this.employService.findAllBySaasId(saasId));
+            return Envelop.getSuccess(BaseUserRequestMapping.BaseRole.message_success_find,this.employService.findAllByNameAndSaasId(name,saasId));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }

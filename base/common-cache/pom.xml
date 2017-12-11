@@ -10,14 +10,19 @@
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
-    <groupId>common-cache</groupId>
-    <artifactId>common-cache</artifactId>
+    <groupId>common-customCache</groupId>
+    <artifactId>common-customCache</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>1.8.10</version>
         </dependency>
     </dependencies>
     
