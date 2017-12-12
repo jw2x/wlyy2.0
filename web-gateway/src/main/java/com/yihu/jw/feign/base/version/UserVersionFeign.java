@@ -15,4 +15,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 )
 @RequestMapping(value = BaseRequestMapping.api_base_common)
 public interface UserVersionFeign {
+
 }

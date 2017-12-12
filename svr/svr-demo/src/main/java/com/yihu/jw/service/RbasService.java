@@ -1,6 +1,7 @@
 package com.yihu.jw.service;
 
 import com.yihu.base.security.rbas.IRbasService;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,8 @@ import java.util.Set;
  * Created by chenweida on 2017/12/5.
  * 判断用户是否有权限访问该路径
  */
-@Component("rbasbean")
+@Primary
+@Service("rbasService")
 public class RbasService implements IRbasService {
 
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
@@ -39,10 +41,8 @@ public class RbasService implements IRbasService {
                 }
             }
         }
-        return hasPerssion;
+        return true;
+        //return hasPerssion;
     }
 
-    public Boolean hello() {
-        return true;
-    }
 }

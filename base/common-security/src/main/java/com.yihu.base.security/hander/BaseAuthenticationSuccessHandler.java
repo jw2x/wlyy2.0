@@ -4,7 +4,9 @@
 package com.yihu.base.security.hander;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.base.security.properties.SecurityProperties;
 import com.yihu.base.security.rbas.ClientServiceProvider;
+import com.yihu.base.security.sms.process.SmsValidateCodeProcessor;
 import org.apache.commons.codec.binary.StringUtils;
 import org.apache.commons.collections.MapUtils;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.codec.Base64;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.UnapprovedClientAuthenticationException;
 import org.springframework.security.oauth2.provider.*;
@@ -21,6 +24,8 @@ import org.springframework.security.oauth2.provider.token.AuthorizationServerTok
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -39,12 +44,20 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
+    /**
+     * 验证请求url与配置的url是否匹配的工具类
+     */
+    private AntPathMatcher pathMatcher = new AntPathMatcher();
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
     private ClientServiceProvider clientDetailsService;
     @Autowired
     private AuthorizationServerTokenServices defaultTokenServices;
+    @Autowired
+    private SmsValidateCodeProcessor smsValidateCodeProcessor;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /*
          * (non-Javadoc)
@@ -66,13 +79,13 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
         assert tokens.length == 2;
 
         String clientId = tokens[0];
-        String clientSecurity = tokens[1];
+        String clientSecurity =tokens[1];
         //得到ClientDetails
         ClientDetails clientDetails = clientDetailsService.loadClientByClientId(clientId);
 
         if (clientDetails == null) {
             throw new UnapprovedClientAuthenticationException("clientId不存在 client:" + clientId);
-        } else if (!StringUtils.equals(clientDetails.getClientSecret(), clientSecurity)) {
+        } else if (!passwordEncoder.matches(clientSecurity,clientDetails.getClientSecret())) {
             throw new UnapprovedClientAuthenticationException("clientSecurity 不匹配 client:" + clientId);
         }
 
@@ -84,6 +97,10 @@ public class BaseAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
 
         OAuth2AccessToken token = defaultTokenServices.createAccessToken(oAuth2Authentication);
 
+        if(pathMatcher.match(SecurityProperties.mobileLogin, request.getRequestURI())){
+            //验证码模式登陆，说明登陆成功  删除验证码
+            smsValidateCodeProcessor.reomve(new ServletWebRequest(request,response));
+        }
         response.setContentType("application/json;charset=UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(token));
 

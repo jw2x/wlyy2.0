@@ -18,6 +18,7 @@ public class SmsService  extends BaseJpaService<BaseSmsDO, SmsDao> {
 
     @Transactional
     public BaseSmsDO createSms(BaseSmsDO sms) throws ApiException {
+
         return smsDao.save(sms);
     }
 

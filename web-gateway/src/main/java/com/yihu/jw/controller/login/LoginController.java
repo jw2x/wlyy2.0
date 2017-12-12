@@ -1,6 +1,6 @@
 package com.yihu.jw.controller.login;
 
-import com.yihu.jw.config.security.roleService.UserService;
+import com.yihu.jw.config.security.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;

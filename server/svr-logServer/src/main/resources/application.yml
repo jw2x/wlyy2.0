@@ -2,6 +2,7 @@ spring:
   application:
     name: svr-logServer
 
+
 ---
 spring:
   profiles: jwdev

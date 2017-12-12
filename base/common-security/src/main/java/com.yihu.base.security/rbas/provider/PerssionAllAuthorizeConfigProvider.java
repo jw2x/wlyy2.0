@@ -14,10 +14,11 @@ import org.springframework.stereotype.Component;
 @Order(Integer.MIN_VALUE)
 public class PerssionAllAuthorizeConfigProvider implements AuthorizeConfigProvider {
 
-    @Override
-    public void condfig(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
 
-        config
+    @Override
+    public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry expressionInterceptUrlRegistry) {
+
+        expressionInterceptUrlRegistry
                 .antMatchers(
                         SecurityProperties.formLogin,
                         SecurityProperties.formLoginPage,

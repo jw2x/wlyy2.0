@@ -9,11 +9,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class AccessTokenPorperties {
-    @Value("${security.oauth2.token.accessTokenValidityHours}")
-    private Integer accessTokenValidityHours = 2; //accesstoken超时时间
+    @Value("${security.oauth2.token.accessTokenValidityHours:2}")
+    private Integer accessTokenValidityHours ; //accesstoken超时时间
 
-    @Value("${security.oauth2.token.refreshTokenValidityHours}")
-    private Integer refreshTokenValidityHours = 2;//刷新token过期时间
+    @Value("${security.oauth2.token.refreshTokenValidityHours:2}")
+    private Integer refreshTokenValidityHours ;//刷新token过期时间
+
+    @Value("${security.oauth2.token.tokenType:accessToken}")
+    private String tokenType;
+
 
 
     public Integer getAccessTokenValidityHours() {
@@ -31,4 +35,15 @@ public class AccessTokenPorperties {
     public void setRefreshTokenValidityHours(Integer refreshTokenValidityHours) {
         this.refreshTokenValidityHours = refreshTokenValidityHours;
     }
+
+    public String getTokenType() {
+        return tokenType;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
+
+
+
 }
