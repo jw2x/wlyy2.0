@@ -132,6 +132,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>common-customCache</groupId>
+            <artifactId>common-customCache</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>svr-base</finalName>
