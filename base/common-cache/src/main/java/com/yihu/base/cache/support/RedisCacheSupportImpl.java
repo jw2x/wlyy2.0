@@ -21,9 +21,6 @@ public class RedisCacheSupportImpl extends CacheSupportImpl implements CacheSupp
     private CustomCacheManager customCacheManager;
 
     @Autowired
-    private CacheKeyGenerator cacheKeyGenerator;
-
-    @Autowired
     private RedisConnectionFactory redisConnectionFactory;
 
     @Override
@@ -44,11 +41,11 @@ public class RedisCacheSupportImpl extends CacheSupportImpl implements CacheSupp
         RedisTemplate redisTemplate = RedisTemplateUtils.getRedisTemplate(redisConnectionFactory);
         CacheInvocation cacheInvocation = (CacheInvocation)redisTemplate.opsForValue().get(cacheKey);
         if(null != cacheInvocation){
-            refreshCache(cacheInvocation,cacheName);
+            refreshCache(cacheName,cacheInvocation);
         }
     }
 
-    private void refreshCache(CacheInvocation cacheInvocation,String cacheName){
+    public void refreshCache(String cacheName,CacheInvocation cacheInvocation){
         Object computed = invoke(cacheInvocation);
         //获取缓存对象
         Cache cache = customCacheManager.getCache(cacheName);

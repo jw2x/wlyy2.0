@@ -14,11 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class CacheSupportImpl implements CacheSupport {
-    // 记录缓存执行方法信息的容器。
-    public Map<String,Set<CacheInvocation>> cacheInvocationMap = new ConcurrentHashMap<>();
-
-    @Autowired
-    private CustomCacheManager customCacheManager;
 
     /**
      * 根据name获取cache列表
@@ -78,24 +73,6 @@ public class CacheSupportImpl implements CacheSupport {
             e.printStackTrace();
         }
         return object;
-    }
-
-    public void refreshCache(String cacheName,CacheInvocation cacheInvocation){
-        boolean invocation;
-        Object computed = null;
-        try {
-            computed = invoke(cacheInvocation);
-            invocation = true;
-        }catch (Exception e){
-            invocation = false;
-            e.printStackTrace();
-        }
-        if(invocation){
-            if(!CollectionUtils.isEmpty(cacheInvocationMap.get(cacheName))){
-                Cache cache = customCacheManager.getCache(cacheName);
-                cache.put(cacheInvocation.getKey(),computed);
-            }
-        }
     }
 
 

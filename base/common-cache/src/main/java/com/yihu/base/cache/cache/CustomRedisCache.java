@@ -18,10 +18,8 @@ import org.springframework.util.Assert;
 
 public class CustomRedisCache extends RedisCache{
 
-    @Value("expire-time")
     private Long expireTime;
 
-    @Value("refresh-time")
     private Long refreshTime;
 
     private RedisOperations redisOperations;
@@ -52,14 +50,13 @@ public class CustomRedisCache extends RedisCache{
 
     /**
      * 重写get方法，获取到缓存后再次取缓存剩余的时间，如果时间小余我们配置的刷新时间就手动刷新缓存。
-     * 为了不影响get的性能，启用后台线程去完成缓存的刷。
-     * 并且只放一个线程去刷新数据。
-     *
+     * 为了不影响get的性能，启用后台线程去完成缓存的刷新
+     * 并且只开一个线程去刷新数据。
      * @param key
      * @return
      */
     @Override
-    public ValueWrapper get(final Object key) {
+    public ValueWrapper get(Object key) {
         String cacheKey = CacheKeyGenerator.getCacheKey();
 
         ValueWrapper valueWrapper = this.get(cacheKey);

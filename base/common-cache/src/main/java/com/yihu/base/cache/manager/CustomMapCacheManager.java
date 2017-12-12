@@ -1,21 +1,19 @@
 package com.yihu.base.cache.manager;
 
 import com.yihu.base.cache.cache.CustomMapCache;
-import com.yihu.base.cache.cache.CustomRedisCache;
 import com.yihu.base.cache.util.ReflectionUtils;
 import com.yihu.base.cache.util.SpringContextUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
+@Component
 public class CustomMapCacheManager extends ConcurrentMapCacheManager implements CustomCacheManager{
 
     @Value("expire-time")
@@ -24,8 +22,10 @@ public class CustomMapCacheManager extends ConcurrentMapCacheManager implements 
     @Value("refresh-time")
     private Long refreshTime;
 
-    @Autowired
     private ConcurrentMapCacheManager concurrentMapCacheManager;
+
+    @Autowired
+    private DefaultListableBeanFactory beanFactory;
 
     private static final String SUPER_CACHEMAP = "cacheMap";
 
@@ -46,18 +46,53 @@ public class CustomMapCacheManager extends ConcurrentMapCacheManager implements 
         return null;
     }
 
+    /**
+     * 获取过期时间
+     * @return
+     */
     @Override
     public Long getExpireTime(String cacheName, String[] cacheParams) {
-        if(cacheParams.length > 1){
-            this.expireTime = Long.parseLong(cacheParams[1]);
+        // 有效时间，初始化获取默认的有效时间
+        Long expirationSecondTime = null;
+
+        // 设置key有效时间
+        if (cacheParams.length > 1) {
+            String expirationStr = cacheParams[1];
+            if (!StringUtils.isEmpty(expirationStr)) {
+                // 支持配置过期时间使用EL表达式读取配置文件时间
+                if (expirationStr.contains(MARK)) {
+                    expirationStr = beanFactory.resolveEmbeddedValue(expirationStr);
+                }
+                expirationSecondTime = Long.parseLong(expirationStr);
+            }
         }
-        return expireTime;
+        if(null == expirationSecondTime){
+            expirationSecondTime = this.getExpireTime();
+        }
+        return expirationSecondTime;
     }
 
+    /**
+     * 获取自动刷新时间
+     * @return
+     */
     @Override
-    public Long getAutoRefreshTime(String[] cacheParams) {
-        if(cacheParams.length > 2){
-            this.refreshTime = Long.parseLong(cacheParams[2]);
+    public Long getRefreshTime(String[] cacheParams) {
+        // 自动刷新时间，默认是0
+        Long refreshTime = 0L;
+        // 设置自动刷新时间
+        if (cacheParams.length > 2) {
+            String refreshTimeStr = cacheParams[2];
+            if (!StringUtils.isEmpty(refreshTimeStr)) {
+                // 支持配置刷新时间使用EL表达式读取配置文件时间
+                if (refreshTimeStr.contains(MARK)) {
+                    refreshTimeStr = beanFactory.resolveEmbeddedValue(refreshTimeStr);
+                }
+                refreshTime = Long.parseLong(refreshTimeStr);
+            }
+        }
+        if(null == refreshTime){
+            refreshTime = this.getRefreshTime();
         }
         return refreshTime;
     }
@@ -73,7 +108,7 @@ public class CustomMapCacheManager extends ConcurrentMapCacheManager implements 
         long expireTime = getExpireTime(name,cacheParams);
 
         //注解里面的刷新时间
-        long refreshTime = getAutoRefreshTime(cacheParams);
+        long refreshTime = getRefreshTime(cacheParams);
 
         Object obj =  ReflectionUtils.getFieldValue(getInstance(),SUPER_CACHEMAP);
         if(null != obj && obj instanceof ConcurrentHashMap){
@@ -100,6 +135,7 @@ public class CustomMapCacheManager extends ConcurrentMapCacheManager implements 
                 cache = cacheMap.get(cacheName);
                 if(null == cache){
                     cache = createConcurrentMapCache(cacheName,expireTime,refreshTime);
+                    cacheMap.put(cacheName,cache);
                 }
             }
         }

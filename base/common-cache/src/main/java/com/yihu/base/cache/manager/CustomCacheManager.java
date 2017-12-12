@@ -19,7 +19,7 @@ public interface CustomCacheManager extends CacheManager{
 
     Long getExpireTime(String cacheName,String[] cacheParams);
 
-    Long getAutoRefreshTime(String[] cacheParams);
+    Long getRefreshTime(String[] cacheParams);
 
 }
 
