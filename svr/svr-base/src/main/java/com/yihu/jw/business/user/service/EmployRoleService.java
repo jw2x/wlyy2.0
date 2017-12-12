@@ -47,8 +47,8 @@ public class EmployRoleService extends BaseJpaService<BaseEmployRoleDO,EmployRol
      * @return
      */
     @Transactional
-    public void createBatchBaseEmployRoleDO(List<BaseEmployRoleDO> list){
-        this.employRoleDao.save(list);
+    public Iterable<BaseEmployRoleDO> createBatchBaseEmployRoleDO(List<BaseEmployRoleDO> list){
+       return this.employRoleDao.save(list);
     }
 
     /**
@@ -87,7 +87,7 @@ public class EmployRoleService extends BaseJpaService<BaseEmployRoleDO,EmployRol
 
 
     /**
-     * 删除用户角色
+     * 根据Id删除用户角色
      * @param id
      * @return
      */
@@ -101,4 +101,39 @@ public class EmployRoleService extends BaseJpaService<BaseEmployRoleDO,EmployRol
         }
 
     }
+
+    /**
+     * 根据用户Id和角色id删除用户角色
+     * @param employId
+     * @param roleIds
+     * @return
+     */
+    @Transactional
+    public void deleteBaseEmployRoleDO(String employId,String roleIds){
+        try{
+            this.employRoleDao.deleteOneByEmployIdAndRoleId(employId,roleIds);
+        }
+        catch (ApiException e){
+            throw new ApiException(BaseUserRequestMapping.BaseEmployRole.message_fail_id_is_null,ExceptionCode.common_error_params_code);
+        }
+
+    }
+
+    /**
+     * 批量删除用户角色
+     * @param employId
+     * @param roleIds
+     * @return
+     */
+    @Transactional
+    public void deleteBatchBaseEmployRoleDO(String employId,String roleIds){
+        try{
+            this.employRoleDao.deleteManyByEmployIdAndRoleIds(employId,roleIds);
+        }
+        catch (ApiException e){
+            throw new ApiException(BaseUserRequestMapping.BaseEmployRole.message_fail_id_is_null,ExceptionCode.common_error_params_code);
+        }
+
+    }
+
 }

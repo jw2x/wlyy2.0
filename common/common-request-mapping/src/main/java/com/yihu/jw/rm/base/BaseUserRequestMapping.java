@@ -41,7 +41,7 @@ public class BaseUserRequestMapping {
         public static final String api_update = "/employee";
         public static final String api_delete = "/employee/{ids}";
         public static final String api_getById = "/employee/{id}";
-        public static final String api_getByUserId = "/employeeById/{userId}";
+        public static final String api_getByPhone = "/employee";
         public static final String api_getList="/employee/list";
         public static final String api_getListNoPage="/employee/listNoPage";
         public static final String api_getByEmployId = "/employee/{employId}";

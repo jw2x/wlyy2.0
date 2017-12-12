@@ -79,6 +79,25 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
         return BaseEmployDO;
     }
 
+
+    /**
+     * 根据手机号和saasId查询用户，一个用户可能注册多个saas平台，所以根据手机号查找要限定saasId
+     * @param phone
+     * @param saasId
+     * @return
+     */
+    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
+    public BaseEmployDO findByPhoneAndSaasId(String phone,String saasId){
+        if (StringUtils.isEmpty(phone)) {
+            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null,ExceptionCode.common_error_params_code);
+        }
+        BaseEmployDO BaseEmployDO = this.employDao.findByPhoneAndSaasId(phone,saasId);
+        if (null == BaseEmployDO) {
+            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_no_exist,ExceptionCode.common_error_params_code);
+        }
+        return BaseEmployDO;
+    }
+
     /**
      * 查询某saasId平台下的所有用户
      * @param saasId

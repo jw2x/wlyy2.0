@@ -25,15 +25,15 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
 
     /**
      * 新增角色菜单
-     * @param baseEmployRoleDO
+     * @param baseRoleMenuDO
      * @return
      */
     @Transactional
-    public BaseRoleMenuDO createBaseEmployRoleDO(BaseRoleMenuDO baseEmployRoleDO){
-        if (StringUtils.isEmpty(baseEmployRoleDO.getRoleId())) {
+    public BaseRoleMenuDO createBaseRoleMenuDO(BaseRoleMenuDO baseRoleMenuDO){
+        if (StringUtils.isEmpty(baseRoleMenuDO.getRoleId())) {
             throw new ApiException(BaseUserRequestMapping.BaseEmployRole.message_fail_roleId_is_null, ExceptionCode.common_error_params_code);
         }
-        return this.baseRoleMenuDao.save(baseEmployRoleDO);
+        return this.baseRoleMenuDao.save(baseRoleMenuDO);
     }
 
     /**
@@ -42,8 +42,8 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
      * @return
      */
     @Transactional
-    public void createBatchBaseRoleMenuDO(List<BaseRoleMenuDO> list){
-        this.baseRoleMenuDao.save(list);
+    public Iterable<BaseRoleMenuDO> createBatchBaseRoleMenuDO(List<BaseRoleMenuDO> list){
+        return this.baseRoleMenuDao.save(list);
     }
 
     /**
@@ -83,7 +83,7 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
 
 
     /**
-     * 删除用户角色
+     * 根据id删除角色菜单
      * @param id
      * @return
      */
@@ -97,4 +97,45 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
         }
 
     }
+
+    /**
+     * 根据roleId和menuId删除角色菜单
+     * @param roleId
+     * @param menuId
+     * @return
+     */
+    @Transactional
+    public void deleteBaseRoleMenuDO(String roleId,String menuId){
+        try{
+            this.baseRoleMenuDao.deleteOneByRoleIdAndMenuId(roleId,menuId);
+        }
+        catch (ApiException e){
+            throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_id_is_null,ExceptionCode.common_error_params_code);
+        }
+    }
+
+    /**
+     * 根据roleId和menuId删除角色菜单
+     * @param roleId
+     * @param menuIds
+     * @return
+     */
+    @Transactional
+    public void deleteBatchBaseRoleMenuDO(String roleId,String menuIds){
+        try{
+            this.baseRoleMenuDao.deleteManyByRoleIdAndMenuIds(roleId,menuIds);
+        }
+        catch (ApiException e){
+            throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_id_is_null,ExceptionCode.common_error_params_code);
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
