@@ -1,20 +1,29 @@
 package com.yihu.jw.business.user.contorller;
 
+import com.yihu.jw.base.base.FunctionDO;
 import com.yihu.jw.base.user.BaseEmployDO;
 import com.yihu.jw.base.user.BaseEmployRoleDO;
 import com.yihu.jw.business.user.service.EmployRoleService;
 import com.yihu.jw.business.user.service.EmployService;
 import com.yihu.jw.exception.ApiException;
+import com.yihu.jw.exception.code.ExceptionCode;
+import com.yihu.jw.restmodel.base.base.FunctionVO;
+import com.yihu.jw.restmodel.base.user.BaseEmployVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,18 +76,19 @@ public class EmployController extends EnvelopRestController {
     @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
     public Envelop getAllEmployeeBySaasId(@ApiParam(name = "saasId", value = "saasId", required = true) @RequestParam(value = "saasId", required = true) String saasId) {
         try{
-            return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_find,this.employService.findAllBySaasId(saasId));
+            return Envelop.getSuccessList(BaseUserRequestMapping.BaseEmploy.message_success_find,this.employService.findAllBySaasId(saasId));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
+
 
     @ApiOperation(value = "根据手机号和saasId查找用户")
     @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
     public Envelop getEmployeeByPhoneAndSaasId(@ApiParam(name = "phone", value = "phone", required = true) @RequestParam(value = "phone", required = true) String phone,
                                                @ApiParam(name = "saasId", value = "saasId", required = true) @RequestParam(value = "saasId", required = true) String saasId) {
         try {
-            return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_find, this.employService.findAllBySaasId(saasId));
+            return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_find, this.employService.findByPhoneAndSaasId(phone,saasId));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -89,10 +99,40 @@ public class EmployController extends EnvelopRestController {
     public Envelop getListByNameAndSaasId(@ApiParam(name = "saasId", value = "saasId", required = true) @RequestParam(value = "saasId", required = true) String saasId,
                                           @ApiParam(name = "name", value = "name", required = true) @RequestParam(value = "name", required = true) String name) {
         try{
-            return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_find,this.employService.findAllByNameAndSaasId(name,saasId));
+            return Envelop.getSuccessList(BaseUserRequestMapping.BaseEmploy.message_success_find,this.employService.findAllByNameAndSaasId(name,saasId));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
+    }
+
+    @ApiOperation(value = "根据指定条件查询用户列表，分页")
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
+    public Envelop getListPageByNameAndSaasId(@ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,sex,photo,skill,email,phone,family_tel,introduction,jxzc,lczc,xlzc,xzzc") @RequestParam(value = "fields", required = false) String fields,
+                                              @ApiParam(name = "filters", value = "过滤器，为空检索所有条件") @RequestParam(value = "filters", required = false) String filters,
+                                              @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime") @RequestParam(value = "sorts", required = false) String sorts,
+                                              @ApiParam(name = "size", value = "分页大小", defaultValue = "15") @RequestParam(value = "size", required = false) int size,
+                                              @ApiParam(name = "page", value = "页码", defaultValue = "1") @RequestParam(value = "page", required = false) int page,
+                                              HttpServletRequest request, HttpServletResponse response) throws ParseException {
+        if (StringUtils.isBlank(filters)) {
+            return Envelop.getError(BaseUserRequestMapping.BaseEmploy.message_fail_params_not_present, ExceptionCode.common_error_params_code);
+        } else {
+            filters = "status<>-1;" + filters;
+        }
+        if (StringUtils.isBlank(sorts)) {
+            sorts = "-updateTime";
+        }
+
+        //得到list数据
+        List<BaseEmployVO> list = employService.search(fields, filters, sorts, page, size);
+
+        //获取总数
+        long count = employService.getCount(filters);
+        //封装头信息
+        pagedResponse(request, response, count, page, size);
+        //封装返回格式
+        List<BaseEmployVO> mFunctions = convertToModels(list, new ArrayList<>(list.size()), BaseEmployVO.class, fields);
+
+        return Envelop.getSuccessListWithPage(BaseUserRequestMapping.BaseEmploy.message_success_find, mFunctions, page, size, count);
     }
 
 
@@ -119,6 +159,29 @@ public class EmployController extends EnvelopRestController {
         }
     }
 
+    @ApiOperation(value = "修改用户角色")
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_update)
+    public Envelop updateEmployRole(@ApiParam(name = "employId", value = "employId", required = true) @RequestParam(value = "employId", required = true) String id,
+                                    @ApiParam(name = "roleId", value = "roleId", required = true) @RequestParam(value = "roleId", required = true) String newRoleId) {
+        try {
+            BaseEmployRoleDO baseEmployRoleDO = new BaseEmployRoleDO();
+            baseEmployRoleDO.setId(id);
+            baseEmployRoleDO.setRoleId(newRoleId);
+            return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_delete, this.employRoleService.updateBaseEmployRoleDO(baseEmployRoleDO));
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
+    @ApiOperation(value = "查看用户角色列表，不分页")
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getRolesByEmployId)
+    public Envelop findEmployRoleList(@ApiParam(name = "employId", value = "employId", required = true) @RequestParam(value = "employId", required = true) String employId) {
+        try {
+            return Envelop.getSuccessList(BaseUserRequestMapping.BaseEmploy.message_success_delete, this.employRoleService.findAllByEmployId(employId));
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
 
     @ApiOperation(value = "删除用户角色")
     @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_delete)
@@ -137,20 +200,4 @@ public class EmployController extends EnvelopRestController {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

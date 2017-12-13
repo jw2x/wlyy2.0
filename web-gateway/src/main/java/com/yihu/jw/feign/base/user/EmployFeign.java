@@ -20,19 +20,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = BaseRequestMapping.api_base_common)
 public interface EmployFeign {
 
-    @RequestMapping(value = BaseUserRequestMapping.BaseRole.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    @RequestMapping(value = BaseUserRequestMapping.BaseEmploy.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
     Envelop create(@RequestBody String jsonData) throws JiWeiException;
 
-    @RequestMapping(value =  BaseUserRequestMapping.BaseRole.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.PUT)
+    @RequestMapping(value =  BaseUserRequestMapping.BaseEmploy.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.PUT)
     Envelop update(@RequestBody String jsonData) throws JiWeiException;
 
-    @RequestMapping(value =  BaseUserRequestMapping.BaseRole.api_delete,method = RequestMethod.DELETE)
+    @RequestMapping(value =  BaseUserRequestMapping.BaseEmploy.api_delete,method = RequestMethod.DELETE)
     Envelop delete(@PathVariable String id) throws JiWeiException;
 
-    @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getById)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getById)
     Envelop findById(@PathVariable(value = "id", required = true) String id) throws JiWeiException;
 
-    @RequestMapping(value = BaseUserRequestMapping.BaseRole.api_getList, method = RequestMethod.GET)
+    @RequestMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList, method = RequestMethod.GET)
     Envelop getList(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
@@ -40,9 +40,23 @@ public interface EmployFeign {
             @RequestParam(value = "size", required = false) int size,
             @RequestParam(value = "page", required = false) int page) throws JiWeiException;
 
-    @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getListNoPage)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getListNoPage)
     Envelop getListNoPage(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts) throws JiWeiException;
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseEmployRole.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    Envelop createEmployRoles(@RequestBody String jsonData) throws JiWeiException;
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseEmployRole.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    Envelop updateEmployRoles(@RequestBody String jsonData) throws JiWeiException;
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseEmployRole.api_delete,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    Envelop deleteEmployRoles(@RequestBody String jsonData) throws JiWeiException;
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseEmployRole.api_getListNoPage,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    Envelop getRoleList(@RequestBody String jsonData) throws JiWeiException;
+
 }
+

@@ -113,9 +113,9 @@ public class EmployController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseUserContants.BaseRole.api_getListNoPage)
+    @GetMapping(value = BaseUserContants.Employee.api_getListNoPage)
     @ApiOperation(value = "获取功能列表，不分页")
-    public Envelop getListNoPage(
+    public Envelop getRolesListNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,saasId,sex,phone,email,jxzc,lczcn,xlzc,xzzc,createUser,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -129,7 +129,64 @@ public class EmployController extends EnvelopRestController {
                 filterStr+="saasId="+jsonResult.get("saasId")+";";
             }
         }
-        return fegin.getListNoPage(fields, filterStr, sorts);
+        return fegin.getRoleList(fields);
     }
+
+
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @PostMapping(value = BaseUserContants.Employee.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "新增用戶角色", notes = "新增用戶角色")
+    public Envelop createEmployRoles(
+            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData) throws JiWeiException {
+        return fegin.create(jsonData);
+    }
+
+
+
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @PostMapping(value = BaseUserContants.Employee.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "新增用戶角色", notes = "新增用戶角色")
+    public Envelop updateEmployRoles(
+            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData) throws JiWeiException {
+        return fegin.create(jsonData);
+    }
+
+
+
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @PostMapping(value = BaseUserContants.Employee.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "新增用戶角色", notes = "新增用戶角色")
+    public Envelop deleteEmployRoles(
+            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData) throws JiWeiException {
+        return fegin.create(jsonData);
+    }
+
+
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @PostMapping(value = BaseUserContants.Employee.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "新增用戶角色", notes = "新增用戶角色")
+    public Envelop getRoleList(
+            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData) throws JiWeiException {
+        return fegin.create(jsonData);
+    }
+
+
+
 
 }

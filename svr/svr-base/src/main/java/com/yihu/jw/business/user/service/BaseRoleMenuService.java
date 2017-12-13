@@ -1,7 +1,9 @@
 package com.yihu.jw.business.user.service;
 
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.jw.base.user.BaseMenuDO;
 import com.yihu.jw.base.user.BaseRoleMenuDO;
+import com.yihu.jw.business.user.dao.BaseMenuDao;
 import com.yihu.jw.business.user.dao.BaseRoleMenuDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +25,9 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
 
     @Autowired
     private BaseRoleMenuDao baseRoleMenuDao;
+
+    @Autowired
+    private BaseMenuDao baseMenuDao;
 
     /**
      * 新增角色菜单
@@ -61,6 +67,7 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
         if (baseRoleMenuDO.getMenuId().equals(OldbaseRoleMenuDO.getMenuId())) {
             throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_same_menuId, ExceptionCode.common_error_params_code);
         }
+        baseRoleMenuDO.setRoleId(OldbaseRoleMenuDO.getRoleId());
         return this.baseRoleMenuDao.save(baseRoleMenuDO);
     }
 
@@ -70,7 +77,7 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
      * @param roleId
      * @return
      */
-    public List<BaseRoleMenuDO> findAllByRoleId(String roleId){
+    public List<BaseMenuDO> findAllByRoleId(String roleId){
         if (StringUtils.isEmpty(roleId)) {
             throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_roleId_is_null, ExceptionCode.common_error_params_code);
         }
@@ -78,7 +85,13 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
         if (null == list || list.size() == 0) {
             throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_baseRoleMenu_no_exist,ExceptionCode.common_error_params_code);
         }
-        return list;
+        List<String> ids = new ArrayList<>();
+        for(BaseRoleMenuDO baseRoleMenuDO:list){
+            ids.add(baseRoleMenuDO.getMenuId());
+        }
+        Iterable<String> iterable = (Iterable<String>)ids.iterator();
+        List<BaseMenuDO> result = (List<BaseMenuDO>)baseMenuDao.findAll(iterable);
+        return result;
     }
 
 

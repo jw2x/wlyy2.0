@@ -3,6 +3,8 @@ package com.yihu.jw.business.user.service;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.base.user.BaseEmployDO;
 import com.yihu.jw.base.user.BaseEmployRoleDO;
+import com.yihu.jw.base.user.BaseRoleDO;
+import com.yihu.jw.business.user.dao.BaseRoleDao;
 import com.yihu.jw.business.user.dao.EmployRoleDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,6 +27,9 @@ public class EmployRoleService extends BaseJpaService<BaseEmployRoleDO,EmployRol
 
     @Autowired
     private EmployRoleDao employRoleDao;
+
+    @Autowired
+    private BaseRoleDao baseRoleDao;
 
     /**
      * 新增用户角色
@@ -65,6 +71,7 @@ public class EmployRoleService extends BaseJpaService<BaseEmployRoleDO,EmployRol
         if (baseEmployRoleDO.getRoleId().equals(OldbaseEmployRoleDO.getRoleId())) {
             throw new ApiException(BaseUserRequestMapping.BaseEmployRole.message_fail_same_roleId, ExceptionCode.common_error_params_code);
         }
+        baseEmployRoleDO.setEmployId(OldbaseEmployRoleDO.getEmployId());
         return this.employRoleDao.save(baseEmployRoleDO);
     }
 
@@ -74,7 +81,7 @@ public class EmployRoleService extends BaseJpaService<BaseEmployRoleDO,EmployRol
      * @param employId
      * @return
      */
-    public List<BaseEmployRoleDO> findAllByEmployId(String employId){
+    public List<BaseRoleDO> findAllByEmployId(String employId){
         if (StringUtils.isEmpty(employId)) {
             throw new ApiException(BaseUserRequestMapping.BaseEmployRole.message_fail_employId_is_null, ExceptionCode.common_error_params_code);
         }
@@ -82,7 +89,13 @@ public class EmployRoleService extends BaseJpaService<BaseEmployRoleDO,EmployRol
         if (null == list || list.size() == 0) {
             throw new ApiException(BaseUserRequestMapping.BaseEmployRole.message_fail_employeeRole_no_exist,ExceptionCode.common_error_params_code);
         }
-        return list;
+        List ids = new ArrayList<>();
+        for(BaseEmployRoleDO baseEmployRoleDO:list){
+            ids.add(baseEmployRoleDO.getRoleId());
+        }
+        Iterable iterable = (Iterable)ids.iterator();
+        List<BaseRoleDO> result = (List<BaseRoleDO>)baseRoleDao.findAll(iterable);
+        return result;
     }
 
 
