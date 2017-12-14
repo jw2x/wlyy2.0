@@ -1,4 +1,7 @@
 ##如果有配置服务的话，远程服务器和本地服务器配置不一致的情况下，优先远程的为主  git上 svr-base ->  git application ->本地 appliction ->本地 bootstarp
+server:
+  port: 10050
+
 spring:
   application:
     name:  svr-iot  ##注册到发现服务的id 如果id一样 eurika会自动做负载
@@ -28,6 +31,20 @@ hibernate:
   ejb:
     naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
 
+fast-dfs:
+  tracker-server: 172.19.103.54:22122 #服务器地址
+  connect-timeout: 2 #链接超时时间
+  network-timeout: 30
+  charset: ISO8859-1 #编码
+  http:
+    tracker-http-port: 80
+    anti-steal-token: no
+    secret-key: FastDFS1234567890
+  pool: #连接池大小
+    init-size: 5
+    max-size: 20
+    wait-time: 500
+
 ---
 spring:
   profiles: jwdev
@@ -36,13 +53,16 @@ spring:
     url: jdbc:mysql://172.19.103.77:3306/xmiot?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
     password: 123456
-
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
 ---
 spring:
   profiles: jwtest
-
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
 
 ---
 spring:
   profiles: jwprod
-
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/

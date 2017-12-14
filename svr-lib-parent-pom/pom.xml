@@ -520,7 +520,7 @@
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-data-fastdfs</artifactId>
-                <version>${version.fastdfs}</version>
+                <version>${version.myCommon}</version>
             </dependency>
             <dependency>
                 <groupId>org.csource</groupId>
