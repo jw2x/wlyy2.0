@@ -517,7 +517,11 @@
             <!--hibernate end-->
 
             <!--fastdfs start-->
-
+            <dependency>
+                <groupId>com.yihu.base</groupId>
+                <artifactId>common-data-fastdfs</artifactId>
+                <version>${version.fastdfs}</version>
+            </dependency>
             <dependency>
                 <groupId>org.csource</groupId>
                 <artifactId>fastdfs_lib</artifactId>
