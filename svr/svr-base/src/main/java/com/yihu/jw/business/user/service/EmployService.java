@@ -9,6 +9,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -19,7 +20,10 @@ import java.util.List;
  * Created by chenweida on 2017/5/11.
  * 用户信息功能
  */
+
 @Service
+@EnableCaching
+@CacheConfig(cacheNames = "employ")
 public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
     @Autowired
     private EmployDao employDao;
@@ -29,6 +33,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @param employeeDO
      * @return
      */
+    @Cacheable(value = "employ#600#300")
     @Transactional
     public BaseEmployDO createBaseEmployDO(BaseEmployDO employeeDO){
         if (StringUtils.isEmpty(employeeDO.getId())) {
@@ -45,6 +50,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @param employeeDO
      * @return
      */
+    @CachePut(value = "employ#600#300",key = "#employeeDO.id")
     @Transactional
     public BaseEmployDO updateBaseEmployDO(BaseEmployDO employeeDO){
         if (StringUtils.isEmpty(employeeDO.getId())) {
@@ -61,6 +67,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @param id
      * @return
      */
+    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
     public BaseEmployDO findById(String id){
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null,ExceptionCode.common_error_params_code);
@@ -72,11 +79,31 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
         return BaseEmployDO;
     }
 
+
+    /**
+     * 根据手机号和saasId查询用户，一个用户可能注册多个saas平台，所以根据手机号查找要限定saasId
+     * @param phone
+     * @param saasId
+     * @return
+     */
+    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
+    public BaseEmployDO findByPhoneAndSaasId(String phone,String saasId){
+        if (StringUtils.isEmpty(phone)) {
+            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null,ExceptionCode.common_error_params_code);
+        }
+        BaseEmployDO BaseEmployDO = this.employDao.findByPhoneAndSaasId(phone,saasId);
+        if (null == BaseEmployDO) {
+            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_no_exist,ExceptionCode.common_error_params_code);
+        }
+        return BaseEmployDO;
+    }
+
     /**
      * 查询某saasId平台下的所有用户
      * @param saasId
      * @return
      */
+    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
     public List<BaseEmployDO> findAllBySaasId(String saasId){
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_param_saasid_is_null,ExceptionCode.common_error_params_code);
@@ -93,6 +120,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @param saasId
      * @return
      */
+    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
     public List<BaseEmployDO> findAllByNameAndSaasId(String name,String saasId){
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_param_saasid_is_null,ExceptionCode.common_error_params_code);
@@ -109,6 +137,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * 根据Id删除用户
      * @param employDO
      */
+    @CacheEvict(key = "#employDO.id")
     @Transactional
     public void deleteBaseEmploy(BaseEmployDO employDO){
         if (StringUtils.isEmpty(employDO.getId())) {

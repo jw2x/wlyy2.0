@@ -1,7 +1,9 @@
 package com.yihu.jw.business.user.service;
 
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.jw.base.user.BaseMenuDO;
 import com.yihu.jw.base.user.BaseRoleMenuDO;
+import com.yihu.jw.business.user.dao.BaseMenuDao;
 import com.yihu.jw.business.user.dao.BaseRoleMenuDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,17 +26,20 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
     @Autowired
     private BaseRoleMenuDao baseRoleMenuDao;
 
+    @Autowired
+    private BaseMenuDao baseMenuDao;
+
     /**
      * 新增角色菜单
-     * @param baseEmployRoleDO
+     * @param baseRoleMenuDO
      * @return
      */
     @Transactional
-    public BaseRoleMenuDO createBaseEmployRoleDO(BaseRoleMenuDO baseEmployRoleDO){
-        if (StringUtils.isEmpty(baseEmployRoleDO.getRoleId())) {
+    public BaseRoleMenuDO createBaseRoleMenuDO(BaseRoleMenuDO baseRoleMenuDO){
+        if (StringUtils.isEmpty(baseRoleMenuDO.getRoleId())) {
             throw new ApiException(BaseUserRequestMapping.BaseEmployRole.message_fail_roleId_is_null, ExceptionCode.common_error_params_code);
         }
-        return this.baseRoleMenuDao.save(baseEmployRoleDO);
+        return this.baseRoleMenuDao.save(baseRoleMenuDO);
     }
 
     /**
@@ -42,8 +48,8 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
      * @return
      */
     @Transactional
-    public void createBatchBaseRoleMenuDO(List<BaseRoleMenuDO> list){
-        this.baseRoleMenuDao.save(list);
+    public Iterable<BaseRoleMenuDO> createBatchBaseRoleMenuDO(List<BaseRoleMenuDO> list){
+        return this.baseRoleMenuDao.save(list);
     }
 
     /**
@@ -61,6 +67,7 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
         if (baseRoleMenuDO.getMenuId().equals(OldbaseRoleMenuDO.getMenuId())) {
             throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_same_menuId, ExceptionCode.common_error_params_code);
         }
+        baseRoleMenuDO.setRoleId(OldbaseRoleMenuDO.getRoleId());
         return this.baseRoleMenuDao.save(baseRoleMenuDO);
     }
 
@@ -70,7 +77,7 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
      * @param roleId
      * @return
      */
-    public List<BaseRoleMenuDO> findAllByRoleId(String roleId){
+    public List<BaseMenuDO> findAllByRoleId(String roleId){
         if (StringUtils.isEmpty(roleId)) {
             throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_roleId_is_null, ExceptionCode.common_error_params_code);
         }
@@ -78,12 +85,18 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
         if (null == list || list.size() == 0) {
             throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_baseRoleMenu_no_exist,ExceptionCode.common_error_params_code);
         }
-        return list;
+        List<String> ids = new ArrayList<>();
+        for(BaseRoleMenuDO baseRoleMenuDO:list){
+            ids.add(baseRoleMenuDO.getMenuId());
+        }
+        Iterable<String> iterable = (Iterable<String>)ids.iterator();
+        List<BaseMenuDO> result = (List<BaseMenuDO>)baseMenuDao.findAll(iterable);
+        return result;
     }
 
 
     /**
-     * 删除用户角色
+     * 根据id删除角色菜单
      * @param id
      * @return
      */
@@ -97,4 +110,45 @@ public class BaseRoleMenuService extends BaseJpaService<BaseRoleMenuDO,BaseRoleM
         }
 
     }
+
+    /**
+     * 根据roleId和menuId删除角色菜单
+     * @param roleId
+     * @param menuId
+     * @return
+     */
+    @Transactional
+    public void deleteBaseRoleMenuDO(String roleId,String menuId){
+        try{
+            this.baseRoleMenuDao.deleteOneByRoleIdAndMenuId(roleId,menuId);
+        }
+        catch (ApiException e){
+            throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_id_is_null,ExceptionCode.common_error_params_code);
+        }
+    }
+
+    /**
+     * 根据roleId和menuId删除角色菜单
+     * @param roleId
+     * @param menuIds
+     * @return
+     */
+    @Transactional
+    public void deleteBatchBaseRoleMenuDO(String roleId,String menuIds){
+        try{
+            this.baseRoleMenuDao.deleteManyByRoleIdAndMenuIds(roleId,menuIds);
+        }
+        catch (ApiException e){
+            throw new ApiException(BaseUserRequestMapping.BaseRoleMenu.message_fail_id_is_null,ExceptionCode.common_error_params_code);
+        }
+    }
+
+
+
+
+
+
+
+
+
 }

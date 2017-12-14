@@ -21,4 +21,7 @@ public interface EmployDao extends PagingAndSortingRepository<BaseEmployDO, Stri
 
     @Query("from BaseEmployDO ba where ba.name like ?1 and ba.saasId = ?2")
     List<BaseEmployDO> findAllByNameAndSaasId(String name,String saasId);
+
+    @Query("from BaseEmployDO ba where ba.phone = ?1 and ba.saasId = ?2")
+    BaseEmployDO findByPhoneAndSaasId(String phone,String saasId);
 }

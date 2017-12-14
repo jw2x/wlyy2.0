@@ -15,4 +15,10 @@ public interface EmployRoleDao extends PagingAndSortingRepository<BaseEmployRole
 
     @Query("from BaseEmployRoleDO ba where ba.employId = ?1")
     List<BaseEmployRoleDO> findRoleListByEmployId(String employId);
+
+    @Query("delete from BaseEmployRoleDO ba where ba.employId = ?1 and ba.roleId = ?2")
+    int deleteOneByEmployIdAndRoleId(String employId,String roleId);
+
+    @Query("delete from BaseEmployRoleDO ba where ba.employId = ?1 and ba.roleId in (?2)")
+    int deleteManyByEmployIdAndRoleIds(String employId,String roleIds);
 }

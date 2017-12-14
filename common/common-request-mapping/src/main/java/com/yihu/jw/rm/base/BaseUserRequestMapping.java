@@ -28,7 +28,7 @@ public class BaseUserRequestMapping {
         public static final String message_fail_saasid_no_exist = "saasId no exist";
         public static final String message_fail_role_no_exist = "baseRole no exist";
 
-        public static final String message_param_id_is_null = "baseRole id param cannot be null";
+        public static final String message_fail_params_not_present = "baseRole id param cannot be null";
         public static final String message_param_saasid_is_null = "baseRole saasId param cannot be null";
         public static final String message_param_name_is_null = "baseRole name param cannot be null";
     }
@@ -41,10 +41,10 @@ public class BaseUserRequestMapping {
         public static final String api_update = "/employee";
         public static final String api_delete = "/employee/{ids}";
         public static final String api_getById = "/employee/{id}";
-        public static final String api_getByUserId = "/employeeById/{userId}";
+        public static final String api_getByPhone = "/employee";
         public static final String api_getList="/employee/list";
         public static final String api_getListNoPage="/employee/listNoPage";
-        public static final String api_getByEmployId = "/employee/{employId}";
+        public static final String api_getRolesByEmployId = "/employee/{employId}";
 
 
         public static final String message_success_create="Employee create success";
@@ -52,12 +52,12 @@ public class BaseUserRequestMapping {
         public static final String message_success_delete="Employee delete success";
         public static final String message_success_find="Employee find success";
 
-        public static final String message_fail_name_exist = "baseRole name exist";
+        public static final String message_fail_params_not_present = "employee all params must be present ";
         public static final String message_fail_name_is_null = "baseRole is null";
         public static final String message_fail_id_is_null = "id is null";
         public static final String message_fail_id_no_exist = "id no exist";
         public static final String message_fail_saasid_is_null = "saasId is null";
-        public static final String message_param_saasid_is_null = "baseRole saasId param cannot be null";
+        public static final String message_param_saasid_is_null = "employee saasId param cannot be null";
         public static final String message_fail_saasid_no_exist = "saasId no exist";
 
     }

@@ -17,4 +17,10 @@ public interface BaseRoleMenuDao extends PagingAndSortingRepository<BaseRoleMenu
 
     @Query("from BaseRoleMenuDO ba where ba.roleId = ?1")
     List<BaseRoleMenuDO> findRoleMenuListByRoleId(String employId);
+
+    @Query("delete from BaseRoleMenuDO ba where ba.roleId = ?1 and ba.menuId = ?2")
+    int deleteOneByRoleIdAndMenuId(String roleId,String menuId);
+
+    @Query("delete from BaseRoleMenuDO ba where ba.roleId = ?1 and ba.menuId in (?2)")
+    int deleteManyByRoleIdAndMenuIds(String roleId,String menuIds);
 }
