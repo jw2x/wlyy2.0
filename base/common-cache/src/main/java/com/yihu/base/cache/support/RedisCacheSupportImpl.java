@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class RedisCacheSupportImpl extends CacheSupportImpl implements CacheSupport {
+public class RedisCacheSupportImpl extends CacheSupportImpl {
 
     @Autowired
     private CustomCacheManager customCacheManager;
