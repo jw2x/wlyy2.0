@@ -50,7 +50,7 @@ public class BaseRoleFeignFallbackFactory implements FallbackFactory<BaseRoleFei
 
             @Override
             public Envelop getList(String fields, String filterStr, String sorts, int size, int page) throws JiWeiException {
-                tracer.getCurrentSpan().logEvent("分页查找角色失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("分页查找角色列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filterStr);
                 tracer.getCurrentSpan().logEvent("sorts:" + sorts);
@@ -61,10 +61,38 @@ public class BaseRoleFeignFallbackFactory implements FallbackFactory<BaseRoleFei
 
             @Override
             public Envelop getListNoPage(String fields, String filters, String sorts) throws JiWeiException {
-                tracer.getCurrentSpan().logEvent("查找角色列表失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("不分页查找角色列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filters);
                 tracer.getCurrentSpan().logEvent("sorts:" + sorts);
+                throw new JiWeiException(e);
+            }
+
+            @Override
+            public Envelop createRoleMenus(@RequestBody String jsonData) throws JiWeiException {
+                tracer.getCurrentSpan().logEvent("创建角色菜单失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
+                throw new JiWeiException(e);
+            }
+
+            @Override
+            public Envelop updateRoleMenus(@RequestBody String jsonData) throws JiWeiException {
+                tracer.getCurrentSpan().logEvent("修改角色菜单失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
+                throw new JiWeiException(e);
+            }
+
+            @Override
+            public Envelop deleteRoleMenus(@RequestBody String jsonData) throws JiWeiException {
+                tracer.getCurrentSpan().logEvent("删除角色菜单失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
+                throw new JiWeiException(e);
+            }
+
+            @Override
+            public Envelop getMenuList(@RequestBody String jsonData) throws JiWeiException {
+                tracer.getCurrentSpan().logEvent("获取角色菜单列表失败:原因:"+e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 

@@ -10,8 +10,8 @@
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
-    <groupId>common-customCache</groupId>
-    <artifactId>common-customCache</artifactId>
+    <groupId>common-cache</groupId>
+    <artifactId>common-cache</artifactId>
     <version>1.0.0</version>
 
     <dependencies>
@@ -23,6 +23,11 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjrt</artifactId>
             <version>1.8.10</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.base</groupId>
+            <artifactId>common-async</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
     

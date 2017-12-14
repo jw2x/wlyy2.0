@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "system_dict")
-public class SystemDictDO extends IdEntityWithOperation implements java.io.Serializable {
+public class SystemDictDO extends IdEntity implements java.io.Serializable {
 
 	// Fields
 

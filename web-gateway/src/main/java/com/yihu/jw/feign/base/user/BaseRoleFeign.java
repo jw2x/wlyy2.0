@@ -43,4 +43,17 @@ public interface BaseRoleFeign {
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts) throws JiWeiException;
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    Envelop createRoleMenus(@RequestBody String jsonData) throws JiWeiException;
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    Envelop updateRoleMenus(@RequestBody String jsonData) throws JiWeiException;
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_delete,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    Envelop deleteRoleMenus(@RequestBody String jsonData) throws JiWeiException;
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_getListNoPage,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    Envelop getMenuList(@RequestBody String jsonData) throws JiWeiException;
+
 }

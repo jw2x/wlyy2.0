@@ -1,5 +1,7 @@
 package com.yihu.jw.restmodel.base.user;
 
+import java.util.Date;
+
 public class BaseEmployVO {
     private String id; //id
     private String saasId; //saasIDF
@@ -20,6 +22,12 @@ public class BaseEmployVO {
     private String xlzc;//学历职称
     private String xzzc;//行政职称
     private Integer status;//-1 删除 0 禁用 1可用
+    private String createUser;
+    private String createUserName;
+    private Date createTime;
+    private String updateUser;
+    private String updateUserName;
+    private Date updateTime;
 
     public String getId() {
         return id;
@@ -171,5 +179,53 @@ public class BaseEmployVO {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

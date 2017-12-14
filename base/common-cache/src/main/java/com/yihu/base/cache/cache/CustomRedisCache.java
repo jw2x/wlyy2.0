@@ -1,11 +1,13 @@
 package com.yihu.base.cache.cache;
 
+import com.yihu.base.async.AsyncExecutorUtils;
 import com.yihu.base.cache.config.CacheKeyGenerator;
 import com.yihu.base.cache.support.CacheSupport;
 import com.yihu.base.cache.lock.CacheLock;
 import com.yihu.base.cache.util.SpringContextUtils;
-import com.yihu.base.cache.util.ThreadTaskUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.cache.RedisCache;
 import org.springframework.data.redis.cache.RedisCacheElement;
@@ -14,15 +16,21 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.util.Assert;
 
 public class CustomRedisCache extends RedisCache{
+
+    public Logger logger = LoggerFactory.getLogger(CustomRedisCache.class);
 
     private Long expireTime;
 
     private Long refreshTime;
 
     private RedisOperations redisOperations;
+
+    @Autowired
+    private AsyncExecutorUtils asyncExecutorUtils;
 
     private CacheSupport getCacheSupport() {
         return SpringContextUtils.getBean(CacheSupport.class);
@@ -102,32 +110,32 @@ public class CustomRedisCache extends RedisCache{
     }
 
     /**
-     * 刷新缓存数据
+     * 新缓存数据
+     * @param key
+     * @param cacheKeyStr
      */
-    private void refreshCache(Object key, String cacheKeyStr) {
+    @Async("asyncExecutorUtils")
+    public void refreshCache(Object key, String cacheKeyStr) {
         Long ttl = this.redisOperations.getExpire(cacheKeyStr);
-        if (null != ttl && ttl <= CustomRedisCache.this.refreshTime) {
+        if (null != ttl && ttl <= getRefreshTime()) {
             // 尽量少的去开启线程，因为线程池是有限的
-            ThreadTaskUtils.run(new Runnable() {
-                @Override
-                public void run() {
-                    // 加一个分布式锁，只放一个请求去刷新缓存
-                    CacheLock cacheLock = new CacheLock((RedisTemplate) redisOperations, cacheKeyStr + "_lock");
-                    try {
-                        if (cacheLock.lock()) {
-                            // 获取锁之后再判断一下过期时间，看是否需要加载数据
-                            Long ttl = CustomRedisCache.this.redisOperations.getExpire(cacheKeyStr);
-                            if (null != ttl && ttl <= CustomRedisCache.this.refreshTime) {
-                                // 通过获取代理方法信息重新加载缓存数据
-                                CustomRedisCache.this.getCacheSupport().refreshCacheByKey(CustomRedisCache.super.getName(), key.toString());
-                            }
-                        }
-                    } catch (Exception e) {
-                    } finally {
-                        cacheLock.unlock();
+            // 加一个分布式锁，只放一个请求去刷新缓存
+
+            CacheLock cacheLock = new CacheLock((RedisTemplate) redisOperations, cacheKeyStr + "_lock");
+            try {
+                if (cacheLock.lock()) {
+                    // 获取锁之后再判断一下过期时间，看是否需要加载数据
+                    Long ttl2 = CustomRedisCache.this.redisOperations.getExpire(cacheKeyStr);
+                    if (null != ttl2 && ttl2 <= getRefreshTime()) {
+                        // 通过获取代理方法信息重新加载缓存数据
+                        CustomRedisCache.this.getCacheSupport().refreshCacheByKey(CustomRedisCache.super.getName(), key.toString());
                     }
                 }
-            });
+            } catch (Exception e) {
+                logger.error("刷新缓存失败");
+            } finally {
+                cacheLock.unlock();
+            }
         }
     }
 

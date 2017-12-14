@@ -1,4 +1,4 @@
-##优先读取 boostarap配置 然后在读取application。yml的配置
+##优先读取 boostarap配置 然后在读取application.yml的配置
 spring:
   #从发现服务里面取配置服务的信息
   cloud:
@@ -8,7 +8,7 @@ spring:
       password: jkzl
       discovery:
         enabled: true #使用发现服务
-        service-id: svr-configurations ##配置服务的名字
+        service-id: svr-configurations #配置服务的名字
 
 
 ---
