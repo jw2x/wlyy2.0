@@ -1,50 +1,22 @@
-package com.yihu.jw.iot.supplier;
+package com.yihu.jw.restmodel.iot.supplier;
 
-import com.yihu.jw.IdEntityWithOperation;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * @author yeshijie on 2017/12/1.
  */
-@Entity
-@Table(name = "iot_supply_device")
-public class IotSupplyDeviceDO extends IdEntityWithOperation implements Serializable {
+public class IotSupplyDeviceVO implements Serializable {
 
-    @Column(name = "saas_id")
     private String saasId;
-
-    @Column(name = "name")
     private String name;//'设备名称
-
-    @Column(name = "device_model")
     private String deviceModel;//型号
-
-    @Column(name = "devie_type")
     private String deviceType;//设备种类 1血压计、2血糖仪
-
-    @Column(name = "is_composite")
     private Integer isComposite;//是否复合型
-
-    @Column(name = "is_platform")
     private Integer isPlatform;//是否平台型
-
-    @Column(name = "device_sn")
     private String deviceSn;//设备编码
-
-    @Column(name = "supplier_type")
     private String supplierType;//供应商类型
-
-    @Column(name = "supplier_code")
     private String supplierCode;//供应商code
-
-    @Column(name = "supplier_name")
     private String supplierName;//供应商名称
-
-    @Column(name = "del")
     private Integer del;//删除标志(1有效，0删除)
 
     public String getSaasId() {

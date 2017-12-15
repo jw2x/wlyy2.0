@@ -31,8 +31,7 @@ public class IotDeviceSupplierController extends EnvelopRestController {
 
     @PostMapping(value = IotRequestMapping.DeviceSupplier.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建供应商", notes = "创建供应商")
-    public Envelop create(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
+    public Envelop create(@ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) {
         try {
             IotDeviceSupplierDO iotDeviceSupplier = toEntity(jsonData, IotDeviceSupplierDO.class);
@@ -42,10 +41,33 @@ public class IotDeviceSupplierController extends EnvelopRestController {
         }
     }
 
+    @PutMapping(value = IotRequestMapping.DeviceSupplier.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "更新供应商", notes = "更新供应商")
+    public Envelop update(@ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData){
+        try {
+            IotDeviceSupplierDO iotDeviceSupplier = toEntity(jsonData, IotDeviceSupplierDO.class);
+            return Envelop.getSuccess(IotRequestMapping.DeviceSupplier.message_success_update, iotDeviceSupplierService.update(iotDeviceSupplier));
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
+    @DeleteMapping(value = IotRequestMapping.DeviceSupplier.api_delete)
+    @ApiOperation(value = "删除供应商", notes = "删除供应商")
+    public Envelop delete(@ApiParam(name = "id", value = "id")
+                              @RequestParam(value = "id", required = true) String id){
+        try {
+            iotDeviceSupplierService.deleteById(id);
+            return Envelop.getSuccess(IotRequestMapping.DeviceSupplier.message_success_delete, null);
+        } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
     @GetMapping(value = IotRequestMapping.DeviceSupplier.api_getById)
     @ApiOperation(value = "根据code查找供应商", notes = "根据code查找供应商")
-    public Envelop findByCode(
-            @ApiParam(name = "id", value = "id")
+    public Envelop findByCode(@ApiParam(name = "id", value = "id")
             @RequestParam(value = "id", required = true) String id
     ) {
         try {
@@ -58,16 +80,16 @@ public class IotDeviceSupplierController extends EnvelopRestController {
     @RequestMapping(value = IotRequestMapping.DeviceSupplier.api_queryPage, method = RequestMethod.GET)
     @ApiOperation(value = "分页获取供应商")
     public Envelop queryPage(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,patientCode,signCode,kpiCode,agreementCode,kpiName")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段(id,supplierName,type,contactsName,contactsMobile)", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
-            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
-            @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+createTime")
+            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件(supplierName?中 g1;contactsName?中 g1)")
+            @RequestParam(value = "filters", required = false,defaultValue = "") String filters,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "-createTime")
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
-            @RequestParam(value = "size", required = false) int size,
+            @RequestParam(value = "size", required = false) Integer size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
-            @RequestParam(value = "page", required = false) int page,
+            @RequestParam(value = "page", required = false) Integer page,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
@@ -86,11 +108,11 @@ public class IotDeviceSupplierController extends EnvelopRestController {
     @GetMapping(value = IotRequestMapping.DeviceSupplier.api_getList)
     @ApiOperation(value = "获取供应商列表(不分页)")
     public Envelop getList(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,code,patientCode,signCode,kpiCode,agreementCode,kpiName")
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段(id,supplierName,type,contactsName,contactsMobile)", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+createTime")
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "-createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
         List<IotDeviceSupplierDO> list = iotDeviceSupplierService.search(fields,filters,sorts);

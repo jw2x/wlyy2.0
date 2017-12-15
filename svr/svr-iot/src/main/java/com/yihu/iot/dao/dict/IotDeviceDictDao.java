@@ -1,7 +1,9 @@
 package com.yihu.iot.dao.dict;
 
 import com.yihu.jw.iot.dict.IotDeviceDictDO;
+import com.yihu.jw.iot.supplier.IotSupplyDeviceDataTypeDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -9,4 +11,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface IotDeviceDictDao extends PagingAndSortingRepository<IotDeviceDictDO,Long>,JpaSpecificationExecutor<IotDeviceDictDO> {
 
+    @Query("from IotDeviceDictDO w where w.id =?1")
+    IotDeviceDictDO findById(String id);
 }

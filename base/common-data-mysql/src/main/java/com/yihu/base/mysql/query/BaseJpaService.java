@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Service基础类。此类基于Spring Data JPA进行封装（Spring Data JPA又是基于JPA封装，EHR平台使用Hibernate作为JPA实现者）。
@@ -51,6 +52,10 @@ public class BaseJpaService<T, R> {
                 repoClass = (Class) params[1];
             }
         }
+    }
+
+    public String getCode() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     public T save(T entity) {
@@ -81,11 +86,11 @@ public class BaseJpaService<T, R> {
     }
 
     public List search(String fields, String filters, String sorts, Integer page, Integer size) throws ParseException {
-        if(filters!=null){
-            filters = "status<>-1;"+filters;
-        }else{
-            filters="status<>-1;";
-        }
+//        if(filters!=null){
+//            filters = "status<>-1;"+filters;
+//        }else{
+//            filters="status<>-1;";
+//        }
         URLQueryParser queryParser = createQueryParser(fields, filters, sorts);
         CriteriaQuery query = queryParser.makeCriteriaQuery();
 
@@ -99,11 +104,11 @@ public class BaseJpaService<T, R> {
                 .getResultList();
     }
     public List search(String fields, String filters, String sorts) throws ParseException {
-        if(filters!=null){
-            filters = "status<>-1;"+filters;
-        }else{
-            filters="status<>-1;";
-        }
+//        if(filters!=null){
+//            filters = "status<>-1;"+filters;
+//        }else{
+//            filters="status<>-1;";
+//        }
         URLQueryParser queryParser = createQueryParser(fields, filters, sorts);
         CriteriaQuery query = queryParser.makeCriteriaQuery();
 
@@ -127,11 +132,11 @@ public class BaseJpaService<T, R> {
     }
 
     public List search(String filters,String sorts) throws ParseException {
-        if(filters!=null){
-            filters = "status<>-1;"+filters;
-        }else{
-            filters="status<>-1;";
-        }
+//        if(filters!=null){
+//            filters = "status<>-1;"+filters;
+//        }else{
+//            filters="status<>-1;";
+//        }
         URLQueryParser queryParser = createQueryParser("", filters, sorts);
         CriteriaQuery query = queryParser.makeCriteriaQuery();
 
@@ -141,11 +146,11 @@ public class BaseJpaService<T, R> {
     }
 
     public long getCount(String filters) throws ParseException {
-        if(filters!=null){
-            filters = "status<>-1;"+filters;
-        }else{
-            filters="status<>-1;";
-        }
+//        if(filters!=null){
+//            filters = "status<>-1;"+filters;
+//        }else{
+//            filters="status<>-1;";
+//        }
         URLQueryParser queryParser = createQueryParser(filters);
         CriteriaQuery query = queryParser.makeCriteriaCountQuery();
 
