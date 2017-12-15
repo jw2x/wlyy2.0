@@ -15,6 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class CacheSupportImpl implements CacheSupport {
 
+    @Autowired
+    private CacheManagerFactory cacheManagerFactory;
     /**
      * 根据name获取cache列表
      * @param annoationCacheName
@@ -26,7 +28,6 @@ public class CacheSupportImpl implements CacheSupport {
             return Collections.EMPTY_LIST;
         }
         Collection<Cache> cacheResults = new ArrayList<>();
-        CacheManagerFactory cacheManagerFactory = new CacheManagerFactory();
         for(String cacheName:cacheNames){
             Cache cache = cacheManagerFactory.getCacheManager().getCache(cacheName);
             if(null == cache){

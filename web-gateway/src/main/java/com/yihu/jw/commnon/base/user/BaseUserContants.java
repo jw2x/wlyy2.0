@@ -16,8 +16,17 @@ public class BaseUserContants {
         public static final String api_getById="/{id}";
         public static final String api_getListNoPage="/listNoPage";
         public static final String api_getList="/list";
-        public static final String api_getChildren="/children/{id}";
     }
+
+
+    //角色菜单常量
+    public static class BaseRoleMenu{
+        public static final String api_create="/";
+        public static final String api_update="/";
+        public static final String api_delete="/{id}";
+        public static final String api_getListNoPage="/listNoPage";
+    }
+
 
     //用户常量
     public static class Employee{
@@ -27,8 +36,14 @@ public class BaseUserContants {
         public static final String api_getById="/{id}";
         public static final String api_getListNoPage="/listNoPage";
         public static final String api_getList="/list";
-        public static final String api_getChildren="/children/{id}";
+    }
 
+    //用户角色常量
+    public static class EmployeeRole{
+        public static final String api_create="/";
+        public static final String api_update="/";
+        public static final String api_delete="/{id}";
+        public static final String api_getListNoPage="/listNoPage";
     }
 
     //菜单常量
@@ -39,7 +54,6 @@ public class BaseUserContants {
         public static final String api_getById="/{id}";
         public static final String api_getListNoPage="/listNoPage";
         public static final String api_getList="/list";
-        public static final String api_getChildren="/children/{id}";
-
     }
+
 }

@@ -9,24 +9,21 @@ public class RedisTemplateUtils {
 
     private static RedisTemplate redisTemplate;
 
-    public static RedisTemplate getRedisTemplate(RedisConnectionFactory redisConnectionFactory){
-        if(null == redisTemplate){
-            synchronized (RedisTemplateUtils.class){
-                if(null == redisTemplate){
-                    redisTemplate = new RedisTemplate();
-                    redisTemplate.setConnectionFactory(redisConnectionFactory);
+    //对方法进行同步，以确保redisTemplate只初始化一次
+    public static synchronized RedisTemplate getRedisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        if (null == redisTemplate) {
+            redisTemplate = new RedisTemplate();
+            redisTemplate.setConnectionFactory(redisConnectionFactory);
 
-                    JdkSerializationRedisSerializer jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();
-                    redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
-                    redisTemplate.setHashValueSerializer(jdkSerializationRedisSerializer);
+            JdkSerializationRedisSerializer jdkSerializationRedisSerializer = new JdkSerializationRedisSerializer();
+            redisTemplate.setValueSerializer(jdkSerializationRedisSerializer);
+            redisTemplate.setHashValueSerializer(jdkSerializationRedisSerializer);
 
-                    //key采用StringRedisSserializer来序列化
-                    redisTemplate.setKeySerializer(new StringRedisSerializer());
-                    redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+            //key采用StringRedisSserializer来序列化
+            redisTemplate.setKeySerializer(new StringRedisSerializer());
+            redisTemplate.setHashKeySerializer(new StringRedisSerializer());
 
-                    redisTemplate.afterPropertiesSet();
-                }
-            }
+            redisTemplate.afterPropertiesSet();
         }
         return redisTemplate;
     }

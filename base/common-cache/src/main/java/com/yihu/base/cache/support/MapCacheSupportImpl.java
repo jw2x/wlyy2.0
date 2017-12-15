@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 @Component
-public class MapCacheSupportImpl extends CacheSupportImpl implements CacheSupport {
+public class MapCacheSupportImpl extends CacheSupportImpl {
 
     private ConcurrentMap<String,Object> invocationMap = new ConcurrentHashMap<>();
 

@@ -1,4 +1,7 @@
-cache: 1 # 1-内存 2-redis
+cache: # 1-内存 2-redis
+  type: 1
+  expire-time: 2
+  refresh-time: 1.5
 
 spring:
   redis:

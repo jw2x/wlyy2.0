@@ -57,6 +57,5 @@ public interface EmployFeign {
 
     @RequestMapping(value = BaseUserRequestMapping.BaseEmployRole.api_getListNoPage,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
     Envelop getRoleList(@RequestBody String jsonData) throws JiWeiException;
-
 }
 

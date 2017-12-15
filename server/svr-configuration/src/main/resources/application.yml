@@ -59,7 +59,7 @@ eureka:
 
 ---
 spring:
-  profiles: native
+  profiles: jwdev
 
 
 eureka:

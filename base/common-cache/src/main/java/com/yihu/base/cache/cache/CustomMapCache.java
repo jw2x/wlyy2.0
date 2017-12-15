@@ -1,25 +1,11 @@
 package com.yihu.base.cache.cache;
 
 import com.yihu.base.cache.config.CacheKeyGenerator;
-import com.yihu.base.cache.lock.CacheLock;
 import com.yihu.base.cache.support.CacheSupport;
 import com.yihu.base.cache.util.ReflectionUtils;
 import com.yihu.base.cache.util.SpringContextUtils;
-import com.yihu.base.cache.util.ThreadTaskUtils;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.Cache;
 import org.springframework.cache.concurrent.ConcurrentMapCache;
-import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.cache.RedisCacheElement;
-import org.springframework.data.redis.cache.RedisCacheKey;
-import org.springframework.data.redis.connection.RedisConnection;
-import org.springframework.data.redis.core.RedisCallback;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.util.Assert;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class CustomMapCache extends ConcurrentMapCache{

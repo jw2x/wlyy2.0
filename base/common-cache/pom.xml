@@ -24,6 +24,11 @@
             <artifactId>aspectjrt</artifactId>
             <version>1.8.10</version>
         </dependency>
+        <dependency>
+            <groupId>com.yihu.base</groupId>
+            <artifactId>common-async</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     
 </project>

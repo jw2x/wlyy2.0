@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.aop.framework.AopProxyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.stereotype.Component;
@@ -61,6 +62,9 @@ public class CachingAnnoationAspect {
         Object object = null;
         Method method = getSpecificMethod(proceedingJoinPoint);
         List<Cacheable> annotations =  getMethodAnnotations(method,Cacheable.class);
+        if(null == annotations){
+            return object;
+        }
 
         Set<String> cacheSet = new HashSet<>();
         String cacheKey = "";

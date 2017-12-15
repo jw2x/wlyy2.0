@@ -132,4 +132,50 @@ public class BaseRoleController extends EnvelopRestController {
         return fegin.getListNoPage(fields, filterStr, sorts);
     }
 
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @PostMapping(value = BaseUserContants.BaseRoleMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "新增角色菜单", notes = "新增角色菜单")
+    public Envelop createRoleMenus(
+            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData) throws JiWeiException {
+        return fegin.createRoleMenus(jsonData);
+    }
+
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @PutMapping(value = BaseUserContants.BaseRoleMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "修改角色菜单", notes = "修改角色菜单")
+    public Envelop updateRoleMenu(
+            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData) throws JiWeiException {
+        return fegin.updateRoleMenus(jsonData);
+    }
+
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @DeleteMapping(value = BaseUserContants.BaseRoleMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "删除角色菜单", notes = "删除角色菜单")
+    public Envelop deleteRoleMenus(
+            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData) throws JiWeiException {
+        return fegin.deleteRoleMenus(jsonData);
+    }
+
+
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    @GetMapping(value = BaseUserContants.BaseRoleMenu.api_getListNoPage)
+    @ApiOperation(value = "获取角菜单列表，不分页")
+    public Envelop getMenuListNoPage(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,saasId,sex,phone,email,jxzc,lczcn,xlzc,xzzc,createUser,remark") @RequestParam(value = "fields", required = false) String fields) throws Exception {
+        return fegin.getMenuList(fields);
+    }
 }
