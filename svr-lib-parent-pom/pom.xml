@@ -96,6 +96,11 @@
             <!--自己的封装 common -->
             <dependency>
                 <groupId>com.yihu.base</groupId>
+                <artifactId>common-async</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.base</groupId>
                 <artifactId>common-security</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
