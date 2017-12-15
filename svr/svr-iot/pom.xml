@@ -47,6 +47,10 @@
             <artifactId>common-log</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.yihu.base</groupId>
+            <artifactId>common-data-fastdfs</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
@@ -57,10 +61,6 @@
         <dependency>
             <groupId>com.yihu.base</groupId>
             <artifactId>common-data-mysql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-quartz</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
