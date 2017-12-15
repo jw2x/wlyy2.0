@@ -10,7 +10,6 @@
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
-    <groupId>common-cache</groupId>
     <artifactId>common-cache</artifactId>
     <version>1.0.0</version>
 
@@ -27,7 +26,6 @@
         <dependency>
             <groupId>com.yihu.base</groupId>
             <artifactId>common-async</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
     

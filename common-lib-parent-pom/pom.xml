@@ -35,6 +35,8 @@
         <module>../base/common-data-redis</module>
         <module>../base/common-data-hbase</module>
         <module>../base/common-security</module>
+        <module>../base/common-cache</module>
+        <module>../base/common-async</module>
     </modules>
 
 </project>
