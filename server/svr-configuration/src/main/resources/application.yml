@@ -1,6 +1,11 @@
 server:
   port: 1221
 
+security:
+  user:
+    name: jw
+    password:  jkzl
+
 
 eureka:
   client:
@@ -33,7 +38,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
 
 
 ---
@@ -56,13 +61,3 @@ eureka:
       defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
 
 
-
----
-spring:
-  profiles: jwdev
-
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
