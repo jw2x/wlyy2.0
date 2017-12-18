@@ -15,8 +15,8 @@ eureka:
     fetch-registry: false #如果是做高可用的发现服务那就要改成true
 
   server:
-    enable-self-preservation: true  ##是否开启自我保护模式，默认为true。
-    eviction-interval-timer-in-ms: 60000 ##eureka server清理无效节点的时间间隔，默认60000毫秒，即60秒
+    enable-self-preservation: true  #是否开启自我保护模式，默认为true。
+    eviction-interval-timer-in-ms: 60000 #eureka server清理无效节点的时间间隔，默认60000毫秒，即60秒
 
 
 
@@ -60,3 +60,16 @@ eureka:
   client:
     service-url:
       defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka
+
+
+
+---
+spring:
+  profiles: native
+
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
