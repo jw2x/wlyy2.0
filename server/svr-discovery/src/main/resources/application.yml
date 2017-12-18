@@ -34,6 +34,11 @@ spring:
   profiles: jwdev
 
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
+
 ---
 spring:
   profiles: jwtest
