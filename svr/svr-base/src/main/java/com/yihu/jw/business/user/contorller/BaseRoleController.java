@@ -31,7 +31,7 @@ import java.util.List;
  * Created by LiTaohong on 2017/11/28.
  */
 @RestController
-@RequestMapping("/role")
+@RequestMapping(BaseUserRequestMapping.api_user_common)
 @Api(description = "基础角色")
 public class BaseRoleController extends EnvelopRestController {
 
@@ -63,7 +63,7 @@ public class BaseRoleController extends EnvelopRestController {
         }
     }
 
-    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getOne, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询单个角色", notes = "根据角色id查询角色信息")
     public Envelop getOneRoleById(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
@@ -85,7 +85,7 @@ public class BaseRoleController extends EnvelopRestController {
         }
     }
 
-    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getList, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getlistNoPage, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询多个角色", notes = "根据平台id查询所有角色信息，不分页")
     public Envelop getRoleListBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
@@ -97,7 +97,7 @@ public class BaseRoleController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "根据指定条件查询所有角色列表，分页")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
+    @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getListPage)
     public Envelop getRoleListPage(@ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,remark") @RequestParam(value = "fields", required = false) String fields,
                                               @ApiParam(name = "filters", value = "过滤器，为空检索所有条件") @RequestParam(value = "filters", required = false) String filters,
                                               @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime") @RequestParam(value = "sorts", required = false) String sorts,
@@ -139,7 +139,7 @@ public class BaseRoleController extends EnvelopRestController {
         }
     }
 
-    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_deleteBySaasId, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "批量删除角色", notes = "删除某一平台下所有角色信息")
     public Envelop deleteRolesBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
@@ -152,7 +152,7 @@ public class BaseRoleController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "給角色添加菜单", notes = "給角色添加菜单")
-    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Envelop addMenuForRole(@ApiParam(name = "roleId", value = "", defaultValue = "") @RequestBody String roleId,
                                   @ApiParam(name = "menuIds", value = "", defaultValue = "") @RequestBody String menuIds){
         try{
@@ -175,7 +175,7 @@ public class BaseRoleController extends EnvelopRestController {
 
 
     @ApiOperation(value = "修改角色菜单")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_update)
+    @GetMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_update)
     public Envelop updateMenuForRole(@ApiParam(name = "employId", value = "employId", required = true) @RequestParam(value = "employId", required = true) String id,
                                     @ApiParam(name = "newMenuId", value = "newMenuId", required = true) @RequestParam(value = "roleId", required = true) String newMenuId) {
         try {
@@ -189,7 +189,7 @@ public class BaseRoleController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "查看角色菜单列表，不分页")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getRolesByEmployId)
+    @GetMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_getListNoPage)
     public Envelop findMenuListForRole(@ApiParam(name = "roleId", value = "roleId", required = true) @RequestParam(value = "roleId", required = true) String roleId) {
         try {
             return Envelop.getSuccessList(BaseUserRequestMapping.BaseEmploy.message_success_delete, this.baseRoleMenuService.findAllByRoleId(roleId));
@@ -200,7 +200,7 @@ public class BaseRoleController extends EnvelopRestController {
 
 
     @ApiOperation(value = "删除角色菜单", notes = "删除角色菜单")
-    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Envelop deleteMenuForRole(@ApiParam(name = "roleId", value = "", defaultValue = "") @RequestBody String roleId,
                                   @ApiParam(name = "menuIds", value = "", defaultValue = "") @RequestBody String menuIds){
         try{

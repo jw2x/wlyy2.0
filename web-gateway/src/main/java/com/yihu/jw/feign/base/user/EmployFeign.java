@@ -32,7 +32,7 @@ public interface EmployFeign {
     @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getById)
     Envelop findById(@PathVariable(value = "id", required = true) String id) throws JiWeiException;
 
-    @RequestMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList, method = RequestMethod.GET)
+    @RequestMapping(value = BaseUserRequestMapping.BaseEmploy.api_getListBySaasId, method = RequestMethod.GET)
     Envelop getList(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,

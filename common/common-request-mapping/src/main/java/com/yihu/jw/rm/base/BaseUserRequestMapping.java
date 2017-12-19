@@ -1,19 +1,21 @@
 package com.yihu.jw.rm.base;
 
 public class BaseUserRequestMapping {
-    public static final String api_common = BaseRequestMapping.api_base_common + "/user";
+    public static final String api_user_common = BaseRequestMapping.api_base_common + "/user";
 
     /**
      * 基础角色
      */
     public static class BaseRole {
         public static final String api_create = "/baseRole";
-        public static final String api_update = "/baseRole";
+        public static final String api_update = "/baseRole/update";
         public static final String api_delete = "/baseRole/{ids}";
-        public static final String api_getById = "/baseRole/{id}";
-        public static final String api_getList="/baseRole/list";
-        public static final String api_getOne="/baseRole";
-        public static final String api_getListNoPage="/baseRole/listNoPage";
+        public static final String api_deleteBySaasId = "/baseRole/{saasId}";
+        public static final String api_getById = "/baseRole/byId/{id}";
+        public static final String api_getlistNoPage="/baseRole/listNoPage";
+        public static final String api_getOne="/baseRole/getOne";
+        public static final String api_getListPage="/baseRole/list";
+        public static final String api_getMenusByroleId="/baseMenus/{roleId}";
 
         public static final String message_success_create = "baseRole create success";
         public static final String message_success_update = "baseRole update success";
@@ -38,12 +40,13 @@ public class BaseUserRequestMapping {
      */
     public class BaseEmploy {
         public static final String api_create = "/employee";
-        public static final String api_update = "/employee";
+        public static final String api_update = "/employee/update";
         public static final String api_delete = "/employee/{ids}";
         public static final String api_getById = "/employee/{id}";
-        public static final String api_getByPhone = "/employee";
-        public static final String api_getList="/employee/list";
-        public static final String api_getListNoPage="/employee/listNoPage";
+        public static final String api_getByPhone = "/employee/phone";
+        public static final String api_getListBySaasId="/employee/list";
+        public static final String api_getListByName="/employee/name";
+        public static final String api_getListNoPage="/employee/name/listNoPage";
         public static final String api_getRolesByEmployId = "/employee/{employId}";
 
 
@@ -67,9 +70,8 @@ public class BaseUserRequestMapping {
      */
     public class BaseEmployRole {
         public static final String api_create = "/employeeRole";
-        public static final String api_update = "/employeeRole";
+        public static final String api_update = "/employeeRole/update";
         public static final String api_delete = "/employeeRole/{ids}";
-        public static final String api_getList="/employeeRole/list";
         public static final String api_getListNoPage="/employeeRole/listNoPage";
 
         public static final String message_success_create="employeeRole create success";
@@ -90,10 +92,10 @@ public class BaseUserRequestMapping {
      */
     public class BaseMenu {
         public static final String api_create = "/baseMenu";
-        public static final String api_update = "/baseMenu";
+        public static final String api_update = "/baseMenu/update";
         public static final String api_delete = "/baseMenu/{ids}";
-        public static final String api_getOne = "/baseMenu/{id}";
-        public static final String api_getchildren = "/baseMenu/{id}";
+        public static final String api_getOne = "/baseMenu//getOne/{id}";
+        public static final String api_getchildren = "/baseMenu/{saasId}/{parentId}";
         public static final String api_getList="/baseMenu/list";
         public static final String api_getListNoPage="/baseMenu/listNoPage";
 
@@ -118,9 +120,8 @@ public class BaseUserRequestMapping {
      */
     public class BaseRoleMenu {
         public static final String api_create = "/baseRoleMenu";
-        public static final String api_update = "/baseRoleMenu";
+        public static final String api_update = "/baseRoleMenu/update";
         public static final String api_delete = "/baseRoleMenu/{ids}";
-        public static final String api_getList="/baseRoleMenu/list";
         public static final String api_getListNoPage="/baseRoleMenu/listNoPage";
 
         public static final String message_success_create="baseRoleMenu create success";
@@ -129,7 +130,6 @@ public class BaseUserRequestMapping {
         public static final String message_success_find="baseRoleMenu find success";
 
         public static final String message_fail_roleId_is_null = "roleId is null";
-        public static final String message_fail_menuId_is_null = "menuId is null";
         public static final String message_fail_id_is_null = "id is null";
         public static final String message_fail_same_menuId = "same menuId";
         public static final String message_fail_baseRoleMenu_no_exist = "baseRoleMenu no exist";

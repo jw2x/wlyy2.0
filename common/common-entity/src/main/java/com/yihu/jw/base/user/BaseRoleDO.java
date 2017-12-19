@@ -37,15 +37,6 @@ public class BaseRoleDO extends IdEntityWithOperation implements java.io.Seriali
 
 
 	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false, length = 50)
-	public String getId() {
-		return this.id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	@Column(name = "saas_id", length = 50)
 	public String getSaasId() {

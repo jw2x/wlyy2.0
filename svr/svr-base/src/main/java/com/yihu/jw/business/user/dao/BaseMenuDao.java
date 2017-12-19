@@ -23,7 +23,7 @@ public interface BaseMenuDao extends PagingAndSortingRepository<BaseMenuDO, Stri
     @Query("from BaseMenuDO b where b.name like %?1%")
     List<BaseMenuDO> findAllByName(String name);
 
-    @Query("from BaseMenuDO b where b.saasId = 1? and b.parentId = ?2")
+    @Query("from BaseMenuDO b where b.saasId = ?1 and b.parentId = ?2")
     List<BaseMenuDO> getChildrenMenuList(String saasId,String parentId);
 
 

@@ -31,7 +31,7 @@ import java.util.List;
  * Created by chenweida on 2017/5/11.
  */
 @RestController
-@RequestMapping(BaseUserRequestMapping.api_common)
+@RequestMapping(BaseUserRequestMapping.api_user_common)
 @Api(description = "医生，行政人员等非患者用户（基础用户）")
 public class EmployController extends EnvelopRestController {
     @Autowired
@@ -63,7 +63,7 @@ public class EmployController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "根据id查找用户")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getByPhone)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getById)
     public Envelop getEmployeeById(@ApiParam(name = "id", value = "id", required = true) @RequestParam(value = "id", required = true) String id) {
         try{
             return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_find,this.employService.findById(id));
@@ -73,7 +73,7 @@ public class EmployController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "根据saasId查找所有用户")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getListBySaasId)
     public Envelop getAllEmployeeBySaasId(@ApiParam(name = "saasId", value = "saasId", required = true) @RequestParam(value = "saasId", required = true) String saasId) {
         try{
             return Envelop.getSuccessList(BaseUserRequestMapping.BaseEmploy.message_success_find,this.employService.findAllBySaasId(saasId));
@@ -84,7 +84,7 @@ public class EmployController extends EnvelopRestController {
 
 
     @ApiOperation(value = "根据手机号和saasId查找用户")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getByPhone)
     public Envelop getEmployeeByPhoneAndSaasId(@ApiParam(name = "phone", value = "phone", required = true) @RequestParam(value = "phone", required = true) String phone,
                                                @ApiParam(name = "saasId", value = "saasId", required = true) @RequestParam(value = "saasId", required = true) String saasId) {
         try {
@@ -95,7 +95,7 @@ public class EmployController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "根据name模糊查询某saasId平台下的所有用户")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getListByName)
     public Envelop getListByNameAndSaasId(@ApiParam(name = "saasId", value = "saasId", required = true) @RequestParam(value = "saasId", required = true) String saasId,
                                           @ApiParam(name = "name", value = "name", required = true) @RequestParam(value = "name", required = true) String name) {
         try{
@@ -106,7 +106,7 @@ public class EmployController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "根据指定条件查询用户列表，分页")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getList)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getListNoPage)
     public Envelop getListPageByNameAndSaasId(@ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,sex,photo,skill,email,phone,family_tel,introduction,jxzc,lczc,xlzc,xzzc") @RequestParam(value = "fields", required = false) String fields,
                                               @ApiParam(name = "filters", value = "过滤器，为空检索所有条件") @RequestParam(value = "filters", required = false) String filters,
                                               @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime") @RequestParam(value = "sorts", required = false) String sorts,
@@ -137,7 +137,7 @@ public class EmployController extends EnvelopRestController {
 
 
     @ApiOperation(value = "给某一用户新增角色")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_create)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmployRole.api_create)
     public Envelop createEmployRoles(@ApiParam(name = "employId", value = "employId", required = true) @RequestParam(value = "employId", required = true) String employId,
                                      @ApiParam(name = "roleIds", value = "roleIds", required = true) @RequestParam(value = "roleIds", required = true) String roleIds) {
         try {
@@ -160,7 +160,7 @@ public class EmployController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "修改用户角色")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_update)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmployRole.api_update)
     public Envelop updateEmployRole(@ApiParam(name = "employId", value = "employId", required = true) @RequestParam(value = "employId", required = true) String id,
                                     @ApiParam(name = "roleId", value = "roleId", required = true) @RequestParam(value = "roleId", required = true) String newRoleId) {
         try {
@@ -174,7 +174,7 @@ public class EmployController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "查看用户角色列表，不分页")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getRolesByEmployId)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmployRole.api_getListNoPage)
     public Envelop findEmployRoleList(@ApiParam(name = "employId", value = "employId", required = true) @RequestParam(value = "employId", required = true) String employId) {
         try {
             return Envelop.getSuccessList(BaseUserRequestMapping.BaseEmploy.message_success_delete, this.employRoleService.findAllByEmployId(employId));
@@ -184,7 +184,7 @@ public class EmployController extends EnvelopRestController {
     }
 
     @ApiOperation(value = "删除用户角色")
-    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_delete)
+    @GetMapping(value = BaseUserRequestMapping.BaseEmployRole.api_delete)
     public Envelop deleteEmployRoles(@ApiParam(name = "employId", value = "employId", required = true) @RequestParam(value = "employId", required = true) String employId,
                                      @ApiParam(name = "roleIds", value = "roleIds", required = true) @RequestParam(value = "roleIds", required = true) String roleIds) {
         try {
