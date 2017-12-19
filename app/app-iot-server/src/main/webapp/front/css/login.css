@@ -1,0 +1,46 @@
+.l-body{position: fixed;left: 0;bottom: 0;right: 0;top: 0;min-width: 790px;min-height: 700px;min-width:1160px;background-color: #fff;}
+.l-header{position: relative;width: 100%;height: 100px;}
+.l-l{ display: inline-block;*display:inline;*zoom:1;width: 210px;height: 100px;background: url(../images/logo.png) center no-repeat;background-size: cover;margin-left: 200px;text-indent: -9999px;}
+.l-s{float: right;margin-right: 220px;}
+.l-s li{position:relative;display: inline-block;height: 100px;line-height: 100px;font-size: 16px;}
+/*.l-s li:first-child{margin-right: 60px;}*/
+.l-s li a{display: block;color: #333;font-weight: 600;}
+.l-s li a:hover{color: #0c93e4}
+.l-main{position: relative;width: 100%;height: 500px;background: url(../images/login_bg.png) center no-repeat;background-size: contain;background-color: #0c93e4;}
+.l-form{position: absolute;width: 341px;height: 360px;top: 70px;right: 220px;padding: 0 40px;background-color: #fff;-webkit-border-radius: 5px;border-radius: 5px; }
+.l-tab{border-bottom: 1px solid #dcdcdc;}
+.l-t-item{position:relative;display: inline-block;width: 49%;height: 60px;text-align: center;line-height: 60px;font-size: 20px;font-weight: 400;}
+.l-t-item:first-child::before{content: " ";position:absolute;width: 1px;height: 12px;background: #dcdcdc;right: 0;top: 24px}
+.l-t-item a{display: block;color: #999;width: 60px;height: 59px;margin: 0 auto;}
+.l-t-item a.l-active{border-bottom: 2px solid #0c93e4;}
+.l-f-tit{height: 60px;line-height: 60px;font-size: 16px;color: #a9a9a9;}
+.l-f-input{width: 260px;height: 38px;line-height: 38px;border: 1px solid #dcdcdc;margin-bottom: 20px;-webkit-border-radius: 2px;border-radius: 2px;font-size: 14px;color: #333;padding-left: 39px;padding-right: 12px;}
+.l-f-input[type=password]{margin-bottom: 12px;}
+.l-f-c>div{position: relative;}
+.l-f-icon{position: absolute;display: block;width: 15px;height: 15px;left: 12px;top: 12px;cursor: pointer/* padding: 0 12px; */}
+.i-an{background: url(../images/zhanghao_icon.png) center no-repeat;}
+.i-pwd{background: url(../images/mima_icon.png) center no-repeat;}
+.l-f-radio{display: inline-block;width: 16px;height: 16px;background: url(../images/gouxuan_btn.png) center no-repeat;vertical-align: middle;/* -webkit-appearance: none; *//*appearance: none;*/margin-right: 10px;}
+.l-f-radio.active{background: url(../images/gouxuan_btn_pre.png) center no-repeat;}
+.l-f-radio input[type="checkbox"]{opacity: 0;}
+.i-an,.i-pwd{background-size: cover;}
+.f-p{display: inline-block;vertical-align: middle;color: #555;font-size: 14px}
+.f-l{display: block;float: right;font-size: 14px;color: #0c93e4}
+.l-btn{width: 260px;height: 40px;line-height: 40px;margin-top: 32px;/* margin-bottom: 12px; */text-align: center;background: #0c93e4;color: #fff;font-size: 14px;-webkit-border-radius: 2px;border-radius: 2px;cursor: pointer;-webkit-box-shadow: 0 0 3px 2px #dcdcdc;-moz-box-shadow: 0 0 3px 2px #dcdcdc;box-shadow: 0 0 3px 2px #dcdcdc;border: none;}
+.l-btn:hover{background:#4db2ee }
+.l-f-footer{height: 35px;line-height: 35px;font-size: 14px;color: #555;}
+.l-f-footer>a{color: #0c93e4}
+.l-footer{width: 100%;position: absolute;bottom: 40px;left: 0;text-align: center;color: #999;font-size: 14px;}
+.header-xz-wrap {
+    height: 97px;
+    line-height: 97px;
+    background-color: #ffffff;
+}
+.header-xz-logo {
+    /* background-color: #259ee7; */
+    background: url(../images/xz-logo.png) center no-repeat;
+    width: 355px;
+    height: 38px;
+    margin-top: 30px;
+    margin-left: 30px;
+}

@@ -34,7 +34,7 @@ spring:
 #          uri: http://192.168.116.100:10080/chenweida/mini.jw.config.git
 #         uri: http://192.168.1.220:10080/jiwei/jw.config.git
          uri: 172.19.103.33:1221/jiwei/jw.config.git
-        default-label: master
+        default-label: jwdev
 
 
 ---
@@ -76,4 +76,4 @@ spring:
       failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         native:
-          search-locations: file:D:\software\soft_dev\IdeaWorkSpace\jw2.0-dev\jw.config  ##本地的got配置路径
+          search-locations: file:D:\Software\soft\IdeaWorkSpace\jw-project\jw.config  ##本地的got配置路径
