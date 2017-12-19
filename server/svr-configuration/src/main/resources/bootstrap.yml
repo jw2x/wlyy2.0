@@ -50,14 +50,14 @@ spring:
 
 ---
 ##不想用远程的git 可以在环境变量配置native 开启本地配置
-spring:
-  profiles:
-    active: native
-
-##git配置
-  cloud:
-    config:
-      failFast: true #启动快速失败 即链接不到配置服务就启动失败
-      server:
-        native:
-          search-locations: file:D:\Software\soft\IdeaWorkSpace\jw-project\jw.config  ##本地的got配置路径
+#spring:
+#  profiles:
+#    active: native
+#
+###git配置
+#  cloud:
+#    config:
+#      failFast: true #启动快速失败 即链接不到配置服务就启动失败
+#      server:
+#        native:
+#          search-locations: file:D:\Software\soft\IdeaWorkSpace\jw-project\jw.config  ##本地的got配置路径
