@@ -4,12 +4,6 @@ spring:
     name:  svr-base  #注册到发现服务的id 如果id一样 eurika会自动做负载
 
 
-#hibernate 配置
-hibernate:
-  dialect: org.hibernate.dialect.MySQL5Dialect
-  show_sql: false
-  ejb:
-    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
 
 
 
