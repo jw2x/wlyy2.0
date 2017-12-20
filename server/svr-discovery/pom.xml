@@ -38,6 +38,7 @@
             <artifactId>spring-webmvc</artifactId>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>svr-discovery</finalName>
         <plugins>

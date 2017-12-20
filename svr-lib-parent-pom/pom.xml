@@ -3,6 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+    </parent>
+
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-lib-parent-pom</artifactId>
     <version>1.0.0</version>
@@ -44,20 +50,11 @@
     </modules>
 
     <properties>
-        <version.springCloud>1.3.0.RELEASE</version.springCloud>
-        <version.springCloud.start>1.2.0.RELEASE</version.springCloud.start>
-        <version.springBoot>1.5.3.RELEASE</version.springBoot>
         <version.mysql>5.1.38</version.mysql>
         <version.jackson>2.8.1</version.jackson>
         <version.myCommon>1.0.0</version.myCommon>
-        <version.spring>4.3.10.RELEASE</version.spring>
-        <version.spring.security>4.2.3.RELEASE</version.spring.security>
-        <version.spring-data-jpa>1.11.3.RELEASE</version.spring-data-jpa>
-        <version.spring-data-common>1.13.3.RELEASE</version.spring-data-common>
         <version.spring-data-hadoop>2.3.0.RELEASE</version.spring-data-hadoop>
-        <version.spring-data.solr>2.1.8.RELEASE</version.spring-data.solr>
-        <version.spring.social>1.1.4.RELEASE</version.spring.social>
-
+        <version.springside>4.2.3-GA</version.springside>
         <version.zipkin>1.24.0</version.zipkin>
         <version.hibernate>5.0.12.Final</version.hibernate>
         <version.hibernate-jpa>1.0.0.Final</version.hibernate-jpa>
@@ -66,19 +63,16 @@
         <version.swagger-ui>2.7.0</version.swagger-ui>
         <version.quartz>2.3.0</version.quartz>
         <version.logback>1.2.3</version.logback>
-        <version.spring-elasticsearch>2.1.3.RELEASE</version.spring-elasticsearch>
         <version.jest>2.4.0</version.jest>
         <version.json>20160212</version.json>
         <verion.fastJson>1.2.17</verion.fastJson>
         <version.net-json>2.4</version.net-json>
-        <version.springside>4.2.3-GA</version.springside>
         <version.common.lang3>3.2.1</version.common.lang3>
         <version.commons.collections>3.2.2</version.commons.collections>
         <version.commons.codec>1.11</version.commons.codec>
         <version.elasticsearch>2.4.4</version.elasticsearch>
         <version.elasticsearch-sql>2.4.1.0</version.elasticsearch-sql>
 
-        <version.redis>1.5.3.RELEASE</version.redis>
         <version.hbase>1.1.12</version.hbase>
         <version.hadoop>2.7.4</version.hadoop>
         <version.scala>2.10.6</version.scala>
@@ -92,7 +86,13 @@
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
         <dependencies>
-
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Edgware.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <!--自己的封装 common -->
             <dependency>
                 <groupId>com.yihu.base</groupId>
@@ -154,305 +154,6 @@
                 <artifactId>common-quartz</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
-            <!--springCloud start-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-eureka-server</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-config-server</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-ribbon</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-zuul</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-bus-amqp</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <!--路由网关-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-zuul</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <!--断路由-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-hystrix</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <!--hystrix仪表盘-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-netflix-hystrix-dashboard</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <!--配置服务客户端-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-config</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <!--发现服务服务客户端-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-eureka</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <!--收集集群中的数据-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-turbine</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <!--配置服务消息总线-->
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-bus-kafka</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-feign</artifactId>
-                <version>${version.springCloud}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter</artifactId>
-                <version>${version.springCloud.start}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-stream-rabbit</artifactId>
-                <version>${version.springCloud.start}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-                <version>${version.springCloud.start}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-sleuth</artifactId>
-                <version>${version.springCloud.start}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-starter-oauth2</artifactId>
-                <version>${version.springCloud.start}</version>
-            </dependency>
-            <!--springCloud end-->
-
-            <!--springBoot start-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <!--web模块-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <!--监控工程得到一些指标-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-actuator</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <!--自动注入模块-->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-autoconfigure</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-configuration-processor</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-logging</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-websocket</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-security</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-mail</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-logging</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-tomcat</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-jdbc</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-configuration-processor</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-aop</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-mongodb</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-activemq</artifactId>
-                <version>${version.springBoot}</version>
-            </dependency>
-
-            <!--springBoot end-->
-
-            <!--spring start-->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-webmvc</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>${version.spring.security}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-web</artifactId>
-                <version>${version.spring.security}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-config</artifactId>
-                <version>${version.spring.security}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-context-support</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-orm</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-jpa</artifactId>
-                <version>${version.spring-data-jpa}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-commons</artifactId>
-                <version>${version.spring-data-common}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-elasticsearch</artifactId>
-                <version>${version.spring-elasticsearch}</version>
-            </dependency>
-            <!--spring end-->
-
-            <!--spring social start-->
-            <dependency>
-                <groupId>org.springframework.social</groupId>
-                <artifactId>spring-social-config</artifactId>
-                <version>${version.spring.social}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.social</groupId>
-                <artifactId>spring-social-core</artifactId>
-                <version>${version.spring.social}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.social</groupId>
-                <artifactId>spring-social-security</artifactId>
-                <version>${version.spring.social}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.social</groupId>
-                <artifactId>spring-social-web</artifactId>
-                <version>${version.spring.social}</version>
-            </dependency>
-            <!--spring  social end-->
             <!--数据库驱动 start-->
             <dependency>
                 <groupId>mysql</groupId>
@@ -651,12 +352,6 @@
                 <version>${version.hadoop}</version>
             </dependency>
             <!--hadoop endf-->
-            <!--  redis -->
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-redis</artifactId>
-                <version>${version.redis}</version>
-            </dependency>
             <!--scala编译 start-->
             <dependency>
                 <groupId>org.scala-lang</groupId>
@@ -700,11 +395,6 @@
                 <version>${version.spring-data-hadoop}</version>
             </dependency>
             <!-- hbase start-->
-
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-hadoop-hbase</artifactId>
-            </dependency>
             <dependency>
                 <groupId>org.apache.hbase</groupId>
                 <artifactId>hbase-protocol</artifactId>
@@ -757,12 +447,12 @@
                     </exclusion>
                 </exclusions>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.data</groupId>
-                <artifactId>spring-data-solr</artifactId>
-                <version>${version.spring-data.solr}</version>
-            </dependency>
             <!--solr end-->
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <version>4.3.3.RELEASE</version>
+            </dependency>
         </dependencies>
 
 
