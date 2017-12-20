@@ -72,7 +72,6 @@ public class WxMenuService extends BaseJpaService<WxMenuDO, WxMenuDao> {
     public void deleteWxMenu(String ids, String userId, String userName) {
         if(!StringUtils.isEmpty(ids)) {
             String[] codeArray = ids.split(",");
-            Date date = new Date();
             for (String code : codeArray) {
                 WxMenuDO wxMenu = wxMenuDao.findById(code);
                 if (wxMenu == null) {

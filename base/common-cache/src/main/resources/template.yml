@@ -1,6 +1,6 @@
 cache: # 1-内存 2-redis
   type: 1
-  expire-time: 2
+  expire-time: 2 #单位为小时
   refresh-time: 1.5
 
 spring:

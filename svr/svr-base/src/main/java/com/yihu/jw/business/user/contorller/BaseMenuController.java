@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * Created by LiTaohong on 2017/11/28.
  */
 @RestController
-@RequestMapping("/menu")
+@RequestMapping(BaseUserRequestMapping.api_user_common)
 @Api(description = "基础菜单")
 public class BaseMenuController extends EnvelopRestController {
 
@@ -60,8 +60,8 @@ public class BaseMenuController extends EnvelopRestController {
 
     @PostMapping(value = BaseUserRequestMapping.BaseMenu.api_getchildren, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询单个菜单的所有子菜单信息", notes = "根据平台和菜单名称查询菜单信息")
-    public Envelop getChlidrenMenuList(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestParam String saasId,
-                                       @ApiParam(name = "json_data", value = "", defaultValue = "") @RequestParam String parentId){
+    public Envelop getChlidrenMenuList(@ApiParam(name = "saasId", value = "", defaultValue = "") @RequestParam String saasId,
+                                       @ApiParam(name = "parentId", value = "", defaultValue = "") @RequestParam String parentId){
         try{
             return Envelop.getSuccess(BaseUserRequestMapping.BaseMenu.message_success_find,baseMenuService.getChlidrenMenuList(saasId,parentId));
         } catch (ApiException e){

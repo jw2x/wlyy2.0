@@ -69,7 +69,7 @@ public class HttpUtil {
 	 */
 	public static String sendPost(String url, String param) {
 		StringBuffer buffer = new StringBuffer();
-		PrintWriter out = null;
+		OutputStreamWriter osw = null;
 		BufferedReader in = null;
 		HttpURLConnection conn = null;
 		try {
@@ -85,14 +85,14 @@ public class HttpUtil {
 			conn.setRequestProperty("accept", "*/*");
 			conn.setRequestProperty("connection", "Keep-Alive");
 			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-			OutputStreamWriter osw = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+			osw = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
 			osw.write(param.toString());
 			osw.flush();
 
 			// 读取返回内容
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
 			String temp;
-			while ((temp = br.readLine()) != null) {
+			while ((temp = in.readLine()) != null) {
 				buffer.append(temp);
 				buffer.append("\n");
 			}
@@ -100,8 +100,8 @@ public class HttpUtil {
 			logger.error("push message error:", e);
 		} finally {
 			try {
-				if (out != null) {
-					out.close();
+				if (osw != null) {
+					osw.close();
 				}
 				if (in != null) {
 					in.close();

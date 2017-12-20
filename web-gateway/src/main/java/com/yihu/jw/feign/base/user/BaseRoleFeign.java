@@ -30,7 +30,7 @@ public interface BaseRoleFeign {
     @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getById)
     Envelop findById(@PathVariable(value = "id", required = true) String id) throws JiWeiException;
 
-    @RequestMapping(value = BaseUserRequestMapping.BaseRole.api_getList, method = RequestMethod.GET)
+    @RequestMapping(value = BaseUserRequestMapping.BaseRole.api_getListPage, method = RequestMethod.GET)
     Envelop getList(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
@@ -38,7 +38,7 @@ public interface BaseRoleFeign {
             @RequestParam(value = "size", required = false) int size,
             @RequestParam(value = "page", required = false) int page) throws JiWeiException;
 
-    @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getListNoPage)
+    @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getlistNoPage)
     Envelop getListNoPage(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
