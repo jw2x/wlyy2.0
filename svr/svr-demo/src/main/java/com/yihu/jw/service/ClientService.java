@@ -1,12 +1,10 @@
 package com.yihu.jw.service;
 
-import com.yihu.base.security.properties.AccessTokenPorperties;
 import com.yihu.base.security.rbas.ClientServiceProvider;
 import com.yihu.jw.model.SaasDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.stereotype.Component;
