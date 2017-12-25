@@ -28,7 +28,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
 		SmsCodeAuthenticationToken authenticationToken = (SmsCodeAuthenticationToken) authentication;
-		
+		//查找用户信息
 		UserDetails user = userDetailsService.loadUserByUsername((String) authenticationToken.getPrincipal());
 
 		if (user == null) {

@@ -11,7 +11,7 @@ import java.util.Collection;
 
 /**
  * @author chenweida
- *
+ *	短信授权的Token对象
  */
 public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {
 

@@ -37,6 +37,7 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException {
+
 		if (postOnly && !request.getMethod().equals("POST")) {
 			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		}
