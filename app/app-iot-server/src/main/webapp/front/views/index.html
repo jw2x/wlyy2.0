@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <title>卫生应急指挥平台</title>
+    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
+    <link href="../css/index.css" rel="stylesheet">
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=mHjQLONxGpRtrZHZkxr9t3cD3n0HupQ0"></script>
+</head>
+<body>
+    <div class="left">
+        <ul id = "myTab" class = "nav nav-tabs">
+            <li class = "active" id="baseInfoId">
+                <a href = "#car" data-toggle = "tab">
+                    救护车辆
+                </a>
+            </li>
+
+            <li id="imageInfoId">
+                <a href = "#person" data-toggle = "tab">
+                    医护人员
+                </a>
+            </li>
+        </ul>
+        <div class = "tab-content">
+            <ul id="car" class = "tab-pane fade in active" style="margin-bottom: 60px;">
+
+            </ul>
+            <ul id="person" class = "tab-pane fade" style="margin-bottom: 60px;">
+
+            </ul>
+        </div>
+    </div>
+    <div class="map-content">
+        <div id="map" style="height:100%;width: 100%;">
+
+        </div>
+        <div id="left-panel" class="" style="height: 535px;">
+            <div id="searchbox" class="clearfix">
+                <div id="searchbox-container">
+                    <div id="sole-searchbox-content" class="searchbox-content">
+                        <input id="sole-input" class="searchbox-content-common" type="text" autocomplete="off" maxlength="256" placeholder="请输入搜索地址" value="">
+                        <div class="input-clear" title="清空"></div>
+                    </div>
+                </div>
+                <button id="search-button" ></button>
+            </div>
+        </div>
+        <div class="dislpay-arrow">
+            <a href="javascript:void(0);" ></a>
+        </div>
+        <div class="ui3-suggest-wrap" id="addr-list">
+            <ul>
+            </ul>
+        </div>
+        <div class="ui3-suggest-wrap" id="car-back">
+            <a href="javascript:void(0)">
+                <img src="../images/fanhui_icon.png">
+                <span class="main-color f-fs14"></span>
+            </a>
+        </div>
+        <div class="ui3-suggest-wrap" id="car-list">
+            <div class="weizhi-bg">
+                <div class="items" style="padding: 10px;align-items: normal;">
+                    <span>派遣地点：</span>
+                    <span class="item"></span>
+                    <span class="dingwei" style="height: 40px;width: 40px"></span>
+                </div>
+            </div>
+            <ul style="overflow-y: auto;">
+            </ul>
+        </div>
+        <div class="query-attendance">
+            <img src="../images/ss.png" style="width:32px;margin-bottom: 10px;">
+            <div class="main-color">急救查询</div>
+        </div>
+    </div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        急救信息
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" id="form">
+                        <input type="hidden" class="form-control" id="dispatchHospital">
+                        <div class="form-group">
+                            <label for="alarmTel"  class="col-sm-2 control-label"><sup
+                                    style="color: red">*</sup>派遣车辆</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="carId" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="alarmTel"  class="col-sm-2 control-label"><sup
+                                    style="color: red">*</sup>呼救地点</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="callAddress" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="alarmTel"  class="col-sm-2 control-label"><sup
+                                    style="color: red">*</sup>接警电话</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="alarmTel"
+                                   placeholder="请输入接警电话">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="callAddress"  class="col-sm-2 control-label"><sup
+                                    style="color: red">*</sup>主诉</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="chiefComplaint"
+                                   placeholder="请输入主诉">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientNum"  class="col-sm-2 control-label"><sup
+                                    style="color: red">*</sup>患者人数</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="patientNum"
+                                   placeholder="请输入接警电话">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="patientGender"  class="col-sm-2 control-label">性别信息</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="patientGender"
+                                   placeholder="请输入性别信息（几男几女）">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="disease"  class="col-sm-2 control-label">初步诊断</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="disease"
+                                   placeholder="请输入初步诊断">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="deliverAddress"  class="col-sm-2 control-label">送达地</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="deliverAddress"
+                                   placeholder="请输入送达地">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="remark"  class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="remark"
+                                   placeholder="请输入备注">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-primary" id="save">
+                        确定
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+    <script src="../js/lib/plugins/require/require.js"></script>
+    <script src="../js/common/config.js"></script>
+    <script src="../js/scripts/index.js?v=19"></script>
+</body>
+</html>
