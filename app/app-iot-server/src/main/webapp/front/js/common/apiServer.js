@@ -3,7 +3,7 @@
  */
 define(['jquery', 'promise', 'layer', 'jsHelper'], function ($, Promise, layer, jsHelper) {
     jsHelper.setLayerCon();
-    var baseUrl = '/emergency/';
+    var baseUrl = '/iot/';
     function httpGet(url,options) {
         //发送ajax请求
         return new Promise(function(resolve, reject) {

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -30,6 +31,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     /**
      * 配置路径完全匹配
+     * idea版本 过低这样子映射boot启动会没有效果，只能tomcat启动  但是不影响打包
      * @param configurer
      */
     @Override
@@ -37,4 +39,9 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         configurer.setUseSuffixPatternMatch(false)
                 .setUseTrailingSlashMatch(true);
     }
+
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/front/**").addResourceLocations("classpath:/webapp/front/");
+//    }
 }

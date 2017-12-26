@@ -34,7 +34,7 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-
+        //短信验证码过滤器
         SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
         smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
         smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
@@ -44,8 +44,8 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
         smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
 
         http.authenticationProvider(smsCodeAuthenticationProvider)
-                .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(smsvalidateCodeFilter,SmsCodeAuthenticationFilter.class);
+                .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)//在账号密码验证过滤器之后添加短信验证码过滤器
+                .addFilterBefore(smsvalidateCodeFilter,SmsCodeAuthenticationFilter.class); //添加短信验证码登陆过滤器
         ;
 
     }
