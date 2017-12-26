@@ -29,19 +29,19 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         super.addInterceptors(registry);
     }
 
-//    /**
-//     * 配置路径完全匹配
-//     *
-//     * @param configurer
-//     */
-//    @Override
-//    public void configurePathMatch(PathMatchConfigurer configurer) {
-//        configurer.setUseSuffixPatternMatch(false)
-//                .setUseTrailingSlashMatch(true);
-//    }
-
+    /**
+     * 配置路径完全匹配
+     *
+     * @param configurer
+     */
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/front/**").addResourceLocations("classpath:/webapp/front/");
+    public void configurePathMatch(PathMatchConfigurer configurer) {
+        configurer.setUseSuffixPatternMatch(false)
+                .setUseTrailingSlashMatch(true);
     }
+
+//    @Override
+//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//        registry.addResourceHandler("/front/**").addResourceLocations("classpath:/webapp/front/");
+//    }
 }
