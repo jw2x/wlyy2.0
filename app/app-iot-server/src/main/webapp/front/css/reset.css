@@ -1,0 +1,226 @@
+.index-top{
+    width: 100%;
+    height: 70px;
+    background-color: #39b3e3;
+    color: #fff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+.index-left{
+    width: 220px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background-color: #384d5e;
+    padding-top: 46px;
+    overflow: hidden;
+}
+#page-wrapper{
+    height: 100%;
+    position: relative;
+    /*padding-top: 70px;*/
+}
+.index-logo{
+    width: 358px;
+    height: 34px;
+    background-image: url(../images/logo.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    text-indent: -9999px;
+    margin-left: 30px;
+    margin-top: 17px;
+    display: inline-block;
+}
+.index-left-header{
+    height: 46px;
+    line-height: 46px;
+    text-align: center;
+    color: #55697c;
+    background-color: #cee7f2;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+.minimalize-styl-2{
+    margin: 0;
+    font-size: 14px;
+    position: absolute;
+    right: 0;
+    padding: 12px;
+    color: #55697c;
+}
+body.mini-navbar .navbar-static-side .index-left-header{
+    font-size: 0;
+}
+body.mini-navbar .navbar-static-side .index-left-header .minimalize-styl-2{
+    padding: 12px 28px;
+}
+.arrow{
+    margin-top: -2px;
+    font-size: 20px;
+}
+nav.page-tabs{
+    margin-left: 0;
+}
+.nav-second-level li a{
+    padding: 0;
+    margin: 14px 15px 14px 52px;
+    word-break: keep-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.navbar-top-links li a{
+    padding: 25px 10px;
+}
+.nav.navbar-right>li>a{
+    color: #fff;
+    font-weight: 400;
+}
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover{
+
+    background: none;
+}
+
+.nav>li>a:focus, .nav>li>a:hover{
+    background: none;
+}
+.fa-icon{
+    width: 18px;
+    height: 18px;
+    vertical-align: text-bottom;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.fa-daiban{
+    background-image: url(../images/icon_daiban.png);
+}
+.fa-msg{
+    background-image: url(../images/icon_wodexiaoxi2.png);
+}
+.fa-down{
+    background-image: url(../images/icon_xiazhongxin2.png);
+}
+.fa-dbx{
+    background-image: url(../images/dbx.png);
+}
+.index-s{
+    width: 1px;
+    height: 10px;
+    background: #fff;
+    position: absolute;
+    top: 31px;
+    right: -2px;
+}
+.fa-head{
+    width: 33px;
+    height: 33px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    border-radius: 50%;
+}
+.fa-head img{
+    width: 100%;
+    height: 100%;
+}
+.navbar-top-links li a#indexHead{
+    padding: 17px 10px;
+}
+.navbar-form-custom{
+    width: 230px;
+    height: 35px;
+    background-color: #1996cd;
+    margin-top: 18px;
+    padding-left: 30px;
+    position: relative;
+    margin-right: 30px;
+}
+.navbar-form-custom .form-control{
+    height: 35px;
+}
+.index-search{
+    width: 21px;
+    height: 22px;
+    display: block;
+    position: absolute;
+    left: 9px;
+    top: 6px;
+    background-image: url(../images/search.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+::-webkit-input-placeholder{
+    color: #c1dfec !important;
+}
+:-moz-placeholder{
+    color:#c1dfec !important;
+}
+::-moz-placeholder{
+    color:#c1dfec !important;
+}
+::-ms-input-placeholder{
+    color:#c1dfec !important;
+}
+.content-tabs{
+    border: 1px solid #e8edec;
+}
+.page-tabs a{
+    background-color: #f1f5f7;
+    color: #323232;    
+    border-right: solid 1px #e8edec;
+}
+.page-tabs a.active,.page-tabs a.active:hover{
+    background: #fff;
+    line-height: 45px;
+    color: #323232;
+}
+.content-tabs{
+    height: 47px;
+    line-height: 45px;
+}
+nav.page-tabs{
+    height: 46px;
+}
+.page-tabs a i{
+    color: #666;
+}
+.page-tabs a.active i:hover{
+    background: #fff;
+    color: #666;
+}
+.navbar-top-links .dropdown-alerts{
+    width: 130px;
+    color: #000;
+}
+.nav>li>a>.nav-label{
+    width: 135px;
+    display: inline-block;
+    vertical-align: bottom;
+    overflow: hidden;
+    word-break: keep-all;
+    text-overflow: ellipsis;
+}
+.mini-navbar .nav-second-level li a{
+    width: 70px;
+    margin: 0;
+    display: inline-block;
+}
+.roll-right.btn-group{
+    right: 0;
+}
+.content-tabs .roll-nav,.content-tabs button{
+    height: 45px;
+    line-height: 15px;
+}
+.roll-right.btn-group button{
+    width: 50px;
+    font-size: 24px;
+}
+.roll-right.btn-group{
+    width: 50px;
+}

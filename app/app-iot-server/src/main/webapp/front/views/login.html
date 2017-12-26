@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>登录</title>
+        <link href="../css/bootstrap.min14ed.css" rel="stylesheet">
+        <link href="../css/style.min862f.css" rel="stylesheet">
+        <link href="../css/login.css" rel="stylesheet">
+        <!--[if lt IE 9]>
+        <meta http-equiv="refresh" content="0;ie.html" />
+        <![endif]-->
+    </head>
+    <body class="gray-bg">
+        <div class="l-body" id="loginApp">
+            <!--logo-->
+            <div class="header-xz-wrap clearfix c-position-r">
+                <div class="header-xz-logo plr20 fl"></div>
+            </div>
+            <!--form-->
+            <div class="l-main">
+                <div class="l-form">
+                    <div class="l-f-c">
+                        <div class="l-f-tit">欢迎使用医疗云平台系统</div>
+                        <div>
+                            <label class="l-f-icon i-an" for="lUAn"></label>
+                            <input id="lUAn" class="l-f-input" type="text" placeholder="请输入账号" v-model="userID"/>
+                        </div>
+                        <div>
+                            <label class="l-f-icon i-pwd" for="lUPwd"></label>
+                            <input id="lUPwd" class="l-f-input" type="password" placeholder="请输入密码" v-model="password"/>
+                        </div>
+                        <div>
+                            <label class="l-f-radio f-r-d" for="lR">
+                                <input id="lR" class="r-d" type="checkbox" />
+                            </label>
+                            <span class="f-p">记住密码</span>
+                            <a class="f-l"  href="javascript:;">忘记密码？</a>
+                        </div>
+                        <div><input class="l-btn doc-btn" type="button" value="登录" v-on:click="sendFun"/></div>
+                    </div>
+                </div>
+            </div>
+            <p class="l-footer">
+                ©健康之路 专业就诊服务机构 版权所有 B2-20110196(全网) 闽B2-20090074 闽ICP备05019666
+            </p>
+        </div>
+
+
+        <script src="../js/lib/plugins/require/require.js"></script>
+        <script src="../js/common/config.js"></script>
+        <script src="../js/scripts/login.js"></script>
+    </body>
+</html>
