@@ -16,7 +16,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         }
         Boolean isLogin = (Boolean) request.getSession().getAttribute("isLogin");
         if (isLogin == null || !isLogin) {
-            response.sendRedirect("/emergency/login");
+            response.sendRedirect("/iot/login");
             response.setStatus(-200);
             return false;
         }

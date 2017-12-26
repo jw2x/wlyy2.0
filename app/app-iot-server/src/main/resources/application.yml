@@ -1,5 +1,5 @@
 server:
-  contextPath: /emergency
+  contextPath: /iot
   port: 9099
   sessionTimeout: 30000000
 
