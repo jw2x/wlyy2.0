@@ -11,9 +11,6 @@ import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
-/**
- * 后台不直接连数据库 都是访问微服务网关
- */
 @SpringBootApplication
 @EnableAutoConfiguration(exclude = {
         SecurityAutoConfiguration.class,
