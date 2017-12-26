@@ -31,7 +31,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     /**
      * 配置路径完全匹配
-     *
+     * idea版本 过低这样子映射boot启动会没有效果，只能tomcat启动  但是不影响打包
      * @param configurer
      */
     @Override
