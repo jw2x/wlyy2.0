@@ -19,6 +19,10 @@
             <artifactId>common-entity</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.yihu.base</groupId>
+            <artifactId>common-data-es</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-request-mapping</artifactId>
         </dependency>

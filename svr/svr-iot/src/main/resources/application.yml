@@ -45,6 +45,38 @@ fast-dfs:
     max-size: 20
     wait-time: 500
 
+#es配置
+es:
+  host:  59.61.92.90
+  port: 9067 #默认是9200
+  tPort: 9068 #http端口 默认是9300
+  clusterName: jkzl
+
+
+spring:
+  data:
+    elasticsearch: #ElasticsearchProperties
+      cluster-name: jkzl #默认即为elasticsearch  集群名
+      cluster-nodes: 172.17.110.217:9300,172.17.110.128:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      local: false ##是否本地连接
+      properties: # Additional properties used to configure the client.
+
+  # JEST (Elasticsearch HTTP client) (JestProperties)
+  elasticsearch:
+    jest:
+      uris: http://localhost:9200
+      connection-timeout: # Connection timeout in milliseconds.
+      multi-threaded: true # Enable connection requests from multiple execution threads.
+      username: # Login user.
+      password: # Login password.
+      proxy.port:  # Proxy port the HTTP client should use.
+      proxy.host:  # Proxy host the HTTP client should use.
+
+
+
+
+
+
 ---
 spring:
   profiles: jwdev
