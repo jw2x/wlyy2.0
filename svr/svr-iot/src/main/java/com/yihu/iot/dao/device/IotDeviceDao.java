@@ -13,4 +13,10 @@ public interface IotDeviceDao extends PagingAndSortingRepository<IotDeviceDO, Lo
 
     @Query("from IotDeviceDO w where w.id =?1")
     IotDeviceDO findById(String id);
+
+    @Query("count(*) from IotDeviceDO w where w.deviceSn =?1")
+    int countByDeviceSn(String deviceSn);
+
+    @Query("from IotDeviceDO w where w.deviceSn =?1")
+    IotDeviceDO findByDeviceSn(String deviceSn);
 }

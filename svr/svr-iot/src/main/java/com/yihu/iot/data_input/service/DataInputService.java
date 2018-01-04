@@ -1,0 +1,195 @@
+package com.yihu.iot.data_input.service;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.yihu.base.es.config.ElastricSearchHelper;
+import com.yihu.base.es.config.model.SaveModel;
+import com.yihu.base.hbase.HBaseHelper;
+import com.yihu.iot.data_input.util.RowKeyUtils;
+import com.yihu.iot.service.device.IotDeviceService;
+import com.yihu.jw.iot.device.IotDeviceDO;
+import com.yihu.jw.util.date.DateUtil;
+import org.apache.http.client.utils.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.util.*;
+
+/**
+ * 1、设备注册及绑定
+ * 2、不含居民身份的数据上传协议
+ * 3、含居民身份的数据上传协议
+ * 4、数据查询返回的协议格式
+ */
+@Component
+public class DataInputService {
+    private Logger logger = LoggerFactory.getLogger(DataInputService.class);
+
+    @Autowired
+    private IotDeviceService iotDeviceService;
+
+    @Autowired
+    private DataProcessLogService dataProcessLogService;
+
+    @Autowired
+    private ElastricSearchHelper elastricSearchHelper;
+
+    @Autowired
+    private HBaseHelper hBaseHelper;
+
+
+    private String esIndex = "body_health_data";
+    private String esType = "signs_data";
+    private String tableName = "body_health_data";
+    private String familyA = "column_signs_header";
+    private String familyB = "column_signs_data";
+
+
+
+    /**
+     * 居民设备注册及绑定
+     */
+    public String bindUser(String json){
+        List<IotDeviceDO> deviceDOList = new ArrayList<>();
+        JSONObject jsonObject = JSONObject.parseObject(json);
+        String data_source = jsonObject.getString("data_source");
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
+        try {
+            if(null != jsonArray){
+                for(Object array:jsonArray){
+                    JSONObject dataJson = (JSONObject)JSONObject.toJSON(array);
+                    IotDeviceDO iotDeviceDO = new IotDeviceDO();
+                    String sn = dataJson.getString("sn");
+                    int count = iotDeviceService.countByDeviceSn(sn);
+                    if(count > 0){
+                        continue; //表示设备已经绑定过
+                    }
+                    iotDeviceDO.setDeviceSn(sn);
+                    iotDeviceDO.setCode(dataJson.getString("ext_code"));
+                    iotDeviceDO.setName(dataJson.getString("device_name"));
+                    iotDeviceDO.setDeviceModel(dataJson.getString("device_model"));
+                    iotDeviceDO.setDeviceSource("2"); //设备来源为居民绑定
+
+                    iotDeviceDO.setCreateUser(dataJson.getString("idcard")); //居民绑定的，暂定创建人和修改人均为居民
+                    iotDeviceDO.setCreateUserName(dataJson.getString("username"));
+                    iotDeviceDO.setUpdateUser(dataJson.getString("idcard"));
+                    iotDeviceDO.setUpdateUserName(dataJson.getString("username"));
+
+                    iotDeviceDO.setManufacturerCode(dataJson.getString("manufacture_code"));
+                    iotDeviceDO.setManufacturerName(dataJson.getString("manufacture_name"));
+                    iotDeviceDO.setManufactureTel(dataJson.getString("manufacture_tel"));
+                    iotDeviceDO.setSupplierCode(dataJson.getString("owner_org_code"));
+                    iotDeviceDO.setSupplierName(dataJson.getString("owner_org_name"));
+                    iotDeviceDO.setName(dataJson.getString("sale_org_code"));
+                    iotDeviceDO.setName(dataJson.getString("sale_org_name"));
+                    deviceDOList.add(iotDeviceDO);
+                }
+                iotDeviceService.bindUser(deviceDOList);
+                //保存日志
+                dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.data_input.service.DataInputService.bindUser",0);
+
+            }
+        }catch (Exception e){
+            logger.error("注册绑定失败");
+            //保存日志
+            dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.data_input.service.DataInputService.bindUser",1);
+            return "fail";
+        }
+        return "success";
+    }
+
+    /**
+     * 修改设备绑定居民信息
+     */
+    public void updateBindUser(String data_source,String deviveSn,String idcard,String username){
+        IotDeviceDO iotDeviceDO = iotDeviceService.findByDeviceSn(deviveSn);
+        if(null != iotDeviceDO){
+            iotDeviceDO.setUpdateUser(idcard);
+            iotDeviceDO.setUpdateUserName(username);
+        }
+        iotDeviceService.save(iotDeviceDO);
+        //保存日志
+        dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.data_input.service.DataInputService.bindUser",1);
+
+    }
+
+    /**
+     * 上传数据
+     * @param json
+     * @return
+     */
+    public String uploadData(String json){
+        String fileName = "";
+        String fileAbsPath = "";
+        String rowkey = "";
+        //提取json各项值
+        JSONObject jsonObject = JSONObject.parseObject(json);
+        String accessToken= jsonObject.getString("access_token");
+        String dataSource = jsonObject.getString("data_source");
+        String deviceSn = jsonObject.getString("sn");
+        String extCode = jsonObject.getString("ext_code");
+        String measuretime = jsonObject.getString("measure_time");
+        //包含居民身份的数据，对设备数据进行校验绑定，此处包含的信息只有身份证号和用户名以及设备序列号，如果设备库中存在该序号的设备，则对绑定居民进行修改，改为当前居民，如果没有则跳过
+        if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
+            String idcard = jsonObject.getString("idcard");
+            String username = jsonObject.getString("username");
+            updateBindUser(dataSource,deviceSn,idcard,username);
+        }
+
+        try {
+            rowkey = RowKeyUtils.makeRowKey(accessToken, deviceSn, extCode, DateUtil.dateTimeParse(measuretime).getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //将数据存入es
+        jsonObject.put("_id", new SaveModel().getId());//es的id继承至jestId
+        jsonObject.put("id", rowkey);//hbase的rowkey
+        elastricSearchHelper.save(esIndex, esType, jsonObject.toJSONString());
+
+
+        Map<String, Map<String, String>> family = new HashMap<>();
+        Map<String, String> columnsA = new HashMap<>();
+        Map<String, String> columnsB = new HashMap<>();
+        //组装A列
+        columnsA.put("access_token",accessToken);
+        columnsA.put("data_source",dataSource);
+        columnsA.put("sn",deviceSn);
+        columnsA.put("ext_code",extCode);
+        columnsA.put("device_name",jsonObject.getString("device_name"));
+        columnsA.put("device_model",jsonObject.getString("device_model"));
+        family.put(familyA,columnsA);
+
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
+        if(null == jsonArray || jsonArray.size() == 0){
+            return "json no data";
+        }
+        //组装B列
+        for(Object obj:jsonArray){
+            JSONObject data = (JSONObject)obj;
+           for(String key:data.keySet()){
+               columnsB.put(key,data.getString(key));
+           }
+           if(data.containsKey("ecg")){
+               fileName = data.getString("fileName");
+               fileAbsPath = data.getString("filepath");
+           }
+        }
+        family.put(familyB,columnsB);
+        try {
+            hBaseHelper.add(tableName,rowkey,family);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //保存日志
+            dataProcessLogService.saveLog(fileName,fileAbsPath,dataSource,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.data_input.service.DataInputService.uploadData",1);
+        }
+        //保存日志
+        dataProcessLogService.saveLog(fileName,fileAbsPath,dataSource,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.data_input.service.DataInputService.uploadData",0);
+
+        return "success";
+    }
+}

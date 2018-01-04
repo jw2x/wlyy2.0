@@ -59,6 +59,37 @@ public class ElastricSearchHelper {
         return null;
     }
 
+    public Boolean save(String index, String type, String source) {
+        JestClient jestClient = null;
+        try {
+            //得到链接elasticFactory.getJestClient();
+
+            int success = 0;
+            int error = 0;
+            Bulk.Builder bulk = new Bulk.Builder().defaultIndex(index).defaultType(type);
+            try {
+                Index indexObj = new Index.Builder(source).build();
+                success++;
+                bulk.addAction(indexObj);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                error++;
+            }
+            BulkResult br = jestClient.execute(bulk.build());
+            logger.info("save flag:" + br.isSucceeded());
+            logger.info("save success:" + success);
+            logger.info("save error:" + error);
+            return br.isSucceeded();
+        } catch (Exception e) {
+            logger.error(" save error ：" + e.getMessage());
+        } finally {
+            if (jestClient != null) {
+                jestClient.shutdownClient();
+            }
+        }
+        return null;
+    }
+
 
     public Boolean update(String index, String type, List<SaveModel> sms) {
         JestClient jestClient = null;

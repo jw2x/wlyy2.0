@@ -54,6 +54,9 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "manufacturer_name")
     private String manufacturerName;//厂商名称
 
+    @Column(name = "manufacturer_tel")
+    private String manufactureTel;//厂商名称
+
     @Column(name = "order_code")
     private String orderCode;//订单code
 
@@ -74,6 +77,12 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "del")
     private Integer del;//删除标志(1有效，0删除)
+
+    @Column(name = "sale_org_code")
+    private String saleOrgCode; //经销商单位代码
+
+    @Column(name = "sale_org_name")
+    private String saleOrgName; //经销商单位名称
 
     public String getSaasId() {
         return saasId;
@@ -179,6 +188,14 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.manufacturerName = manufacturerName;
     }
 
+    public String getManufactureTel() {
+        return manufactureTel;
+    }
+
+    public void setManufactureTel(String manufactureTel) {
+        this.manufactureTel = manufactureTel;
+    }
+
     public String getOrderCode() {
         return orderCode;
     }
@@ -233,5 +250,21 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public String getSaleOrgCode() {
+        return saleOrgCode;
+    }
+
+    public void setSaleOrgCode(String saleOrgCode) {
+        this.saleOrgCode = saleOrgCode;
+    }
+
+    public String getSaleOrgName() {
+        return saleOrgName;
+    }
+
+    public void setSaleOrgName(String saleOrgName) {
+        this.saleOrgName = saleOrgName;
     }
 }

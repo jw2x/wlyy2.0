@@ -1,4 +1,4 @@
-package com.yihu.iot.data_input;
+package com.yihu.iot.data_input.dao;
 
 import com.yihu.jw.iot.data_input.DataStandardDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
