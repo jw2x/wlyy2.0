@@ -1,11 +1,12 @@
-package com.yihu.iot.data_input.service;
+package com.yihu.iot.datainput.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
 import com.yihu.base.es.config.model.SaveModel;
 import com.yihu.base.hbase.HBaseHelper;
-import com.yihu.iot.data_input.util.RowKeyUtils;
+import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
+import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.iot.device.IotDeviceDO;
 import com.yihu.jw.util.date.DateUtil;
@@ -15,9 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -91,13 +89,13 @@ public class DataInputService {
                 }
                 iotDeviceService.bindUser(deviceDOList);
                 //保存日志
-                dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.data_input.service.DataInputService.bindUser",0);
+                dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.datainput.service.DataInputService.bindUser",DataOperationTypeEnum.bindUser.getName(),0);
 
             }
         }catch (Exception e){
             logger.error("注册绑定失败");
             //保存日志
-            dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.data_input.service.DataInputService.bindUser",1);
+            dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.datainput.service.DataInputService.bindUser",DataOperationTypeEnum.bindUser.getName(),1);
             return "fail";
         }
         return "success";
@@ -114,7 +112,7 @@ public class DataInputService {
         }
         iotDeviceService.save(iotDeviceDO);
         //保存日志
-        dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.data_input.service.DataInputService.bindUser",1);
+        dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.datainput.service.DataInputService.bindUser","",1);
 
     }
 
@@ -134,6 +132,9 @@ public class DataInputService {
         String deviceSn = jsonObject.getString("sn");
         String extCode = jsonObject.getString("ext_code");
         String measuretime = jsonObject.getString("measure_time");
+        if(null == measuretime){
+            measuretime = DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss);
+        }
         //包含居民身份的数据，对设备数据进行校验绑定，此处包含的信息只有身份证号和用户名以及设备序列号，如果设备库中存在该序号的设备，则对绑定居民进行修改，改为当前居民，如果没有则跳过
         if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
             String idcard = jsonObject.getString("idcard");
@@ -185,10 +186,10 @@ public class DataInputService {
         } catch (Exception e) {
             e.printStackTrace();
             //保存日志
-            dataProcessLogService.saveLog(fileName,fileAbsPath,dataSource,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.data_input.service.DataInputService.uploadData",1);
+            dataProcessLogService.saveLog(fileName,fileAbsPath,dataSource,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(),1);
         }
         //保存日志
-        dataProcessLogService.saveLog(fileName,fileAbsPath,dataSource,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.data_input.service.DataInputService.uploadData",0);
+        dataProcessLogService.saveLog(fileName,fileAbsPath,dataSource,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.datainput.service.DataInputService.uploadData",DataOperationTypeEnum.upload1.getName(),0);
 
         return "success";
     }

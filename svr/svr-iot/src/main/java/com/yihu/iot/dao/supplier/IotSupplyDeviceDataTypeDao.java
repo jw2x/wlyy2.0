@@ -1,6 +1,5 @@
 package com.yihu.iot.dao.supplier;
 
-import com.yihu.jw.iot.supplier.IotSupplyDeviceDO;
 import com.yihu.jw.iot.supplier.IotSupplyDeviceDataTypeDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

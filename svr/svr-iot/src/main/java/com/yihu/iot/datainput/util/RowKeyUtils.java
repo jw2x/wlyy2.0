@@ -1,4 +1,4 @@
-package com.yihu.iot.data_input.util;
+package com.yihu.iot.datainput.util;
 
 import org.springframework.util.DigestUtils;
 import java.io.UnsupportedEncodingException;

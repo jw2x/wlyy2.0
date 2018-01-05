@@ -20,7 +20,7 @@ public class DataRequestMapping {
      * 数据上传
      */
     public static class DataInput{
-        public static final String api_data_input = "dataInput";//数据上传
+        public static final String api_data_input = "input";//数据上传
         public static final String api_user_bind = "userBind";//设备注册绑定
 
         public static final String message_success = "上传成功";

@@ -1,6 +1,6 @@
-package com.yihu.iot.data_input.controller;
+package com.yihu.iot.datainput.controller;
 
-import com.yihu.iot.data_input.service.DataInputService;
+import com.yihu.iot.datainput.service.DataInputService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.iot.DataRequestMapping;

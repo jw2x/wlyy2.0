@@ -1,5 +1,6 @@
 package com.yihu.jw.iot.data_input;
 
+import com.yihu.jw.IdEntity;
 import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
@@ -9,7 +10,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "iot_base_data_def")
-public class DataStandardDO extends IdEntityWithOperation implements Serializable {
+public class DataStandardDO extends IdEntity implements Serializable {
 
     @Column(name = "base_name")
     private String baseName;

@@ -1,8 +1,9 @@
-package com.yihu.iot.data_input.service;
+package com.yihu.iot.datainput.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.iot.data_input.enums.DataDeviceTypeEnum;
+import com.yihu.iot.datainput.enums.DataDeviceTypeEnum;
+import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
 import com.yihu.jw.iot.data_input.DataStandardDO;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.http.client.utils.DateUtils;
@@ -62,7 +63,7 @@ public class DataStandardConvertService {
     public String iconvert(String oldJson){
         JSONObject jsonObject = JSONObject.parseObject(oldJson);
         //如果没有授权或者数据来源，则表示数据异常
-        if(jsonObject.containsKey("access_token") || jsonObject.containsKey("data_source")){
+        if(!jsonObject.containsKey("access_token") || !jsonObject.containsKey("data_source")){
             logger.warn("传过来的数据无有效access_token或data_source",oldJson);
             return "";
         }
@@ -75,7 +76,7 @@ public class DataStandardConvertService {
         String access_token = (String)jsonObject.get("access_token");
         String data_source = (String)jsonObject.get("data_source");
         String sn = (String)jsonObject.get("deviceSn");
-        String deviceType = (String)jsonObject.get("deviceType");
+        String deviceType = jsonObject.getString("deviceType");
         String ext_code = (String)jsonObject.get("userType");
         String data = (String)jsonObject.get("userType") + (String)jsonObject.get("unit");
         String device_name = (String)jsonObject.get("device_name");
@@ -100,7 +101,7 @@ public class DataStandardConvertService {
         dataJsonObject.put(deviceDataName,data);
         jsonArray.add(dataJsonObject);
         //保存日志
-        dataProcessLogService.saveLog("","",data_source,measure_time, DateUtils.formatDate(new Date(),DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.data_input.service.DataStandardConvertService.iconvert",0);
+        dataProcessLogService.saveLog("","",data_source,measure_time, DateUtils.formatDate(new Date(),DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.datainput.service.DataStandardConvertService.iconvert", DataOperationTypeEnum.convert.getName(),0);
         //转换后的标准json数据
         return newJsonObject.toJSONString();
     }

@@ -1,12 +1,9 @@
-package com.yihu.iot.data_input.controller;
+package com.yihu.iot.datainput.controller;
 
-import com.yihu.iot.data_input.service.DataStandardConvertService;
-import com.yihu.jw.base.user.BaseMenuDO;
+import com.yihu.iot.datainput.service.DataStandardConvertService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.rm.base.BaseUserRequestMapping;
 import com.yihu.jw.rm.iot.DataRequestMapping;
-import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

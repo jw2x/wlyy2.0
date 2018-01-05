@@ -1,5 +1,6 @@
 package com.yihu.jw.iot.data_input;
 
+import com.yihu.jw.IdEntity;
 import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
@@ -9,7 +10,10 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "iot_data_process_log")
-public class DataProcessLogDO extends IdEntityWithOperation implements Serializable {
+public class DataProcessLogDO extends IdEntity implements Serializable {
+
+    @Column(name = "data_id")
+    private String dataId;
 
     @Column(name = "file_name")
     private String fileName;
@@ -112,5 +116,13 @@ public class DataProcessLogDO extends IdEntityWithOperation implements Serializa
 
     public void setFileCount(int fileCount) {
         this.fileCount = fileCount;
+    }
+
+    public String getProcessInterface() {
+        return processInterface;
+    }
+
+    public void setProcessInterface(String processInterface) {
+        this.processInterface = processInterface;
     }
 }

@@ -1,7 +1,7 @@
-package com.yihu.iot.data_input.service;
+package com.yihu.iot.datainput.service;
 
 import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.iot.data_input.dao.DataProcessLogDao;
+import com.yihu.iot.datainput.dao.DataProcessLogDao;
 import com.yihu.jw.iot.data_input.DataProcessLogDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,15 +22,16 @@ public class DataProcessLogService extends BaseJpaService<DataProcessLogDO,DataP
         this.dataProcessLogDao.save(list);
     }
 
-    public void saveLog(String fileName,String fileAbsPath,String dataSource,String receiveTime,String uploadTime,String processType,String status,String desc,int failCount){
+    public void saveLog(String fileName,String fileAbsPath,String dataSource,String receiveTime,String uploadTime,String processType,String status,String processInterface,String desc,int failCount){
         DataProcessLogDO dataProcessLog = new DataProcessLogDO();
         dataProcessLog.setFileName(fileName);
-        dataProcessLog.setFileName(fileAbsPath);
-        dataProcessLog.setFileName(dataSource);
-        dataProcessLog.setFileName(receiveTime);
-        dataProcessLog.setFileName(uploadTime);
+        dataProcessLog.setFileAbsoultePath(fileAbsPath);
+        dataProcessLog.setDataSource(dataSource);
+        dataProcessLog.setReceiveTime(receiveTime);
+        dataProcessLog.setUploadTime(uploadTime);
         dataProcessLog.setProcessType(processType);
         dataProcessLog.setProcessStatus(status);
+        dataProcessLog.setProcessInterface(processInterface);
         dataProcessLog.setProcessDes(desc);
         dataProcessLog.setFileCount(failCount);
         dataProcessLogDao.save(dataProcessLog);

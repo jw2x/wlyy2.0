@@ -1,4 +1,4 @@
-package com.yihu.iot.data_input.enums;
+package com.yihu.iot.datainput.enums;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -7,8 +7,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public enum DataDeviceTypeEnum {
 
-    SYSTOLIC("1","血压"),
-    BLOOD_SUGAR("2","血糖");
+    SYSTOLIC("1","SYSTOLIC"),
+    BLOOD_SUGAR("2","BLOOD_SUGAR");
 
     private String type;
     private String name;

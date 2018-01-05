@@ -5,6 +5,7 @@ import com.yihu.iot.dao.device.IotDeviceDao;
 import com.yihu.jw.iot.device.IotDeviceDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * 设备注册及绑定
      * @param iotDeviceDO
      */
+    @Transactional
     public void bindUser(List<IotDeviceDO> iotDeviceDO){
         this.batchInsert(iotDeviceDO);
     }

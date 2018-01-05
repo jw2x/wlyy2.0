@@ -30,7 +30,7 @@ public class ElastricSearchHelper {
         JestClient jestClient = null;
         try {
             //得到链接elasticFactory.getJestClient();
-
+            jestClient = elasticFactory.getJestClient();
             int success = 0;
             int error = 0;
             Bulk.Builder bulk = new Bulk.Builder().defaultIndex(index).defaultType(type);
@@ -63,7 +63,7 @@ public class ElastricSearchHelper {
         JestClient jestClient = null;
         try {
             //得到链接elasticFactory.getJestClient();
-
+            jestClient = elasticFactory.getJestClient();
             int success = 0;
             int error = 0;
             Bulk.Builder bulk = new Bulk.Builder().defaultIndex(index).defaultType(type);
