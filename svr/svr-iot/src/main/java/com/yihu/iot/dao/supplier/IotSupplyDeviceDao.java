@@ -9,7 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * @author yeshijie on 2017/12/5.
  */
-public interface IotSupplyDeviceDao extends PagingAndSortingRepository<IotSupplyDeviceDO, Long>, JpaSpecificationExecutor<IotSupplyDeviceDO> {
+public interface IotSupplyDeviceDao extends PagingAndSortingRepository<IotSupplyDeviceDO, String>, JpaSpecificationExecutor<IotSupplyDeviceDO> {
 
     @Query("from IotSupplyDeviceDO w where w.id =?1")
     IotSupplyDeviceDO findById(String id);

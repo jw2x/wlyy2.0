@@ -15,6 +15,17 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
     @Autowired
     private IotDeviceOrderDao iotDeviceOrderDao;
 
+    /**
+     * 新增
+     * @param iotDeviceOrder
+     * @return
+     */
+    public IotDeviceOrderDO create(IotDeviceOrderDO iotDeviceOrder) {
+
+        iotDeviceOrder.setSaasId(getCode());
+        return iotDeviceOrderDao.save(iotDeviceOrder);
+    }
+
     public IotDeviceOrderDO findById(String id) {
         return iotDeviceOrderDao.findById(id);
     }

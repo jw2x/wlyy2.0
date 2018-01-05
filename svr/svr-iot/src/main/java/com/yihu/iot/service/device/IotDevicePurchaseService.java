@@ -14,6 +14,18 @@ public class IotDevicePurchaseService extends BaseJpaService<IotDevicePurchaseDO
     @Autowired
     private IotDevicePurchaseDao iotDevicePurchaseDao;
 
+    /**
+     * 新增
+     * @param iotDevicePurchase
+     * @return
+     */
+    public IotDevicePurchaseDO create(IotDevicePurchaseDO iotDevicePurchase) {
+
+        iotDevicePurchase.setSaasId(getCode());
+        iotDevicePurchase.setDel(1);
+        return iotDevicePurchaseDao.save(iotDevicePurchase);
+    }
+
     public IotDevicePurchaseDO findById(String id) {
         return iotDevicePurchaseDao.findById(id);
     }
