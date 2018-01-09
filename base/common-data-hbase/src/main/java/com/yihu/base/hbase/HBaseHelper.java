@@ -217,6 +217,38 @@ public class HBaseHelper extends AbstractHBaseClient {
     }
 
     /**
+     * 批量新增行
+     */
+    public void addBulk(String tableName , List<String> rowkeyList, List<Map<String,Map<String,String>>> familyList) throws Exception
+    {
+        hbaseTemplate.execute(tableName, new TableCallback<String>() {
+
+            public String doInTable(HTableInterface table) throws Throwable {
+                List<Put> list = new ArrayList<>();
+                for(int i = 0; i < rowkeyList.size();i++){
+                    Put p = new Put(rowkeyList.get(i).getBytes());
+                    Map<String,Map<String,String>> family = familyList.get(i);
+                    for(String familyName : family.keySet())
+                    {
+                        Map<String,String> map = family.get(familyName);
+                        for (String qualifier : map.keySet())
+                        {
+                            String value = map.get(qualifier);
+                            if(value == null){
+                                continue;
+                            }
+                            p.add(familyName.getBytes(), qualifier.getBytes(), value.getBytes());
+                        }
+                    }
+                    list.add(p);
+                }
+                table.put(list);
+                return null;
+            }
+        });
+    }
+
+    /**
      * 新增数据
      */
     public void add(String tableName, String rowKey, String family, Object[] columns, Object[] values) throws Exception {

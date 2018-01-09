@@ -24,12 +24,12 @@ public class DataSearchService {
      * @param json
      * @return
      */
-  /*  public String getData(String json){
+    public String getData(String json){
         String result = elastricSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,json);
         if(null == result){
             return "no data";
         }
         return result;
-    }*/
+    }
 
 }

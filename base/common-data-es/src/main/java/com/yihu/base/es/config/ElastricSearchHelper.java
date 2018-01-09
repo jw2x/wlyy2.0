@@ -166,26 +166,16 @@ public class ElastricSearchHelper {
         JestResult result = null;
         try {
             jestClient = elasticFactory.getJestClient();
-
-            //根据id批量删除
-            Bulk.Builder bulk = new Bulk.Builder().defaultIndex(index).defaultType(type);
-//            for (SaveModel obj : saveModels) {
-//                Search indexObj = new Search.Builder(obj.getId()).build();
-//                bulk.addAction(indexObj);
-//            }
-            BulkResult br = jestClient.execute(bulk.build());
-
-            Search search = (Search) new Search.Builder(queryStr)
+            Search search = new Search.Builder(queryStr)
                     // multiple index or types can be added.
-                    .addIndex("articles")
-                    .addType("article")
+                    .addIndex(index)
+                    .addType(type)
                     .build();
 
             result = jestClient.execute(search);
             JSONObject resultJsonObject = (JSONObject)JSONObject.parse(result.getJsonString());
             JSONObject jsonObject = (JSONObject)resultJsonObject.get("hits");
-            logger.info("delete data count:" + jsonObject.get("total"));
-            logger.info("delete flag:" + br.isSucceeded());
+            logger.info("search data count:" + jsonObject.get("total"));
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
