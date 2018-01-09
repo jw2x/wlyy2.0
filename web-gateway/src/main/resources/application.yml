@@ -1,7 +1,7 @@
 ##如果有配置服务的话，远程服务器和本地服务器配置不一致的情况下，优先远程的为主
 spring:
   application:
-    name:  web-gateway-lith  #注册到发现服务的id 如果id一样 eurika会自动做负载
+    name:  web-gateway  #注册到发现服务的id 如果id一样 eurika会自动做负载
   http:
     multipart:
       enabled: true
@@ -18,6 +18,23 @@ feign:
 management:
   security:
     enabled: false  #关闭 refresh的权限认证
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 500  #并发执行的最大线程数，默认10
+  command:
+    paas-file:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 3600000
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 8000  #命令执行超时时间，默认1000ms
+
 
 
 

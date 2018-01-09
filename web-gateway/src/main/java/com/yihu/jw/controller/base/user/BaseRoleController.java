@@ -148,7 +148,7 @@ public class BaseRoleController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @PutMapping(value = BaseUserContants.BaseRoleMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PutMapping(value = BaseUserContants.BaseRoleMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "修改角色菜单", notes = "修改角色菜单")
     public Envelop updateRoleMenu(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
@@ -160,7 +160,7 @@ public class BaseRoleController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @DeleteMapping(value = BaseUserContants.BaseRoleMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @DeleteMapping(value = BaseUserContants.BaseRoleMenu.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "删除角色菜单", notes = "删除角色菜单")
     public Envelop deleteRoleMenus(
             @ApiParam(name = "json_data", value = "", defaultValue = "")

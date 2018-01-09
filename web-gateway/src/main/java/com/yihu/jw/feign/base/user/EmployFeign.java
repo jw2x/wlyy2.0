@@ -27,7 +27,7 @@ public interface EmployFeign {
     Envelop update(@RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value =  BaseUserRequestMapping.BaseEmploy.api_delete,method = RequestMethod.DELETE)
-    Envelop delete(@PathVariable String id) throws JiWeiException;
+    Envelop delete(@PathVariable (value = "id") String id) throws JiWeiException;
 
     @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getById)
     Envelop findById(@PathVariable(value = "id", required = true) String id) throws JiWeiException;

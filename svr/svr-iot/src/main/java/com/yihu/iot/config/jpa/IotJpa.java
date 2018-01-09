@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "iotEntityManagerFactory",
         transactionManagerRef = "iotTransactionManager",
-        basePackages = {"com.yihu.iot.dao"})   //设置Repository所在位置
+        basePackages = {"com.yihu.iot.dao","com.yihu.iot.datainput.dao"})   //设置Repository所在位置
 public class IotJpa {
 
     @Autowired

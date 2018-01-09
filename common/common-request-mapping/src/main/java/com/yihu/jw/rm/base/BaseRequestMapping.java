@@ -139,7 +139,7 @@ public class BaseRequestMapping {
         public static final String api_create="/systemDictList";
         public static final String api_update="/systemDictList";
         public static final String api_delete="/systemDictList";
-        public static final String api_getById="/getById";
+        public static final String api_getById="/systemDictList/getById";
         public static final String api_getList="/systemDictList/list";
         public static final String api_getListNoPage="/systemDictList/listNoPage";
         public static final String api_getChildren="/systemDictList/children/{id}";
