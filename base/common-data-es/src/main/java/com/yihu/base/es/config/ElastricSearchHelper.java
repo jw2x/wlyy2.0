@@ -1,8 +1,10 @@
 package com.yihu.base.es.config;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.JsonObject;
 import com.yihu.base.es.config.model.SaveModel;
 import io.searchbox.client.JestClient;
+import io.searchbox.client.JestResult;
 import io.searchbox.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -154,5 +156,50 @@ public class ElastricSearchHelper {
                 jestClient.shutdownClient();
             }
         }
+    }
+
+    /**
+     * 查询
+     */
+    public String search(String index, String type, String queryStr) {
+        JestClient jestClient = null;
+        JestResult result = null;
+        try {
+            jestClient = elasticFactory.getJestClient();
+
+            //根据id批量删除
+            Bulk.Builder bulk = new Bulk.Builder().defaultIndex(index).defaultType(type);
+//            for (SaveModel obj : saveModels) {
+//                Search indexObj = new Search.Builder(obj.getId()).build();
+//                bulk.addAction(indexObj);
+//            }
+            BulkResult br = jestClient.execute(bulk.build());
+
+            Search search = (Search) new Search.Builder(queryStr)
+                    // multiple index or types can be added.
+                    .addIndex("articles")
+                    .addType("article")
+                    .build();
+
+            result = jestClient.execute(search);
+            JSONObject resultJsonObject = (JSONObject)JSONObject.parse(result.getJsonString());
+            JSONObject jsonObject = (JSONObject)resultJsonObject.get("hits");
+            logger.info("delete data count:" + jsonObject.get("total"));
+            logger.info("delete flag:" + br.isSucceeded());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (jestClient != null) {
+                jestClient.shutdownClient();
+            }
+        }
+        return result.getJsonString();
+    }
+
+    public static void main(String args[]){
+        String json = "";
+        JSONObject resultJsonObject = (JSONObject)JSONObject.parse(json);
+        JSONObject jsonObject = (JSONObject)resultJsonObject.get("hits");
+        System.out.println(jsonObject.get("total"));
     }
 }
