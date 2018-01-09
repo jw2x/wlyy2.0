@@ -64,16 +64,6 @@ fast-dfs:
     max-size: 20
     wait-time: 500
 
-#es配置
-es:
-  host:  127.0.0.1
-  port: 9200 #默认是9200
-  tPort: 9300 #http端口 默认是9300
-  clusterName: jkzl
-
-
-
-
 
 hadoop:
   hbase-properties:

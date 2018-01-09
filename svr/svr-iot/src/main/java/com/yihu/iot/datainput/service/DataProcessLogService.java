@@ -31,7 +31,7 @@ public class DataProcessLogService extends BaseJpaService<DataProcessLogDO,DataP
         dataProcessLog.setUploadTime(uploadTime);
         dataProcessLog.setProcessType(processType);
         dataProcessLog.setProcessStatus(status);
-        dataProcessLog.setProcessInterface(processInterface);
+//        dataProcessLog.setProcessInterface(processInterface);
         dataProcessLog.setProcessDes(desc);
         dataProcessLog.setFileCount(failCount);
         dataProcessLogDao.save(dataProcessLog);

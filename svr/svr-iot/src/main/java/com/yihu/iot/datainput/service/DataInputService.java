@@ -7,6 +7,7 @@ import com.yihu.base.es.config.model.SaveModel;
 import com.yihu.base.hbase.HBaseAdmin;
 import com.yihu.base.hbase.HBaseHelper;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
+import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.iot.device.IotDeviceDO;
@@ -43,13 +44,6 @@ public class DataInputService {
 
     @Autowired
     private HBaseAdmin hBaseAdmin;
-
-
-    private String esIndex = "body_health_data";
-    private String esType = "signs_data";
-    private String tableName = "body_health_data";
-    private String familyA = "column_signs_header";
-    private String familyB = "column_signs_data";
 
 
 
@@ -160,10 +154,11 @@ public class DataInputService {
         //将数据存入es
         jsonObject.put("_id", new SaveModel().getId());//es的id继承至jestId
         jsonObject.put("id", rowkey);//hbase的rowkey
-        elastricSearchHelper.save(esIndex, esType, jsonObject.toJSONString());
+        elastricSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, jsonObject.toJSONString());
 
 
         Map<String, Map<String, String>> family = new HashMap<>();
+//        List<Map<String, String>> columnsA = new ArrayList<>();
         Map<String, String> columnsA = new HashMap<>();
         Map<String, String> columnsB = new HashMap<>();
         //组装A列
@@ -173,7 +168,7 @@ public class DataInputService {
         columnsA.put("ext_code",extCode);
         columnsA.put("device_name",jsonObject.getString("device_name"));
         columnsA.put("device_model",jsonObject.getString("device_model"));
-        family.put(familyA,columnsA);
+        family.put(ConstantUtils.tableName,columnsA);
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
         if(null == jsonArray || jsonArray.size() == 0){
@@ -189,14 +184,15 @@ public class DataInputService {
                fileName = data.getString("fileName");
                fileAbsPath = data.getString("filepath");
            }
+//            columnsA.add(columnsB);
         }
-        family.put(familyB, columnsB);
+        family.put(ConstantUtils.familyB, columnsB);
         try {
-            boolean tableExists = hBaseAdmin.isTableExists(tableName);
+            boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
             if (!tableExists) {
-                hBaseAdmin.createTable(tableName,familyA,familyB);
+                hBaseAdmin.createTable(ConstantUtils.tableName,ConstantUtils.familyA,ConstantUtils.familyB);
             }
-            hBaseHelper.add(tableName, rowkey, family);
+            hBaseHelper.add(ConstantUtils.tableName, rowkey, family);
         } catch (Exception e) {
             e.printStackTrace();
             //保存日志
