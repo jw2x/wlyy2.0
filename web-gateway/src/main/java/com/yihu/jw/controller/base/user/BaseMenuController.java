@@ -84,8 +84,8 @@ public class BaseMenuController extends EnvelopRestController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    @GetMapping(value = BaseUserContants.BaseMenu.api_getById)
-    @ApiOperation(value = "根据Id查找", notes = "根据uuid查找")
+    @GetMapping(value = BaseUserContants.BaseMenu.api_children)
+    @ApiOperation(value = "获取子菜单", notes = "根据父菜单id查找")
     public Envelop getChildren(@ApiParam(name = "saasId", value = "saasId") @RequestParam(value = "saasId", required = true) String saasId,
                                @ApiParam(name = "parentId", value = "parentId") @RequestParam(value = "parentId", required = true) String parentId) throws JiWeiException {
         return fegin.getChildren(saasId,parentId);
@@ -96,7 +96,7 @@ public class BaseMenuController extends EnvelopRestController {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     @RequestMapping(value = BaseUserContants.BaseMenu.api_getList, method = RequestMethod.GET)
-    @ApiOperation(value = "获取功能列表(分页)")
+    @ApiOperation(value = "获取菜单列表(分页)")
     public Envelop getBaseMenus(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,saasId,createUser,remark")
             @RequestParam(value = "fields", required = false) String fields,
@@ -125,7 +125,7 @@ public class BaseMenuController extends EnvelopRestController {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     @GetMapping(value = BaseUserContants.BaseMenu.api_getListNoPage)
-    @ApiOperation(value = "获取功能列表，不分页")
+    @ApiOperation(value = "获取菜单列表，不分页")
     public Envelop getListNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,saasId,createUser,remark")
             @RequestParam(value = "fields", required = false) String fields,

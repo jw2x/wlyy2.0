@@ -7,12 +7,14 @@ import com.yihu.jw.restmodel.common.Envelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * Created by LiTaohong on 2017/11/28.
  */
+@Component
 public class BaseMenuFeignFallbackFactory implements FallbackFactory<BaseMenuFeign> {
 
     @Autowired

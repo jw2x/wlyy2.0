@@ -25,7 +25,7 @@ public interface BaseMenuFeign {
     Envelop update(@RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value =  BaseUserRequestMapping.BaseMenu.api_delete,method = RequestMethod.DELETE)
-    Envelop delete(@PathVariable String id) throws JiWeiException;
+    Envelop delete(@PathVariable(value = "id") String id) throws JiWeiException;
 
     @GetMapping(value = BaseUserRequestMapping.BaseMenu.api_getOne)
     Envelop findById(@PathVariable(value = "id", required = true) String id) throws JiWeiException;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(BaseContants.api_common)
 @Api(description = "灰度发布相关")
 public class UserVersionController {
-    @Autowired
-    private UserVersionFeign userVersionFeign;
+//    @Autowired
+//    private UserVersionFeign userVersionFeign;
 
 }
