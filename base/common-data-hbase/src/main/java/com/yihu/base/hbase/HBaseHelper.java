@@ -203,6 +203,9 @@ public class HBaseHelper extends AbstractHBaseClient {
                     for (String qualifier : map.keySet())
                     {
                         String value = map.get(qualifier);
+                        if(value == null){
+                            continue;
+                        }
                         p.add(familyName.getBytes(), qualifier.getBytes(), value.getBytes());
                     }
                 }

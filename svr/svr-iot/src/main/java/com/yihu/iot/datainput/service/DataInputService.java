@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
 import com.yihu.base.es.config.model.SaveModel;
+import com.yihu.base.hbase.HBaseAdmin;
 import com.yihu.base.hbase.HBaseHelper;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
+import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.iot.device.IotDeviceDO;
@@ -40,12 +42,9 @@ public class DataInputService {
     @Autowired
     private HBaseHelper hBaseHelper;
 
+    @Autowired
+    private HBaseAdmin hBaseAdmin;
 
-    private String esIndex = "body_health_data";
-    private String esType = "signs_data";
-    private String tableName = "body_health_data";
-    private String familyA = "column_signs_header";
-    private String familyB = "column_signs_data";
 
 
 
@@ -53,9 +52,9 @@ public class DataInputService {
      * 居民设备注册及绑定
      */
     public String bindUser(String json){
-        List<IotDeviceDO> deviceDOList = new ArrayList<>();
         JSONObject jsonObject = JSONObject.parseObject(json);
         String data_source = jsonObject.getString("data_source");
+        List<IotDeviceDO> deviceDOList = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("data");
         try {
             if(null != jsonArray){
@@ -68,7 +67,7 @@ public class DataInputService {
                         continue; //表示设备已经绑定过
                     }
                     iotDeviceDO.setDeviceSn(sn);
-                    iotDeviceDO.setCode(dataJson.getString("ext_code"));
+//                    iotDeviceDO.setCode(dataJson.getString("ext_code"));
                     iotDeviceDO.setName(dataJson.getString("device_name"));
                     iotDeviceDO.setDeviceModel(dataJson.getString("device_model"));
                     iotDeviceDO.setDeviceSource("2"); //设备来源为居民绑定
@@ -90,7 +89,6 @@ public class DataInputService {
                 iotDeviceService.bindUser(deviceDOList);
                 //保存日志
                 dataProcessLogService.saveLog("","",data_source,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.datainput.service.DataInputService.bindUser",DataOperationTypeEnum.bindUser.getName(),0);
-
             }
         }catch (Exception e){
             logger.error("注册绑定失败");
@@ -109,6 +107,12 @@ public class DataInputService {
         if(null != iotDeviceDO){
             iotDeviceDO.setUpdateUser(idcard);
             iotDeviceDO.setUpdateUserName(username);
+        }else{
+            iotDeviceDO = new IotDeviceDO();
+            iotDeviceDO.setDeviceSource(data_source);
+            iotDeviceDO.setDeviceSn(deviveSn);
+            iotDeviceDO.setCreateUser(idcard);
+            iotDeviceDO.setCreateUserName(username);
         }
         iotDeviceService.save(iotDeviceDO);
         //保存日志
@@ -150,10 +154,11 @@ public class DataInputService {
         //将数据存入es
         jsonObject.put("_id", new SaveModel().getId());//es的id继承至jestId
         jsonObject.put("id", rowkey);//hbase的rowkey
-        elastricSearchHelper.save(esIndex, esType, jsonObject.toJSONString());
+        elastricSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, jsonObject.toJSONString());
 
 
         Map<String, Map<String, String>> family = new HashMap<>();
+//        List<Map<String, String>> columnsA = new ArrayList<>();
         Map<String, String> columnsA = new HashMap<>();
         Map<String, String> columnsB = new HashMap<>();
         //组装A列
@@ -163,7 +168,7 @@ public class DataInputService {
         columnsA.put("ext_code",extCode);
         columnsA.put("device_name",jsonObject.getString("device_name"));
         columnsA.put("device_model",jsonObject.getString("device_model"));
-        family.put(familyA,columnsA);
+        family.put(ConstantUtils.tableName,columnsA);
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
         if(null == jsonArray || jsonArray.size() == 0){
@@ -179,17 +184,22 @@ public class DataInputService {
                fileName = data.getString("fileName");
                fileAbsPath = data.getString("filepath");
            }
+//            columnsA.add(columnsB);
         }
-        family.put(familyB,columnsB);
+        family.put(ConstantUtils.familyB, columnsB);
         try {
-            hBaseHelper.add(tableName,rowkey,family);
+            boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
+            if (!tableExists) {
+                hBaseAdmin.createTable(ConstantUtils.tableName,ConstantUtils.familyA,ConstantUtils.familyB);
+            }
+            hBaseHelper.add(ConstantUtils.tableName, rowkey, family);
         } catch (Exception e) {
             e.printStackTrace();
             //保存日志
-            dataProcessLogService.saveLog(fileName,fileAbsPath,dataSource,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","3","com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(),1);
+            dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "3", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 1);
         }
         //保存日志
-        dataProcessLogService.saveLog(fileName,fileAbsPath,dataSource,"", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.datainput.service.DataInputService.uploadData",DataOperationTypeEnum.upload1.getName(),0);
+        dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "4", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 0);
 
         return "success";
     }

@@ -18,9 +18,6 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "saas_id")
     private String saasId;
 
-    @Column(name = "code")
-    private String code;
-
     @Column(name = "name")
     private String name;//设备名称
 
@@ -54,7 +51,7 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "manufacturer_name")
     private String manufacturerName;//厂商名称
 
-    @Column(name = "manufacturer_tel")
+    @Column(name = "manufacture_tel")
     private String manufactureTel;//厂商名称
 
     @Column(name = "order_code")
@@ -90,14 +87,6 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
 
     public void setSaasId(String saasId) {
         this.saasId = saasId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getName() {

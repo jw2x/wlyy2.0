@@ -18,6 +18,17 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
     @Autowired
     private IotDeviceDao iotDeviceDao;
 
+    /**
+     * 新增
+     * @param iotDevice
+     * @return
+     */
+    public IotDeviceDO create(IotDeviceDO iotDevice) {
+
+        iotDevice.setSaasId(getCode());
+        return iotDeviceDao.save(iotDevice);
+    }
+
     public IotDeviceDO findById(String id) {
         return iotDeviceDao.findById(id);
     }

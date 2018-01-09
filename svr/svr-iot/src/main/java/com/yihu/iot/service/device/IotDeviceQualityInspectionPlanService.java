@@ -15,6 +15,18 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
     @Autowired
     private IotDeviceQualityInspectionPlanDao iotDeviceQualityInspectionPlanDao;
 
+    /**
+     * 新增
+     * @param iotDeviceQualityInspectionPlan
+     * @return
+     */
+    public IotDeviceQualityInspectionPlanDO create(IotDeviceQualityInspectionPlanDO iotDeviceQualityInspectionPlan) {
+
+        iotDeviceQualityInspectionPlan.setSaasId(getCode());
+        iotDeviceQualityInspectionPlan.setDel(1);
+        return iotDeviceQualityInspectionPlanDao.save(iotDeviceQualityInspectionPlan);
+    }
+
     public IotDeviceQualityInspectionPlanDO findById(String id) {
         return iotDeviceQualityInspectionPlanDao.findById(id);
     }

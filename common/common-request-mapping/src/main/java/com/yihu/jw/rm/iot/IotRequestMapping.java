@@ -239,4 +239,56 @@ public class IotRequestMapping {
         public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
+    /**
+     * 设备标签模块常量
+     */
+    public static class DeviceLabel{
+        public static final String api_create = "deviceLabel";
+        public static final String api_delete = "deviceLabel";
+        public static final String api_getById = "getDeviceLabelById";
+        public static final String api_update = "deviceLabel";
+        public static final String api_queryPage = "queryDeviceLabelPage";
+        public static final String api_getList = "getDeviceLabelList";
+
+        public static final String message_success_update = "deviceLabel update success";
+        public static final String message_success_delete = "deviceLabel delete success";
+        public static final String message_success_find = "deviceLabel find success";
+        public static final String message_success_create = "deviceLabel create success";
+        public static final String message_success_find_functions = "deviceLabel find success";
+
+        public static final String message_fail_name_is_null = "name is null";
+        public static final String message_fail_iotDeviceLabel_is_no_exist = "iotDeviceLabel is no exist";
+        public static final String message_fail_id_no_exist = "id no exist";
+        public static final String message_fail_status_is_null = "status is null";
+        public static final String message_fail_id_is_null = "id is null";
+        public static final String message_fail_id_exist = "id exist";
+        public static final String message_fail_saasId_is_null = "saasId is null";
+    }
+
+    /**
+     * 设备标签信息模块常量
+     */
+    public static class DeviceLabelInfo{
+        public static final String api_create = "deviceLabelInfo";
+        public static final String api_delete = "deviceLabelInfo";
+        public static final String api_getById = "getDeviceLabelInfoById";
+        public static final String api_update = "deviceLabelInfo";
+        public static final String api_queryPage = "queryDeviceLabelInfoPage";
+        public static final String api_getList = "getDeviceLabelInfoList";
+
+        public static final String message_success_update = "deviceLabelInfo update success";
+        public static final String message_success_delete = "deviceLabelInfo delete success";
+        public static final String message_success_find = "deviceLabelInfo find success";
+        public static final String message_success_create = "deviceLabelInfo create success";
+        public static final String message_success_find_functions = "deviceLabelInfo find success";
+
+        public static final String message_fail_name_is_null = "name is null";
+        public static final String message_fail_iotDeviceLabelInfo_is_no_exist = "iotDeviceLabelInfo is no exist";
+        public static final String message_fail_id_no_exist = "id no exist";
+        public static final String message_fail_status_is_null = "status is null";
+        public static final String message_fail_id_is_null = "id is null";
+        public static final String message_fail_id_exist = "id exist";
+        public static final String message_fail_saasId_is_null = "saasId is null";
+    }
+
 }
