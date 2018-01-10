@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.iot.datainput.enums.DataDeviceTypeEnum;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
+import com.yihu.iot.datainput.enums.DataTypeEnum;
 import com.yihu.jw.iot.data_input.DataStandardDO;
 import com.yihu.jw.util.date.DateUtil;
 import com.yihu.jw.util.spring.SpringContextHolder;
@@ -23,7 +24,7 @@ import java.util.*;
 public class DataStandardConvertService {
 
     private Logger logger = LoggerFactory.getLogger(DataStandardConvertService.class);
-    public  static Map<String,List<Object>> dataMap = new HashMap<>();
+    public  static Map<String,List<DataStandardDO>> dataMap = new HashMap<>();
 
     @Autowired
     private DataProcessLogService dataProcessLogService;
@@ -37,25 +38,12 @@ public class DataStandardConvertService {
      */
     @PostConstruct
     public void init(){
-        List<DataStandardDO>  resultList = dataStandardService.getList();
-        if(null == resultList || resultList.isEmpty()){
-            return;
-        }
-        List list = new ArrayList();
-        for(DataStandardDO dataStandardDO:resultList){
-            String baseName = dataStandardDO.getBaseName();
-            if(dataMap.containsKey(baseName)){
-                list.add(dataStandardDO);
-            } else {
-                List tempList = new ArrayList();
-                list.add(dataStandardDO);
-                tempList.addAll(list);
-                list.clear();
-                dataMap.put(baseName, tempList);
-            }
+        Set<String> baseNames = DataTypeEnum.getNames();
+        for(String baseNmae:baseNames){
+            List<DataStandardDO>  resultList = dataStandardService.getList(baseNmae);
+            dataMap.put(baseNmae, resultList);
         }
     }
-
 
     /**
      * 数据标准转换，i健康数据-->物联网数据标准

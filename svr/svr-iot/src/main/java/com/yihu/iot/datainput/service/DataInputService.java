@@ -196,7 +196,12 @@ public class DataInputService {
         //保存日志
         dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "4", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 0);
 
-        return "success";
+        JSONObject result = new JSONObject();
+        JSONArray rids = new JSONArray();
+        rids.addAll(rowkeyList);
+        result.put("id",rids);
+        result.put("upload_time",DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
+        return result.toJSONString();
     }
 
     /**
