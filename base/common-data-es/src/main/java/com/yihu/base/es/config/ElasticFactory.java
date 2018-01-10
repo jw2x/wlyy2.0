@@ -2,6 +2,7 @@ package com.yihu.base.es.config;
 
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestClientFactory;
+import io.searchbox.client.config.ClientConfig;
 import io.searchbox.client.config.HttpClientConfig;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -9,10 +10,14 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -28,6 +33,7 @@ public class ElasticFactory {
     private String clusterNodes; // 120.25.194.233:9300,120.25.194.233:9300,120.25.194.233:9300
     @Value("${spring.elasticsearch.jest.uris}")
     private String jestHost; // http://192.168.226.133:9200
+
 //-----------------------------------jestClient----------------------------------------
 
     /**
@@ -48,8 +54,11 @@ public class ElasticFactory {
     public synchronized void init() {
         // Construct a new Jest client according to configuration via factory
         factory = new JestClientFactory();
+        Set<String> serverList = new LinkedHashSet<>();
+        String[] uris = jestHost.split(",");
+        serverList.addAll(CollectionUtils.arrayToList(uris));
         factory.setHttpClientConfig(new HttpClientConfig
-                .Builder(jestHost)
+                .Builder(serverList)
                 .multiThreaded(true)
                 .maxTotalConnection(50)// 最大链接
                 .maxConnectionIdleTime(120, TimeUnit.SECONDS)//链接等待时间

@@ -76,8 +76,6 @@
         <version.hbase>1.1.12</version.hbase>
         <version.hadoop>2.7.4</version.hadoop>
         <version.scala>2.10.6</version.scala>
-        <version.elasticsearch>2.4.4</version.elasticsearch>
-        <version.jest>2.4.0</version.jest>
         <version.hbase-client>1.1.1</version.hbase-client>
         <version.joda-time>2.8.2</version.joda-time>
         <version.solr>5.5.1</version.solr>
@@ -369,16 +367,6 @@
                 <groupId>org.nlpcn</groupId>
                 <artifactId>elasticsearch-sql</artifactId>
                 <version>${version.elasticsearch-sql}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.elasticsearch</groupId>
-                <artifactId>elasticsearch</artifactId>
-                <version>${version.elasticsearch}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.searchbox</groupId>
-                <artifactId>jest</artifactId>
-                <version>${version.jest}</version>
             </dependency>
             <!--elasticsearch end-->
             <!--alibaba  json 包-->

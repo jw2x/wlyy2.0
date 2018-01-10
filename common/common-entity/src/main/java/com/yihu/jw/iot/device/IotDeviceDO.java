@@ -51,7 +51,7 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "manufacturer_name")
     private String manufacturerName;//厂商名称
 
-    @Column(name = "manufacturer_tel")
+    @Column(name = "manufacture_tel")
     private String manufactureTel;//厂商名称
 
     @Column(name = "order_code")

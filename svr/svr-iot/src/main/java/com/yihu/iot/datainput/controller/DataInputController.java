@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,10 +35,28 @@ public class DataInputController {
 
     @PostMapping(value = DataRequestMapping.DataInput.api_data_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "数据上传", notes = "数据上传入库")
-    public Envelop uoloadData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+    public Envelop uploadData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
+        String str = "";
         try {
-            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success, dataInputService.uploadData(jsonData));
+            str = dataInputService.uploadData(jsonData);
+            if (str.equals("fail")) {
+                return Envelop.getError(DataRequestMapping.DataInput.message_fail, 0);
+            }
+            if (str.equals("json no data")) {
+                return Envelop.getError(DataRequestMapping.DataInput.message_fail_jsonData_is_null, 1);
+            }
         } catch (ApiException e) {
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+        return Envelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
+    }
+
+    @PostMapping(value = DataRequestMapping.DataInput.api_update_record, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "用户体征状态修改", notes = "用户体征状态修改,0-标准，1-异常")
+    public Envelop updateRecord(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+        try{
+            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success,dataInputService.bindUser(jsonData));
+        } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
