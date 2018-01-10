@@ -37,7 +37,9 @@ public class DataRequestMapping {
         public static final String api_user_search_list = "searchList";
         public static final String api_user_search_list_page = "listPage";
         public static final String api_user_search_recent5 = "recent5";
+        public static final String api_user_search_recent1 = "recent1";
         public static final String api_user_abnormal_times_a_week = "abnormalTimes";
+        public static final String api_user_search_list_code_del = "searchListByCodeAndDel";
 
         public static final String message_success = "search success";
         public static final String message_fail = "search fail";

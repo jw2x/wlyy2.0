@@ -76,7 +76,7 @@ public class DataSearchController {
         }
     }
 
-    @PostMapping(value = DataRequestMapping.DataSearch.api_user_abnormal_times_a_week, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_recent1, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询体征数据", notes = "根据居民code和删除标识获取最近一次体征数据")
     public Envelop getOneByCodeAndDel(@ApiParam(name = "userCode", value = "", defaultValue = "") @RequestBody String userCode,
                                       @ApiParam(name = "del", value = "", defaultValue = "") @RequestBody String del) {
@@ -88,7 +88,7 @@ public class DataSearchController {
         }
     }
 
-    @PostMapping(value = DataRequestMapping.DataSearch.api_user_abnormal_times_a_week, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list_code_del, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询体征数据", notes = "根据居民code和删除标识获取所有体征数据，时间倒序")
     public Envelop getListByCodeAndDel(
             @ApiParam(name = "userCode", value = "", defaultValue = "") @RequestBody String userCode,
