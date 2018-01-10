@@ -174,7 +174,7 @@ public class DataInputService {
                 fileName = data.getString("fileName");
                 fileAbsPath = data.getString("filepath");
             }
-            family.put(ConstantUtils.tableName,columnsB);
+            family.put(ConstantUtils.familyB,columnsB);
             familyList.add(family);
         }
 
@@ -191,6 +191,7 @@ public class DataInputService {
             e.printStackTrace();
             //保存日志
             dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "3", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 1);
+            return "fail";
         }
         //保存日志
         dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "4", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 0);
