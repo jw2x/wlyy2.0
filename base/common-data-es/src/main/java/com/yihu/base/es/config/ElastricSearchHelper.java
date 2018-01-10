@@ -134,7 +134,7 @@ public class ElastricSearchHelper {
     /**
      * 删除
      */
-    private void deleteData(String index, String type, List<SaveModel> saveModels) {
+    public void deleteData(String index, String type, List<SaveModel> saveModels) {
         JestClient jestClient = null;
         try {
             jestClient = elasticFactory.getJestClient();

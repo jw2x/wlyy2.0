@@ -23,6 +23,7 @@ public class DataRequestMapping {
         public static final String api_data_input = "input";//数据上传
         public static final String api_user_bind = "userBind";//设备注册绑定
         public static final String api_update_record = "updateRecord";//更新体征状态标识
+        public static final String api_delete_record = "deleteRecord";//更新体征状态标识
 
         public static final String message_success = "upload success";
         public static final String message_fail = "upload fail";

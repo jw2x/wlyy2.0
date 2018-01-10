@@ -198,4 +198,24 @@ public class DataInputService {
 
         return "success";
     }
+
+    /**
+     * 修改用户体征状态标志
+     * @param json
+     * @return
+     */
+    public String updateRecordStatus(String json){
+//        elastricSearchHelper.update();
+        return "";
+    }
+
+    /**
+     * 修改用户体征状态标志
+     * @param json
+     * @return
+     */
+    public String deleteRecord(String json){
+//        elastricSearchHelper.deleteData();
+        return "";
+    }
 }
