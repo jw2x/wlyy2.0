@@ -1,9 +1,12 @@
 package com.yihu.jw.util.spring;
 
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 
 /**
  * Spring上下文管理器。
@@ -13,7 +16,9 @@ import org.springframework.stereotype.Component;
  * @created 12-05-2015 17:47:55
  */
 @Component
-public class SpringContext implements ApplicationContextAware {
+public class SpringContextHolder implements ApplicationContextAware {
+
+    @Autowired
     private static ApplicationContext springContext = null;
 
     /**

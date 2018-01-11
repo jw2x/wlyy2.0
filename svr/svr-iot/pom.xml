@@ -126,6 +126,11 @@
             <artifactId>common-data-es</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-util</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>svr-iot</finalName>

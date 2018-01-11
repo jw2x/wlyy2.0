@@ -15,9 +15,9 @@ public class DataStandardService extends BaseJpaService<DataStandardDO,DataStand
     @Autowired
     private DataStandardDao dataStandardDao;
 
-    List<DataStandardDO> getList(){
+    List<DataStandardDO> getList(String baseName){
         List<DataStandardDO> list = new ArrayList<>();
-        list = dataStandardDao.getList();
+        list = dataStandardDao.getList(baseName);
         return list;
     }
 }

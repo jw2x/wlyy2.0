@@ -134,7 +134,7 @@ public class ElastricSearchHelper {
     /**
      * 删除
      */
-    private void deleteData(String index, String type, List<SaveModel> saveModels) {
+    public void deleteData(String index, String type, List<SaveModel> saveModels) {
         JestClient jestClient = null;
         try {
             jestClient = elasticFactory.getJestClient();
@@ -161,9 +161,9 @@ public class ElastricSearchHelper {
     /**
      * 查询
      */
-    public String search(String index, String type, String queryStr) {
+    public SearchResult search(String index, String type, String queryStr) {
         JestClient jestClient = null;
-        JestResult result = null;
+        SearchResult result = null;
         try {
             jestClient = elasticFactory.getJestClient();
             Search search = new Search.Builder(queryStr)
@@ -173,9 +173,7 @@ public class ElastricSearchHelper {
                     .build();
 
             result = jestClient.execute(search);
-            JSONObject resultJsonObject = (JSONObject)JSONObject.parse(result.getJsonString());
-            JSONObject jsonObject = (JSONObject)resultJsonObject.get("hits");
-            logger.info("search data count:" + jsonObject.get("total"));
+            logger.info("search data count:" + result.getTotal());
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -183,7 +181,7 @@ public class ElastricSearchHelper {
                 jestClient.shutdownClient();
             }
         }
-        return result.getJsonString();
+        return result;
     }
 
     public static void main(String args[]){

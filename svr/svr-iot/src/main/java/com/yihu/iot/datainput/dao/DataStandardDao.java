@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface DataStandardDao extends PagingAndSortingRepository<DataStandardDO, String>, JpaSpecificationExecutor<DataStandardDO> {
 
-    @Query("select baseName,itemCode,itemName,itemType,required,itemValueMin,itemValueMax from DataStandardDO" )
-    List<DataStandardDO>  getList();
+    @Query("from DataStandardDO where baseName = ?1" )
+    List<DataStandardDO>  getList(String baseName);
 }

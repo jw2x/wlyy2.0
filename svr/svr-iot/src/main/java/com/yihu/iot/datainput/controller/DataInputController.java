@@ -55,7 +55,17 @@ public class DataInputController {
     @ApiOperation(value = "用户体征状态修改", notes = "用户体征状态修改,0-标准，1-异常")
     public Envelop updateRecord(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success,dataInputService.bindUser(jsonData));
+            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success,dataInputService.updateRecordStatus(jsonData));
+        } catch (ApiException e){
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
+    @PostMapping(value = DataRequestMapping.DataInput.api_delete_record, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "删除体征数据", notes = "删除标志，支持伪删除")
+    public Envelop deleteRecord(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+        try{
+            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success,dataInputService.updateRecordStatus(jsonData));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
