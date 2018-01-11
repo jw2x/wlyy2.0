@@ -161,7 +161,7 @@ public class ElastricSearchHelper {
     /**
      * 查询
      */
-    public String search(String index, String type, String queryStr) {
+    public SearchResult search(String index, String type, String queryStr) {
         JestClient jestClient = null;
         SearchResult result = null;
         try {
@@ -181,7 +181,7 @@ public class ElastricSearchHelper {
                 jestClient.shutdownClient();
             }
         }
-        return result.getSourceAsString();
+        return result;
     }
 
     public static void main(String args[]){
