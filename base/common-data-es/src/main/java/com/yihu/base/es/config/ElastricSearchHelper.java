@@ -147,6 +147,7 @@ public class ElastricSearchHelper {
             }
             BulkResult br = jestClient.execute(bulk.build());
 
+
             logger.info("delete data count:" + saveModels.size());
             logger.info("delete flag:" + br.isSucceeded());
         } catch (Exception e) {
