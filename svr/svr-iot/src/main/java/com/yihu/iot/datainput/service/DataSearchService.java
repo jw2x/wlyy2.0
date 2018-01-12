@@ -186,7 +186,7 @@ public class DataSearchService {
             String field = String.valueOf(param.get("field"));
             Object value = param.get("value");
             String baseName = DataTypeEnum.body_sign_params.name().toString();
-            if(null != DataStandardConvertService.dataMap.get(baseName) && DataStandardConvertService.dataMap.get(baseName).contains(field) || StringUtils.equalsIgnoreCase("id",field)){
+            if(null != DataStandardConvertService.dataMap.get(baseName) && DataStandardConvertService.dataMap.get(baseName).contains(field) || StringUtils.equalsIgnoreCase("rid",field)){
                 field = "data." + field;
             }
             if(condition.equals("=")) {
