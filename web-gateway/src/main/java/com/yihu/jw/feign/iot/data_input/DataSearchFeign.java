@@ -27,33 +27,21 @@ public interface DataSearchFeign {
     public Envelop getOne(@RequestBody String jsonData);
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Envelop getList( @RequestBody String jsonData,
-                            @RequestParam(value = "page", required = true) int page,
-                            @RequestParam(value = "size", required = true) int size);
+    public Envelop getList( @RequestBody String jsonData);
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list_page, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Envelop getListPage( @RequestBody String jsonData,
-                                @RequestParam(value = "page", required = true) int page,
-                                @RequestParam(value = "size", required = true) int size);
+    public Envelop getListPage( @RequestBody String jsonData);
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_recent5, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Envelop getRecent5ByTypeAndTime( @RequestBody String jsonData,
-                               @RequestParam(value = "page", required = true) int page,
-                               @RequestParam(value = "size", required = true) int size);
+    public Envelop getRecent5ByTypeAndTime( @RequestBody String jsonData);
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_abnormal_times_a_week, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Envelop getAbnormalTimesAWeek(@RequestBody String jsonData,
-                                          @RequestParam(value = "page", required = true) int page,
-                                          @RequestParam(value = "size", required = true) int size);
+    public Envelop getAbnormalTimesAWeek(@RequestBody String jsonData);
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_recent1, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Envelop getRecent1ByCodeAndDel(@RequestBody String jsonData,
-                                      @RequestParam(value = "page", required = true) int page,
-                                      @RequestParam(value = "size", required = true) int size);
+    public Envelop getRecent1ByCodeAndDel(@RequestBody String jsonData);
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list_code_del, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Envelop getListByCodeAndDel( @RequestBody String jsonData,
-                                        @RequestParam(value = "page", required = true)int page,
-                                        @RequestParam(value = "size", required = true)int size);
+    public Envelop getListByCodeAndDel( @RequestBody String jsonData);
 
 }

@@ -1,5 +1,6 @@
 package com.yihu.iot.datainput.service;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,9 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.CollectionUtils;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.SortBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,18 +110,18 @@ public class DataSearchService {
         return query.toJSONString();
     }
 
-    public String getData(String jsonData,int page, int size){
+    public String getData(String jsonData){
 //        String query = getQueryString(jsonData);
         JSONObject resultJsonObj = new JSONObject();
         JSONArray  resultArray = new JSONArray();
-        List list = new ArrayList();
+       /* List list = new ArrayList();
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             list = objectMapper.readValue(jsonData,(List.class));
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        SearchSourceBuilder query = getQueryBuilder(list,page,size);
+        }*/
+        SearchSourceBuilder query = getQueryBuilder(jsonData);
         SearchResult esResult = elastricSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
         if(esResult.getTotal() == 0){
             return "";
@@ -177,7 +181,13 @@ public class DataSearchService {
         return resultJsonObj.toJSONString();
     }
 
-    private SearchSourceBuilder getQueryBuilder(List<Map<String, Object>> filter,int page, int size) {
+    //List<Map<String, Object>> filter,int page, int size,String sort
+    private SearchSourceBuilder getQueryBuilder(String jsonData) {
+        JSONObject json = JSONObject.parseObject(jsonData);
+        List<Map<String, Object>> filter = (List)json.getJSONArray("filter");
+        int page = json.getIntValue("page");
+        int size = json.getIntValue("size");
+        JSONArray sort = json.getJSONArray("sort");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         for(Map<String, Object> param : filter) {
@@ -227,6 +237,21 @@ public class DataSearchService {
         searchSourceBuilder.query(boolQueryBuilder);
         searchSourceBuilder.from((page -1)*size);
         searchSourceBuilder.size(size);
+        if(CollectionUtils.notEmpty(sort)){
+            for(Object obj:sort){
+                JSONObject object = JSONObject.parseObject(obj.toString());
+                for(String key:object.keySet()){
+                    FieldSortBuilder fieldSortBuilder = new FieldSortBuilder(key);
+                    JSONObject sortValue = object.getJSONObject(key);
+                    if(StringUtils.equalsIgnoreCase(SortOrder.ASC.toString(),sortValue.getString("order"))){
+                        fieldSortBuilder.order(SortOrder.ASC);
+                    }else if(StringUtils.equalsIgnoreCase(SortOrder.DESC.toString(),sortValue.getString("order"))){
+                        fieldSortBuilder.order(SortOrder.DESC);
+                    }
+                    searchSourceBuilder.sort(fieldSortBuilder);
+                }
+            }
+        }
         return searchSourceBuilder;
     }
 
@@ -238,6 +263,31 @@ public class DataSearchService {
     public String updateFiled(String json){
         return "success";
     }
-    public static void main(String args[]) {
-        }
+    public static void main(String args[]) {}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
