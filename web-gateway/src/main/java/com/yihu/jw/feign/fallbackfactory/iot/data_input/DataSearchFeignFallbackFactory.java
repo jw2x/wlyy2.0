@@ -41,7 +41,7 @@ public class DataSearchFeignFallbackFactory implements FallbackFactory<DataSearc
             }
 
             @Override
-            public Envelop getRecent5(String jsonData, int page, int size) {
+            public Envelop getRecent5ByTypeAndTime(String jsonData, int page, int size) {
                 tracer.getCurrentSpan().logEvent("获取最近"+size+"条记录数据:原因:" + throwable.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
@@ -55,7 +55,7 @@ public class DataSearchFeignFallbackFactory implements FallbackFactory<DataSearc
             }
 
             @Override
-            public Envelop getOneByCodeAndDel(String jsonData, int page, int size) {
+            public Envelop getRecent1ByCodeAndDel(String jsonData, int page, int size) {
                 tracer.getCurrentSpan().logEvent("根据居民code和删除标识获取最近一次体征数据:" + throwable.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
