@@ -59,7 +59,7 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_recent5, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "获取最近5条数据", notes = "根据居民的体征类型，测量时间获取")
-    public Envelop getRecent5(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
+    public Envelop getRecent5ByTypeAndTime(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
                               @ApiParam(name = "page", value = "", defaultValue = "") @RequestParam int page,
                               @ApiParam(name = "size", value = "", defaultValue = "") @RequestParam int size){
         try{
@@ -83,11 +83,11 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_recent1, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询体征数据", notes = "根据居民code和删除标识获取最近一次体征数据")
-    public Envelop getOneByCodeAndDel(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
+    public Envelop getRecent1ByCodeAndDel(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
                                       @ApiParam(name = "page", value = "", defaultValue = "") @RequestParam int page,
                                       @ApiParam(name = "size", value = "", defaultValue = "") @RequestParam int size) {
         try {
-            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success, dataSearchService.getData(jsonData,page,size));
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success, dataSearchService.getData(jsonData,page,size));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -99,7 +99,7 @@ public class DataSearchController {
                                        @ApiParam(name = "page", value = "", defaultValue = "") @RequestParam int page,
                                        @ApiParam(name = "size", value = "", defaultValue = "") @RequestParam int size){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success,dataSearchService.getData(jsonData,page,size));
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getData(jsonData,page,size));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
