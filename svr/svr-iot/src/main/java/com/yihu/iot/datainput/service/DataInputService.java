@@ -12,6 +12,7 @@ import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.iot.device.IotDeviceDO;
 import com.yihu.jw.util.date.DateUtil;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -168,6 +169,9 @@ public class DataInputService {
             Map<String, Map<String, String>> family = new HashMap<>();
             Map<String, String> columnsB = new HashMap<>();
             for(String key:data.keySet()){
+                if(StringUtils.equalsIgnoreCase("rid",key)){ //存到hbase里的数据不需要rid
+                    continue;
+                }
                 columnsB.put(key,data.getString(key));
             }
             if(data.containsKey("ecg")){
@@ -199,7 +203,7 @@ public class DataInputService {
         JSONObject result = new JSONObject();
         JSONArray rids = new JSONArray();
         rids.addAll(rowkeyList);
-        result.put("id",rids);
+        result.put("rid",rids);
         result.put("upload_time",DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         return result.toJSONString();
     }
