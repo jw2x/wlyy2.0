@@ -35,9 +35,7 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询数据", notes = "根据条件查询数据")
-    public Envelop getList(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
-                           @ApiParam(name = "page", value = "", defaultValue = "") @RequestParam int page,
-                           @ApiParam(name = "size", value = "", defaultValue = "") @RequestParam int size){
+    public Envelop getList(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
             return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getData(jsonData));
         } catch (ApiException e){
@@ -47,9 +45,7 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list_page, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询数据,分页", notes = "根据条件查询数据,分页")
-    public Envelop getListPage(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
-                               @ApiParam(name = "page", value = "", defaultValue = "") @RequestParam int page,
-                               @ApiParam(name = "size", value = "", defaultValue = "") @RequestParam int size){
+    public Envelop getListPage(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
             return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getData(jsonData));
         } catch (ApiException e){
@@ -69,9 +65,7 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_abnormal_times_a_week, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "获取居民一周内体征数据异常次数", notes = "血糖或血压体征数据")
-    public Envelop getAbnormalTimesAWeek(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
-                                         @ApiParam(name = "page", value = "", defaultValue = "") @RequestParam int page,
-                                         @ApiParam(name = "size", value = "", defaultValue = "") @RequestParam int size){
+    public Envelop getAbnormalTimesAWeek(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
             return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getData(jsonData));
         } catch (ApiException e){
@@ -81,9 +75,7 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_recent1, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询体征数据", notes = "根据居民code和删除标识获取最近一次体征数据")
-    public Envelop getRecent1ByCodeAndDel(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
-                                      @ApiParam(name = "page", value = "", defaultValue = "") @RequestParam int page,
-                                      @ApiParam(name = "size", value = "", defaultValue = "") @RequestParam int size) {
+    public Envelop getRecent1ByCodeAndDel(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
         try {
             return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success, dataSearchService.getData(jsonData));
         } catch (ApiException e) {
@@ -93,9 +85,7 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list_code_del, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询体征数据", notes = "根据居民code和删除标识获取所有体征数据，时间倒序")
-    public Envelop getListByCodeAndDel(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData,
-                                       @ApiParam(name = "page", value = "", defaultValue = "") @RequestParam int page,
-                                       @ApiParam(name = "size", value = "", defaultValue = "") @RequestParam int size){
+    public Envelop getListByCodeAndDel(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
             return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getData(jsonData));
         } catch (ApiException e){
