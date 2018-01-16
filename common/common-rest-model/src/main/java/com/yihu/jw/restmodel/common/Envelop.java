@@ -31,7 +31,7 @@ public class Envelop<T> implements Serializable {
 
     private int totalCount;
 
-    private List detailModelList;
+    private List<T> detailModelList;
 
     private T obj;
 
@@ -55,11 +55,11 @@ public class Envelop<T> implements Serializable {
         this.totalCount = totalCount;
     }
 
-    public List getDetailModelList() {
+    public List<T> getDetailModelList() {
         return detailModelList;
     }
 
-    public void setDetailModelList(List detailModelList) {
+    public void setDetailModelList(List<T> detailModelList) {
         this.detailModelList = detailModelList;
     }
 
