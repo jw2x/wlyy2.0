@@ -23,10 +23,11 @@ import java.util.List;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@ApiModel(value = "ListResult", description = "通用的实体")
-public class Envelop<T> extends BaseEnvelop implements Serializable {
+@ApiModel(value = "PageResult<T>", description = "分页查询返回")
+public class EnvelopPage<T> extends BaseEnvelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
+
     @ApiModelProperty("每页大小 默认10")
     private int pageSize = 10;
 
@@ -39,19 +40,8 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
     @ApiModelProperty("总共多少数据")
     private int totalCount;
 
-    @ApiModelProperty("列表内容")
+    @ApiModelProperty("所有满足条件的实体")
     private List<T> detailModelList;
-
-    @ApiModelProperty("内容")
-    private T obj;
-
-    public T getObj() {
-        return obj;
-    }
-
-    public void setObj(T obj) {
-        this.obj = obj;
-    }
 
     public int getTotalCount() {
         return totalCount;
@@ -115,21 +105,14 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
         this.successMsg = successMsg;
     }
 
-    public static Envelop getSuccess(String message) {
-        Envelop envelop = new Envelop();
+    public static EnvelopPage getSuccess(String message) {
+        EnvelopPage envelop = new EnvelopPage();
         envelop.setSuccessMsg(message);
         return envelop;
     }
 
-    public static Envelop getSuccess(String message, Object obj) {
-        Envelop envelop = new Envelop();
-        envelop.setSuccessMsg(message);
-        envelop.setObj(obj);
-        return envelop;
-    }
-
-    public static Envelop getSuccessListWithPage(String message, List detailModelList, int page, int size, Long count) {
-        Envelop envelop = new Envelop();
+    public static EnvelopPage getSuccessListWithPage(String message, List detailModelList, int page, int size, Long count) {
+        EnvelopPage envelop = new EnvelopPage();
         envelop.setSuccessMsg(message);
         envelop.setPageSize(size);
         envelop.setDetailModelList(detailModelList);
@@ -138,14 +121,14 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
         return envelop;
     }
 
-    public static Envelop getError(String message, int errorCode) {
-        Envelop envelop = new Envelop();
+    public static EnvelopPage getError(String message, int errorCode) {
+        EnvelopPage envelop = new EnvelopPage();
         envelop.setErrorMsg(message);
         return envelop;
     }
 
-    public static Envelop getSuccessList(String message, List objList) {
-        Envelop envelop = new Envelop();
+    public static EnvelopPage getSuccessList(String message, List objList) {
+        EnvelopPage envelop = new EnvelopPage();
         envelop.setSuccessMsg(message);
         envelop.setDetailModelList(objList);
         return envelop;
