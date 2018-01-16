@@ -20,7 +20,7 @@ import java.util.List;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Envelop implements Serializable {
+public class Envelop<T> implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
     private int pageSize = 10;
@@ -33,17 +33,17 @@ public class Envelop implements Serializable {
 
     private List detailModelList;
 
-    private Object obj;
+    private T obj;
 
     private String errorMsg;
 
     private String successMsg;
 
-    public Object getObj() {
+    public T getObj() {
         return obj;
     }
 
-    public void setObj(Object obj) {
+    public void setObj(T obj) {
         this.obj = obj;
     }
 
