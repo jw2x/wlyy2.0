@@ -1,6 +1,9 @@
 package com.yihu.jw.restmodel.common;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.common.base.BaseEnvelop;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,24 +23,27 @@ import java.util.List;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Envelop<T> implements Serializable {
+@ApiModel(value = "ListResult", description = "通用的实体")
+public class Envelop<T> extends BaseEnvelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;
+    @ApiModelProperty("每页大小 默认10")
     private int pageSize = 10;
 
+    @ApiModelProperty("当前页")
     private int currPage;
 
+    @ApiModelProperty("总共多少页")
     private int totalPage;
 
+    @ApiModelProperty("总共多少数据")
     private int totalCount;
 
+    @ApiModelProperty("列表内容")
     private List<T> detailModelList;
 
+    @ApiModelProperty("内容")
     private T obj;
-
-    private String errorMsg;
-
-    private String successMsg;
 
     public T getObj() {
         return obj;
