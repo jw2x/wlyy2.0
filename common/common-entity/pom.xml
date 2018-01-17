@@ -36,5 +36,9 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model</artifactId>
+        </dependency>
     </dependencies>
 </project>

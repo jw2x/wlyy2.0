@@ -1,44 +1,33 @@
-package com.yihu.jw.iot.company;
+package com.yihu.jw.restmodel.iot.company;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * 企业三证变更记录表
  * @author yeshijie on 2018/1/16.
  */
-@Entity
-@Table(name = "iot_company_certificate_change_record")
-public class IotCompanyCertificateChangeRecordDO extends IdEntityWithOperation implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@ApiModel(value = "ListResult", description = "企业三证变更记录")
+public class IotCompanyCertificateChangeRecordVO implements Serializable {
 
-    @Column(name = "saas_id")
-    private String saasId;//
-    @Column(name = "company_name")
-    private String companyName;//企业名称
-    @Column(name = "company_id")
-    private String companyId;//企业id
-    @Column(name = "type")
-    private String type;//类型
-    @Column(name = "license_old")
-    private String licenseOld;//原证书号码
-    @Column(name = "certificate_old")
-    private String certificateOld;//原证书扫描件
-    @Column(name = "license_new")
-    private String licenseNew;//新证书号码
-    @Column(name = "certificate_new")
-    private String certificateNew;//新证书扫描件
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
-    }
+    @ApiModelProperty("企业名称")
+    private String companyName;
+    @ApiModelProperty("企业id")
+    private String companyId;
+    @ApiModelProperty("类型")
+    private String type;
+    @ApiModelProperty("原证书号码")
+    private String licenseOld;
+    @ApiModelProperty("原证书扫描件")
+    private String certificateOld;
+    @ApiModelProperty("新证书号码")
+    private String licenseNew;
+    @ApiModelProperty("新证书扫描件")
+    private String certificateNew;
 
     public String getCompanyName() {
         return companyName;
