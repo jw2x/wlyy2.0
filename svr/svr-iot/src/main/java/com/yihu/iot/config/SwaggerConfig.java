@@ -63,11 +63,11 @@ public class SwaggerConfig {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        String groupName="system";
-        // String groupName="iot";
+        //String groupName="system";
+         String groupName="iot";
 
-        URL remoteSwaggerFile = new URL("http://127.0.0.1:8080//v2/api-docs?group="+groupName);
-        Path outputFile = Paths.get("open-api/build/"+groupName);
+        URL remoteSwaggerFile = new URL("http://127.0.0.1:10050//v2/api-docs?group="+groupName);
+        Path outputFile = Paths.get("svr/svr-iot/build/"+groupName);
 
         Swagger2MarkupConfig config = new Swagger2MarkupConfigBuilder()
                 .withMarkupLanguage(MarkupLanguage.ASCIIDOC)
