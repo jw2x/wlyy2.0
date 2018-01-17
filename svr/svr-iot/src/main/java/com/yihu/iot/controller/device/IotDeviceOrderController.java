@@ -23,14 +23,14 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(IotRequestMapping.api_iot_common)
-@Api(value = "设备订单管理相关操作", description = "设备订单管理相关操作")
+@Api(tags = "设备订单管理相关操作", description = "设备订单管理相关操作")
 public class IotDeviceOrderController extends EnvelopRestController{
     @Autowired
     private IotDeviceOrderService iotDeviceOrderService;
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建设备订单", notes = "创建设备订单")
-    public Envelop create(@ApiParam(name = "json_data", value = "", defaultValue = "")
+    public Envelop<IotDeviceOrderDO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                           @RequestBody String jsonData) {
         try {
             IotDeviceOrderDO iotDeviceOrder = toEntity(jsonData, IotDeviceOrderDO.class);
@@ -42,7 +42,7 @@ public class IotDeviceOrderController extends EnvelopRestController{
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.api_getById)
     @ApiOperation(value = "根据code查找设备订单", notes = "根据code查找设备订单")
-    public Envelop findByCode(@ApiParam(name = "id", value = "id")
+    public Envelop<IotDeviceOrderDO>  findByCode(@ApiParam(name = "id", value = "id")
                               @RequestParam(value = "id", required = true) String id
     ) {
         try {
@@ -54,7 +54,7 @@ public class IotDeviceOrderController extends EnvelopRestController{
 
     @RequestMapping(value = IotRequestMapping.DeviceOrder.api_queryPage, method = RequestMethod.GET)
     @ApiOperation(value = "分页获取设备订单")
-    public Envelop queryPage(
+    public Envelop<IotDeviceOrderDO>  queryPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段(id,supplierName,type,contactsName,contactsMobile)", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件(supplierName?中 g1;contactsName?中 g1)")
@@ -82,7 +82,7 @@ public class IotDeviceOrderController extends EnvelopRestController{
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.api_getList)
     @ApiOperation(value = "获取设备订单列表(不分页)")
-    public Envelop getList(
+    public Envelop<IotDeviceOrderDO>  getList(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段(id,supplierName,type,contactsName,contactsMobile)", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
