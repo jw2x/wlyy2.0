@@ -1,7 +1,6 @@
 package com.yihu.jw.iot.company;
 
 import com.yihu.jw.IdEntityWithOperation;
-import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -59,7 +58,7 @@ public class IotCompanyDO extends IdEntityWithOperation implements Serializable 
     private Integer del;//删除标志(1有效，0删除)
 
     @Transient
-    private List<IotCompanyTypeVO> typeList;//类型
+    private List<IotCompanyTypeDO> typeList;//类型
 
     public String getSaasId() {
         return saasId;
@@ -213,11 +212,11 @@ public class IotCompanyDO extends IdEntityWithOperation implements Serializable 
         this.del = del;
     }
 
-    public List<IotCompanyTypeVO> getTypeList() {
+    public List<IotCompanyTypeDO> getTypeList() {
         return typeList;
     }
 
-    public void setTypeList(List<IotCompanyTypeVO> typeList) {
+    public void setTypeList(List<IotCompanyTypeDO> typeList) {
         this.typeList = typeList;
     }
 }

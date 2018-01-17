@@ -76,7 +76,7 @@ public class IotCompanyController extends EnvelopRestController {
         try {
             IotCompanyDO iotCompanyDO = iotCompanyService.findById(id);
             IotCompanyVO vo = convertToModel(iotCompanyDO,IotCompanyVO.class);
-            EnvelopObj<IotCompanyVO> obj = new EnvelopObj<>();
+            EnvelopObj<IotCompanyVO> obj = new EnvelopObj<IotCompanyVO>();
             obj.setObj(vo);
             return obj;
         } catch (ApiException e) {
