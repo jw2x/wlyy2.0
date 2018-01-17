@@ -1,11 +1,11 @@
 package com.yihu.jw.manage.service.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.base.wx.WxMenuDO;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.base.wx.MWxMenu;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
@@ -74,7 +74,7 @@ public class WechatMenuService {
         return envelop;
     }
 
-    public Envelop saveOrUpdate(MWxMenu menu,String userCode) throws JsonProcessingException {
+    public Envelop saveOrUpdate(WxMenuDO menu, String userCode) throws JsonProcessingException {
         ManageUser user = userService.findByCode(userCode);
         String userName = user.getName();
 

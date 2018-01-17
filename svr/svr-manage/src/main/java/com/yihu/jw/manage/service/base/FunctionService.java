@@ -121,7 +121,7 @@ public class FunctionService {
             func.setCreateUser(userCode);
             func.setStatus(1);
             func.setCreateUserName(userName);
-            func.setCode(UUID.randomUUID().toString().replaceAll("-",""));
+//            func.setCode(UUID.randomUUID().toString().replaceAll("-",""));
         }
         func.setUpdateUserName(userName);
         func.setUpdateUser(userCode);

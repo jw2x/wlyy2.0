@@ -1,8 +1,8 @@
 package com.yihu.jw.manage.controller.base;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.base.base.ModuleDO;
 import com.yihu.jw.manage.service.base.ModuleService;
-import com.yihu.jw.restmodel.base.base.MModule;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
@@ -90,7 +90,7 @@ public class ModuleController {
 
     @PostMapping(BaseRequestMapping.Module.api_create)
     @ApiOperation(value = "保存/更新", notes = "保存/更新")
-    public Envelop saveOrUpdate(@ModelAttribute @Valid MModule module,String userCode) throws JsonProcessingException {
+    public Envelop saveOrUpdate(@ModelAttribute @Valid ModuleDO module, String userCode) throws JsonProcessingException {
         return moduleService.saveOrUpdate(module,userCode);
     }
 

@@ -1,9 +1,9 @@
 package com.yihu.jw.manage.controller.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.base.wx.WxTemplateDO;
 import com.yihu.jw.manage.service.wechat.TemplateService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.base.wx.MWxTemplate;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -73,7 +73,7 @@ public class TemplateController {
 
     @PostMapping(value = WechatRequestMapping.WxTemplate.api_create)
     @ApiOperation(value = "保存或者修改微信模板消息", notes = "保存或者修改微信模板消息")
-    public Envelop saveOrUpdate(@ModelAttribute @Valid MWxTemplate template,@RequestParam String userCode) throws JsonProcessingException {
+    public Envelop saveOrUpdate(@ModelAttribute @Valid WxTemplateDO template, @RequestParam String userCode) throws JsonProcessingException {
         Envelop envelop = templateService.saveOrUpdate(template,userCode);
         return envelop;
     }
