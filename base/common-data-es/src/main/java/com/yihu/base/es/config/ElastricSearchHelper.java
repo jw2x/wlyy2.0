@@ -6,14 +6,18 @@ import com.yihu.base.es.config.model.SaveModel;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.*;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
 import org.springframework.stereotype.Component;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 ;
 
@@ -184,6 +188,32 @@ public class ElastricSearchHelper {
         }
         return result;
     }
+
+
+    /**
+     * 修改
+     */
+    public boolean update(String index, String type,String _id, JSONObject source) {
+        JestClient jestClient = null;
+        JestResult jestResult = null;
+        try {
+            jestClient = elasticFactory.getJestClient();
+            JSONObject docSource = new JSONObject();
+            docSource.put("doc",source);
+            Update update = new Update.Builder(docSource).index(index).type(type).id(_id).build();
+            jestResult = jestClient.execute(update);
+            logger.info("update info:" + jestResult.isSucceeded());
+        } catch (Exception e) {
+            logger.error("update fail:" + _id,e.getMessage());
+            return false;
+        } finally {
+            if (jestClient != null) {
+                jestClient.shutdownClient();
+            }
+        }
+        return true;
+    }
+
 
     public static void main(String args[]){
         String json = "";

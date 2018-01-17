@@ -93,4 +93,24 @@ public class DataSearchController {
         }
     }
 
+    @PostMapping(value = DataRequestMapping.DataSearch.api_user_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "体征数据删除", notes = "根据id删除标志，支持伪删除")
+    public Envelop delete(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+        try{
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.updateData(jsonData));
+        } catch (ApiException e){
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
+    @PostMapping(value = DataRequestMapping.DataSearch.api_user_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "更新体征记录", notes = "根据id更新体征记录（包括体征值、上传时间等）")
+    public Envelop update(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+        try{
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.updateData(jsonData));
+        } catch (ApiException e){
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
 }
