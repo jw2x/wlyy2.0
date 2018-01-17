@@ -1,12 +1,13 @@
 package com.yihu.iot.service.company;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.company.IotCompanyDao;
 import com.yihu.iot.dao.company.IotCompanyTypeDao;
 import com.yihu.jw.iot.company.IotCompanyDO;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
+import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,10 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
         //获取总数
         long count = getCount(filters);
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,list, page, size,count);
+        //DO转VO
+        List<IotCompanyVO> iotCompanyVOList = convertToModels(list,new ArrayList<>(list.size()),IotCompanyVO.class);
+
+        return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
     }
 
     /**
@@ -78,7 +82,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @param type
      * @return
      */
-    public Envelop queryPage(Integer page,Integer size,String status,String name,String type){
+    public Envelop<IotCompanyVO> queryPage(Integer page, Integer size, String status, String name, String type){
         StringBuffer sql = new StringBuffer("SELECT DISTINCT c.* from iot_company c ,iot_company_type t WHERE del=1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_company c ,iot_company_type t WHERE del=1 ");
         List<Object> args = new ArrayList<>();
@@ -107,7 +111,10 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
         List<Map<String,Object>> countList = jdbcTempalte.queryForList(sqlCount.toString());
         long count = Long.valueOf(countList.get(0).get("count").toString());
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,list, page, size,count);
+        //DO转VO
+        List<IotCompanyVO> iotCompanyVOList = convertToModels(list,new ArrayList<>(list.size()),IotCompanyVO.class);
+
+        return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
     }
 
     /**
@@ -119,18 +126,19 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
 
         iotCompany.setSaasId(getCode());
         iotCompany.setDel(1);
-        List<JSONObject> list = iotCompany.getTypeList();
+        List<IotCompanyTypeVO> list = iotCompany.getTypeList();
         iotCompany = iotCompanyDao.save(iotCompany);
+        String id = iotCompany.getId();
         //新增类型
         List<IotCompanyTypeDO> companyTypes = new ArrayList<>(10);
-        for (JSONObject json:list) {
+        list.forEach(one->{
             IotCompanyTypeDO companyType = new IotCompanyTypeDO();
             companyType.setSaasId(getCode());
-            companyType.setCompanyId(iotCompany.getId());
-            companyType.setType(json.getString("type"));
-            companyType.setTypeName(json.getString("typeName"));
+            companyType.setCompanyId(id);
+            companyType.setType(one.getType());
+            companyType.setTypeName(one.getTypeName());
             companyTypes.add(companyType);
-        }
+        });
         iotCompanyTypeDao.save(companyTypes);
 
         return iotCompany;
@@ -154,13 +162,13 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
     public void findType(IotCompanyDO company){
         //查找类型
         List<IotCompanyTypeDO> companyTypes = iotCompanyTypeDao.findByCompanyId(company.getId());
-        List<JSONObject> list = new ArrayList<>(8);
+        List<IotCompanyTypeVO> list = new ArrayList<>(8);
         if(companyTypes.size()>0){
             companyTypes.forEach(one->{
-                JSONObject json = new JSONObject();
-                json.put("type",one.getType());
-                json.put("typeName",one.getTypeName());
-                list.add(json);
+                IotCompanyTypeVO vo = new IotCompanyTypeVO();
+                vo.setType(one.getType());
+                vo.setTypeName(one.getTypeName());
+                list.add(vo);
             });
         }
         company.setTypeList(list);
@@ -185,14 +193,16 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
         List<IotCompanyTypeDO> typeList = iotCompanyTypeDao.findByCompanyId(iotCompany.getId());
         iotCompanyTypeDao.delete(typeList);
         List<IotCompanyTypeDO> companyTypes = new ArrayList<>(10);
-        for (JSONObject json:iotCompany.getTypeList()) {
+
+        iotCompany.getTypeList().forEach(one->{
             IotCompanyTypeDO companyType = new IotCompanyTypeDO();
             companyType.setSaasId(getCode());
             companyType.setCompanyId(iotCompany.getId());
-            companyType.setType(json.getString("type"));
-            companyType.setTypeName(json.getString("typeName"));
+            companyType.setType(one.getType());
+            companyType.setTypeName(one.getTypeName());
             companyTypes.add(companyType);
-        }
+        });
+
         iotCompanyTypeDao.save(companyTypes);
 
         iotCompanyDao.save(iotCompany);

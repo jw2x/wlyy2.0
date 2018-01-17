@@ -11,12 +11,22 @@ public class BaseEnvelop {
 
     protected String successMsg;
 
+    protected Integer status;
+
     public BaseEnvelop() {
     }
 
     public BaseEnvelop(String errorCode, String errorMsg) {
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public String getErrorMsg() {
