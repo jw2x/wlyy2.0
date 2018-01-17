@@ -69,15 +69,6 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
         this.detailModelList = detailModelList;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-
     public int getPageSize() {
         return pageSize;
     }
@@ -107,14 +98,6 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
         this.totalPage = totalPage;
     }
 
-    public String getSuccessMsg() {
-        return successMsg;
-    }
-
-    public void setSuccessMsg(String successMsg) {
-        this.successMsg = successMsg;
-    }
-
     public static Envelop getSuccess(String message) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
@@ -125,6 +108,7 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
         envelop.setObj(obj);
+        envelop.setStatus(200);
         return envelop;
     }
 
@@ -134,6 +118,7 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
         envelop.setPageSize(size);
         envelop.setDetailModelList(detailModelList);
         envelop.setCurrPage(page);
+        envelop.setStatus(200);
         envelop.setTotalCount(count.intValue());
         return envelop;
     }
@@ -141,6 +126,14 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
     public static Envelop getError(String message, int errorCode) {
         Envelop envelop = new Envelop();
         envelop.setErrorMsg(message);
+        envelop.setStatus(errorCode);
+        return envelop;
+    }
+
+    public static Envelop getError(String message) {
+        Envelop envelop = new Envelop();
+        envelop.setErrorMsg(message);
+        envelop.setStatus(-1);
         return envelop;
     }
 
@@ -148,6 +141,7 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
         envelop.setDetailModelList(objList);
+        envelop.setStatus(200);
         return envelop;
     }
 }

@@ -1,10 +1,9 @@
-package com.yihu.jw.iot.company;
+package com.yihu.jw.restmodel.iot.company;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -12,42 +11,32 @@ import java.util.Date;
  * 企业证书表
  * @author yeshijie on 2018/1/16.
  */
-@Entity
-@Table(name = "iot_company_certificate")
-public class IotCompanyCertificateDO extends IdEntityWithOperation implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@ApiModel(value = "ListResult", description = "企业证书表")
+public class IotCompanyCertificateVO implements Serializable {
 
-    @Column(name = "saas_id")
-    private String saas_id;//
-    @Column(name = "name")
-    private String name;//证书名称
-    @Column(name = "manufacturer_name")
-    private String manufacturerName;//生产厂家名称
-    @Column(name = "manufacturer_id")
-    private String manufacturerId;//生产厂家id
-    @Column(name = "manufacturer_business_license")
-    private String manufacturerBusinessLicense;//生产厂家营业执照号
-    @Column(name = "company_name")
-    private String companyName;//发起企业名称
-    @Column(name = "company_id")
-    private String companyId;//发起企业id
-    @Column(name = "company_business_license")
-    private String companyBusinessLicense;//发起企业营业执照号
-    @Column(name = "start_time")
-    private Date startTime;//有效期开始时间
-    @Column(name = "end_time")
-    private Date endTime;//有效结束时间
-    @Column(name = "certificate_of_authorization_img")
-    private String certificateOfAuthorizationImg;//授权书扫描件
-    @Column(name = "del")
-    private Integer del;//删除标志
-
-    public String getSaas_id() {
-        return saas_id;
-    }
-
-    public void setSaas_id(String saas_id) {
-        this.saas_id = saas_id;
-    }
+    @ApiModelProperty("证书名称")
+    private String name;
+    @ApiModelProperty("生产厂家名称")
+    private String manufacturerName;
+    @ApiModelProperty("生产厂家id")
+    private String manufacturerId;
+    @ApiModelProperty("生产厂家营业执照号")
+    private String manufacturerBusinessLicense;
+    @ApiModelProperty("发起企业名称")
+    private String companyName;
+    @ApiModelProperty("发起企业id")
+    private String companyId;
+    @ApiModelProperty("发起企业营业执照号")
+    private String companyBusinessLicense;
+    @ApiModelProperty("有效期开始时间")
+    private Date startTime;
+    @ApiModelProperty("有效结束时间")
+    private Date endTime;
+    @ApiModelProperty("授权书扫描件")
+    private String certificateOfAuthorizationImg;
+    @ApiModelProperty("删除标志")
+    private Integer del;
 
     public String getName() {
         return name;

@@ -1,12 +1,11 @@
-package com.yihu.jw.iot.company;
+package com.yihu.jw.restmodel.iot.company;
 
-import com.alibaba.fastjson.JSONObject;
-import com.yihu.jw.IdEntityWithOperation;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -15,59 +14,51 @@ import java.util.List;
  * 企业表
  * @author yeshijie on 2018/1/15.
  */
-@Entity
-@Table(name = "iot_company")
-public class IotCompanyDO extends IdEntityWithOperation implements Serializable {
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(value = "ListResult", description = "企业表")
+public class IotCompanyVO extends BaseVO implements Serializable {
 
-    @Column(name = "saas_id")
-    private String saasId;//
-    @Column(name = "status")
-    private String status;//审核状态（预留字段）
-    @Column(name = "name")
-    private String name;//企业名称
-    @Column(name = "is_three_in_one")
-    private Integer isThreeInOne;//是否三证合一（1是，0否）
-    @Column(name = "business_license")
-    private String businessLicense;//统一社会信用代码/营业执照
-    @Column(name = "business_start_time")
-    private Date businessStartTime;//营业开始时间
-    @Column(name = "business_end_time")
-    private Date businessEndTime;//营业结束时间
-    @Column(name = "organization_address")
-    private String organizationAddress;//机构地址
-    @Column(name = "office_phone")
-    private String officePhone;//办公电话
-    @Column(name = "contacts_name")
-    private String contactsName;//联系人姓名
-    @Column(name = "contacts_mobile")
-    private String contactsMobile;//联系人手机号码
-    @Column(name = "contacts_idcard")
-    private String contactsIdcard;//联系人身份证号
-    @Column(name = "contacts_email")
-    private String contactsEmail;//联系人邮件
-    @Column(name = "business_license_img")
-    private String businessLicenseImg;//统一社会信用代码证照片
-    @Column(name = "organization_code_img")
-    private String organizationCodeImg;//组织机构代码证照片
-    @Column(name = "tax_registration_img")
-    private String taxRegistrationImg;//税务登记证照片
-    @Column(name = "contacts_idcard_img")
-    private String contactsIdcardImg;//联系人身份证照片
-    @Column(name = "account")
-    private String account;//账号
-    @Column(name = "del")
-    private Integer del;//删除标志(1有效，0删除)
+    @ApiModelProperty("审核状态（预留字段）")
+    private String status;
+    @ApiModelProperty("企业名称")
+    private String name;
+    @ApiModelProperty("是否三证合一（1是，0否）")
+    private Integer isThreeInOne;
+    @ApiModelProperty("统一社会信用代码/营业执照")
+    private String businessLicense;
+    @ApiModelProperty("营业开始时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date businessStartTime;
+    @ApiModelProperty("营业结束时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date businessEndTime;
+    @ApiModelProperty("机构地址")
+    private String organizationAddress;
+    @ApiModelProperty("办公电话")
+    private String officePhone;
+    @ApiModelProperty("联系人姓名")
+    private String contactsName;
+    @ApiModelProperty("联系人手机号码")
+    private String contactsMobile;
+    @ApiModelProperty("联系人身份证号")
+    private String contactsIdcard;
+    @ApiModelProperty("联系人邮件")
+    private String contactsEmail;
+    @ApiModelProperty("统一社会信用代码证照片")
+    private String businessLicenseImg;
+    @ApiModelProperty("组织机构代码证照片")
+    private String organizationCodeImg;
+    @ApiModelProperty("税务登记证照片")
+    private String taxRegistrationImg;
+    @ApiModelProperty("联系人身份证照片")
+    private String contactsIdcardImg;
+    @ApiModelProperty("账号")
+    private String account;
+    @ApiModelProperty("删除标志(1有效，0删除)")
+    private Integer del;
 
-    @Transient
-    private List<JSONObject> typeList;//类型
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
-    }
+    @ApiModelProperty("类型")
+    private List<IotCompanyTypeVO> typeList;
 
     public String getStatus() {
         return status;
@@ -213,11 +204,11 @@ public class IotCompanyDO extends IdEntityWithOperation implements Serializable 
         this.del = del;
     }
 
-    public List<JSONObject> getTypeList() {
+    public List<IotCompanyTypeVO> getTypeList() {
         return typeList;
     }
 
-    public void setTypeList(List<JSONObject> typeList) {
+    public void setTypeList(List<IotCompanyTypeVO> typeList) {
         this.typeList = typeList;
     }
 }

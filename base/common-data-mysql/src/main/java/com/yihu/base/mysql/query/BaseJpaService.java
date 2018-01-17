@@ -4,6 +4,7 @@ import com.yihu.jw.restmodel.common.PageArg;
 import com.yihu.jw.util.spring.SpringContext;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -22,10 +23,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Service基础类。此类基于Spring Data JPA进行封装（Spring Data JPA又是基于JPA封装，EHR平台使用Hibernate作为JPA实现者）。
@@ -52,6 +50,23 @@ public class BaseJpaService<T, R> {
                 repoClass = (Class) params[1];
             }
         }
+    }
+
+    /**
+     * 将实体集合转换为模型集合。
+     * @param sources
+     * @param targets
+     * @param targetCls
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> convertToModels(Collection sources, List<T> targets, Class<T> targetCls){
+        sources.forEach(one -> {
+            T target = (T) BeanUtils.instantiate(targetCls);
+            BeanUtils.copyProperties(one, target);
+            targets.add(target);
+        });
+        return targets;
     }
 
     public String getCode() {

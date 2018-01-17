@@ -8,7 +8,6 @@ import com.yihu.jw.util.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
@@ -96,6 +95,41 @@ public class EnvelopRestController {
         }
 
         return targets;
+    }
+
+    /**
+     * 将实体集合转换为模型集合。
+     * @param sources
+     * @param targets
+     * @param targetCls
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> convertToModels(Collection sources, List<T> targets, Class<T> targetCls){
+        sources.forEach(one -> {
+            T target = (T) BeanUtils.instantiate(targetCls);
+            BeanUtils.copyProperties(one, target);
+            targets.add(target);
+        });
+        return targets;
+    }
+
+    /**
+     * 将实体转换为模型。
+     *
+     * @param source
+     * @param targetCls
+     * @param properties
+     * @param <T>
+     * @return
+     */
+    public <T> T convertToModel(Object source, Class<T> targetCls, String... properties) {
+        if (source == null) {
+            return null;
+        }
+        T target = BeanUtils.instantiate(targetCls);
+        BeanUtils.copyProperties(source, target, propertyDiffer(properties, targetCls));
+        return target;
     }
 
     /**
