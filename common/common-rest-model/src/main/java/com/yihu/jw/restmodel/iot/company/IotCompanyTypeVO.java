@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @author yeshijie on 2018/1/16.
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-@ApiModel(value = "ListResult", description = "企业三证变更记录")
+@ApiModel(value = "企业三证变更记录", description = "企业三证变更记录")
 public class IotCompanyTypeVO implements Serializable {
 
     @ApiModelProperty("企业类型code")

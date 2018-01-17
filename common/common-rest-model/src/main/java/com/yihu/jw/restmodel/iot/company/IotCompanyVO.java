@@ -15,7 +15,7 @@ import java.util.List;
  * @author yeshijie on 2018/1/15.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "ListResult", description = "企业表")
+@ApiModel(value = "企业表", description = "企业表")
 public class IotCompanyVO extends BaseVO implements Serializable {
 
     @ApiModelProperty("审核状态（预留字段）")
