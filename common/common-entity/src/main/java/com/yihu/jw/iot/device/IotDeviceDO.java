@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 设备表
  * @author yeshijie on 2017/12/1.
  */
 @Entity
@@ -18,11 +19,14 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "saas_id")
     private String saasId;
 
+    @Column(name = "product_id")
+    private String productId;//产品id
+
     @Column(name = "name")
     private String name;//设备名称
 
-    @Column(name = "device_model")
-    private String deviceModel;//设备型号
+//    @Column(name = "device_model")
+//    private String deviceModel;//设备型号
 
     @Column(name = "device_sn")
     private String deviceSn;//设备sn码
@@ -33,29 +37,32 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "is_platform")
     private Integer isPlatform;//是否平台型(1是，0否)
 
-    @Column(name = "device_type")
-    private String deviceType;//设备种类
+//    @Column(name = "device_type")
+//    private String deviceType;//设备种类
 
     @Column(name = "device_source")
     private String deviceSource;//设备来源(1采购订单关联,2居民绑定,3管理员新增)
 
-    @Column(name = "supplier_code")
-    private String supplierCode;//供应商code
+    @Column(name = "supplier_id")
+    private String supplierId;//供应商code
 
     @Column(name = "supplier_name")
     private String supplierName;//供应商名称
 
-    @Column(name = "manufacturer_code")
-    private String manufacturerCode;//厂商code
+    @Column(name = "manufacturer_id")
+    private String manufacturerId;//厂商code
 
     @Column(name = "manufacturer_name")
     private String manufacturerName;//厂商名称
 
-    @Column(name = "manufacture_tel")
-    private String manufactureTel;//厂商名称
+    @Column(name = "hospital")
+    private String hospital;//归属社区
 
-    @Column(name = "order_code")
-    private String orderCode;//订单code
+    @Column(name = "hospital_name")
+    private String hospital_name;//归属社区名称
+
+    @Column(name = "order_id")
+    private String orderId;//订单code
 
     @Column(name = "order_no")
     private String orderNo;//订单编号
@@ -66,20 +73,14 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "next_quality_time")
     private Date nextQualityTime;//下次质检时间
 
-    @Column(name = "purchase_code")
-    private String purchaseCode;//采购code
+    @Column(name = "purchase_id")
+    private String purchaseId;//采购code
 
     @Column(name = "sim_no")
     private String simNo;//sim卡号
 
     @Column(name = "del")
     private Integer del;//删除标志(1有效，0删除)
-
-    @Column(name = "sale_org_code")
-    private String saleOrgCode; //经销商单位代码
-
-    @Column(name = "sale_org_name")
-    private String saleOrgName; //经销商单位名称
 
     public String getSaasId() {
         return saasId;
@@ -97,13 +98,13 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.name = name;
     }
 
-    public String getDeviceModel() {
-        return deviceModel;
-    }
-
-    public void setDeviceModel(String deviceModel) {
-        this.deviceModel = deviceModel;
-    }
+//    public String getDeviceModel() {
+//        return deviceModel;
+//    }
+//
+//    public void setDeviceModel(String deviceModel) {
+//        this.deviceModel = deviceModel;
+//    }
 
     public String getDeviceSn() {
         return deviceSn;
@@ -129,13 +130,13 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.isPlatform = isPlatform;
     }
 
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
-    }
+//    public String getDeviceType() {
+//        return deviceType;
+//    }
+//
+//    public void setDeviceType(String deviceType) {
+//        this.deviceType = deviceType;
+//    }
 
     public String getDeviceSource() {
         return deviceSource;
@@ -145,12 +146,12 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.deviceSource = deviceSource;
     }
 
-    public String getSupplierCode() {
-        return supplierCode;
+    public String getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getSupplierName() {
@@ -161,12 +162,12 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.supplierName = supplierName;
     }
 
-    public String getManufacturerCode() {
-        return manufacturerCode;
+    public String getManufacturerId() {
+        return manufacturerId;
     }
 
-    public void setManufacturerCode(String manufacturerCode) {
-        this.manufacturerCode = manufacturerCode;
+    public void setManufacturerId(String manufacturerId) {
+        this.manufacturerId = manufacturerId;
     }
 
     public String getManufacturerName() {
@@ -177,20 +178,12 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.manufacturerName = manufacturerName;
     }
 
-    public String getManufactureTel() {
-        return manufactureTel;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setManufactureTel(String manufactureTel) {
-        this.manufactureTel = manufactureTel;
-    }
-
-    public String getOrderCode() {
-        return orderCode;
-    }
-
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getOrderNo() {
@@ -217,12 +210,12 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.nextQualityTime = nextQualityTime;
     }
 
-    public String getPurchaseCode() {
-        return purchaseCode;
+    public String getPurchaseId() {
+        return purchaseId;
     }
 
-    public void setPurchaseCode(String purchaseCode) {
-        this.purchaseCode = purchaseCode;
+    public void setPurchaseId(String purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
     public String getSimNo() {
@@ -241,19 +234,27 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.del = del;
     }
 
-    public String getSaleOrgCode() {
-        return saleOrgCode;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setSaleOrgCode(String saleOrgCode) {
-        this.saleOrgCode = saleOrgCode;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-    public String getSaleOrgName() {
-        return saleOrgName;
+    public String getHospital() {
+        return hospital;
     }
 
-    public void setSaleOrgName(String saleOrgName) {
-        this.saleOrgName = saleOrgName;
+    public void setHospital(String hospital) {
+        this.hospital = hospital;
+    }
+
+    public String getHospital_name() {
+        return hospital_name;
+    }
+
+    public void setHospital_name(String hospital_name) {
+        this.hospital_name = hospital_name;
     }
 }

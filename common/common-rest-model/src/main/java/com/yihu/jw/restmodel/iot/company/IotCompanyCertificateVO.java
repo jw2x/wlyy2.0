@@ -1,0 +1,139 @@
+package com.yihu.jw.iot.company;
+
+import com.yihu.jw.IdEntityWithOperation;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * 企业证书表
+ * @author yeshijie on 2018/1/16.
+ */
+@Entity
+@Table(name = "iot_company_certificate")
+public class IotCompanyCertificateDO extends IdEntityWithOperation implements Serializable {
+
+    @Column(name = "saas_id")
+    private String saas_id;//
+    @Column(name = "name")
+    private String name;//证书名称
+    @Column(name = "manufacturer_name")
+    private String manufacturerName;//生产厂家名称
+    @Column(name = "manufacturer_id")
+    private String manufacturerId;//生产厂家id
+    @Column(name = "manufacturer_business_license")
+    private String manufacturerBusinessLicense;//生产厂家营业执照号
+    @Column(name = "company_name")
+    private String companyName;//发起企业名称
+    @Column(name = "company_id")
+    private String companyId;//发起企业id
+    @Column(name = "company_business_license")
+    private String companyBusinessLicense;//发起企业营业执照号
+    @Column(name = "start_time")
+    private Date startTime;//有效期开始时间
+    @Column(name = "end_time")
+    private Date endTime;//有效结束时间
+    @Column(name = "certificate_of_authorization_img")
+    private String certificateOfAuthorizationImg;//授权书扫描件
+    @Column(name = "del")
+    private Integer del;//删除标志
+
+    public String getSaas_id() {
+        return saas_id;
+    }
+
+    public void setSaas_id(String saas_id) {
+        this.saas_id = saas_id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getManufacturerName() {
+        return manufacturerName;
+    }
+
+    public void setManufacturerName(String manufacturerName) {
+        this.manufacturerName = manufacturerName;
+    }
+
+    public String getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public void setManufacturerId(String manufacturerId) {
+        this.manufacturerId = manufacturerId;
+    }
+
+    public String getManufacturerBusinessLicense() {
+        return manufacturerBusinessLicense;
+    }
+
+    public void setManufacturerBusinessLicense(String manufacturerBusinessLicense) {
+        this.manufacturerBusinessLicense = manufacturerBusinessLicense;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCompanyBusinessLicense() {
+        return companyBusinessLicense;
+    }
+
+    public void setCompanyBusinessLicense(String companyBusinessLicense) {
+        this.companyBusinessLicense = companyBusinessLicense;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getCertificateOfAuthorizationImg() {
+        return certificateOfAuthorizationImg;
+    }
+
+    public void setCertificateOfAuthorizationImg(String certificateOfAuthorizationImg) {
+        this.certificateOfAuthorizationImg = certificateOfAuthorizationImg;
+    }
+
+    public Integer getDel() {
+        return del;
+    }
+
+    public void setDel(Integer del) {
+        this.del = del;
+    }
+}
