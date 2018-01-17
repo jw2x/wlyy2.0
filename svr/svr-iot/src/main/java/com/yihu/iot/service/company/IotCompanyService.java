@@ -6,7 +6,6 @@ import com.yihu.iot.dao.company.IotCompanyTypeDao;
 import com.yihu.jw.iot.company.IotCompanyDO;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.apache.commons.lang.StringUtils;
@@ -126,7 +125,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
 
         iotCompany.setSaasId(getCode());
         iotCompany.setDel(1);
-        List<IotCompanyTypeVO> list = iotCompany.getTypeList();
+        List<IotCompanyTypeDO> list = iotCompany.getTypeList();
         iotCompany = iotCompanyDao.save(iotCompany);
         String id = iotCompany.getId();
         //新增类型
@@ -162,10 +161,10 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
     public void findType(IotCompanyDO company){
         //查找类型
         List<IotCompanyTypeDO> companyTypes = iotCompanyTypeDao.findByCompanyId(company.getId());
-        List<IotCompanyTypeVO> list = new ArrayList<>(8);
+        List<IotCompanyTypeDO> list = new ArrayList<>(8);
         if(companyTypes.size()>0){
             companyTypes.forEach(one->{
-                IotCompanyTypeVO vo = new IotCompanyTypeVO();
+                IotCompanyTypeDO vo = new IotCompanyTypeDO();
                 vo.setType(one.getType());
                 vo.setTypeName(one.getTypeName());
                 list.add(vo);
