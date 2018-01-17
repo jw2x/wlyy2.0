@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(IotRequestMapping.api_iot_common)
-@Api(value = "设备字典管理相关操作", description = "设备字典管理相关操作")
+@Api(tags = "设备字典管理相关操作", description = "设备字典管理相关操作")
 public class IotDeviceDictController extends EnvelopRestController{
 
     @Autowired

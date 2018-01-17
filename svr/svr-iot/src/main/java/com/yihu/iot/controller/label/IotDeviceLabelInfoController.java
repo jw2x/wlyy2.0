@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(IotRequestMapping.api_iot_common)
-@Api(value = "设备标签信息操作", description = "设备标签信息相关操作")
+@Api(tags = "设备标签信息操作", description = "设备标签信息相关操作")
 public class IotDeviceLabelInfoController extends EnvelopRestController {
 
     @Autowired

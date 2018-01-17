@@ -8,6 +8,18 @@ public class IotRequestMapping {
     public static final String api_iot_common = "svr-iot";
     public static final Integer api_iot_fail = -1;
 
+    /**
+     * 公共模块
+     */
+    public static class Common{
+        public static final String company = api_iot_common + "/company";
+        public static final String system_dict = api_iot_common + "/systemDict";
+        public static final String file_upload = api_iot_common + "/fileUpload";
+    }
+
+    public static class System{
+        public static final String findDictByCode = "findDictByCode";
+    }
 
     /**
      * 文件上传模块常量
@@ -19,6 +31,39 @@ public class IotRequestMapping {
         public static final String message_success_upload = "上传成功";
         public static final String message_fail_upload = "上传失败";
         public static final String message_fail_jsonData_is_null = "jsonData is null";
+    }
+
+    /**
+     * 企业模块
+     */
+    public static class Company{
+        public static final String findCompanyPage = "findCompanyPage";
+        public static final String addCompany = "addCompany";
+        public static final String findCompanyById = "findCompanyById";
+        public static final String updCompany = "updCompany";
+        public static final String delCompany = "delCompany";
+
+
+        public static final String api_create = "company";
+        public static final String api_delete = "company";
+        public static final String api_getById = "getById";
+        public static final String api_update = "company";
+        public static final String api_queryPage = "queryPage";
+        public static final String api_getList = "getList";
+
+        public static final String message_success_update = "update success";
+        public static final String message_success_delete = "delete success";
+        public static final String message_success_find = "find success";
+        public static final String message_success_create = "create success";
+        public static final String message_success_find_functions = "find success";
+
+        public static final String message_fail_name_is_null = "name is null";
+        public static final String message_fail_is_no_exist = "is no exist";
+        public static final String message_fail_id_no_exist = "id no exist";
+        public static final String message_fail_status_is_null = "status is null";
+        public static final String message_fail_id_is_null = "id is null";
+        public static final String message_fail_id_exist = "id exist";
+        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
     /**

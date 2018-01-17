@@ -5,14 +5,16 @@
  *******************************************************************************/
 package com.yihu.jw;
 
-import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 /**
@@ -28,6 +30,7 @@ public abstract class IdEntityWithOperation extends IdEntity{
 
 
 	@CreatedDate
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	@Column(name = "create_time", nullable = false, length = 0,updatable = false)
 	protected Date createTime;
 
@@ -40,15 +43,16 @@ public abstract class IdEntityWithOperation extends IdEntity{
 	protected String createUserName;
 
 	@LastModifiedDate
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	@Column(name = "update_time", nullable = false, length = 0)
 	protected Date updateTime;
 
 	@LastModifiedBy
-	@Column(name = "update_user", length = 100)
+	@Column(name = "update_user")
 	protected String updateUser;
 
 	@LastModifiedBy
-	@Column(name = "update_user_name", length = 50)
+	@Column(name = "update_user_name")
 	protected String updateUserName;
 
 

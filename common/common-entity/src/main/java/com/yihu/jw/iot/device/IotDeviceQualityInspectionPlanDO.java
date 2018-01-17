@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 设备质检计划表
  * @author yeshijie on 2017/12/1.
  */
 @Entity
@@ -18,26 +19,26 @@ public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation impl
     @Column(name = "saas_id")
     private String saasId;
 
-    @Column(name = "purchase_code")
-    private String purchaseCode;//采购code
+    @Column(name = "purchase_id")
+    private String purchaseId;//采购code
 
-    @Column(name = "order_code")
-    private String orderCode;//订单code
+    @Column(name = "order_id")
+    private String orderId;//订单code
 
     @Column(name = "order_no")
     private String orderNo;//订单编号
 
-    @Column(name = "device_code")
-    private String deviceCode;//设备code
+    @Column(name = "device_id")
+    private String deviceId;//设备code
 
     @Column(name = "device_name")
     private String deviceName;//设备名称
 
-    @Column(name = "device_model")
-    private String deviceModel;//设备型号
-
-    @Column(name = "device_type")
-    private String deviceType;//设备种类
+//    @Column(name = "device_model")
+//    private String deviceModel;//设备型号
+//
+//    @Column(name = "device_type")
+//    private String deviceType;//设备种类
 
     @Column(name = "purchase_num")
     private Long purchaseNum;//采购数量
@@ -68,20 +69,20 @@ public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation impl
         this.saasId = saasId;
     }
 
-    public String getPurchaseCode() {
-        return purchaseCode;
+    public String getPurchaseId() {
+        return purchaseId;
     }
 
-    public void setPurchaseCode(String purchaseCode) {
-        this.purchaseCode = purchaseCode;
+    public void setPurchaseId(String purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
-    public String getOrderCode() {
-        return orderCode;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getOrderNo() {
@@ -92,12 +93,12 @@ public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation impl
         this.orderNo = orderNo;
     }
 
-    public String getDeviceCode() {
-        return deviceCode;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setDeviceCode(String deviceCode) {
-        this.deviceCode = deviceCode;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getDeviceName() {
@@ -108,21 +109,21 @@ public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation impl
         this.deviceName = deviceName;
     }
 
-    public String getDeviceModel() {
-        return deviceModel;
-    }
-
-    public void setDeviceModel(String deviceModel) {
-        this.deviceModel = deviceModel;
-    }
-
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
-    }
+//    public String getDeviceModel() {
+//        return deviceModel;
+//    }
+//
+//    public void setDeviceModel(String deviceModel) {
+//        this.deviceModel = deviceModel;
+//    }
+//
+//    public String getDeviceType() {
+//        return deviceType;
+//    }
+//
+//    public void setDeviceType(String deviceType) {
+//        this.deviceType = deviceType;
+//    }
 
     public Long getPurchaseNum() {
         return purchaseNum;

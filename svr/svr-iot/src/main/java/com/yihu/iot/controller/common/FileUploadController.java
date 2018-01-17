@@ -26,7 +26,7 @@ import java.util.Base64;
  */
 @RestController
 @RequestMapping(IotRequestMapping.api_iot_common)
-@Api(value = "文件上传相关操作", description = "文件上传相关操作")
+@Api(tags = "文件上传相关操作", description = "文件上传相关操作")
 public class FileUploadController extends EnvelopRestController{
 
     @Autowired
