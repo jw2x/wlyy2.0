@@ -9,55 +9,31 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 设备质检计划表
- * @author yeshijie on 2017/12/1.
+ * 质检记录表
+ * @author yeshijie on 2018/1/16.
  */
 @Entity
-@Table(name = "iot_device_quality_inspection_plan")
-public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation implements Serializable{
+@Table(name = "iot_quality_record")
+public class IotQualityRecordDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
-    private String saasId;
-
-    @Column(name = "purchase_id")
-    private String purchaseId;//采购code
-
-    @Column(name = "order_id")
-    private String orderId;//订单code
-
-    @Column(name = "order_no")
-    private String orderNo;//订单编号
-
+    private String saasId;//
     @Column(name = "device_id")
-    private String deviceId;//设备code
-
+    private String deviceId;//设备id
     @Column(name = "device_name")
     private String deviceName;//设备名称
-
-//    @Column(name = "device_model")
-//    private String deviceModel;//设备型号
-//
-//    @Column(name = "device_type")
-//    private String deviceType;//设备种类
-
     @Column(name = "purchase_num")
     private Long purchaseNum;//采购数量
-
     @Column(name = "quality_leader")
     private String qualityLeader;//质检负责人
-
     @Column(name = "quality_leader_phone")
     private String qualityLeaderPhone;//质检负责人联系方式
-
     @Column(name = "plan_time")
     private Date planTime;//计划质检时间
-
     @Column(name = "actual_time")
     private Date actualTime;//实际质检时间
-
     @Column(name = "status")
-    private String status;//质检状态(1未检，2已检)
-
+    private String status;//质检状态
     @Column(name = "del")
     private Integer del;//删除标志
 
@@ -67,30 +43,6 @@ public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation impl
 
     public void setSaasId(String saasId) {
         this.saasId = saasId;
-    }
-
-    public String getPurchaseId() {
-        return purchaseId;
-    }
-
-    public void setPurchaseId(String purchaseId) {
-        this.purchaseId = purchaseId;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
     }
 
     public String getDeviceId() {
@@ -108,22 +60,6 @@ public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation impl
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
     }
-
-//    public String getDeviceModel() {
-//        return deviceModel;
-//    }
-//
-//    public void setDeviceModel(String deviceModel) {
-//        this.deviceModel = deviceModel;
-//    }
-//
-//    public String getDeviceType() {
-//        return deviceType;
-//    }
-//
-//    public void setDeviceType(String deviceType) {
-//        this.deviceType = deviceType;
-//    }
 
     public Long getPurchaseNum() {
         return purchaseNum;

@@ -3,7 +3,6 @@ package com.yihu.iot.datainput.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
-import com.yihu.base.es.config.model.SaveModel;
 import com.yihu.base.hbase.HBaseAdmin;
 import com.yihu.base.hbase.HBaseHelper;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
@@ -67,7 +66,7 @@ public class DataInputService {
                     iotDeviceDO.setDeviceSn(sn);
 //                    iotDeviceDO.setCode(dataJson.getString("ext_code"));
                     iotDeviceDO.setName(dataJson.getString("device_name"));
-                    iotDeviceDO.setDeviceModel(dataJson.getString("device_model"));
+//                    iotDeviceDO.setDeviceModel(dataJson.getString("device_model"));
                     iotDeviceDO.setDeviceSource("2"); //设备来源为居民绑定
 
                     iotDeviceDO.setCreateUser(dataJson.getString("idcard")); //居民绑定的，暂定创建人和修改人均为居民
@@ -75,10 +74,10 @@ public class DataInputService {
                     iotDeviceDO.setUpdateUser(dataJson.getString("idcard"));
                     iotDeviceDO.setUpdateUserName(dataJson.getString("username"));
 
-                    iotDeviceDO.setManufacturerCode(dataJson.getString("manufacture_code"));
+//                    iotDeviceDO.setManufacturerCode(dataJson.getString("manufacture_code"));
                     iotDeviceDO.setManufacturerName(dataJson.getString("manufacture_name"));
-                    iotDeviceDO.setManufactureTel(dataJson.getString("manufacture_tel"));
-                    iotDeviceDO.setSupplierCode(dataJson.getString("owner_org_code"));
+//                    iotDeviceDO.setManufactureTel(dataJson.getString("manufacture_tel"));
+//                    iotDeviceDO.setSupplierCode(dataJson.getString("owner_org_code"));
                     iotDeviceDO.setSupplierName(dataJson.getString("owner_org_name"));
                     iotDeviceDO.setName(dataJson.getString("sale_org_code"));
                     iotDeviceDO.setName(dataJson.getString("sale_org_name"));

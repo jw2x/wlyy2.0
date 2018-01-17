@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.common;
 
+import com.alibaba.fastjson.JSONArray;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
@@ -31,7 +32,11 @@ public class Envelop implements Serializable {
 
     private int totalCount;
 
+    private int status;//状态 成功200，错误-1
+
     private List detailModelList;
+
+    private JSONArray detailJsonArray;
 
     private Object obj;
 
@@ -109,15 +114,33 @@ public class Envelop implements Serializable {
         this.successMsg = successMsg;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public JSONArray getDetailJsonArray() {
+        return detailJsonArray;
+    }
+
+    public void setDetailJsonArray(JSONArray detailJsonArray) {
+        this.detailJsonArray = detailJsonArray;
+    }
+
     public static Envelop getSuccess(String message) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
+        envelop.setStatus(200);
         return envelop;
     }
 
     public static Envelop getSuccess(String message, Object obj) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
+        envelop.setStatus(200);
         envelop.setObj(obj);
         return envelop;
     }
@@ -126,22 +149,41 @@ public class Envelop implements Serializable {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
         envelop.setPageSize(size);
+        envelop.setStatus(200);
         envelop.setDetailModelList(detailModelList);
         envelop.setCurrPage(page);
         envelop.setTotalCount(count.intValue());
         return envelop;
     }
 
+    public static Envelop getError(String message) {
+        Envelop envelop = new Envelop();
+        envelop.setErrorMsg(message);
+        envelop.setStatus(-1);
+        return envelop;
+    }
+
     public static Envelop getError(String message, int errorCode) {
         Envelop envelop = new Envelop();
         envelop.setErrorMsg(message);
+        envelop.setStatus(errorCode);
         return envelop;
     }
 
     public static Envelop getSuccessList(String message, List objList) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
+        envelop.setStatus(200);
         envelop.setDetailModelList(objList);
         return envelop;
     }
+
+    public static Envelop getSuccessJsonArray(String message, JSONArray jsonArray) {
+        Envelop envelop = new Envelop();
+        envelop.setSuccessMsg(message);
+        envelop.setStatus(200);
+        envelop.setDetailJsonArray(jsonArray);
+        return envelop;
+    }
+
 }

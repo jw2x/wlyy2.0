@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 设备订单表
  * @author yeshijie on 2017/12/1.
  */
 @Entity
@@ -45,8 +46,8 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
     @Column(name = "purchaser_phone")
     private String purchaserPhone;//采购负责人联系方式
 
-    @Column(name = "supplier_code")
-    private String supplierCode;//供应商code
+    @Column(name = "supplier_id")
+    private String supplierId;//供应商code
 
     @Column(name = "supplier_name")
     private String supplierName;//供应商名称
@@ -59,6 +60,12 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
 
     @Column(name = "supplier_leader_phone")
     private String supplierLeaderPhone;//供应商负责人联系方式
+
+    @Column(name = "instruction")
+    private String instruction;//订单说明
+
+    @Column(name = "del")
+    private Integer del;//删除标志
 
     public String getSaasId() {
         return saasId;
@@ -140,12 +147,12 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
         this.purchaserPhone = purchaserPhone;
     }
 
-    public String getSupplierCode() {
-        return supplierCode;
+    public String getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getSupplierName() {
@@ -178,5 +185,21 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
 
     public void setSupplierLeaderPhone(String supplierLeaderPhone) {
         this.supplierLeaderPhone = supplierLeaderPhone;
+    }
+
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
+
+    public Integer getDel() {
+        return del;
+    }
+
+    public void setDel(Integer del) {
+        this.del = del;
     }
 }

@@ -1,8 +1,8 @@
 package com.yihu.iot.controller.device;
 
-import com.yihu.iot.service.device.IotDevicePurchaseService;
+import com.yihu.iot.service.device.IotOrderPurchaseService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.iot.device.IotDevicePurchaseDO;
+import com.yihu.jw.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -23,17 +23,17 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(IotRequestMapping.api_iot_common)
-@Api(value = "设备采购管理相关操作", description = "设备采购管理相关操作")
+@Api(tags = "设备采购管理相关操作", description = "设备采购管理相关操作")
 public class IotDevicePurchaseController extends EnvelopRestController{
     @Autowired
-    private IotDevicePurchaseService iotDevicePurchaseService;
+    private IotOrderPurchaseService iotDevicePurchaseService;
 
     @PostMapping(value = IotRequestMapping.DevicePurchase.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建设备采购", notes = "创建设备采购")
     public Envelop create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                           @RequestBody String jsonData) {
         try {
-            IotDevicePurchaseDO iotDevicePurchase = toEntity(jsonData, IotDevicePurchaseDO.class);
+            IotOrderPurchaseDO iotDevicePurchase = toEntity(jsonData, IotOrderPurchaseDO.class);
             return Envelop.getSuccess(IotRequestMapping.DevicePurchase.message_success_create, iotDevicePurchaseService.create(iotDevicePurchase));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -69,13 +69,13 @@ public class IotDevicePurchaseController extends EnvelopRestController{
             HttpServletRequest request,
             HttpServletResponse response) throws Exception {
         //得到list数据
-        List<IotDevicePurchaseDO> list = iotDevicePurchaseService.search(fields, filters, sorts, page, size);
+        List<IotOrderPurchaseDO> list = iotDevicePurchaseService.search(fields, filters, sorts, page, size);
         //获取总数
         long count=iotDevicePurchaseService.getCount(filters);
         //封装头信息
         pagedResponse(request, response, count, page, size);
         //封装返回格式
-        List<IotDevicePurchaseDO> iotDevicePurchases = convertToModels(list, new ArrayList<>(list.size()), IotDevicePurchaseDO.class, fields);
+        List<IotOrderPurchaseDO> iotDevicePurchases = convertToModels(list, new ArrayList<>(list.size()), IotOrderPurchaseDO.class, fields);
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.DevicePurchase.message_success_find_functions,iotDevicePurchases, page, size,count);
     }
@@ -91,9 +91,9 @@ public class IotDevicePurchaseController extends EnvelopRestController{
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "-createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<IotDevicePurchaseDO> list = iotDevicePurchaseService.search(fields,filters,sorts);
+        List<IotOrderPurchaseDO> list = iotDevicePurchaseService.search(fields,filters,sorts);
         //封装返回格式
-        List<IotDevicePurchaseDO> iotDevicePurchases = convertToModels(list, new ArrayList<>(list.size()), IotDevicePurchaseDO.class, fields);
+        List<IotOrderPurchaseDO> iotDevicePurchases = convertToModels(list, new ArrayList<>(list.size()), IotOrderPurchaseDO.class, fields);
         return Envelop.getSuccessList(IotRequestMapping.DevicePurchase.message_success_find_functions,iotDevicePurchases);
     }
 }

@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(IotRequestMapping.api_iot_common)
-@Api(value = "设备质检管理相关操作", description = "设备质检管理相关操作")
+@Api(tags = "设备质检管理相关操作", description = "设备质检管理相关操作")
 public class IotDeviceQualityInspectionPlanController extends EnvelopRestController{
     @Autowired
     private IotDeviceQualityInspectionPlanService iotDeviceQualityInspectionPlanService;

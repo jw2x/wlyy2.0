@@ -8,7 +8,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * @author yeshijie on 2017/12/1.
  */
-public interface IotDeviceDictDao extends PagingAndSortingRepository<IotDeviceDictDO,String>,JpaSpecificationExecutor<IotDeviceDictDO> {
+public interface IotDeviceDictDao extends PagingAndSortingRepository<IotDeviceDictDO,String>,
+        JpaSpecificationExecutor<IotDeviceDictDO> {
 
     @Query("from IotDeviceDictDO w where w.id =?1")
     IotDeviceDictDO findById(String id);
