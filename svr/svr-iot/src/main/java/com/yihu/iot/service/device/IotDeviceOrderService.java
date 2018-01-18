@@ -7,6 +7,9 @@ import com.yihu.jw.util.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * @author yeshijie on 2017/12/8.
  */
@@ -23,13 +26,20 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
      */
     public IotDeviceOrderDO create(IotDeviceOrderDO iotDeviceOrder) {
 
-        String time = DateUtil.yyyy_MM_dd_HH_mm_ss;
+        String time = DateUtil.dateToStr(new Date(),DateUtil.YYYYMMDD);
+        List<IotDeviceOrderDO> doList = iotDeviceOrderDao.findByYmd(time);
+        iotDeviceOrder.setOrderNo(String.format("",doList.size()));
         iotDeviceOrder.setSaasId(getCode());
         iotDeviceOrder.setDel(1);
+        iotDeviceOrder.setYmd(time);
         return iotDeviceOrderDao.save(iotDeviceOrder);
     }
 
     public IotDeviceOrderDO findById(String id) {
         return iotDeviceOrderDao.findById(id);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(String.format("%05d", 5));
     }
 }
