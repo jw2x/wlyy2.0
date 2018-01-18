@@ -3,12 +3,14 @@ package com.yihu.iot.datainput.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
+import com.yihu.base.es.config.model.SaveModel;
 import com.yihu.base.hbase.HBaseAdmin;
 import com.yihu.base.hbase.HBaseHelper;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
+import com.yihu.jw.iot.datainput.DataBodySignsDO;
 import com.yihu.jw.iot.device.IotDeviceDO;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
@@ -127,11 +129,12 @@ public class DataInputService {
         String fileAbsPath = "";
         String rowkey = "";
         //提取json某些项值
+        DataBodySignsDO dataBodySignsDO = JSONObject.parseObject(json,DataBodySignsDO.class);
         JSONObject jsonObject = JSONObject.parseObject(json);
-        String accessToken= jsonObject.getString("access_token");
-        String dataSource = jsonObject.getString("data_source");
-        String deviceSn = jsonObject.getString("sn");
-        String extCode = jsonObject.getString("ext_code");
+        String accessToken= dataBodySignsDO.getAccess_token();
+        String dataSource = dataBodySignsDO.getData_source();
+        String deviceSn = dataBodySignsDO.getSn();
+        String extCode = dataBodySignsDO.getExt_code();
 
         //包含居民身份的数据，对设备数据进行校验绑定，此处包含的信息只有身份证号和用户名以及设备序列号，如果设备库中存在该序号的设备，则对绑定居民进行修改，改为当前居民，如果没有则跳过
         if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
@@ -158,7 +161,7 @@ public class DataInputService {
                     measuretime = DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss);
                 }
                 //生成一份json数据的rowkey
-                rowkey = RowKeyUtils.makeRowKey(accessToken,deviceSn, extCode, DateUtil.dateTimeParse(measuretime).getTime());
+                rowkey = RowKeyUtils.makeRowKey(accessToken,dataSource, extCode, DateUtil.dateTimeParse(measuretime).getTime());
                 data.put("rid",rowkey);//hbase的rowkey
                 rowkeyList.add(rowkey);
             } catch (Exception e) {
@@ -208,22 +211,95 @@ public class DataInputService {
     }
 
     /**
-     * 修改用户体征状态标志
+     * 上传数据
      * @param json
      * @return
      */
-    public String updateRecordStatus(String json){
-//        elastricSearchHelper.update();
-        return "";
-    }
+    public String inputData(String json){
+        String fileName = "";
+        String fileAbsPath = "";
+        String rowkey = "";
+        //提取json某些项值
+        DataBodySignsDO dataBodySignsDO = JSONObject.parseObject(json,DataBodySignsDO.class);
+        JSONObject jsonObject = JSONObject.parseObject(json);
+        String accessToken= dataBodySignsDO.getAccess_token();
+        String dataSource = dataBodySignsDO.getData_source();
+        String deviceSn = dataBodySignsDO.getSn();
+        String extCode = dataBodySignsDO.getExt_code();
 
-    /**
-     * 修改用户体征状态标志
-     * @param json
-     * @return
-     */
-    public String deleteRecord(String json){
-//        elastricSearchHelper.deleteData();
-        return "";
+        //包含居民身份的数据，对设备数据进行校验绑定，此处包含的信息只有身份证号和用户名以及设备序列号，如果设备库中存在该序号的设备，则对绑定居民进行修改，改为当前居民，如果没有则跳过
+        if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
+            String idcard = jsonObject.getString("idcard");
+            String username = jsonObject.getString("username");
+            updateBindUser(dataSource,deviceSn,idcard,username);
+        }
+
+        JSONArray jsonArray = jsonObject.getJSONArray("data");
+        if(null == jsonArray || jsonArray.size() == 0){
+            return "json no data";
+        }
+
+        List<String> rowkeyList = new ArrayList<>();
+        List<Map<String,Map<String,String>>> familyList = new ArrayList<>();
+
+        //循环数据，一组数据存一行，生成一个rowkey，并将该rowkey存到es中
+        for(Object obj:jsonArray){
+            JSONObject data = (JSONObject)obj;
+            data.put("del","1"); //添加删除标记
+            try {
+                String measuretime = jsonObject.getString("measure_time");
+                if(null == measuretime){
+                    measuretime = DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss);
+                }
+                //生成一份json数据的rowkey
+                rowkey = RowKeyUtils.makeRowKey(accessToken,dataSource, extCode, DateUtil.dateTimeParse(measuretime).getTime());
+                data.put("rid",rowkey);//hbase的rowkey
+                rowkeyList.add(rowkey);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //组装B列
+            Map<String, Map<String, String>> family = new HashMap<>();
+            Map<String, String> columnsB = new HashMap<>();
+            for(String key:data.keySet()){
+                if(StringUtils.equalsIgnoreCase("rid",key)){ //存到hbase里的数据不需要rid
+                    continue;
+                }
+                columnsB.put(key,data.getString(key));
+            }
+            if(data.containsKey("ecg")){
+                fileName = data.getString("fileName");
+                fileAbsPath = data.getString("filepath");
+            }
+            family.put(ConstantUtils.familyB,columnsB);
+            familyList.add(family);
+        }
+        DataBodySignsDO bodySignsDO = JSONObject.parseObject(jsonObject.toJSONString(),DataBodySignsDO.class);
+        List<SaveModel> list = new ArrayList<>();
+        list.add(bodySignsDO);
+        //将数据存入es
+        elastricSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, list);
+
+        /*try {
+            boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
+            if (!tableExists) {
+                hBaseAdmin.createTable(ConstantUtils.tableName,ConstantUtils.familyB);
+            }
+            hBaseHelper.addBulk(ConstantUtils.tableName, rowkeyList, familyList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //保存日志
+            dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "3", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 1);
+            return "fail";
+        }*/
+        //保存日志
+        dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "4", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 0);
+
+        JSONObject result = new JSONObject();
+        JSONArray rids = new JSONArray();
+        rids.addAll(rowkeyList);
+        result.put("rid",rids);
+        result.put("upload_time",DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
+        return result.toJSONString();
     }
 }

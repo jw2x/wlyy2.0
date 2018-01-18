@@ -1,18 +1,18 @@
 package com.yihu.iot.datainput.service;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
 import com.yihu.base.hbase.HBaseHelper;
 import com.yihu.iot.datainput.enums.DataTypeEnum;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
+import com.yihu.jw.iot.datainput.Data;
+import com.yihu.jw.iot.datainput.DataBodySignsDO;
+import com.yihu.jw.iot.datainput.DataStandardDO;
+import com.yihu.jw.restmodel.iot.datainput.DataBodySignsVO;
+import com.yihu.jw.util.date.DateUtil;
 import io.searchbox.core.SearchResult;
 import io.searchbox.core.Update;
 import org.apache.commons.lang.StringUtils;
@@ -20,23 +20,22 @@ import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.CollectionUtils;
-import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.elasticsearch.core.query.UpdateQuery;
 import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.beans.PropertyDescriptor;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Component
 public class DataSearchService {
@@ -49,7 +48,15 @@ public class DataSearchService {
     @Autowired
     private HBaseHelper hBaseHelper;
 
+    private Set<String> fieldsSet = new HashSet<>();
 
+    @PostConstruct
+    public void init(){
+        PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(Data.class);
+        for(PropertyDescriptor field:properties){
+            fieldsSet.add(field.getName());
+        }
+    }
     /**
      * 拼接es搜索json string
      * @param json
@@ -117,7 +124,7 @@ public class DataSearchService {
     }
 
     public String getData(String jsonData){
-//        String query = getQueryString(jsonData);
+        logger.info("load data from elasticsearch start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         JSONObject resultJsonObj = new JSONObject();
         JSONArray  resultArray = new JSONArray();
        /* List list = new ArrayList();
@@ -147,6 +154,7 @@ public class DataSearchService {
         resultArray.addAll(esResult.getSourceAsStringList());
         resultJsonObj.put("data", resultArray);
         resultJsonObj.put("count", esResult.getTotal());
+        logger.info("load data from elasticsearch end:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         return resultJsonObj.toJSONString();
 
 //        if (!CollectionUtils.isEmpty(rowkeys)) {
@@ -172,8 +180,8 @@ public class DataSearchService {
     private SearchSourceBuilder getQueryBuilder(String jsonData) {
         JSONObject json = JSONObject.parseObject(jsonData);
         List<Map<String, Object>> filter = (List)json.getJSONArray("filter");
-        int page = json.getIntValue("page");
-        int size = json.getIntValue("size");
+        int page = json.getIntValue("page") == 0 ? 1:json.getIntValue("page"); //从第一页开始
+        int size = json.getIntValue("size") == 0 ? 1:json.getIntValue("size"); //默认值为1，最少获取一条记录
         JSONArray sort = json.getJSONArray("sort");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -182,8 +190,7 @@ public class DataSearchService {
             String condition = String.valueOf(param.get("condition"));
             String field = String.valueOf(param.get("field"));
             Object value = param.get("value");
-            String baseName = DataTypeEnum.body_sign_params.name().toString();
-            if(null != DataStandardConvertService.dataMap.get(baseName) && DataStandardConvertService.dataMap.get(baseName).contains(field) || StringUtils.equalsIgnoreCase("rid",field)){
+            if(!CollectionUtils.isEmpty(fieldsSet) && fieldsSet.contains(field)){
                 field = "data." + field;
             }
             if(condition.equals("=")) {
@@ -221,24 +228,33 @@ public class DataSearchService {
                 }
             }
         }
-        searchSourceBuilder.query(boolQueryBuilder);
         searchSourceBuilder.from((page -1)*size);
         searchSourceBuilder.size(size);
         if(CollectionUtils.notEmpty(sort)){
             for(Object obj:sort){
                 JSONObject object = JSONObject.parseObject(obj.toString());
+                FieldSortBuilder fieldSortBuilder = null;
                 for(String key:object.keySet()){
-                    FieldSortBuilder fieldSortBuilder = new FieldSortBuilder(key);
+                    if(fieldsSet.contains(key)){
+                        fieldSortBuilder = new FieldSortBuilder("data." + key);
+                    }else{
+                        fieldSortBuilder = new FieldSortBuilder(key);
+                    }
                     JSONObject sortValue = object.getJSONObject(key);
                     if(StringUtils.equalsIgnoreCase(SortOrder.ASC.toString(),sortValue.getString("order"))){
                         fieldSortBuilder.order(SortOrder.ASC);
                     }else if(StringUtils.equalsIgnoreCase(SortOrder.DESC.toString(),sortValue.getString("order"))){
                         fieldSortBuilder.order(SortOrder.DESC);
                     }
+                    fieldSortBuilder.setNestedPath("data");
                     searchSourceBuilder.sort(fieldSortBuilder);
                 }
             }
         }
+
+        NestedQueryBuilder nestedQueryBuilder = new NestedQueryBuilder("data",boolQueryBuilder);
+        searchSourceBuilder.query(nestedQueryBuilder);
+
         return searchSourceBuilder;
     }
 
@@ -278,6 +294,8 @@ public class DataSearchService {
         JSONObject updateObj = new JSONObject();
         updateObj.put("data",datas);
 //        boolean bool = elastricSearchHelper.update(ConstantUtils.esIndex, ConstantUtils.esType, _id, updateObj.toJSONString());
+//        Update update = new Update();
+//        update.
         boolean bool = elastricSearchHelper.update(ConstantUtils.esIndex, ConstantUtils.esType, _id, resultObject);
         JSONObject updateResult = new JSONObject();
         updateResult.put("result", bool);
@@ -302,6 +320,8 @@ public class DataSearchService {
      * @return
      */
     public String getDataFromHbase(List<String> rowkeys,SearchResult esResult){
+        long time = System.currentTimeMillis();
+        logger.info("load data from hbase start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         JSONObject resultJsonObj = new JSONObject();
         JSONArray  resultArray = new JSONArray();
         List<Map<String, Object>> resultList = new ArrayList<>();
@@ -338,10 +358,26 @@ public class DataSearchService {
         resultArray.addAll(resultList);
         resultJsonObj.put("data",resultArray);
         resultJsonObj.put("count",esResult.getTotal());
+        long count = System.currentTimeMillis() - time;
+        logger.info("load data from hbase end:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss) + ",count: " + count);
         return resultJsonObj.toJSONString();
     }
 
+    public List<DataBodySignsVO> getDataToBean(String jsonData){
+        List<DataBodySignsVO> result = new ArrayList<>();
+        logger.info("load data from elasticsearch start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
+        SearchSourceBuilder query = getQueryBuilder(jsonData);
+        SearchResult esResult = elastricSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
+        if(esResult.getTotal() == 0){
+            return result;
+        }
+        for(String str :esResult.getSourceAsStringList()){
+            DataBodySignsVO dataBodySignsVO = JSONObject.parseObject(str,DataBodySignsVO.class);
+            result.add(dataBodySignsVO);
+        }
 
+        return result;
+    }
 
     public static void main(String args[]) {
     }

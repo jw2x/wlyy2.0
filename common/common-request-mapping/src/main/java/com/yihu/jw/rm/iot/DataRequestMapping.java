@@ -46,6 +46,8 @@ public class DataRequestMapping {
         public static final String api_user_update = "update";
 
         public static final String message_success = "search success";
+        public static final String update_success = "update success";
+        public static final String delete_success = "delete success";
         public static final String message_fail = "search fail";
         public static final String message_fail_jsonData_is_null = "param is null";
     }

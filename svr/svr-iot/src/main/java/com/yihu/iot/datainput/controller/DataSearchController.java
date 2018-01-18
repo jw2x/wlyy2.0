@@ -1,15 +1,14 @@
 package com.yihu.iot.datainput.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.yihu.iot.datainput.service.DataSearchService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.datainput.DataBodySignsVO;
 import com.yihu.jw.rm.iot.DataRequestMapping;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +23,10 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_data_search_one, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询单条数据", notes = "根据id查询单条数据")
-    public Envelop getOne(
+    public Envelop<DataBodySignsVO> getOne(
             @ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getData(jsonData));
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getDataToBean(jsonData));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -35,9 +34,10 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "查询数据", notes = "根据条件查询数据")
-    public Envelop getList(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+    @ApiModelProperty()
+    public Envelop<DataBodySignsVO> getList(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getData(jsonData));
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getDataToBean(jsonData));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -55,9 +55,9 @@ public class DataSearchController {
 
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_recent5, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "获取最近5条数据", notes = "根据居民的体征类型，测量时间获取")
-    public Envelop getRecent5ByTypeAndTime(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData ){
+    public Envelop<DataBodySignsVO> getRecent5ByTypeAndTime(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData ){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getData(jsonData));
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.getDataToBean(jsonData));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -97,7 +97,7 @@ public class DataSearchController {
     @ApiOperation(value = "体征数据删除", notes = "根据id删除标志，支持伪删除")
     public Envelop delete(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.updateData(jsonData));
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.delete_success,dataSearchService.updateData(jsonData));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -107,7 +107,7 @@ public class DataSearchController {
     @ApiOperation(value = "更新体征记录", notes = "根据id更新体征记录（包括体征值、上传时间等）")
     public Envelop update(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataSearch.message_success,dataSearchService.updateData(jsonData));
+            return Envelop.getSuccess(DataRequestMapping.DataSearch.update_success,dataSearchService.updateData(jsonData));
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
