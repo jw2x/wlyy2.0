@@ -66,7 +66,7 @@ public class FileUploadController extends EnvelopRestController{
             uploadVO.setFileType(fileType);
             uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
             uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
-            return Envelop.getSuccess(IotRequestMapping.DeviceSupplier.message_success_create, uploadVO);
+            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
         }catch (Exception e){
             e.printStackTrace();
             return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
@@ -91,7 +91,7 @@ public class FileUploadController extends EnvelopRestController{
             uploadVO.setFileType(fileType);
             uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
             uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
-            return Envelop.getSuccess(IotRequestMapping.DeviceSupplier.message_success_create, uploadVO);
+            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);

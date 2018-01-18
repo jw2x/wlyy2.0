@@ -64,6 +64,9 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
     @Column(name = "instruction")
     private String instruction;//订单说明
 
+    @Column(name = "ymd")
+    private String ymd;//年月日
+
     @Column(name = "del")
     private Integer del;//删除标志
 
@@ -201,5 +204,13 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public String getYmd() {
+        return ymd;
+    }
+
+    public void setYmd(String ymd) {
+        this.ymd = ymd;
     }
 }
