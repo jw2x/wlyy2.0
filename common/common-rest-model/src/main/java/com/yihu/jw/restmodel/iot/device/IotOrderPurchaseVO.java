@@ -1,0 +1,122 @@
+package com.yihu.jw.restmodel.iot.device;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
+import java.util.Date;
+
+/**
+ * 采购清单表
+ * @author yeshijie on 2017/12/1.
+ */
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(value = "设备质检计划表", description = "设备质检计划表")
+public class IotOrderPurchaseVO extends BaseVO implements Serializable{
+
+    @ApiModelProperty("订单id")
+    private String orderId;
+    @ApiModelProperty("订单编号")
+    private String orderNo;
+    @ApiModelProperty("供应商id")
+    private String supplierId;
+    @ApiModelProperty("供应商名称")
+    private String supplierName;
+    @ApiModelProperty("采购设备名称")
+    private String deviceName;
+    @ApiModelProperty("厂商id")
+    private String manufacturerId;
+    @ApiModelProperty("厂商名称")
+    private String manufacturerName;
+    @ApiModelProperty("采购数量")
+    private Long purchaseNum;
+    @ApiModelProperty("下次质检时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date nextQualityTime;
+    @ApiModelProperty("质检状态")
+    private String qualityStatus;
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getOrderNo() {
+        return orderNo;
+    }
+
+    public void setOrderNo(String orderNo) {
+        this.orderNo = orderNo;
+    }
+
+    public String getSupplierId() {
+        return supplierId;
+    }
+
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
+    }
+
+    public String getSupplierName() {
+        return supplierName;
+    }
+
+    public void setSupplierName(String supplierName) {
+        this.supplierName = supplierName;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getManufacturerId() {
+        return manufacturerId;
+    }
+
+    public void setManufacturerId(String manufacturerId) {
+        this.manufacturerId = manufacturerId;
+    }
+
+    public String getManufacturerName() {
+        return manufacturerName;
+    }
+
+    public void setManufacturerName(String manufacturerName) {
+        this.manufacturerName = manufacturerName;
+    }
+
+    public Long getPurchaseNum() {
+        return purchaseNum;
+    }
+
+    public void setPurchaseNum(Long purchaseNum) {
+        this.purchaseNum = purchaseNum;
+    }
+
+    public Date getNextQualityTime() {
+        return nextQualityTime;
+    }
+
+    public void setNextQualityTime(Date nextQualityTime) {
+        this.nextQualityTime = nextQualityTime;
+    }
+
+    public String getQualityStatus() {
+        return qualityStatus;
+    }
+
+    public void setQualityStatus(String qualityStatus) {
+        this.qualityStatus = qualityStatus;
+    }
+    
+}

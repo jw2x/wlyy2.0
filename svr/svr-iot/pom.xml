@@ -42,7 +42,7 @@
             <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.base</groupId>
+            <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
         <dependency>

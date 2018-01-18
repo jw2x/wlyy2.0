@@ -1,5 +1,6 @@
 package com.yihu.jw.iot.company;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ import java.util.Date;
 public class IotCompanyCertificateDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
-    private String saas_id;//
+    private String saasId;//
     @Column(name = "name")
     private String name;//证书名称
     @Column(name = "manufacturer_name")
@@ -33,20 +34,22 @@ public class IotCompanyCertificateDO extends IdEntityWithOperation implements Se
     @Column(name = "company_business_license")
     private String companyBusinessLicense;//发起企业营业执照号
     @Column(name = "start_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date startTime;//有效期开始时间
     @Column(name = "end_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date endTime;//有效结束时间
     @Column(name = "certificate_of_authorization_img")
     private String certificateOfAuthorizationImg;//授权书扫描件
     @Column(name = "del")
     private Integer del;//删除标志
 
-    public String getSaas_id() {
-        return saas_id;
+    public String getSaasId() {
+        return saasId;
     }
 
-    public void setSaas_id(String saas_id) {
-        this.saas_id = saas_id;
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 
     public String getName() {

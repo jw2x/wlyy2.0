@@ -134,7 +134,7 @@
                 <version>${version.myCommon}</version>
             </dependency>
             <dependency>
-                <groupId>com.yihu.base</groupId>
+                <groupId>com.yihu.jw</groupId>
                 <artifactId>common-util</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>

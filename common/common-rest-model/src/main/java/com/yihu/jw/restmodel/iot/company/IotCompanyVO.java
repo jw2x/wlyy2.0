@@ -54,8 +54,6 @@ public class IotCompanyVO extends BaseVO implements Serializable {
     private String contactsIdcardImg;
     @ApiModelProperty("账号")
     private String account;
-    @ApiModelProperty("删除标志(1有效，0删除)")
-    private Integer del;
 
     @ApiModelProperty("类型")
     private List<IotCompanyTypeVO> typeList;
@@ -194,14 +192,6 @@ public class IotCompanyVO extends BaseVO implements Serializable {
 
     public void setAccount(String account) {
         this.account = account;
-    }
-
-    public Integer getDel() {
-        return del;
-    }
-
-    public void setDel(Integer del) {
-        this.del = del;
     }
 
     public List<IotCompanyTypeVO> getTypeList() {

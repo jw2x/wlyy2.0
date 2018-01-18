@@ -1,14 +1,18 @@
 package com.yihu.iot.service.company;
 
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.iot.dao.company.IotCompanyCertificateChangeRecordDao;
 import com.yihu.iot.dao.company.IotCompanyDao;
 import com.yihu.iot.dao.company.IotCompanyTypeDao;
+import com.yihu.jw.iot.company.IotCompanyCertificateChangeRecordDO;
 import com.yihu.jw.iot.company.IotCompanyDO;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,9 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yeshijie on 2018/1/15.
@@ -33,6 +35,8 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
     private IotCompanyTypeDao iotCompanyTypeDao;
     @Autowired
     private JdbcTemplate jdbcTempalte;
+    @Autowired
+    private IotCompanyCertificateChangeRecordDao iotCompanyCertificateChangeRecordDao;
 
     /**
      * 分页查找
@@ -43,7 +47,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @return
      * @throws ParseException
      */
-    public Envelop queryPage(Integer page,Integer size,String status,String name) throws ParseException {
+    public Envelop<IotCompanyVO> queryPage(Integer page,Integer size,String status,String name) throws ParseException {
         String filters = "";
         String semicolon = "";
         if(StringUtils.isNotBlank(name)){
@@ -67,9 +71,38 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
         long count = getCount(filters);
 
         //DO转VO
-        List<IotCompanyVO> iotCompanyVOList = convertToModels(list,new ArrayList<>(list.size()),IotCompanyVO.class);
+        List<IotCompanyVO> iotCompanyVOList = convertToModelVOs(list,new ArrayList<>(list.size()));
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
+    }
+
+    /**
+     * 转换
+     * @param sources
+     * @param targets
+     * @return
+     */
+    public List<IotCompanyVO> convertToModelVOs(Collection sources, List<IotCompanyVO> targets){
+        sources.forEach(one -> {
+            IotCompanyVO target = new IotCompanyVO();
+            BeanUtils.copyProperties(one, target);
+            List<IotCompanyTypeVO> voList = convertToModels(target.getTypeList(),new ArrayList<>(target.getTypeList().size()),IotCompanyTypeVO.class);
+            target.setTypeList(voList);
+            targets.add(target);
+        });
+        return targets;
+    }
+
+    /**
+     * 单个转换
+     * @return
+     */
+    public IotCompanyVO convertToModelVO(IotCompanyDO iotCompanyDO){
+        IotCompanyVO target = new IotCompanyVO();
+        BeanUtils.copyProperties(iotCompanyDO, target);
+        List<IotCompanyTypeVO> voList = convertToModels(target.getTypeList(),new ArrayList<>(target.getTypeList().size()),IotCompanyTypeVO.class);
+        target.setTypeList(voList);
+        return target;
     }
 
     /**
@@ -111,7 +144,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
         long count = Long.valueOf(countList.get(0).get("count").toString());
 
         //DO转VO
-        List<IotCompanyVO> iotCompanyVOList = convertToModels(list,new ArrayList<>(list.size()),IotCompanyVO.class);
+        List<IotCompanyVO> iotCompanyVOList = convertToModelVOs(list,new ArrayList<>(list.size()));
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
     }
@@ -122,7 +155,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @return
      */
     public IotCompanyDO create(IotCompanyDO iotCompany) {
-
+        iotCompany.setStatus("1");
         iotCompany.setSaasId(getCode());
         iotCompany.setDel(1);
         List<IotCompanyTypeDO> list = iotCompany.getTypeList();
@@ -152,6 +185,15 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
         IotCompanyDO company = iotCompanyDao.findById(id);
         findType(company);
         return company;
+    }
+
+    /**
+     * 按营业执照号查询
+     * @param businessLincense
+     * @return
+     */
+    public IotCompanyDO findByBusinessLicense(String businessLincense){
+        return iotCompanyDao.findByBusinessLicense(businessLincense);
     }
 
     /**
@@ -204,6 +246,68 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
 
         iotCompanyTypeDao.save(companyTypes);
 
+        //记录三证变更记录
+        IotCompanyDO iotCompanyOld = iotCompanyDao.findById(iotCompany.getId());
+        List<IotCompanyCertificateChangeRecordDO> recordDOList = new ArrayList<>(3);
+        if(compare(iotCompany.getBusinessLicense(),iotCompanyOld.getBusinessLicense())||
+                compare(iotCompany.getBusinessLicenseImg(),iotCompanyOld.getBusinessLicenseImg())){
+            //营业执照
+            IotCompanyCertificateChangeRecordDO recordDO = new IotCompanyCertificateChangeRecordDO();
+            recordDO.setCompanyId(iotCompany.getId());
+            recordDO.setSaasId(getCode());
+            recordDO.setType("1");
+            recordDO.setCreateTime(new Date());
+            recordDO.setCertificateNew(iotCompany.getBusinessLicenseImg());
+            recordDO.setLicenseNew(iotCompany.getBusinessLicense());
+            recordDO.setCertificateOld(iotCompanyOld.getBusinessLicenseImg());
+            recordDO.setLicenseOld(iotCompanyOld.getBusinessLicense());
+            recordDO.setCompanyName(iotCompany.getName());
+            recordDOList.add(recordDO);
+        }
+        if(compare(iotCompany.getOrganizationCodeImg(),iotCompanyOld.getOrganizationCodeImg())){
+            //组织机构代码
+            IotCompanyCertificateChangeRecordDO recordDO = new IotCompanyCertificateChangeRecordDO();
+            recordDO.setCompanyId(iotCompany.getId());
+            recordDO.setSaasId(getCode());
+            recordDO.setType("2");
+            recordDO.setCreateTime(new Date());
+            recordDO.setCertificateNew(iotCompany.getOrganizationCodeImg());
+            recordDO.setCertificateOld(iotCompanyOld.getOrganizationCodeImg());
+            recordDO.setCompanyName(iotCompany.getName());
+            recordDOList.add(recordDO);
+        }
+        if(compare(iotCompany.getTaxRegistrationImg(),iotCompanyOld.getTaxRegistrationImg())){
+            //税务登记证
+            IotCompanyCertificateChangeRecordDO recordDO = new IotCompanyCertificateChangeRecordDO();
+            recordDO.setCompanyId(iotCompany.getId());
+            recordDO.setSaasId(getCode());
+            recordDO.setType("3");
+            recordDO.setCreateTime(new Date());
+            recordDO.setCertificateNew(iotCompany.getTaxRegistrationImg());
+            recordDO.setCertificateOld(iotCompanyOld.getTaxRegistrationImg());
+            recordDO.setCompanyName(iotCompany.getName());
+            recordDOList.add(recordDO);
+        }
+        if(recordDOList.size()>0){
+            iotCompanyCertificateChangeRecordDao.save(recordDOList);
+        }
+
         iotCompanyDao.save(iotCompany);
+    }
+
+    /**
+     * 判断三证是否修改
+     * @param newStr
+     * @param oldStr
+     * @return
+     */
+    public Boolean compare(String newStr,String oldStr){
+        if(newStr!=null){
+            return newStr.equals(oldStr);
+        }else if(oldStr!=null){
+            return oldStr.equals(newStr);
+        }else {
+            return true;
+        }
     }
 }

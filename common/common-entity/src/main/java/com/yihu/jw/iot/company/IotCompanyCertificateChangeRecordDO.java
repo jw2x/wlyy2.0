@@ -22,7 +22,7 @@ public class IotCompanyCertificateChangeRecordDO extends IdEntityWithOperation i
     @Column(name = "company_id")
     private String companyId;//企业id
     @Column(name = "type")
-    private String type;//类型
+    private String type;//类型(1营业执照，2组织机构代码证，3税务登记证)
     @Column(name = "license_old")
     private String licenseOld;//原证书号码
     @Column(name = "certificate_old")

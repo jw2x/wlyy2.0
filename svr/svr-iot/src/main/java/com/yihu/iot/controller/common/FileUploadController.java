@@ -2,15 +2,16 @@ package com.yihu.iot.controller.common;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.yihu.base.fastdfs.FastDFSHelper;
-import com.yihu.iot.vo.common.UploadVO;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,47 @@ public class FileUploadController extends EnvelopRestController{
     private String fastdfs_file_url;
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream)
+    @ApiOperation(value = "文件流上传图片", notes = "文件流上传图片")
+    public Envelop<UploadVO> uploadImg(@ApiParam(value = "文件", required = true)
+                                       @RequestParam(value = "file", required = true) MultipartFile file){
+        try {
+            // 得到文件的完整名称  xxx.txt
+            String fullName = file.getOriginalFilename();
+            if(StringUtils.isBlank(fullName)){
+                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
+            }
+            //得到文件类型
+            String fileType = fullName.substring(fullName.lastIndexOf(".") + 1).toLowerCase();
+            if(StringUtils.isBlank(fileType)||!"jpg,jpeg,png".contains(fileType)){
+                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
+            }
+
+            long size = file.getSize();
+            long max = 5*1024*1024;
+            if(size>max){
+                return Envelop.getError("文件大小不超过5M",IotRequestMapping.api_iot_fail);
+            }
+
+            String fileName = fullName.substring(0, fullName.lastIndexOf("."));
+            //上传到fastdfs
+            ObjectNode objectNode = fastDFSHelper.upload(file.getInputStream(), fileType, "");
+            //解析返回的objectNode
+            UploadVO uploadVO = new UploadVO();
+            uploadVO.setFileName(fileName);
+            uploadVO.setFileType(fileType);
+            uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
+            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+            return Envelop.getSuccess(IotRequestMapping.DeviceSupplier.message_success_create, uploadVO);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
+        }
+    }
+
+
+    @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream)
     @ApiOperation(value = "文件流上传文件", notes = "文件流上传文件")
-    public Envelop uploadStream(@ApiParam(value = "文件", required = true) @RequestParam(value = "file", required = true) MultipartFile file) {
+    public Envelop<UploadVO> uploadStream(@ApiParam(value = "文件", required = true) @RequestParam(value = "file", required = true) MultipartFile file) {
         try {
             // 得到文件的完整名称  xxx.txt
             String fullName = file.getOriginalFilename();
@@ -60,7 +100,7 @@ public class FileUploadController extends EnvelopRestController{
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_string)
     @ApiOperation(value = "base64上传图片",notes = "base64上传图片")
-    public Envelop uploadImages(@ApiParam(name = "jsonData", value = "头像转化后的输入流") @RequestBody String jsonData) throws Exception {
+    public Envelop<UploadVO> uploadImages(@ApiParam(name = "jsonData", value = "头像转化后的输入流") @RequestBody String jsonData) throws Exception {
         try {
             if(jsonData == null){
                 return Envelop.getError(IotRequestMapping.FileUpload.message_fail_jsonData_is_null, ExceptionCode.common_error_params_code);

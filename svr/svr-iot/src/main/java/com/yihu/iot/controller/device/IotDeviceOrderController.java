@@ -5,6 +5,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.iot.device.IotDeviceOrderDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,11 +31,12 @@ public class IotDeviceOrderController extends EnvelopRestController{
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建设备订单", notes = "创建设备订单")
-    public Envelop<IotDeviceOrderDO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
+    public Envelop<IotDeviceOrderVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                           @RequestBody String jsonData) {
         try {
             IotDeviceOrderDO iotDeviceOrder = toEntity(jsonData, IotDeviceOrderDO.class);
-            return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_create, iotDeviceOrderService.create(iotDeviceOrder));
+            iotDeviceOrderService.create(iotDeviceOrder);
+            return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_create);
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
