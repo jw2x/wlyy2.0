@@ -1,75 +1,69 @@
-package com.yihu.jw.iot.product;
+package com.yihu.jw.restmodel.iot.product;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 产品基本信息表
  * @author yeshijie on 2018/1/16.
  */
-@Entity
-@Table(name = "iot_product_base_info")
-public class IotProductBaseInfoDO extends IdEntityWithOperation implements Serializable {
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(description = "产品基本信息表")
+public class IotProductBaseInfoVO extends BaseVO implements Serializable {
 
-    @Column(name = "saas_id")
-    private String saasId;//
-    @Column(name = "parent_id")
-    private String parentId;//父类ID
-    @Column(name = "product_classify")
-    private String productClassify;//产品分类(1自由产品，2代理产品)
-    @Column(name = "supplier_name")
-    private String supplierName;//厂商名称
-    @Column(name = "supplier_id")
-    private String supplierId;//厂商id
-    @Column(name = "agent_name")
-    private String agentName;//代理商名称
-    @Column(name = "agent_id")
-    private String agentId;//代理商id
-    @Column(name = "type")
-    private String type;//产品类型
-    @Column(name = "product_subclass")
-    private String productSubclass;//产品小类
-    @Column(name = "instrument_classify")
-    private String instrumentClassify;//68分类/器械分类
-    @Column(name = "register_certificate")
-    private String registerCertificate;//注册证号
-    @Column(name = "register_certificate_img")
-    private String registerCertificateImg;//注册证扫描件
-    @Column(name = "start_time")
-    private Date startTime;//有效期开始时间
-    @Column(name = "end_time")
-    private Date endTime;//有效期结束时间
-    @Column(name = "name")
-    private String name;//产品名称
-    @Column(name = "alias")
-    private String alias;//别名
-    @Column(name = "brand_name")
-    private String brandName;//品牌名称
-    @Column(name = "origin_place")
-    private String originPlace;//产地
-    @Column(name = "origin_type")
-    private Integer originType;//产地类型
-    @Column(name = "is_cold_chain")
-    private Integer isColdChain;//是否需要冷链
-    @Column(name = "certificate_id")
-    private String certificateId;//授权id
-    @Column(name = "certificate_name")
-    private String certificateName;//授权书名称
-    @Column(name = "del")
-    private Integer del;//删除标志
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
-    }
+    @ApiModelProperty("父类ID")
+    private String parentId;
+    @ApiModelProperty("产品分类")
+    private String productClassify;
+    @ApiModelProperty("厂商名称")
+    private String supplierName;
+    @ApiModelProperty("厂商id")
+    private String supplierId;
+    @ApiModelProperty("代理商名称")
+    private String agentName;
+    @ApiModelProperty("代理商id")
+    private String agentId;
+    @ApiModelProperty("产品类型")
+    private String type;
+    @ApiModelProperty("产品小类")
+    private String productSubclass;
+    @ApiModelProperty("68分类/器械分类")
+    private String instrumentClassify;
+    @ApiModelProperty("注册证号")
+    private String registerCertificate;
+    @ApiModelProperty("注册证扫描件")
+    private String registerCertificateImg;
+    @ApiModelProperty("有效期开始时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date startTime;
+    @ApiModelProperty("有效期结束时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date endTime;
+    @ApiModelProperty("产品名称")
+    private String name;
+    @ApiModelProperty("别名")
+    private String alias;
+    @ApiModelProperty("品牌名称")
+    private String brandName;
+    @ApiModelProperty("产地")
+    private String originPlace;
+    @ApiModelProperty("产地类型(1国产，2进口)")
+    private Integer originType;
+    @ApiModelProperty("是否需要冷链(1是，0否)")
+    private Integer isColdChain;
+    @ApiModelProperty("授权id")
+    private String certificateId;
+    @ApiModelProperty("授权书名称")
+    private String certificateName;
+    @ApiModelProperty("数据传输方式")
+    private List<IotProductDataTransmissionVO> dataTransmissionVOList;
 
     public String getParentId() {
         return parentId;
@@ -239,11 +233,11 @@ public class IotProductBaseInfoDO extends IdEntityWithOperation implements Seria
         this.certificateName = certificateName;
     }
 
-    public Integer getDel() {
-        return del;
+    public List<IotProductDataTransmissionVO> getDataTransmissionVOList() {
+        return dataTransmissionVOList;
     }
 
-    public void setDel(Integer del) {
-        this.del = del;
+    public void setDataTransmissionVOList(List<IotProductDataTransmissionVO> dataTransmissionVOList) {
+        this.dataTransmissionVOList = dataTransmissionVOList;
     }
 }

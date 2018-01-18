@@ -10,19 +10,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 设备质检计划表
- * @author yeshijie on 2017/12/1.
+ * 质检记录表
+ * @author yeshijie on 2018/1/16.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "设备质检计划表", description = "设备质检计划表")
-public class IotDeviceQualityInspectionPlanVO extends BaseVO implements Serializable{
+@ApiModel(value = "质检记录表", description = "质检记录表")
+public class IotQualityRecordVO extends BaseVO implements Serializable {
 
-    @ApiModelProperty("采购id")
-    private String purchaseId;
-    @ApiModelProperty("订单id")
-    private String orderId;
-    @ApiModelProperty("订单编号")
-    private String orderNo;
     @ApiModelProperty("设备id")
     private String deviceId;
     @ApiModelProperty("设备名称")
@@ -39,32 +33,8 @@ public class IotDeviceQualityInspectionPlanVO extends BaseVO implements Serializ
     @ApiModelProperty("实际质检时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date actualTime;
-    @ApiModelProperty("质检状态(1未检，2已检)")
+    @ApiModelProperty("质检状态")
     private String status;
-
-    public String getPurchaseId() {
-        return purchaseId;
-    }
-
-    public void setPurchaseId(String purchaseId) {
-        this.purchaseId = purchaseId;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
-    }
 
     public String getDeviceId() {
         return deviceId;
@@ -129,4 +99,5 @@ public class IotDeviceQualityInspectionPlanVO extends BaseVO implements Serializ
     public void setStatus(String status) {
         this.status = status;
     }
+    
 }

@@ -15,6 +15,22 @@ public class IotRequestMapping {
         public static final String company = api_iot_common + "/company";
         public static final String system_dict = api_iot_common + "/systemDict";
         public static final String file_upload = api_iot_common + "/fileUpload";
+        public static final String product = api_iot_common + "/product";
+
+
+        public static final String message_success_update = "update success";
+        public static final String message_success_delete = "delete success";
+        public static final String message_success_find = "find success";
+        public static final String message_success_create = "create success";
+        public static final String message_success_find_functions = "find success";
+
+        public static final String message_fail_name_is_null = "name is null";
+        public static final String message_fail_is_no_exist = "is no exist";
+        public static final String message_fail_id_no_exist = "id no exist";
+        public static final String message_fail_status_is_null = "status is null";
+        public static final String message_fail_id_is_null = "id is null";
+        public static final String message_fail_id_exist = "id exist";
+        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
     public static class System{
@@ -26,10 +42,12 @@ public class IotRequestMapping {
      */
     public static class FileUpload{
         public static final String api_upload_stream = "uploadStream";//文件流上传
+        public static final String api_upload_stream_img = "uploadImg";//文件流上传图片
         public static final String api_upload_string = "uploadString";//base64字符串上传
 
         public static final String message_success_upload = "上传成功";
         public static final String message_fail_upload = "上传失败";
+        public static final String message_fail_upload_format = "不支持该文件格式上传";
         public static final String message_fail_jsonData_is_null = "jsonData is null";
     }
 
@@ -40,9 +58,14 @@ public class IotRequestMapping {
         public static final String findCompanyPage = "findCompanyPage";
         public static final String addCompany = "addCompany";
         public static final String findCompanyById = "findCompanyById";
+        public static final String findByBusinessLicense = "findByBusinessLicense";
         public static final String updCompany = "updCompany";
         public static final String delCompany = "delCompany";
 
+        public static final String findCompanyCertPage = "findCompanyCertPage";
+        public static final String findCompanyCertById = "findCompanyCertById";
+        public static final String findCompanyCertByCompanyId = "findCompanyCertByCompanyId";
+        public static final String addCompanyCert = "addCompanyCert";
 
         public static final String api_create = "company";
         public static final String api_delete = "company";
@@ -67,39 +90,16 @@ public class IotRequestMapping {
     }
 
     /**
-     * 供应商模块常量
+     * 产品模块常量
      */
-    public static class DeviceSupplier {
-        public static final String api_create = "deviceSupplier";
-        public static final String api_delete = "deviceSupplier";
-        public static final String api_getById = "getDeviceSupplierById";
-        public static final String api_update = "deviceSupplier";
-        public static final String api_queryPage = "queryDeviceSupplierPage";
-        public static final String api_getList = "getDeviceSupplierList";
+    public static class Product {
+        public static final String findProductPage = "findProductPage";
+        public static final String findProductPageByCompanyId = "findProductPageByCompanyId";
+        public static final String addProduct = "addProduct";
+        public static final String findProductById = "findProductById";
+        public static final String updProduct= "updProduct";
+        public static final String delProduct= "delProduct";
 
-        public static final String message_success_update = "deviceSupplier update success";
-        public static final String message_success_delete = "deviceSupplier delete success";
-        public static final String message_success_find = "deviceSupplier find success";
-        public static final String message_success_create = "deviceSupplier create success";
-        public static final String message_success_find_functions = "deviceSupplier find success";
-
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotDeviceSupplier_is_no_exist = "iotDeviceSupplier is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
-
-        public static final String message_fail_supplierName_is_null = "供应商名称不能为空";
-        public static final String message_fail_organizationCode_is_null = "组织机构代码/统一社会信用代码不能为空";
-        public static final String message_fail_contactsName_is_null = "联系人姓名不能为空";
-        public static final String message_fail_contactsMobile_is_null = "联系人手机号码不能为空";
-        public static final String message_fail_contactsPhone_is_null = "联系人座机不能为空";
-        public static final String message_fail_contactsIdcard_is_null = "联系人身份证号不能为空";
-        public static final String message_fail_type_is_null = "请选择供应商类型";
-        public static final String message_fail_organizationCodeImg_is_null = "请上传组织机构代码证照片";
-        public static final String message_fail_contactsIdcardImg_is_null = "请上传联系人身份证照片";
     }
 
     /**

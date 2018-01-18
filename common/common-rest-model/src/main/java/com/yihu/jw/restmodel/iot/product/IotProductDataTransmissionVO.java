@@ -1,23 +1,24 @@
-package com.yihu.jw.restmodel.iot.company;
+package com.yihu.jw.restmodel.iot.product;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
 /**
- * 企业类型表
+ * 设备数据传输方式表
  * @author yeshijie on 2018/1/16.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "企业类型表", description = "企业类型表")
-public class IotCompanyTypeVO implements Serializable {
+@ApiModel(description = "设备数据传输方式表")
+public class IotProductDataTransmissionVO extends BaseVO implements Serializable {
 
-    @ApiModelProperty("企业类型code")
-    private String type;//
-    @ApiModelProperty("企业类型名称")
-    private String typeName;//
+    @ApiModelProperty("传输协议类型")
+    private String type;
+    @ApiModelProperty("传输协议类型名称")
+    private String typeName;
 
     public String getType() {
         return type;
@@ -34,4 +35,5 @@ public class IotCompanyTypeVO implements Serializable {
     public void setTypeName(String typeName) {
         this.typeName = typeName;
     }
+
 }

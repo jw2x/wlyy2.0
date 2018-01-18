@@ -13,6 +13,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface IotCompanyDao extends PagingAndSortingRepository<IotCompanyDO, String>,
         JpaSpecificationExecutor<IotCompanyDO> {
 
-    @Query("from IotCompanyDO w where w.id =?1")
+    @Query("from IotCompanyDO w where w.id =?1 and w.del=1 ")
     IotCompanyDO findById(String id);
+
+    @Query("from IotCompanyDO w where w.businessLicense =?1 and w.del=1")
+    IotCompanyDO findByBusinessLicense(String businessLicense);
 }

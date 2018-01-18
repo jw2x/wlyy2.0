@@ -1,36 +1,53 @@
 package com.yihu.jw.restmodel.iot.device;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 设备订单表
  * @author yeshijie on 2017/12/1.
  */
-public class IotDeviceOrderVO implements Serializable{
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(value = "设备订单表", description = "设备订单表")
+public class IotDeviceOrderVO extends BaseVO implements Serializable{
 
-    private String saasId;
-    private String orderNo;//订单编号
-    private String orderStatus;//订单状态
-    private Date purchaseTime;//采购时间
-    private String orderContractName;//订单合同名称
-    private String orderContractUrl;//订单合同链接
-    private String purchaseUnitCode;//采购单位编码
-    private String purchaseUnitName;//采购单位名称
-    private String purchaserName;//采购负责人
-    private String purchaserPhone;//采购负责人联系方式
-    private String supplierCode;//供应商code
-    private String supplierName;//供应商名称
-    private String supplierType;//供应商类型
-    private String supplierLeader;//供应商负责人
-    private String supplierLeaderPhone;//供应商负责人联系方式
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
-    }
+    @ApiModelProperty("订单编号")
+    private String orderNo;
+    @ApiModelProperty("订单状态")
+    private String orderStatus;
+    @ApiModelProperty("采购时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date purchaseTime;
+    @ApiModelProperty("订单合同名称")
+    private String orderContractName;
+    @ApiModelProperty("订单合同链接")
+    private String orderContractUrl;
+    @ApiModelProperty("采购单位编码")
+    private String purchaseUnitCode;
+    @ApiModelProperty("采购单位名称")
+    private String purchaseUnitName;
+    @ApiModelProperty("采购负责人")
+    private String purchaserName;
+    @ApiModelProperty("采购负责人联系方式")
+    private String purchaserPhone;
+    @ApiModelProperty("供应商id")
+    private String supplierId;
+    @ApiModelProperty("供应商名称")
+    private String supplierName;
+    @ApiModelProperty("供应商类型")
+    private String supplierType;
+    @ApiModelProperty("供应商负责人")
+    private String supplierLeader;
+    @ApiModelProperty("供应商负责人联系方式")
+    private String supplierLeaderPhone;
+    @ApiModelProperty("订单说明")
+    private String instruction;
 
     public String getOrderNo() {
         return orderNo;
@@ -104,12 +121,12 @@ public class IotDeviceOrderVO implements Serializable{
         this.purchaserPhone = purchaserPhone;
     }
 
-    public String getSupplierCode() {
-        return supplierCode;
+    public String getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getSupplierName() {
@@ -143,4 +160,13 @@ public class IotDeviceOrderVO implements Serializable{
     public void setSupplierLeaderPhone(String supplierLeaderPhone) {
         this.supplierLeaderPhone = supplierLeaderPhone;
     }
+
+    public String getInstruction() {
+        return instruction;
+    }
+
+    public void setInstruction(String instruction) {
+        this.instruction = instruction;
+    }
+    
 }
