@@ -1,7 +1,6 @@
 package com.yihu.iot.controller.product;
 
 import com.yihu.iot.service.product.IotProductBaseInfoService;
-import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.iot.product.IotProductBaseInfoDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
@@ -71,6 +70,7 @@ public class IotProductController extends EnvelopRestController {
 
             return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
         } catch (Exception e) {
+            e.printStackTrace();
             return Envelop.getError(e.getMessage());
         }
     }
@@ -108,6 +108,7 @@ public class IotProductController extends EnvelopRestController {
 
             return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
         } catch (Exception e) {
+            e.printStackTrace();
             return Envelop.getError(e.getMessage());
         }
     }
@@ -120,8 +121,9 @@ public class IotProductController extends EnvelopRestController {
             IotProductVO iotProductVO = toEntity(jsonData, IotProductVO.class);
             iotProductBaseInfoService.addProduct(iotProductVO);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_create);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -133,8 +135,8 @@ public class IotProductController extends EnvelopRestController {
         try {
             IotProductVO vo = iotProductBaseInfoService.findProductById(id);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, vo);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -145,8 +147,9 @@ public class IotProductController extends EnvelopRestController {
         try {
             iotProductBaseInfoService.delProduct(id);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -158,8 +161,9 @@ public class IotProductController extends EnvelopRestController {
             IotProductVO iotProductVO = toEntity(jsonData, IotProductVO.class);
             iotProductBaseInfoService.updProduct(iotProductVO);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 

@@ -23,7 +23,7 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
     private String orderNo;//订单编号
 
     @Column(name = "order_status")
-    private String orderStatus;//订单状态
+    private String orderStatus;//订单状态(1新增、2已采购、3已入库)
 
     @Column(name = "purchase_time")
     private Date purchaseTime;//采购时间
@@ -52,9 +52,6 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
     @Column(name = "supplier_name")
     private String supplierName;//供应商名称
 
-    @Column(name = "supplier_type")
-    private String supplierType;//供应商类型
-
     @Column(name = "supplier_leader")
     private String supplierLeader;//供应商负责人
 
@@ -69,6 +66,35 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
 
     @Column(name = "del")
     private Integer del;//删除标志
+
+    public enum DeviceOrderStatus {
+        create("新增", "1"),
+        purchased("已采购", "2"),
+        storaged("已入库", "3");
+        private String name;
+        private String value;
+
+        DeviceOrderStatus(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
 
     public String getSaasId() {
         return saasId;
@@ -164,14 +190,6 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
-    }
-
-    public String getSupplierType() {
-        return supplierType;
-    }
-
-    public void setSupplierType(String supplierType) {
-        this.supplierType = supplierType;
     }
 
     public String getSupplierLeader() {

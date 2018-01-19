@@ -35,7 +35,7 @@ public class FileUploadController extends EnvelopRestController{
     @Value("${fastDFS.fastdfs_file_url}")
     private String fastdfs_file_url;
 
-    @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream)
+    @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream_img)
     @ApiOperation(value = "文件流上传图片", notes = "文件流上传图片")
     public Envelop<UploadVO> uploadImg(@ApiParam(value = "文件", required = true)
                                        @RequestParam(value = "file", required = true) MultipartFile file){

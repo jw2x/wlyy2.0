@@ -115,8 +115,8 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @return
      */
     public Envelop<IotCompanyVO> queryPage(Integer page, Integer size, String status, String name, String type){
-        StringBuffer sql = new StringBuffer("SELECT DISTINCT c.* from iot_company c ,iot_company_type t WHERE del=1 ");
-        StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_company c ,iot_company_type t WHERE del=1 ");
+        StringBuffer sql = new StringBuffer("SELECT DISTINCT c.* from iot_company c ,iot_company_type t WHERE c.del=1 ");
+        StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_company c ,iot_company_type t WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
         if(StringUtils.isNotBlank(status)){
             sql.append(" and c.status=? ");
@@ -124,8 +124,8 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
             args.add(status);
         }
         if(StringUtils.isNotBlank(name)){
-            sql.append(" and (c.name like ? or c.contactsName like ?)");
-            sqlCount.append(" and (c.name like '").append(name).append("' or c.contactsName like '").append(name).append("')");
+            sql.append(" and (c.name like ? or c.contacts_name like ?)");
+            sqlCount.append(" and (c.name like '").append(name).append("' or c.contacts_name like '").append(name).append("')");
             args.add(name);
             args.add(name);
         }
@@ -213,6 +213,15 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
             });
         }
         company.setTypeList(list);
+    }
+
+    /**
+     * 查找企业类型
+     * @param companyId
+     * @return
+     */
+    public List<IotCompanyTypeDO> findTypeByCompanyId(String companyId){
+        return iotCompanyTypeDao.findByCompanyId(companyId);
     }
 
     /**
