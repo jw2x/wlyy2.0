@@ -35,8 +35,9 @@ public class IotDeviceQualityInspectionPlanController extends EnvelopRestControl
         try {
             IotDeviceQualityInspectionPlanDO iotDeviceQualityInspectionPlan = toEntity(jsonData, IotDeviceQualityInspectionPlanDO.class);
             return Envelop.getSuccess(IotRequestMapping.DeviceQualityInspectionPlan.message_success_create, iotDeviceQualityInspectionPlanService.create(iotDeviceQualityInspectionPlan));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -47,8 +48,9 @@ public class IotDeviceQualityInspectionPlanController extends EnvelopRestControl
     ) {
         try {
             return Envelop.getSuccess(IotRequestMapping.DeviceQualityInspectionPlan.message_success_find, iotDeviceQualityInspectionPlanService.findById(id));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 

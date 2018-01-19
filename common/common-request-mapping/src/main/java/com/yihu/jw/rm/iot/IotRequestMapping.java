@@ -16,6 +16,8 @@ public class IotRequestMapping {
         public static final String system_dict = api_iot_common + "/systemDict";
         public static final String file_upload = api_iot_common + "/fileUpload";
         public static final String product = api_iot_common + "/product";
+        public static final String order = api_iot_common + "/order";
+        public static final String device = api_iot_common + "/device";
 
 
         public static final String message_success_update = "update success";
@@ -191,6 +193,12 @@ public class IotRequestMapping {
         public static final String api_queryPage = "queryDevicePage";
         public static final String api_getList = "getDeviceList";
 
+        public static final String isSnExist = "isSnExist";
+        public static final String isSimExist = "isSimExist";
+        public static final String importDevice = "importDevice";
+
+        public static final String queryImportRecordPage = "queryImportRecordPage";
+
         public static final String message_success_update = "device update success";
         public static final String message_success_delete = "device delete success";
         public static final String message_success_find = "device find success";
@@ -210,6 +218,13 @@ public class IotRequestMapping {
      * 设备订单模块常量
      */
     public static class DeviceOrder{
+        public static final String findPage = "findPage";
+        public static final String findById = "findById";
+        public static final String delOrder = "delOrder";
+        public static final String updOrder = "updOrder";
+
+        public static final String findPurcharsePage = "findPurcharsePage";
+
         public static final String api_create = "deviceOrder";
         public static final String api_delete = "deviceOrder";
         public static final String api_getById = "getDeviceOrderById";

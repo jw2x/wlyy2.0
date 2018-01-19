@@ -38,6 +38,14 @@ public class IotOrderPurchaseVO extends BaseVO implements Serializable{
     private Date nextQualityTime;
     @ApiModelProperty("质检状态")
     private String qualityStatus;
+    @ApiModelProperty("维护单位Id")
+    private String maintenanceUnitId;
+    @ApiModelProperty("维护单位名称")
+    private String maintenanceUnitName;
+    @ApiModelProperty("已关联数量")
+    private Long associatedNum;
+    @ApiModelProperty("未关联数量")
+    private Long unAssociatedNum;
 
     public String getOrderId() {
         return orderId;
@@ -118,5 +126,36 @@ public class IotOrderPurchaseVO extends BaseVO implements Serializable{
     public void setQualityStatus(String qualityStatus) {
         this.qualityStatus = qualityStatus;
     }
-    
+
+    public String getMaintenanceUnitId() {
+        return maintenanceUnitId;
+    }
+
+    public void setMaintenanceUnitId(String maintenanceUnitId) {
+        this.maintenanceUnitId = maintenanceUnitId;
+    }
+
+    public String getMaintenanceUnitName() {
+        return maintenanceUnitName;
+    }
+
+    public void setMaintenanceUnitName(String maintenanceUnitName) {
+        this.maintenanceUnitName = maintenanceUnitName;
+    }
+
+    public Long getAssociatedNum() {
+        return associatedNum;
+    }
+
+    public void setAssociatedNum(Long associatedNum) {
+        this.associatedNum = associatedNum;
+    }
+
+    public Long getUnAssociatedNum() {
+        return unAssociatedNum;
+    }
+
+    public void setUnAssociatedNum(Long unAssociatedNum) {
+        this.unAssociatedNum = unAssociatedNum;
+    }
 }

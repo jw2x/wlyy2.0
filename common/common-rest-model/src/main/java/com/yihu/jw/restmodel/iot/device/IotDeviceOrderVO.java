@@ -3,11 +3,13 @@ package com.yihu.jw.restmodel.iot.device;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yihu.jw.restmodel.iot.common.BaseVO;
+import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 设备订单表
@@ -40,14 +42,15 @@ public class IotDeviceOrderVO extends BaseVO implements Serializable{
     private String supplierId;
     @ApiModelProperty("供应商名称")
     private String supplierName;
-    @ApiModelProperty("供应商类型")
-    private String supplierType;
     @ApiModelProperty("供应商负责人")
     private String supplierLeader;
     @ApiModelProperty("供应商负责人联系方式")
     private String supplierLeaderPhone;
     @ApiModelProperty("订单说明")
     private String instruction;
+
+    @ApiModelProperty("类型")
+    private List<IotCompanyTypeVO> typeList;
 
     public String getOrderNo() {
         return orderNo;
@@ -137,14 +140,6 @@ public class IotDeviceOrderVO extends BaseVO implements Serializable{
         this.supplierName = supplierName;
     }
 
-    public String getSupplierType() {
-        return supplierType;
-    }
-
-    public void setSupplierType(String supplierType) {
-        this.supplierType = supplierType;
-    }
-
     public String getSupplierLeader() {
         return supplierLeader;
     }
@@ -168,5 +163,12 @@ public class IotDeviceOrderVO extends BaseVO implements Serializable{
     public void setInstruction(String instruction) {
         this.instruction = instruction;
     }
-    
+
+    public List<IotCompanyTypeVO> getTypeList() {
+        return typeList;
+    }
+
+    public void setTypeList(List<IotCompanyTypeVO> typeList) {
+        this.typeList = typeList;
+    }
 }

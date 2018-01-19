@@ -2,7 +2,6 @@ package com.yihu.iot.controller.company;
 
 import com.yihu.iot.service.company.IotCompanyCertificateService;
 import com.yihu.iot.service.company.IotCompanyService;
-import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.iot.company.IotCompanyCertificateDO;
 import com.yihu.jw.iot.company.IotCompanyDO;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -59,6 +58,7 @@ public class IotCompanyController extends EnvelopRestController {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
             return Envelop.getError(e.getMessage());
         }
     }
@@ -70,11 +70,11 @@ public class IotCompanyController extends EnvelopRestController {
         try {
             IotCompanyDO iotCompany = toEntity(jsonData, IotCompanyDO.class);
             return Envelop.getSuccess(IotRequestMapping.Company.message_success_create, iotCompanyService.create(iotCompany));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
-
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyById)
     @ApiOperation(value = "根据id查找企业", notes = "根据id查找企业")
@@ -84,8 +84,9 @@ public class IotCompanyController extends EnvelopRestController {
             IotCompanyDO iotCompanyDO = iotCompanyService.findById(id);
             IotCompanyVO vo = iotCompanyService.convertToModelVO(iotCompanyDO);
             return Envelop.getSuccess(IotRequestMapping.Company.message_success_find, vo);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -97,8 +98,9 @@ public class IotCompanyController extends EnvelopRestController {
             IotCompanyDO iotCompanyDO = iotCompanyService.findByBusinessLicense(businessLicense);
             IotCompanyVO vo = iotCompanyService.convertToModelVO(iotCompanyDO);
             return Envelop.getSuccess(IotRequestMapping.Company.message_success_find, vo);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -109,8 +111,9 @@ public class IotCompanyController extends EnvelopRestController {
         try {
             iotCompanyService.delCompany(id);
             return Envelop.getSuccess(IotRequestMapping.Company.message_success_find);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -122,8 +125,9 @@ public class IotCompanyController extends EnvelopRestController {
             IotCompanyDO iotCompany = toEntity(jsonData, IotCompanyDO.class);
             iotCompanyService.updCompany(iotCompany);
             return Envelop.getSuccess(IotRequestMapping.Company.message_success_find);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -145,6 +149,7 @@ public class IotCompanyController extends EnvelopRestController {
             }
             return iotCompanyCertificateService.queryPage(page,size,name);
         } catch (Exception e) {
+            e.printStackTrace();
             return Envelop.getError(e.getMessage());
         }
     }
@@ -157,8 +162,9 @@ public class IotCompanyController extends EnvelopRestController {
             IotCompanyCertificateDO iotCompanyCertificateDO = iotCompanyCertificateService.findById(id);
             IotCompanyCertificateVO vo = convertToModel(iotCompanyCertificateDO,IotCompanyCertificateVO.class);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, vo);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -170,8 +176,9 @@ public class IotCompanyController extends EnvelopRestController {
             List<IotCompanyCertificateDO> iotCompanyCertificateDOList = iotCompanyCertificateService.findByCompanyId(companyId);
             List<IotCompanyCertificateVO> voList = convertToModels(iotCompanyCertificateDOList,new ArrayList<>(iotCompanyCertificateDOList.size()),IotCompanyCertificateVO.class);
             return Envelop.getSuccessList(IotRequestMapping.Common.message_success_find, voList);
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -182,8 +189,9 @@ public class IotCompanyController extends EnvelopRestController {
         try {
             IotCompanyCertificateDO iotCompanyCertificate = toEntity(jsonData, IotCompanyCertificateDO.class);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, iotCompanyCertificateService.create(iotCompanyCertificate));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
         }
     }
 
