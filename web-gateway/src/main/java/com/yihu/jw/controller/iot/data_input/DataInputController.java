@@ -28,20 +28,25 @@ public class DataInputController {
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop bindUser(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
+    public Envelop bindUser(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
         return dataInputFeign.bindUser(jsonData);
     }
 
     @PostMapping(value = DataConstants.DataInput.api_upload_data, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "数据上传", notes = "数据上传")
+    @ApiOperation(value = "体征数据上传", notes = "体征数据上传")
     @HystrixCommand(commandProperties = {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
-    public Envelop uploadData(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
+    public Envelop uploadData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
         return dataInputFeign.uploadData(jsonData);
+    }
+
+    @PostMapping(value = DataConstants.DataInput.api_upload_weRunData, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "微信运动数据上传", notes = "微信运动数据上传")
+    @HystrixCommand(commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
+            @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
+    public Envelop uploadWeRunData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
+        return dataInputFeign.uploadWeRunData(jsonData);
     }
 }

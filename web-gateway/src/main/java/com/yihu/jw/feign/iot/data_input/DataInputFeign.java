@@ -25,4 +25,7 @@ public interface DataInputFeign {
     @PostMapping(value = DataRequestMapping.DataInput.api_data_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop uploadData(@RequestBody String jsonData);
 
+    @PostMapping(value = DataRequestMapping.DataInput.api_weRunData_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    Envelop uploadWeRunData(@RequestBody String jsonData);
+
 }

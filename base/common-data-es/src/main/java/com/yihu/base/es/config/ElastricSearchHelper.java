@@ -67,6 +67,7 @@ public class ElastricSearchHelper {
 
     public Boolean save(String index, String type, String source) {
         JestClient jestClient = null;
+        BulkResult br = null;
         try {
             //得到链接elasticFactory.getJestClient();
             jestClient = elasticFactory.getJestClient();
@@ -81,7 +82,7 @@ public class ElastricSearchHelper {
                 logger.error(e.getMessage());
                 error++;
             }
-            BulkResult br = jestClient.execute(bulk.build());
+            br = jestClient.execute(bulk.build());
             logger.info("save flag:" + br.isSucceeded());
             logger.info("save success:" + success);
             logger.info("save error:" + error);
@@ -93,12 +94,13 @@ public class ElastricSearchHelper {
                 jestClient.shutdownClient();
             }
         }
-        return null;
+        return br.isSucceeded();
     }
 
 
     public Boolean update(String index, String type, List<SaveModel> sms) {
         JestClient jestClient = null;
+        BulkResult br = null;
         try {
             //得到链接
             jestClient = elasticFactory.getJestClient();
@@ -120,7 +122,7 @@ public class ElastricSearchHelper {
                 }
             }
 
-            BulkResult br = jestClient.execute(bulk.build());
+            br = jestClient.execute(bulk.build());
             logger.info("update flag:" + br.isSucceeded());
             logger.info("update success:" + success);
             logger.info("update error:" + error);
@@ -132,7 +134,7 @@ public class ElastricSearchHelper {
                 jestClient.shutdownClient();
             }
         }
-        return null;
+        return br.isSucceeded();
     }
 
     /**

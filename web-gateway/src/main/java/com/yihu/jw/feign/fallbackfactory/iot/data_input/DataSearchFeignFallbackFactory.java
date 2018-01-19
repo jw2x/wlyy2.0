@@ -67,6 +67,27 @@ public class DataSearchFeignFallbackFactory implements FallbackFactory<DataSearc
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
+
+            @Override
+            public Envelop delete(String jsonData) {
+                tracer.getCurrentSpan().logEvent("根据居民rid删除用户体征数据失败:原因:" + throwable.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
+                return null;
+            }
+
+            @Override
+            public Envelop update(String jsonData) {
+                tracer.getCurrentSpan().logEvent("根据rid修改用户体征数据失败:原因:" + throwable.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
+                return null;
+            }
+
+            @Override
+            public Envelop getWeRunDataListById(String jsonData) {
+                tracer.getCurrentSpan().logEvent("根据用户code用户微信运动数据列表数据失败:原因:" + throwable.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
+                return null;
+            }
         };
     }
 }

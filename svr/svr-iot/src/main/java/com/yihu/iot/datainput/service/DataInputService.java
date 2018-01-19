@@ -11,9 +11,12 @@ import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.iot.datainput.DataBodySignsDO;
+import com.yihu.jw.iot.datainput.WeRunDataDO;
 import com.yihu.jw.iot.device.IotDeviceDO;
+import com.yihu.jw.restmodel.iot.datainput.WeRunDataVO;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.hadoop.hbase.util.CollectionUtils;
 import org.apache.http.client.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -215,7 +218,7 @@ public class DataInputService {
      * @param json
      * @return
      */
-    public String inputData(String json){
+    public String inputBodySignsData(String json){
         String fileName = "";
         String fileAbsPath = "";
         String rowkey = "";
@@ -302,4 +305,32 @@ public class DataInputService {
         result.put("upload_time",DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         return result.toJSONString();
     }
+
+
+    /**
+     * 上传微信运动数据
+     * 目前只上传到es，hbase没有可用服务器
+     * @param json
+     * @return
+     */
+    public String inputWeRunData(String json){
+        WeRunDataDO weRunData = JSONObject.parseObject(json,WeRunDataDO.class);
+        boolean bool = false;
+        //用户code不能为空
+        if(StringUtils.isEmpty(weRunData.getUsercode())){
+            return "invalid usercode";
+        }
+        //步数数据不能为空
+        if(CollectionUtils.isEmpty(weRunData.getStepInfoList())){
+            return "invalid stepinfolist";
+        }
+        try{
+            bool = elastricSearchHelper.save(ConstantUtils.weRunDataIndex,ConstantUtils.weRunDataType,json);
+        }catch (Exception e){
+            logger.error("upload weRunData to elasticsearch failed," + e.getMessage());
+            return e.getMessage();
+        }
+       return String.valueOf(bool);
+    }
+
 }

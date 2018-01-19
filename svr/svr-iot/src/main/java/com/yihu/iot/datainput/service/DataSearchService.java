@@ -11,7 +11,9 @@ import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.jw.iot.datainput.Data;
 import com.yihu.jw.iot.datainput.DataBodySignsDO;
 import com.yihu.jw.iot.datainput.DataStandardDO;
+import com.yihu.jw.iot.datainput.StepInfoDO;
 import com.yihu.jw.restmodel.iot.datainput.DataBodySignsVO;
+import com.yihu.jw.restmodel.iot.datainput.WeRunDataVO;
 import com.yihu.jw.util.date.DateUtil;
 import io.searchbox.core.SearchResult;
 import io.searchbox.core.Update;
@@ -20,6 +22,8 @@ import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.CollectionUtils;
+import org.apache.lucene.queryparser.xml.FilterBuilder;
+import org.apache.lucene.queryparser.xml.FilterBuilderFactory;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
@@ -48,14 +52,22 @@ public class DataSearchService {
     @Autowired
     private HBaseHelper hBaseHelper;
 
-    private Set<String> fieldsSet = new HashSet<>();
+    private static Map<String,Set<String>> fieldsMap = new HashMap<>();
 
     @PostConstruct
-    public void init(){
+    public static void init(){
+        Set<String> fieldsSet = new HashSet<>();
         PropertyDescriptor[] properties = BeanUtils.getPropertyDescriptors(Data.class);
         for(PropertyDescriptor field:properties){
             fieldsSet.add(field.getName());
         }
+        fieldsMap.put("data",fieldsSet);
+        Set<String> fieldsSet2 = new HashSet<>();
+        PropertyDescriptor[] properties2 = BeanUtils.getPropertyDescriptors(StepInfoDO.class);
+        for(PropertyDescriptor field:properties2){
+            fieldsSet2.add(field.getName());
+        }
+        fieldsMap.put("stepInfoList",fieldsSet2);
     }
     /**
      * 拼接es搜索json string
@@ -127,14 +139,7 @@ public class DataSearchService {
         logger.info("load data from elasticsearch start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         JSONObject resultJsonObj = new JSONObject();
         JSONArray  resultArray = new JSONArray();
-       /* List list = new ArrayList();
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            list = objectMapper.readValue(jsonData,(List.class));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-        SearchSourceBuilder query = getQueryBuilder(jsonData);
+        SearchSourceBuilder query = getQueryBuilder("data",jsonData);
         SearchResult esResult = elastricSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
         if(esResult.getTotal() == 0){
             return "";
@@ -167,9 +172,10 @@ public class DataSearchService {
      * @param jsonData
      *
              {
-             "filter":[{"andOr":"and|or","condition":">|=|<|>=|<=|?","field":"<filed>","value":"<value>"},<{...}>], - 参数说明：andOr跟数据库的中的AND和OR相似；condition指条件匹配程度，?相当于数据库中的like；filed指检索的字段；value为检索的值
-            "page":1,		- 参数格式：页码，默认1，int类型 不需要分页，传""
-            "size":10,		- 参数格式：条数，默认10，int类型 不需要分页，传""
+             "filter":[{"andOr":"and|or","condition":">|=|<|>=|<=|?","field":"<filed>","value":"<value>"},<{...}>],
+                       - 参数说明：andOr跟数据库的中的AND和OR相似；condition指条件匹配程度，?相当于数据库中的like；filed指检索的字段；value为检索的值
+            "page":1,  - 参数格式：页码，默认1，int类型 不需要分页，传""
+            "size":10, - 参数格式：条数，默认10，int类型 不需要分页，传""
             "sort":[
                      {"key":{"order":"asc|desc"}}, - 参数格式：排序， key要排序的字段，order固定，取值asc或desc，不需要排序，传""
                      {"key":{"order":"asc|desc"}}
@@ -177,7 +183,7 @@ public class DataSearchService {
             }
      * @return
      */
-    private SearchSourceBuilder getQueryBuilder(String jsonData) {
+    private static SearchSourceBuilder getQueryBuilder(String nestedPath,String jsonData) {
         JSONObject json = JSONObject.parseObject(jsonData);
         List<Map<String, Object>> filter = (List)json.getJSONArray("filter");
         int page = json.getIntValue("page") == 0 ? 1:json.getIntValue("page"); //从第一页开始
@@ -185,15 +191,87 @@ public class DataSearchService {
         JSONArray sort = json.getJSONArray("sort");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        boolQueryBuilder = getBoolQueryBuilder(nestedPath,jsonData,false);//非嵌套的数据查询不需要nested
+
+        NestedQueryBuilder nestedQueryBuilder = getNestedBuilder(nestedPath,jsonData);//嵌套的数据查询
+        QueryFilterBuilder filterBuilder = QueryBuilders.queryFilter(nestedQueryBuilder);
+        FilteredQueryBuilder filteredQueryBuilder = QueryBuilders.filteredQuery(boolQueryBuilder,filterBuilder);
+
+        searchSourceBuilder.from((page -1)*size);
+        searchSourceBuilder.size(size);
+        //排序
+        if(CollectionUtils.notEmpty(sort)){
+            for(Object obj:sort){
+                JSONObject object = JSONObject.parseObject(obj.toString());
+                FieldSortBuilder fieldSortBuilder = null;
+                for(String key:object.keySet()){
+                    if(!CollectionUtils.isEmpty(fieldsMap.get(nestedPath)) && fieldsMap.get(nestedPath).contains(key)){
+                        fieldSortBuilder = new FieldSortBuilder("data." + key);
+                    }else{
+                        fieldSortBuilder = new FieldSortBuilder(key);
+                    }
+                    JSONObject sortValue = object.getJSONObject(key);
+                    if(StringUtils.equalsIgnoreCase(SortOrder.ASC.toString(),sortValue.getString("order"))){
+                        fieldSortBuilder.order(SortOrder.ASC);
+                    }else if(StringUtils.equalsIgnoreCase(SortOrder.DESC.toString(),sortValue.getString("order"))){
+                        fieldSortBuilder.order(SortOrder.DESC);
+                    }
+                    fieldSortBuilder.setNestedPath("data");
+                    searchSourceBuilder.sort(fieldSortBuilder);
+                }
+            }
+        }
+
+        searchSourceBuilder.query(filteredQueryBuilder);
+        return searchSourceBuilder;
+    }
+
+    /**
+     * 嵌套的查询query
+     * @param nestedPath
+     * @param queryCondition
+     * @return
+     */
+    private static NestedQueryBuilder getNestedBuilder(String nestedPath,String queryCondition){
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder = getBoolQueryBuilder(nestedPath,queryCondition,true);
+        NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery(nestedPath,boolQueryBuilder);
+        return nestedQueryBuilder;
+    }
+
+    /**
+     * 构造bool查询（里面有匹配，过滤，范围等）
+     * @param nestedPath
+     * @param queryCondition
+     * @return
+     */
+    private static BoolQueryBuilder getBoolQueryBuilder(String nestedPath,String queryCondition,Boolean isNested){
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        JSONObject jsonCondition = JSONObject.parseObject(queryCondition);
+        List<Map<String, Object>> filter = (List)jsonCondition.getJSONArray("filter");
         for(Map<String, Object> param : filter) {
             String andOr = String.valueOf(param.get("andOr"));
             String condition = String.valueOf(param.get("condition"));
             String field = String.valueOf(param.get("field"));
             Object value = param.get("value");
-            if(!CollectionUtils.isEmpty(fieldsSet) && fieldsSet.contains(field)){
-                field = "data." + field;
+
+            if(!isNested){
+                if(!CollectionUtils.isEmpty(fieldsMap.get(nestedPath)) && fieldsMap.get(nestedPath).contains(field)){
+                    continue;
+                }
+            }else{
+                if(!CollectionUtils.isEmpty(fieldsMap.get(nestedPath)) && !fieldsMap.get(nestedPath).contains(field)){
+                    continue;
+                }
+                field = nestedPath + "." + field;
             }
-            if(condition.equals("=")) {
+            if(null == condition){
+                MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchPhraseQuery(field, value);
+                if(null == andOr) {
+                    boolQueryBuilder.must(matchQueryBuilder);
+                }
+            }else if(condition.equals("=")) {
                 MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchPhraseQuery(field, value);
                 if("and".equals(andOr)) {
                     boolQueryBuilder.must(matchQueryBuilder);
@@ -208,7 +286,7 @@ public class DataSearchService {
                     boolQueryBuilder.should(queryStringQueryBuilder);
                 }
             }else {
-                RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(field);;
+                RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery(field);
                 if(field.endsWith("Date")) {
                     rangeQueryBuilder.format("yyyy-MM-dd HH:mm:ss");
                 }
@@ -228,34 +306,7 @@ public class DataSearchService {
                 }
             }
         }
-        searchSourceBuilder.from((page -1)*size);
-        searchSourceBuilder.size(size);
-        if(CollectionUtils.notEmpty(sort)){
-            for(Object obj:sort){
-                JSONObject object = JSONObject.parseObject(obj.toString());
-                FieldSortBuilder fieldSortBuilder = null;
-                for(String key:object.keySet()){
-                    if(fieldsSet.contains(key)){
-                        fieldSortBuilder = new FieldSortBuilder("data." + key);
-                    }else{
-                        fieldSortBuilder = new FieldSortBuilder(key);
-                    }
-                    JSONObject sortValue = object.getJSONObject(key);
-                    if(StringUtils.equalsIgnoreCase(SortOrder.ASC.toString(),sortValue.getString("order"))){
-                        fieldSortBuilder.order(SortOrder.ASC);
-                    }else if(StringUtils.equalsIgnoreCase(SortOrder.DESC.toString(),sortValue.getString("order"))){
-                        fieldSortBuilder.order(SortOrder.DESC);
-                    }
-                    fieldSortBuilder.setNestedPath("data");
-                    searchSourceBuilder.sort(fieldSortBuilder);
-                }
-            }
-        }
-
-        NestedQueryBuilder nestedQueryBuilder = new NestedQueryBuilder("data",boolQueryBuilder);
-        searchSourceBuilder.query(nestedQueryBuilder);
-
-        return searchSourceBuilder;
+        return boolQueryBuilder;
     }
 
 
@@ -269,37 +320,49 @@ public class DataSearchService {
      */
     public String updateData(String json) {
         JSONObject params = JSONObject.parseObject(json);
-        //拿到rid
+        //拿到rid，构造通用查询结构，查询对应es Id
         String rid = params.getString("rid");
+        JSONObject queryField = new JSONObject();
+        queryField.put("field","rid");
+        queryField.put("value",rid);
+        JSONArray filter = new JSONArray();
+        filter.add(queryField);
         JSONObject query = new JSONObject();
-        query.put("rid",rid);
-        String queryString = getQueryString(query.toJSONString());
-        //将该rid的文档取出来
-        SearchResult searchResult = elastricSearchHelper.search(ConstantUtils.esIndex, ConstantUtils.esType, queryString);
-        params.remove("rid");
-        String _id = getEsId(searchResult.getJsonString());
-        String resultSource = searchResult.getSourceAsString();
-        //inner，nested object在es中修改只支持替换整个的object
-        JSONObject resultObject = (JSONObject) JSONObject.parse(String.valueOf(resultSource));
-        //文档里的data数组对象数据
-        JSONArray datas = (JSONArray) resultObject.get("data");
-        for (Object data : datas) {
-            JSONObject dataJson = (JSONObject) data;
-            if (StringUtils.equalsIgnoreCase(rid, dataJson.getString("rid"))) {
-                for (String key : params.keySet()) {
-                    dataJson.put(key, params.get(key));//改的是data里面的数据
+        query.put("filter",filter);
+        SearchSourceBuilder queryString = getQueryBuilder("data",query.toJSONString());
+        JSONArray datas = new JSONArray();
+        JSONObject resultObject = new JSONObject();
+        String _id = "";
+        try {
+            //将该rid的文档取出来
+            SearchResult searchResult = elastricSearchHelper.search(ConstantUtils.esIndex, ConstantUtils.esType, queryString.toString());
+            params.remove("rid");
+            _id = getEsId(searchResult.getJsonString());
+            String resultSource = searchResult.getSourceAsString();
+            //inner，nested object在es中修改只支持替换整个的object
+            resultObject = (JSONObject) JSONObject.parse(String.valueOf(resultSource));
+            //文档里的data数组对象数据
+            datas = (JSONArray) resultObject.get("data");
+            for (Object data : datas) {
+                JSONObject dataJson = (JSONObject) data;
+                if (StringUtils.equalsIgnoreCase(rid, dataJson.getString("rid"))) {
+                    for (String key : params.keySet()) {
+                        dataJson.put(key, params.get(key));//改的是data里面的数据
+                    }
                 }
             }
+        }catch (Exception e){
+            logger.error("get data failed from elasticsearch",e.getMessage());
+            return "no data for rid:"+ rid +",update failed";
         }
+
         JSONObject updateObj = new JSONObject();
         updateObj.put("data",datas);
 //        boolean bool = elastricSearchHelper.update(ConstantUtils.esIndex, ConstantUtils.esType, _id, updateObj.toJSONString());
 //        Update update = new Update();
 //        update.
         boolean bool = elastricSearchHelper.update(ConstantUtils.esIndex, ConstantUtils.esType, _id, resultObject);
-        JSONObject updateResult = new JSONObject();
-        updateResult.put("result", bool);
-        return updateResult.toJSONString();
+        return String.valueOf(bool);
     }
 
     private String getEsId(String str){
@@ -352,7 +415,7 @@ public class DataSearchService {
 
         } catch (Exception e) {
             e.printStackTrace();
-            logger.error("get data from hbase fail.",e.getMessage());
+            logger.error("get data from hbase failed.",e.getMessage());
             return esResult.getSourceAsString();
         }
         resultArray.addAll(resultList);
@@ -363,12 +426,17 @@ public class DataSearchService {
         return resultJsonObj.toJSONString();
     }
 
+    /**
+     * 体征数据查询，数据转为视图展示VO类
+     * @param jsonData
+     * @return
+     */
     public List<DataBodySignsVO> getDataToBean(String jsonData){
         List<DataBodySignsVO> result = new ArrayList<>();
         logger.info("load data from elasticsearch start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
-        SearchSourceBuilder query = getQueryBuilder(jsonData);
+        SearchSourceBuilder query = getQueryBuilder("data",jsonData);
         SearchResult esResult = elastricSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
-        if(esResult.getTotal() == 0){
+        if(null!= esResult && esResult.getTotal() == 0){
             return result;
         }
         for(String str :esResult.getSourceAsStringList()){
@@ -379,7 +447,45 @@ public class DataSearchService {
         return result;
     }
 
+    /**
+     * 查询微信运动数据
+     * @param json
+     * @return
+     */
+    public List<WeRunDataVO> getWeRunDataList(String json){
+        List<WeRunDataVO> result = new ArrayList<>();
+        SearchSourceBuilder query = getQueryBuilder("stepInfoList",json);
+        SearchResult esResult = elastricSearchHelper.search(ConstantUtils.weRunDataIndex,ConstantUtils.weRunDataType,query.toString());
+        if(null != esResult && esResult.getTotal() == 0){
+            return result;
+        }
+        for(String str:esResult.getSourceAsStringList()){
+            WeRunDataVO weRunDataVO = JSONObject.parseObject(str,WeRunDataVO.class);
+            result.add(weRunDataVO);
+        }
+        return result;
+    }
+
+
     public static void main(String args[]) {
+
+        init();
+        String str = "{\n" +
+                "\t\"filter\":[{\n" +
+                "\t\t\"andOr\":\"and\",\n" +
+                "\t\t\"condition\":\"=\",\n" +
+                "\t\t\"field\":\"usercode\",\n" +
+                "\t\t\"value\":\"thisisjustatest\"\n" +
+                "\t},\n" +
+                "\t{\n" +
+                "\t\t\"andOr\":\"and\",\n" +
+                "\t\t\"condition\":\"=\",\n" +
+                "\t\t\"field\":\"step\",\n" +
+                "\t\t\"value\":100\n" +
+                "\t}\n" +
+                "\t]\n" +
+                "}\n";
+        getQueryBuilder("stepInfoList",str);
     }
 
 }

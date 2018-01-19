@@ -7,66 +7,66 @@ public class Data {
     private String rid; // 存到hbase中的id
     private int del = 1; //删除标记,1代表正常，0代表删除
     private String measure_time;     //测量时间  yyyy-MM-dd HH:mm:ss
-    private double systolic;        //收缩压
+    private String systolic;        //收缩压
     private String systolic_unit;   //收缩压测量单位
-    private double diastolic;       //舒张压
-    private double pulse;            //脉搏
+    private String diastolic;       //舒张压
+    private String pulse;            //脉搏
     private String pulse_unit;
-    private double blood_sugar;     //血糖
+    private String blood_sugar;     //血糖
     private String blood_sugar_unit;
-    private double blood_sugar_result;
-    private double blood_oxygen; //血氧
+    private String blood_sugar_result;
+    private String blood_oxygen; //血氧
     private String blood_oxygen_unit;
-    private double bbt; //体温
+    private String bbt; //体温
     private String bbt_unit;
-    private double ket; //酮体
+    private String ket; //酮体
     private String ket_unit;
-    private double uro; //尿胆原
+    private String uro; //尿胆原
     private String uro_unit;
-    private double uric_acid;   //尿酸
+    private String uric_acid;   //尿酸
     private String uric_acid_unit;
-    private double tchol;   //总胆固醇
+    private String tchol;   //总胆固醇
     private String tchol_unit;
-    private double hdl; //高密度脂蛋白
+    private String hdl; //高密度脂蛋白
     private String hdl_unit;
-    private double tg;  //甘油三酯
+    private String tg;  //甘油三酯
     private String tg_unit;
-    private double ldl; //低密度脂蛋白
+    private String ldl; //低密度脂蛋白
     private String ldl_unit;
-    private double height;  //身高
+    private String height;  //身高
     private String height_unit;
-    private double weight;  //体重
+    private String weight;  //体重
     private String weight_unit;
-    private double waist;   //腰围
+    private String waist;   //腰围
     private String waist_unit;
-    private double bmi; //BMI
+    private String bmi; //BMI
     private String bmi_unit;
-    private double hgb; //血红蛋白
+    private String hgb; //血红蛋白
     private String hgb_unit;
-    private double hbalc;   //糖化血红蛋白
+    private String hbalc;   //糖化血红蛋白
     private String hbalc_unit;
-    private double left_eye;//  左眼
+    private String left_eye;//  左眼
     private String left_eye_unit;
-    private double right_eye;// 左眼
+    private String right_eye;// 左眼
     private String right_eye_unit;
-    private double ecg; //心电
+    private String ecg; //心电
     private String ecg_attach;
-    private double ph;  //PH值
-    private double nit; //亚硝酸盐
+    private String ph;  //PH值
+    private String nit; //亚硝酸盐
     private String nit_unit;
-    private double pro; //蛋白质
+    private String pro; //蛋白质
     private String pro_unit;
-    private double glu; //葡萄糖
+    private String glu; //葡萄糖
     private String glu_unit;
-    private double bil; //胆红素
+    private String bil; //胆红素
     private String bil_unit;
-    private double sg;  //比重
+    private String sg;  //比重
     private String sg_unit;
-    private double wbc; //白细胞
+    private String wbc; //白细胞
     private String wbc_unit;
-    private double vc;      //维生素C
+    private String vc;      //维生素C
     private String vc_unit;
-    private double bld; //潜血
+    private String bld; //潜血
     private String bld_unit;
 
     public String getRid() {
@@ -93,11 +93,11 @@ public class Data {
         this.measure_time = measure_time;
     }
 
-    public double getSystolic() {
+    public String getSystolic() {
         return systolic;
     }
 
-    public void setSystolic(double systolic) {
+    public void setSystolic(String systolic) {
         this.systolic = systolic;
     }
 
@@ -109,19 +109,19 @@ public class Data {
         this.systolic_unit = systolic_unit;
     }
 
-    public double getDiastolic() {
+    public String getDiastolic() {
         return diastolic;
     }
 
-    public void setDiastolic(double diastolic) {
+    public void setDiastolic(String diastolic) {
         this.diastolic = diastolic;
     }
 
-    public double getPulse() {
+    public String getPulse() {
         return pulse;
     }
 
-    public void setPulse(double pulse) {
+    public void setPulse(String pulse) {
         this.pulse = pulse;
     }
 
@@ -133,11 +133,11 @@ public class Data {
         this.pulse_unit = pulse_unit;
     }
 
-    public double getBlood_sugar() {
+    public String getBlood_sugar() {
         return blood_sugar;
     }
 
-    public void setBlood_sugar(double blood_sugar) {
+    public void setBlood_sugar(String blood_sugar) {
         this.blood_sugar = blood_sugar;
     }
 
@@ -149,19 +149,19 @@ public class Data {
         this.blood_sugar_unit = blood_sugar_unit;
     }
 
-    public double getBlood_sugar_result() {
+    public String getBlood_sugar_result() {
         return blood_sugar_result;
     }
 
-    public void setBlood_sugar_result(double blood_sugar_result) {
+    public void setBlood_sugar_result(String blood_sugar_result) {
         this.blood_sugar_result = blood_sugar_result;
     }
 
-    public double getBlood_oxygen() {
+    public String getBlood_oxygen() {
         return blood_oxygen;
     }
 
-    public void setBlood_oxygen(double blood_oxygen) {
+    public void setBlood_oxygen(String blood_oxygen) {
         this.blood_oxygen = blood_oxygen;
     }
 
@@ -173,11 +173,11 @@ public class Data {
         this.blood_oxygen_unit = blood_oxygen_unit;
     }
 
-    public double getBbt() {
+    public String getBbt() {
         return bbt;
     }
 
-    public void setBbt(double bbt) {
+    public void setBbt(String bbt) {
         this.bbt = bbt;
     }
 
@@ -189,11 +189,11 @@ public class Data {
         this.bbt_unit = bbt_unit;
     }
 
-    public double getKet() {
+    public String getKet() {
         return ket;
     }
 
-    public void setKet(double ket) {
+    public void setKet(String ket) {
         this.ket = ket;
     }
 
@@ -205,11 +205,11 @@ public class Data {
         this.ket_unit = ket_unit;
     }
 
-    public double getUro() {
+    public String getUro() {
         return uro;
     }
 
-    public void setUro(double uro) {
+    public void setUro(String uro) {
         this.uro = uro;
     }
 
@@ -221,11 +221,11 @@ public class Data {
         this.uro_unit = uro_unit;
     }
 
-    public double getUric_acid() {
+    public String getUric_acid() {
         return uric_acid;
     }
 
-    public void setUric_acid(double uric_acid) {
+    public void setUric_acid(String uric_acid) {
         this.uric_acid = uric_acid;
     }
 
@@ -237,11 +237,11 @@ public class Data {
         this.uric_acid_unit = uric_acid_unit;
     }
 
-    public double getTchol() {
+    public String getTchol() {
         return tchol;
     }
 
-    public void setTchol(double tchol) {
+    public void setTchol(String tchol) {
         this.tchol = tchol;
     }
 
@@ -253,11 +253,11 @@ public class Data {
         this.tchol_unit = tchol_unit;
     }
 
-    public double getHdl() {
+    public String getHdl() {
         return hdl;
     }
 
-    public void setHdl(double hdl) {
+    public void setHdl(String hdl) {
         this.hdl = hdl;
     }
 
@@ -269,11 +269,11 @@ public class Data {
         this.hdl_unit = hdl_unit;
     }
 
-    public double getTg() {
+    public String getTg() {
         return tg;
     }
 
-    public void setTg(double tg) {
+    public void setTg(String tg) {
         this.tg = tg;
     }
 
@@ -285,11 +285,11 @@ public class Data {
         this.tg_unit = tg_unit;
     }
 
-    public double getLdl() {
+    public String getLdl() {
         return ldl;
     }
 
-    public void setLdl(double ldl) {
+    public void setLdl(String ldl) {
         this.ldl = ldl;
     }
 
@@ -301,11 +301,11 @@ public class Data {
         this.ldl_unit = ldl_unit;
     }
 
-    public double getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public void setHeight(double height) {
+    public void setHeight(String height) {
         this.height = height;
     }
 
@@ -317,11 +317,11 @@ public class Data {
         this.height_unit = height_unit;
     }
 
-    public double getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
@@ -333,11 +333,11 @@ public class Data {
         this.weight_unit = weight_unit;
     }
 
-    public double getWaist() {
+    public String getWaist() {
         return waist;
     }
 
-    public void setWaist(double waist) {
+    public void setWaist(String waist) {
         this.waist = waist;
     }
 
@@ -349,11 +349,11 @@ public class Data {
         this.waist_unit = waist_unit;
     }
 
-    public double getBmi() {
+    public String getBmi() {
         return bmi;
     }
 
-    public void setBmi(double bmi) {
+    public void setBmi(String bmi) {
         this.bmi = bmi;
     }
 
@@ -365,11 +365,11 @@ public class Data {
         this.bmi_unit = bmi_unit;
     }
 
-    public double getHgb() {
+    public String getHgb() {
         return hgb;
     }
 
-    public void setHgb(double hgb) {
+    public void setHgb(String hgb) {
         this.hgb = hgb;
     }
 
@@ -381,11 +381,11 @@ public class Data {
         this.hgb_unit = hgb_unit;
     }
 
-    public double getHbalc() {
+    public String getHbalc() {
         return hbalc;
     }
 
-    public void setHbalc(double hbalc) {
+    public void setHbalc(String hbalc) {
         this.hbalc = hbalc;
     }
 
@@ -397,11 +397,11 @@ public class Data {
         this.hbalc_unit = hbalc_unit;
     }
 
-    public double getLeft_eye() {
+    public String getLeft_eye() {
         return left_eye;
     }
 
-    public void setLeft_eye(double left_eye) {
+    public void setLeft_eye(String left_eye) {
         this.left_eye = left_eye;
     }
 
@@ -413,11 +413,11 @@ public class Data {
         this.left_eye_unit = left_eye_unit;
     }
 
-    public double getRight_eye() {
+    public String getRight_eye() {
         return right_eye;
     }
 
-    public void setRight_eye(double right_eye) {
+    public void setRight_eye(String right_eye) {
         this.right_eye = right_eye;
     }
 
@@ -429,11 +429,11 @@ public class Data {
         this.right_eye_unit = right_eye_unit;
     }
 
-    public double getEcg() {
+    public String getEcg() {
         return ecg;
     }
 
-    public void setEcg(double ecg) {
+    public void setEcg(String ecg) {
         this.ecg = ecg;
     }
 
@@ -445,19 +445,19 @@ public class Data {
         this.ecg_attach = ecg_attach;
     }
 
-    public double getPh() {
+    public String getPh() {
         return ph;
     }
 
-    public void setPh(double ph) {
+    public void setPh(String ph) {
         this.ph = ph;
     }
 
-    public double getNit() {
+    public String getNit() {
         return nit;
     }
 
-    public void setNit(double nit) {
+    public void setNit(String nit) {
         this.nit = nit;
     }
 
@@ -469,11 +469,11 @@ public class Data {
         this.nit_unit = nit_unit;
     }
 
-    public double getPro() {
+    public String getPro() {
         return pro;
     }
 
-    public void setPro(double pro) {
+    public void setPro(String pro) {
         this.pro = pro;
     }
 
@@ -485,11 +485,11 @@ public class Data {
         this.pro_unit = pro_unit;
     }
 
-    public double getGlu() {
+    public String getGlu() {
         return glu;
     }
 
-    public void setGlu(double glu) {
+    public void setGlu(String glu) {
         this.glu = glu;
     }
 
@@ -501,11 +501,11 @@ public class Data {
         this.glu_unit = glu_unit;
     }
 
-    public double getBil() {
+    public String getBil() {
         return bil;
     }
 
-    public void setBil(double bil) {
+    public void setBil(String bil) {
         this.bil = bil;
     }
 
@@ -517,11 +517,11 @@ public class Data {
         this.bil_unit = bil_unit;
     }
 
-    public double getSg() {
+    public String getSg() {
         return sg;
     }
 
-    public void setSg(double sg) {
+    public void setSg(String sg) {
         this.sg = sg;
     }
 
@@ -533,11 +533,11 @@ public class Data {
         this.sg_unit = sg_unit;
     }
 
-    public double getWbc() {
+    public String getWbc() {
         return wbc;
     }
 
-    public void setWbc(double wbc) {
+    public void setWbc(String wbc) {
         this.wbc = wbc;
     }
 
@@ -549,11 +549,11 @@ public class Data {
         this.wbc_unit = wbc_unit;
     }
 
-    public double getVc() {
+    public String getVc() {
         return vc;
     }
 
-    public void setVc(double vc) {
+    public void setVc(String vc) {
         this.vc = vc;
     }
 
@@ -565,11 +565,11 @@ public class Data {
         this.vc_unit = vc_unit;
     }
 
-    public double getBld() {
+    public String getBld() {
         return bld;
     }
 
-    public void setBld(double bld) {
+    public void setBld(String bld) {
         this.bld = bld;
     }
 

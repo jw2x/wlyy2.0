@@ -26,7 +26,14 @@ public class DataInputFeignFallbackFactory implements FallbackFactory<DataInputF
 
             @Override
             public Envelop uploadData(@RequestBody String jsonData) {
-                tracer.getCurrentSpan().logEvent("数据上传失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("体征数据上传失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
+                return null;
+            }
+
+            @Override
+            public Envelop uploadWeRunData(String jsonData) {
+                tracer.getCurrentSpan().logEvent("微信运动数据上传失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
