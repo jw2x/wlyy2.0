@@ -38,7 +38,8 @@ public class LogAspect {
             tracer.getCurrentSpan().tag(GatewayContanrts.ZipkinElasticKey.gateway_input_params,new JSONObject(request.getParameterMap()).toString());
             o = point.proceed();
             //访问后日志
-            tracer.getCurrentSpan().tag(GatewayContanrts.ZipkinElasticKey.gateway_out_params,new JSONObject(o).toString());
+            String after = o==null?null:new JSONObject(o).toString();
+            tracer.getCurrentSpan().tag(GatewayContanrts.ZipkinElasticKey.gateway_out_params,after);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
