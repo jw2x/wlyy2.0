@@ -32,6 +32,34 @@ public class IotDeviceImportRecordDO extends IdEntityWithOperation implements Se
     @Column(name = "del")
     private Integer del;//删除标志
 
+    public enum DeviceImportRecordStatus {
+        create("进行中", "1"),
+        complete("已完成", "2");
+        private String name;
+        private String value;
+
+        DeviceImportRecordStatus(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
     public String getSaasId() {
         return saasId;
     }

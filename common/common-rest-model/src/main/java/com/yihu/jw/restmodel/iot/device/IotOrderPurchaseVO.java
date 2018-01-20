@@ -27,6 +27,8 @@ public class IotOrderPurchaseVO extends BaseVO implements Serializable{
     private String supplierName;
     @ApiModelProperty("采购设备名称")
     private String deviceName;
+    @ApiModelProperty("产品id")
+    private String productId;
     @ApiModelProperty("厂商id")
     private String manufacturerId;
     @ApiModelProperty("厂商名称")
@@ -157,5 +159,13 @@ public class IotOrderPurchaseVO extends BaseVO implements Serializable{
 
     public void setUnAssociatedNum(Long unAssociatedNum) {
         this.unAssociatedNum = unAssociatedNum;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 }

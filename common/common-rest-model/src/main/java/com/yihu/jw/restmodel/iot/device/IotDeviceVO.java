@@ -40,7 +40,7 @@ public class IotDeviceVO extends BaseVO implements Serializable {
     @ApiModelProperty("归属社区")
     private String hospital;
     @ApiModelProperty("归属社区名称")
-    private String hospital_name;
+    private String hospitalName;
     @ApiModelProperty("订单id")
     private String orderId;
     @ApiModelProperty("订单编号")
@@ -191,11 +191,11 @@ public class IotDeviceVO extends BaseVO implements Serializable {
         this.hospital = hospital;
     }
 
-    public String getHospital_name() {
-        return hospital_name;
+    public String getHospitalName() {
+        return hospitalName;
     }
 
-    public void setHospital_name(String hospital_name) {
-        this.hospital_name = hospital_name;
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 }

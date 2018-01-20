@@ -184,7 +184,7 @@ public class IotCompanyController extends EnvelopRestController {
 
     @PostMapping(value = IotRequestMapping.Company.addCompanyCert)
     @ApiOperation(value = "创建企业证书", notes = "创建企业证书")
-    public Envelop<IotCompanyVO> addCompanyCert(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
+    public Envelop<IotCompanyCertificateVO> addCompanyCert(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = false)String jsonData) {
         try {
             IotCompanyCertificateDO iotCompanyCertificate = toEntity(jsonData, IotCompanyCertificateDO.class);

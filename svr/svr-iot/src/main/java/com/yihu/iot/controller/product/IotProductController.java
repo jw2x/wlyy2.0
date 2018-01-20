@@ -136,6 +136,7 @@ public class IotProductController extends EnvelopRestController {
             IotProductVO vo = iotProductBaseInfoService.findProductById(id);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, vo);
         } catch (Exception e) {
+            e.printStackTrace();
             return Envelop.getError(e.getMessage());
         }
     }

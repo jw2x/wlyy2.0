@@ -33,6 +33,9 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
     @Column(name = "device_name")
     private String deviceName;//采购设备名称
 
+    @Column(name = "product_id")
+    private String productId;//产品id
+
 //    @Column(name = "device_model")
 //    private String deviceModel;//采购设备型号
 //
@@ -158,6 +161,15 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
 //    public void setNextQualityTime(Date nextQualityTime) {
 //        this.nextQualityTime = nextQualityTime;
 //    }
+
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
 
     public String getQualityStatus() {
         return qualityStatus;
