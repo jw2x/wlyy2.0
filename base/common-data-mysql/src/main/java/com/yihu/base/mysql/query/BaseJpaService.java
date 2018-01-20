@@ -26,7 +26,7 @@ import java.text.ParseException;
 import java.util.*;
 
 /**
- * Service基础类。此类基于Spring Data JPA进行封装（Spring Data JPA又是基于JPA封装，EHR平台使用Hibernate作为JPA实现者）。
+ * Service基础类。此类基于Spring DataVO JPA进行封装（Spring DataVO JPA又是基于JPA封装，EHR平台使用Hibernate作为JPA实现者）。
  * 需要注意的是，部分功能会跳过JPA接口而直接使用Hibernate接口，比如访问Hibernate的Session接口，因为它把JPA的EntityManager功能强大。
  *
  * @author lincl

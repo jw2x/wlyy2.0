@@ -1,9 +1,9 @@
 package com.yihu.jw.manage.service.base;
 
+import com.yihu.jw.base.base.ModuleDO;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
-import com.yihu.jw.restmodel.base.base.MModule;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import net.sf.json.JSONObject;
@@ -89,7 +89,7 @@ public class ModuleService {
         return template.getForObject(url +"/module/children/"+code, Envelop.class);
     }
 
-    public Envelop saveOrUpdate(MModule module,String userCode) {
+    public Envelop saveOrUpdate(ModuleDO module, String userCode) {
         ManageUser user = userService.findByCode(userCode);
         String userName = user.getName();
 
@@ -98,7 +98,7 @@ public class ModuleService {
             module.setCreateUser(userCode);
             module.setStatus(1);
             module.setCreateUserName(userName);
-            module.setCode(UUID.randomUUID().toString().replaceAll("-",""));
+//            module.setCode(UUID.randomUUID().toString().replaceAll("-",""));
         }
         module.setUpdateUserName(userName);
         module.setUpdateUser(userCode);

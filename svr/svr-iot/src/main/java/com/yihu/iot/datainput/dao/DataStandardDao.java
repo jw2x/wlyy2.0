@@ -1,6 +1,6 @@
 package com.yihu.iot.datainput.dao;
 
-import com.yihu.jw.iot.data_input.DataStandardDO;
+import com.yihu.jw.iot.datainput.DataStandardDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

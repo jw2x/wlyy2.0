@@ -6,14 +6,18 @@ import com.yihu.base.es.config.model.SaveModel;
 import io.searchbox.client.JestClient;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.*;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
 import org.springframework.stereotype.Component;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 ;
 
@@ -63,6 +67,7 @@ public class ElastricSearchHelper {
 
     public Boolean save(String index, String type, String source) {
         JestClient jestClient = null;
+        BulkResult br = null;
         try {
             //得到链接elasticFactory.getJestClient();
             jestClient = elasticFactory.getJestClient();
@@ -77,7 +82,7 @@ public class ElastricSearchHelper {
                 logger.error(e.getMessage());
                 error++;
             }
-            BulkResult br = jestClient.execute(bulk.build());
+            br = jestClient.execute(bulk.build());
             logger.info("save flag:" + br.isSucceeded());
             logger.info("save success:" + success);
             logger.info("save error:" + error);
@@ -89,12 +94,13 @@ public class ElastricSearchHelper {
                 jestClient.shutdownClient();
             }
         }
-        return null;
+        return br.isSucceeded();
     }
 
 
     public Boolean update(String index, String type, List<SaveModel> sms) {
         JestClient jestClient = null;
+        BulkResult br = null;
         try {
             //得到链接
             jestClient = elasticFactory.getJestClient();
@@ -116,7 +122,7 @@ public class ElastricSearchHelper {
                 }
             }
 
-            BulkResult br = jestClient.execute(bulk.build());
+            br = jestClient.execute(bulk.build());
             logger.info("update flag:" + br.isSucceeded());
             logger.info("update success:" + success);
             logger.info("update error:" + error);
@@ -128,7 +134,7 @@ public class ElastricSearchHelper {
                 jestClient.shutdownClient();
             }
         }
-        return null;
+        return br.isSucceeded();
     }
 
     /**
@@ -184,6 +190,32 @@ public class ElastricSearchHelper {
         }
         return result;
     }
+
+
+    /**
+     * 修改
+     */
+    public boolean update(String index, String type,String _id, JSONObject source) {
+        JestClient jestClient = null;
+        JestResult jestResult = null;
+        try {
+            jestClient = elasticFactory.getJestClient();
+            JSONObject docSource = new JSONObject();
+            docSource.put("doc",source);
+            Update update = new Update.Builder(docSource).index(index).type(type).id(_id).build();
+            jestResult = jestClient.execute(update);
+            logger.info("update info:" + jestResult.isSucceeded());
+        } catch (Exception e) {
+            logger.error("update fail:" + _id,e.getMessage());
+            return false;
+        } finally {
+            if (jestClient != null) {
+                jestClient.shutdownClient();
+            }
+        }
+        return true;
+    }
+
 
     public static void main(String args[]){
         String json = "";

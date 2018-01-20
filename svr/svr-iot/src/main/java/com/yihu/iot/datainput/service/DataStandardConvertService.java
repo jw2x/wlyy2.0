@@ -5,12 +5,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.yihu.iot.datainput.enums.DataDeviceTypeEnum;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
 import com.yihu.iot.datainput.enums.DataTypeEnum;
-import com.yihu.jw.iot.data_input.DataStandardDO;
+import com.yihu.jw.iot.datainput.DataBodySignsDO;
+import com.yihu.jw.iot.datainput.DataStandardDO;
 import com.yihu.jw.util.date.DateUtil;
-import com.yihu.jw.util.spring.SpringContextHolder;
 import org.apache.http.client.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -52,49 +53,17 @@ public class DataStandardConvertService {
      * @param oldJson 要转换的json
      */
     public String iconvert(String oldJson){
+        //将传过来的数据转换为对象
+        DataBodySignsDO dataBodySignsDO = JSONObject.parseObject(oldJson,DataBodySignsDO.class);
         JSONObject jsonObject = JSONObject.parseObject(oldJson);
         //如果没有授权或者数据来源，则表示数据异常
-        if(!jsonObject.containsKey("access_token") || !jsonObject.containsKey("data_source")){
+        if(null == dataBodySignsDO.getAccess_token() || (null != dataBodySignsDO.getAccess_token() && null == dataBodySignsDO.getData_source())){
             logger.warn("传过来的数据无有效access_token或data_source",oldJson);
             return "";
         }
-
-        //拿到i健康json数据里的各项值
-        Object id = jsonObject.get("id");
-        if(null == id){
-            id = UUID.randomUUID();
-        }
-        String access_token = (String)jsonObject.get("access_token");
-        String data_source = (String)jsonObject.get("data_source");
-        String sn = (String)jsonObject.get("deviceSn");
-        String deviceType = jsonObject.getString("deviceType");
-        String ext_code = (String)jsonObject.get("userType");
-        String data = (String)jsonObject.get("userType") + (String)jsonObject.get("unit");
-        String device_name = (String)jsonObject.get("device_name");
-        String device_model = (String)jsonObject.get("device_model");
-        String measure_time = (String)jsonObject.get("sendTime");
-
-        JSONObject newJsonObject = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        JSONObject dataJsonObject = new JSONObject();
-
-        newJsonObject.put("id",id);
-        newJsonObject.put("access_token",access_token);
-        newJsonObject.put("data_source",data_source);
-        newJsonObject.put("sn",sn);
-        newJsonObject.put("ext_code",ext_code);
-        newJsonObject.put("device_name",device_name);
-        newJsonObject.put("device_model",device_model);
-        newJsonObject.put("data",jsonArray);
-
-        dataJsonObject.put("measure_time",measure_time);
-        String deviceDataName = DataDeviceTypeEnum.getNameByType(deviceType);
-        dataJsonObject.put(deviceDataName,data);
-        jsonArray.add(dataJsonObject);
         //保存日志
-        dataProcessLogService.saveLog("","",data_source,measure_time, DateUtils.formatDate(new Date(),DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.datainput.service.DataStandardConvertService.iconvert", DataOperationTypeEnum.convert.getName(),0);
-        //转换后的标准json数据
-        return newJsonObject.toJSONString();
+        dataProcessLogService.saveLog("","",dataBodySignsDO.getData_source(),"", DateUtils.formatDate(new Date(),DateUtil.yyyy_MM_dd_HH_mm_ss),"1","4","com.yihu.iot.datainput.service.DataStandardConvertService.iconvert", DataOperationTypeEnum.convert.getName(),0);
+        return String.valueOf(dataBodySignsDO);
     }
 
 }

@@ -1,9 +1,9 @@
 package com.yihu.jw.manage.controller.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.base.wx.WxWechatDO;
 import com.yihu.jw.manage.service.wechat.WechatConfigService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.base.wx.MWxWechat;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -74,7 +74,7 @@ public class WechatConfigController {
 
     @PostMapping(value = WechatRequestMapping.WxConfig.api_create)
     @ApiOperation(value = "保存微信配置", notes = "保存微信配置")
-    public Envelop save(@ModelAttribute @Valid MWxWechat wechatConfig,@RequestParam String userCode) throws JsonProcessingException {
+    public Envelop save(@ModelAttribute @Valid WxWechatDO wechatConfig, @RequestParam String userCode) throws JsonProcessingException {
         return wechatConfigService.saveOrUpdate(wechatConfig, userCode);
     }
 

@@ -6,6 +6,8 @@ import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.security.User;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.security.UserGroupInformation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,7 @@ import java.util.*;
 @Configuration
 @ConfigurationProperties(prefix = "hadoop")
 public class HbaseConfig{
+    private static Logger logger = LoggerFactory.getLogger(HbaseConfig.class);
     private Map<String, String> hbaseProperties = new HashMap<>();
 
     public Map<String, String> getHbaseProperties(){
@@ -57,9 +60,14 @@ public class HbaseConfig{
 
         try
         {
+            logger.info("set System property for hbase ---",user);
             System.setProperty("HADOOP_USER_NAME", user);
             String tableName = "HealthProfile";
+            //覆盖默认的配置文件
+            org.apache.hadoop.conf.Configuration.addDefaultResource("core-site.xml");
+            org.apache.hadoop.conf.Configuration.addDefaultResource("hbase-site.xml");
             Connection connection = ConnectionFactory.createConnection(configuration);
+            logger.info("Hbase createConnection finished---",connection.getConfiguration());
             Admin admin = connection.getAdmin();
             boolean ex = admin.tableExists(TableName.valueOf(tableName));
             //判断是否存在
@@ -80,9 +88,9 @@ public class HbaseConfig{
         }
         catch (Exception ex)
         {
-            ex.printStackTrace();
+            logger.info("Hbase createConnection failure",ex.getMessage());
         }
-
         return hbaseTemplate;
     }
+
 }

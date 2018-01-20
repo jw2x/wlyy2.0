@@ -34,16 +34,13 @@ public class DataInputController {
     }
 
     @PostMapping(value = DataRequestMapping.DataInput.api_data_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "数据上传", notes = "数据上传入库")
+    @ApiOperation(value = "体征数据上传", notes = "数据上传入库")
     public Envelop uploadData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
         String str = "";
         try {
-            str = dataInputService.uploadData(jsonData);
-            if (str.equals("fail")) {
-                return Envelop.getError(DataRequestMapping.DataInput.message_fail, 0);
-            }
-            if (str.equals("json no data")) {
-                return Envelop.getError(DataRequestMapping.DataInput.message_fail_jsonData_is_null, 1);
+            str = dataInputService.inputBodySignsData(jsonData);
+            if (!str.equals("success")) {
+                return Envelop.getSuccess(DataRequestMapping.DataInput.message_fail, str);
             }
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
@@ -51,23 +48,19 @@ public class DataInputController {
         return Envelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
     }
 
-    @PostMapping(value = DataRequestMapping.DataInput.api_update_record, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "用户体征状态修改", notes = "用户体征状态修改,0-标准，1-异常")
-    public Envelop updateRecord(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
-        try{
-            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success,dataInputService.updateRecordStatus(jsonData));
-        } catch (ApiException e){
+    @PostMapping(value = DataRequestMapping.DataInput.api_weRunData_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "微信运动数据上传", notes = "微信运动数据上传入库")
+    public Envelop uploadWeRunData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
+        String str = "";
+        try {
+            str = dataInputService.inputWeRunData(jsonData);
+            if (!StringUtils.endsWithIgnoreCase("success",str)) {
+                return Envelop.getError(DataRequestMapping.DataInput.message_fail, 0);
+            }
+        } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
+        return Envelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
     }
 
-    @PostMapping(value = DataRequestMapping.DataInput.api_delete_record, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "删除体征数据", notes = "删除标志，支持伪删除")
-    public Envelop deleteRecord(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
-        try{
-            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success,dataInputService.updateRecordStatus(jsonData));
-        } catch (ApiException e){
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
-        }
-    }
 }

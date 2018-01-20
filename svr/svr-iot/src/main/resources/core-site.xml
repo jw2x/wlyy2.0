@@ -132,7 +132,7 @@
     
     <property>
       <name>ipc.client.connect.max.retries</name>
-      <value>2</value><!--50-->
+      <value>1</value><!--50-->
     </property>
     
     <property>

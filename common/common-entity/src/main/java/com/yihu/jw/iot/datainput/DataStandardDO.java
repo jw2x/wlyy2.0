@@ -1,7 +1,6 @@
-package com.yihu.jw.iot.data_input;
+package com.yihu.jw.iot.datainput;
 
 import com.yihu.jw.IdEntity;
-import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -44,4 +44,13 @@ public interface DataSearchFeign {
     @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_list_code_del, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Envelop getListByCodeAndDel( @RequestBody String jsonData);
 
+    @PostMapping(value = DataRequestMapping.DataSearch.api_user_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Envelop delete( @RequestBody String jsonData);
+
+    @PostMapping(value = DataRequestMapping.DataSearch.api_user_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Envelop update( @RequestBody String jsonData);
+
+    @PostMapping(value = DataRequestMapping.DataSearch.api_user_search_werun_datas, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Envelop getWeRunDataListById( @RequestBody String jsonData);
+
 }

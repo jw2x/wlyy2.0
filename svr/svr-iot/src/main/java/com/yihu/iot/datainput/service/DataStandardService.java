@@ -2,7 +2,7 @@ package com.yihu.iot.datainput.service;
 
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.datainput.dao.DataStandardDao;
-import com.yihu.jw.iot.data_input.DataStandardDO;
+import com.yihu.jw.iot.datainput.DataStandardDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

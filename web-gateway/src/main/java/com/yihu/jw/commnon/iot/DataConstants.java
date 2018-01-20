@@ -14,6 +14,7 @@ public class DataConstants {
         public static final String api_common = api_iot_common + "/dataInput";
         public static final String api_bind_user = "/userBind";
         public static final String api_upload_data = "/input";
+        public static final String api_upload_weRunData = "/inputWeRunData";
     }
 
 
