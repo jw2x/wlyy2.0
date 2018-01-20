@@ -1,5 +1,6 @@
 package com.yihu.iot.controller.device;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.yihu.base.fastdfs.FastDFSHelper;
 import com.yihu.iot.dao.device.IotDeviceImportRecordDao;
 import com.yihu.iot.service.device.IotDeviceService;
@@ -8,7 +9,6 @@ import com.yihu.jw.iot.device.IotDeviceImportRecordDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
-import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -16,7 +16,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -179,7 +177,7 @@ public class IotDeviceController extends EnvelopRestController{
 
     @PostMapping(value = IotRequestMapping.Device.importDevice)
     @ApiOperation(value = "设备导入", notes = "设备导入")
-    public Envelop<UploadVO> uploadStream(@ApiParam(value = "文件", required = true)
+    public Envelop<IotDeviceImportRecordVO> uploadStream(@ApiParam(value = "文件", required = true)
                                           @RequestParam(value = "file", required = true) MultipartFile file,
                                           @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
                                           @RequestParam(value = "purcharseId", required = true) String purcharseId) {
@@ -197,36 +195,26 @@ public class IotDeviceController extends EnvelopRestController{
             }
             String fileName = fullName.substring(0, fullName.lastIndexOf("."));
             HSSFWorkbook wb = null;
+            IotDeviceImportRecordVO vo = null;
             try {
                 wb = new HSSFWorkbook(file.getInputStream());
-                // logger.debug(wb.getNumberOfSheets());
                 HSSFSheet sheet = wb.getSheetAt(0);
-                logger.debug("sheet name = "+wb.getSheetName(0));
-                for(int i = sheet.getFirstRowNum();i<=sheet.getLastRowNum();i++){
-                    HSSFRow row = sheet.getRow(i);
-                    Iterator cells = row.cellIterator();
-                    while(cells.hasNext()){
-                        HSSFCell cell = (HSSFCell) cells.next();
-                        logger.debug(cell.getStringCellValue());
-                    }
+                if(sheet==null||sheet.getLastRowNum()<2){
+                    return Envelop.getError("文件内容不正确");
                 }
-                logger.debug("last row = "+sheet.getLastRowNum());
-
-//                return wb.getNumberOfSheets();
-//            return sheet.getFirstRowNum();
+                HSSFRow row = sheet.getRow(0);
+                if(row.getLastCellNum()<3){
+                    return Envelop.getError("文件内容不正确");
+                }
+                //上传到fastdfs
+                ObjectNode objectNode = fastDFSHelper.upload(file.getInputStream(), fileType, "");
+                vo = iotDeviceService.importDevice(objectNode.get("fid").toString().replaceAll("\"", ""),fileName,purcharseId,wb);
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.error(e.getMessage());
+                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
             }
-            //上传到fastdfs
-//            ObjectNode objectNode = fastDFSHelper.upload(file.getInputStream(), fileType, "");
-            //解析返回的objectNode
-            UploadVO uploadVO = new UploadVO();
-            uploadVO.setFileName(fileName);
-            uploadVO.setFileType(fileType);
-//            uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-//            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
+            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create,vo);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);

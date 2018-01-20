@@ -45,6 +45,7 @@ public class IotRequestMapping {
     public static class FileUpload{
         public static final String api_upload_stream = "uploadStream";//文件流上传
         public static final String api_upload_stream_img = "uploadImg";//文件流上传图片
+        public static final String api_upload_stream_attachment = "uploadattAchment";//文件流上传附件
         public static final String api_upload_string = "uploadString";//base64字符串上传
 
         public static final String message_success_upload = "上传成功";
@@ -186,7 +187,7 @@ public class IotRequestMapping {
      * 设备模块常量
      */
     public static class Device{
-        public static final String api_create = "device";
+        public static final String api_create = "createDevice";
         public static final String api_delete = "device";
         public static final String api_getById = "getDeviceById";
         public static final String api_update = "device";
@@ -222,6 +223,7 @@ public class IotRequestMapping {
         public static final String findById = "findById";
         public static final String delOrder = "delOrder";
         public static final String updOrder = "updOrder";
+        public static final String createOrder = "createOrder";
 
         public static final String findPurcharsePage = "findPurcharsePage";
 

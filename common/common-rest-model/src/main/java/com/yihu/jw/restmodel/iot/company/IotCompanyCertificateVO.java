@@ -2,6 +2,7 @@ package com.yihu.jw.restmodel.iot.company;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -12,9 +13,9 @@ import java.util.Date;
  * 企业证书表
  * @author yeshijie on 2018/1/16.
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@ApiModel(value = "ListResult", description = "企业证书表")
-public class IotCompanyCertificateVO implements Serializable {
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(description = "企业证书表")
+public class IotCompanyCertificateVO extends BaseVO implements Serializable {
 
     @ApiModelProperty("证书名称")
     private String name;

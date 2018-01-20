@@ -1,6 +1,7 @@
 package com.yihu.jw.restmodel.iot.company;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -10,9 +11,9 @@ import java.io.Serializable;
  * 企业三证变更记录表
  * @author yeshijie on 2018/1/16.
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@ApiModel(value = "ListResult", description = "企业三证变更记录")
-public class IotCompanyCertificateChangeRecordVO implements Serializable {
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(description = "企业三证变更记录")
+public class IotCompanyCertificateChangeRecordVO extends BaseVO implements Serializable {
 
     @ApiModelProperty("企业名称")
     private String companyName;

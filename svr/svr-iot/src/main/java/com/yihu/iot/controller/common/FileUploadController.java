@@ -74,6 +74,44 @@ public class FileUploadController extends EnvelopRestController{
     }
 
 
+    @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream_attachment)
+    @ApiOperation(value = "文件流上传附件", notes = "文件流上传附件")
+    public Envelop<UploadVO> uploadAttachment(@ApiParam(value = "文件", required = true)
+                                       @RequestParam(value = "file", required = true) MultipartFile file){
+        try {
+            // 得到文件的完整名称  xxx.txt
+            String fullName = file.getOriginalFilename();
+            if(StringUtils.isBlank(fullName)){
+                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
+            }
+            //得到文件类型
+            String fileType = fullName.substring(fullName.lastIndexOf(".") + 1).toLowerCase();
+            if(StringUtils.isBlank(fileType)||!"doc、docx、pdf、xls、xlsx、jpg、jpeg、png".contains(fileType)){
+                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
+            }
+
+            long size = file.getSize();
+            long max = 5*1024*1024;
+            if(size>max){
+                return Envelop.getError("文件大小不超过5M",IotRequestMapping.api_iot_fail);
+            }
+
+            String fileName = fullName.substring(0, fullName.lastIndexOf("."));
+            //上传到fastdfs
+            ObjectNode objectNode = fastDFSHelper.upload(file.getInputStream(), fileType, "");
+            //解析返回的objectNode
+            UploadVO uploadVO = new UploadVO();
+            uploadVO.setFileName(fileName);
+            uploadVO.setFileType(fileType);
+            uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
+            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
+        }catch (Exception e){
+            e.printStackTrace();
+            return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
+        }
+    }
+
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream)
     @ApiOperation(value = "文件流上传文件", notes = "文件流上传文件")
     public Envelop<UploadVO> uploadStream(@ApiParam(value = "文件", required = true) @RequestParam(value = "file", required = true) MultipartFile file) {

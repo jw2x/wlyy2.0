@@ -2,7 +2,6 @@ package com.yihu.iot.controller.device;
 
 import com.yihu.iot.service.company.IotCompanyService;
 import com.yihu.iot.service.device.IotDeviceOrderService;
-import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.iot.device.IotDeviceOrderDO;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -35,7 +34,7 @@ public class IotDeviceOrderController extends EnvelopRestController{
     @Autowired
     private IotCompanyService iotCompanyService;
 
-    @PostMapping(value = IotRequestMapping.DeviceOrder.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建设备订单", notes = "创建设备订单")
     public Envelop<IotOrderVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                           @RequestBody String jsonData) {

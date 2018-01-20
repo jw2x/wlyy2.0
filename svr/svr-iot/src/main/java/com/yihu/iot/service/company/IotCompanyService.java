@@ -201,6 +201,9 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @param company
      */
     public void findType(IotCompanyDO company){
+        if(company==null){
+            return;
+        }
         //查找类型
         List<IotCompanyTypeDO> companyTypes = iotCompanyTypeDao.findByCompanyId(company.getId());
         List<IotCompanyTypeDO> list = new ArrayList<>(8);

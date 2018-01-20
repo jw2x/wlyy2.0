@@ -22,7 +22,7 @@ import java.util.List;
  *
  * @author llh
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(value = "ListResult", description = "通用的实体")
 public class Envelop<T> extends BaseEnvelop implements Serializable {
 

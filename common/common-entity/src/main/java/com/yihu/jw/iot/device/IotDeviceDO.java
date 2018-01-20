@@ -59,7 +59,7 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
     private String hospital;//归属社区
 
     @Column(name = "hospital_name")
-    private String hospital_name;//归属社区名称
+    private String hospitalName;//归属社区名称
 
     @Column(name = "order_id")
     private String orderId;//订单code
@@ -81,6 +81,64 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "del")
     private Integer del;//删除标志(1有效，0删除)
+
+    public enum DeviceStatus {
+        normal("正常", "1"),
+        scrap("报废", "2"),
+        overhaul("检修", "3");
+        private String name;
+        private String value;
+
+        DeviceStatus(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
+
+    public enum DeviceSource {
+        purchaese("采购订单关联", "1"),
+        binding("居民绑定", "2"),
+        create("管理员新增", "3");
+        private String name;
+        private String value;
+
+        DeviceSource(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
 
     public String getSaasId() {
         return saasId;
@@ -250,11 +308,11 @@ public class IotDeviceDO extends IdEntityWithOperation implements Serializable {
         this.hospital = hospital;
     }
 
-    public String getHospital_name() {
-        return hospital_name;
+    public String getHospitalName() {
+        return hospitalName;
     }
 
-    public void setHospital_name(String hospital_name) {
-        this.hospital_name = hospital_name;
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 }

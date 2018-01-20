@@ -116,6 +116,68 @@ public class FastDFSHelper {
         return message;
     }
 
+    /**
+     * 以字节的方式上传文件
+     * @param fileBuffer
+     * @param fileExtension
+     * @param description
+     * @return
+     * @throws Exception
+     */
+    public ObjectNode uploadByByte(byte[] fileBuffer, String fileExtension,String description) throws Exception {
+        NameValuePair[] fileMetaData = new NameValuePair[1];
+        fileMetaData[0] = new NameValuePair("description", description == null ? "" : description);
+        return uploadByByte(fileBuffer,fileExtension,fileMetaData);
+    }
+
+    /**
+     * 以字节的方式上传文件
+     */
+    public ObjectNode uploadByByte(byte[] fileBuffer, String fileExtension,NameValuePair[] fileMetaData) throws Exception {
+        StorageClient client = clientPool.getStorageClient();
+        ObjectNode message = new ObjectMapper().createObjectNode();
+        try {
+            TrackerServer trackerServer = clientPool.getTrackerServer();
+
+            String[] results = client.upload_file(fileBuffer, fileExtension, fileMetaData);
+            if (results != null) {
+                String fileId;
+                int ts;
+                String token;
+                String fileURl;
+                InetSocketAddress socketAddress;
+
+                String groupName = results[0];
+                String remoteFile = results[1];
+                message.put(GroupField, groupName);
+                message.put(RemoteFileField, remoteFile);
+
+                fileId = groupName + StorageClient1.SPLIT_GROUP_NAME_AND_FILENAME_SEPERATOR + remoteFile;
+                message.put(FileIdField, fileId);
+
+                socketAddress = trackerServer.getInetSocketAddress();
+                fileURl = "http://" + socketAddress.getAddress().getHostAddress();
+                if (ClientGlobal.g_tracker_http_port != 80) {
+                    fileURl += ":" + ClientGlobal.g_tracker_http_port;
+                }
+
+                fileURl += "/" + fileId;
+                if (ClientGlobal.g_anti_steal_token) {
+                    ts = (int) (System.currentTimeMillis() / 1000);
+                    token = ProtoCommon.getToken(fileId, ts, ClientGlobal.g_secret_key);
+                    fileURl += "?token=" + token + "&ts=" + ts;
+                }
+
+                message.put(FileUrlField, fileURl);
+                logger.info(client.get_file_info(groupName, remoteFile).toString());
+
+            }
+        } finally {
+            clientPool.releaseStorageClient(client);
+        }
+        return message;
+    }
+
 
 
     /**
