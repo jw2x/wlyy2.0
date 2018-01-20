@@ -223,7 +223,7 @@ public class IotDeviceController extends EnvelopRestController{
 
     @GetMapping(value = IotRequestMapping.Device.queryImportRecordPage)
     @ApiOperation(value = "分页查找导入记录", notes = "分页查找导入记录")
-    public Envelop<IotDeviceImportRecordVO> findProductPageByCompanyId(@ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
+    public Envelop<IotDeviceImportRecordVO> queryImportRecordPage(@ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
                                                            @RequestParam(value = "purcharseId", required = true) String purcharseId,
                                                                        @ApiParam(name = "page", value = "第几页", defaultValue = "")
                                                            @RequestParam(value = "page", required = false) Integer page,
