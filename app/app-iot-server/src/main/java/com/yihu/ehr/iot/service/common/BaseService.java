@@ -43,6 +43,8 @@ public class BaseService {
     protected String portalInnerUrl;
     @Value("${service-gateway.portalOuterUrl}")
     protected String portalOuterUrl;
+    @Value("${service-gateway.iotUrl}")
+    protected String iotUrl;
     @Value("${app.oauth2InnerUrl}")
     protected String oauth2InnerUrl;
     @Value("${app.oauth2OuterUrl}")
