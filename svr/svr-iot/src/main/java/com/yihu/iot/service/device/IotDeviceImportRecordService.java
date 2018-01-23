@@ -8,6 +8,8 @@ import com.yihu.iot.dao.device.IotDeviceImportRecordDao;
 import com.yihu.jw.iot.device.IotDeviceDO;
 import com.yihu.jw.iot.device.IotDeviceImportRecordDO;
 import com.yihu.jw.iot.device.IotOrderPurchaseDO;
+import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yeshijie on 2018/1/19.
@@ -36,29 +39,74 @@ public class IotDeviceImportRecordService extends BaseJpaService<IotDeviceImport
     @Autowired
     private FastDFSHelper fastDFSHelper;
 
+    /**
+     * 创建 HSSFWorkbook
+     * @return
+     */
+    private HSSFWorkbook createWb(){
+        //创建HSSFWorkbook对象
+        HSSFWorkbook wb = new HSSFWorkbook();
+        //创建HSSFSheet对象
+        HSSFSheet sheet = wb.createSheet("sheet0");
+        //创建HSSFRow对象
+        HSSFRow row0 = sheet.createRow(0);
+        //创建HSSFCell对象
+        HSSFCell cell0=row0.createCell(0);
+        HSSFCell cell1=row0.createCell(1);
+        HSSFCell cell2=row0.createCell(2);
+        HSSFCell cell3=row0.createCell(3);
+        //设置单元格的值
+        cell0.setCellValue("sn码");
+        cell1.setCellValue("归属社区");
+        cell2.setCellValue("sim卡号");
+        cell3.setCellValue("导入结果");
+        return wb;
+    }
+
+    /**
+     * 新增单元行
+     * @param sheet
+     * @param rowNum
+     * @param vo
+     * @param msg
+     */
+    private void addRow(HSSFSheet sheet,Integer rowNum,IotDeviceImportVO vo,String msg){
+        HSSFRow row =sheet.createRow(rowNum);
+        HSSFCell cell0 = row.createCell(0);
+        HSSFCell cell1 = row.createCell(1);
+        HSSFCell cell2 = row.createCell(2);
+        HSSFCell cell3 = row.createCell(3);
+        //设置单元格的值
+        cell0.setCellValue(vo.getSn());
+        cell1.setCellValue(vo.getHospital());
+        cell2.setCellValue(vo.getSim());
+        cell3.setCellValue(msg);
+    }
+
     @Async
-    public void importDevice(IotOrderPurchaseDO purchaseDO, HSSFWorkbook wb, IotDeviceImportRecordDO recordDO){
+    public void importDevice(IotOrderPurchaseDO purchaseDO, List<IotDeviceImportVO> importVOList, IotDeviceImportRecordDO recordDO){
+
+        HSSFWorkbook wb = createWb();
+        HSSFSheet sheet = wb.getSheetAt(0);
         List<IotDeviceDO> deviceDOList = new ArrayList<IotDeviceDO>();
         Integer associatedNum = iotDeviceDao.countByPurchaseId(purchaseDO.getId());
         Long unAssociatedNum = purchaseDO.getPurchaseNum()-associatedNum;//未关联数量
         Integer count = 0;
-        HSSFSheet sheet = wb.getSheetAt(0);
-        for(int i = sheet.getFirstRowNum();i<=sheet.getLastRowNum();i++){
-            HSSFRow row = sheet.getRow(i);
+        Integer rowNum = 0;
+        Map<String,String> snMap = new HashedMap(importVOList.size());
+        for(IotDeviceImportVO iotDeviceImportVO:importVOList){
+            rowNum++;
+
             try{
-                if(i==sheet.getFirstRowNum()){
-                    HSSFCell cell = row.createCell(3);
-                    cell.setCellValue("导入结果");
-                    continue;
-                }
                 String errorMsg = null;
                 if(unAssociatedNum<=count){
                     errorMsg = "入库SN码数量超过采购量";
+                    addRow(sheet,rowNum,iotDeviceImportVO,errorMsg);
                     continue;
                 }
-                String sn = getStringCellValue(row,0);
-                String hos = getStringCellValue(row,1);
-                String sim = getStringCellValue(row,2);
+                String sn = iotDeviceImportVO.getSn();
+                String hos = iotDeviceImportVO.getHospital();
+                String sim = iotDeviceImportVO.getSim();
 
                 //分割字符串--思明区莲前街道社区卫生服务中心(3502030400)
                 String[] ho = hos.split("\\(");
@@ -67,9 +115,15 @@ public class IotDeviceImportRecordService extends BaseJpaService<IotDeviceImport
                 //验证
                 if(StringUtils.isBlank(sn)){
                     errorMsg = "sn码不能为空";
-                    HSSFCell cell = row.createCell(3);
-                    cell.setCellValue(errorMsg);
+                    addRow(sheet,rowNum,iotDeviceImportVO,errorMsg);
                     continue;
+                }
+                if(snMap.containsKey(sn)){
+                    errorMsg = "SN码重复，并不允许新增";
+                    addRow(sheet,rowNum,iotDeviceImportVO,errorMsg);
+                    continue;
+                }else {
+                    snMap.put(sn,sn);
                 }
                 IotDeviceDO device = iotDeviceDao.findByDeviceSn(sn);
 //                if(iotDeviceDao.findByDeviceSn(sn)!=null){
@@ -80,18 +134,16 @@ public class IotDeviceImportRecordService extends BaseJpaService<IotDeviceImport
 //                }
                 if(StringUtils.isNotBlank(sim)&&iotDeviceDao.findByDeviceSn(sim)!=null){
                     errorMsg = "SIM卡号重复，并不允许新增";
-                    HSSFCell cell = row.createCell(3);
-                    cell.setCellValue(errorMsg);
+                    addRow(sheet,rowNum,iotDeviceImportVO,errorMsg);
                     continue;
                 }
                 if(device==null){
                     device = new IotDeviceDO();
+                    device.setSaasId(getCode());
                 }
-                device = new IotDeviceDO();
                 device.setDel(1);
                 device.setOrderNo(purchaseDO.getOrderNo());
                 device.setProductId(purchaseDO.getProductId());
-                device.setSaasId(getCode());
                 device.setStatus(IotDeviceDO.DeviceStatus.normal.getValue());
                 device.setDeviceSn(sn);
                 device.setDeviceSource(IotDeviceDO.DeviceSource.purchaese.getValue());
@@ -107,12 +159,10 @@ public class IotDeviceImportRecordService extends BaseJpaService<IotDeviceImport
                 device.setSupplierName(purchaseDO.getSupplierName());
 
                 deviceDOList.add(device);
-                HSSFCell cell = row.createCell(3);
-                cell.setCellValue("新增成功");
+                addRow(sheet,rowNum,iotDeviceImportVO,"新增成功");
             }catch (Exception e){
                 e.printStackTrace();
-                HSSFCell cell = row.createCell(3);
-                cell.setCellValue("新增失败："+e.getMessage());
+                addRow(sheet,rowNum,iotDeviceImportVO,"新增失败："+e.getMessage());
             }
         }
         //保存结果

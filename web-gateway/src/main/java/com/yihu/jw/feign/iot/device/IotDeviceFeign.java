@@ -10,7 +10,6 @@ import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author yeshijie on 2017/12/8.
@@ -43,11 +42,11 @@ public interface IotDeviceFeign{
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
 
-    @PostMapping(value = IotRequestMapping.Device.importDevice)
-    public Envelop<IotDeviceImportRecordVO> uploadStream(
-            @RequestParam(value = "file", required = true) MultipartFile file,
-            @RequestParam(value = "purcharseId", required = true) String purcharseId);
+    @GetMapping(value = IotRequestMapping.Device.isImportDevice)
+    public Envelop<ExistVO> isImportDevice(@RequestParam(value = "purcharseId", required = true) String purcharseId);
 
+    @PostMapping(value = IotRequestMapping.Device.importDevice)
+    public Envelop<IotDeviceImportRecordVO> uploadStream(@RequestBody String jsonData);
 
     @GetMapping(value = IotRequestMapping.Device.queryImportRecordPage)
     public Envelop<IotDeviceImportRecordVO> queryImportRecordPage(

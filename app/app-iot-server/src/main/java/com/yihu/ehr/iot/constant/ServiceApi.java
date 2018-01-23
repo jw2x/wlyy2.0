@@ -54,7 +54,7 @@ public class ServiceApi {
     }
 
     public static class Device{
-        public static final String Base = "wg/product/";
+        public static final String Base = "wg/device/";
         public static final String CreateDevice = Base +"createDevice";
         public static final String GetDeviceById = Base +"getDeviceById";
         public static final String QueryDevicePage = Base +"queryDevicePage";
@@ -63,6 +63,7 @@ public class ServiceApi {
         public static final String IsSnExist = Base +"isSnExist";
         public static final String IsSimExist = Base +"isSimExist";
         public static final String ImportDevice = Base +"importDevice";
+        public static final String IsImportDevice = Base +"isImportDevice";
 
         public static final String QueryImportRecordPage = Base +"queryImportRecordPage";
 

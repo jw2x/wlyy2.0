@@ -6,12 +6,12 @@ import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import feign.hystrix.FallbackFactory;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author yeshijie on 2017/12/8.
@@ -75,10 +75,17 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             }
 
             @Override
-            public Envelop<IotDeviceImportRecordVO> uploadStream(@RequestParam(value = "file", required = true) MultipartFile file,
-                                                                 @RequestParam(value = "purcharseId", required = true) String purcharseId) {
-                tracer.getCurrentSpan().logEvent("设备导入失败:原因:" + e.getMessage());
+            public Envelop<ExistVO> isImportDevice(@ApiParam(name = "purcharseId", value = "purcharseId")
+                                                   @RequestParam(value = "purcharseId", required = true) String purcharseId) {
+                tracer.getCurrentSpan().logEvent("是否正在导入设备数据失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("purcharseId:" + purcharseId);
+                return null;
+            }
+
+            @Override
+            public Envelop<IotDeviceImportRecordVO> uploadStream(@RequestBody String jsonData) {
+                tracer.getCurrentSpan().logEvent("设备导入失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 

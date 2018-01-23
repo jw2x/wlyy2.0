@@ -218,4 +218,43 @@ public class HttpHelper {
         return HttpClientUtil.request("DELETE",url,params,header,ssl,user,password);
     }
 
+    /************************************postBody*******************************************************************/
+    public static String postBody(String url)
+    {
+        return postBody(url, null, null);
+    }
+    public static String postBody(String url, String params)
+    {
+        return postBody(url, params, null);
+    }
+    public static String postBody(String url, String params, Map<String,Object> header)
+    {
+        if(url.startsWith("https"))
+        {
+            return postBody(url, params, header, defaultSSL);
+        }
+        else{
+            //默认http不走ssl和用户密码
+            return postBody(url, params, header, null, null, null);
+        }
+    }
+    public static String postBody(String url, String params, Map<String,Object> header, Boolean isCheck)
+    {
+        if(isCheck)
+        {
+            return postBody(url, params, header, defaultSSL, defaultHttpUser, defaultHttpPassword);
+        }
+        else{
+            return postBody(url, params, header, null, null, null);
+        }
+    }
+    public static String postBody(String url, String params, Map<String,Object> header, SSLConnectionSocketFactory ssl)
+    {
+        return postBody(url, params, header, ssl, defaultHttpUser, defaultHttpPassword);
+    }
+    public static String postBody(String url, String params, Map<String,Object> header, SSLConnectionSocketFactory ssl, String user, String password)
+    {
+        return HttpClientUtil.postBody(url,params,header,ssl,user,password);
+    }
+
 }
