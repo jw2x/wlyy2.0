@@ -26,7 +26,7 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title("政府服务平台 SwaggerUI").description("Government Server").version("v1.0").build();
+        return new ApiInfoBuilder().title("物联网 SwaggerUI").description("Government Server").version("v1.0").build();
     }
 
 }
