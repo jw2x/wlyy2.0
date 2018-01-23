@@ -28,6 +28,20 @@ app:
   clientId: 3CDhsgepr4
   baseClientId: Qz2yA1MOD0  # 【物联网】应用
 
+fast-dfs:
+  tracker-server: 172.19.103.54:22122 #服务器地址
+  connect-timeout: 2 #链接超时时间
+  network-timeout: 30
+  charset: ISO8859-1 #编码
+  http:
+    tracker-http-port: 80
+    anti-steal-token: no
+    secret-key: FastDFS1234567890
+  pool: #连接池大小
+    init-size: 5
+    max-size: 20
+    wait-time: 500
+
 ---
 spring:
   profiles: dev
@@ -40,14 +54,14 @@ app:
   oauth2InnerUrl: http://172.19.103.44:10260/
   oauth2OuterUrl: http://27.154.233.186:10260/  #上饶-授权外网映射
 service-gateway:
-  iotUrl: http://192.168.131.24:8088/
+  iotUrl: http://192.168.131.24:8088/svr-iot/
   profileInnerUrl: http://172.19.103.48:10000/api/v1.0/admin
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
   portalInnerUrl: http://172.19.103.48:10280/api/v1.0/portal
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
 fast-dfs:
-  tracker-server: 172.19.103.13:22122
-  public-server: http://172.19.103.52:80
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
 logging:
   path: /data/logger
   file: app-emergency-server
@@ -69,8 +83,8 @@ service-gateway:
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
 fast-dfs:
-  tracker-server: 172.19.103.13:22122
-  public-server: http://172.19.103.52:80
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
 logging:
   path: /data/logger
   file: app-emergency-server
@@ -98,48 +112,3 @@ logging:
   path: /data/logger
   file: app-emergency-server
 
----
-spring:
-  profiles: prod_fz
-  loginVaild: true
-  redis:
-    host: 192.168.135.40 # Redis server host.
-    port: 6390
-    password: redis!@456
-app:
-  oauth2InnerUrl: http://192.168.135.35:10260/
-  oauth2OuterUrl: http://11.1.2.16:10260/
-service-gateway:
-  profileInnerUrl: http://192.168.135.31:10001/api/v1.0/admin
-  profileOuterUrl: http://11.1.2.13:10000/api/v1.0/admin
-  portalInnerUrl: http://192.168.135.31:10280/api/v1.0/portal
-  portalOuterUrl: http://11.1.2.13:10280/api/v1.0/portal
-fast-dfs:
-  tracker-server: 192.168.135.42:22122
-  public-server: http://192.168.135.42:22122
-logging:
-  path: /data/logger
-  file: app-emergency-server
-
----
-spring:
-  profiles: prod_sr
-  loginVaild: true
-  redis:
-    host: 10.176.97.5 # Redis server host.
-    port: 6390
-    password: q4YaQemf
-app:
-  oauth2InnerUrl: http://10.176.97.10:10260/
-  oauth2OuterUrl: http://171.35.109.46:10260/
-service-gateway:
-  profileInnerUrl: http://10.176.97.10:10000/api/v1.0/admin
-  profileOuterUrl: http://171.35.109.46:10000/api/v1.0/admin
-  portalInnerUrl: http://10.176.97.10:10280/api/v1.0/portal
-  portalOuterUrl: http://171.35.109.46:10280/api/v1.0/portal
-fast-dfs:
-  tracker-server: 10.176.97.5:22122
-  public-server: http://10.176.97.5:8888
-logging:
-  path: /data/logger
-  file: app-emergency-server

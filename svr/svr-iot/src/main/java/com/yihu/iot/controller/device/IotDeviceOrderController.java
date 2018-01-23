@@ -37,7 +37,7 @@ public class IotDeviceOrderController extends EnvelopRestController{
     @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建设备订单", notes = "创建设备订单")
     public Envelop<IotOrderVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
-                          @RequestBody String jsonData) {
+                          @RequestParam String jsonData) {
         try {
             IotOrderVO iotOrderVO = toEntity(jsonData, IotOrderVO.class);
             iotDeviceOrderService.create(iotOrderVO);

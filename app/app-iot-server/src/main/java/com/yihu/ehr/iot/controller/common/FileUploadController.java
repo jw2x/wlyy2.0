@@ -1,11 +1,10 @@
-package com.yihu.iot.controller.common;
+package com.yihu.ehr.iot.controller.common;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.yihu.base.fastdfs.FastDFSHelper;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
@@ -23,17 +22,16 @@ import java.net.URLDecoder;
 import java.util.Base64;
 
 /**
- * 文件上传不在微服务中处理
  * @author yeshijie on 2017/12/7.
  */
 @RestController
 @RequestMapping(IotRequestMapping.Common.file_upload)
 @Api(tags = "文件上传相关操作", description = "文件上传相关操作")
-public class FileUploadController extends EnvelopRestController{
+public class FileUploadController extends BaseController {
 
     @Autowired
     private FastDFSHelper fastDFSHelper;
-    @Value("${fastDFS.fastdfs_file_url}")
+    @Value("${fast-dfs.public-server}")
     private String fastdfs_file_url;
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream_img)
@@ -78,7 +76,7 @@ public class FileUploadController extends EnvelopRestController{
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream_attachment)
     @ApiOperation(value = "文件流上传附件", notes = "文件流上传附件")
     public Envelop<UploadVO> uploadAttachment(@ApiParam(value = "文件", required = true)
-                                       @RequestParam(value = "file", required = true) MultipartFile file){
+                                              @RequestParam(value = "file", required = true) MultipartFile file){
         try {
             // 得到文件的完整名称  xxx.txt
             String fullName = file.getOriginalFilename();

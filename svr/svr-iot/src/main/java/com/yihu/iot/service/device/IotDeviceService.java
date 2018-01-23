@@ -10,9 +10,9 @@ import com.yihu.jw.iot.device.IotDeviceImportRecordDO;
 import com.yihu.jw.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
+import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.apache.commons.lang.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -105,7 +105,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
     /**
      * 设备导入
      */
-    public IotDeviceImportRecordVO importDevice(String fileUrl,String fileName,String purcharseId,HSSFWorkbook wb){
+    public IotDeviceImportRecordVO importDevice(String fileUrl, String fileName, String purcharseId, List<IotDeviceImportVO> importVOList){
         IotDeviceImportRecordDO recordDO = new IotDeviceImportRecordDO();
         IotOrderPurchaseDO purchaseDO = iotOrderPurchaseDao.findById(purcharseId);
         recordDO.setDel(1);
@@ -120,7 +120,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
         IotDeviceImportRecordVO vo = convertToModel(recordDO,IotDeviceImportRecordVO.class);
 
         //批量导入 异步操作
-        importRecordService.importDevice(purchaseDO,wb,recordDO);
+        importRecordService.importDevice(purchaseDO,importVOList,recordDO);
 
         return vo;
     };

@@ -13,7 +13,7 @@ import java.io.Serializable;
 @ApiModel(description = "是否存在")
 public class ExistVO implements Serializable{
 
-    @ApiModelProperty("是否存在(1已经存在，2不存在)")
+    @ApiModelProperty("是否存在(1已经存在，0不存在)")
     private Integer isExist;
 
     public ExistVO() {

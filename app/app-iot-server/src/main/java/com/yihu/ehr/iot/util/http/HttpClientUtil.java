@@ -21,7 +21,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -33,6 +36,23 @@ import java.util.Map;
  * Created by hzp on 2016/4/14.
  */
 public class HttpClientUtil {
+
+    /**
+     * 发送post请求
+     * @param url     请求地址
+     * @param params  请求参数
+     * @return
+     */
+    public static String postBody(String url, String params,Map<String,Object> header,SSLConnectionSocketFactory ssl, String user, String password) {
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        headers.setContentType(type);
+        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
+        org.springframework.http.HttpEntity<String> formEntity = new org.springframework.http.HttpEntity<String>(params, headers);
+        String ret = restTemplate.postForObject(url, formEntity, String.class);
+        return ret;
+    }
 
 
     /**************************** 私有方法 *****************************************/

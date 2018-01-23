@@ -197,6 +197,7 @@ public class IotRequestMapping {
         public static final String isSnExist = "isSnExist";
         public static final String isSimExist = "isSimExist";
         public static final String importDevice = "importDevice";
+        public static final String isImportDevice = "isImportDevice";
 
         public static final String queryImportRecordPage = "queryImportRecordPage";
 
