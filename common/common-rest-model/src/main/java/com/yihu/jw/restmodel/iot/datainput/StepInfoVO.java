@@ -9,9 +9,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class StepInfoVO {
 
-    @ApiModelProperty(value = "时间戳",hidden = true)
+    @ApiModelProperty(value = "时间戳",example = "yyyy-MM-dd HH:mm:ss",hidden = true)
     private String timestamp;
-    @ApiModelProperty(value = "运动步数",hidden = true)
+    @ApiModelProperty(value = "运动步数",example = "到某一时刻走了多少步",hidden = true)
     private Integer step;
 
     public String getTimestamp() {

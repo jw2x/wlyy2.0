@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(DataRequestMapping.api_iot_common)
-@Api(value = "数据查询操作", description = "数据查询操作")
+@Api(tags = "数据查询操作", description = "数据查询操作")
 public class DataSearchController {
 
     @Autowired

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(DataRequestMapping.api_iot_common)
-@Api(value = "数据标准转换操作", description = "数据标准转换接口")
+@Api(tags = "数据标准转换操作", description = "数据标准转换接口")
 public class DataStandardConvertController {
 
     @Autowired
