@@ -10,6 +10,7 @@ import com.yihu.jw.iot.device.IotDeviceDO;
 import com.yihu.jw.iot.device.IotDeviceImportRecordDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
@@ -113,6 +114,20 @@ public class IotDeviceController extends EnvelopRestController{
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.updSim)
+    @ApiOperation(value = "修改sim卡号", notes = "修改sim卡号")
+    public BaseEnvelop updSim(@ApiParam(name = "sim", value = "sim")
+                                   @RequestParam(value = "sim", required = true) String sim,
+                              @ApiParam(name = "id", value = "设备id")
+                                   @RequestParam(value = "id", required = true) String id) {
+        try {
+            return iotDeviceService.updSim(sim,id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseEnvelop.getError(e.getMessage());
         }
     }
 

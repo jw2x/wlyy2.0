@@ -9,6 +9,7 @@ import com.yihu.jw.iot.device.IotDeviceDO;
 import com.yihu.jw.iot.device.IotDeviceImportRecordDO;
 import com.yihu.jw.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -73,6 +74,22 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      */
     public IotDeviceDO findBySimNo(String simNo) {
         return iotDeviceDao.findBySimNo(simNo);
+    }
+
+    /**
+     * 修改sim卡号
+     * @param sim
+     * @param id
+     */
+    public BaseEnvelop updSim(String sim, String id){
+        if(findBySimNo(sim)!=null){
+            return BaseEnvelop.getError("sim卡号已存在");
+        }
+
+        IotDeviceDO deviceDO = findById(id);
+        deviceDO.setSimNo(sim);
+        iotDeviceDao.save(deviceDO);
+        return BaseEnvelop.getSuccess("修改成功");
     }
 
     /**

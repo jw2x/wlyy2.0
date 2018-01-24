@@ -18,6 +18,7 @@ public class IotRequestMapping {
         public static final String product = api_iot_common + "/product";
         public static final String order = api_iot_common + "/order";
         public static final String device = api_iot_common + "/device";
+        public static final String quality = api_iot_common + "/quality";
 
 
         public static final String message_success_update = "update success";
@@ -105,57 +106,6 @@ public class IotRequestMapping {
 
     }
 
-    /**
-     * 供应设备常量模块
-     */
-    public static class SupplyDevice{
-        public static final String api_create = "supplyDevice";
-        public static final String api_delete = "supplyDevice";
-        public static final String api_getById = "getSupplyDeviceById";
-        public static final String api_update = "supplyDevice";
-        public static final String api_queryPage = "querySupplyDevicePage";
-        public static final String api_getList = "getSupplierDeviceList";
-
-        public static final String message_success_update = "supplyDevice update success";
-        public static final String message_success_delete = "supplyDevice delete success";
-        public static final String message_success_find = "supplyDevice find success";
-        public static final String message_success_create = "supplyDevice create success";
-        public static final String message_success_find_functions = "supplyDevice find success";
-
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotSupplyDevice_is_no_exist = "iotSupplyDevice is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
-    }
-
-    /**
-     * 供应设备数据类型
-     */
-    public static class SupplyDeviceDataType{
-        public static final String api_create = "supplyDeviceDataType";
-        public static final String api_delete = "supplyDeviceDataType";
-        public static final String api_getById = "getSupplyDeviceDataTypeById";
-        public static final String api_update = "supplyDeviceDataType";
-        public static final String api_queryPage = "querySupplyDeviceDataTypePage";
-        public static final String api_getList = "getSupplyDeviceDataTypeList";
-
-        public static final String message_success_update = "supplyDeviceDataType update success";
-        public static final String message_success_delete = "supplyDeviceDataType delete success";
-        public static final String message_success_find = "supplyDeviceDataType find success";
-        public static final String message_success_create = "supplyDeviceDataType create success";
-        public static final String message_success_find_functions = "supplyDeviceDataType find success";
-
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotSupplyDeviceDataType_is_no_exist = "iotSupplyDeviceDataType is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
-    }
 
     /**
      * 设备字典模块常量
@@ -196,6 +146,7 @@ public class IotRequestMapping {
 
         public static final String isSnExist = "isSnExist";
         public static final String isSimExist = "isSimExist";
+        public static final String updSim = "updSim";
         public static final String importDevice = "importDevice";
         public static final String isImportDevice = "isImportDevice";
 
@@ -250,51 +201,19 @@ public class IotRequestMapping {
         public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
-    /**
-     * 订单采购模块常量
-     */
-    public static class DevicePurchase{
-        public static final String api_create = "devicePurchase";
-        public static final String api_delete = "devicePurchase";
-        public static final String api_getById = "getDevicePurchaseById";
-        public static final String api_update = "devicePurchase";
-        public static final String api_queryPage = "queryDevicePurchasePage";
-        public static final String api_getList = "getDevicePurchaseList";
-
-        public static final String message_success_update = "devicePurchase update success";
-        public static final String message_success_delete = "devicePurchase delete success";
-        public static final String message_success_find = "devicePurchase find success";
-        public static final String message_success_create = "devicePurchase create success";
-        public static final String message_success_find_functions = "devicePurchase find success";
-
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotDevicePurchase_is_no_exist = "iotDevicePurchase is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
-    }
 
     /**
      * 设备质检模块常量
      */
-    public static class DeviceQualityInspectionPlan{
-        public static final String api_create = "deviceQualityInspectionPlan";
-        public static final String api_delete = "deviceQualityInspectionPlan";
-        public static final String api_getById = "getDeviceQualityInspectionPlanById";
-        public static final String api_update = "deviceQualityInspectionPlan";
-        public static final String api_queryPage = "queryDeviceQualityInspectionPlanPage";
-        public static final String api_getList = "getDeviceQualityInspectionPlanList";
-
-        public static final String message_success_update = "deviceQualityInspectionPlan update success";
-        public static final String message_success_delete = "deviceQualityInspectionPlan delete success";
-        public static final String message_success_find = "deviceQualityInspectionPlan find success";
-        public static final String message_success_create = "deviceQualityInspectionPlan create success";
-        public static final String message_success_find_functions = "deviceQualityInspectionPlan find success";
+    public static class DeviceQuality{
+        public static final String addQualityPlan = "addQualityPlan";
+        public static final String delQualityPlan = "delQualityPlan";
+        public static final String updQualityPlan = "updQualityPlan";
+        public static final String completeQualityPlan = "completeQualityPlan";
+        public static final String queryQualityPlanPage = "queryQualityPlanPage";
+        public static final String findById = "findById";
 
         public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotDeviceQualityInspectionPlan_is_no_exist = "iotDeviceQualityInspectionPlan is no exist";
         public static final String message_fail_id_no_exist = "id no exist";
         public static final String message_fail_status_is_null = "status is null";
         public static final String message_fail_id_is_null = "id is null";

@@ -4,9 +4,11 @@ import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.company.IotCompanyTypeDao;
 import com.yihu.iot.dao.device.IotDeviceDao;
 import com.yihu.iot.dao.device.IotDeviceOrderDao;
+import com.yihu.iot.dao.device.IotDeviceQualityInspectionPlanDao;
 import com.yihu.iot.dao.device.IotOrderPurchaseDao;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.iot.device.IotDeviceOrderDO;
+import com.yihu.jw.iot.device.IotDeviceQualityInspectionPlanDO;
 import com.yihu.jw.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
@@ -43,6 +45,8 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
     private JdbcTemplate jdbcTempalte;
     @Autowired
     private IotDeviceDao iotDeviceDao;
+    @Autowired
+    private IotDeviceQualityInspectionPlanDao iotDeviceQualityInspectionPlanDao;
 
     /**
      * 新增
@@ -246,15 +250,22 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
 
         //DO转VO
         List<IotOrderPurchaseVO> iotOrderPurchaseVOList = convertToModels(list,new ArrayList<>(list.size()),IotOrderPurchaseVO.class);
-        if("1".equals(type)){
-            iotOrderPurchaseVOList.forEach(purchase->{
-                //计算已关联设备数量
+        iotOrderPurchaseVOList.forEach(purchase->{
+            //计算已关联设备数量
+            if("1".equals(type)){
+
                 Integer num = iotDeviceDao.countByPurchaseId(purchase.getId());
                 Long unNum = (purchase.getPurchaseNum()-num)>0? (purchase.getPurchaseNum()-num):0;
                 purchase.setAssociatedNum(Long.valueOf(num));
                 purchase.setUnAssociatedNum(unNum);
-            });
-        }
+            }
+            //获取质检信息
+            IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanDao.findLastByPurchaseId(purchase.getId());
+            if(planDO!=null){
+                purchase.setQualityStatus(planDO.getStatus());//质检状态
+                purchase.setNextQualityTime(planDO.getPlanTime());//下次质检时间
+            }
+        });
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotOrderPurchaseVOList, page, size,count);
     }

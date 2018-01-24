@@ -11,6 +11,7 @@ import com.yihu.ehr.iot.util.excel.reader.IotDeviceImportVOReader;
 import com.yihu.ehr.iot.util.http.HttpHelper;
 import com.yihu.ehr.iot.util.http.HttpResponse;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
@@ -94,6 +95,20 @@ public class DeviceService extends BaseService{
         params.put("sim", sim);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.IsSimExist, params);
         Envelop<ExistVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
+     * 修改sim卡号
+     * @param sim
+     * @param id
+     * @return
+     */
+    public BaseEnvelop updSim(String sim,String id) throws IOException{
+        Map<String, Object> params = new HashMap<>();
+        params.put("sim", sim);
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.UpdSim, params);
+        BaseEnvelop envelop = objectMapper.readValue(response.getBody(),BaseEnvelop.class);
         return envelop;
     }
 

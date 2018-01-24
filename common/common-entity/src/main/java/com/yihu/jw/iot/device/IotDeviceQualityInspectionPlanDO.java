@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 设备质检计划表
+ * 设备质检计划表（质检计划是针对采购清单的）
  * @author yeshijie on 2017/12/1.
  */
 @Entity
@@ -29,7 +29,7 @@ public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation impl
     private String orderNo;//订单编号
 
     @Column(name = "device_id")
-    private String deviceId;//设备code
+    private String deviceId;//产品id
 
     @Column(name = "device_name")
     private String deviceName;//设备名称
@@ -60,6 +60,34 @@ public class IotDeviceQualityInspectionPlanDO extends IdEntityWithOperation impl
 
     @Column(name = "del")
     private Integer del;//删除标志
+
+    public enum QualityPlanStatus {
+        create("未完成", "1"),
+        complete("已完成", "2");
+        private String name;
+        private String value;
+
+        QualityPlanStatus(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+    }
 
     public String getSaasId() {
         return saasId;

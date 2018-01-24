@@ -3,12 +3,12 @@ package com.yihu.jw.feign.iot.device;
 import com.yihu.jw.feign.fallbackfactory.iot.device.IotDeviceFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(IotRequestMapping.Common.device)
 public interface IotDeviceFeign{
 
-    @PostMapping(value = IotRequestMapping.Device.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Envelop<IotDeviceVO> create(@RequestBody String jsonData);
+    @PostMapping(value = IotRequestMapping.Device.api_create)
+    public Envelop<IotDeviceVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
 
     @GetMapping(value = IotRequestMapping.Device.api_getById)
     public Envelop<IotDeviceVO> findByCode(@RequestParam(value = "id", required = true) String id);
@@ -32,6 +32,10 @@ public interface IotDeviceFeign{
 
     @GetMapping(value = IotRequestMapping.Device.isSimExist)
     public Envelop<ExistVO> isSimExist(@RequestParam(value = "sim", required = true) String sim);
+
+    @PostMapping(value = IotRequestMapping.Device.updSim)
+    public BaseEnvelop updSim(@RequestParam(value = "sim", required = true) String sim,
+                             @RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.Device.api_queryPage)
     public Envelop<IotDeviceVO> findProductPageByCompanyId(

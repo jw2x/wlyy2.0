@@ -32,7 +32,7 @@ public interface IotCompanyFeign {
                                        @RequestParam(value = "size", required = false) Integer size);
 
     @PostMapping(value = IotRequestMapping.Company.addCompany)
-    public Envelop<IotCompanyVO> addCompany(@RequestParam(value = "jsonData", required = false)String jsonData);
+    public Envelop<IotCompanyVO> addCompany(@RequestParam(value = "jsonData", required = true)String jsonData);
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyById)
     public Envelop<IotCompanyVO> findByCode(@RequestParam(value = "id", required = true) String id);
@@ -44,7 +44,7 @@ public interface IotCompanyFeign {
     public Envelop<IotCompanyVO> delCompany(@RequestParam(value = "id", required = true) String id);
 
     @PostMapping(value = IotRequestMapping.Company.updCompany)
-    public Envelop<IotCompanyVO> updCompany(@RequestParam(value = "jsonData", required = false)String jsonData);
+    public Envelop<IotCompanyVO> updCompany(@RequestParam(value = "jsonData", required = true)String jsonData);
 
     @PostMapping(value = IotRequestMapping.Company.findCompanyCertPage)
     public Envelop<IotCompanyCertificateVO> findCompanyCertPage
@@ -59,6 +59,6 @@ public interface IotCompanyFeign {
     public Envelop<IotCompanyCertificateVO> findCompanyCertByCompanyId(@RequestParam(value = "companyId", required = true) String companyId);
 
     @PostMapping(value = IotRequestMapping.Company.addCompanyCert)
-    public Envelop<IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = false)String jsonData);
+    public Envelop<IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = true)String jsonData);
 
 }
