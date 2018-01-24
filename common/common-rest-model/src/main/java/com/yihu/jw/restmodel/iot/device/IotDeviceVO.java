@@ -1,49 +1,59 @@
 package com.yihu.jw.restmodel.iot.device;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 设备表
  * @author yeshijie on 2017/12/1.
  */
-public class IotDeviceVO implements Serializable {
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(value = "设备表", description = "设备表")
+public class IotDeviceVO extends BaseVO implements Serializable {
 
-    private String saasId;
-    private String code;
-    private String name;//设备名称
-    private String deviceModel;//设备型号
-    private String deviceSn;//设备sn码
-    private Integer isComposite;//是否复合型(1是，0否即设备为单一功能)
-    private Integer isPlatform;//是否平台型(1是，0否)
-    private String deviceType;//设备种类
-    private String deviceSource;//设备来源(1采购订单关联,2居民绑定,3管理员新增)
-    private String supplierCode;//供应商code
-    private String supplierName;//供应商名称
-    private String manufacturerCode;//厂商code
-    private String manufacturerName;//厂商名称
-    private String orderCode;//订单code
-    private String orderNo;//订单编号
-    private String status;//设备状态(正常、报废、检修)
-    private Date nextQualityTime;//下次质检时间
-    private String purchaseCode;//采购code
-    private String simNo;//sim卡号
-    private Integer del;//删除标志(1有效，0删除)
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
+    @ApiModelProperty("产品id")
+    private String productId;
+    @ApiModelProperty("设备名称")
+    private String name;
+    @ApiModelProperty("设备sn码")
+    private String deviceSn;
+    @ApiModelProperty("是否复合型(1是，0否即设备为单一功能)")
+    private Integer isComposite;
+    @ApiModelProperty("是否平台型(1是，0否)")
+    private Integer isPlatform;
+    @ApiModelProperty("设备来源(1采购订单关联,2居民绑定,3管理员新增)")
+    private String deviceSource;
+    @ApiModelProperty("供应商code")
+    private String supplierId;
+    @ApiModelProperty("供应商名称")
+    private String supplierName;
+    @ApiModelProperty("厂商code")
+    private String manufacturerId;
+    @ApiModelProperty("厂商名称")
+    private String manufacturerName;
+    @ApiModelProperty("归属社区")
+    private String hospital;
+    @ApiModelProperty("归属社区名称")
+    private String hospitalName;
+    @ApiModelProperty("订单id")
+    private String orderId;
+    @ApiModelProperty("订单编号")
+    private String orderNo;
+    @ApiModelProperty("设备状态(1正常、2报废、3检修)")
+    private String status;
+    @ApiModelProperty("下次质检时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date nextQualityTime;
+    @ApiModelProperty("采购id")
+    private String purchaseId;
+    @ApiModelProperty("sim卡号")
+    private String simNo;
 
     public String getName() {
         return name;
@@ -51,14 +61,6 @@ public class IotDeviceVO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDeviceModel() {
-        return deviceModel;
-    }
-
-    public void setDeviceModel(String deviceModel) {
-        this.deviceModel = deviceModel;
     }
 
     public String getDeviceSn() {
@@ -85,14 +87,6 @@ public class IotDeviceVO implements Serializable {
         this.isPlatform = isPlatform;
     }
 
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
-    }
-
     public String getDeviceSource() {
         return deviceSource;
     }
@@ -101,12 +95,12 @@ public class IotDeviceVO implements Serializable {
         this.deviceSource = deviceSource;
     }
 
-    public String getSupplierCode() {
-        return supplierCode;
+    public String getSupplierId() {
+        return supplierId;
     }
 
-    public void setSupplierCode(String supplierCode) {
-        this.supplierCode = supplierCode;
+    public void setSupplierId(String supplierId) {
+        this.supplierId = supplierId;
     }
 
     public String getSupplierName() {
@@ -117,12 +111,12 @@ public class IotDeviceVO implements Serializable {
         this.supplierName = supplierName;
     }
 
-    public String getManufacturerCode() {
-        return manufacturerCode;
+    public String getManufacturerId() {
+        return manufacturerId;
     }
 
-    public void setManufacturerCode(String manufacturerCode) {
-        this.manufacturerCode = manufacturerCode;
+    public void setManufacturerId(String manufacturerId) {
+        this.manufacturerId = manufacturerId;
     }
 
     public String getManufacturerName() {
@@ -133,12 +127,12 @@ public class IotDeviceVO implements Serializable {
         this.manufacturerName = manufacturerName;
     }
 
-    public String getOrderCode() {
-        return orderCode;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getOrderNo() {
@@ -165,12 +159,12 @@ public class IotDeviceVO implements Serializable {
         this.nextQualityTime = nextQualityTime;
     }
 
-    public String getPurchaseCode() {
-        return purchaseCode;
+    public String getPurchaseId() {
+        return purchaseId;
     }
 
-    public void setPurchaseCode(String purchaseCode) {
-        this.purchaseCode = purchaseCode;
+    public void setPurchaseId(String purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
     public String getSimNo() {
@@ -181,11 +175,27 @@ public class IotDeviceVO implements Serializable {
         this.simNo = simNo;
     }
 
-    public Integer getDel() {
-        return del;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setDel(Integer del) {
-        this.del = del;
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(String hospital) {
+        this.hospital = hospital;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 }

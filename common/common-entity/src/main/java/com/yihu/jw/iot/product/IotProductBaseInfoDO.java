@@ -21,7 +21,7 @@ public class IotProductBaseInfoDO extends IdEntityWithOperation implements Seria
     @Column(name = "parent_id")
     private String parentId;//父类ID
     @Column(name = "product_classify")
-    private String productClassify;//产品分类
+    private String productClassify;//产品分类(1自由产品，2代理产品)
     @Column(name = "supplier_name")
     private String supplierName;//厂商名称
     @Column(name = "supplier_id")
@@ -56,6 +56,10 @@ public class IotProductBaseInfoDO extends IdEntityWithOperation implements Seria
     private Integer originType;//产地类型
     @Column(name = "is_cold_chain")
     private Integer isColdChain;//是否需要冷链
+    @Column(name = "certificate_id")
+    private String certificateId;//授权id
+    @Column(name = "certificate_name")
+    private String certificateName;//授权书名称
     @Column(name = "del")
     private Integer del;//删除标志
 
@@ -217,6 +221,22 @@ public class IotProductBaseInfoDO extends IdEntityWithOperation implements Seria
 
     public void setIsColdChain(Integer isColdChain) {
         this.isColdChain = isColdChain;
+    }
+
+    public String getCertificateId() {
+        return certificateId;
+    }
+
+    public void setCertificateId(String certificateId) {
+        this.certificateId = certificateId;
+    }
+
+    public String getCertificateName() {
+        return certificateName;
+    }
+
+    public void setCertificateName(String certificateName) {
+        this.certificateName = certificateName;
     }
 
     public Integer getDel() {

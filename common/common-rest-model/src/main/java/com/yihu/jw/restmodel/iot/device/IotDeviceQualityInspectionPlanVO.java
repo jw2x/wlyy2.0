@@ -1,51 +1,61 @@
 package com.yihu.jw.restmodel.iot.device;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.yihu.jw.restmodel.iot.common.BaseVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
+ * 设备质检计划表
  * @author yeshijie on 2017/12/1.
  */
-public class IotDeviceQualityInspectionPlanVO implements Serializable{
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(value = "设备质检计划表", description = "设备质检计划表")
+public class IotDeviceQualityInspectionPlanVO extends BaseVO implements Serializable{
 
-    private String saasId;
-    private String purchaseCode;//采购code
-    private String orderCode;//订单code
-    private String orderNo;//订单编号
-    private String deviceCode;//设备code
-    private String deviceName;//设备名称
-    private String deviceModel;//设备型号
-    private String deviceType;//设备种类
-    private Long purchaseNum;//采购数量
-    private String qualityLeader;//质检负责人
-    private String qualityLeaderPhone;//质检负责人联系方式
-    private Date planTime;//计划质检时间
-    private Date actualTime;//实际质检时间
-    private String status;//质检状态(1未检，2已检)
-    private Integer del;//删除标志
+    @ApiModelProperty("采购id")
+    private String purchaseId;
+    @ApiModelProperty("订单id")
+    private String orderId;
+    @ApiModelProperty("订单编号")
+    private String orderNo;
+    @ApiModelProperty("设备id")
+    private String deviceId;
+    @ApiModelProperty("设备名称")
+    private String deviceName;
+    @ApiModelProperty("采购数量")
+    private Long purchaseNum;
+    @ApiModelProperty("质检负责人")
+    private String qualityLeader;
+    @ApiModelProperty("质检负责人联系方式")
+    private String qualityLeaderPhone;
+    @ApiModelProperty("计划质检时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date planTime;
+    @ApiModelProperty("实际质检时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date actualTime;
+    @ApiModelProperty("质检状态(1未检，2已检)")
+    private String status;
 
-    public String getSaasId() {
-        return saasId;
+    public String getPurchaseId() {
+        return purchaseId;
     }
 
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
+    public void setPurchaseId(String purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
-    public String getPurchaseCode() {
-        return purchaseCode;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setPurchaseCode(String purchaseCode) {
-        this.purchaseCode = purchaseCode;
-    }
-
-    public String getOrderCode() {
-        return orderCode;
-    }
-
-    public void setOrderCode(String orderCode) {
-        this.orderCode = orderCode;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getOrderNo() {
@@ -56,12 +66,12 @@ public class IotDeviceQualityInspectionPlanVO implements Serializable{
         this.orderNo = orderNo;
     }
 
-    public String getDeviceCode() {
-        return deviceCode;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setDeviceCode(String deviceCode) {
-        this.deviceCode = deviceCode;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getDeviceName() {
@@ -70,22 +80,6 @@ public class IotDeviceQualityInspectionPlanVO implements Serializable{
 
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
-    }
-
-    public String getDeviceModel() {
-        return deviceModel;
-    }
-
-    public void setDeviceModel(String deviceModel) {
-        this.deviceModel = deviceModel;
-    }
-
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
     }
 
     public Long getPurchaseNum() {
@@ -134,13 +128,5 @@ public class IotDeviceQualityInspectionPlanVO implements Serializable{
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Integer getDel() {
-        return del;
-    }
-
-    public void setDel(Integer del) {
-        this.del = del;
     }
 }

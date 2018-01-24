@@ -10,8 +10,8 @@ import java.io.Serializable;
  * 企业类型表
  * @author yeshijie on 2018/1/16.
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
-@ApiModel(value = "企业三证变更记录", description = "企业三证变更记录")
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(value = "企业类型表", description = "企业类型表")
 public class IotCompanyTypeVO implements Serializable {
 
     @ApiModelProperty("企业类型code")

@@ -33,10 +33,6 @@ public class IotProductExtendInfoDO extends IdEntityWithOperation implements Ser
     private String contraindication;//禁忌症
     @Column(name = "specification")
     private String specification;//产品说明书
-    @Column(name = "certificate_id")
-    private String certificateId;//授权id
-    @Column(name = "certificate_name")
-    private String certificateName;//授权书名称
     @Column(name = "del")
     private Integer del;//删除标志
 
@@ -110,22 +106,6 @@ public class IotProductExtendInfoDO extends IdEntityWithOperation implements Ser
 
     public void setSpecification(String specification) {
         this.specification = specification;
-    }
-
-    public String getCertificateId() {
-        return certificateId;
-    }
-
-    public void setCertificateId(String certificateId) {
-        this.certificateId = certificateId;
-    }
-
-    public String getCertificateName() {
-        return certificateName;
-    }
-
-    public void setCertificateName(String certificateName) {
-        this.certificateName = certificateName;
     }
 
     public Integer getDel() {

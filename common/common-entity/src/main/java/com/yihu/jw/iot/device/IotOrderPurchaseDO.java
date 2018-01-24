@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 采购清单表
@@ -34,6 +33,9 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
     @Column(name = "device_name")
     private String deviceName;//采购设备名称
 
+    @Column(name = "product_id")
+    private String productId;//产品id
+
 //    @Column(name = "device_model")
 //    private String deviceModel;//采购设备型号
 //
@@ -49,11 +51,17 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
     @Column(name = "purchase_num")
     private Long purchaseNum;//采购数量
 
-    @Column(name = "next_quality_time")
-    private Date nextQualityTime;//'下次质检时间'
+//    @Column(name = "next_quality_time")
+//    private Date nextQualityTime;//'下次质检时间'
 
     @Column(name = "quality_status")
     private String qualityStatus;//'质检状态'
+
+    @Column(name = "maintenance_unit_id")
+    private String maintenanceUnitId;//维护单位Id
+
+    @Column(name = "maintenance_unit_name")
+    private String maintenanceUnitName;//维护单位名称
 
     @Column(name = "del")
     private Integer del;//删除标志
@@ -146,12 +154,21 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
         this.purchaseNum = purchaseNum;
     }
 
-    public Date getNextQualityTime() {
-        return nextQualityTime;
+//    public Date getNextQualityTime() {
+//        return nextQualityTime;
+//    }
+//
+//    public void setNextQualityTime(Date nextQualityTime) {
+//        this.nextQualityTime = nextQualityTime;
+//    }
+
+
+    public String getProductId() {
+        return productId;
     }
 
-    public void setNextQualityTime(Date nextQualityTime) {
-        this.nextQualityTime = nextQualityTime;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getQualityStatus() {
@@ -168,5 +185,21 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public String getMaintenanceUnitId() {
+        return maintenanceUnitId;
+    }
+
+    public void setMaintenanceUnitId(String maintenanceUnitId) {
+        this.maintenanceUnitId = maintenanceUnitId;
+    }
+
+    public String getMaintenanceUnitName() {
+        return maintenanceUnitName;
+    }
+
+    public void setMaintenanceUnitName(String maintenanceUnitName) {
+        this.maintenanceUnitName = maintenanceUnitName;
     }
 }

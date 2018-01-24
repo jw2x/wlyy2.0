@@ -69,6 +69,23 @@ public class BaseJpaService<T, R> {
         return targets;
     }
 
+    /**
+     * 将实体转换为模型。
+     *
+     * @param source
+     * @param targetCls
+     * @param <T>
+     * @return
+     */
+    public <T> T convertToModel(Object source, Class<T> targetCls) {
+        if (source == null) {
+            return null;
+        }
+        T target = BeanUtils.instantiate(targetCls);
+        BeanUtils.copyProperties(source, target);
+        return target;
+    }
+
     public String getCode() {
         return UUID.randomUUID().toString().replaceAll("-", "");
     }

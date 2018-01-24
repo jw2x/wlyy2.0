@@ -42,7 +42,7 @@
             <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.base</groupId>
+            <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
         <dependency>
@@ -135,6 +135,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.3.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.15-beta1</version>
         </dependency>
     </dependencies>
     <build>

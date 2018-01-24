@@ -16,13 +16,15 @@ import java.io.Serializable;
 public class IotProductMeasuredDataDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
-    private String saas_id;//
+    private String saasId;//
     @Column(name = "product_id")
-    private String product_id;//产品ID
+    private String productId;//产品ID
     @Column(name = "company_id")
-    private String company_id;//企业id
+    private String companyId;//企业id
     @Column(name = "data_code")
-    private String data_code;//编码
+    private String dataCode;//编码
+    @Column(name = "name")
+    private String name;
     @Column(name = "type")
     private String type;//类型
     @Column(name = "instruction")
@@ -30,36 +32,36 @@ public class IotProductMeasuredDataDO extends IdEntityWithOperation implements S
     @Column(name = "del")
     private Integer del;//删除标志
 
-    public String getSaas_id() {
-        return saas_id;
+    public String getSaasId() {
+        return saasId;
     }
 
-    public void setSaas_id(String saas_id) {
-        this.saas_id = saas_id;
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 
-    public String getProduct_id() {
-        return product_id;
+    public String getProductId() {
+        return productId;
     }
 
-    public void setProduct_id(String product_id) {
-        this.product_id = product_id;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
-    public String getCompany_id() {
-        return company_id;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setCompany_id(String company_id) {
-        this.company_id = company_id;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
-    public String getData_code() {
-        return data_code;
+    public String getDataCode() {
+        return dataCode;
     }
 
-    public void setData_code(String data_code) {
-        this.data_code = data_code;
+    public void setDataCode(String dataCode) {
+        this.dataCode = dataCode;
     }
 
     public String getType() {
@@ -76,6 +78,14 @@ public class IotProductMeasuredDataDO extends IdEntityWithOperation implements S
 
     public void setInstruction(String instruction) {
         this.instruction = instruction;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getDel() {

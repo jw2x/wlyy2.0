@@ -20,7 +20,8 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 对日志进行格式化 -->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger -%msg%n</pattern>
+            <pattern>%d %level %C.%M %m%n</pattern> <!-- %C.%M 可能会影响效率-->
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
         </encoder>
     </appender>
 
@@ -55,7 +56,8 @@
            </triggeringPolicy>   -->
 
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d %level %C.%M %m%n</pattern> <!-- %C.%M 可能会影响效率-->
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
         </encoder>
     </appender>
 
@@ -77,7 +79,8 @@
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d %level %C.%M %m%n</pattern> <!-- %C.%M 可能会影响效率-->
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
         </encoder>
     </appender>
 
@@ -100,7 +103,8 @@
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d %level %C.%M %m%n</pattern> <!-- %C.%M 可能会影响效率-->
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
         </encoder>
     </appender>
 
@@ -123,7 +127,8 @@
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d %level %C.%M %m%n</pattern> <!-- %C.%M 可能会影响效率-->
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
         </encoder>
     </appender>
 
@@ -146,7 +151,8 @@
             <maxHistory>${maxHistory}</maxHistory>
         </rollingPolicy>
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger - %msg%n</pattern>
+            <pattern>%d %level %C.%M %m%n</pattern> <!-- %C.%M 可能会影响效率-->
+            <charset class="java.nio.charset.Charset">UTF-8</charset>
         </encoder>
     </appender>
 
@@ -157,8 +163,6 @@
     <logger name="com.ibatis.common.jdbc.SimpleDataSource" value="DEBUG" />
     <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG"/>
     <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" value="DEBUG" />
-
-
 
     <!-- root级别   DEBUG -->
     <root level="INFO">
@@ -172,10 +176,3 @@
         <appender-ref ref="TRACE" />
     </root>
 </configuration>
-
-        <!--admin-->
-        <!--<?xml version="1.0" encoding="UTF-8"?>-->
-<!--<configuration>-->
-<!--<include resource="org/springframework/boot/logging/logback/base.xml"/>-->
-<!--<jmxConfigurator/>-->
-<!--</configuration>-->
