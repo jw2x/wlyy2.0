@@ -3,6 +3,7 @@ package com.yihu.ehr.iot.controller.device;
 import com.yihu.ehr.iot.controller.common.BaseController;
 import com.yihu.ehr.iot.service.device.DeviceService;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
@@ -69,6 +70,20 @@ public class IotDeviceController extends BaseController{
                                            @RequestParam(value = "sim", required = true) String sim) {
         try {
             return deviceService.isSimExist(sim);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.updSim)
+    @ApiOperation(value = "修改sim卡号", notes = "修改sim卡号")
+    public BaseEnvelop updSim(@ApiParam(name = "sim", value = "sim")
+                              @RequestParam(value = "sim", required = true) String sim,
+                              @ApiParam(name = "id", value = "设备id")
+                              @RequestParam(value = "id", required = true) String id) {
+        try {
+            return deviceService.updSim(sim,id);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

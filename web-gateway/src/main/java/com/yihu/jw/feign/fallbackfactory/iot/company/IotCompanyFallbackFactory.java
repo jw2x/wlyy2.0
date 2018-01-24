@@ -39,7 +39,7 @@ public class IotCompanyFallbackFactory implements FallbackFactory<IotCompanyFeig
             }
 
             @Override
-            public Envelop<IotCompanyVO> addCompany(@RequestParam(value = "jsonData", required = false)String jsonData) {
+            public Envelop<IotCompanyVO> addCompany(@RequestParam(value = "jsonData", required = true)String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建企业失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
@@ -67,7 +67,7 @@ public class IotCompanyFallbackFactory implements FallbackFactory<IotCompanyFeig
             }
 
             @Override
-            public Envelop<IotCompanyVO> updCompany(@RequestParam(value = "jsonData", required = false)String jsonData) {
+            public Envelop<IotCompanyVO> updCompany(@RequestParam(value = "jsonData", required = true)String jsonData) {
                 tracer.getCurrentSpan().logEvent("修改企业信息失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
@@ -100,7 +100,7 @@ public class IotCompanyFallbackFactory implements FallbackFactory<IotCompanyFeig
             }
 
             @Override
-            public Envelop<IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = false)String jsonData) {
+            public Envelop<IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = true)String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建企业证书失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
