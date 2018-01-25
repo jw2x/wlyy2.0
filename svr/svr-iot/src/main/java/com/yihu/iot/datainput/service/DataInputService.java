@@ -13,6 +13,7 @@ import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.iot.datainput.DataBodySignsDO;
 import com.yihu.jw.iot.datainput.WeRunDataDO;
 import com.yihu.jw.iot.device.IotDeviceDO;
+import com.yihu.jw.restmodel.iot.datainput.WeRunDataVO;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.util.CollectionUtils;
@@ -142,7 +143,7 @@ public class DataInputService {
         if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
             String idcard = jsonObject.getString("idcard");
             String username = jsonObject.getString("username");
-//            updateBindUser(dataSource,deviceSn,idcard,username);
+            updateBindUser(dataSource,deviceSn,idcard,username);
         }
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -230,11 +231,11 @@ public class DataInputService {
         String extCode = dataBodySignsDO.getExt_code();
 
         //包含居民身份的数据，对设备数据进行校验绑定，此处包含的信息只有身份证号和用户名以及设备序列号，如果设备库中存在该序号的设备，则对绑定居民进行修改，改为当前居民，如果没有则跳过
-        if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
+        /*if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
             String idcard = jsonObject.getString("idcard");
             String username = jsonObject.getString("username");
-//            updateBindUser(dataSource,deviceSn,idcard,username);
-        }
+            updateBindUser(dataSource,deviceSn,idcard,username);
+        }*/
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
         if(null == jsonArray || jsonArray.size() == 0){

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(DataRequestMapping.api_iot_common)
-@Api(value = "数据上传操作", description = "数据上传操作")
+@Api(tags = "数据上传操作", description = "数据上传操作")
 public class DataInputController {
 
     @Autowired
