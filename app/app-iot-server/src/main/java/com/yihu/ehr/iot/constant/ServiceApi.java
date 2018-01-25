@@ -62,6 +62,7 @@ public class ServiceApi {
 
         public static final String IsSnExist = Base +"isSnExist";
         public static final String IsSimExist = Base +"isSimExist";
+        public static final String UpdSim = Base +"updSim";
         public static final String ImportDevice = Base +"importDevice";
         public static final String IsImportDevice = Base +"isImportDevice";
 
@@ -82,6 +83,20 @@ public class ServiceApi {
         public static final String FindPurcharsePage = Base +"findPurcharsePage";
 
         public DeviceOrder() {
+        }
+    }
+
+    public static class Quality{
+        public static final String Base = "wg/quality/";
+        public static final String CreateDevice = Base +"createDevice";
+        public static final String AddQualityPlan = Base +"addQualityPlan";
+        public static final String DelQualityPlan = Base +"delQualityPlan";
+        public static final String UpdQualityPlan = Base +"updQualityPlan";
+        public static final String CompleteQualityPlan = Base +"completeQualityPlan";
+        public static final String QueryQualityPlanPage = Base +"queryQualityPlanPage";
+        public static final String FindById = Base +"findById";
+
+        public Quality() {
         }
     }
 

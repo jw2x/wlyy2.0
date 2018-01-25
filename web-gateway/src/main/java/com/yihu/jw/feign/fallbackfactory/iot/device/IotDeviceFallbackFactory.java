@@ -2,6 +2,7 @@ package com.yihu.jw.feign.fallbackfactory.iot.device;
 
 import com.yihu.jw.feign.iot.device.IotDeviceFeign;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
@@ -27,7 +28,7 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
         return new IotDeviceFeign() {
 
             @Override
-            public Envelop<IotDeviceVO> create(@RequestBody String jsonData) {
+            public Envelop<IotDeviceVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建设备失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
@@ -54,6 +55,15 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             ) {
                 tracer.getCurrentSpan().logEvent("sim卡号是否存在失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("sim:" + sim);
+                return null;
+            }
+
+            @Override
+            public BaseEnvelop updSim(@RequestParam(value = "sim", required = true) String sim,
+                                      @RequestParam(value = "id", required = true) String id) {
+                tracer.getCurrentSpan().logEvent("修改sim卡号失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("sim:" + sim);
+                tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
 

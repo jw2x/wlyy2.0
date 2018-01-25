@@ -54,8 +54,8 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
 //    @Column(name = "next_quality_time")
 //    private Date nextQualityTime;//'下次质检时间'
 
-    @Column(name = "quality_status")
-    private String qualityStatus;//'质检状态'
+//    @Column(name = "quality_status")
+//    private String qualityStatus;//'质检状态'
 
     @Column(name = "maintenance_unit_id")
     private String maintenanceUnitId;//维护单位Id
@@ -171,13 +171,13 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
         this.productId = productId;
     }
 
-    public String getQualityStatus() {
-        return qualityStatus;
-    }
-
-    public void setQualityStatus(String qualityStatus) {
-        this.qualityStatus = qualityStatus;
-    }
+//    public String getQualityStatus() {
+//        return qualityStatus;
+//    }
+//
+//    public void setQualityStatus(String qualityStatus) {
+//        this.qualityStatus = qualityStatus;
+//    }
 
     public Integer getDel() {
         return del;

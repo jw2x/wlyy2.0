@@ -50,7 +50,7 @@ public class IotCompanyController extends EnvelopRestController {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop<IotCompanyVO> addCompany(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
-                                  @RequestParam(value = "jsonData", required = false)String jsonData) {
+                                  @RequestParam(value = "jsonData", required = true)String jsonData) {
         return iotCompanyFeign.addCompany(jsonData);
     }
 
@@ -90,7 +90,7 @@ public class IotCompanyController extends EnvelopRestController {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop<IotCompanyVO> updCompany(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
-                                  @RequestParam(value = "jsonData", required = false)String jsonData) {
+                                  @RequestParam(value = "jsonData", required = true)String jsonData) {
         return iotCompanyFeign.updCompany(jsonData);
     }
 
@@ -132,7 +132,7 @@ public class IotCompanyController extends EnvelopRestController {
             @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
             @HystrixProperty(name = "execution.timeout.enabled", value = "false") })
     public Envelop<IotCompanyCertificateVO> addCompanyCert(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
-                                            @RequestParam(value = "jsonData", required = false)String jsonData) {
+                                            @RequestParam(value = "jsonData", required = true)String jsonData) {
         return iotCompanyFeign.addCompanyCert(jsonData);
     }
 

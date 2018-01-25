@@ -13,4 +13,7 @@ public interface IotDeviceQualityInspectionPlanDao extends PagingAndSortingRepos
 
     @Query("from IotDeviceQualityInspectionPlanDO w where w.id =?1")
     IotDeviceQualityInspectionPlanDO findById(String id);
+
+    @Query(value = "SELECT a.* from iot_device_quality_inspection_plan a WHERE a.purchase_id = ?1 and a.del=1 ORDER BY a.status asc,a.plan_time desc limit 1",nativeQuery = true)
+    IotDeviceQualityInspectionPlanDO findLastByPurchaseId(String purchaseId);
 }

@@ -4,6 +4,7 @@ import com.yihu.jw.commnon.iot.IotCommonContants;
 import com.yihu.jw.feign.iot.device.IotDeviceFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
@@ -12,7 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -26,10 +26,10 @@ public class IotDeviceController extends EnvelopRestController{
     @Autowired
     private IotDeviceFeign iotDeviceFeign;
 
-    @PostMapping(value = IotRequestMapping.Device.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = IotRequestMapping.Device.api_create)
     @ApiOperation(value = "创建设备", notes = "创建设备")
-    public Envelop<IotDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
-                          @RequestParam String jsonData) {
+    public Envelop<IotDeviceVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+                          @RequestParam(value = "jsonData", required = true) String jsonData) {
         return iotDeviceFeign.create(jsonData);
     }
 
@@ -53,9 +53,17 @@ public class IotDeviceController extends EnvelopRestController{
     @GetMapping(value = IotRequestMapping.Device.isSimExist)
     @ApiOperation(value = "sim卡号是否存在", notes = "sim卡号是否存在")
     public Envelop<ExistVO> isSimExist(@ApiParam(name = "sim", value = "sim")
-                                           @RequestParam(value = "sim", required = true) String sim
-    ) {
+                                           @RequestParam(value = "sim", required = true) String sim) {
         return iotDeviceFeign.isSimExist(sim);
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.updSim)
+    @ApiOperation(value = "修改sim卡号", notes = "修改sim卡号")
+    public BaseEnvelop updSim(@ApiParam(name = "sim", value = "sim")
+                              @RequestParam(value = "sim", required = true) String sim,
+                              @ApiParam(name = "id", value = "设备id")
+                              @RequestParam(value = "id", required = true) String id) {
+        return iotDeviceFeign.updSim(sim,id);
     }
 
     @GetMapping(value = IotRequestMapping.Device.api_queryPage)
