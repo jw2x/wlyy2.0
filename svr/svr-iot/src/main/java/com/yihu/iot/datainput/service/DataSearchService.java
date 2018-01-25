@@ -257,9 +257,9 @@ public class DataSearchService {
                 }
                 field = nestedPath + "." + field;
             }
-            if(null == condition){
+            if("null".equals(condition)){
                 MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchPhraseQuery(field, value);
-                if(null == andOr) {
+                if("null".equals(andOr)) {
                     boolQueryBuilder.must(matchQueryBuilder);
                 }
             }else if(condition.equals("=")) {
