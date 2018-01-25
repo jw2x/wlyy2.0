@@ -15,21 +15,24 @@ import java.util.List;
 @ApiModel
 public class DataBodySignsVO {
 
+    @ApiModelProperty(value = "访问token",example = "",hidden = true)
     private String access_token; //访问token
+    @ApiModelProperty(value = "数据来源",example = "iHealth",hidden = true)
     private String data_source; //数据来源
+    @ApiModelProperty(value = "设备序列码",example = "65746176875",hidden = true)
     private String sn;          //设备序列码
-    @ApiModelProperty(value = "设备数据识别代码",hidden = true)
+    @ApiModelProperty(value = "设备数据识别代码",example = "1/0",hidden = true)
     private String ext_code;    //设备A，B键，取值为0,1，代表绑定不同的用户，
-    @ApiModelProperty(value = "设备名称",hidden = true)
+    @ApiModelProperty(value = "设备名称",example = "血压计",hidden = true)
     private String device_name; //设备名称
-    @ApiModelProperty(value = "设备型号",hidden = true)
+    @ApiModelProperty(value = "设备型号",example = "",hidden = true)
     private String device_model;//设备型号
     private List<DataVO> data;    //设备所测量的数据内容
-    @ApiModelProperty(value = "身份证号",hidden = true)
+    @ApiModelProperty(value = "身份证号",example = "350122198601145513",hidden = true)
     private String idCard;      //设备绑定的用户身份证号
-    @ApiModelProperty(value = "用户名",hidden = true)
+    @ApiModelProperty(value = "用户名",example = "谢挺盛",hidden = true)
     private String username;    //用户名
-    @ApiModelProperty(value = "用户code",hidden = true)
+    @ApiModelProperty(value = "用户code",example = "443a196ef8744536a531260eb26c05d7",hidden = true)
     private String usercode;    //用户在系统中的code，唯一识别
 
     public String getAccess_token() {
