@@ -13,7 +13,6 @@ import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.iot.datainput.DataBodySignsDO;
 import com.yihu.jw.iot.datainput.WeRunDataDO;
 import com.yihu.jw.iot.device.IotDeviceDO;
-import com.yihu.jw.restmodel.iot.datainput.WeRunDataVO;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.util.CollectionUtils;
@@ -143,7 +142,7 @@ public class DataInputService {
         if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
             String idcard = jsonObject.getString("idcard");
             String username = jsonObject.getString("username");
-            updateBindUser(dataSource,deviceSn,idcard,username);
+//            updateBindUser(dataSource,deviceSn,idcard,username);
         }
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
@@ -234,7 +233,7 @@ public class DataInputService {
         if(jsonObject.containsKey("idcard") && jsonObject.containsKey("username")){
             String idcard = jsonObject.getString("idcard");
             String username = jsonObject.getString("username");
-            updateBindUser(dataSource,deviceSn,idcard,username);
+//            updateBindUser(dataSource,deviceSn,idcard,username);
         }
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");

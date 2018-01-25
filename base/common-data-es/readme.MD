@@ -64,7 +64,7 @@ ElasticSearch
                     - 同上
                 id
                     - 同上
-        6.简单数据检索（findByFiled）
+        6.简单数据检索（findByField）
             1).请求findByField接口
             2).参数
                 index
@@ -85,7 +85,7 @@ ElasticSearch
                 type
                     - 同上
                 filter
-                    - 参数格式：[{"andOr":"and|or","condition":">|=|<|>=|<=|?","field":"<filed>","value":"<value>"},<{...}>]
+                    - 参数格式：[{"andOr":"and|or","condition":">|=|<|>=|<=|?","field":"<field>","value":"<value>"},<{...}>]
                     - 参数说明：andOr跟数据库的中的AND和OR相似；condition指条件匹配程度，?相当于数据库中的like；filed指检索的字段；value为检索的值
                 page
                     - 参数说明：页码
