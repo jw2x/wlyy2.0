@@ -104,7 +104,7 @@ public class DataSearchController {
     public Envelop delete(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
             String str = dataSearchService.updateData(jsonData);
-            if(!StringUtils.equalsIgnoreCase("success",str)){
+            if(!StringUtils.equalsIgnoreCase("true",str)){
                 return Envelop.getSuccess(DataRequestMapping.DataSearch.message_fail,str);
             }
             return Envelop.getSuccess(DataRequestMapping.DataSearch.delete_success,str);
