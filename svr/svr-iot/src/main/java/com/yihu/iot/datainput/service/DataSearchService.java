@@ -2,28 +2,22 @@ package com.yihu.iot.datainput.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.base.es.config.ElastricSearchHelper;
 import com.yihu.base.hbase.HBaseHelper;
 import com.yihu.iot.datainput.enums.DataTypeEnum;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.jw.iot.datainput.Data;
-import com.yihu.jw.iot.datainput.DataBodySignsDO;
-import com.yihu.jw.iot.datainput.DataStandardDO;
 import com.yihu.jw.iot.datainput.StepInfoDO;
 import com.yihu.jw.restmodel.iot.datainput.DataBodySignsVO;
 import com.yihu.jw.restmodel.iot.datainput.WeRunDataVO;
 import com.yihu.jw.util.date.DateUtil;
 import io.searchbox.core.SearchResult;
-import io.searchbox.core.Update;
 import org.apache.commons.lang.StringUtils;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.hbase.util.CollectionUtils;
-import org.apache.lucene.queryparser.xml.FilterBuilder;
-import org.apache.lucene.queryparser.xml.FilterBuilderFactory;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
@@ -32,13 +26,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.query.UpdateQuery;
-import org.springframework.data.elasticsearch.core.query.UpdateQueryBuilder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.beans.PropertyDescriptor;
-import java.io.IOException;
 import java.util.*;
 
 @Component
@@ -436,7 +427,7 @@ public class DataSearchService {
         logger.info("load data from elasticsearch start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         SearchSourceBuilder query = getQueryBuilder("data",jsonData);
         SearchResult esResult = elastricSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
-        if(null!= esResult && esResult.getTotal() == 0){
+        if(null== esResult || esResult.getTotal()==null || esResult.getTotal() == 0){
             return result;
         }
         for(String str :esResult.getSourceAsStringList()){
