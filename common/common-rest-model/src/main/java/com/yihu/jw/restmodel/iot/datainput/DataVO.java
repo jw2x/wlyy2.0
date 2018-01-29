@@ -15,6 +15,10 @@ public class DataVO {
     @ApiModelProperty(hidden = true)
     private String rid; // 存到hbase中的id
 
+    @ApiModelProperty(value = "类型：1血糖，2血压，3体重/身高/BMI，4腰围",hidden = true)
+    private String type; //类型：1血糖，2血压，3体重/身高/BMI，4腰围
+    @ApiModelProperty(value = "状态：0为标准，1为异常",hidden = true)
+    private Integer status =0; //状态：0为标准，1为异常
     @ApiModelProperty(value = "是否删除，0代表删除，1代表未删除",hidden = true)
     private int del = 1; //删除标记,1代表正常，0代表删除
     @ApiModelProperty(value = "测量时间",hidden = true)
@@ -115,6 +119,22 @@ public class DataVO {
     private  String bld;
     @ApiModelProperty(value = "潜血数值单位",hidden = true)
     private String bld_unit;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public String getRid() {
         return rid;
