@@ -258,12 +258,12 @@ public class DataSearchService {
                 field = nestedPath + "." + field;
             }
             if("null".equals(condition)){
-                MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchPhraseQuery(field, value);
+                MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(field, value);
                 if("null".equals(andOr)) {
                     boolQueryBuilder.must(matchQueryBuilder);
                 }
             }else if(condition.equals("=")) {
-                MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchPhraseQuery(field, value);
+                MatchQueryBuilder matchQueryBuilder = QueryBuilders.matchQuery(field, value);
                 if("and".equals(andOr)) {
                     boolQueryBuilder.must(matchQueryBuilder);
                 }else if("or".equals(andOr)) {
