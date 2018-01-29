@@ -5,6 +5,8 @@ package com.yihu.jw.iot.datainput;
  */
 public class Data {
     private String rid; // 存到hbase中的id
+    private String type; //类型：1血糖，2血压，3体重/身高/BMI，4腰围
+    private Integer status =0; //状态：0为标准，1为异常
     private int del = 1; //删除标记,1代表正常，0代表删除
     private String measure_time;     //测量时间  yyyy-MM-dd HH:mm:ss
     private String systolic;        //收缩压
@@ -75,6 +77,22 @@ public class Data {
 
     public void setRid(String rid) {
         this.rid = rid;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public int getDel() {
