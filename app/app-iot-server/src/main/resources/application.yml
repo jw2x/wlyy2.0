@@ -112,3 +112,5 @@ logging:
   path: /data/logger
   file: app-emergency-server
 
+#单点登录
+#GET http://172.19.103.73:10260/oauth/sso?response_type=token&client_id=uzs5G0HgTp&state=sxy&scope=read&redirect_uri=http://192.168.1.221:8010/ehr/browser/common/login/signin?idCardNo=362321200108017313&user=admin
