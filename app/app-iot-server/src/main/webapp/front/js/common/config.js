@@ -3,7 +3,7 @@
  */
 require.config({
     urlArgs: 'bust=' +  (new Date()).getTime(),//测试打开
-    baseUrl: '../js',
+    baseUrl: '/iot/front/js/',
     paths: {
         'jquery': 'lib/jquery.min',
         'bootstrap': 'lib/bootstrap.min',

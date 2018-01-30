@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,8 +35,9 @@ public class LoginController extends BaseController{
      */
     @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "登陆首页")
-    public void index(HttpServletResponse response)throws IOException {
-        response.sendRedirect(contextPath + "/front/views/login.html");
+    public void index(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException {
+//        response.sendRedirect(contextPath + "/front/views/login.html");
+        request.getRequestDispatcher("/front/views/login.html").forward(request, response);
     }
 
     /**

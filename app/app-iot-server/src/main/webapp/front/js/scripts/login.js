@@ -29,7 +29,7 @@ require(loginRelyOn, function ($, layer, vue, jsHelper, apiServer, Promise) {
                 this.setLoad();
                 apiServer.login({
                     data:{
-                        "userName": this.userID,
+                        "username": this.userID,
                         "password": this.password
                     }
                 }).then(function (res) {
