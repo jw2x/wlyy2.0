@@ -31,7 +31,7 @@ require([
             var me = this;
             apiServer.autoLogin({
                 data: {
-                    "token":token,
+                    "accessToken":token,
                     "clientId": clientId
                 }
             }).then(function (data) {

@@ -65,10 +65,10 @@ define(['jquery', 'promise', 'layer', 'jsHelper'], function ($, Promise, layer, 
             return baseUrl + 'attendance/index'
         },
         autoLogin: function (opt) {//单点登录
-            return httpPost(baseUrl + 'login/autoLogin', opt)
+            return httpPost(baseUrl + 'login', opt)
         },
         login: function(opt) {//登录
-            return httpPost(baseUrl + 'login/submit', opt)
+            return httpPost(baseUrl + 'login11', opt)
         },
         out: function (opt) {//退出
             sessionStorage.clear();

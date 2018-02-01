@@ -1,9 +1,10 @@
 package com.yihu.jw.manage.controller.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.base.wx.WxMenuDO;
 import com.yihu.jw.manage.service.wechat.WechatMenuService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.base.wx.MWxMenu;
+import com.yihu.jw.restmodel.base.wx.WxMenuVO;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -82,7 +83,7 @@ public class WechatMenuController {
 
     @PostMapping(value = WechatRequestMapping.WxMenu.api_create)
     @ApiOperation(value = "保存或者修改微信菜单", notes = "保存或者修改微信菜单")
-    public Envelop saveOrUpdate(@ModelAttribute @Valid MWxMenu menu,@RequestParam String userCode) throws JsonProcessingException {
+    public Envelop saveOrUpdate(@ModelAttribute @Valid WxMenuDO menu, @RequestParam String userCode) throws JsonProcessingException {
         Envelop envelop = menuService.saveOrUpdate(menu,userCode);
         return envelop;
     }

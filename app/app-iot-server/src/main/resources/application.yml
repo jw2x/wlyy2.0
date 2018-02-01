@@ -20,13 +20,17 @@ spring:
   application:
     name: app-emergency-server
     message: EHR Emergency Server
+  resources:
+    static-locations: classpath:/
+    cache-period: 0
+
+
 
 permissions:
   info: admin
 
 app:
-  clientId: 3CDhsgepr4
-  baseClientId: Qz2yA1MOD0  # 【物联网】应用
+  clientId: Qz2yA1MOD0 # 【物联网】应用
 
 fast-dfs:
   tracker-server: 172.19.103.54:22122 #服务器地址
@@ -44,21 +48,23 @@ fast-dfs:
 
 ---
 spring:
-  profiles: dev
+  profiles: jwdev
   loginVaild: true
   redis:
     host: 172.19.103.47 # Redis server host.
     port: 6379
     password: redis!@456
 app:
-  oauth2InnerUrl: http://172.19.103.44:10260/
-  oauth2OuterUrl: http://27.154.233.186:10260/  #上饶-授权外网映射
+#  oauth2InnerUrl: http://172.19.103.44:10260/  # 物联网环境
+  oauth2InnerUrl: http://172.19.103.73:10260/   # 认证中心，获取token ehr环境
+  oauth2OuterUrl: http://27.154.233.186:10260/  # 上饶-授权外网映射
 service-gateway:
-  iotUrl: http://192.168.131.24:8088/svr-iot/
-  profileInnerUrl: http://172.19.103.48:10000/api/v1.0/admin
+  iotUrl: http://192.168.131.24:8088/svr-io
+#  profileInnerUrl: http://172.19.103.48:10000/api/v1.0/admin/ # 物联网环境
+  profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin   # 网关接口 ehr环境
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
-  portalInnerUrl: http://172.19.103.48:10280/api/v1.0/portal
-  portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
+
+
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
@@ -68,7 +74,7 @@ logging:
 
 ---
 spring:
-  profiles: test
+  profiles: jwtest
   loginVaild: true
   redis:
     host: 172.19.103.47 # Redis server host.
@@ -87,11 +93,11 @@ fast-dfs:
   public-server: http://172.19.103.54:80/
 logging:
   path: /data/logger
-  file: app-emergency-server
+  file: app-iot-server
 
 ---
 spring:
-  profiles: prod
+  profiles: jwprod
   loginVaild: true
   redis:
     host: 172.19.103.47 # Redis server host.
@@ -112,3 +118,5 @@ logging:
   path: /data/logger
   file: app-emergency-server
 
+#单点登录
+#GET http://172.19.103.73:10260/oauth/sso?response_type=token&client_id=uzs5G0HgTp&state=sxy&scope=read&redirect_uri=http://192.168.1.221:8010/ehr/browser/common/login/signin?idCardNo=362321200108017313&user=admin

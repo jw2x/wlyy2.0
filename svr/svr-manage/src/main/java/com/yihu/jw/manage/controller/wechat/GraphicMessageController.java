@@ -1,9 +1,10 @@
 package com.yihu.jw.manage.controller.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.base.wx.WxGraphicMessageDO;
 import com.yihu.jw.manage.service.wechat.GraphicMessageService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.base.wx.MWxGraphicMessage;
+import com.yihu.jw.restmodel.base.wx.WxGraphicMessageVO;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -73,7 +74,7 @@ public class GraphicMessageController {
 
     @PostMapping(value = WechatRequestMapping.WxGraphicMessage.api_create)
     @ApiOperation(value = "保存或者修改微信图文消息", notes = "保存或者修改微信图文消息")
-    public Envelop saveOrUpdate(@ModelAttribute @Valid MWxGraphicMessage graphicMessage,@RequestParam String userCode) throws JsonProcessingException {
+    public Envelop saveOrUpdate(@ModelAttribute @Valid WxGraphicMessageDO graphicMessage, @RequestParam String userCode) throws JsonProcessingException {
         return graphicMessageService.saveOrUpdate(graphicMessage,userCode);
     }
 }
