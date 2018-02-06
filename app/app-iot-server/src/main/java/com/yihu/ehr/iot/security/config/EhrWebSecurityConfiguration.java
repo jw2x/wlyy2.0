@@ -1,9 +1,6 @@
 package com.yihu.ehr.iot.security.config;
 
-import com.yihu.ehr.iot.security.core.EhrWebAuthenticationProvider;
-import com.yihu.ehr.iot.security.core.EhrWebAuthenticationSuccessHandler;
-import com.yihu.ehr.iot.security.core.EhrWebUserDetailsService;
-import com.yihu.ehr.iot.security.core.EhrWebUsernamePasswordAuthenticationFilter;
+import com.yihu.ehr.iot.security.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +30,8 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private EhrWebAuthenticationProvider ehrWebAuthenticationProvider;
     @Autowired
     private EhrWebAuthenticationSuccessHandler ehrWebAuthenticationSuccessHandler;
+    @Autowired
+    private EhrWebAuthenticationFailureHandler ehrWebAuthenticationFailureHandler;
     //@Autowired
     //private EhrWebAccessDecisionManager ehrWebAccessDecisionManager;
     //@Autowired
@@ -48,6 +47,7 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // ---------- 自定义Filter Start ----------
         EhrWebUsernamePasswordAuthenticationFilter ehrWebUsernamePasswordAuthenticationFilter = new EhrWebUsernamePasswordAuthenticationFilter(oauth2InnerUrl, profileInnerUrl);
         ehrWebUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(ehrWebAuthenticationSuccessHandler);
+        ehrWebUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler(ehrWebAuthenticationFailureHandler);
         ehrWebUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
         //ehrWebUsernamePasswordAuthenticationFilter.setSessionAuthenticationStrategy(new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry));
         http.addFilterBefore(ehrWebUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -96,6 +96,10 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new EhrWebAuthenticationSuccessHandler();
     }
 
+    @Bean
+    EhrWebAuthenticationFailureHandler ehrWebAuthenticationFailureHandler(){
+        return new EhrWebAuthenticationFailureHandler();
+    }
     /**
     @Bean
     EhrWebAccessDecisionManager ehrWebAccessDecisionManager() {

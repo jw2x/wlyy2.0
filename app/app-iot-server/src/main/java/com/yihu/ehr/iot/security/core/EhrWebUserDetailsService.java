@@ -66,6 +66,7 @@ public class EhrWebUserDetailsService implements UserDetailsService {
                     request.setAttribute("id", userDetailModel.getId());
                     request.setAttribute("username", username);
                     request.setAttribute("realName", userDetailModel.getRealName());
+                    request.setAttribute("user",userDetailModel);
                     return new User(username, password, getGrantedAuthorities(username));
                 }
                 logger.error(httpResponse.getBody());
