@@ -45,7 +45,7 @@ public class IotCompanyController extends BaseController {
 
     @PostMapping(value = IotRequestMapping.Company.addCompany)
     @ApiOperation(value = "创建企业", notes = "创建企业")
-    public Envelop<IotCompanyVO> addCompany(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
+    public Envelop<IotCompanyVO> addCompany(@ApiParam(name = "jsonData", value = "json串", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
             return companyService.addCompany(jsonData);
@@ -57,7 +57,7 @@ public class IotCompanyController extends BaseController {
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyById)
     @ApiOperation(value = "根据id查找企业", notes = "根据id查找企业")
-    public Envelop<IotCompanyVO> findByCode(@ApiParam(name = "id", value = "id")
+    public Envelop<IotCompanyVO> findByCode(@ApiParam(name = "id", value = "企业id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             return companyService.findByCode(id);
@@ -69,7 +69,7 @@ public class IotCompanyController extends BaseController {
 
     @GetMapping(value = IotRequestMapping.Company.findByBusinessLicense)
     @ApiOperation(value = "根据营业执照号查找企业", notes = "根据营业执照号查找企业")
-    public Envelop<IotCompanyVO> findByBusinessLicense(@ApiParam(name = "businessLicense", value = "businessLicense")
+    public Envelop<IotCompanyVO> findByBusinessLicense(@ApiParam(name = "businessLicense", value = "营业执照号")
                                                        @RequestParam(value = "businessLicense", required = true) String businessLicense) {
         try {
             return companyService.findByBusinessLicense(businessLicense);
@@ -81,7 +81,7 @@ public class IotCompanyController extends BaseController {
 
     @PostMapping(value = IotRequestMapping.Company.delCompany)
     @ApiOperation(value = "删除企业", notes = "删除企业")
-    public Envelop<IotCompanyVO> delCompany(@ApiParam(name = "id", value = "id")
+    public Envelop<IotCompanyVO> delCompany(@ApiParam(name = "id", value = "企业id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             return companyService.delCompany(id);
@@ -93,7 +93,7 @@ public class IotCompanyController extends BaseController {
 
     @PostMapping(value = IotRequestMapping.Company.updCompany)
     @ApiOperation(value = "修改企业信息", notes = "修改企业信息")
-    public Envelop<IotCompanyVO> updCompany(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
+    public Envelop<IotCompanyVO> updCompany(@ApiParam(name = "jsonData", value = "json串", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
             return companyService.updCompany(jsonData);
@@ -128,7 +128,7 @@ public class IotCompanyController extends BaseController {
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyCertById)
     @ApiOperation(value = "根据id查找企业证书", notes = "根据id查找企业证书")
-    public Envelop<IotCompanyCertificateVO> findCompanyCertById(@ApiParam(name = "id", value = "id")
+    public Envelop<IotCompanyCertificateVO> findCompanyCertById(@ApiParam(name = "id", value = "企业证书id")
                                                                 @RequestParam(value = "id", required = true) String id) {
         try {
             return companyService.findCompanyCertById(id);
@@ -140,7 +140,7 @@ public class IotCompanyController extends BaseController {
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyCertByCompanyId)
     @ApiOperation(value = "根据企业id查找企业证书", notes = "根据企业id查找企业证书")
-    public Envelop<IotCompanyCertificateVO> findCompanyCertByCompanyId(@ApiParam(name = "companyId", value = "companyId")
+    public Envelop<IotCompanyCertificateVO> findCompanyCertByCompanyId(@ApiParam(name = "companyId", value = "企业id")
                                                                        @RequestParam(value = "companyId", required = true) String companyId) {
         try {
             return companyService.findCompanyCertByCompanyId(companyId);
@@ -152,10 +152,24 @@ public class IotCompanyController extends BaseController {
 
     @PostMapping(value = IotRequestMapping.Company.addCompanyCert)
     @ApiOperation(value = "创建企业证书", notes = "创建企业证书")
-    public Envelop<IotCompanyCertificateVO> addCompanyCert(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
+    public Envelop<IotCompanyCertificateVO> addCompanyCert(@ApiParam(name = "jsonData", value = "json串", defaultValue = "")
                                                            @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
             return companyService.addCompanyCert(jsonData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.Company.changePassWord)
+    @ApiOperation(value = "修改用户密码", notes = "修改用户密码")
+    public Envelop changePassWord(@ApiParam(name = "userId", value = "用户id", defaultValue = "")
+                                  @RequestParam(value = "userId", required = true)String userId,
+                                  @ApiParam(name = "passWord", value = "密码", defaultValue = "")
+                                  @RequestParam(value = "passWord", required = true)String passWord){
+        try {
+            return companyService.changePassWord(userId,passWord);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
