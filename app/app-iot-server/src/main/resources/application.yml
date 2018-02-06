@@ -18,11 +18,11 @@ spring:
       max-wait: -1 # Maximum amount of time (in milliseconds) a connection allocation should block before throwing an exception when the pool is exhausted. Use a negative value to block indefinitely.
       min-idle: 1  # Target for the minimum number of idle connections to maintain in the pool. This setting only has an effect if it is positive.
   application:
-    name: app-emergency-server
-    message: EHR Emergency Server
-  resources:
-    static-locations: classpath:/
-    cache-period: 0
+    name: app-iot-server
+    message: App IOT Server
+#  resources:
+#    static-locations: classpath:/
+#    cache-period: 0
 
 
 
@@ -59,10 +59,11 @@ app:
   oauth2InnerUrl: http://172.19.103.73:10260/   # 认证中心，获取token ehr环境
   oauth2OuterUrl: http://27.154.233.186:10260/  # 上饶-授权外网映射
 service-gateway:
-  iotUrl: http://192.168.131.24:8088/svr-io
-#  profileInnerUrl: http://172.19.103.48:10000/api/v1.0/admin/ # 物联网环境
-  profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin   # 网关接口 ehr环境
+  iotUrl: http://192.168.131.24:8088/svr-iot/
+  profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
+  portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
+  portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
 
 
 fast-dfs:
@@ -70,7 +71,7 @@ fast-dfs:
   public-server: http://172.19.103.54:80/
 logging:
   path: /data/logger
-  file: app-emergency-server
+  file: app-iot-server
 
 ---
 spring:
@@ -116,7 +117,7 @@ fast-dfs:
   accessUrl: http://11.1.2.9
 logging:
   path: /data/logger
-  file: app-emergency-server
+  file: app-iot-server
 
 #单点登录
 #GET http://172.19.103.73:10260/oauth/sso?response_type=token&client_id=uzs5G0HgTp&state=sxy&scope=read&redirect_uri=http://192.168.1.221:8010/ehr/browser/common/login/signin?idCardNo=362321200108017313&user=admin

@@ -2,6 +2,7 @@ package com.yihu.ehr.iot.service.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.ehr.iot.util.CurrentRequest;
 import com.yihu.ehr.iot.util.encode.AES;
 import com.yihu.ehr.iot.util.encode.Base64;
 import com.yihu.ehr.iot.util.http.HttpHelper;
@@ -33,8 +34,8 @@ public class BaseService {
     protected String permissionsInfo;
     @Value("${app.clientId}")
     protected String clientId;
-    @Value("${app.baseClientId}")
-    protected String baseClientId;
+//    @Value("${app.baseClientId}")
+//    protected String baseClientId;
     @Value("${service-gateway.profileInnerUrl}")
     protected String profileInnerUrl;
     @Value("${service-gateway.profileOuterUrl}")
@@ -49,7 +50,8 @@ public class BaseService {
     protected String oauth2InnerUrl;
     @Value("${app.oauth2OuterUrl}")
     protected String oauth2OuterUrl;
-
+    @Autowired
+    private CurrentRequest currentRequest;
 
     public String readFile(String filePath, String charSet) {
 
