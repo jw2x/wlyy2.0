@@ -7,6 +7,7 @@ import com.yihu.ehr.util.rest.Envelop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -27,8 +28,8 @@ public class EhrWebAuthenticationSuccessHandler implements AuthenticationSuccess
     @Autowired
     private ObjectMapper objectMapper;
 
-    //@Autowired
-    //private FindByIndexNameSessionRepository findByIndexNameSessionRepository;
+    @Autowired
+    SessionRegistry sessionRegistry;
 
     /**
      * Step 4
@@ -56,8 +57,9 @@ public class EhrWebAuthenticationSuccessHandler implements AuthenticationSuccess
         modelList.add(userDetailModel);
         envelop.setDetailModelList(modelList);
 
-        //Map<String, Object> sessionMap = findByIndexNameSessionRepository.findByIndexNameAndIndexValue(FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME, "admin");
         httpServletResponse.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         httpServletResponse.getWriter().print(objectMapper.writeValueAsString(envelop));
+
+        sessionRegistry.registerNewSession(httpServletRequest.getSession().getId(),userDetailModel);
     }
 }
