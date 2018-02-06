@@ -35,9 +35,10 @@ require(loginRelyOn, function ($, layer, vue, jsHelper, apiServer, Promise) {
                 }).then(function (res) {
                     layer.close(load);
                     if (res.successFlg) {
-                        sessionStorage.setItem("ZF_UID",res.data.user.id);
-                        sessionStorage.setItem("ZF_UN",res.data.user.realName);
-                        sessionStorage.setItem("ZF_U",res.data.user);
+                        debugger
+                        sessionStorage.setItem("ZF_UID",res.obj.id);
+                        sessionStorage.setItem("ZF_UN",res.obj.realName);
+                        sessionStorage.setItem("ZF_U",res.obj);
                         location.href = apiServer.indexPage();
                     } else {
                         layer.msg(res.message);

@@ -62,13 +62,13 @@ define(['jquery', 'promise', 'layer', 'jsHelper'], function ($, Promise, layer, 
 
     var APIService = {
         indexPage: function () {//首页
-            return baseUrl + 'attendance/index'
+            return baseUrl + '/index'
         },
         autoLogin: function (opt) {//单点登录
             return httpPost(baseUrl + 'login', opt)
         },
         login: function(opt) {//登录
-            return httpPost(baseUrl + 'login11', opt)
+            return httpPost(baseUrl + 'login', opt)
         },
         out: function (opt) {//退出
             sessionStorage.clear();
