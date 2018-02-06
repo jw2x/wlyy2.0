@@ -4,12 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.ehr.agModel.user.UserDetailModel;
 import com.yihu.ehr.iot.util.http.HttpHelper;
 import com.yihu.ehr.iot.util.http.HttpResponse;
+import com.yihu.ehr.iot.util.spring.SpringContextHolder;
 import com.yihu.ehr.util.rest.Envelop;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,29 +28,20 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class CurrentRequest {
 
-    @Value("${service-gateway.profileInnerUrl}")
-    protected String profileInnerUrl;
-
     @Autowired
-    private ObjectMapper objectMapper;
+    SessionRegistry sessionRegistry;
 
-    public static Map<String,UserDetailModel> userMap = new ConcurrentHashMap<>(1000);
-
-    public UserDetailModel getCurrentUserByName(String username) throws IOException {
+    /**
+     * 获取当前登录用户，当前已登录的用户都缓存在session中
+     * @param request
+     * @return
+     */
+    public  UserDetailModel getCurrentUser(HttpServletRequest request){
+        String sessionId = request.getSession().getId();
         UserDetailModel user = null;
-        if(userMap.containsKey(username)){
-            return userMap.get(username);
-        }
-        Map params = new HashMap<>();
-        params.put("login_code", username);
-        HttpResponse httpResponse = HttpHelper.get(profileInnerUrl + "/users/" + username, params);
-        if(httpResponse.getStatusCode() == 200) {
-            Envelop envelop = this.objectMapper.readValue(httpResponse.getBody(), Envelop.class);
-            if (envelop.isSuccessFlg()){
-                String userString = this.objectMapper.writeValueAsString(envelop.getObj());
-                user = this.objectMapper.readValue(userString, UserDetailModel.class);
-                userMap.put(username,user);
-            }
+        SessionInformation sessionInformation = sessionRegistry.getSessionInformation(sessionId);
+        if(null != sessionInformation.getPrincipal()){
+            user = (UserDetailModel)sessionInformation.getPrincipal();
         }
         return user;
     }

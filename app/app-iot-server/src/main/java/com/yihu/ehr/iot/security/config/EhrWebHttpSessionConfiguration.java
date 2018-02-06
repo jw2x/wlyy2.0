@@ -8,13 +8,11 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 /**
  * Created by progr1mmer on 2018/1/27.
  */
-//@Configuration
-//@EnableRedisHttpSession
+@Configuration
 public class EhrWebHttpSessionConfiguration {
 
-    /*
     @Bean
     SessionRegistry sessionRegistry(){
         return new SessionRegistryImpl();
-    }*/
+    }
 }
