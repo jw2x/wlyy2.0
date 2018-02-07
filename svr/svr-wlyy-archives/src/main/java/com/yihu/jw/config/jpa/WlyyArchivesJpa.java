@@ -25,7 +25,7 @@ import javax.sql.DataSource;
         entityManagerFactoryRef = "wlyyArchivesEntityManagerFactory",
         transactionManagerRef = "wlyyArchivesTransactionManager",
         basePackages = {"com.yihu.jw.dao"})   //设置Repository所在位置
-public class WlyyJpa {
+public class WlyyArchivesJpa {
 
     @Autowired
     private HibernateProperties hibernateProperties;
@@ -36,7 +36,7 @@ public class WlyyJpa {
 
         LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
         emfb.setDataSource(dataSource);
-        emfb.setPackagesToScan("com.yihu.jw.dao");
+        emfb.setPackagesToScan("com.yihu.jw.entity");
         emfb.setPersistenceUnitName("archives");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emfb.setJpaVendorAdapter(vendorAdapter);
