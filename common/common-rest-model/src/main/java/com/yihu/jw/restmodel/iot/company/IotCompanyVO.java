@@ -54,7 +54,10 @@ public class IotCompanyVO extends BaseVO implements Serializable {
     private String contactsIdcardImg;
     @ApiModelProperty("账号")
     private String account;
-
+    @ApiModelProperty("密码")
+    private String password;
+    @ApiModelProperty("ehr用户id，修改密码时使用")
+    private String ehrUserId;
     @ApiModelProperty("类型")
     private List<IotCompanyTypeVO> typeList;
 
@@ -200,5 +203,21 @@ public class IotCompanyVO extends BaseVO implements Serializable {
 
     public void setTypeList(List<IotCompanyTypeVO> typeList) {
         this.typeList = typeList;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getEhrUserId() {
+        return ehrUserId;
+    }
+
+    public void setEhrUserId(String ehrUserId) {
+        this.ehrUserId = ehrUserId;
     }
 }
