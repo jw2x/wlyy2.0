@@ -70,6 +70,7 @@ public class IotRequestMapping {
         public static final String findCompanyCertById = "findCompanyCertById";
         public static final String findCompanyCertByCompanyId = "findCompanyCertByCompanyId";
         public static final String addCompanyCert = "addCompanyCert";
+        public static final String changePassWord = "changePassWord";
 
         public static final String api_create = "company";
         public static final String api_delete = "company";
