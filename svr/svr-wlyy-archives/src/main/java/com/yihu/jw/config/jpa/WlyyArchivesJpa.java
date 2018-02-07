@@ -25,7 +25,7 @@ import javax.sql.DataSource;
         entityManagerFactoryRef = "wlyyArchivesEntityManagerFactory",
         transactionManagerRef = "wlyyArchivesTransactionManager",
         basePackages = {"com.yihu.jw.dao"})   //设置Repository所在位置
-public class WlyyJpa {
+public class WlyyArchivesJpa {
 
     @Autowired
     private HibernateProperties hibernateProperties;
