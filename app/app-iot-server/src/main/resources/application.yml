@@ -20,8 +20,8 @@ spring:
   application:
     name: app-iot-server
     message: App IOT Server
-#  resources:
-#    static-locations: classpath:/
+  resources:
+    static-locations: classpath:/
 #    cache-period: 0
 
 
