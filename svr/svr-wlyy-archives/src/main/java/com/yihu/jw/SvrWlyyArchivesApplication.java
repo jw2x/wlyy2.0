@@ -6,9 +6,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfigur
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-/**
- *
- */
+
 @SpringBootApplication(exclude = OAuth2AutoConfiguration.class)
 @ComponentScan(basePackages = {"com"})
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
