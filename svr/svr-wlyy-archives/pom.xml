@@ -10,7 +10,7 @@
         <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
-    <groupId>com.yihu.jw</groupId>
+    <groupId>com.yihu.archives</groupId>
     <artifactId>svr-wlyy-archives</artifactId>
     <version>1.0.0</version>
 
