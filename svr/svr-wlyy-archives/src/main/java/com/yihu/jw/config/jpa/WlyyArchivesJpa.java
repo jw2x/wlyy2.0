@@ -36,7 +36,7 @@ public class WlyyArchivesJpa {
 
         LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
         emfb.setDataSource(dataSource);
-        emfb.setPackagesToScan("com.yihu.jw.dao");
+        emfb.setPackagesToScan("com.yihu.jw.entity");
         emfb.setPersistenceUnitName("archives");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emfb.setJpaVendorAdapter(vendorAdapter);
