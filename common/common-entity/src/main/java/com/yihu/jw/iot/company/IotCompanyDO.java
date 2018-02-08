@@ -54,6 +54,8 @@ public class IotCompanyDO extends IdEntityWithOperation implements Serializable 
     private String contactsIdcardImg;//联系人身份证照片
     @Column(name = "account")
     private String account;//账号
+    @Column(name = "ehr_user_id")
+    private String ehrUserId;//    ehr用户id，修改密码时使用
     @Column(name = "del")
     private Integer del;//删除标志(1有效，0删除)
 
@@ -202,6 +204,14 @@ public class IotCompanyDO extends IdEntityWithOperation implements Serializable 
 
     public void setAccount(String account) {
         this.account = account;
+    }
+
+    public String getEhrUserId() {
+        return ehrUserId;
+    }
+
+    public void setEhrUserId(String ehrUserId) {
+        this.ehrUserId = ehrUserId;
     }
 
     public Integer getDel() {

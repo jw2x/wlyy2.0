@@ -234,7 +234,7 @@
     </dependencies>
 
     <build>
-        <finalName>app-emergency-server</finalName>
+        <finalName>app-iot-server</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -248,5 +248,24 @@
                 </configuration>
             </plugin>
         </plugins>
+
+        <resources>
+            <resource>
+                <!--打包的时候把resources下的资源移到classpath下-->
+                <directory>${basedir}/src/main/webapp</directory>
+                <targetPath>${project.build.directory}/classes</targetPath>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+            </resource>
+            <resource>
+                <!--打包的时候把resources下的资源移到classpath下-->
+                <directory>${basedir}/src/main/resources</directory>
+                <targetPath>${project.build.directory}/classes</targetPath>
+                <includes>
+                    <include>**/**</include>
+                </includes>
+            </resource>
+        </resources>
     </build>
 </project>

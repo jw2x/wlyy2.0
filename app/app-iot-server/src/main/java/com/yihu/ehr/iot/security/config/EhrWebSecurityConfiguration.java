@@ -1,9 +1,6 @@
 package com.yihu.ehr.iot.security.config;
 
-import com.yihu.ehr.iot.security.core.EhrWebAuthenticationProvider;
-import com.yihu.ehr.iot.security.core.EhrWebAuthenticationSuccessHandler;
-import com.yihu.ehr.iot.security.core.EhrWebUserDetailsService;
-import com.yihu.ehr.iot.security.core.EhrWebUsernamePasswordAuthenticationFilter;
+import com.yihu.ehr.iot.security.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +11,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy;
 
 /**
  * Created by progr1mmer on 2018/1/26.
@@ -33,10 +32,15 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private EhrWebAuthenticationProvider ehrWebAuthenticationProvider;
     @Autowired
     private EhrWebAuthenticationSuccessHandler ehrWebAuthenticationSuccessHandler;
+    @Autowired
+    private EhrWebAuthenticationFailureHandler ehrWebAuthenticationFailureHandler;
     //@Autowired
     //private EhrWebAccessDecisionManager ehrWebAccessDecisionManager;
-    //@Autowired
-    //private SessionRegistry sessionRegistry;
+    @Autowired
+    private SessionRegistry sessionRegistry;
+
+    @Autowired
+    private EhrWebContextLogoutHandler ehrWebContextLogoutHandler;
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -48,8 +52,9 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // ---------- 自定义Filter Start ----------
         EhrWebUsernamePasswordAuthenticationFilter ehrWebUsernamePasswordAuthenticationFilter = new EhrWebUsernamePasswordAuthenticationFilter(oauth2InnerUrl, profileInnerUrl);
         ehrWebUsernamePasswordAuthenticationFilter.setAuthenticationSuccessHandler(ehrWebAuthenticationSuccessHandler);
+        ehrWebUsernamePasswordAuthenticationFilter.setAuthenticationFailureHandler(ehrWebAuthenticationFailureHandler);
         ehrWebUsernamePasswordAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
-        //ehrWebUsernamePasswordAuthenticationFilter.setSessionAuthenticationStrategy(new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry));
+        ehrWebUsernamePasswordAuthenticationFilter.setSessionAuthenticationStrategy(new ConcurrentSessionControlAuthenticationStrategy(sessionRegistry));
         http.addFilterBefore(ehrWebUsernamePasswordAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         // ---------- 自定义Filter End ----------
         //http.sessionManagement().maximumSessions(3).expiredUrl("/login?expired").sessionRegistry(sessionRegistry);
@@ -69,7 +74,7 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/front/views/**").hasRole("USER")
                 .antMatchers("/**").hasRole("USER")
                 .and().formLogin().loginPage("/login")
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login")
+                .and().logout().addLogoutHandler(ehrWebContextLogoutHandler).logoutUrl("/logout").logoutSuccessUrl("/login")
                 .and().headers().frameOptions().disable()
                 .and().csrf().disable();
     }
@@ -96,6 +101,15 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new EhrWebAuthenticationSuccessHandler();
     }
 
+    @Bean
+    EhrWebAuthenticationFailureHandler ehrWebAuthenticationFailureHandler(){
+        return new EhrWebAuthenticationFailureHandler();
+    }
+
+    @Bean
+    EhrWebContextLogoutHandler ehrWebContextLogoutHandler(){
+        return new EhrWebContextLogoutHandler();
+    }
     /**
     @Bean
     EhrWebAccessDecisionManager ehrWebAccessDecisionManager() {

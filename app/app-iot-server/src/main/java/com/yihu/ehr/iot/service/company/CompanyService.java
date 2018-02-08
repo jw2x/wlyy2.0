@@ -1,6 +1,10 @@
 package com.yihu.ehr.iot.service.company;
 
+import com.yihu.ehr.constants.ErrorCode;
 import com.yihu.ehr.iot.constant.ServiceApi;
+import com.yihu.ehr.iot.model.ObjectResult;
+import com.yihu.ehr.iot.model.Result;
+import com.yihu.ehr.iot.model.user.UserModel;
 import com.yihu.ehr.iot.service.common.BaseService;
 import com.yihu.ehr.iot.util.http.HttpHelper;
 import com.yihu.ehr.iot.util.http.HttpResponse;
@@ -8,6 +12,7 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,6 +23,8 @@ import java.util.Map;
  */
 @Service
 public class CompanyService extends BaseService {
+
+    private String roleId = "10268";//物联网默认用户角色
 
     /**
      * 分页查找企业
@@ -49,12 +56,180 @@ public class CompanyService extends BaseService {
      * @throws IOException
      */
     public Envelop<IotCompanyVO> addCompany(String jsonData) throws IOException {
+        Envelop<IotCompanyVO> envelop = new Envelop<IotCompanyVO>();
+        //新增ehr用户
+        IotCompanyVO iotCompany = toModel(jsonData, IotCompanyVO.class);
+
+        envelop = userVerification(iotCompany,envelop);
+        if(envelop.getStatus()==-1){
+            return envelop;
+        }
+        //验证账户
+        Result login_code = existence("login_code",iotCompany.getAccount());
+        if(login_code.isSuccessFlg()){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg("该账号已存在");
+            return envelop;
+        }
+        //验证身份证
+        Result id_card_no = existence("id_card_no",iotCompany.getContactsIdcard());
+        if(id_card_no.isSuccessFlg()){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg("该身份证号已被注册，请确认。");
+            return envelop;
+        }
+        //验证邮件
+        Result email = existence("email",iotCompany.getContactsEmail());
+        if(email.isSuccessFlg()){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg("该邮箱已存在");
+            return envelop;
+        }
+        //验证手机号
+        Result telephone = existence("telephone",iotCompany.getContactsMobile());
+        if(telephone.isSuccessFlg()){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg("该手机号码已存在");
+            return envelop;
+        }
+        Envelop<UserModel> userModelEnvelop = updateUser(iotCompany);
+        if(userModelEnvelop.getStatus()!=200){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg(userModelEnvelop.getErrorMsg());
+            return envelop;
+        }
+
         Map<String, Object> params = new HashMap<>();
-        params.put("jsonData", jsonData);
+        params.put("jsonData", toJson(iotCompany));
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Company.AddCompany, params);
-        Envelop<IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }
+
+    /**
+     * 校验用户信息
+     * @param iotCompany
+     * @param envelop
+     * @return
+     */
+    private Envelop<IotCompanyVO> userVerification(IotCompanyVO iotCompany,Envelop<IotCompanyVO> envelop){
+        if(StringUtils.isEmpty(iotCompany.getAccount())){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg("账号不能为空");
+            return envelop;
+        }
+        if(StringUtils.isEmpty(iotCompany.getContactsIdcard())){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg("身份证号不能为空");
+            return envelop;
+        }
+        if(StringUtils.isEmpty(iotCompany.getContactsEmail())){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg("邮箱不能为空");
+            return envelop;
+        }
+        if(StringUtils.isEmpty(iotCompany.getContactsMobile())){
+            envelop.setStatus(-1);
+            envelop.setErrorMsg("手机号码账号不能为空");
+            return envelop;
+        }
+
+        return envelop;
+    }
+
+    /**
+     * 验证用户信息
+     */
+    private Result existence(String existenceType, String existenceNm){
+        String getUserUrl = "/users/existence";
+        Result result = null;
+        Map<String, Object> params = new HashMap<>();
+        params.put("existenceType",existenceType);
+        params.put("existenceNm",existenceNm);
+//        params.put("username",null);
+//        params.put("password",null);
+        try {
+            HttpResponse response = HttpHelper.get(profileInnerUrl + getUserUrl, params);
+            result = objectMapper.readValue(response.getBody(),Result.class);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            result = new Result();
+            result.setSuccessFlg(false);
+            result.setMessage(ErrorCode.SystemError.toString());
+            return result;
+        }
+    }
+
+    /**
+     * 新增用户
+     * @param iotCompany
+     * @return
+     */
+    private Envelop<UserModel> updateUser(IotCompanyVO iotCompany){
+        String url = "/user/";
+        UserModel userModel = new UserModel();
+        userModel.setEmail(iotCompany.getContactsEmail());
+        userModel.setIdCardNo(iotCompany.getContactsIdcard());
+        userModel.setLoginCode(iotCompany.getAccount());
+        userModel.setTelephone(iotCompany.getContactsMobile());
+        userModel.setRole(roleId);
+        Envelop envelop  = new Envelop();
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_json_data",toJson(userModel));
+        try {
+            Map<String, Object> head = new HashMap<>();
+            head.put("Content-Type","application/json; charset=UTF-8");
+            HttpResponse response = HttpHelper.post(profileInnerUrl + url, params,head);
+            ObjectResult result = toModel(response.getBody(),ObjectResult.class);
+            if(result.isSuccessFlg()){
+                UserModel addUserModel = toModel(toJson(result.getObj()),UserModel.class);
+                iotCompany.setEhrUserId(addUserModel.getId());
+                envelop.setStatus(200);
+            }else {
+                envelop.setStatus(-1);
+                envelop.setErrorMsg(result.getErrorMsg());
+            }
+            return envelop;
+        } catch (Exception e) {
+            e.printStackTrace();
+            envelop.setStatus(-1);
+            envelop.setErrorMsg(ErrorCode.SystemError.toString());
+            return envelop;
+        }
+    }
+
+    /**
+     * 修改密码
+     * @param userId
+     * @param passWord
+     * @return
+     */
+    public Envelop changePassWord(String userId,String passWord){
+        Envelop envelop = new Envelop();
+        String url = "/users/changePassWord";
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id",userId);
+        params.put("password",passWord);
+        try {
+            HttpResponse response = HttpHelper.put(profileInnerUrl + url, params);
+            ObjectResult result = toModel(response.getBody(),ObjectResult.class);
+            if(result.isSuccessFlg()){
+                envelop.setStatus(200);
+                envelop.setSuccessMsg("修改成功");
+            }else {
+                envelop.setStatus(-1);
+                envelop.setErrorMsg(result.getErrorMsg());
+            }
+            return envelop;
+        } catch (Exception e) {
+            e.printStackTrace();
+            envelop.setStatus(-1);
+            envelop.setErrorMsg(ErrorCode.SystemError.toString());
+            return envelop;
+        }
+    }
+
 
     /**
      * 根据id查找企业

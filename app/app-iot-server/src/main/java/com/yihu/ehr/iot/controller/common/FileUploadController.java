@@ -2,8 +2,6 @@ package com.yihu.ehr.iot.controller.common;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.yihu.base.fastdfs.FastDFSHelper;
-import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -139,9 +137,7 @@ public class FileUploadController extends BaseController {
     @ApiOperation(value = "base64上传图片",notes = "base64上传图片")
     public Envelop<UploadVO> uploadImages(@ApiParam(name = "jsonData", value = "头像转化后的输入流") @RequestBody String jsonData) throws Exception {
         try {
-            if(jsonData == null){
-                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_jsonData_is_null, ExceptionCode.common_error_params_code);
-            }
+
             String date = URLDecoder.decode(jsonData,"UTF-8");
             String[] fileStreams = date.split(",");
             String is = URLDecoder.decode(fileStreams[1],"UTF-8").replace(" ","+");
@@ -168,8 +164,9 @@ public class FileUploadController extends BaseController {
             uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
             //返回文件路径
             return Envelop.getSuccess(IotRequestMapping.FileUpload.message_success_upload, uploadVO);
-        }catch (ApiException e){
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }catch (Exception e){
+            e.printStackTrace();
+            return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
         }
     }
 
