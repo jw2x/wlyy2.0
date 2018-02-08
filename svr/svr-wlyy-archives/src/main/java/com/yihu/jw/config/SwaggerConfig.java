@@ -1,5 +1,6 @@
 package com.yihu.jw.config;
 
+import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,18 +17,18 @@ import static springfox.documentation.builders.PathSelectors.regex;
 @EnableSwagger2
 @ComponentScan("com.yihu.jw.**")
 public class SwaggerConfig {
-    public static final String Wlyy_API = "archives";
+    public static final String archives_API = "archives";
 
     @Bean
     public Docket wlyyAPI() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName(Wlyy_API)
+                .groupName(archives_API)
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(false)
                 .pathMapping("/")
                 .select()
                 .paths(or(
-                        regex("/" + WlyyRequestMapping.api_wlyy_common + "/.*")
+                        regex("/" + PatientArchivesMapping.api_archives_common + "/.*")
                 ))
                 .build()
                 .apiInfo(wlyyApiInfo());

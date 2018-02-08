@@ -2,12 +2,16 @@ package com.yihu.jw.entity.archives;
 
 import com.yihu.jw.IdEntityWithOperation;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Trick on 2018/2/7.
  */
+@Entity
+@Table(name = "wlyy_patient_archives_info")
 public class PatientArchivesInfo extends IdEntityWithOperation implements Serializable {
     private String code; //业务主键
     private String saasId; //saasid
