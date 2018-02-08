@@ -82,7 +82,7 @@ public class PatientArchivesSevice extends BaseJpaService<PatientArchives,Patien
      */
     public Envelop<PatientArchivesInfoVO> queryPatientArchivesInfoPage(String code) throws ParseException {
 
-        List<PatientArchivesInfo> list = patientArchivesInfoDao.findByCodeOrderByLevel1(code);
+        List<PatientArchivesInfo> list = patientArchivesInfoDao.findByArchivesCodeOrderByLevel1(code);
 
         List<PatientArchivesInfoVO> patientArchivesinfoVOs = convertToModelVOs2(list,new ArrayList<>(list.size()));
 
