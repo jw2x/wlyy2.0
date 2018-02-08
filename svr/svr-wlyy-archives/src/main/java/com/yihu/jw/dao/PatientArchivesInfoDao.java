@@ -12,5 +12,5 @@ import java.util.List;
 public interface PatientArchivesInfoDao extends PagingAndSortingRepository<PatientArchivesInfo, String>,
         JpaSpecificationExecutor<PatientArchivesInfo> {
     List<PatientArchivesInfo> findByCodeOrderByLevel1(String code);
-    int deleteByArchivesCode(String archivesCode);
+//    int deleteByArchivesCode(String archivesCode);
 }

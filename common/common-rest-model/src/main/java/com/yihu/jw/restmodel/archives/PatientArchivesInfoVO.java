@@ -1,26 +1,33 @@
-package com.yihu.jw.entity.archives;
+package com.yihu.jw.restmodel.archives;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by Trick on 2018/2/7.
+ * Created by Trick on 2018/2/8.
  */
-@Entity
-@Table(name = "wlyy_patient_archives_info")
-public class PatientArchivesInfo extends IdEntityWithOperation implements Serializable {
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(value = "居民档案详细信息", description = "居民档案详细信息")
+public class PatientArchivesInfoVO {
 
+    @ApiModelProperty("saasid")
     private String saasId; //saasid
+    @ApiModelProperty("档案code")
     private String archivesCode; //档案code
+    @ApiModelProperty("1.历史情况，2.既往史，3.家族史，4.生活环境")
     private String level1;//1.历史情况，2.既往史，3.家族史，4.生活环境
+    @ApiModelProperty("子类别")
     private String level2; //子类别
+    @ApiModelProperty("字典值，或判断值（有，无）")
     private String key; //字典值，或判断值（有，无）
+    @ApiModelProperty("字典名称")
     private String value; //字典名称
+    @ApiModelProperty("关联时间")
     private Date date;//关联时间
+    @ApiModelProperty("备注/其他/描述/详情")
     private String remark; //备注/其他/描述/详情
 
 

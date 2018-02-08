@@ -1,48 +1,83 @@
-package com.yihu.jw.entity.archives;
+package com.yihu.jw.restmodel.archives;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by Trick on 2018/2/7.
+ * Created by Trick on 2018/2/8.
  */
-@Entity
-@Table(name = "wlyy_patient_archives")
-public class PatientArchives extends IdEntityWithOperation implements Serializable {
+@JsonInclude(JsonInclude.Include.ALWAYS)
+@ApiModel(value = "居民档案基本信息", description = "居民档案基本信息")
+public class PatientArchivesVO {
 
+    @ApiModelProperty("saasid")
     private String saasId; //saasid
+    @ApiModelProperty("关联居民登录code")
     private String patientCode;//关联居民登录code
+    @ApiModelProperty("姓名")
     private String patientName;//姓名
+    @ApiModelProperty("身份证号")
     private String idcard;//身份证号
+    @ApiModelProperty("生日")
     private Date birthday;//生日
-    private String sex;//int(11) DEFAULT NULL COMMENT '性别，1男，2女
+    @ApiModelProperty("性别，1男，2女")
+    private Integer sex;//性别，1男，2女
+    @ApiModelProperty("手机号")
     private String mobile;//手机号
+    @ApiModelProperty("社保卡号")
     private String ssc;//社保卡号
-    private String status;//int(11) DEFAULT NULL COMMENT '档案状态：1正常，0注销
+    @ApiModelProperty("档案状态：1正常，0注销")
+    private Integer status;//档案状态：1正常，0注销
+    @ApiModelProperty("注销原因：1死亡，2.重复")
     private String cancelReseanType;//注销原因：1死亡，2.重复
+    @ApiModelProperty("居委会代码（字典）")
     private String sickVillage;//居委会代码（字典）
+    @ApiModelProperty("居委会")
     private String sickVillageName;//居委会
+    @ApiModelProperty("常住类型 :1户籍，2非户籍")
     private String residentType;//常住类型 :1户籍，2非户籍
+    @ApiModelProperty("血型：A，AB，O，B，N（不详）")
     private String blood;//血型：A，AB，O，B，N（不详）
+    @ApiModelProperty("，阴性;2阳性;0 不详")
     private String RH;//1，阴性;2阳性;0 不详
-    private String nationCode;//民族code(字典)
+    @ApiModelProperty("民族名称(字典)")
+    private String nationCode;//民族名称(字典)
+    @ApiModelProperty("民族名称")
     private String nation;//民族名称
+    @ApiModelProperty("工作地点")
     private String workPlace;//工作地点
+    @ApiModelProperty("联系人")
     private String contactPeople;//联系人
-    private String contactMobile;//联系人电话
+    @ApiModelProperty("联系人电话")
+    private String contactMobile;//
+    @ApiModelProperty("文化程度（字典）")
     private String educationCode;//文化程度（字典）
+    @ApiModelProperty("文化程度")
     private String education;//文化程度
+    @ApiModelProperty("职业（字典）")
     private String professionCode;//职业（字典）
+    @ApiModelProperty("职业")
     private String profession;//职业·
+    @ApiModelProperty("婚姻状况（字典）")
     private String marriageCode;//婚姻状况（字典）
+    @ApiModelProperty("婚姻状况")
     private String marriage;//婚姻状况
+    @ApiModelProperty("支付方式（字典）")
     private String paymentCode;//支付方式（字典）
+    @ApiModelProperty("支付方式")
     private String payment;// 支付方式
 
+
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
 
     public String getPatientCode() {
         return patientCode;
@@ -76,11 +111,11 @@ public class PatientArchives extends IdEntityWithOperation implements Serializab
         this.birthday = birthday;
     }
 
-    public String getSex() {
+    public Integer getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -100,11 +135,11 @@ public class PatientArchives extends IdEntityWithOperation implements Serializab
         this.ssc = ssc;
     }
 
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -258,13 +293,5 @@ public class PatientArchives extends IdEntityWithOperation implements Serializab
 
     public void setPayment(String payment) {
         this.payment = payment;
-    }
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
     }
 }
