@@ -19,6 +19,7 @@ public class IotCommonContants {
         public static final String order = api_iot_common + "/wg/order";
         public static final String device = api_iot_common + "/wg/device";
         public static final String quality = api_iot_common + "/wg/quality";
+        public static final String patientDevice = api_iot_common + "/wg/patientDevice";
     }
 
 }

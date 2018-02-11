@@ -24,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class IotDeviceController extends EnvelopRestController{
     @Autowired
     private IotDeviceImportRecordDao iotDeviceImportRecordDao;
 
-    @PostMapping(value = IotRequestMapping.Device.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = IotRequestMapping.Device.api_create)
     @ApiOperation(value = "创建设备", notes = "创建设备")
     public Envelop<IotDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                           @RequestParam String jsonData) {

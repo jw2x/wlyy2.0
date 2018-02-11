@@ -2,25 +2,31 @@ package com.yihu.ehr.iot.service.common;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.ehr.iot.util.CurrentRequest;
+import com.yihu.ehr.agModel.user.UserDetailModel;
+import com.yihu.ehr.iot.model.AccessToken;
+import com.yihu.ehr.iot.model.ListResult;
+import com.yihu.ehr.iot.model.ObjectResult;
+import com.yihu.ehr.iot.model.Result;
 import com.yihu.ehr.iot.util.encode.AES;
 import com.yihu.ehr.iot.util.encode.Base64;
 import com.yihu.ehr.iot.util.http.HttpHelper;
 import com.yihu.ehr.iot.util.http.HttpResponse;
 import com.yihu.ehr.iot.util.operator.StringUtil;
-import com.yihu.ehr.iot.model.AccessToken;
-import com.yihu.ehr.iot.model.ListResult;
-import com.yihu.ehr.iot.model.ObjectResult;
-import com.yihu.ehr.iot.model.Result;
 import com.yihu.ehr.util.rest.Envelop;
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Serveice - 基类
@@ -51,7 +57,23 @@ public class BaseService {
     @Value("${app.oauth2OuterUrl}")
     protected String oauth2OuterUrl;
     @Autowired
-    private CurrentRequest currentRequest;
+    protected SessionRegistry sessionRegistry;
+    @Autowired
+    protected HttpServletRequest request;
+
+    /**
+     * 获取当前登录用户，当前已登录的用户都缓存在session中
+     * @return
+     */
+    public UserDetailModel getCurrentUser(){
+        String sessionId = request.getSession().getId();
+        UserDetailModel user = null;
+        SessionInformation sessionInformation = sessionRegistry.getSessionInformation(sessionId);
+        if(null != sessionInformation.getPrincipal()){
+            user = (UserDetailModel)sessionInformation.getPrincipal();
+        }
+        return user;
+    }
 
     public String readFile(String filePath, String charSet) {
 
