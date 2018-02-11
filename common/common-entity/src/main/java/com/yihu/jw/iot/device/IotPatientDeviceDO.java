@@ -23,20 +23,25 @@ public class IotPatientDeviceDO extends IdEntityWithOperation implements Seriali
     private String patientName;//居民姓名
     @Column(name = "idcard")
     private String idcard;//居民身份证
+    @Column(name = "category_code")
+    private String categoryCode;//设备类型标识
     @Column(name = "device_id")
     private String deviceId;//设备id
     @Column(name = "device_name")
     private String deviceName;//设备名称
     @Column(name = "device_sn")
     private String deviceSn;//设备sn码
+    @Column(name = "sim")
+    private String sim; //sim卡号
     @Column(name = "doctor")
-    private String doctor;//质检负责人
+    private String doctor;//医生code
     @Column(name = "agent")
-    private String agent;//质检负责人联系方式
+    private String agent;//代理人
     @Column(name = "user_type")
-    private String userType;//质检状态
+    private String userType;//按键号
     @Column(name = "del")
     private Integer del;//删除标志
+
 
     public String getSaasId() {
         return saasId;
@@ -124,5 +129,21 @@ public class IotPatientDeviceDO extends IdEntityWithOperation implements Seriali
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
+    }
+
+    public String getSim() {
+        return sim;
+    }
+
+    public void setSim(String sim) {
+        this.sim = sim;
     }
 }
