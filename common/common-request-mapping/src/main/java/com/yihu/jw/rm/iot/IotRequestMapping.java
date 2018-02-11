@@ -19,6 +19,7 @@ public class IotRequestMapping {
         public static final String order = api_iot_common + "/order";
         public static final String device = api_iot_common + "/device";
         public static final String quality = api_iot_common + "/quality";
+        public static final String patientDevice = api_iot_common + "/patientDevice";
 
 
         public static final String message_success_update = "update success";
@@ -85,13 +86,6 @@ public class IotRequestMapping {
         public static final String message_success_create = "create success";
         public static final String message_success_find_functions = "find success";
 
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_is_no_exist = "is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
     /**
@@ -104,6 +98,25 @@ public class IotRequestMapping {
         public static final String findProductById = "findProductById";
         public static final String updProduct= "updProduct";
         public static final String delProduct= "delProduct";
+
+    }
+
+    /**
+     * 居民设备模块常量
+     */
+    public static class PatientDevice {
+        public static final String findByPage = "findByPage";
+        public static final String addPatientDevice = "addPatientDevice";
+        public static final String findById = "findById";
+        public static final String updPatientDevice= "updPatientDevice";
+        public static final String delPatientDevice= "delPatientDevice";
+        public static final String findByDeviceSnAndUserType= "findByDeviceSnAndUserType";
+        public static final String findByPatient= "findByPatient";
+        public static final String findByPatientAndDeviceSn= "findByPatientAndDeviceSn";
+        public static final String findByDeviceSnAndCategoryCode= "findByDeviceSnAndCategoryCode";
+        public static final String findByDeviceSnAndCategoryCodeAndUserType= "findByDeviceSnAndCategoryCodeAndUserType";
+        public static final String updatePatientDevice= "updatePatientDevice";
+        public static final String findListByPatient= "findListByPatient";
 
     }
 
@@ -125,13 +138,6 @@ public class IotRequestMapping {
         public static final String message_success_create = "deviceDict create success";
         public static final String message_success_find_functions = "deviceDict find success";
 
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotDeviceDict_is_no_exist = "iotDeviceDict is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
     /**
@@ -159,13 +165,6 @@ public class IotRequestMapping {
         public static final String message_success_create = "device create success";
         public static final String message_success_find_functions = "device find success";
 
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotDevice_is_no_exist = "iotDevice is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
     /**
@@ -193,13 +192,6 @@ public class IotRequestMapping {
         public static final String message_success_create = "deviceOrder create success";
         public static final String message_success_find_functions = "deviceOrder find success";
 
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotDeviceOrder_is_no_exist = "iotDeviceOrder is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
 
@@ -214,12 +206,6 @@ public class IotRequestMapping {
         public static final String queryQualityPlanPage = "queryQualityPlanPage";
         public static final String findById = "findById";
 
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
     /**
@@ -239,13 +225,6 @@ public class IotRequestMapping {
         public static final String message_success_create = "deviceLabel create success";
         public static final String message_success_find_functions = "deviceLabel find success";
 
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotDeviceLabel_is_no_exist = "iotDeviceLabel is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
     /**
@@ -265,13 +244,6 @@ public class IotRequestMapping {
         public static final String message_success_create = "deviceLabelInfo create success";
         public static final String message_success_find_functions = "deviceLabelInfo find success";
 
-        public static final String message_fail_name_is_null = "name is null";
-        public static final String message_fail_iotDeviceLabelInfo_is_no_exist = "iotDeviceLabelInfo is no exist";
-        public static final String message_fail_id_no_exist = "id no exist";
-        public static final String message_fail_status_is_null = "status is null";
-        public static final String message_fail_id_is_null = "id is null";
-        public static final String message_fail_id_exist = "id exist";
-        public static final String message_fail_saasId_is_null = "saasId is null";
     }
 
 }

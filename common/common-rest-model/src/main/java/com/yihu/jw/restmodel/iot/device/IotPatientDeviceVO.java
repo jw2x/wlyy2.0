@@ -27,11 +27,11 @@ public class IotPatientDeviceVO extends BaseVO implements Serializable {
     private String deviceName;
     @ApiModelProperty("设备sn码")
     private String deviceSn;
-    @ApiModelProperty("质检负责人")
+    @ApiModelProperty("医生code")
     private String doctor;
-    @ApiModelProperty("质检负责人联系方式")
+    @ApiModelProperty("代理人code")
     private String agent;
-    @ApiModelProperty("质检状态")
+    @ApiModelProperty("按键号")
     private String userType;
 
     public String getPatient() {
