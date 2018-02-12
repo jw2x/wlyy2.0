@@ -1,0 +1,124 @@
+server:
+  contextPath: /health
+  port: 9100
+  sessionTimeout: 30000000
+
+spring:
+  redis:
+    database: 0 # Database index used by the connection factory.
+    port: 6379 # Redis server port.
+    password: # Login password of the redis server.
+    timeout: 0 # Connection timeout in milliseconds.
+    #sentinel:
+    #  master: # Name of Redis server.
+    #  nodes: # Comma-separated list of host:port pairs.
+    pool:
+      max-active: 8 # Max number of connections that can be allocated by the pool at a given time. Use a negative value for no limit.
+      max-idle: 8 # Max number of "idle" connections in the pool. Use a negative value to indicate an unlimited number of idle connections.
+      max-wait: -1 # Maximum amount of time (in milliseconds) a connection allocation should block before throwing an exception when the pool is exhausted. Use a negative value to block indefinitely.
+      min-idle: 1  # Target for the minimum number of idle connections to maintain in the pool. This setting only has an effect if it is positive.
+  application:
+    name: app-health-server
+    message: App IOT Server
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/front/,classpath:/
+  #    cache-period: 0
+
+
+
+permissions:
+  info: admin
+
+app:
+  clientId: Qz2yA1MOD0 # 【物联网】应用
+
+fast-dfs:
+  tracker-server: 172.19.103.54:22122 #服务器地址
+  connect-timeout: 2 #链接超时时间
+  network-timeout: 30
+  charset: ISO8859-1 #编码
+  http:
+    tracker-http-port: 80
+    anti-steal-token: no
+    secret-key: FastDFS1234567890
+  pool: #连接池大小
+    init-size: 5
+    max-size: 20
+    wait-time: 500
+
+---
+spring:
+  profiles: jwdev
+  loginVaild: true
+  redis:
+    host: 172.19.103.47 # Redis server host.
+    port: 6379
+    password: redis!@456
+app:
+#  oauth2InnerUrl: http://172.19.103.44:10260/  # 物联网环境
+  oauth2InnerUrl: http://172.19.103.73:10260/   # 认证中心，获取token ehr环境
+  oauth2OuterUrl: http://27.154.233.186:10260/  # 上饶-授权外网映射
+service-gateway:
+  iotUrl: http://192.168.131.24:8088/svr-health/
+  profileInnerUrl: http://localhost:10001/api/v1.0/admin
+  #profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin
+  profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
+  portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
+  portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
+
+
+fast-dfs:
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
+logging:
+  path: /data/logger
+  file: app-health-server
+
+---
+spring:
+  profiles: jwtest
+  loginVaild: true
+  redis:
+    host: 172.19.103.47 # Redis server host.
+    port: 6379
+    password: redis!@456
+app:
+  oauth2InnerUrl: http://172.19.103.73:10260/
+  oauth2OuterUrl: http://27.154.233.186:10260/
+service-gateway:
+  profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin
+  profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
+  portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
+  portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
+fast-dfs:
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
+logging:
+  path: /data/logger
+  file: app-health-server
+
+---
+spring:
+  profiles: jwprod
+  loginVaild: true
+  redis:
+    host: 172.19.103.47 # Redis server host.
+    port: 6379
+    password: redis!@456
+app:
+  oauth2InnerUrl: http://172.19.103.73:10260/
+  oauth2OuterUrl: http://27.154.233.186:10260/
+service-gateway:
+  profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin
+  profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
+  portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
+  portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
+fast-dfs:
+  tracker-server: 11.1.2.9:22122
+  accessUrl: http://11.1.2.9
+logging:
+  path: /data/logger
+  file: app-health-server
+
+#单点登录
+#GET http://172.19.103.73:10260/oauth/sso?response_type=token&client_id=uzs5G0HgTp&state=sxy&scope=read&redirect_uri=http://192.168.1.221:8010/ehr/browser/common/login/signin?idCardNo=362321200108017313&user=admin
