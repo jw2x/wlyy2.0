@@ -22,6 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages={"com.yihu.base","com.yihu.ehr.iot"})
 public class AppIotServer extends SpringBootServletInitializer {
     @Override
+
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(AppIotServer.class);
     }

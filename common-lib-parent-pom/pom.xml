@@ -22,21 +22,6 @@
         <module>../common/common-request-mapping</module>
         <module>../common/common-util</module>
 
-        <module>../base/common-swagger</module>
-        <module>../base/common-quartz</module>
-        <module>../base/common-log</module>
-
-        <module>../base/common-data-fastdfs</module>
-        <module>../base/common-mq</module>
-
-        <module>../base/common-data-es</module>
-        <module>../base/common-data-solr</module>
-        <module>../base/common-data-mysql</module>
-        <module>../base/common-data-redis</module>
-        <module>../base/common-data-hbase</module>
-        <module>../base/common-security</module>
-        <module>../base/common-cache</module>
-        <module>../base/common-async</module>
     </modules>
 
 </project>
