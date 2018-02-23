@@ -2,6 +2,7 @@ package com.yihu.jw.entity.archives;
 
 import com.yihu.jw.IdEntityWithOperation;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
@@ -14,13 +15,21 @@ import java.util.Date;
 @Table(name = "wlyy_patient_archives_info")
 public class PatientArchivesInfo extends IdEntityWithOperation implements Serializable {
 
+    @Column(name = "saas_id")
     private String saasId; //saasid
+    @Column(name = "archives_code")
     private String archivesCode; //档案code
+    @Column(name = "level1")
     private String level1;//1.历史情况，2.既往史，3.家族史，4.生活环境
+    @Column(name = "level2")
     private String level2; //子类别
+    @Column(name = "key")
     private String key; //字典值，或判断值（有，无）
+    @Column(name = "value")
     private String value; //字典名称
+    @Column(name = "date")
     private Date date;//关联时间
+    @Column(name = "remark")
     private String remark; //备注/其他/描述/详情
 
 

@@ -6,21 +6,18 @@ import com.yihu.jw.dao.PatientArchivesDao;
 import com.yihu.jw.dao.PatientArchivesInfoDao;
 import com.yihu.jw.entity.archives.PatientArchives;
 import com.yihu.jw.entity.archives.PatientArchivesInfo;
-import com.yihu.jw.iot.company.IotCompanyDO;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
-import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
-import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
+import javax.persistence.EntityManager;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,6 +34,7 @@ public class PatientArchivesSevice extends BaseJpaService<PatientArchives,Patien
     private PatientArchivesInfoDao patientArchivesInfoDao;
     @Autowired
     private PatientArchivesDao patientArchivesDao;
+
 
     /**
      * 分页查找健康档案
@@ -58,7 +56,7 @@ public class PatientArchivesSevice extends BaseJpaService<PatientArchives,Patien
             filters += semicolon +"status="+status;
             semicolon = ";";
         }
-        if(StringUtils.isBlank(cancelReseanType)){
+        if(StringUtils.isNotBlank(cancelReseanType)){
             filters+= semicolon + "cancelReseanType="+cancelReseanType+"";
             semicolon = ";";
         }
@@ -68,7 +66,6 @@ public class PatientArchivesSevice extends BaseJpaService<PatientArchives,Patien
 
         //获取总数
         long count = getCount(filters);
-
         //DO转VO
         List<PatientArchivesVO> patientArchivesVOs = convertToModelVOs(list,new ArrayList<>(list.size()));
 

@@ -65,7 +65,7 @@ service-gateway:
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
-
+  archivesInnerUrl: http://localhost:8088/svr-archives
 
 fast-dfs:
   tracker-server: 172.19.103.54:22122
@@ -90,6 +90,7 @@ service-gateway:
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
+  archivesInnerUrl: http://localhost:8088/svr-archives
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
@@ -113,6 +114,7 @@ service-gateway:
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
+  archivesInnerUrl: http://localhost:8088/svr-archives
 fast-dfs:
   tracker-server: 11.1.2.9:22122
   accessUrl: http://11.1.2.9
