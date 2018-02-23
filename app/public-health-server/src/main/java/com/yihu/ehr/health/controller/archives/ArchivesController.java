@@ -1,51 +1,31 @@
-package com.yihu.jw.controller;
+package com.yihu.ehr.health.controller.archives;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.entity.archives.PatientArchives;
-import com.yihu.jw.entity.archives.PatientArchivesInfo;
-import com.yihu.jw.iot.device.IotDeviceQualityInspectionPlanDO;
+import com.yihu.ehr.health.service.archives.ArchivesService;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
-import com.yihu.jw.restmodel.archives.Test;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
-import com.yihu.jw.rm.iot.IotRequestMapping;
-import com.yihu.jw.service.PatientArchivesSevice;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Trick on 2018/2/7.
+ * Created by Trick on 2018/2/22.
  */
 @RestController
 @RequestMapping(PatientArchivesMapping.api_archives_common)
 @Api(tags = "居民建档相关操作", description = "居民建档相关操作")
-public class PatientArchivesController extends EnvelopRestController {
+public class ArchivesController {
+
     @Autowired
-    private PatientArchivesSevice patientArchivesSevice;
-    @Autowired
-    private Tracer tracer;
-    @GetMapping(value = "test")
-    @ApiOperation(value = "测试")
-    public Test test(){
-        Test t = new Test();
-        t.setFileName("11");
-        t.setFileType("1");
-        return t;
-    }
+    private ArchivesService archivesService;
 
     @GetMapping(value = PatientArchivesMapping.Archives.findPatientArchives)
     @ApiOperation(value = "查询健康信息列表")
@@ -58,10 +38,9 @@ public class PatientArchivesController extends EnvelopRestController {
                                                           @ApiParam(name = "page", value = "分页") @RequestParam(value = "page", required = false)Integer page,
                                                           @ApiParam(name = "size", value = "每一页大小")@RequestParam(value = "size", required = false )Integer size){
         try {
-            return patientArchivesSevice.queryPatientArchivesPage(page,size,status, cancelReseanType ,name);
+            return archivesService.queryPatientArchivesPage(page,size,status, cancelReseanType ,name);
         }catch (Exception e){
             e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError(e.getMessage());
         }
     }
@@ -69,12 +48,11 @@ public class PatientArchivesController extends EnvelopRestController {
     @GetMapping(value = PatientArchivesMapping.Archives.findPatientArchivesInfos)
     @ApiOperation(value = "查询健康信息详情列表")
     public Envelop<PatientArchivesInfoVO> queryPatientArchivesInfoPage(@ApiParam(name = "code", value = "档案编号")
-                                                                           @RequestParam(value = "code", required = false)String code){
+                                                                       @RequestParam(value = "code", required = false)String code){
         try {
-            return patientArchivesSevice.queryPatientArchivesInfoPage(code);
+            return archivesService.queryPatientArchivesInfoPage(code);
         }catch (Exception e){
             e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError(e.getMessage());
         }
     }
@@ -85,14 +63,10 @@ public class PatientArchivesController extends EnvelopRestController {
                                                   @ApiParam(name = "list", value = "建档详情Json")
                                                   @RequestParam(value = "list", required = true)String list){
         try {
-            PatientArchives ps = toEntity(patientArchives, PatientArchives.class);
 
-            List<PatientArchivesInfo> infos = new ObjectMapper().readValue(list, new TypeReference<List<PatientArchivesInfo>>(){});
-
-            return patientArchivesSevice.createPatientArchives(ps,infos);
+            return archivesService.createPatientArchives(patientArchives,list);
         }catch (Exception e){
             e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError(e.getMessage());
         }
     }
@@ -104,14 +78,9 @@ public class PatientArchivesController extends EnvelopRestController {
                                                   @ApiParam(name = "list", value = "建档详情")
                                                   @RequestParam(value = "list", required = true)String list){
         try {
-            PatientArchives ps = toEntity(patientArchives, PatientArchives.class);
-
-            List<PatientArchivesInfo> infos = new ObjectMapper().readValue(list, new TypeReference<List<PatientArchivesInfo>>(){});
-
-            return patientArchivesSevice.updatePatientArchives(ps,infos);
+            return archivesService.updatePatientArchives(patientArchives,list);
         }catch (Exception e){
             e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError(e.getMessage());
         }
     }

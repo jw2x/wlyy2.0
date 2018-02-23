@@ -13,4 +13,12 @@ public class ServiceApi {
         public SystemDict() {
         }
     }
+    public static class Archives{
+        public static final String basePath = "/wg/archives";
+        public static final String findPatientArchives =basePath+ "/findPatientArchives";
+        public static final String findPatientArchivesInfos =basePath+ "/findPatientArchivesInfos";
+        public static final String createPatientArchives = basePath+ "/createPatientArchives";
+        public static final String updatePatientArchives = basePath+ "/updatePatientArchives";
+        public Archives(){}
+    }
 }
