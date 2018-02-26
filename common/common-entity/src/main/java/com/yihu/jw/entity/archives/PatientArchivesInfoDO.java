@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_patient_archives_info")
-public class PatientArchivesInfo extends IdEntityWithOperation implements Serializable {
+public class PatientArchivesInfoDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId; //saasid

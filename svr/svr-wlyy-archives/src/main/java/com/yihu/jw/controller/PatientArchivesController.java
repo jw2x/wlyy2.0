@@ -1,21 +1,15 @@
 package com.yihu.jw.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.entity.archives.PatientArchives;
-import com.yihu.jw.entity.archives.PatientArchivesInfo;
-import com.yihu.jw.iot.device.IotDeviceQualityInspectionPlanDO;
+import com.yihu.jw.entity.archives.PatientArchivesDO;
+import com.yihu.jw.entity.archives.PatientArchivesInfoDO;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
 import com.yihu.jw.restmodel.archives.Test;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
-import com.yihu.jw.rm.iot.IotRequestMapping;
 import com.yihu.jw.service.PatientArchivesSevice;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,9 +78,9 @@ public class PatientArchivesController extends EnvelopRestController {
                                                   @ApiParam(name = "list", value = "建档详情Json")
                                                   @RequestParam(value = "list", required = true)String list){
         try {
-            PatientArchives ps = toEntity(patientArchives, PatientArchives.class);
+            PatientArchivesDO ps = toEntity(patientArchives, PatientArchivesDO.class);
 
-            List<PatientArchivesInfo> infos = new ObjectMapper().readValue(list, new TypeReference<List<PatientArchivesInfo>>(){});
+            List<PatientArchivesInfoDO> infos = new ObjectMapper().readValue(list, new TypeReference<List<PatientArchivesInfoDO>>(){});
 
             return patientArchivesSevice.createPatientArchives(ps,infos);
         }catch (Exception e){
@@ -104,9 +97,9 @@ public class PatientArchivesController extends EnvelopRestController {
                                                   @ApiParam(name = "list", value = "建档详情")
                                                   @RequestParam(value = "list", required = true)String list){
         try {
-            PatientArchives ps = toEntity(patientArchives, PatientArchives.class);
+            PatientArchivesDO ps = toEntity(patientArchives, PatientArchivesDO.class);
 
-            List<PatientArchivesInfo> infos = new ObjectMapper().readValue(list, new TypeReference<List<PatientArchivesInfo>>(){});
+            List<PatientArchivesInfoDO> infos = new ObjectMapper().readValue(list, new TypeReference<List<PatientArchivesInfoDO>>(){});
 
             return patientArchivesSevice.updatePatientArchives(ps,infos);
         }catch (Exception e){
