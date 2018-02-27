@@ -36,6 +36,7 @@ spring:
       server:
         git:
           uri: http://192.168.1.220:10080/jiwei/jw.config.git
+          force-pull: true
         default-label: master
 
 

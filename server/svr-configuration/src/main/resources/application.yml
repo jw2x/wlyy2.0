@@ -23,7 +23,7 @@ eureka:
 
 ---
 spring:
-  profiles:
+  profiles: jwdev
 #
 #  cloud:
 #    stream:
@@ -53,6 +53,16 @@ eureka:
 ---
 spring:
   profiles: jwprod
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
+
+---
+spring:
+  profiles: native
 
 
 eureka:
