@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.yihu.jw.rm.iot.IotRequestMapping.Common.patientDevice;
-
 /**
  * @author yeshijie on 2018/2/8.
  */
 @RestController
-@RequestMapping(patientDevice)
+@RequestMapping(IotRequestMapping.Common.patientDevice)
 @Api(tags = "居民设备管理相关操作", description = "居民设备管理相关操作")
 public class IotPatientDeviceController extends EnvelopRestController{
 
@@ -36,8 +34,12 @@ public class IotPatientDeviceController extends EnvelopRestController{
     public Envelop<IotPatientDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                                        @RequestParam String jsonData) {
         try {
+            //设备绑定
             IotPatientDeviceDO patientDevice = toEntity(jsonData, IotPatientDeviceDO.class);
             iotPatientDeviceService.create(patientDevice);
+            //地址信息存入es
+            IotPatientDeviceVO deviceVO = toEntity(jsonData, IotPatientDeviceVO.class);
+            iotPatientDeviceService.deviceData2Es(deviceVO);
             return Envelop.getSuccess(IotRequestMapping.Device.message_success_create);
         } catch (Exception e) {
             e.printStackTrace();

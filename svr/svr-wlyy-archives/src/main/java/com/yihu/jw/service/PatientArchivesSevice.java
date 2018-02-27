@@ -4,8 +4,8 @@ package com.yihu.jw.service;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.PatientArchivesDao;
 import com.yihu.jw.dao.PatientArchivesInfoDao;
-import com.yihu.jw.entity.archives.PatientArchives;
-import com.yihu.jw.entity.archives.PatientArchivesInfo;
+import com.yihu.jw.entity.archives.PatientArchivesDO;
+import com.yihu.jw.entity.archives.PatientArchivesInfoDO;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -13,11 +13,9 @@ import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +26,7 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class PatientArchivesSevice extends BaseJpaService<PatientArchives,PatientArchivesDao> {
+public class PatientArchivesSevice extends BaseJpaService<PatientArchivesDO,PatientArchivesDao> {
 
     @Autowired
     private PatientArchivesInfoDao patientArchivesInfoDao;
@@ -62,7 +60,7 @@ public class PatientArchivesSevice extends BaseJpaService<PatientArchives,Patien
         }
         String sorts = "-createTime";
         //得到list数据
-        List<PatientArchivesVO> list = search(null, filters, sorts, page, size);
+        List<PatientArchivesDO> list = search(null, filters, sorts, page, size);
 
         //获取总数
         long count = getCount(filters);
@@ -79,26 +77,26 @@ public class PatientArchivesSevice extends BaseJpaService<PatientArchives,Patien
      */
     public Envelop<PatientArchivesInfoVO> queryPatientArchivesInfoPage(String code) throws ParseException {
 
-        List<PatientArchivesInfo> list = patientArchivesInfoDao.findByArchivesCodeOrderByLevel1(code);
+        List<PatientArchivesInfoDO> list = patientArchivesInfoDao.findByArchivesCodeOrderByLevel1(code);
 
         List<PatientArchivesInfoVO> patientArchivesinfoVOs = convertToModelVOs2(list,new ArrayList<>(list.size()));
 
         return Envelop.getSuccessList(PatientArchivesMapping.api_success,patientArchivesinfoVOs);
     }
 
-    public Envelop<Boolean> createPatientArchives(PatientArchives patientArchives,List<PatientArchivesInfo> list){
+    public Envelop<Boolean> createPatientArchives(PatientArchivesDO patientArchivesDO, List<PatientArchivesInfoDO> list){
 
-        patientArchivesDao.save(patientArchives);
+        patientArchivesDao.save(patientArchivesDO);
         patientArchivesInfoDao.save(list);
         Envelop envelop = new Envelop();
         envelop.setObj(true);
         return envelop;
     }
 
-    public  Envelop<Boolean> updatePatientArchives(PatientArchives patientArchives,List<PatientArchivesInfo> list){
+    public  Envelop<Boolean> updatePatientArchives(PatientArchivesDO patientArchivesDO, List<PatientArchivesInfoDO> list){
 
-        patientArchivesDao.save(patientArchives);
-        patientArchivesInfoDao.deleteByArchivesCode(patientArchives.getId());
+        patientArchivesDao.save(patientArchivesDO);
+        patientArchivesInfoDao.deleteByArchivesCode(patientArchivesDO.getId());
         patientArchivesInfoDao.save(list);
         Envelop envelop = new Envelop();
         envelop.setObj(true);

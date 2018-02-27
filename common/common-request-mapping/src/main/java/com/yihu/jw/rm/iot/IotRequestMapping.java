@@ -20,6 +20,7 @@ public class IotRequestMapping {
         public static final String device = api_iot_common + "/device";
         public static final String quality = api_iot_common + "/quality";
         public static final String patientDevice = api_iot_common + "/patientDevice";
+        public static final String wlyy = api_iot_common + "/wlyy";
 
 
         public static final String message_success_update = "update success";
