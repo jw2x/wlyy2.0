@@ -1,9 +1,12 @@
 package com.yihu.ehr.iot.controller.common;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.ehr.util.rest.Envelop;
 import org.springframework.beans.factory.annotation.Value;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Controller - 基类
@@ -35,6 +38,26 @@ public class BaseController {
         envelop.setSuccessFlg(true);
         envelop.setDetailModelList(objectList);
         return envelop;
+    }
+
+    /**
+     * 返回接口处理结果
+     *
+     * @param code  结果码，成功为200
+     * @param msg   结果提示信息
+     * @return
+     */
+    public String error(int code, String msg) {
+        try {
+            Map<Object, Object> map = new HashMap<Object, Object>();
+            ObjectMapper mapper = new ObjectMapper();
+            map.put("status", code);
+            map.put("msg", msg);
+            return mapper.writeValueAsString(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

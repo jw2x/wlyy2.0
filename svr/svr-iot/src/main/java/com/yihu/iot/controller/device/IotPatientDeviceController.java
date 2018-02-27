@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.yihu.jw.rm.iot.IotRequestMapping.Common.patientDevice;
-
 /**
  * @author yeshijie on 2018/2/8.
  */
 @RestController
-@RequestMapping(patientDevice)
+@RequestMapping(IotRequestMapping.Common.patientDevice)
 @Api(tags = "居民设备管理相关操作", description = "居民设备管理相关操作")
 public class IotPatientDeviceController extends EnvelopRestController{
 
