@@ -89,11 +89,19 @@ fastDFS:
 ---
 spring:
   profiles: jwtest
+  datasource:
+    url: jdbc:mysql://172.19.103.77:3306/xmiot?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: root
+    password: 123456
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
 ---
 spring:
   profiles: jwprod
+  datasource:
+    url: jdbc:mysql://172.19.103.77:3306/xmiot?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: root
+    password: 123456
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
