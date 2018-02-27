@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author yeshijie on 2018/1/16.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "设备质检计划表", description = "设备质检计划表")
+@ApiModel(value = "居民设备绑定表", description = "居民设备绑定表")
 public class IotPatientDeviceVO extends BaseVO implements Serializable {
 
     @ApiModelProperty("居民code")
@@ -33,6 +33,10 @@ public class IotPatientDeviceVO extends BaseVO implements Serializable {
     private String agent;
     @ApiModelProperty("按键号")
     private String userType;
+    @ApiModelProperty("设备类型标识(1血压计，2血糖仪)")
+    private String categoryCode;
+    @ApiModelProperty("地址")
+    private String address;
 
     public String getPatient() {
         return patient;
@@ -106,4 +110,19 @@ public class IotPatientDeviceVO extends BaseVO implements Serializable {
         this.userType = userType;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
+    }
 }

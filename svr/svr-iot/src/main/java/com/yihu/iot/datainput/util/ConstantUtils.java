@@ -16,4 +16,8 @@ public class ConstantUtils {
     //微信运动数据es类型
     public static String weRunDataType = "step_data";
 
+    //设备坐标es索引
+    public static String deviceLocationIndex = "device_location_index";
+    //设备坐标es类型
+    public static String deviceLocationType = "device_location_type";
 }

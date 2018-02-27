@@ -35,8 +35,9 @@ spring:
       failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
-          uri: http://192.168.1.220:10080/jiwei/jw.config.git
-        default-label: master
+#         uri: http://192.168.1.220:10080/jiwei/jw.config.git
+         uri: http://192.168.1.220:10080/jiwei/jw.config.git
+        default-label: jwdev
 
 
 ---
@@ -48,7 +49,8 @@ spring:
       failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
-          uri: http://192.168.1.220:10080/jiwei/jw.config.git
+#          uri: http://192.168.1.220:10080/EHR/ehr.config.git
+          uri: http://192.168.1.220:10080/chenyongxing/jw.config.git
         default-label: master
 
 ---
