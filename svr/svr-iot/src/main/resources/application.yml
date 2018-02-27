@@ -27,14 +27,14 @@ spring:
   data:
     elasticsearch: #ElasticsearchProperties
       cluster-name: jkzl #默认即为elasticsearch  集群名
-      cluster-nodes: 172.19.103.45:9300,172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      cluster-nodes: 172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
       local: false #是否本地连接
       properties: # Additional properties used to configure the client.
         enable: true
   # JEST (Elasticsearch HTTP client) (JestProperties)
   elasticsearch:
     jest:
-      uris: http://172.19.103.45:9200,http://172.19.103.68:9200
+      uris: http://172.19.103.68:9200
 #      uris: http://172.19.103.68:9200
       connection-timeout: 60000 # Connection timeout in milliseconds.
       multi-threaded: true # Enable connection requests from multiple execution threads.
@@ -89,6 +89,11 @@ fastDFS:
 ---
 spring:
   profiles: jwtest
+
+  datasource:
+    url: jdbc:mysql://172.19.103.77:3306/xmiot?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: root
+    password: 123456
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 

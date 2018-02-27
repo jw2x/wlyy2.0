@@ -1,13 +1,24 @@
 package com.yihu.iot.service.device;
 
+import com.alibaba.fastjson.JSONObject;
+import com.yihu.base.es.config.ElastricSearchHelper;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.device.IotPatientDeviceDao;
+import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.jw.iot.device.IotPatientDeviceDO;
+import com.yihu.jw.iot.device.LocationDataDO;
+import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
+import com.yihu.jw.util.common.LatitudeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yeshijie on 2018/1/16.
@@ -15,8 +26,11 @@ import java.util.List;
 @Service
 public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,IotPatientDeviceDao> {
 
+    private Logger logger = LoggerFactory.getLogger(IotPatientDeviceService.class);
     @Autowired
     private IotPatientDeviceDao iotPatientDeviceDao;
+    @Autowired
+    private ElastricSearchHelper elastricSearchHelper;
 
     /**
      * 新增
@@ -28,6 +42,36 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
         patientDevice.setSaasId(getCode());
         patientDevice.setDel(1);
         return iotPatientDeviceDao.save(patientDevice);
+    }
+
+    /**
+     * 设备绑定时 把坐标信息存入es
+     * @param deviceVO
+     */
+    public void deviceData2Es(IotPatientDeviceVO deviceVO) {
+        try {
+            if (StringUtils.isEmpty(deviceVO.getAddress())) {
+                return;
+            }
+//            List<LocationDataDO> dataDTOs = new ArrayList<>();
+            LocationDataDO dataDTO = new LocationDataDO();
+            dataDTO.setCreateTime(new Date());
+            dataDTO.setDeviceTime(new Date());
+            dataDTO.setCategoryCode(deviceVO.getCategoryCode());
+            dataDTO.setDeviceSn(deviceVO.getDeviceSn());
+            dataDTO.setIdCard(deviceVO.getIdcard());
+
+            Map<String, String> json = LatitudeUtils.getGeocoderLatitude(deviceVO.getAddress().replace("G.", "").replace("（糖友网）", "").replace("（高友网）", ""));
+            if (json == null) {
+                return;
+            }
+            logger.info("地址:," + deviceVO.getAddress() + "坐标" + json.toString());
+            dataDTO.setLocation(Double.valueOf(json.get("lat")), Double.valueOf(json.get("lng")));
+//            dataDTOs.add(dataDTO);
+            elastricSearchHelper.save(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType,JSONObject.toJSONString(dataDTO));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**

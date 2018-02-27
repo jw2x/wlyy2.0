@@ -34,8 +34,12 @@ public class IotPatientDeviceController extends EnvelopRestController{
     public Envelop<IotPatientDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                                        @RequestParam String jsonData) {
         try {
+            //设备绑定
             IotPatientDeviceDO patientDevice = toEntity(jsonData, IotPatientDeviceDO.class);
             iotPatientDeviceService.create(patientDevice);
+            //地址信息存入es
+            IotPatientDeviceVO deviceVO = toEntity(jsonData, IotPatientDeviceVO.class);
+            iotPatientDeviceService.deviceData2Es(deviceVO);
             return Envelop.getSuccess(IotRequestMapping.Device.message_success_create);
         } catch (Exception e) {
             e.printStackTrace();
