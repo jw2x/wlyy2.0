@@ -103,7 +103,7 @@ public class IotCompanyController extends BaseController {
         }
     }
 
-    @PostMapping(value = IotRequestMapping.Company.findCompanyCertPage)
+    @GetMapping(value = IotRequestMapping.Company.findCompanyCertPage)
     @ApiOperation(value = "分页获取企业证书", notes = "分页获取企业证书")
     public Envelop<IotCompanyCertificateVO> findCompanyCertPage
             (@ApiParam(name = "name", value = "证书名称", defaultValue = "")

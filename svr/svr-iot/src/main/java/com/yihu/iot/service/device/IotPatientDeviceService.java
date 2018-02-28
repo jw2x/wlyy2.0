@@ -9,6 +9,7 @@ import com.yihu.jw.iot.device.IotPatientDeviceDO;
 import com.yihu.jw.iot.device.LocationDataDO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
 import com.yihu.jw.util.common.LatitudeUtils;
+import com.yihu.jw.util.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,8 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
             }
 //            List<LocationDataDO> dataDTOs = new ArrayList<>();
             LocationDataDO dataDTO = new LocationDataDO();
-            dataDTO.setCreateTime(new Date());
-            dataDTO.setDeviceTime(new Date());
+            dataDTO.setCreateTime(DateUtil.dateToStrLong(new Date()));
+            dataDTO.setDeviceTime(dataDTO.getCreateTime());
             dataDTO.setCategoryCode(deviceVO.getCategoryCode());
             dataDTO.setDeviceSn(deviceVO.getDeviceSn());
             dataDTO.setIdCard(deviceVO.getIdcard());

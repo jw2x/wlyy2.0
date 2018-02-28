@@ -59,6 +59,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         List<IotOrderPurchaseVO> iotOrderPurchaseVOList = iotOrderVO.getPurchaseVOList();
 
         IotDeviceOrderDO iotDeviceOrderDO = convertToModel(iotDeviceOrderVO,IotDeviceOrderDO.class);
+        iotDeviceOrderDO.setPurchaseTime(DateUtil.strToDate(iotDeviceOrderVO.getPurchaseTime()));
         List<IotOrderPurchaseDO> orderPurchaseDOList =
                 convertToModels(iotOrderPurchaseVOList,new ArrayList<>(iotOrderPurchaseVOList.size()),IotOrderPurchaseDO.class);
 
@@ -263,7 +264,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
             IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanDao.findLastByPurchaseId(purchase.getId());
             if(planDO!=null){
                 purchase.setQualityStatus(planDO.getStatus());//质检状态
-                purchase.setNextQualityTime(planDO.getPlanTime());//下次质检时间
+                purchase.setNextQualityTime(DateUtil.dateToStrLong(planDO.getPlanTime()));//下次质检时间
             }
         });
 

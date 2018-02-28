@@ -3,6 +3,7 @@ package com.yihu.jw.feign.iot.product;
 import com.yihu.jw.feign.fallbackfactory.iot.product.IotProductFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
 import com.yihu.jw.restmodel.iot.product.IotProductBaseInfoVO;
 import com.yihu.jw.restmodel.iot.product.IotProductVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -42,6 +43,9 @@ public interface IotProductFeign{
 
     @GetMapping(value = IotRequestMapping.Product.findProductById)
     public Envelop<IotProductVO> findByCode(@RequestParam(value = "id", required = true) String id);
+
+    @GetMapping(value = IotRequestMapping.Product.maintenanceUnitById)
+    public Envelop<IotMaintenanceUnitVO> getList(@RequestParam(value = "productId", required = true) String productId);
 
     @PostMapping(value = IotRequestMapping.Product.delProduct)
     public Envelop<IotProductVO> delCompany(@RequestParam(value = "id", required = true) String id);

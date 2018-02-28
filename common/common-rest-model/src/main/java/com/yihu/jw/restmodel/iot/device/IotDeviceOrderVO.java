@@ -8,7 +8,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,7 +24,7 @@ public class IotDeviceOrderVO extends BaseVO implements Serializable{
     private String orderStatus;
     @ApiModelProperty("采购时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date purchaseTime;
+    private String purchaseTime;
     @ApiModelProperty("订单合同名称")
     private String orderContractName;
     @ApiModelProperty("订单合同链接")
@@ -68,11 +67,11 @@ public class IotDeviceOrderVO extends BaseVO implements Serializable{
         this.orderStatus = orderStatus;
     }
 
-    public Date getPurchaseTime() {
+    public String getPurchaseTime() {
         return purchaseTime;
     }
 
-    public void setPurchaseTime(Date purchaseTime) {
+    public void setPurchaseTime(String purchaseTime) {
         this.purchaseTime = purchaseTime;
     }
 

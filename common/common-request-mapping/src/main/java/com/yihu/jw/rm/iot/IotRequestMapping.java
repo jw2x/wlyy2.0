@@ -94,11 +94,13 @@ public class IotRequestMapping {
      */
     public static class Product {
         public static final String findProductPage = "findProductPage";
+        public static final String metadata = "metadata";
         public static final String findProductPageByCompanyId = "findProductPageByCompanyId";
         public static final String addProduct = "addProduct";
         public static final String findProductById = "findProductById";
-        public static final String updProduct= "updProduct";
-        public static final String delProduct= "delProduct";
+        public static final String updProduct = "updProduct";
+        public static final String delProduct = "delProduct";
+        public static final String maintenanceUnitById = "maintenanceUnitById";
 
     }
 

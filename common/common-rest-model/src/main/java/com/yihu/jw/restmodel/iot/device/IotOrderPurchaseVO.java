@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 采购清单表
@@ -37,7 +36,7 @@ public class IotOrderPurchaseVO extends BaseVO implements Serializable{
     private Long purchaseNum;
     @ApiModelProperty("下次质检时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date nextQualityTime;
+    private String nextQualityTime;
     @ApiModelProperty("质检状态")
     private String qualityStatus;
     @ApiModelProperty("维护单位Id")
@@ -113,11 +112,11 @@ public class IotOrderPurchaseVO extends BaseVO implements Serializable{
         this.purchaseNum = purchaseNum;
     }
 
-    public Date getNextQualityTime() {
+    public String getNextQualityTime() {
         return nextQualityTime;
     }
 
-    public void setNextQualityTime(Date nextQualityTime) {
+    public void setNextQualityTime(String nextQualityTime) {
         this.nextQualityTime = nextQualityTime;
     }
 
