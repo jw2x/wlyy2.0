@@ -21,7 +21,7 @@ public class IotProductBaseInfoDO extends IdEntityWithOperation implements Seria
     @Column(name = "parent_id")
     private String parentId;//父类ID
     @Column(name = "product_classify")
-    private String productClassify;//产品分类(1自由产品，2代理产品)
+    private String productClassify;//产品分类(1自有产品，2代理产品)
     @Column(name = "supplier_name")
     private String supplierName;//厂商名称
     @Column(name = "supplier_id")

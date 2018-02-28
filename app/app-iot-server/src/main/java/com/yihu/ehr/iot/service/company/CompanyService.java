@@ -61,7 +61,7 @@ public class CompanyService extends BaseService {
         IotCompanyVO iotCompany = toModel(jsonData, IotCompanyVO.class);
 
         envelop = userVerification(iotCompany,envelop);
-        if(envelop.getStatus()==-1){
+        if(envelop.getStatus()!=null&&envelop.getStatus()==-1){
             return envelop;
         }
         //验证账户
@@ -173,6 +173,7 @@ public class CompanyService extends BaseService {
         userModel.setIdCardNo(iotCompany.getContactsIdcard());
         userModel.setLoginCode(iotCompany.getAccount());
         userModel.setTelephone(iotCompany.getContactsMobile());
+        userModel.setRealName(iotCompany.getContactsName());
         userModel.setRole(roleId);
         Envelop envelop  = new Envelop();
         Map<String, Object> params = new HashMap<>();

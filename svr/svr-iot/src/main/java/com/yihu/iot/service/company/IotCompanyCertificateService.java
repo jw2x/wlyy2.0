@@ -6,7 +6,9 @@ import com.yihu.jw.iot.company.IotCompanyCertificateDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
+import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +68,7 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
         long count = getCount(filters);
 
         //DO转VO
-        List<IotCompanyCertificateVO> iotCompanyCertificateVOList = convertToModels(list,new ArrayList<>(list.size()),IotCompanyCertificateVO.class);
+        List<IotCompanyCertificateVO> iotCompanyCertificateVOList = convertToModels(list,new ArrayList<>(list.size()));
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotCompanyCertificateVOList, page, size,count);
     }
@@ -83,6 +85,21 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
         iotCompanyCertificateDao.save(iotCompanyCertificateDO);
 
         return iotCompanyCertificateDO;
+    }
+
+    public List<IotCompanyCertificateVO> convertToModels(List<IotCompanyCertificateDO> iotCompanyCertificateDOList,List<IotCompanyCertificateVO> voList){
+        iotCompanyCertificateDOList.forEach(one -> {
+            IotCompanyCertificateVO target = new IotCompanyCertificateVO();
+            BeanUtils.copyProperties(one, target);
+            if(one.getStartTime()!=null){
+                target.setStartTime(DateUtil.dateToStrLong(one.getStartTime()));
+            }
+            if(one.getEndTime()!=null){
+                target.setEndTime(DateUtil.dateToStrLong(one.getEndTime()));
+            }
+            voList.add(target);
+        });
+        return voList;
     }
 
 }

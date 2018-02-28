@@ -46,7 +46,7 @@ public interface IotCompanyFeign {
     @PostMapping(value = IotRequestMapping.Company.updCompany)
     public Envelop<IotCompanyVO> updCompany(@RequestParam(value = "jsonData", required = true)String jsonData);
 
-    @PostMapping(value = IotRequestMapping.Company.findCompanyCertPage)
+    @GetMapping(value = IotRequestMapping.Company.findCompanyCertPage)
     public Envelop<IotCompanyCertificateVO> findCompanyCertPage
             (@RequestParam(value = "name", required = false) String name,
              @RequestParam(value = "page", required = false) Integer page,

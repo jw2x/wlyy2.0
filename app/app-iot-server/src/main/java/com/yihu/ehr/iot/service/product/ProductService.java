@@ -1,14 +1,19 @@
 package com.yihu.ehr.iot.service.product;
 
+import com.yihu.ehr.constants.ErrorCode;
 import com.yihu.ehr.iot.constant.ServiceApi;
+import com.yihu.ehr.iot.model.ObjectResult;
+import com.yihu.ehr.iot.model.ehr.MRsMetadata;
 import com.yihu.ehr.iot.service.common.BaseService;
 import com.yihu.ehr.iot.util.http.HttpHelper;
 import com.yihu.ehr.iot.util.http.HttpResponse;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
 import com.yihu.jw.restmodel.iot.product.IotProductBaseInfoVO;
 import com.yihu.jw.restmodel.iot.product.IotProductVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -21,6 +26,46 @@ import java.util.Map;
  */
 @Service
 public class ProductService extends BaseService {
+
+//    @Value("ehr.metadata.domain")
+    private String metadataDomain;
+
+    /**
+     * 测量数据（ehr资源标准-数据元）
+     * @return
+     */
+    public Envelop<MRsMetadata> metadata(Integer page, Integer size, String type, String name){
+        String url = "/resources/metadata";
+        Envelop<MRsMetadata> envelop = new Envelop<MRsMetadata>();
+        Map<String, Object> params = new HashMap<>();
+        String filters = "valid=1;domain="+metadataDomain+";";
+        if(StringUtils.isNotBlank(name)){
+            filters+="name?"+name+";";
+        }
+        if(StringUtils.isNotBlank(type)){
+            filters+="columnType?"+type+";";
+        }
+        params.put("filters", filters);
+        params.put("page", page);
+        params.put("size", size);
+        try {
+            HttpResponse response = HttpHelper.get(profileInnerUrl + url, params);
+            ObjectResult result =  objectMapper.readValue(response.getBody(),ObjectResult.class);
+            if(result.isSuccessFlg()){
+                envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+                envelop.setStatus(200);
+            }else {
+                envelop.setStatus(-1);
+                envelop.setErrorMsg(result.getErrorMsg());
+            }
+            return envelop;
+        } catch (Exception e) {
+            e.printStackTrace();
+            envelop.setStatus(-1);
+            envelop.setErrorMsg(ErrorCode.SystemError.toString());
+            return envelop;
+        }
+    }
 
 
     /**
@@ -87,6 +132,20 @@ public class ProductService extends BaseService {
         params.put("id", id);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductById, params);
         Envelop<IotProductVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
+     * 根据产品id查找维护单位
+     * @param productId
+     * @return
+     * @throws IOException
+     */
+    public Envelop<IotMaintenanceUnitVO> maintenanceUnitById(String productId) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.MaintenanceUnitById, params);
+        Envelop<IotMaintenanceUnitVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }
 

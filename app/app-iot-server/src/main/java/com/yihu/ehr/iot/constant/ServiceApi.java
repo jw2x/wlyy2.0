@@ -46,6 +46,7 @@ public class ServiceApi {
         public static final String FindProductPageByCompanyId = Base +"findProductPageByCompanyId";
         public static final String AddProduct = Base +"addProduct";
         public static final String FindProductById = Base +"findProductById";
+        public static final String MaintenanceUnitById = Base +"maintenanceUnitById";
         public static final String UpdProduct= Base +"updProduct";
         public static final String DelProduct= Base + "delProduct";
 

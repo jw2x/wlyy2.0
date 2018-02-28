@@ -4,6 +4,7 @@ import com.yihu.jw.commnon.iot.IotCommonContants;
 import com.yihu.jw.feign.iot.product.IotProductFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
 import com.yihu.jw.restmodel.iot.product.IotProductBaseInfoVO;
 import com.yihu.jw.restmodel.iot.product.IotProductVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -64,6 +65,14 @@ public class IotProductController extends EnvelopRestController {
     public Envelop<IotProductVO> findByCode(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         return iotProductFeign.findByCode(id);
+    }
+
+    @GetMapping(value = IotRequestMapping.Product.maintenanceUnitById)
+    @ApiOperation(value = "获取维护单位")
+    public Envelop<IotMaintenanceUnitVO> getList(
+            @ApiParam(name = "productId", value = "产品", defaultValue = "1")
+            @RequestParam(value = "productId", required = true) String productId) throws Exception {
+        return iotProductFeign.getList(productId);
     }
 
     @PostMapping(value = IotRequestMapping.Product.delProduct)

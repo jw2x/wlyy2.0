@@ -9,6 +9,7 @@ import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
+import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -68,7 +69,8 @@ public class IotCompanyController extends EnvelopRestController {
     public Envelop<IotCompanyVO> addCompany(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                   @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
-            IotCompanyDO iotCompany = toEntity(jsonData, IotCompanyDO.class);
+            IotCompanyVO iotCompanyVO = toEntity(jsonData, IotCompanyVO.class);
+            IotCompanyDO iotCompany = iotCompanyService.convertToModelDO(iotCompanyVO);
             return Envelop.getSuccess(IotRequestMapping.Company.message_success_create, iotCompanyService.create(iotCompany));
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,7 +124,8 @@ public class IotCompanyController extends EnvelopRestController {
     public Envelop<IotCompanyVO> updCompany(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                   @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
-            IotCompanyDO iotCompany = toEntity(jsonData, IotCompanyDO.class);
+            IotCompanyVO iotCompanyVO = toEntity(jsonData, IotCompanyVO.class);
+            IotCompanyDO iotCompany = iotCompanyService.convertToModelDO(iotCompanyVO);
             iotCompanyService.updCompany(iotCompany);
             return Envelop.getSuccess(IotRequestMapping.Company.message_success_find);
         } catch (Exception e) {
@@ -161,6 +164,12 @@ public class IotCompanyController extends EnvelopRestController {
         try {
             IotCompanyCertificateDO iotCompanyCertificateDO = iotCompanyCertificateService.findById(id);
             IotCompanyCertificateVO vo = convertToModel(iotCompanyCertificateDO,IotCompanyCertificateVO.class);
+            if(iotCompanyCertificateDO.getStartTime()!=null){
+                vo.setStartTime(DateUtil.dateToStrLong(iotCompanyCertificateDO.getStartTime()));
+            }
+            if(iotCompanyCertificateDO.getEndTime()!=null){
+                vo.setEndTime(DateUtil.dateToStrLong(iotCompanyCertificateDO.getEndTime()));
+            }
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, vo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -174,7 +183,8 @@ public class IotCompanyController extends EnvelopRestController {
                                                                 @RequestParam(value = "companyId", required = true) String companyId) {
         try {
             List<IotCompanyCertificateDO> iotCompanyCertificateDOList = iotCompanyCertificateService.findByCompanyId(companyId);
-            List<IotCompanyCertificateVO> voList = convertToModels(iotCompanyCertificateDOList,new ArrayList<>(iotCompanyCertificateDOList.size()),IotCompanyCertificateVO.class);
+            List<IotCompanyCertificateVO> voList = iotCompanyCertificateService.convertToModels(iotCompanyCertificateDOList,new ArrayList<>(iotCompanyCertificateDOList.size()));
+
             return Envelop.getSuccessList(IotRequestMapping.Common.message_success_find, voList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,7 +197,14 @@ public class IotCompanyController extends EnvelopRestController {
     public Envelop<IotCompanyCertificateVO> addCompanyCert(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
-            IotCompanyCertificateDO iotCompanyCertificate = toEntity(jsonData, IotCompanyCertificateDO.class);
+            IotCompanyCertificateVO vo = toEntity(jsonData, IotCompanyCertificateVO.class);
+            IotCompanyCertificateDO iotCompanyCertificate = convertToModel(vo, IotCompanyCertificateDO.class);
+            if(StringUtils.isNotBlank(vo.getStartTime())){
+                iotCompanyCertificate.setStartTime(DateUtil.strToDate(vo.getStartTime()));
+            }
+            if(StringUtils.isNotBlank(vo.getEndTime())){
+                iotCompanyCertificate.setEndTime(DateUtil.strToDate(vo.getEndTime()));
+            }
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, iotCompanyCertificateService.create(iotCompanyCertificate));
         } catch (Exception e) {
             e.printStackTrace();

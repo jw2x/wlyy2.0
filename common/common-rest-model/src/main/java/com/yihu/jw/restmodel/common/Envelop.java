@@ -101,6 +101,7 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
     public static Envelop getSuccess(String message) {
         Envelop envelop = new Envelop();
         envelop.setSuccessMsg(message);
+        envelop.setStatus(200);
         return envelop;
     }
 

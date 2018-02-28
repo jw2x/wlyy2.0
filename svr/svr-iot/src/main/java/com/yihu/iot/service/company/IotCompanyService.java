@@ -11,6 +11,7 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
+import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +101,29 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
     public IotCompanyVO convertToModelVO(IotCompanyDO iotCompanyDO){
         IotCompanyVO target = new IotCompanyVO();
         BeanUtils.copyProperties(iotCompanyDO, target);
-        List<IotCompanyTypeVO> voList = convertToModels(target.getTypeList(),new ArrayList<>(target.getTypeList().size()),IotCompanyTypeVO.class);
+        target.setBusinessEndTime(DateUtil.dateToStrShort(iotCompanyDO.getBusinessEndTime()));
+        target.setBusinessStartTime(DateUtil.dateToStrShort(iotCompanyDO.getBusinessStartTime()));
+        if(target.getTypeList()!=null){
+            List<IotCompanyTypeVO> voList = convertToModels(target.getTypeList(),new ArrayList<>(target.getTypeList().size()),IotCompanyTypeVO.class);
+            target.setTypeList(voList);
+        }
+        return target;
+    }
+
+    /**
+     * 单个转换
+     * @return
+     */
+    public IotCompanyDO convertToModelDO(IotCompanyVO iotCompanyVO){
+        IotCompanyDO target = new IotCompanyDO();
+        BeanUtils.copyProperties(iotCompanyVO, target);
+        if(StringUtils.isNotBlank(iotCompanyVO.getBusinessEndTime())){
+            target.setBusinessEndTime(DateUtil.strToDate(iotCompanyVO.getBusinessEndTime()));
+        }
+        if(StringUtils.isNotBlank(iotCompanyVO.getBusinessStartTime())){
+            target.setBusinessStartTime(DateUtil.strToDate(iotCompanyVO.getBusinessStartTime()));
+        }
+        List<IotCompanyTypeDO> voList = convertToModels(target.getTypeList(),new ArrayList<>(target.getTypeList().size()),IotCompanyTypeDO.class);
         target.setTypeList(voList);
         return target;
     }
