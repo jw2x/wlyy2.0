@@ -40,7 +40,7 @@
     </dependencies>
 
     <build>
-        <finalName>svr-configurations</finalName>
+        <finalName>svr-configuration</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
