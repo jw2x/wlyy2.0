@@ -2,14 +2,19 @@ package com.yihu.iot.service.device;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
+import com.yihu.base.es.config.model.SaveModel;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.device.IotPatientDeviceDao;
 import com.yihu.iot.datainput.util.ConstantUtils;
+import com.yihu.iot.service.common.ElasticSearchQueryGenerator;
 import com.yihu.jw.iot.device.IotPatientDeviceDO;
 import com.yihu.jw.iot.device.LocationDataDO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
+import com.yihu.jw.restmodel.iot.device.LocationDataVO;
 import com.yihu.jw.util.common.LatitudeUtils;
 import com.yihu.jw.util.date.DateUtil;
+import io.searchbox.client.JestResult;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yeshijie on 2018/1/16.
@@ -32,6 +35,8 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
     private IotPatientDeviceDao iotPatientDeviceDao;
     @Autowired
     private ElastricSearchHelper elastricSearchHelper;
+    @Autowired
+    private ElasticSearchQueryGenerator elasticSearchQueryGenerator;
 
     /**
      * 新增
@@ -155,6 +160,75 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      */
     public int updatePatientDevice(String patient, String deviceSN, String newDeviceSN,String userType,String sim){
         return iotPatientDeviceDao.updatePatientDevice(patient, deviceSN, newDeviceSN, userType, sim);
+    }
+
+
+    /**
+     * 查询所有设备地址
+     * @return
+     */
+    public List<LocationDataVO> findAllDeviceLocations(){
+        SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryAllBuilder();
+        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        return getESResultBeanList(esResult);
+    }
+
+    /**
+     * 根据居民绑定的idCard查询设备地址
+     * @return
+     */
+    public List<LocationDataVO> findDeviceLocationsByIdCard(String jsonData){
+        SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
+        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        return getESResultBeanList(esResult);
+    }
+
+    /**
+     * 根据设备SN码查询设备地址
+     * @return
+     */
+    public List<LocationDataVO> findDeviceLocationsBySn(String jsonData){
+        SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
+        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        return getESResultBeanList(esResult);
+    }
+
+    /**
+     * 返回对象集合
+     * @param esResult
+     * @return
+     */
+    private List<LocationDataVO> getESResultBeanList(JestResult esResult){
+        List<LocationDataVO> resultList = new ArrayList<>();
+        if(!esResult.isSucceeded()){
+            return resultList;
+        }
+        return esResult.getSourceAsObjectList(LocationDataVO.class);
+    }
+
+    /**
+     * 设备解绑，根据Sn或idCard删除地址
+     * @return
+     */
+    public boolean deleteLocationsByIdcardOrSn(String jsonData){
+        List<SaveModel> saveModelList = new ArrayList<>();
+        SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
+        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        List<LocationDataVO> resultList = getESResultBeanList(esResult);
+        for(LocationDataVO locationDataVO : resultList){
+            SaveModel saveModel = new SaveModel();
+            saveModel.setId(locationDataVO.getId());
+            saveModelList.add(saveModel);
+        }
+        boolean bool = true;
+        try {
+            elastricSearchHelper.deleteData(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,saveModelList);
+        }catch (Exception e){
+            bool = false;
+        }
+//        JestResult deleteResult = elastricSearchHelper.deleteData(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,saveModelList);
+//        return deleteResult.isSucceeded();
+        return bool;
     }
 
 }

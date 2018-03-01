@@ -121,6 +121,13 @@ public class IotRequestMapping {
         public static final String updatePatientDevice= "updatePatientDevice";
         public static final String findListByPatient= "findListByPatient";
 
+        public static final String findAllLocations= "findAllLocations";
+        public static final String findLocationByIdCard= "findLocationByIdCard";
+        public static final String findLocationBySn= "findLocationBySn";
+        public static final String deleteLocation= "deteleLocation";
+        public static final String updateLocation= "deteleLocation";
+
+
     }
 
 
