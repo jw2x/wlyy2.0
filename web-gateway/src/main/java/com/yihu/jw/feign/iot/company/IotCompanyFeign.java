@@ -61,4 +61,6 @@ public interface IotCompanyFeign {
     @PostMapping(value = IotRequestMapping.Company.addCompanyCert)
     public Envelop<IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = true)String jsonData);
 
+    @PostMapping(value = IotRequestMapping.Company.delCompanyCert)
+    public Envelop<IotCompanyCertificateVO> delCompanyCert(@RequestParam(value = "id", required = true)String id);
 }

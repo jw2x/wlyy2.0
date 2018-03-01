@@ -247,6 +247,19 @@ public class CompanyService extends BaseService {
     }
 
     /**
+     * 删除企业证书
+     * @param id
+     * @return
+     */
+    public Envelop<IotCompanyCertificateVO> delCompanyCert(String id) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Company.DelCompanyCert, params);
+        Envelop<IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
      * 根据营业执照号查找企业
      * @param businessLicense
      * @return

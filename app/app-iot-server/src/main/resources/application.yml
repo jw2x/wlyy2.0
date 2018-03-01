@@ -59,7 +59,7 @@ app:
   oauth2InnerUrl: http://172.19.103.73:10260/   # 认证中心，获取token ehr环境
   oauth2OuterUrl: http://27.154.233.186:10260/  # 上饶-授权外网映射
 service-gateway:
-  iotUrl: http://172.19.103.88:8088/svr-iot/
+  iotUrl: http://192.168.131.24:8088/svr-iot/
   profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal

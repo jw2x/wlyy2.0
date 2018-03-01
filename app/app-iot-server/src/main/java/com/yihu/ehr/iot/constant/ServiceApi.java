@@ -12,6 +12,7 @@ public class ServiceApi {
         public static final String FindCompanyPage = Base +"findCompanyPage";
         public static final String AddCompany = Base +"addCompany";
         public static final String FindCompanyById = Base +"findCompanyById";
+        public static final String DelCompanyCert = Base +"delCompanyCert";
         public static final String FindByBusinessLicense = Base +"findByBusinessLicense";
         public static final String UpdCompany = Base +"updCompany";
         public static final String DelCompany = Base +"delCompany";

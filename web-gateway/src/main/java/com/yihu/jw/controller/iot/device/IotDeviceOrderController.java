@@ -12,7 +12,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -25,10 +24,10 @@ public class IotDeviceOrderController extends EnvelopRestController{
     @Autowired
     private IotDeviceOrderFeign iotDeviceOrderFeign;
 
-    @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder)
     @ApiOperation(value = "创建设备订单", notes = "创建设备订单")
-    public Envelop<IotOrderVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
-                          @RequestParam String jsonData) {
+    public Envelop<IotOrderVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+                          @RequestParam(value = "jsonData", required = true) String jsonData) {
         return iotDeviceOrderFeign.create(jsonData);
     }
 

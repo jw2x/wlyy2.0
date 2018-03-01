@@ -37,6 +37,8 @@ public class IotPatientDeviceVO extends BaseVO implements Serializable {
     private String categoryCode;
     @ApiModelProperty("地址")
     private String address;
+    @ApiModelProperty("病情：0绿标，1黄标，2红标")
+    private Integer diseaseCondition;
 
     public String getPatient() {
         return patient;
@@ -124,5 +126,13 @@ public class IotPatientDeviceVO extends BaseVO implements Serializable {
 
     public void setCategoryCode(String categoryCode) {
         this.categoryCode = categoryCode;
+    }
+
+    public Integer getDiseaseCondition() {
+        return diseaseCondition;
+    }
+
+    public void setDiseaseCondition(Integer diseaseCondition) {
+        this.diseaseCondition = diseaseCondition;
     }
 }

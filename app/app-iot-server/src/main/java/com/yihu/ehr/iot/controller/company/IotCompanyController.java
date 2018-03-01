@@ -176,4 +176,16 @@ public class IotCompanyController extends BaseController {
         }
     }
 
+    @PostMapping(value = IotRequestMapping.Company.delCompanyCert)
+    @ApiOperation(value = "删除企业证书", notes = "删除企业证书")
+    public Envelop<IotCompanyCertificateVO> delCompanyCert(@ApiParam(name = "id", value = "id", defaultValue = "")
+                                                           @RequestParam(value = "id", required = true)String id) {
+        try {
+            return companyService.delCompanyCert(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
 }

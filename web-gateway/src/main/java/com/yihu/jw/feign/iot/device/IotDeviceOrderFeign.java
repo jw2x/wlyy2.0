@@ -8,7 +8,6 @@ import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,8 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(IotRequestMapping.Common.order)
 public interface IotDeviceOrderFeign {
 
-    @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Envelop<IotOrderVO> create(@RequestBody String jsonData);
+    @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder)
+    public Envelop<IotOrderVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findById)
     public Envelop<IotDeviceOrderVO> findByCode(@RequestParam(value = "id", required = true) String id);

@@ -72,6 +72,7 @@ public class IotRequestMapping {
         public static final String findCompanyCertById = "findCompanyCertById";
         public static final String findCompanyCertByCompanyId = "findCompanyCertByCompanyId";
         public static final String addCompanyCert = "addCompanyCert";
+        public static final String delCompanyCert = "delCompanyCert";
         public static final String changePassWord = "changePassWord";
 
         public static final String api_create = "company";
@@ -94,6 +95,7 @@ public class IotRequestMapping {
      */
     public static class Product {
         public static final String findProductPage = "findProductPage";
+        public static final String data_sets = "data_sets";
         public static final String metadata = "metadata";
         public static final String findProductPageByCompanyId = "findProductPageByCompanyId";
         public static final String addProduct = "addProduct";

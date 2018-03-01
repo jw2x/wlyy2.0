@@ -3,7 +3,7 @@ package com.yihu.ehr.iot.service.product;
 import com.yihu.ehr.constants.ErrorCode;
 import com.yihu.ehr.iot.constant.ServiceApi;
 import com.yihu.ehr.iot.model.ObjectResult;
-import com.yihu.ehr.iot.model.ehr.MRsMetadata;
+import com.yihu.ehr.iot.model.ehr.MStdDataSet;
 import com.yihu.ehr.iot.service.common.BaseService;
 import com.yihu.ehr.iot.util.http.HttpHelper;
 import com.yihu.ehr.iot.util.http.HttpResponse;
@@ -28,26 +28,25 @@ import java.util.Map;
 public class ProductService extends BaseService {
 
 //    @Value("ehr.metadata.domain")
-    private String metadataDomain;
+    private String version = "5a6feb15fb05";//版本
+    private String reference = "000000065a965615966b3a40c86ceba7";//标准来源
 
     /**
-     * 测量数据（ehr资源标准-数据元）
+     * 测量数据（ehr标准规范管理-平台标准-标准数据集）
      * @return
      */
-    public Envelop<MRsMetadata> metadata(Integer page, Integer size, String type, String name){
-        String url = "/resources/metadata";
-        Envelop<MRsMetadata> envelop = new Envelop<MRsMetadata>();
+    public Envelop<MStdDataSet> data_sets(Integer page, Integer size, String name){
+        String url = "/std/data_sets";
+        Envelop<MStdDataSet> envelop = new Envelop<MStdDataSet>();
         Map<String, Object> params = new HashMap<>();
-        String filters = "valid=1;domain="+metadataDomain+";";
+        String filters = "reference="+reference+";";
         if(StringUtils.isNotBlank(name)){
             filters+="name?"+name+";";
-        }
-        if(StringUtils.isNotBlank(type)){
-            filters+="columnType?"+type+";";
         }
         params.put("filters", filters);
         params.put("page", page);
         params.put("size", size);
+        params.put("version", version);
         try {
             HttpResponse response = HttpHelper.get(profileInnerUrl + url, params);
             ObjectResult result =  objectMapper.readValue(response.getBody(),ObjectResult.class);
