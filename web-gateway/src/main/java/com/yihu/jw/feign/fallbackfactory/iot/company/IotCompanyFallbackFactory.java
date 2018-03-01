@@ -106,6 +106,13 @@ public class IotCompanyFallbackFactory implements FallbackFactory<IotCompanyFeig
                 return null;
             }
 
+            @Override
+            public Envelop<IotCompanyCertificateVO> delCompanyCert(@RequestParam(value = "id", required = true)String id) {
+                tracer.getCurrentSpan().logEvent("删除企业证书失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("id:" + id);
+                return null;
+            }
+
         };
     }
 

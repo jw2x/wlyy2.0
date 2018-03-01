@@ -74,17 +74,42 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
     }
 
     /**
-     * 新增
+     * 新增/修改
      * @param iotCompanyCertificateDO
      * @return
      */
     public IotCompanyCertificateDO create(IotCompanyCertificateDO iotCompanyCertificateDO) {
-
-        iotCompanyCertificateDO.setSaasId(getCode());
-        iotCompanyCertificateDO.setDel(1);
-        iotCompanyCertificateDao.save(iotCompanyCertificateDO);
-
+        if(StringUtils.isNotBlank(iotCompanyCertificateDO.getId())){
+            //修改
+            IotCompanyCertificateDO old = iotCompanyCertificateDao.findById(iotCompanyCertificateDO.getId());
+            old.setManufacturerBusinessLicense(iotCompanyCertificateDO.getManufacturerBusinessLicense());
+            old.setManufacturerName(iotCompanyCertificateDO.getManufacturerName());
+            old.setManufacturerId(iotCompanyCertificateDO.getManufacturerId());
+            old.setCompanyName(iotCompanyCertificateDO.getCompanyName());
+            old.setCompanyId(iotCompanyCertificateDO.getCompanyId());
+            old.setCompanyBusinessLicense(iotCompanyCertificateDO.getCompanyBusinessLicense());
+            old.setStartTime(iotCompanyCertificateDO.getStartTime());
+            old.setEndTime(iotCompanyCertificateDO.getEndTime());
+            old.setCertificateOfAuthorizationImg(iotCompanyCertificateDO.getCertificateOfAuthorizationImg());
+            iotCompanyCertificateDao.save(old);
+            return old;
+        }else {
+            //新增
+            iotCompanyCertificateDO.setSaasId(getCode());
+            iotCompanyCertificateDO.setDel(1);
+            iotCompanyCertificateDao.save(iotCompanyCertificateDO);
+        }
         return iotCompanyCertificateDO;
+    }
+
+    /**
+     * 删除
+     * @param id
+     */
+    public void delCompanyCert(String id){
+        IotCompanyCertificateDO companyCert = iotCompanyCertificateDao.findById(id);
+        companyCert.setDel(0);
+        iotCompanyCertificateDao.save(companyCert);
     }
 
     public List<IotCompanyCertificateVO> convertToModels(List<IotCompanyCertificateDO> iotCompanyCertificateDOList,List<IotCompanyCertificateVO> voList){

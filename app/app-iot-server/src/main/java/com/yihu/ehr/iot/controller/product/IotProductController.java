@@ -1,7 +1,7 @@
 package com.yihu.ehr.iot.controller.product;
 
 import com.yihu.ehr.iot.controller.common.BaseController;
-import com.yihu.ehr.iot.model.ehr.MRsMetadata;
+import com.yihu.ehr.iot.model.ehr.MStdDataSet;
 import com.yihu.ehr.iot.service.product.ProductService;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
@@ -25,12 +25,10 @@ public class IotProductController extends BaseController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping(value = IotRequestMapping.Product.metadata)
+    @GetMapping(value = IotRequestMapping.Product.data_sets)
     @ApiOperation(value = "测量数据", notes = "测量数据")
-    public Envelop<MRsMetadata> metadata(@ApiParam(name = "name", value = "名称", defaultValue = "")
+    public Envelop<MStdDataSet> data_sets(@ApiParam(name = "name", value = "名称", defaultValue = "")
                                          @RequestParam(value = "name", required = false) String name,
-                                         @ApiParam(name = "type", value = "类型", defaultValue = "")
-                                         @RequestParam(value = "type", required = false) String type,
                                          @ApiParam(name = "page", value = "第几页", defaultValue = "")
                                          @RequestParam(value = "page", required = false) Integer page,
                                          @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
@@ -42,7 +40,7 @@ public class IotProductController extends BaseController {
             if(size == null){
                 size = 10;
             }
-            return productService.metadata(page, size, type, name);
+            return productService.data_sets(page, size, name);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

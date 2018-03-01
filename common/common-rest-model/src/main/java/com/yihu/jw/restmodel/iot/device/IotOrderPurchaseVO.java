@@ -13,7 +13,7 @@ import java.io.Serializable;
  * @author yeshijie on 2017/12/1.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "设备质检计划表", description = "设备质检计划表")
+@ApiModel(value = "采购清单", description = "采购清单")
 public class IotOrderPurchaseVO extends BaseVO implements Serializable{
 
     @ApiModelProperty("订单id")

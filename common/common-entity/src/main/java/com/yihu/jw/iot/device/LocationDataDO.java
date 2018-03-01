@@ -21,6 +21,8 @@ public class LocationDataDO {
 
     private String categoryCode;//设备类型标识
 
+    private Integer diseaseCondition;//病情：0绿标，1黄标，2红标
+
     @GeoPointField
     private GeoPoint location;//经纬度
 
@@ -89,6 +91,13 @@ public class LocationDataDO {
         this.createTime = createTime;
     }
 
+    public Integer getDiseaseCondition() {
+        return diseaseCondition;
+    }
+
+    public void setDiseaseCondition(Integer diseaseCondition) {
+        this.diseaseCondition = diseaseCondition;
+    }
 
     public void setLocation(Double lat, Double lng) {
         GeoPoint geoPoint = new GeoPoint(lat, lng);

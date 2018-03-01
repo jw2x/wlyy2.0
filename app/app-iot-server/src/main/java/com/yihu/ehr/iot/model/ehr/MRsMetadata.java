@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 /**
- * Created by lyr on 2016/5/16.
+ * @author yeshijie on 2018/2/28.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(description = "ehr数据元")

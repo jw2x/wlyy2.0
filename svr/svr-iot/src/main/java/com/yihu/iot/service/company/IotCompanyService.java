@@ -327,7 +327,23 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
             iotCompanyCertificateChangeRecordDao.save(recordDOList);
         }
 
-        iotCompanyDao.save(iotCompany);
+        //修改企业记录
+        iotCompanyOld.setName(iotCompany.getName());
+        iotCompanyOld.setIsThreeInOne(iotCompany.getIsThreeInOne());
+        iotCompanyOld.setBusinessLicense(iotCompany.getBusinessLicense());
+        iotCompanyOld.setBusinessStartTime(iotCompany.getBusinessStartTime());
+        iotCompanyOld.setBusinessEndTime(iotCompany.getBusinessEndTime());
+        iotCompanyOld.setOrganizationAddress(iotCompany.getOrganizationAddress());
+        iotCompanyOld.setOfficePhone(iotCompany.getOfficePhone());
+        iotCompanyOld.setContactsName(iotCompany.getContactsName());
+        iotCompanyOld.setContactsMobile(iotCompany.getContactsMobile());
+        iotCompanyOld.setContactsIdcard(iotCompany.getContactsIdcard());
+        iotCompanyOld.setContactsEmail(iotCompany.getContactsEmail());
+        iotCompanyOld.setBusinessLicenseImg(iotCompany.getBusinessLicenseImg());
+        iotCompanyOld.setOrganizationCodeImg(iotCompany.getOrganizationCodeImg());
+        iotCompanyOld.setTaxRegistrationImg(iotCompany.getTaxRegistrationImg());
+        iotCompanyOld.setContactsIdcardImg(iotCompany.getContactsIdcardImg());
+        iotCompanyDao.save(iotCompanyOld);
     }
 
     /**
