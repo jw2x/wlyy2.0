@@ -1,7 +1,7 @@
 package com.yihu.jw.restmodel.iot.device;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.yihu.base.es.config.model.SaveModel;
+import com.yihu.jw.restmodel.iot.common.SaveModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
