@@ -50,6 +50,29 @@ public class MonitoringHealthPlatformController extends BaseController{
         }
     }
 
+    @RequestMapping(value = "/searchPatient",method = RequestMethod.GET)
+    @ApiOperation("居民 医生搜索")
+    public String searchPatient(
+            @ApiParam(name="name",value="姓名")
+            @RequestParam(value="name",required = false) String name,
+            @ApiParam(name="page",value="第几页(默认第一页)",defaultValue = "1")
+            @RequestParam(value="page",required = false) Integer page,
+            @ApiParam(name="pageSize",value="每页几行(默认10条记录)",defaultValue = "10")
+            @RequestParam(value="pageSize",required = false) Integer pageSize){
+        try {
+            if(page==null){
+                page = 1;
+            }
+            if(pageSize==null){
+                pageSize = 10;
+            }
+            return monitoringHealthService.searchPatient(name,page,pageSize);
+        }catch (Exception e){
+            e.printStackTrace();
+            return error(-1,"查询失败");
+        }
+    }
+
 
     @RequestMapping(value = "/warningInformationAlarm",method = RequestMethod.GET)
     @ApiOperation("预警信息警报")

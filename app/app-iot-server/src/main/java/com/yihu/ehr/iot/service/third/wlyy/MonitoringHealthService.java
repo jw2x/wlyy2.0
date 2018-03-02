@@ -98,6 +98,21 @@ public class MonitoringHealthService extends BaseService{
     }
 
     /**
+     * 居民 医生搜索
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    public String searchPatient(String name,Integer page,Integer pageSize){
+        String url = "/wlyygc/iot_monitoring/searchPatient";
+        Map<String, Object> params = new HashMap<>();
+        params.put("name",name);
+        params.put("page",page);
+        params.put("pageSize",pageSize);
+        return sendGet(url,params);
+    }
+
+    /**
      * 设备绑定情况
      * @param type 设备类型(1血糖仪，2血压计
      * @return
