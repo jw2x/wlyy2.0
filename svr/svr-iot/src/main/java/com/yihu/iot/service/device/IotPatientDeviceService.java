@@ -232,4 +232,22 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
         return bool;
     }
 
+    /**
+     * 设备地址修改，根据Sn或idCard修改地址
+     * @return
+     */
+    public boolean updateLocationsByIdcardOrSn(String jsonData){
+        List<SaveModel> saveModelList = new ArrayList<>();
+        SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
+        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        List<LocationDataVO> resultList = getESResultBeanList(esResult);
+        for(LocationDataVO locationDataVO : resultList){
+            SaveModel saveModel = new SaveModel();
+            saveModel.setId(locationDataVO.getId());
+            saveModelList.add(saveModel);
+        }
+        boolean bool = elastricSearchHelper.update(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,saveModelList);
+        return bool;
+    }
+
 }

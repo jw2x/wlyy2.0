@@ -127,7 +127,7 @@ public class IotRequestMapping {
         public static final String findLocationByIdCard= "findLocationByIdCard";
         public static final String findLocationBySn= "findLocationBySn";
         public static final String deleteLocation= "deteleLocation";
-        public static final String updateLocation= "deteleLocation";
+        public static final String updateLocation= "updateLocation";
 
 
     }

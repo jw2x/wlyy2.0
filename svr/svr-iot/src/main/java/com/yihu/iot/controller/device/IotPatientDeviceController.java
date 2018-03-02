@@ -195,7 +195,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
         }
     }
 
-    @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
+    @PostMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
     @ApiOperation(value = "根据idCard查询设备地址", notes = "根据idCard查询设备地址")
     public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
@@ -208,7 +208,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
         }
     }
 
-    @GetMapping(value = IotRequestMapping.PatientDevice.findLocationBySn)
+    @PostMapping(value = IotRequestMapping.PatientDevice.findLocationBySn)
     @ApiOperation(value = "根据sn码查询设备地址", notes = "根据sn码查询设备地址")
     public Envelop<List<LocationDataVO>> findDeviceLocationsBySn(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
@@ -221,14 +221,31 @@ public class IotPatientDeviceController extends EnvelopRestController{
         }
     }
 
-    @GetMapping(value = IotRequestMapping.PatientDevice.deleteLocation)
+    @PostMapping(value = IotRequestMapping.PatientDevice.deleteLocation)
     @ApiOperation(value = "解绑设备删除地址", notes = "解绑设备删除地址")
-    public Envelop deleteLocation(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
+    public Envelop deleteLocations(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                  @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             boolean bool = iotPatientDeviceService.deleteLocationsByIdcardOrSn(jsonData);
             if(bool){
                 return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,"device delete success");
+            }
+            return Envelop.getError("delete fail,not exist");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.PatientDevice.updateLocation)
+    @ApiOperation(value = "设备地址修改", notes = "设备地址修改")
+    public Envelop updateLocations(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
+                                   @RequestParam(value = "jsonData",required = true) String jsonData) {
+        try {
+            boolean bool = iotPatientDeviceService.updateLocationsByIdcardOrSn(jsonData);
+            if(bool){
+                return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,"device update success");
             }
             return Envelop.getError("delete fail,not exist");
 
