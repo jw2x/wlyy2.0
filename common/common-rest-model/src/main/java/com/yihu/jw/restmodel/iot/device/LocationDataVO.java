@@ -2,7 +2,6 @@ package com.yihu.jw.restmodel.iot.device;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yihu.base.es.config.model.SaveModel;
-import io.searchbox.annotations.JestId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
@@ -29,6 +28,9 @@ public class LocationDataVO extends SaveModel {
 
     @ApiModelProperty("设备绑定时间")
     private String deviceTime;
+
+    @ApiModelProperty("病情：0绿标，1黄标，2红标")
+    private Integer diseaseCondition;
 
     @ApiModelProperty("创建时间")
     private String createTime;
@@ -81,6 +83,13 @@ public class LocationDataVO extends SaveModel {
         this.createTime = createTime;
     }
 
+    public Integer getDiseaseCondition() {
+        return diseaseCondition;
+    }
+
+    public void setDiseaseCondition(Integer diseaseCondition) {
+        this.diseaseCondition = diseaseCondition;
+    }
 
     public void setLocation(Double lat, Double lng) {
         GeoPoint geoPoint = new GeoPoint(lat, lng);
