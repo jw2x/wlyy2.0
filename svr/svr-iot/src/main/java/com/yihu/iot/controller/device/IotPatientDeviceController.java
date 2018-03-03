@@ -195,7 +195,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
         }
     }
 
-    @PostMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
+    @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
     @ApiOperation(value = "根据idCard查询设备地址", notes = "根据idCard查询设备地址")
     public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
@@ -208,7 +208,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
         }
     }
 
-    @PostMapping(value = IotRequestMapping.PatientDevice.findLocationBySn)
+    @GetMapping(value = IotRequestMapping.PatientDevice.findLocationBySn)
     @ApiOperation(value = "根据sn码查询设备地址", notes = "根据sn码查询设备地址")
     public Envelop<List<LocationDataVO>> findDeviceLocationsBySn(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
