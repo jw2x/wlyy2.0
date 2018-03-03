@@ -21,11 +21,6 @@
             <artifactId>common-entity</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-data-es</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-request-mapping</artifactId>
         </dependency>
@@ -61,12 +56,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <!--tomcat 启动时 打开注释 start-->
-            <exclusions>
+           <!-- <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
-            </exclusions>
+            </exclusions>-->
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
