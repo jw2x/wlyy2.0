@@ -126,7 +126,7 @@ public class IotProductController extends BaseController {
 
 
     @GetMapping(value = IotRequestMapping.Product.maintenanceUnitById)
-    @ApiOperation(value = "根据id查找产品", notes = "根据id查找产品")
+    @ApiOperation(value = "根据id查找产品的维护单位", notes = "根据id查找产品的维护单位")
     public Envelop<IotMaintenanceUnitVO> maintenanceUnitById(@ApiParam(name = "productId", value = "productId")
                                             @RequestParam(value = "productId", required = true) String productId) {
         try {

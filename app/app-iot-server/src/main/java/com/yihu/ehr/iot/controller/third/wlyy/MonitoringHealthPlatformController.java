@@ -178,12 +178,14 @@ public class MonitoringHealthPlatformController extends BaseController{
                                                @RequestParam(value = "type", required = true) Integer type,
                                                @ApiParam(name = "gi_type", value = "就餐类型0全部", defaultValue = "1")
                                                @RequestParam(value = "gi_type", required = false) Integer gi_type,
+                                               @ApiParam(name="time",value="时间（一周，一月，半年）",defaultValue = "")
+                                               @RequestParam(value="time",required = true) String time,
                                                @ApiParam(name = "begin", value = "开始时间", defaultValue = "2017-05-22")
                                                @RequestParam(value = "begin", required = true) String begin,
                                                @ApiParam(name = "end", value = "结束时间", defaultValue = "2018-06-02")
                                                @RequestParam(value = "end", required = true) String end) {
         try {
-            return monitoringHealthService.getHealthIndexChartByPatient(patient,type,gi_type,begin,end);
+            return monitoringHealthService.getHealthIndexChartByPatient(patient,type,gi_type,begin,end,time);
         } catch (Exception e) {
             e.printStackTrace();
             return error(-1,"查询失败");
