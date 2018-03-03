@@ -304,14 +304,16 @@ public class CompanyService extends BaseService {
     /**
      * 分页获取企业证书
      * @param name
+     * @param companyId
      * @param page
      * @param size
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyCertificateVO> findCompanyCertPage(String name,Integer page,Integer size) throws IOException{
+    public Envelop<IotCompanyCertificateVO> findCompanyCertPage(String name,Integer page,Integer size,String companyId) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
+        params.put("companyId", companyId);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Company.FindCompanyCertPage, params);

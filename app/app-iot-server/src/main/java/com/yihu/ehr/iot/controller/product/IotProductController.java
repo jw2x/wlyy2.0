@@ -55,6 +55,8 @@ public class IotProductController extends BaseController {
             @RequestParam(value = "name", required = false) String name,
             @ApiParam(name = "classify", value = "产品分类", defaultValue = "")
             @RequestParam(value = "classify", required = false) String classify,
+            @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
+            @RequestParam(value = "companyId", required = false) String companyId,
             @ApiParam(name = "page", value = "第几页", defaultValue = "")
             @RequestParam(value = "page", required = false) Integer page,
             @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
@@ -66,7 +68,7 @@ public class IotProductController extends BaseController {
             if(size == null){
                 size = 10;
             }
-            return productService.findCompanyPage(name,classify,page,size);
+            return productService.findCompanyPage(name,classify,companyId,page,size);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

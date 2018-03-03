@@ -28,11 +28,13 @@ public class IotProductFallbackFactory implements FallbackFactory<IotProductFeig
             public Envelop<IotProductBaseInfoVO> findCompanyPage(
                     @RequestParam(value = "name", required = false) String name,
                     @RequestParam(value = "classify", required = false) String classify,
+                    @RequestParam(value = "companyId", required = false) String companyId,
                     @RequestParam(value = "page", required = false) Integer page,
                     @RequestParam(value = "size", required = false) Integer size){
                 tracer.getCurrentSpan().logEvent("分页查找产品失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("name:" + name);
                 tracer.getCurrentSpan().logEvent("classify:" + classify);
+                tracer.getCurrentSpan().logEvent("companyId:" + companyId);
                 tracer.getCurrentSpan().logEvent("page:" + page);
                 tracer.getCurrentSpan().logEvent("size:" + size);
                 return null;

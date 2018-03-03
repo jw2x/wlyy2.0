@@ -5,12 +5,15 @@ import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
+import com.yihu.jw.restmodel.iot.device.LocationDataVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * @author yeshijie on 2018/2/8.
@@ -64,4 +67,6 @@ public interface IotPatientDeviceFeign{
             @RequestParam(value = "userType",required = true) String userType,
             @RequestParam(value = "sim",required = true) String sim);
 
+    @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
+    public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(@RequestParam(value = "jsonData",required = true) String jsonData);
 }

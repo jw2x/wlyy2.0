@@ -4,7 +4,6 @@ import com.yihu.jw.feign.iot.device.IotDeviceQualityFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
 import feign.hystrix.FallbackFactory;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Component;
@@ -23,16 +22,14 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
         return new IotDeviceQualityFeign() {
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
-                                                                    @RequestParam(value = "jsonData", required = true) String jsonData) {
+            public Envelop<IotDeviceQualityInspectionPlanVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建质检计划失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> findByCode(@ApiParam(name = "id", value = "id")
-                                                                        @RequestParam(value = "id", required = true) String id
+            public Envelop<IotDeviceQualityInspectionPlanVO> findByCode(@RequestParam(value = "id", required = true) String id
             ) {
                 tracer.getCurrentSpan().logEvent("查找质检计划失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
@@ -53,8 +50,8 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
             }
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(@ApiParam(name = "id", value = "id")
-                                                                        @RequestParam(value = "id", required = true) String id) {
+            public Envelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(
+                    @RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("删除质检计划失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;

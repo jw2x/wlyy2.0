@@ -75,10 +75,11 @@ public class ProductService extends BaseService {
      * @param size
      * @return
      */
-    public Envelop<IotProductBaseInfoVO> findCompanyPage(String name,String classify,Integer page,Integer size) throws IOException{
+    public Envelop<IotProductBaseInfoVO> findCompanyPage(String name,String classify,String companyId,Integer page,Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         params.put("classify", classify);
+        params.put("companyId", companyId);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductPage, params);

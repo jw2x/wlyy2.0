@@ -51,9 +51,13 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
      * @return
      * @throws ParseException
      */
-    public Envelop<IotCompanyCertificateVO> queryPage(Integer page, Integer size,String name) throws ParseException {
+    public Envelop<IotCompanyCertificateVO> queryPage(Integer page, Integer size,String name,String companyId) throws ParseException {
         String filters = "";
         String semicolon = "";
+        if(StringUtils.isNotBlank(companyId)){
+            filters = "companyId="+companyId;
+            semicolon = ";";
+        }
         if(StringUtils.isNotBlank(name)){
             filters = "name?"+name;
             semicolon = ";";
@@ -83,11 +87,14 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
             //修改
             IotCompanyCertificateDO old = iotCompanyCertificateDao.findById(iotCompanyCertificateDO.getId());
             old.setManufacturerBusinessLicense(iotCompanyCertificateDO.getManufacturerBusinessLicense());
+            old.setName(iotCompanyCertificateDO.getName());
             old.setManufacturerName(iotCompanyCertificateDO.getManufacturerName());
             old.setManufacturerId(iotCompanyCertificateDO.getManufacturerId());
             old.setCompanyName(iotCompanyCertificateDO.getCompanyName());
             old.setCompanyId(iotCompanyCertificateDO.getCompanyId());
-            old.setCompanyBusinessLicense(iotCompanyCertificateDO.getCompanyBusinessLicense());
+            old.setLaunchCcompanyBusinessLicense(iotCompanyCertificateDO.getLaunchCcompanyBusinessLicense());
+            old.setLaunchCompanyId(iotCompanyCertificateDO.getLaunchCompanyId());
+            old.setLaunchCompanyName(iotCompanyCertificateDO.getLaunchCompanyName());
             old.setStartTime(iotCompanyCertificateDO.getStartTime());
             old.setEndTime(iotCompanyCertificateDO.getEndTime());
             old.setCertificateOfAuthorizationImg(iotCompanyCertificateDO.getCertificateOfAuthorizationImg());

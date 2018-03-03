@@ -27,6 +27,7 @@ public interface IotProductFeign{
     public Envelop<IotProductBaseInfoVO> findCompanyPage(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "classify", required = false) String classify,
+            @RequestParam(value = "companyId", required = false) String companyId,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
 

@@ -2,15 +2,16 @@ package com.yihu.ehr.iot.controller.third.wlyy;
 
 import com.yihu.ehr.iot.controller.common.BaseController;
 import com.yihu.ehr.iot.service.third.wlyy.MonitoringHealthService;
+import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.device.LocationDataVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 远程监测健康平台-访问wlyy
@@ -33,7 +34,29 @@ public class MonitoringHealthPlatformController extends BaseController{
             e.printStackTrace();
             return error(-1,"查询失败");
         }
+    }
 
+    @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
+    @ApiOperation(value = "根据idCard查询设备地址", notes = "根据idCard查询设备地址")
+    public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(
+            @ApiParam(name = "diseaseCondition", value = "病情：0绿标，1黄标，2红标,-1没有标注的居民", defaultValue = "")
+            @RequestParam(value = "diseaseCondition",required = false) Integer diseaseCondition,
+            @ApiParam(name="page",value="第几页(默认第一页)",defaultValue = "1")
+            @RequestParam(value="page",required = false) Integer page,
+            @ApiParam(name="pageSize",value="每页几行(默认10条记录)",defaultValue = "10")
+            @RequestParam(value="pageSize",required = false) Integer pageSize) {
+        try {
+            if(page==null){
+                page = 1;
+            }
+            if(pageSize==null){
+                pageSize = 10;
+            }
+            return monitoringHealthService.findDeviceLocations(diseaseCondition,page,pageSize);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/chronicDiseaseCount",method = RequestMethod.GET)

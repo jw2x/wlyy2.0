@@ -6,12 +6,15 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
+import com.yihu.jw.restmodel.iot.device.LocationDataVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author yeshijie on 2018/2/8.
@@ -27,7 +30,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
 
     @PostMapping(value = IotRequestMapping.PatientDevice.addPatientDevice)
     @ApiOperation(value = "设备绑定", notes = "设备绑定")
-    public Envelop<IotPatientDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
+    public Envelop<IotPatientDeviceVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                                        @RequestParam String jsonData) {
         return iotPatientDeviceFeign.create(jsonData);
     }
@@ -109,6 +112,13 @@ public class IotPatientDeviceController extends EnvelopRestController{
             @ApiParam(name = "sim", value = "按键号", defaultValue = "")
             @RequestParam(value = "sim",required = true) String sim) {
         return iotPatientDeviceFeign.updatePatientDevice(patient, deviceSN, newDeviceSN, userType, sim);
+    }
+
+    @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
+    @ApiOperation(value = "根据idCard查询设备地址", notes = "根据idCard查询设备地址")
+    public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
+                                                                     @RequestParam(value = "jsonData",required = true) String jsonData) {
+        return iotPatientDeviceFeign.findDeviceLocationsByIdCard(jsonData);
     }
 
 }
