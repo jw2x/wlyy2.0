@@ -223,11 +223,12 @@ public class MonitoringHealthService extends BaseService{
      * @param end
      * @return
      */
-    public String getHealthIndexChartByPatient(String patient,Integer type, Integer gi_type,String begin,String end) {
+    public String getHealthIndexChartByPatient(String patient, Integer type, Integer gi_type, String begin, String end,String time) {
         String url = "/wlyygc/iot_monitoring/chart";
         Map<String, Object> params = new HashMap<>();
         params.put("patient",patient);
         params.put("type",type);
+        params.put("time",time);
         params.put("begin",begin);
         params.put("end",end);
         params.put("gi_type",gi_type);

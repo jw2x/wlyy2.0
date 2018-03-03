@@ -92,7 +92,7 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
             old.setManufacturerId(iotCompanyCertificateDO.getManufacturerId());
             old.setCompanyName(iotCompanyCertificateDO.getCompanyName());
             old.setCompanyId(iotCompanyCertificateDO.getCompanyId());
-            old.setLaunchCcompanyBusinessLicense(iotCompanyCertificateDO.getLaunchCcompanyBusinessLicense());
+            old.setLaunchCompanyBusinessLicense(iotCompanyCertificateDO.getLaunchCompanyBusinessLicense());
             old.setLaunchCompanyId(iotCompanyCertificateDO.getLaunchCompanyId());
             old.setLaunchCompanyName(iotCompanyCertificateDO.getLaunchCompanyName());
             old.setStartTime(iotCompanyCertificateDO.getStartTime());

@@ -32,7 +32,7 @@ public class IotCompanyCertificateDO extends IdEntityWithOperation implements Se
     @Column(name = "launch_company_id")
     private String launchCompanyId;//发起企业id
     @Column(name = "launch_company_business_license")
-    private String launchCcompanyBusinessLicense;//发起企业营业执照号
+    private String launchCompanyBusinessLicense;//发起企业营业执照号
     @Column(name = "company_name")
     private String companyName;//归属企业名称
     @Column(name = "company_id")
@@ -120,12 +120,12 @@ public class IotCompanyCertificateDO extends IdEntityWithOperation implements Se
         this.launchCompanyId = launchCompanyId;
     }
 
-    public String getLaunchCcompanyBusinessLicense() {
-        return launchCcompanyBusinessLicense;
+    public String getLaunchCompanyBusinessLicense() {
+        return launchCompanyBusinessLicense;
     }
 
-    public void setLaunchCcompanyBusinessLicense(String launchCcompanyBusinessLicense) {
-        this.launchCcompanyBusinessLicense = launchCcompanyBusinessLicense;
+    public void setLaunchCompanyBusinessLicense(String launchCompanyBusinessLicense) {
+        this.launchCompanyBusinessLicense = launchCompanyBusinessLicense;
     }
 
     public Date getStartTime() {
