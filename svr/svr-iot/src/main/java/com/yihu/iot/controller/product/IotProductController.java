@@ -55,7 +55,7 @@ public class IotProductController extends EnvelopRestController {
                 size = 10;
             }
             String filters = "";
-            String semicolon = "";
+            String semicolon = "del=1;";
             if(StringUtils.isNotBlank(name)){
                 filters = "name?"+name+" g1;registerCertificate?"+name+" g1";
                 semicolon = ";";
@@ -67,9 +67,6 @@ public class IotProductController extends EnvelopRestController {
             if(StringUtils.isNotBlank(classify)){
                 filters += semicolon +"productClassify="+classify;
                 semicolon = ";";
-            }
-            if(StringUtils.isBlank(filters)){
-                filters+= semicolon + "del=1";
             }
             String sorts = "-updateTime";
             //得到list数据
