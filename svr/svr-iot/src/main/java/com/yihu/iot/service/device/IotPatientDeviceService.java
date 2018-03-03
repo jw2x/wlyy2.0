@@ -67,6 +67,10 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
             dataDTO.setDeviceSn(deviceVO.getDeviceSn());
             dataDTO.setIdCard(deviceVO.getIdcard());
             dataDTO.setDiseaseCondition(deviceVO.getDiseaseCondition());
+            if(dataDTO.getDiseaseCondition()==null){
+                //未定标的居民设置成-1
+                dataDTO.setDiseaseCondition(-1);
+            }
 
             Map<String, String> json = LatitudeUtils.getGeocoderLatitude(deviceVO.getAddress().replace("G.", "").replace("（糖友网）", "").replace("（高友网）", ""));
             if (json == null) {

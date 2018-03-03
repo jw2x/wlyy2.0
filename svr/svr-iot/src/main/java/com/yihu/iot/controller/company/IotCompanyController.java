@@ -139,6 +139,8 @@ public class IotCompanyController extends EnvelopRestController {
     public Envelop<IotCompanyCertificateVO> findCompanyCertPage
             (@ApiParam(name = "name", value = "证书名称", defaultValue = "")
              @RequestParam(value = "name", required = false) String name,
+             @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
+             @RequestParam(value = "companyId", required = false) String companyId,
              @ApiParam(name = "page", value = "第几页", defaultValue = "")
              @RequestParam(value = "page", required = false) Integer page,
              @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
@@ -150,7 +152,7 @@ public class IotCompanyController extends EnvelopRestController {
             if(size == null){
                 size = 10;
             }
-            return iotCompanyCertificateService.queryPage(page,size,name);
+            return iotCompanyCertificateService.queryPage(page,size,name,companyId);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

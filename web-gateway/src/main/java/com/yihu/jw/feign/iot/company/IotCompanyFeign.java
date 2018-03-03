@@ -49,6 +49,7 @@ public interface IotCompanyFeign {
     @GetMapping(value = IotRequestMapping.Company.findCompanyCertPage)
     public Envelop<IotCompanyCertificateVO> findCompanyCertPage
             (@RequestParam(value = "name", required = false) String name,
+             @RequestParam(value = "companyId", required = false) String companyId,
              @RequestParam(value = "page", required = false) Integer page,
              @RequestParam(value = "size", required = false) Integer size);
 
