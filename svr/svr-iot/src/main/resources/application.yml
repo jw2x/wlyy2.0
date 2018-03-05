@@ -5,6 +5,8 @@ server:
 spring:
   application:
     name:  svr-iot  #注册到发现服务的id 如果id一样 eurika会自动做负载
+  jmx:
+    default-domain: svr-iot
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
