@@ -35,15 +35,18 @@ public class IotProductController extends EnvelopRestController {
 
 
     @GetMapping(value = IotRequestMapping.Product.findProductPage)
-    @ApiOperation(value = "分页查找产品", notes = "分页查找产品")
-    public Envelop<IotProductBaseInfoVO> findCompanyPage(@ApiParam(name = "name", value = "注册证号或产品名称", defaultValue = "")
-                                                 @RequestParam(value = "name", required = false) String name,
-                                                         @ApiParam(name = "classify", value = "产品分类", defaultValue = "")
-                                                 @RequestParam(value = "classify", required = false) String classify,
-                                                         @ApiParam(name = "page", value = "第几页", defaultValue = "")
-                                                 @RequestParam(value = "page", required = false) Integer page,
-                                                         @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
-                                                 @RequestParam(value = "size", required = false) Integer size){
+    @ApiOperation(value = "分页查1找产品", notes = "分页查找产品")
+    public Envelop<IotProductBaseInfoVO> findCompanyPage(
+            @ApiParam(name = "name", value = "注册证号或产品名称", defaultValue = "")
+            @RequestParam(value = "name", required = false) String name,
+            @ApiParam(name = "classify", value = "产品分类", defaultValue = "")
+            @RequestParam(value = "classify", required = false) String classify,
+            @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
+            @RequestParam(value = "companyId", required = false) String companyId,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
         try {
             if(page == null|| page < 0){
                 page = 1;
@@ -52,17 +55,18 @@ public class IotProductController extends EnvelopRestController {
                 size = 10;
             }
             String filters = "";
-            String semicolon = "";
+            String semicolon = "del=1;";
             if(StringUtils.isNotBlank(name)){
                 filters = "name?"+name+" g1;registerCertificate?"+name+" g1";
+                semicolon = ";";
+            }
+            if(StringUtils.isNotBlank(companyId)){
+                filters += semicolon +"companyId="+companyId;
                 semicolon = ";";
             }
             if(StringUtils.isNotBlank(classify)){
                 filters += semicolon +"productClassify="+classify;
                 semicolon = ";";
-            }
-            if(StringUtils.isBlank(filters)){
-                filters+= semicolon + "del=1";
             }
             String sorts = "-updateTime";
             //得到list数据

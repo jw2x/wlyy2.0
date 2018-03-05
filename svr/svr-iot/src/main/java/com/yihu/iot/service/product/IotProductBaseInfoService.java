@@ -81,8 +81,8 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         if("2".equals(baseInfoDO.getProductClassify())){
             //代理产品
             IotMaintenanceUnitVO vo2 = new IotMaintenanceUnitVO();
-            vo2.setMaintenanceUnitId(baseInfoDO.getAgentId());
-            vo2.setMaintenanceUnitName(baseInfoDO.getAgentName());
+            vo2.setMaintenanceUnitId(baseInfoDO.getCompanyId());
+            vo2.setMaintenanceUnitName(baseInfoDO.getCompanyName());
             voList.add(vo2);
         }
         return voList;

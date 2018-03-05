@@ -25,10 +25,10 @@ public class IotProductBaseInfoVO extends BaseVO implements Serializable {
     private String supplierName;
     @ApiModelProperty("厂商id")
     private String supplierId;
-    @ApiModelProperty("代理商名称")
-    private String agentName;
-    @ApiModelProperty("代理商id")
-    private String agentId;
+    @ApiModelProperty("企业名称")
+    private String companyName;
+    @ApiModelProperty("企业id")
+    private String companyId;
     @ApiModelProperty("产品类型")
     private String type;
     @ApiModelProperty("产品类型名称")
@@ -102,20 +102,20 @@ public class IotProductBaseInfoVO extends BaseVO implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public String getAgentName() {
-        return agentName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public String getAgentId() {
-        return agentId;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setAgentId(String agentId) {
-        this.agentId = agentId;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
     public String getType() {

@@ -102,4 +102,13 @@ public class ServiceApi {
         }
     }
 
+    public static class PatientDevice{
+        public static final String Base = "wg/patientDevice/";
+        public static final String findLocationByIdCard = Base + "findLocationByIdCard";
+
+        public PatientDevice(){
+
+        }
+    }
+
 }

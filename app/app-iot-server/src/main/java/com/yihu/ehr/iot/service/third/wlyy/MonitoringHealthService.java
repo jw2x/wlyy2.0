@@ -1,10 +1,15 @@
 package com.yihu.ehr.iot.service.third.wlyy;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yihu.ehr.iot.constant.ServiceApi;
 import com.yihu.ehr.iot.service.common.BaseService;
 import com.yihu.ehr.iot.util.http.HttpHelper;
 import com.yihu.ehr.iot.util.http.HttpResponse;
+import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.device.LocationDataVO;
+import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,6 +37,34 @@ public class MonitoringHealthService extends BaseService{
     private String appid;
     @Value("${third.wlyy.appsecret}")
     private String appSecret;
+    public static Map<String,String> tokenMap = new HashMap<>();
+
+    /**
+     * 获取位置信息
+     * @param diseaseCondition
+     * @return
+     */
+    public Envelop<List<LocationDataVO>> findDeviceLocations(Integer diseaseCondition,Integer page,Integer size) throws IOException {
+        JSONArray jsonArray = new JSONArray();
+        if(diseaseCondition!=null){
+            JSONObject json = new JSONObject();
+            json.put("andOr","and");
+            json.put("field","diseaseCondition");
+            json.put("condition","=");
+            json.put("value",diseaseCondition);
+            jsonArray.add(json);
+        }
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("filter",jsonArray);
+        jsonObject.put("page",page);
+        jsonObject.put("size",size);
+        Map<String, Object> params = new HashMap<>();
+        params.put("jsonData", jsonObject.toString());
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.PatientDevice.findLocationByIdCard, params);
+        Envelop<List<LocationDataVO>> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
 
 
     /**
@@ -48,7 +83,18 @@ public class MonitoringHealthService extends BaseService{
      * @return
      * @throws IOException
      */
-    private String getAccessToken(){
+    private synchronized String getAccessToken(){
+        String token = "";
+        if(tokenMap.get("token")!=null){
+            token = tokenMap.get("token");
+            String time = tokenMap.get("time");
+            Date start = DateUtil.strToDate(time);
+            long m = (System.currentTimeMillis()-start.getTime())/1000;
+            long overTime = 15*6*60;//1.5小时
+            if(m<overTime){
+                return token;
+            }
+        }
         Map<String, Object> params = new HashMap<>();
         params.put("appid", appid);
         params.put("appSecret", appSecret);
@@ -56,7 +102,10 @@ public class MonitoringHealthService extends BaseService{
         HttpResponse response = HttpHelper.post(wlyyUrl + url, params);
         JSONObject jsonObject = JSON.parseObject(response.getBody());
         if(jsonObject.getInteger("status")==10000){
-            return jsonObject.getJSONObject("result").getString("accesstoken");
+            String accesstoken = jsonObject.getJSONObject("result").getString("accesstoken");
+            tokenMap.put("token",accesstoken);
+            tokenMap.put("time",DateUtil.getStringDate());
+            return accesstoken;
         }
         return null;
     }
@@ -174,11 +223,12 @@ public class MonitoringHealthService extends BaseService{
      * @param end
      * @return
      */
-    public String getHealthIndexChartByPatient(String patient,Integer type, Integer gi_type,String begin,String end) {
+    public String getHealthIndexChartByPatient(String patient, Integer type, Integer gi_type, String begin, String end,String time) {
         String url = "/wlyygc/iot_monitoring/chart";
         Map<String, Object> params = new HashMap<>();
         params.put("patient",patient);
         params.put("type",type);
+        params.put("time",time);
         params.put("begin",begin);
         params.put("end",end);
         params.put("gi_type",gi_type);
