@@ -4,6 +4,7 @@ import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.product.*;
 import com.yihu.jw.iot.product.*;
 import com.yihu.jw.restmodel.iot.product.*;
+import com.yihu.jw.util.date.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,10 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
 
         //数据转换
         IotProductBaseInfoVO baseInfoVO = convertToModel(baseInfoDO,IotProductBaseInfoVO.class);
+        //日期单独处理
+        baseInfoVO.setStartTime(DateUtil.dateToStrShort(baseInfoDO.getStartTime()));
+        baseInfoVO.setEndTime(DateUtil.dateToStrShort(baseInfoDO.getEndTime()));
+
         IotProductExtendInfoVO extendInfoVO = convertToModel(extendInfoDO,IotProductExtendInfoVO.class);
         List<IotProductAttachmentVO> attachmentVOList =
                 convertToModels(attachmentDOList,new ArrayList<>(attachmentDOList.size()),IotProductAttachmentVO.class);
@@ -59,6 +64,28 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         iotProductVO.setMeasuredDataVOList(measuredDataVOList);
 
         return iotProductVO;
+    }
+
+    /**
+     * 根据产品id查找维护单位
+     * @param id
+     */
+    public List<IotMaintenanceUnitVO> maintenanceUnitById(String id){
+        List<IotMaintenanceUnitVO> voList = new ArrayList<IotMaintenanceUnitVO>();
+        IotProductBaseInfoDO baseInfoDO = iotProductBaseInfoDao.findById(id);
+        //厂商
+        IotMaintenanceUnitVO vo1 = new IotMaintenanceUnitVO();
+        vo1.setMaintenanceUnitId(baseInfoDO.getSupplierId());
+        vo1.setMaintenanceUnitName(baseInfoDO.getSupplierName());
+        voList.add(vo1);
+        if("2".equals(baseInfoDO.getProductClassify())){
+            //代理产品
+            IotMaintenanceUnitVO vo2 = new IotMaintenanceUnitVO();
+            vo2.setMaintenanceUnitId(baseInfoDO.getCompanyId());
+            vo2.setMaintenanceUnitName(baseInfoDO.getCompanyName());
+            voList.add(vo2);
+        }
+        return voList;
     }
 
     /**
@@ -89,6 +116,10 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
 
         //数据转换
         IotProductBaseInfoDO baseInfoDO = convertToModel(baseInfoVO,IotProductBaseInfoDO.class);
+        //日期单独处理
+        baseInfoDO.setStartTime(DateUtil.strToDate(baseInfoVO.getStartTime()));
+        baseInfoDO.setEndTime(DateUtil.strToDate(baseInfoVO.getEndTime()));
+
         IotProductExtendInfoDO extendInfoDO = convertToModel(extendInfoVO,IotProductExtendInfoDO.class);
         List<IotProductAttachmentDO> attachmentDOList =
                 convertToModels(attachmentVOList,new ArrayList<>(attachmentVOList.size()),IotProductAttachmentDO.class);
@@ -153,6 +184,9 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
 
         //数据转换
         IotProductBaseInfoDO baseInfoDO = convertToModel(baseInfoVO,IotProductBaseInfoDO.class);
+        //日期单独处理
+        baseInfoDO.setStartTime(DateUtil.strToDate(baseInfoVO.getStartTime()));
+        baseInfoDO.setEndTime(DateUtil.strToDate(baseInfoVO.getEndTime()));
         IotProductExtendInfoDO extendInfoDO = convertToModel(extendInfoVO,IotProductExtendInfoDO.class);
         List<IotProductAttachmentDO> attachmentDOList =
                 convertToModels(attachmentVOList,new ArrayList<>(attachmentVOList.size()),IotProductAttachmentDO.class);

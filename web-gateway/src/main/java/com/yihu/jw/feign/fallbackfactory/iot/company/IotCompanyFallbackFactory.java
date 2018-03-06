@@ -76,10 +76,12 @@ public class IotCompanyFallbackFactory implements FallbackFactory<IotCompanyFeig
             @Override
             public Envelop<IotCompanyCertificateVO> findCompanyCertPage
                     (@RequestParam(value = "name", required = false) String name,
+                     @RequestParam(value = "companyId", required = false) String companyId,
                      @RequestParam(value = "page", required = false) Integer page,
                      @RequestParam(value = "size", required = false) Integer size){
                 tracer.getCurrentSpan().logEvent("分页获取企业证书失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("name:" + name);
+                tracer.getCurrentSpan().logEvent("companyId:" + companyId);
                 tracer.getCurrentSpan().logEvent("page:" + page);
                 tracer.getCurrentSpan().logEvent("size:" + size);
                 return null;
@@ -103,6 +105,13 @@ public class IotCompanyFallbackFactory implements FallbackFactory<IotCompanyFeig
             public Envelop<IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = true)String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建企业证书失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
+                return null;
+            }
+
+            @Override
+            public Envelop<IotCompanyCertificateVO> delCompanyCert(@RequestParam(value = "id", required = true)String id) {
+                tracer.getCurrentSpan().logEvent("删除企业证书失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
 

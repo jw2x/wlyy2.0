@@ -7,8 +7,9 @@ public class CommonContants {
 
     //微服务的id start
     public static final String svr_base = "svr-base";
-    public static final String svr_iot = "svr-iot-ysj";
+    public static final String svr_iot = "svr-iot";
     public static final String svr_wlyy = "svr-wlyy";
     public static final String svr_gateway = "svr-gateway";
+    public static final String svr_archives = "svr-wlyy-archives";
 
 }

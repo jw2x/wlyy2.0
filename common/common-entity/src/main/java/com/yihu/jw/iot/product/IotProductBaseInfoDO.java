@@ -21,15 +21,15 @@ public class IotProductBaseInfoDO extends IdEntityWithOperation implements Seria
     @Column(name = "parent_id")
     private String parentId;//父类ID
     @Column(name = "product_classify")
-    private String productClassify;//产品分类(1自由产品，2代理产品)
+    private String productClassify;//产品分类(1自有产品，2代理产品)
     @Column(name = "supplier_name")
     private String supplierName;//厂商名称
     @Column(name = "supplier_id")
     private String supplierId;//厂商id
-    @Column(name = "agent_name")
-    private String agentName;//代理商名称
-    @Column(name = "agent_id")
-    private String agentId;//代理商id
+    @Column(name = "company_name")
+    private String companyName;//企业名称
+    @Column(name = "company_id")
+    private String companyId;//企业id
     @Column(name = "type")
     private String type;//产品类型
     @Column(name = "product_subclass")
@@ -103,20 +103,20 @@ public class IotProductBaseInfoDO extends IdEntityWithOperation implements Seria
         this.supplierId = supplierId;
     }
 
-    public String getAgentName() {
-        return agentName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public String getAgentId() {
-        return agentId;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setAgentId(String agentId) {
-        this.agentId = agentId;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
     public String getType() {

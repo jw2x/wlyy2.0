@@ -2,6 +2,7 @@ package com.yihu.jw.feign.fallbackfactory.iot.product;
 
 import com.yihu.jw.feign.iot.product.IotProductFeign;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
 import com.yihu.jw.restmodel.iot.product.IotProductBaseInfoVO;
 import com.yihu.jw.restmodel.iot.product.IotProductVO;
 import feign.hystrix.FallbackFactory;
@@ -27,11 +28,13 @@ public class IotProductFallbackFactory implements FallbackFactory<IotProductFeig
             public Envelop<IotProductBaseInfoVO> findCompanyPage(
                     @RequestParam(value = "name", required = false) String name,
                     @RequestParam(value = "classify", required = false) String classify,
+                    @RequestParam(value = "companyId", required = false) String companyId,
                     @RequestParam(value = "page", required = false) Integer page,
                     @RequestParam(value = "size", required = false) Integer size){
                 tracer.getCurrentSpan().logEvent("分页查找产品失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("name:" + name);
                 tracer.getCurrentSpan().logEvent("classify:" + classify);
+                tracer.getCurrentSpan().logEvent("companyId:" + companyId);
                 tracer.getCurrentSpan().logEvent("page:" + page);
                 tracer.getCurrentSpan().logEvent("size:" + size);
                 return null;
@@ -63,6 +66,13 @@ public class IotProductFallbackFactory implements FallbackFactory<IotProductFeig
             public Envelop<IotProductVO> findByCode(@RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("根据id查找产品失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
+                return null;
+            }
+
+            @Override
+            public Envelop<IotMaintenanceUnitVO> getList(@RequestParam(value = "productId", required = true) String productId){
+                tracer.getCurrentSpan().logEvent("获取维护单位失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("productId:" + productId);
                 return null;
             }
 

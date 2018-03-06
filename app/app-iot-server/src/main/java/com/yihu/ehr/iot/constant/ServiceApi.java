@@ -12,6 +12,7 @@ public class ServiceApi {
         public static final String FindCompanyPage = Base +"findCompanyPage";
         public static final String AddCompany = Base +"addCompany";
         public static final String FindCompanyById = Base +"findCompanyById";
+        public static final String DelCompanyCert = Base +"delCompanyCert";
         public static final String FindByBusinessLicense = Base +"findByBusinessLicense";
         public static final String UpdCompany = Base +"updCompany";
         public static final String DelCompany = Base +"delCompany";
@@ -46,6 +47,7 @@ public class ServiceApi {
         public static final String FindProductPageByCompanyId = Base +"findProductPageByCompanyId";
         public static final String AddProduct = Base +"addProduct";
         public static final String FindProductById = Base +"findProductById";
+        public static final String MaintenanceUnitById = Base +"maintenanceUnitById";
         public static final String UpdProduct= Base +"updProduct";
         public static final String DelProduct= Base + "delProduct";
 
@@ -97,6 +99,15 @@ public class ServiceApi {
         public static final String FindById = Base +"findById";
 
         public Quality() {
+        }
+    }
+
+    public static class PatientDevice{
+        public static final String Base = "wg/patientDevice/";
+        public static final String findLocationByIdCard = Base + "findLocationByIdCard";
+
+        public PatientDevice(){
+
         }
     }
 

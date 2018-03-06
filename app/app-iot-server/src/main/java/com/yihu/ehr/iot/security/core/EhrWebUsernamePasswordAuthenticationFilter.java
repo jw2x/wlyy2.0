@@ -55,6 +55,7 @@ public class EhrWebUsernamePasswordAuthenticationFilter extends AbstractAuthenti
      * @return
      * @throws AuthenticationException
      */
+    @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         if(this.postOnly && !request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());

@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -27,11 +26,11 @@ public class IotCompanyVO extends BaseVO implements Serializable {
     @ApiModelProperty("统一社会信用代码/营业执照")
     private String businessLicense;
     @ApiModelProperty("营业开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date businessStartTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
+    private String businessStartTime;
     @ApiModelProperty("营业结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date businessEndTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
+    private String businessEndTime;
     @ApiModelProperty("机构地址")
     private String organizationAddress;
     @ApiModelProperty("办公电话")
@@ -93,19 +92,19 @@ public class IotCompanyVO extends BaseVO implements Serializable {
         this.businessLicense = businessLicense;
     }
 
-    public Date getBusinessStartTime() {
+    public String getBusinessStartTime() {
         return businessStartTime;
     }
 
-    public void setBusinessStartTime(Date businessStartTime) {
+    public void setBusinessStartTime(String businessStartTime) {
         this.businessStartTime = businessStartTime;
     }
 
-    public Date getBusinessEndTime() {
+    public String getBusinessEndTime() {
         return businessEndTime;
     }
 
-    public void setBusinessEndTime(Date businessEndTime) {
+    public void setBusinessEndTime(String businessEndTime) {
         this.businessEndTime = businessEndTime;
     }
 

@@ -1,8 +1,10 @@
 package com.yihu.ehr.iot.controller.product;
 
 import com.yihu.ehr.iot.controller.common.BaseController;
+import com.yihu.ehr.iot.model.ehr.MStdDataSet;
 import com.yihu.ehr.iot.service.product.ProductService;
 import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
 import com.yihu.jw.restmodel.iot.product.IotProductBaseInfoVO;
 import com.yihu.jw.restmodel.iot.product.IotProductVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -23,17 +25,14 @@ public class IotProductController extends BaseController {
     @Autowired
     private ProductService productService;
 
-
-    @GetMapping(value = IotRequestMapping.Product.findProductPage)
-    @ApiOperation(value = "分页查找产品", notes = "分页查找产品")
-    public Envelop<IotProductBaseInfoVO> findCompanyPage(@ApiParam(name = "name", value = "注册证号或产品名称", defaultValue = "")
-                                                 @RequestParam(value = "name", required = false) String name,
-                                                         @ApiParam(name = "classify", value = "产品分类", defaultValue = "")
-                                                 @RequestParam(value = "classify", required = false) String classify,
-                                                         @ApiParam(name = "page", value = "第几页", defaultValue = "")
-                                                 @RequestParam(value = "page", required = false) Integer page,
-                                                         @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
-                                                 @RequestParam(value = "size", required = false) Integer size){
+    @GetMapping(value = IotRequestMapping.Product.data_sets)
+    @ApiOperation(value = "测量数据", notes = "测量数据")
+    public Envelop<MStdDataSet> data_sets(@ApiParam(name = "name", value = "名称", defaultValue = "")
+                                         @RequestParam(value = "name", required = false) String name,
+                                         @ApiParam(name = "page", value = "第几页", defaultValue = "")
+                                         @RequestParam(value = "page", required = false) Integer page,
+                                         @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+                                         @RequestParam(value = "size", required = false) Integer size){
         try {
             if(page == null|| page < 0){
                 page = 1;
@@ -41,7 +40,35 @@ public class IotProductController extends BaseController {
             if(size == null){
                 size = 10;
             }
-            return productService.findCompanyPage(name,classify,page,size);
+            return productService.data_sets(page, size, name);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
+    @GetMapping(value = IotRequestMapping.Product.findProductPage)
+    @ApiOperation(value = "分页查找产品", notes = "分页查找产品")
+    public Envelop<IotProductBaseInfoVO> findCompanyPage(
+            @ApiParam(name = "name", value = "注册证号或产品名称", defaultValue = "")
+            @RequestParam(value = "name", required = false) String name,
+            @ApiParam(name = "classify", value = "产品分类", defaultValue = "")
+            @RequestParam(value = "classify", required = false) String classify,
+            @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
+            @RequestParam(value = "companyId", required = false) String companyId,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
+        try {
+            if(page == null|| page < 0){
+                page = 1;
+            }
+            if(size == null){
+                size = 10;
+            }
+            return productService.findCompanyPage(name,classify,companyId,page,size);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -91,6 +118,19 @@ public class IotProductController extends BaseController {
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             return productService.findByCode(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
+    @GetMapping(value = IotRequestMapping.Product.maintenanceUnitById)
+    @ApiOperation(value = "根据id查找产品的维护单位", notes = "根据id查找产品的维护单位")
+    public Envelop<IotMaintenanceUnitVO> maintenanceUnitById(@ApiParam(name = "productId", value = "productId")
+                                            @RequestParam(value = "productId", required = true) String productId) {
+        try {
+            return productService.maintenanceUnitById(productId);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

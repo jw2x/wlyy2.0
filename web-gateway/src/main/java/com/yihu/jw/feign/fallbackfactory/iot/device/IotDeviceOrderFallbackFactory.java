@@ -9,7 +9,6 @@ import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -26,7 +25,7 @@ public class IotDeviceOrderFallbackFactory implements FallbackFactory<IotDeviceO
         return new IotDeviceOrderFeign() {
 
             @Override
-            public Envelop<IotOrderVO> create(@RequestBody String jsonData) {
+            public Envelop<IotOrderVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建设备订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;

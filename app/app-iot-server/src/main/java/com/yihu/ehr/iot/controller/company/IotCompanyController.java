@@ -103,11 +103,13 @@ public class IotCompanyController extends BaseController {
         }
     }
 
-    @PostMapping(value = IotRequestMapping.Company.findCompanyCertPage)
+    @GetMapping(value = IotRequestMapping.Company.findCompanyCertPage)
     @ApiOperation(value = "分页获取企业证书", notes = "分页获取企业证书")
     public Envelop<IotCompanyCertificateVO> findCompanyCertPage
             (@ApiParam(name = "name", value = "证书名称", defaultValue = "")
              @RequestParam(value = "name", required = false) String name,
+             @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
+             @RequestParam(value = "companyId", required = false) String companyId,
              @ApiParam(name = "page", value = "第几页", defaultValue = "")
              @RequestParam(value = "page", required = false) Integer page,
              @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
@@ -119,7 +121,7 @@ public class IotCompanyController extends BaseController {
             if(size == null){
                 size = 10;
             }
-            return companyService.findCompanyCertPage(name,page,size);
+            return companyService.findCompanyCertPage(name,page,size,companyId);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -170,6 +172,18 @@ public class IotCompanyController extends BaseController {
                                   @RequestParam(value = "passWord", required = true)String passWord){
         try {
             return companyService.changePassWord(userId,passWord);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.Company.delCompanyCert)
+    @ApiOperation(value = "删除企业证书", notes = "删除企业证书")
+    public Envelop<IotCompanyCertificateVO> delCompanyCert(@ApiParam(name = "id", value = "id", defaultValue = "")
+                                                           @RequestParam(value = "id", required = true)String id) {
+        try {
+            return companyService.delCompanyCert(id);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

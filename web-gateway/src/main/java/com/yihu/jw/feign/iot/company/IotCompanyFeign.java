@@ -46,9 +46,10 @@ public interface IotCompanyFeign {
     @PostMapping(value = IotRequestMapping.Company.updCompany)
     public Envelop<IotCompanyVO> updCompany(@RequestParam(value = "jsonData", required = true)String jsonData);
 
-    @PostMapping(value = IotRequestMapping.Company.findCompanyCertPage)
+    @GetMapping(value = IotRequestMapping.Company.findCompanyCertPage)
     public Envelop<IotCompanyCertificateVO> findCompanyCertPage
             (@RequestParam(value = "name", required = false) String name,
+             @RequestParam(value = "companyId", required = false) String companyId,
              @RequestParam(value = "page", required = false) Integer page,
              @RequestParam(value = "size", required = false) Integer size);
 
@@ -61,4 +62,6 @@ public interface IotCompanyFeign {
     @PostMapping(value = IotRequestMapping.Company.addCompanyCert)
     public Envelop<IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = true)String jsonData);
 
+    @PostMapping(value = IotRequestMapping.Company.delCompanyCert)
+    public Envelop<IotCompanyCertificateVO> delCompanyCert(@RequestParam(value = "id", required = true)String id);
 }

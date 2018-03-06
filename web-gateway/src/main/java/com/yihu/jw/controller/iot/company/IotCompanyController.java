@@ -99,11 +99,13 @@ public class IotCompanyController extends EnvelopRestController {
     public Envelop<IotCompanyCertificateVO> findCompanyCertPage
             (@ApiParam(name = "name", value = "证书名称", defaultValue = "")
              @RequestParam(value = "name", required = false) String name,
+             @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
+             @RequestParam(value = "companyId", required = false) String companyId,
              @ApiParam(name = "page", value = "第几页", defaultValue = "")
              @RequestParam(value = "page", required = false) Integer page,
              @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
              @RequestParam(value = "size", required = false) Integer size){
-        return iotCompanyFeign.findCompanyCertPage(name,page,size);
+        return iotCompanyFeign.findCompanyCertPage(name,companyId,page,size);
     }
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyCertById)
@@ -134,6 +136,13 @@ public class IotCompanyController extends EnvelopRestController {
     public Envelop<IotCompanyCertificateVO> addCompanyCert(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = true)String jsonData) {
         return iotCompanyFeign.addCompanyCert(jsonData);
+    }
+
+    @PostMapping(value = IotRequestMapping.Company.delCompanyCert)
+    @ApiOperation(value = "删除企业证书", notes = "删除企业证书")
+    public Envelop<IotCompanyCertificateVO> delCompanyCert(@ApiParam(name = "id", value = "id", defaultValue = "")
+                                                           @RequestParam(value = "id", required = true)String id) {
+        return iotCompanyFeign.delCompanyCert(id);
     }
 
 }

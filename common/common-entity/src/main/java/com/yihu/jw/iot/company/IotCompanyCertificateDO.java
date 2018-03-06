@@ -27,12 +27,16 @@ public class IotCompanyCertificateDO extends IdEntityWithOperation implements Se
     private String manufacturerId;//生产厂家id
     @Column(name = "manufacturer_business_license")
     private String manufacturerBusinessLicense;//生产厂家营业执照号
+    @Column(name = "launch_company_name")
+    private String launchCompanyName;//发起企业名称
+    @Column(name = "launch_company_id")
+    private String launchCompanyId;//发起企业id
+    @Column(name = "launch_company_business_license")
+    private String launchCompanyBusinessLicense;//发起企业营业执照号
     @Column(name = "company_name")
-    private String companyName;//发起企业名称
+    private String companyName;//归属企业名称
     @Column(name = "company_id")
-    private String companyId;//发起企业id
-    @Column(name = "company_business_license")
-    private String companyBusinessLicense;//发起企业营业执照号
+    private String companyId;//归属企业id
     @Column(name = "start_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date startTime;//有效期开始时间
@@ -100,12 +104,28 @@ public class IotCompanyCertificateDO extends IdEntityWithOperation implements Se
         this.companyId = companyId;
     }
 
-    public String getCompanyBusinessLicense() {
-        return companyBusinessLicense;
+    public String getLaunchCompanyName() {
+        return launchCompanyName;
     }
 
-    public void setCompanyBusinessLicense(String companyBusinessLicense) {
-        this.companyBusinessLicense = companyBusinessLicense;
+    public void setLaunchCompanyName(String launchCompanyName) {
+        this.launchCompanyName = launchCompanyName;
+    }
+
+    public String getLaunchCompanyId() {
+        return launchCompanyId;
+    }
+
+    public void setLaunchCompanyId(String launchCompanyId) {
+        this.launchCompanyId = launchCompanyId;
+    }
+
+    public String getLaunchCompanyBusinessLicense() {
+        return launchCompanyBusinessLicense;
+    }
+
+    public void setLaunchCompanyBusinessLicense(String launchCompanyBusinessLicense) {
+        this.launchCompanyBusinessLicense = launchCompanyBusinessLicense;
     }
 
     public Date getStartTime() {

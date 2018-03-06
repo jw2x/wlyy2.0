@@ -4,6 +4,7 @@ import com.yihu.jw.commnon.iot.IotCommonContants;
 import com.yihu.jw.feign.iot.product.IotProductFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
 import com.yihu.jw.restmodel.iot.product.IotProductBaseInfoVO;
 import com.yihu.jw.restmodel.iot.product.IotProductVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -27,15 +28,18 @@ public class IotProductController extends EnvelopRestController {
 
     @GetMapping(value = IotRequestMapping.Product.findProductPage)
     @ApiOperation(value = "分页查找产品", notes = "分页查找产品")
-    public Envelop<IotProductBaseInfoVO> findCompanyPage(@ApiParam(name = "name", value = "注册证号或产品名称", defaultValue = "")
-                                                 @RequestParam(value = "name", required = false) String name,
-                                                         @ApiParam(name = "classify", value = "产品分类", defaultValue = "")
-                                                 @RequestParam(value = "classify", required = false) String classify,
-                                                         @ApiParam(name = "page", value = "第几页", defaultValue = "")
-                                                 @RequestParam(value = "page", required = false) Integer page,
-                                                         @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
-                                                 @RequestParam(value = "size", required = false) Integer size){
-        return iotProductFeign.findCompanyPage(name,classify,page,size);
+    public Envelop<IotProductBaseInfoVO> findCompanyPage(
+            @ApiParam(name = "name", value = "注册证号或产品名称", defaultValue = "")
+            @RequestParam(value = "name", required = false) String name,
+            @ApiParam(name = "classify", value = "产品分类", defaultValue = "")
+            @RequestParam(value = "classify", required = false) String classify,
+            @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
+            @RequestParam(value = "companyId", required = false) String companyId,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
+        return iotProductFeign.findCompanyPage(name,classify,companyId,page,size);
     }
 
     @GetMapping(value = IotRequestMapping.Product.findProductPageByCompanyId)
@@ -64,6 +68,14 @@ public class IotProductController extends EnvelopRestController {
     public Envelop<IotProductVO> findByCode(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         return iotProductFeign.findByCode(id);
+    }
+
+    @GetMapping(value = IotRequestMapping.Product.maintenanceUnitById)
+    @ApiOperation(value = "获取维护单位")
+    public Envelop<IotMaintenanceUnitVO> getList(
+            @ApiParam(name = "productId", value = "产品", defaultValue = "1")
+            @RequestParam(value = "productId", required = true) String productId) throws Exception {
+        return iotProductFeign.getList(productId);
     }
 
     @PostMapping(value = IotRequestMapping.Product.delProduct)

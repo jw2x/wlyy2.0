@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author yeshijie on 2018/1/16.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "设备质检计划表", description = "设备质检计划表")
+@ApiModel(value = "居民设备绑定表", description = "居民设备绑定表")
 public class IotPatientDeviceVO extends BaseVO implements Serializable {
 
     @ApiModelProperty("居民code")
@@ -27,12 +27,18 @@ public class IotPatientDeviceVO extends BaseVO implements Serializable {
     private String deviceName;
     @ApiModelProperty("设备sn码")
     private String deviceSn;
-    @ApiModelProperty("质检负责人")
+    @ApiModelProperty("医生code")
     private String doctor;
-    @ApiModelProperty("质检负责人联系方式")
+    @ApiModelProperty("代理人code")
     private String agent;
-    @ApiModelProperty("质检状态")
+    @ApiModelProperty("按键号")
     private String userType;
+    @ApiModelProperty("设备类型标识(1血压计，2血糖仪)")
+    private String categoryCode;
+    @ApiModelProperty("地址")
+    private String address;
+    @ApiModelProperty("病情：0绿标，1黄标，2红标")
+    private Integer diseaseCondition;
 
     public String getPatient() {
         return patient;
@@ -106,4 +112,27 @@ public class IotPatientDeviceVO extends BaseVO implements Serializable {
         this.userType = userType;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCategoryCode() {
+        return categoryCode;
+    }
+
+    public void setCategoryCode(String categoryCode) {
+        this.categoryCode = categoryCode;
+    }
+
+    public Integer getDiseaseCondition() {
+        return diseaseCondition;
+    }
+
+    public void setDiseaseCondition(Integer diseaseCondition) {
+        this.diseaseCondition = diseaseCondition;
+    }
 }

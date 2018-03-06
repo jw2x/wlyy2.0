@@ -21,7 +21,7 @@ spring:
     name: app-iot-server
     message: App IOT Server
   resources:
-    static-locations: classpath:/
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/front/,classpath:/
 #    cache-period: 0
 
 
@@ -65,6 +65,11 @@ service-gateway:
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
 
+third:
+  wlyy:
+    url: http://ehr.yihu.com/wlyy/
+    appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
+    appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
 
 fast-dfs:
   tracker-server: 172.19.103.54:22122
@@ -85,10 +90,16 @@ app:
   oauth2InnerUrl: http://172.19.103.73:10260/
   oauth2OuterUrl: http://27.154.233.186:10260/
 service-gateway:
+  iotUrl: http://172.19.103.88:8088/svr-iot/
   profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
+third:
+  wlyy:
+    url: http://ehr.yihu.com/wlyy/
+    appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
+    appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
@@ -112,6 +123,11 @@ service-gateway:
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
+third:
+  wlyy:
+    url: http://www.yihu.com/wlyy/
+    appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
+    appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
 fast-dfs:
   tracker-server: 11.1.2.9:22122
   accessUrl: http://11.1.2.9

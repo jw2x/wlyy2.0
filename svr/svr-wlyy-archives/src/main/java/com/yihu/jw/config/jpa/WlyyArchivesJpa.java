@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.Properties;
 
 /**
  * Created by chenweida on 2017/4/6.
@@ -40,6 +41,8 @@ public class WlyyArchivesJpa {
         emfb.setPersistenceUnitName("archives");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emfb.setJpaVendorAdapter(vendorAdapter);
+        Properties properties = hibernateProperties.hibProperties();
+        properties.put("hibernate.ejb.naming_strategy","org.hibernate.cfg.ImprovedNamingStrategy");
         emfb.setJpaProperties(hibernateProperties.hibProperties());
 
         return emfb;

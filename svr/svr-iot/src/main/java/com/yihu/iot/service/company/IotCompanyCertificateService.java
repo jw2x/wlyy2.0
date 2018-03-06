@@ -6,7 +6,9 @@ import com.yihu.jw.iot.company.IotCompanyCertificateDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
+import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,9 +51,13 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
      * @return
      * @throws ParseException
      */
-    public Envelop<IotCompanyCertificateVO> queryPage(Integer page, Integer size,String name) throws ParseException {
+    public Envelop<IotCompanyCertificateVO> queryPage(Integer page, Integer size,String name,String companyId) throws ParseException {
         String filters = "";
         String semicolon = "";
+        if(StringUtils.isNotBlank(companyId)){
+            filters = "companyId="+companyId;
+            semicolon = ";";
+        }
         if(StringUtils.isNotBlank(name)){
             filters = "name?"+name;
             semicolon = ";";
@@ -66,23 +72,66 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
         long count = getCount(filters);
 
         //DO转VO
-        List<IotCompanyCertificateVO> iotCompanyCertificateVOList = convertToModels(list,new ArrayList<>(list.size()),IotCompanyCertificateVO.class);
+        List<IotCompanyCertificateVO> iotCompanyCertificateVOList = convertToModels(list,new ArrayList<>(list.size()));
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotCompanyCertificateVOList, page, size,count);
     }
 
     /**
-     * 新增
+     * 新增/修改
      * @param iotCompanyCertificateDO
      * @return
      */
     public IotCompanyCertificateDO create(IotCompanyCertificateDO iotCompanyCertificateDO) {
-
-        iotCompanyCertificateDO.setSaasId(getCode());
-        iotCompanyCertificateDO.setDel(1);
-        iotCompanyCertificateDao.save(iotCompanyCertificateDO);
-
+        if(StringUtils.isNotBlank(iotCompanyCertificateDO.getId())){
+            //修改
+            IotCompanyCertificateDO old = iotCompanyCertificateDao.findById(iotCompanyCertificateDO.getId());
+            old.setManufacturerBusinessLicense(iotCompanyCertificateDO.getManufacturerBusinessLicense());
+            old.setName(iotCompanyCertificateDO.getName());
+            old.setManufacturerName(iotCompanyCertificateDO.getManufacturerName());
+            old.setManufacturerId(iotCompanyCertificateDO.getManufacturerId());
+            old.setCompanyName(iotCompanyCertificateDO.getCompanyName());
+            old.setCompanyId(iotCompanyCertificateDO.getCompanyId());
+            old.setLaunchCompanyBusinessLicense(iotCompanyCertificateDO.getLaunchCompanyBusinessLicense());
+            old.setLaunchCompanyId(iotCompanyCertificateDO.getLaunchCompanyId());
+            old.setLaunchCompanyName(iotCompanyCertificateDO.getLaunchCompanyName());
+            old.setStartTime(iotCompanyCertificateDO.getStartTime());
+            old.setEndTime(iotCompanyCertificateDO.getEndTime());
+            old.setCertificateOfAuthorizationImg(iotCompanyCertificateDO.getCertificateOfAuthorizationImg());
+            iotCompanyCertificateDao.save(old);
+            return old;
+        }else {
+            //新增
+            iotCompanyCertificateDO.setSaasId(getCode());
+            iotCompanyCertificateDO.setDel(1);
+            iotCompanyCertificateDao.save(iotCompanyCertificateDO);
+        }
         return iotCompanyCertificateDO;
+    }
+
+    /**
+     * 删除
+     * @param id
+     */
+    public void delCompanyCert(String id){
+        IotCompanyCertificateDO companyCert = iotCompanyCertificateDao.findById(id);
+        companyCert.setDel(0);
+        iotCompanyCertificateDao.save(companyCert);
+    }
+
+    public List<IotCompanyCertificateVO> convertToModels(List<IotCompanyCertificateDO> iotCompanyCertificateDOList,List<IotCompanyCertificateVO> voList){
+        iotCompanyCertificateDOList.forEach(one -> {
+            IotCompanyCertificateVO target = new IotCompanyCertificateVO();
+            BeanUtils.copyProperties(one, target);
+            if(one.getStartTime()!=null){
+                target.setStartTime(DateUtil.dateToStrLong(one.getStartTime()));
+            }
+            if(one.getEndTime()!=null){
+                target.setEndTime(DateUtil.dateToStrLong(one.getEndTime()));
+            }
+            voList.add(target);
+        });
+        return voList;
     }
 
 }

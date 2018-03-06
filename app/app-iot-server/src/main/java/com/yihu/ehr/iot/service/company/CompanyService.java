@@ -61,7 +61,7 @@ public class CompanyService extends BaseService {
         IotCompanyVO iotCompany = toModel(jsonData, IotCompanyVO.class);
 
         envelop = userVerification(iotCompany,envelop);
-        if(envelop.getStatus()==-1){
+        if(envelop.getStatus()!=null&&envelop.getStatus()==-1){
             return envelop;
         }
         //验证账户
@@ -173,6 +173,7 @@ public class CompanyService extends BaseService {
         userModel.setIdCardNo(iotCompany.getContactsIdcard());
         userModel.setLoginCode(iotCompany.getAccount());
         userModel.setTelephone(iotCompany.getContactsMobile());
+        userModel.setRealName(iotCompany.getContactsName());
         userModel.setRole(roleId);
         Envelop envelop  = new Envelop();
         Map<String, Object> params = new HashMap<>();
@@ -246,6 +247,19 @@ public class CompanyService extends BaseService {
     }
 
     /**
+     * 删除企业证书
+     * @param id
+     * @return
+     */
+    public Envelop<IotCompanyCertificateVO> delCompanyCert(String id) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Company.DelCompanyCert, params);
+        Envelop<IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
      * 根据营业执照号查找企业
      * @param businessLicense
      * @return
@@ -290,14 +304,16 @@ public class CompanyService extends BaseService {
     /**
      * 分页获取企业证书
      * @param name
+     * @param companyId
      * @param page
      * @param size
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyCertificateVO> findCompanyCertPage(String name,Integer page,Integer size) throws IOException{
+    public Envelop<IotCompanyCertificateVO> findCompanyCertPage(String name,Integer page,Integer size,String companyId) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
+        params.put("companyId", companyId);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Company.FindCompanyCertPage, params);

@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 企业证书表
@@ -26,17 +25,21 @@ public class IotCompanyCertificateVO extends BaseVO implements Serializable {
     @ApiModelProperty("生产厂家营业执照号")
     private String manufacturerBusinessLicense;
     @ApiModelProperty("发起企业名称")
-    private String companyName;
+    private String launchCompanyName;
     @ApiModelProperty("发起企业id")
-    private String companyId;
+    private String launchCompanyId;
     @ApiModelProperty("发起企业营业执照号")
-    private String companyBusinessLicense;
+    private String launchCompanyBusinessLicense;
+    @ApiModelProperty("归属企业名称")
+    private String companyName;
+    @ApiModelProperty("归属企业id")
+    private String companyId;
     @ApiModelProperty("有效期开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
+    private String startTime;
     @ApiModelProperty("有效结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
+    private String endTime;
     @ApiModelProperty("授权书扫描件")
     private String certificateOfAuthorizationImg;
 
@@ -88,27 +91,43 @@ public class IotCompanyCertificateVO extends BaseVO implements Serializable {
         this.companyId = companyId;
     }
 
-    public String getCompanyBusinessLicense() {
-        return companyBusinessLicense;
+    public String getLaunchCompanyName() {
+        return launchCompanyName;
     }
 
-    public void setCompanyBusinessLicense(String companyBusinessLicense) {
-        this.companyBusinessLicense = companyBusinessLicense;
+    public void setLaunchCompanyName(String launchCompanyName) {
+        this.launchCompanyName = launchCompanyName;
     }
 
-    public Date getStartTime() {
+    public String getLaunchCompanyId() {
+        return launchCompanyId;
+    }
+
+    public void setLaunchCompanyId(String launchCompanyId) {
+        this.launchCompanyId = launchCompanyId;
+    }
+
+    public String getLaunchCompanyBusinessLicense() {
+        return launchCompanyBusinessLicense;
+    }
+
+    public void setLaunchCompanyBusinessLicense(String launchCompanyBusinessLicense) {
+        this.launchCompanyBusinessLicense = launchCompanyBusinessLicense;
+    }
+
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

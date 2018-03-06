@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,26 +25,32 @@ public class IotProductBaseInfoVO extends BaseVO implements Serializable {
     private String supplierName;
     @ApiModelProperty("厂商id")
     private String supplierId;
-    @ApiModelProperty("代理商名称")
-    private String agentName;
-    @ApiModelProperty("代理商id")
-    private String agentId;
+    @ApiModelProperty("企业名称")
+    private String companyName;
+    @ApiModelProperty("企业id")
+    private String companyId;
     @ApiModelProperty("产品类型")
     private String type;
+    @ApiModelProperty("产品类型名称")
+    private String typeName;
     @ApiModelProperty("产品小类")
     private String productSubclass;
+    @ApiModelProperty("产品小类名称")
+    private String productSubclassName;
     @ApiModelProperty("68分类/器械分类")
     private String instrumentClassify;
+    @ApiModelProperty("68分类/器械分类名称")
+    private String instrumentClassifyName;
     @ApiModelProperty("注册证号")
     private String registerCertificate;
     @ApiModelProperty("注册证扫描件")
     private String registerCertificateImg;
     @ApiModelProperty("有效期开始时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
+    private String startTime;
     @ApiModelProperty("有效期结束时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date endTime;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
+    private String endTime;
     @ApiModelProperty("产品名称")
     private String name;
     @ApiModelProperty("别名")
@@ -97,20 +102,20 @@ public class IotProductBaseInfoVO extends BaseVO implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public String getAgentName() {
-        return agentName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setAgentName(String agentName) {
-        this.agentName = agentName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
-    public String getAgentId() {
-        return agentId;
+    public String getCompanyId() {
+        return companyId;
     }
 
-    public void setAgentId(String agentId) {
-        this.agentId = agentId;
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
     public String getType() {
@@ -153,19 +158,19 @@ public class IotProductBaseInfoVO extends BaseVO implements Serializable {
         this.registerCertificateImg = registerCertificateImg;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
@@ -239,5 +244,29 @@ public class IotProductBaseInfoVO extends BaseVO implements Serializable {
 
     public void setDataTransmissionVOList(List<IotProductDataTransmissionVO> dataTransmissionVOList) {
         this.dataTransmissionVOList = dataTransmissionVOList;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getProductSubclassName() {
+        return productSubclassName;
+    }
+
+    public void setProductSubclassName(String productSubclassName) {
+        this.productSubclassName = productSubclassName;
+    }
+
+    public String getInstrumentClassifyName() {
+        return instrumentClassifyName;
+    }
+
+    public void setInstrumentClassifyName(String instrumentClassifyName) {
+        this.instrumentClassifyName = instrumentClassifyName;
     }
 }
