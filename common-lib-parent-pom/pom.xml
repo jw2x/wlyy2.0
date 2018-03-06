@@ -21,6 +21,7 @@
         <module>../common/common-exception</module>
         <module>../common/common-request-mapping</module>
         <module>../common/common-util</module>
+        <module>../common/common-fegin</module>
 
     </modules>
 

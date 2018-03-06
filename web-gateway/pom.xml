@@ -18,6 +18,11 @@
     <dependencies>
         <dependency>
             <groupId>com.yihu.jw</groupId>
+            <artifactId>common-fegin</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
             <artifactId>common-exception</artifactId>
         </dependency>
         <dependency>

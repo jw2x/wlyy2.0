@@ -1,7 +1,7 @@
 //package com.yihu.jw.config.security;
 //
 //
-//import com.yihu.jw.feign.base.user.EmployFeign;
+//import com.yihu.jw.fegin.base.user.EmployFeign;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.security.core.authority.AuthorityUtils;
 //import org.springframework.security.core.userdetails.User;

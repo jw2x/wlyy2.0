@@ -4,7 +4,7 @@ import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.user.BaseUserContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.feign.base.user.EmployFeign;
+import com.yihu.jw.fegin.base.user.EmployFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;

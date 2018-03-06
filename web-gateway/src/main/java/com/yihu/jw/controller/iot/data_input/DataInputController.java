@@ -3,7 +3,7 @@ package com.yihu.jw.controller.iot.data_input;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.iot.DataConstants;
-import com.yihu.jw.feign.iot.data_input.DataInputFeign;
+import com.yihu.jw.fegin.iot.data_input.DataInputFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

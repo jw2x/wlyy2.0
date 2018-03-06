@@ -1,7 +1,7 @@
 package com.yihu.jw.controller.iot.device;
 
 import com.yihu.jw.commnon.iot.IotCommonContants;
-import com.yihu.jw.feign.iot.device.IotDeviceOrderFeign;
+import com.yihu.jw.fegin.iot.device.IotDeviceOrderFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
