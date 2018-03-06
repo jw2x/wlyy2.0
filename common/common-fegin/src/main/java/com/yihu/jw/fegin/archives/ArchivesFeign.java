@@ -6,8 +6,6 @@ import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 

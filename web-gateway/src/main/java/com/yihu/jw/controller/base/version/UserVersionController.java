@@ -1,7 +1,6 @@
 package com.yihu.jw.controller.base.version;
 
-import com.yihu.jw.commnon.base.base.BaseContants;
-import com.yihu.jw.fegin.base.version.UserVersionFeign;
+import com.yihu.jw.common.base.base.BaseContants;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

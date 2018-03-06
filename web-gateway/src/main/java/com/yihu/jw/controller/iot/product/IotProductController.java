@@ -1,6 +1,6 @@
 package com.yihu.jw.controller.iot.product;
 
-import com.yihu.jw.commnon.iot.IotCommonContants;
+import com.yihu.jw.common.iot.IotCommonContants;
 import com.yihu.jw.fegin.iot.product.IotProductFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;

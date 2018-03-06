@@ -1,6 +1,6 @@
 package com.yihu.jw.controller.wlyy.patient;
 
-import com.yihu.jw.commnon.wlyy.PatientContants;
+import com.yihu.jw.common.wlyy.PatientContants;
 import com.yihu.jw.fegin.wlyy.patient.AdvertisementFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;

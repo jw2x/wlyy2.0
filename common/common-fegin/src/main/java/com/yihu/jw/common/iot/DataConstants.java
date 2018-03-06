@@ -1,4 +1,4 @@
-package com.yihu.jw.commnon.iot;
+package com.yihu.jw.common.iot;
 
 public class DataConstants {
     public static final String api_iot_common = "/svr-iot";
