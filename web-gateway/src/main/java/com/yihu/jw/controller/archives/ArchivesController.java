@@ -3,7 +3,7 @@ package com.yihu.jw.controller.archives;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.archives.ArchivesContants;
-import com.yihu.jw.feign.archives.ArchivesFeign;
+import com.yihu.jw.fegin.archives.ArchivesFeign;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
 import com.yihu.jw.restmodel.common.Envelop;

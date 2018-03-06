@@ -3,7 +3,7 @@ package com.yihu.jw.controller.base.base;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.base.base.BaseContants;
-import com.yihu.jw.feign.base.base.SaasFeign;
+import com.yihu.jw.fegin.base.base.SaasFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import io.swagger.annotations.Api;

@@ -3,7 +3,7 @@ package com.yihu.jw.controller.iot.common;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.yihu.jw.commnon.iot.IotCommonContants;
-import com.yihu.jw.feign.iot.common.IotSystemDictFeign;
+import com.yihu.jw.fegin.iot.common.IotSystemDictFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.dict.IotSystemDictVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
