@@ -1,4 +1,4 @@
-package com.yihu.jw.commnon.base.base;
+package com.yihu.jw.common.base.base;
 
 /**
  * Created by chenweida on 2017/5/19.

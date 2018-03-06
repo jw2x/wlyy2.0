@@ -1,4 +1,4 @@
-package com.yihu.jw.commnon.wlyy;
+package com.yihu.jw.common.wlyy;
 
 /**
  * Created by Administrator on 2017/6/2 0002.

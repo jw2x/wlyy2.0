@@ -1,4 +1,4 @@
-package com.yihu.jw.commnon.archives;
+package com.yihu.jw.common.archives;
 
 /**
  * Created by Trick on 2018/2/12.

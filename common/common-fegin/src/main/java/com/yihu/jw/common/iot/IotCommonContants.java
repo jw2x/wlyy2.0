@@ -1,4 +1,4 @@
-package com.yihu.jw.commnon.iot;
+package com.yihu.jw.common.iot;
 
 /**
  * @author yeshijie on 2018/1/20.

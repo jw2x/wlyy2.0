@@ -1,4 +1,4 @@
-package com.yihu.jw.commnon.base.wx;
+package com.yihu.jw.common.base.wx;
 
 /**
  * Created by Administrator on 2017/5/20 0020.

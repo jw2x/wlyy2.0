@@ -2,9 +2,8 @@ package com.yihu.jw.controller.base.user;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yihu.jw.commnon.base.user.BaseUserContants;
+import com.yihu.jw.common.base.user.BaseUserContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.fegin.base.user.BaseMenuFeign;
 import com.yihu.jw.fegin.base.user.BaseMenuFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;

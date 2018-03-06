@@ -1,6 +1,6 @@
 package com.yihu.jw.controller.wlyy.agreement;
 
-import com.yihu.jw.commnon.wlyy.AgreementContants;
+import com.yihu.jw.common.wlyy.AgreementContants;
 import com.yihu.jw.fegin.wlyy.agreement.WlyyAgreementKpiFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;

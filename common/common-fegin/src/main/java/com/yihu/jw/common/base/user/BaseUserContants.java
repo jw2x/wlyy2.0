@@ -1,4 +1,4 @@
-package com.yihu.jw.commnon.base.user;
+package com.yihu.jw.common.base.user;
 /**
  * Created by LiTaohong on 2017/11/28.
  */
