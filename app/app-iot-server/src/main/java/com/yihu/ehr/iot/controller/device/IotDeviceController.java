@@ -12,7 +12,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,7 +26,7 @@ public class IotDeviceController extends BaseController{
     @Autowired
     private DeviceService deviceService;
 
-    @PostMapping(value = IotRequestMapping.Device.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = IotRequestMapping.Device.api_create)
     @ApiOperation(value = "创建设备", notes = "创建设备")
     public Envelop<IotDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                           @RequestParam String jsonData) {
@@ -99,7 +98,9 @@ public class IotDeviceController extends BaseController{
                                                            @ApiParam(name = "orderId", value = "订单id", defaultValue = "")
                                                            @RequestParam(value = "orderId", required = false) String orderId,
                                                            @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
-                                                           @RequestParam(value = "purcharseId", required = true) String purcharseId,
+                                                           @RequestParam(value = "purcharseId", required = false) String purcharseId,
+                                                           @ApiParam(name = "isBinding", value = "是否绑定（1已绑定，2未绑定）", defaultValue = "")
+                                                           @RequestParam(value = "isBinding", required = false) Integer isBinding,
                                                            @ApiParam(name = "page", value = "第几页", defaultValue = "")
                                                            @RequestParam(value = "page", required = false) Integer page,
                                                            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
@@ -111,7 +112,7 @@ public class IotDeviceController extends BaseController{
             if(size == null){
                 size = 10;
             }
-            return deviceService.findProductPageByCompanyId(sn,hospital,orderId,purcharseId,page,size);
+            return deviceService.findProductPageByCompanyId(sn,hospital,orderId,purcharseId,isBinding,page,size);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -166,4 +167,5 @@ public class IotDeviceController extends BaseController{
             return Envelop.getError(e.getMessage());
         }
     }
+
 }

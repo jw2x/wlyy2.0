@@ -77,4 +77,11 @@ public class IotDeviceOrderController extends EnvelopRestController{
         return iotDeviceOrderFeign.findPurcharsePage(orderId,page,size);
     }
 
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharseById)
+    @ApiOperation(value = "根据id查找采购订单", notes = "根据id查找采购订单")
+    public Envelop<IotOrderPurchaseVO>  findPurcharseById(@ApiParam(name = "id", value = "id")
+                                                          @RequestParam(value = "id", required = true) String id
+    ) {
+        return iotDeviceOrderFeign.findPurcharseById(id);
+    }
 }

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author yeshijie on 2018/1/17.
@@ -35,7 +34,7 @@ public class IotProductController extends EnvelopRestController {
 
 
     @GetMapping(value = IotRequestMapping.Product.findProductPage)
-    @ApiOperation(value = "分页查1找产品", notes = "分页查找产品")
+    @ApiOperation(value = "分页查找产品", notes = "分页查找产品")
     public Envelop<IotProductBaseInfoVO> findCompanyPage(
             @ApiParam(name = "name", value = "注册证号或产品名称", defaultValue = "")
             @RequestParam(value = "name", required = false) String name,
@@ -76,6 +75,7 @@ public class IotProductController extends EnvelopRestController {
 
             //DO转VO
             List<IotProductBaseInfoVO> iotCompanyVOList = convertToModels(list,new ArrayList<>(list.size()),IotProductBaseInfoVO.class);
+            iotProductBaseInfoService.translateDictForList(iotCompanyVOList);
 
             return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
         } catch (Exception e) {
@@ -116,23 +116,7 @@ public class IotProductController extends EnvelopRestController {
 
             //DO转VO
             List<IotProductBaseInfoVO> iotCompanyVOList = convertToModels(list,new ArrayList<>(list.size()),IotProductBaseInfoVO.class);
-            if(iotCompanyVOList.size()>0){
-                //字典翻译
-                Map<String,String> product68Map = iotSystemDictService.findByDictName("PRODUCT_68_TYPE");
-                Map<String,String> originMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
-                Map<String,String> productSmallMap = iotSystemDictService.findByDictName("PRODUCT_SMALL_TYPE");
-                iotCompanyVOList.forEach(infoVO->{
-                    if(StringUtils.isNotBlank(infoVO.getType())){
-                        infoVO.setTypeName(originMap.get(infoVO.getType()));
-                    }
-                    if(StringUtils.isNotBlank(infoVO.getInstrumentClassify())){
-                        infoVO.setInstrumentClassifyName(product68Map.get(infoVO.getInstrumentClassify()));
-                    }
-                    if(StringUtils.isNotBlank(infoVO.getProductSubclass())){
-                        infoVO.setProductSubclassName(productSmallMap.get(infoVO.getType()));
-                    }
-                });
-            }
+            iotProductBaseInfoService.translateDictForList(iotCompanyVOList);
 
             return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
         } catch (Exception e) {

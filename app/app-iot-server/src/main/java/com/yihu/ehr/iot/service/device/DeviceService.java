@@ -124,12 +124,13 @@ public class DeviceService extends BaseService{
      * @throws IOException
      */
     public Envelop<IotDeviceVO> findProductPageByCompanyId(String sn,String hospital,String orderId,
-                String purcharseId,Integer page,Integer size) throws IOException{
+                String purcharseId,Integer isBinding,Integer page,Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("sn", sn);
         params.put("hospital", hospital);
         params.put("orderId", orderId);
         params.put("purcharseId", purcharseId);
+        params.put("isBinding", isBinding);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.QueryDevicePage, params);
@@ -224,4 +225,5 @@ public class DeviceService extends BaseService{
         Envelop<IotDeviceImportRecordVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }
+
 }

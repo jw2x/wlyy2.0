@@ -25,6 +25,8 @@ public class IotDeviceVO extends BaseVO implements Serializable {
     private String deviceSn;
     @ApiModelProperty("是否复合型(1是，0否即设备为单一功能)")
     private Integer isComposite;
+    @ApiModelProperty("是否绑定（1已绑定，2未绑定）")
+    private Integer isBinding;
     @ApiModelProperty("是否平台型(1是，0否)")
     private Integer isPlatform;
     @ApiModelProperty("设备来源(1采购订单关联,2居民绑定,3管理员新增)")
@@ -197,5 +199,13 @@ public class IotDeviceVO extends BaseVO implements Serializable {
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public Integer getIsBinding() {
+        return isBinding;
+    }
+
+    public void setIsBinding(Integer isBinding) {
+        this.isBinding = isBinding;
     }
 }

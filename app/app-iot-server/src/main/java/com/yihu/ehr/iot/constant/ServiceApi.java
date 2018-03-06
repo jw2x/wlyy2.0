@@ -83,6 +83,7 @@ public class ServiceApi {
         public static final String CreateOrder = Base +"createOrder";
 
         public static final String FindPurcharsePage = Base +"findPurcharsePage";
+        public static final String FindPurcharseById = Base +"findPurcharseById";
 
         public DeviceOrder() {
         }

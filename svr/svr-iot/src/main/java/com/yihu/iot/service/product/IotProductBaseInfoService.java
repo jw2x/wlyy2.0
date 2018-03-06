@@ -2,15 +2,18 @@ package com.yihu.iot.service.product;
 
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.product.*;
+import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.jw.iot.product.*;
 import com.yihu.jw.restmodel.iot.product.*;
 import com.yihu.jw.util.date.DateUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yeshijie on 2018/1/16.
@@ -29,6 +32,8 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
     private IotProductDataTransmissionDao iotProductDataTransmissionDao;
     @Autowired
     private IotProductExtendInfoDao iotProductExtendInfoDao;
+    @Autowired
+    private IotSystemDictService iotSystemDictService;
 
     /**
      * 按id查找产品详情
@@ -48,6 +53,8 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         //日期单独处理
         baseInfoVO.setStartTime(DateUtil.dateToStrShort(baseInfoDO.getStartTime()));
         baseInfoVO.setEndTime(DateUtil.dateToStrShort(baseInfoDO.getEndTime()));
+        //字典翻译
+        translateDictForOne(baseInfoVO);
 
         IotProductExtendInfoVO extendInfoVO = convertToModel(extendInfoDO,IotProductExtendInfoVO.class);
         List<IotProductAttachmentVO> attachmentVOList =
@@ -225,5 +232,50 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         iotProductDataTransmissionDao.save(dataTransmissionDOList);
     }
 
+    /**
+     * 产品字典翻译
+     * @param iotCompanyVOList
+     */
+    public void translateDictForList(List<IotProductBaseInfoVO> iotCompanyVOList){
+        if(iotCompanyVOList.size()>0){
+            //字典翻译
+            Map<String,String> product68Map = iotSystemDictService.findByDictName("PRODUCT_68_TYPE");
+            Map<String,String> originMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
+            Map<String,String> productSmallMap = iotSystemDictService.findByDictName("PRODUCT_SMALL_TYPE");
+            iotCompanyVOList.forEach(infoVO->{
+                if(StringUtils.isNotBlank(infoVO.getType())){
+                    infoVO.setTypeName(originMap.get(infoVO.getType()));
+                }
+                if(StringUtils.isNotBlank(infoVO.getInstrumentClassify())){
+                    infoVO.setInstrumentClassifyName(product68Map.get(infoVO.getInstrumentClassify()));
+                }
+                if(StringUtils.isNotBlank(infoVO.getProductSubclass())){
+                    infoVO.setProductSubclassName(productSmallMap.get(infoVO.getType()));
+                }
+            });
+        }
+    }
+
+    /**
+     * 产品字典翻译
+     * @param infoVO
+     */
+    public void translateDictForOne(IotProductBaseInfoVO infoVO){
+        if(infoVO!=null){
+            //字典翻译
+            Map<String,String> product68Map = iotSystemDictService.findByDictName("PRODUCT_68_TYPE");
+            Map<String,String> originMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
+            Map<String,String> productSmallMap = iotSystemDictService.findByDictName("PRODUCT_SMALL_TYPE");
+            if(StringUtils.isNotBlank(infoVO.getType())){
+                infoVO.setTypeName(originMap.get(infoVO.getType()));
+            }
+            if(StringUtils.isNotBlank(infoVO.getInstrumentClassify())){
+                infoVO.setInstrumentClassifyName(product68Map.get(infoVO.getInstrumentClassify()));
+            }
+            if(StringUtils.isNotBlank(infoVO.getProductSubclass())){
+                infoVO.setProductSubclassName(productSmallMap.get(infoVO.getType()));
+            }
+        }
+    }
 
 }
