@@ -1,6 +1,6 @@
 package com.yihu.jw.fegin;
 
-import com.yihu.jw.commnon.Contants;
+import com.yihu.jw.common.Contants;
 import com.yihu.jw.fegin.fallbackfactory.DemoFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import org.springframework.cloud.netflix.feign.FeignClient;
