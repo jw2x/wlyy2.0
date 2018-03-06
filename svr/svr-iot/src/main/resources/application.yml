@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name:  svr-iot  #注册到发现服务的id 如果id一样 eurika会自动做负载
+    name:  svr-iot-ysj  #注册到发现服务的id 如果id一样 eurika会自动做负载
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
