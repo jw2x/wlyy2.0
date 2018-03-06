@@ -143,10 +143,14 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         iotProductBaseInfoDao.save(baseInfoDO);
         //扩展信息
         IotProductExtendInfoDO extendInfoDOOld = iotProductExtendInfoDao.findByProductId(productId);
-        extendInfoDO.setSaasId(extendInfoDOOld.getSaasId());
-        extendInfoDO.setDel(1);
-        extendInfoDO.setProductId(productId);
-        iotProductExtendInfoDao.save(extendInfoDO);
+        extendInfoDOOld.setContraindication(extendInfoDO.getContraindication());
+        extendInfoDOOld.setDescription(extendInfoDO.getDescription());
+        extendInfoDOOld.setProductImg(extendInfoDO.getProductImg());
+        extendInfoDOOld.setSpecification(extendInfoDO.getSpecification());
+        extendInfoDOOld.setStandard(extendInfoDO.getStandard());
+        extendInfoDOOld.setUseRange(extendInfoDO.getUseRange());
+        extendInfoDOOld.setVersion(extendInfoDO.getVersion());
+        iotProductExtendInfoDao.save(extendInfoDOOld);
         //附件
         List<IotProductAttachmentDO> attachmentDOOldList = iotProductAttachmentDao.findByProductId(productId);
         iotProductAttachmentDao.delete(attachmentDOOldList);
@@ -240,17 +244,21 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         if(iotCompanyVOList.size()>0){
             //字典翻译
             Map<String,String> product68Map = iotSystemDictService.findByDictName("PRODUCT_68_TYPE");
-            Map<String,String> originMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
+            Map<String,String> productTypeMap = iotSystemDictService.findByDictName("PRODUCT_TYPE");
+            Map<String,String> originTypeMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
             Map<String,String> productSmallMap = iotSystemDictService.findByDictName("PRODUCT_SMALL_TYPE");
             iotCompanyVOList.forEach(infoVO->{
                 if(StringUtils.isNotBlank(infoVO.getType())){
-                    infoVO.setTypeName(originMap.get(infoVO.getType()));
+                    infoVO.setTypeName(productTypeMap.get(infoVO.getType()));
                 }
                 if(StringUtils.isNotBlank(infoVO.getInstrumentClassify())){
                     infoVO.setInstrumentClassifyName(product68Map.get(infoVO.getInstrumentClassify()));
                 }
                 if(StringUtils.isNotBlank(infoVO.getProductSubclass())){
-                    infoVO.setProductSubclassName(productSmallMap.get(infoVO.getType()));
+                    infoVO.setProductSubclassName(productSmallMap.get(infoVO.getProductSubclass()));
+                }
+                if(infoVO.getOriginType()!=null){
+                    infoVO.setOriginTypeName(originTypeMap.get(infoVO.getOriginType().toString()));
                 }
             });
         }
@@ -264,16 +272,20 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         if(infoVO!=null){
             //字典翻译
             Map<String,String> product68Map = iotSystemDictService.findByDictName("PRODUCT_68_TYPE");
-            Map<String,String> originMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
+            Map<String,String> productTypeMap = iotSystemDictService.findByDictName("PRODUCT_TYPE");
             Map<String,String> productSmallMap = iotSystemDictService.findByDictName("PRODUCT_SMALL_TYPE");
+            Map<String,String> originTypeMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
             if(StringUtils.isNotBlank(infoVO.getType())){
-                infoVO.setTypeName(originMap.get(infoVO.getType()));
+                infoVO.setTypeName(productTypeMap.get(infoVO.getType()));
             }
             if(StringUtils.isNotBlank(infoVO.getInstrumentClassify())){
                 infoVO.setInstrumentClassifyName(product68Map.get(infoVO.getInstrumentClassify()));
             }
             if(StringUtils.isNotBlank(infoVO.getProductSubclass())){
-                infoVO.setProductSubclassName(productSmallMap.get(infoVO.getType()));
+                infoVO.setProductSubclassName(productSmallMap.get(infoVO.getProductSubclass()));
+            }
+            if(infoVO.getOriginType()!=null){
+                infoVO.setOriginTypeName(originTypeMap.get(infoVO.getOriginType().toString()));
             }
         }
     }
