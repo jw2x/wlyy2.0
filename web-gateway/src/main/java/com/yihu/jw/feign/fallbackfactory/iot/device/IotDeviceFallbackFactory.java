@@ -71,7 +71,8 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             public Envelop<IotDeviceVO> findProductPageByCompanyId(@RequestParam(value = "sn", required = false) String sn,
                                                                    @RequestParam(value = "hospital", required = false) String hospital,
                                                                    @RequestParam(value = "orderId", required = false) String orderId,
-                                                                   @RequestParam(value = "purcharseId", required = true) String purcharseId,
+                                                                   @RequestParam(value = "purcharseId", required = false) String purcharseId,
+                                                                   @RequestParam(value = "isBinding", required = false) Integer isBinding,
                                                                    @RequestParam(value = "page", required = false) Integer page,
                                                                    @RequestParam(value = "size", required = false) Integer size){
                 tracer.getCurrentSpan().logEvent("分页查找设备失败:原因:" + e.getMessage());
@@ -79,6 +80,7 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
                 tracer.getCurrentSpan().logEvent("hospital:" + hospital);
                 tracer.getCurrentSpan().logEvent("orderId:" + orderId);
                 tracer.getCurrentSpan().logEvent("purcharseId:" + purcharseId);
+                tracer.getCurrentSpan().logEvent("isBinding:" + isBinding);
                 tracer.getCurrentSpan().logEvent("page:" + page);
                 tracer.getCurrentSpan().logEvent("size:" + size);
                 return null;

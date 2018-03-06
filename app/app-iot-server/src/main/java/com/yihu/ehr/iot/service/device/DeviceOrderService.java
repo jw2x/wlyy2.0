@@ -114,4 +114,17 @@ public class DeviceOrderService extends BaseService{
         return envelop;
     }
 
+    /**
+     * 根据id查找采购订单
+     * @param id
+     * @return
+     */
+    public Envelop<IotOrderPurchaseVO> findPurcharseById(String id) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindPurcharseById, params);
+        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
 }

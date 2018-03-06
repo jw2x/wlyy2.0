@@ -45,4 +45,6 @@ public interface IotDeviceOrderFeign {
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
 
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharseById)
+    Envelop<IotOrderPurchaseVO>  findPurcharseById(@RequestParam(value = "id", required = true) String id);
 }

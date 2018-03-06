@@ -41,7 +41,7 @@ public class IotDeviceQualityController extends EnvelopRestController{
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
     @ApiOperation(value = "分页获取设备质检计划", notes = "分页获取设备质检计划")
     public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(@ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
-                                                           @RequestParam(value = "purcharseId", required = true) String purcharseId,
+                                                           @RequestParam(value = "purcharseId", required = false) String purcharseId,
                                                            @ApiParam(name = "page", value = "第几页", defaultValue = "")
                                                            @RequestParam(value = "page", required = false) Integer page,
                                                            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")

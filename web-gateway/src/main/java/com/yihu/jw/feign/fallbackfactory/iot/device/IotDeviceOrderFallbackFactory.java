@@ -77,6 +77,12 @@ public class IotDeviceOrderFallbackFactory implements FallbackFactory<IotDeviceO
                 return null;
             }
 
+            @Override
+            public Envelop<IotOrderPurchaseVO>  findPurcharseById(@RequestParam(value = "id", required = true) String id) {
+                tracer.getCurrentSpan().logEvent("根据id查找采购订单失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("id:" + id);
+                return null;
+            }
         };
     }
 

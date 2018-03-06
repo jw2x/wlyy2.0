@@ -4,6 +4,7 @@ import com.yihu.iot.service.company.IotCompanyService;
 import com.yihu.iot.service.device.IotDeviceOrderService;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.iot.device.IotDeviceOrderDO;
+import com.yihu.jw.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
@@ -137,6 +138,22 @@ public class IotDeviceOrderController extends EnvelopRestController{
                 size = 10;
             }
             return iotDeviceOrderService.queryPurcharsePage(page,size,orderId,"1");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharseById)
+    @ApiOperation(value = "根据id查找采购订单", notes = "根据id查找采购订单")
+    public Envelop<IotOrderPurchaseVO> findPurcharseById(@ApiParam(name = "id", value = "id")
+                                                 @RequestParam(value = "id", required = true) String id
+    ) {
+        try {
+            IotOrderPurchaseDO iotOrderPurchaseDO = iotDeviceOrderService.findPurchaseById(id);
+            IotOrderPurchaseVO orderPurchaseVO = convertToModel(iotOrderPurchaseDO,IotOrderPurchaseVO.class);
+
+            return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find,orderPurchaseVO);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

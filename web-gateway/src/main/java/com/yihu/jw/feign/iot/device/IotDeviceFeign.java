@@ -42,7 +42,8 @@ public interface IotDeviceFeign{
             @RequestParam(value = "sn", required = false) String sn,
             @RequestParam(value = "hospital", required = false) String hospital,
             @RequestParam(value = "orderId", required = false) String orderId,
-            @RequestParam(value = "purcharseId", required = true) String purcharseId,
+            @RequestParam(value = "purcharseId", required = false) String purcharseId,
+            @RequestParam(value = "isBinding", required = false) Integer isBinding,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
 
@@ -57,4 +58,5 @@ public interface IotDeviceFeign{
            @RequestParam(value = "purcharseId", required = true) String purcharseId,
            @RequestParam(value = "page", required = false) Integer page,
            @RequestParam(value = "size", required = false) Integer size);
+
 }

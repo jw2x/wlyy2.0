@@ -49,6 +49,15 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
     private IotDeviceQualityInspectionPlanDao iotDeviceQualityInspectionPlanDao;
 
     /**
+     * 查找采购清单
+     * @param id
+     * @return
+     */
+    public IotOrderPurchaseDO findPurchaseById(String id){
+        return iotOrderPurchaseDao.findById(id);
+    }
+
+    /**
      * 新增
      * @param iotOrderVO
      * @return
