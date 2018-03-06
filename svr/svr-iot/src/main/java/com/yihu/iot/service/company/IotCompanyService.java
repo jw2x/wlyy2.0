@@ -99,6 +99,9 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @return
      */
     public IotCompanyVO convertToModelVO(IotCompanyDO iotCompanyDO){
+        if(iotCompanyDO==null){
+            return null;
+        }
         IotCompanyVO target = new IotCompanyVO();
         BeanUtils.copyProperties(iotCompanyDO, target);
         target.setBusinessEndTime(DateUtil.dateToStrShort(iotCompanyDO.getBusinessEndTime()));

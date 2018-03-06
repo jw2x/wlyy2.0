@@ -3,6 +3,7 @@ package com.yihu.iot.service.device;
 import com.yihu.base.fastdfs.FastDFSHelper;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.device.*;
+import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.jw.iot.device.*;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
@@ -46,6 +47,8 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
     private IotPatientDeviceDao iotPatientDeviceDao;
     @Autowired
     private IotDeviceQualityInspectionPlanDao iotDeviceQualityInspectionPlanDao;
+    @Autowired
+    private IotSystemDictService iotSystemDictService;
 
     /**
      * 新增
@@ -170,6 +173,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
                 one.setIsBinding(2);
             }
         });
+        translateDictForList(iotDeviceVOList);
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotDeviceVOList, page, size,count);
     }
@@ -186,8 +190,8 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * @return
      */
     public Envelop<IotDeviceVO> queryPage(String sn,String hospital,String orderId,String purcharseId,Integer isBinding,Integer page,Integer size){
-        StringBuffer sql = new StringBuffer("SELECT DISTINCT c.* from iot_device c ,iot_patient_device t WHERE c.del=1 and t.del=1 ");
-        StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_device c ,iot_patient_device t WHERE c.del=1 and t.del=1 ");
+        StringBuffer sql = new StringBuffer("SELECT DISTINCT c.* from iot_device c left join iot_patient_device t on t.del = 1 AND c.device_sn = t.device_sn  WHERE c.del=1 ");
+        StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_device c left join iot_patient_device t on t.del = 1 AND c.device_sn = t.device_sn  WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
 
         if(StringUtils.isNotBlank(orderId)){
@@ -211,8 +215,14 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
             args.add(sn);
             args.add(sn);
         }
-        sql.append(" and c.device_sn = t.device_sn ");
-        sqlCount.append("  and c.device_sn = t.device_sn '");
+        if(isBinding==1){
+            sql.append(" and t.id is not null ");
+            sqlCount.append("  and t.id is not null ");
+        }else {
+            sql.append(" and t.id is null ");
+            sqlCount.append("  and t.id is null ");
+        }
+
 
         sql.append("order by c.update_time desc limit ").append((page-1)*size).append(",").append(size);
 
@@ -225,6 +235,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
         iotDeviceVOList.forEach(one->{
             one.setIsBinding(isBinding);
         });
+        translateDictForList(iotDeviceVOList);
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotDeviceVOList, page, size,count);
     }
@@ -297,5 +308,25 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
         List<IotDeviceImportRecordVO> importRecordVOList = convertToModels(list,new ArrayList<>(list.size()),IotDeviceImportRecordVO.class);
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,importRecordVOList, page, size,count);
+    }
+
+    /**
+     * 字典翻译
+     * @param iotDeviceVOList
+     */
+    public void translateDictForList(List<IotDeviceVO> iotDeviceVOList){
+        if(iotDeviceVOList.size()>0){
+            //字典翻译
+            Map<String,String> deviceBindingMap = iotSystemDictService.findByDictName("DEVICE_BINDING");
+            Map<String,String> deviceSourceMap = iotSystemDictService.findByDictName("DEVICE_SOURCE");
+            iotDeviceVOList.forEach(infoVO->{
+                if(infoVO.getIsBinding()!=null){
+                    infoVO.setIsBindingName(deviceBindingMap.get(infoVO.getIsBinding().toString()));
+                }
+                if(StringUtils.isNotBlank(infoVO.getDeviceSource())){
+                    infoVO.setDeviceSourceName(deviceSourceMap.get(infoVO.getDeviceSource()));
+                }
+            });
+        }
     }
 }
