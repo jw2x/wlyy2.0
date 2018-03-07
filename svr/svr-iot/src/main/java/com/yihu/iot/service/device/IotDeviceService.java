@@ -3,13 +3,17 @@ package com.yihu.iot.service.device;
 import com.yihu.base.fastdfs.FastDFSHelper;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.device.*;
+import com.yihu.iot.dao.product.IotProductDataTransmissionDao;
 import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.jw.iot.device.*;
+import com.yihu.jw.iot.product.IotProductDataTransmissionDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
+import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
+import com.yihu.jw.restmodel.iot.product.IotProductDataTransmissionVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +53,8 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
     private IotDeviceQualityInspectionPlanDao iotDeviceQualityInspectionPlanDao;
     @Autowired
     private IotSystemDictService iotSystemDictService;
+    @Autowired
+    private IotProductDataTransmissionDao iotProductDataTransmissionDao;
 
     /**
      * 新增
@@ -327,6 +333,52 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
                     infoVO.setDeviceSourceName(deviceSourceMap.get(infoVO.getDeviceSource()));
                 }
             });
+        }
+    }
+
+    /**
+     * 字典翻译
+     * @param iotDeviceVO
+     */
+    public void translateDictForOne(IotDeviceVO iotDeviceVO){
+        if(iotDeviceVO!=null){
+            //字典翻译
+            Map<String,String> deviceBindingMap = iotSystemDictService.findByDictName("DEVICE_BINDING");
+            Map<String,String> deviceSourceMap = iotSystemDictService.findByDictName("DEVICE_SOURCE");
+            Map<String,String> qualityStatusMap = iotSystemDictService.findByDictName("QUALITY_STATUS");
+
+            List<IotPatientDeviceDO>  deviceDOList = iotPatientDeviceDao.findByDeviceSn(iotDeviceVO.getDeviceSn());
+            if(deviceDOList!=null&&deviceDOList.size()>0){
+                iotDeviceVO.setIsBinding(1);
+            }else {
+                iotDeviceVO.setIsBinding(2);
+            }
+            iotDeviceVO.setIsBindingName(deviceBindingMap.get(iotDeviceVO.getIsBinding().toString()));
+
+            if(StringUtils.isNotBlank(iotDeviceVO.getDeviceSource())){
+                iotDeviceVO.setDeviceSourceName(deviceSourceMap.get(iotDeviceVO.getDeviceSource()));
+            }
+            //获取质检信息
+            IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanDao.findByDeviceId(iotDeviceVO.getId());
+            if(planDO!=null){
+                iotDeviceVO.setQualityStatus(qualityStatusMap.get(planDO.getStatus()));//质检状态
+            }
+            //数据来源
+            if(StringUtils.isNotBlank(iotDeviceVO.getPurchaseId())){
+                List<IotProductDataTransmissionDO> dataTransmissionDOList = iotProductDataTransmissionDao.findByProductId(iotDeviceVO.getProductId());
+                if(dataTransmissionDOList!=null){
+                    List<IotProductDataTransmissionVO> dataTransmissionVOList =
+                            convertToModels(dataTransmissionDOList,new ArrayList<>(dataTransmissionDOList.size()),IotProductDataTransmissionVO.class);
+                    iotDeviceVO.setDataTransmissionVOList(dataTransmissionVOList);
+                }
+            }
+            //关联居民
+            List<IotPatientDeviceDO> patientDeviceDOList = iotPatientDeviceDao.findByDeviceSn(iotDeviceVO.getDeviceSn());
+            if(patientDeviceDOList!=null){
+                List<IotPatientDeviceVO> patientDeviceVOList =
+                        convertToModels(patientDeviceDOList,new ArrayList<>(patientDeviceDOList.size()),IotPatientDeviceVO.class);
+                iotDeviceVO.setPatientDeviceVOList(patientDeviceVOList);
+            }
         }
     }
 }

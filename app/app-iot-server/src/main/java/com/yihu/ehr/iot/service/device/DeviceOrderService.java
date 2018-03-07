@@ -127,4 +127,28 @@ public class DeviceOrderService extends BaseService{
         return envelop;
     }
 
+    /**
+     * 质检管理
+     * @param qualityStatus
+     * @param orderNo
+     * @param startTime
+     * @param endTime
+     * @param page
+     * @param size
+     * @return
+     */
+    public Envelop<IotOrderPurchaseVO> findQualityPage(String qualityStatus,
+            String orderNo,String startTime,String endTime,Integer page,Integer size) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("qualityStatus", qualityStatus);
+        params.put("orderNo", orderNo);
+        params.put("startTime", startTime);
+        params.put("endTime", endTime);
+        params.put("page", page);
+        params.put("size", size);
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindQualityPage, params);
+        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(), Envelop.class);
+        return envelop;
+    }
+
 }

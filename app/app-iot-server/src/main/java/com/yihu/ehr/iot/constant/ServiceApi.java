@@ -84,6 +84,7 @@ public class ServiceApi {
 
         public static final String FindPurcharsePage = Base +"findPurcharsePage";
         public static final String FindPurcharseById = Base +"findPurcharseById";
+        public static final String FindQualityPage = Base +"findQualityPage";
 
         public DeviceOrder() {
         }

@@ -8,7 +8,10 @@ import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 /**
  * @author yeshijie on 2018/01/20.
@@ -47,4 +50,13 @@ public interface IotDeviceOrderFeign {
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharseById)
     Envelop<IotOrderPurchaseVO>  findPurcharseById(@RequestParam(value = "id", required = true) String id);
+
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findQualityPage)
+    Envelop<IotOrderPurchaseVO> findQualityPage(
+            @RequestParam(value = "qualityStatus", required = false) String qualityStatus,
+            @RequestParam(value = "orderNo", required = false) String orderNo,
+            @RequestParam(value = "startTime", required = false) String startTime,
+            @RequestParam(value = "endTime", required = false) String endTime,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size);
 }

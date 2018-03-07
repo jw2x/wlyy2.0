@@ -191,6 +191,7 @@ public class IotRequestMapping {
 
         public static final String findPurcharsePage = "findPurcharsePage";
         public static final String findPurcharseById = "findPurcharseById";
+        public static final String findQualityPage = "findQualityPage";
 
         public static final String api_create = "deviceOrder";
         public static final String api_delete = "deviceOrder";

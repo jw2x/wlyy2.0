@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 采购清单表
@@ -51,11 +52,14 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
     @Column(name = "purchase_num")
     private Long purchaseNum;//采购数量
 
-//    @Column(name = "next_quality_time")
-//    private Date nextQualityTime;//'下次质检时间'
+    @Column(name = "next_quality_time")
+    private Date nextQualityTime;//下次质检时间
 
-//    @Column(name = "quality_status")
-//    private String qualityStatus;//'质检状态'
+    @Column(name = "quality_status")
+    private String qualityStatus;//质检状态
+
+    @Column(name = "quality_leader")
+    private String qualityLeader;//质检负责人
 
     @Column(name = "maintenance_unit_id")
     private String maintenanceUnitId;//维护单位Id
@@ -154,14 +158,13 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
         this.purchaseNum = purchaseNum;
     }
 
-//    public Date getNextQualityTime() {
-//        return nextQualityTime;
-//    }
-//
-//    public void setNextQualityTime(Date nextQualityTime) {
-//        this.nextQualityTime = nextQualityTime;
-//    }
+    public Date getNextQualityTime() {
+        return nextQualityTime;
+    }
 
+    public void setNextQualityTime(Date nextQualityTime) {
+        this.nextQualityTime = nextQualityTime;
+    }
 
     public String getProductId() {
         return productId;
@@ -171,13 +174,21 @@ public class IotOrderPurchaseDO extends IdEntityWithOperation implements Seriali
         this.productId = productId;
     }
 
-//    public String getQualityStatus() {
-//        return qualityStatus;
-//    }
-//
-//    public void setQualityStatus(String qualityStatus) {
-//        this.qualityStatus = qualityStatus;
-//    }
+    public String getQualityStatus() {
+        return qualityStatus;
+    }
+
+    public void setQualityStatus(String qualityStatus) {
+        this.qualityStatus = qualityStatus;
+    }
+
+    public String getQualityLeader() {
+        return qualityLeader;
+    }
+
+    public void setQualityLeader(String qualityLeader) {
+        this.qualityLeader = qualityLeader;
+    }
 
     public Integer getDel() {
         return del;
