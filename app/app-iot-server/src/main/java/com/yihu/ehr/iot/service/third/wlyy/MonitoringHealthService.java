@@ -84,7 +84,9 @@ public class MonitoringHealthService extends BaseService{
         params.put("jsonData", jsonObject.toString());
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.PatientDevice.findLocationByIdCard, params);
         envelop = objectMapper.readValue(response.getBody(),Envelop.class);
-        envelop.setTotalCount(total);
+        if(envelop.getTotalCount()==0){
+            envelop.setTotalCount(total);
+        }
         return envelop;
     }
 

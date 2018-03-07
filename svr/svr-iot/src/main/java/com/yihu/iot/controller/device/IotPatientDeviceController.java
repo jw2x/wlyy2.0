@@ -201,7 +201,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             List<LocationDataVO> list = iotPatientDeviceService.findDeviceLocationsByIdCard(jsonData);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,list);
+            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,list,iotPatientDeviceService.getESCount(jsonData));
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

@@ -22,8 +22,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.naming.directory.SearchResult;
-import java.util.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -79,7 +77,14 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
 
             Map<String, String> json = LatitudeUtils.getGeocoderLatitude(deviceVO.getAddress().replace("G.", "").replace("（糖友网）", "").replace("（高友网）", ""));
             if (json == null) {
-                return;
+                if(!StringUtils.isEmpty(deviceVO.getHospitalName())){
+                    json = LatitudeUtils.getGeocoderLatitude(deviceVO.getHospitalName().replace("G.", "").replace("（糖友网）", "").replace("（高友网）", ""));
+                    if(json==null){
+                        return;
+                    }
+                }else {
+                    return;
+                }
             }
             logger.info("地址:," + deviceVO.getAddress() + "坐标" + json.toString());
             dataDTO.setLocation(Double.valueOf(json.get("lat")), Double.valueOf(json.get("lng")));
