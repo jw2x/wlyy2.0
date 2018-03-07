@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.naming.directory.SearchResult;
 import java.util.*;
 
 /**
@@ -254,4 +255,16 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
         return bool;
     }
 
+    /**
+     * 计算符合查询条件的总数
+     * @param jsonData
+     * @return
+     */
+    public int getESCount(String jsonData){
+        int count = 0;
+        SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
+        io.searchbox.core.SearchResult result = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        count = result.getTotal();
+        return count;
+    }
 }
