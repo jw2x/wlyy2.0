@@ -6,9 +6,9 @@ import com.yihu.iot.dao.device.IotDeviceDao;
 import com.yihu.iot.dao.device.IotDeviceOrderDao;
 import com.yihu.iot.dao.device.IotDeviceQualityInspectionPlanDao;
 import com.yihu.iot.dao.device.IotOrderPurchaseDao;
+import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.iot.device.IotDeviceOrderDO;
-import com.yihu.jw.iot.device.IotDeviceQualityInspectionPlanDO;
 import com.yihu.jw.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
@@ -18,16 +18,14 @@ import com.yihu.jw.restmodel.iot.device.IotOrderVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yeshijie on 2017/12/8.
@@ -47,6 +45,8 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
     private IotDeviceDao iotDeviceDao;
     @Autowired
     private IotDeviceQualityInspectionPlanDao iotDeviceQualityInspectionPlanDao;
+    @Autowired
+    private IotSystemDictService iotSystemDictService;
 
     /**
      * 查找采购清单
@@ -56,6 +56,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
     public IotOrderPurchaseDO findPurchaseById(String id){
         return iotOrderPurchaseDao.findById(id);
     }
+
 
     /**
      * 新增
@@ -74,12 +75,13 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
 
         String time = DateUtil.dateToStr(new Date(),DateUtil.YYYYMMDD);
         List<IotDeviceOrderDO> doList = iotDeviceOrderDao.findByYmd(time);
-        String orderNo = String.format("%05d",doList.size());
+        String orderNo = time + String.format("%05d",doList.size());
         iotDeviceOrderDO.setOrderNo(orderNo);
         iotDeviceOrderDO.setOrderStatus(IotDeviceOrderDO.DeviceOrderStatus.create.getValue());
         iotDeviceOrderDO.setSaasId(getCode());
         iotDeviceOrderDO.setDel(1);
         iotDeviceOrderDO.setYmd(time);
+        iotDeviceOrderDO.setPurchaseTime(DateUtil.strToDate(iotDeviceOrderVO.getPurchaseTime()));
         iotDeviceOrderDao.save(iotDeviceOrderDO);
         String orderId = iotDeviceOrderDO.getId();
         //采购清单
@@ -90,6 +92,23 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
             purchase.setSaasId(getCode());
         });
         iotOrderPurchaseDao.save(orderPurchaseDOList);
+        //质检计划
+//        List<IotDeviceQualityInspectionPlanDO> planDOList = new ArrayList<>();
+//        orderPurchaseDOList.forEach(purchase->{
+//            //质检计划
+//            IotDeviceQualityInspectionPlanDO planDO = new IotDeviceQualityInspectionPlanDO();
+//            planDO.setPurchaseNum(purchase.getPurchaseNum());
+//            planDO.setOrderNo(orderNo);
+//            planDO.setOrderId(orderId);
+//            planDO.setSaasId(getCode());
+//            planDO.setStatus(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.create.getValue());
+//            planDO.setDeviceName(purchase.getDeviceName());
+//            planDO.setPurchaseId(purchase.getId());
+////            planDO.set
+//
+//            planDOList.add(planDO);
+//        });
+//        iotDeviceQualityInspectionPlanDao.save(planDOList);
 
         return iotDeviceOrderDO;
     }
@@ -144,6 +163,24 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
     }
 
     /**
+     * 转换
+     * @param sources
+     * @param targets
+     * @return
+     */
+    public List<IotDeviceOrderVO> convertToModelVOs(List<IotDeviceOrderDO> sources, List<IotDeviceOrderVO> targets){
+        sources.forEach(one -> {
+            IotDeviceOrderVO target = new IotDeviceOrderVO();
+            BeanUtils.copyProperties(one, target);
+            if(one.getPurchaseTime()!=null){
+                target.setPurchaseTime(DateUtil.dateToStrShort(one.getPurchaseTime()));
+            }
+            targets.add(target);
+        });
+        return targets;
+    }
+
+    /**
      * 分页查找
      * @param page
      * @param size
@@ -169,7 +206,8 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         long count = getCount(filters);
 
         //DO转VO
-        List<IotDeviceOrderVO> iotDeviceOrderVOList = convertToModels(list,new ArrayList<>(list.size()),IotDeviceOrderVO.class);
+        List<IotDeviceOrderVO> iotDeviceOrderVOList = new ArrayList<>();
+        convertToModelVOs(list,iotDeviceOrderVOList);
         iotDeviceOrderVOList.forEach(one->{
             findType(one);
         });
@@ -209,14 +247,12 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_device_order c ,iot_company_type t WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
         if(StringUtils.isNotBlank(name)){
-            sql.append(" and (c.supplier_name like ? or c.purchaser_name like ?)");
-            sqlCount.append(" and (c.supplier_name like '").append(name).append("' or c.purchaser_name like '").append(name).append("')");
-            args.add(name);
-            args.add(name);
+            sql.append(" and (c.supplier_name like '%").append(name).append("%' or c.purchaser_name like '%").append(name).append("%')");
+            sqlCount.append(" and (c.supplier_name like '%").append(name).append("%' or c.purchaser_name like '%").append(name).append("%')");
         }
         if(StringUtils.isNotBlank(type)){
-            sql.append(" and t.type=? ");
-            sqlCount.append(" and t.type='").append(type).append("' ");
+            sql.append(" and c.supplier_id=t.company_id and t.type=? ");
+            sqlCount.append(" and c.supplier_id=t.company_id and t.type='").append(type).append("' ");
             args.add(type);
         }
         sql.append("order by c.update_time desc limit ").append((page-1)*size).append(",").append(size);
@@ -226,7 +262,8 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         long count = Long.valueOf(countList.get(0).get("count").toString());
 
         //DO转VO
-        List<IotDeviceOrderVO> iotDeviceOrderVOList = convertToModels(list,new ArrayList<>(list.size()),IotDeviceOrderVO.class);
+        List<IotDeviceOrderVO> iotDeviceOrderVOList = new ArrayList<>();
+        convertToModelVOs(list,iotDeviceOrderVOList);
         iotDeviceOrderVOList.forEach(one->{
             findType(one);
         });
@@ -263,20 +300,74 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         iotOrderPurchaseVOList.forEach(purchase->{
             //计算已关联设备数量
             if("1".equals(type)){
-
                 Integer num = iotDeviceDao.countByPurchaseId(purchase.getId());
                 Long unNum = (purchase.getPurchaseNum()-num)>0? (purchase.getPurchaseNum()-num):0;
                 purchase.setAssociatedNum(Long.valueOf(num));
                 purchase.setUnAssociatedNum(unNum);
             }
-            //获取质检信息
-            IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanDao.findLastByPurchaseId(purchase.getId());
-            if(planDO!=null){
-                purchase.setQualityStatus(planDO.getStatus());//质检状态
-                purchase.setNextQualityTime(DateUtil.dateToStrLong(planDO.getPlanTime()));//下次质检时间
-            }
         });
+        translateForList(iotOrderPurchaseVOList);
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotOrderPurchaseVOList, page, size,count);
     }
+
+    /**
+     * 字典翻译
+     * @param iotOrderPurchaseVOList
+     */
+    public void translateForList(List<IotOrderPurchaseVO> iotOrderPurchaseVOList){
+        if(iotOrderPurchaseVOList!=null&&iotOrderPurchaseVOList.size()>0){
+            Map<String,String> qualityStatusMap = iotSystemDictService.findByDictName("QUALITY_STATUS");
+            iotOrderPurchaseVOList.forEach(one->{
+                if(StringUtils.isNotBlank(one.getQualityStatus())){
+                    one.setQualityStatusName(qualityStatusMap.get(one.getQualityStatus()));
+                }
+            });
+        }
+    }
+
+    /**
+     * 按类型分页查找
+     * @param page
+     * @param size
+     * @return
+     */
+    public Envelop<IotOrderPurchaseVO> queryPurcharsePage(Integer page, Integer size,
+              String qualityStatus,String orderNo,String startTime,String endTime){
+        StringBuffer sql = new StringBuffer("SELECT c.* from iot_order_purchase c  WHERE c.del=1 ");
+        StringBuffer sqlCount = new StringBuffer("SELECT COUNT(c.id) count from iot_order_purchase c WHERE c.del=1 ");
+        List<Object> args = new ArrayList<>();
+
+        if(StringUtils.isNotBlank(qualityStatus)){
+            sql.append(" and c.quality_status=? ");
+            sqlCount.append(" and c.quality_status='").append(qualityStatus).append("' ");
+            args.add(qualityStatus);
+        }
+        if(StringUtils.isNotBlank(orderNo)){
+            sql.append(" and c.order_no like '%").append(orderNo).append("%' ");
+            sqlCount.append(" and c.order_no like '%").append(orderNo).append("%' ");
+        }
+        if(StringUtils.isNotBlank(startTime)){
+            sql.append(" and c.next_quality_time>=? ");
+            sqlCount.append(" and c.next_quality_time>='").append(startTime).append("' ");
+            args.add(startTime);
+        }
+        if(StringUtils.isNotBlank(endTime)){
+            sql.append(" and c.next_quality_time<=? ");
+            sqlCount.append(" and c.next_quality_time<='").append(endTime).append("' ");
+            args.add(endTime);
+        }
+        sql.append("order by c.update_time desc limit ").append((page-1)*size).append(",").append(size);
+
+        List<IotOrderPurchaseDO> list = jdbcTempalte.query(sql.toString(),args.toArray(),new BeanPropertyRowMapper(IotOrderPurchaseDO.class));
+        List<Map<String,Object>> countList = jdbcTempalte.queryForList(sqlCount.toString());
+        long count = Long.valueOf(countList.get(0).get("count").toString());
+
+        //DO转VO
+        List<IotOrderPurchaseVO> iotOrderPurchaseVOList = convertToModels(list,new ArrayList<>(list.size()),IotOrderPurchaseVO.class);
+        translateForList(iotOrderPurchaseVOList);
+
+        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotOrderPurchaseVOList, page, size,count);
+    }
+
 }

@@ -78,6 +78,7 @@ public class IotDeviceController extends EnvelopRestController{
         try {
             IotDeviceDO iotDeviceDO = iotDeviceService.findById(id);
             IotDeviceVO iotDeviceVO = convertToModel(iotDeviceDO,IotDeviceVO.class);
+            iotDeviceService.translateDictForOne(iotDeviceVO);
             return Envelop.getSuccess(IotRequestMapping.Device.message_success_find, iotDeviceVO);
         } catch (Exception e) {
             e.printStackTrace();

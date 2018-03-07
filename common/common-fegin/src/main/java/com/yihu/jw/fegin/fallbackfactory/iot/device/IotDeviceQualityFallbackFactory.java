@@ -39,10 +39,16 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
             @Override
             public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
                     @RequestParam(value = "purcharseId", required = false) String purcharseId,
+                    @RequestParam(value = "orderNo", required = false) String orderNo,
+                    @RequestParam(value = "startTime", required = false) String startTime,
+                    @RequestParam(value = "endTime", required = false) String endTime,
                     @RequestParam(value = "page", required = false) Integer page,
                     @RequestParam(value = "size", required = false) Integer size){
                 tracer.getCurrentSpan().logEvent("分页获取设备质检计划失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("purcharseId:" + purcharseId);
+                tracer.getCurrentSpan().logEvent("orderNo:" + orderNo);
+                tracer.getCurrentSpan().logEvent("startTime:" + startTime);
+                tracer.getCurrentSpan().logEvent("endTime:" + endTime);
                 tracer.getCurrentSpan().logEvent("page:" + page);
                 tracer.getCurrentSpan().logEvent("size:" + size);
                 return null;

@@ -37,7 +37,7 @@ public class IotDeviceOrderController extends BaseController {
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findById)
     @ApiOperation(value = "根据id查找设备订单", notes = "根据id查找设备订单")
-    public Envelop<IotDeviceOrderVO>  findByCode(@ApiParam(name = "id", value = "id")
+    public Envelop<IotDeviceOrderVO> findByCode(@ApiParam(name = "id", value = "id")
                               @RequestParam(value = "id", required = true) String id) {
         try {
             return deviceOrderService.findByCode(id);
@@ -124,6 +124,35 @@ public class IotDeviceOrderController extends BaseController {
             @RequestParam(value = "id", required = true) String id) {
         try {
             return deviceOrderService.findPurcharseById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findQualityPage)
+    @ApiOperation(value = "质检管理", notes = "质检管理")
+    public Envelop<IotOrderPurchaseVO> findQualityPage(
+            @ApiParam(name = "qualityStatus", value = "质检状态", defaultValue = "")
+            @RequestParam(value = "qualityStatus", required = false) String qualityStatus,
+            @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
+            @RequestParam(value = "orderNo", required = false) String orderNo,
+            @ApiParam(name = "startTime", value = "开始时间", defaultValue = "")
+            @RequestParam(value = "startTime", required = false) String startTime,
+            @ApiParam(name = "endTime", value = "结束时间", defaultValue = "")
+            @RequestParam(value = "endTime", required = false) String endTime,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
+        try {
+            if(page == null|| page < 0){
+                page = 1;
+            }
+            if(size == null){
+                size = 10;
+            }
+            return deviceOrderService.findQualityPage(qualityStatus, orderNo, startTime, endTime, page, size);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

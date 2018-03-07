@@ -40,13 +40,20 @@ public class IotDeviceQualityController extends EnvelopRestController{
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
     @ApiOperation(value = "分页获取设备质检计划", notes = "分页获取设备质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(@ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
-                                                           @RequestParam(value = "purcharseId", required = false) String purcharseId,
-                                                           @ApiParam(name = "page", value = "第几页", defaultValue = "")
-                                                           @RequestParam(value = "page", required = false) Integer page,
-                                                           @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
-                                                           @RequestParam(value = "size", required = false) Integer size){
-        return iotDeviceQualityFeign.queryQualityPlanPage(purcharseId,page,size);
+    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
+            @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
+            @RequestParam(value = "purcharseId", required = false) String purcharseId,
+            @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
+            @RequestParam(value = "orderNo", required = false) String orderNo,
+            @ApiParam(name = "startTime", value = "开始时间", defaultValue = "")
+            @RequestParam(value = "startTime", required = false) String startTime,
+            @ApiParam(name = "endTime", value = "结束时间", defaultValue = "")
+            @RequestParam(value = "endTime", required = false) String endTime,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
+        return iotDeviceQualityFeign.queryQualityPlanPage(purcharseId, orderNo, startTime, endTime, page, size);
     }
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.delQualityPlan)

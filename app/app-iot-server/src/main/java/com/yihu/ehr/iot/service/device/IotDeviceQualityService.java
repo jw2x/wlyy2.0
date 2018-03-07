@@ -52,9 +52,13 @@ public class IotDeviceQualityService extends BaseService{
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(String purcharseId,Integer page,Integer size) throws IOException{
+    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(String purcharseId,String orderNo,
+            String startTime,String endTime,Integer page,Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("purcharseId", purcharseId);
+        params.put("orderNo", orderNo);
+        params.put("startTime", startTime);
+        params.put("endTime", endTime);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Quality.QueryQualityPlanPage, params);

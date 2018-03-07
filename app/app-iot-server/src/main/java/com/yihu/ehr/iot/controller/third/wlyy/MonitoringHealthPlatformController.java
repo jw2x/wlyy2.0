@@ -41,6 +41,8 @@ public class MonitoringHealthPlatformController extends BaseController{
     public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(
             @ApiParam(name = "diseaseCondition", value = "病情：0绿标，1黄标，2红标,-1没有标注的居民", defaultValue = "")
             @RequestParam(value = "diseaseCondition",required = false) Integer diseaseCondition,
+            @ApiParam(name = "type", value = "1高血压 2糖尿病", defaultValue = "")
+            @RequestParam(value = "type",required = false) String type,
             @ApiParam(name="page",value="第几页(默认第一页)",defaultValue = "1")
             @RequestParam(value="page",required = false) Integer page,
             @ApiParam(name="pageSize",value="每页几行(默认10条记录)",defaultValue = "10")
@@ -52,7 +54,7 @@ public class MonitoringHealthPlatformController extends BaseController{
             if(pageSize==null){
                 pageSize = 10;
             }
-            return monitoringHealthService.findDeviceLocations(diseaseCondition,page,pageSize);
+            return monitoringHealthService.findDeviceLocations(diseaseCondition,page,pageSize,type);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

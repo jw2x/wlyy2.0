@@ -83,6 +83,24 @@ public class IotDeviceOrderFallbackFactory implements FallbackFactory<IotDeviceO
                 tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
+
+            @Override
+            public Envelop<IotOrderPurchaseVO> findQualityPage(
+                    @RequestParam(value = "qualityStatus", required = false) String qualityStatus,
+                    @RequestParam(value = "orderNo", required = false) String orderNo,
+                    @RequestParam(value = "startTime", required = false) String startTime,
+                    @RequestParam(value = "endTime", required = false) String endTime,
+                    @RequestParam(value = "page", required = false) Integer page,
+                    @RequestParam(value = "size", required = false) Integer size){
+                tracer.getCurrentSpan().logEvent("查找质检管理失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("qualityStatus:" + qualityStatus);
+                tracer.getCurrentSpan().logEvent("orderNo:" + orderNo);
+                tracer.getCurrentSpan().logEvent("startTime:" + startTime);
+                tracer.getCurrentSpan().logEvent("endTime:" + endTime);
+                tracer.getCurrentSpan().logEvent("page:" + page);
+                tracer.getCurrentSpan().logEvent("size:" + size);
+                return null;
+            }
         };
     }
 

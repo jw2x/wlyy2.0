@@ -39,6 +39,10 @@ public class IotOrderPurchaseVO extends BaseVO implements Serializable{
     private String nextQualityTime;
     @ApiModelProperty("质检状态")
     private String qualityStatus;
+    @ApiModelProperty("质检状态")
+    private String qualityStatusName;
+    @ApiModelProperty("质检负责人")
+    private String qualityLeader;
     @ApiModelProperty("维护单位Id")
     private String maintenanceUnitId;
     @ApiModelProperty("维护单位名称")
@@ -166,5 +170,21 @@ public class IotOrderPurchaseVO extends BaseVO implements Serializable{
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getQualityStatusName() {
+        return qualityStatusName;
+    }
+
+    public void setQualityStatusName(String qualityStatusName) {
+        this.qualityStatusName = qualityStatusName;
+    }
+
+    public String getQualityLeader() {
+        return qualityLeader;
+    }
+
+    public void setQualityLeader(String qualityLeader) {
+        this.qualityLeader = qualityLeader;
     }
 }

@@ -30,6 +30,9 @@ public interface IotDeviceQualityFeign{
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
     public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
            @RequestParam(value = "purcharseId", required = false) String purcharseId,
+           @RequestParam(value = "orderNo", required = false) String orderNo,
+           @RequestParam(value = "startTime", required = false) String startTime,
+           @RequestParam(value = "endTime", required = false) String endTime,
            @RequestParam(value = "page", required = false) Integer page,
            @RequestParam(value = "size", required = false) Integer size);
 
