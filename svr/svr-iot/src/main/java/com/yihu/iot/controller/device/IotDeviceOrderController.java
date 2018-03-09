@@ -101,13 +101,34 @@ public class IotDeviceOrderController extends EnvelopRestController{
         }
     }
 
+    @PostMapping(value = IotRequestMapping.DeviceOrder.delPurchase)
+    @ApiOperation(value = "删除采购订单", notes = "删除采购订单")
+    public Envelop<IotOrderPurchaseVO> delPurchase(@ApiParam(name = "id", value = "id")
+                                              @RequestParam(value = "id", required = true) String id) {
+        try {
+            Integer re =  iotDeviceOrderService.delPurchase(id);
+            if(re==1){
+                return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find);
+            }else {
+                return Envelop.getError(IotRequestMapping.DeviceOrder.delete_purchase_fail_message_device);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
     @PostMapping(value = IotRequestMapping.DeviceOrder.delOrder)
     @ApiOperation(value = "删除订单", notes = "删除订单")
     public Envelop<IotDeviceOrderVO> delOrder(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
-            iotDeviceOrderService.delOrder(id);
-            return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find);
+            Integer re =  iotDeviceOrderService.delOrder(id);
+            if(re==1){
+                return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find);
+            }else {
+                return Envelop.getError(IotRequestMapping.DeviceOrder.delete_order_fail_message_device);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

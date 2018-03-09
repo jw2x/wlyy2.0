@@ -43,6 +43,21 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             }
 
             @Override
+            public Envelop<IotDeviceVO> delDevice(@RequestParam(value = "id", required = true) String id
+            ) {
+                tracer.getCurrentSpan().logEvent("删除设备失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("id:" + id);
+                return null;
+            }
+
+            @Override
+            public BaseEnvelop updDevice(@RequestParam String jsonData) {
+                tracer.getCurrentSpan().logEvent("修改设备失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
+                return null;
+            }
+
+            @Override
             public Envelop<ExistVO> isSnExist(@RequestParam(value = "sn", required = true) String sn
             ) {
                 tracer.getCurrentSpan().logEvent("sn码是否存在失败:原因:" + e.getMessage());

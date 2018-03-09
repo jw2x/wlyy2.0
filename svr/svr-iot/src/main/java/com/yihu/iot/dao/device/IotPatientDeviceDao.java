@@ -23,6 +23,9 @@ public interface IotPatientDeviceDao extends PagingAndSortingRepository<IotPatie
     @Query("from IotPatientDeviceDO a where a.deviceSn = ?1 and a.del=1 ")
     List<IotPatientDeviceDO> findByDeviceSn(String deviceSn);
 
+    @Query("from IotPatientDeviceDO a where a.deviceId = ?1 and a.del=1 ")
+    List<IotPatientDeviceDO> findByDeviceId(String deviceId);
+
     @Query("from IotPatientDeviceDO a where a.patient = ?1 and a.deviceSn=?2 and a.del=1")
     List<IotPatientDeviceDO> findByPatientAndDeviceSn(String patient,String deviceSn);
 

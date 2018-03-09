@@ -59,6 +59,13 @@ public class IotDeviceOrderController extends EnvelopRestController{
         return iotDeviceOrderFeign.delOrder(id);
     }
 
+    @PostMapping(value = IotRequestMapping.DeviceOrder.delPurchase)
+    @ApiOperation(value = "删除采购订单", notes = "删除采购订单")
+    public Envelop<IotOrderPurchaseVO> delPurchase(@ApiParam(name = "id", value = "id")
+                                                   @RequestParam(value = "id", required = true) String id) {
+        return iotDeviceOrderFeign.delPurchase(id);
+    }
+
     @PostMapping(value = IotRequestMapping.DeviceOrder.updOrder)
     @ApiOperation(value = "修改订单", notes = "修改订单")
     public Envelop<IotOrderVO> updOrder(@ApiParam(name = "jsonData", value = "json", defaultValue = "")

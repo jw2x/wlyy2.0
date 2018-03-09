@@ -60,6 +60,13 @@ public class IotDeviceOrderFallbackFactory implements FallbackFactory<IotDeviceO
             }
 
             @Override
+            public Envelop<IotOrderPurchaseVO> delPurchase(@RequestParam(value = "id", required = true) String id) {
+                tracer.getCurrentSpan().logEvent("删除采购订单失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("id:" + id);
+                return null;
+            }
+
+            @Override
             public Envelop<IotOrderVO> updOrder(@RequestParam(value = "jsonData", required = false)String jsonData) {
                 tracer.getCurrentSpan().logEvent("修改订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);

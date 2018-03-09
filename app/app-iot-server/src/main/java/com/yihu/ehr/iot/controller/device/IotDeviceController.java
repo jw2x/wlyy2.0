@@ -75,6 +75,31 @@ public class IotDeviceController extends BaseController{
         }
     }
 
+    @PostMapping(value = IotRequestMapping.Device.api_delete)
+    @ApiOperation(value = "删除设备", notes = "删除设备")
+    public Envelop<IotDeviceVO> delDevice(@ApiParam(name = "id", value = "id")
+                                          @RequestParam(value = "id", required = true) String id
+    ) {
+        try {
+            return deviceService.delDevice(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.api_update)
+    @ApiOperation(value = "修改设备", notes = "修改设备")
+    public BaseEnvelop updDevice(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+                                 @RequestParam String jsonData) {
+        try {
+            return deviceService.updDevice(jsonData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseEnvelop.getError(e.getMessage());
+        }
+    }
+
     @PostMapping(value = IotRequestMapping.Device.updSim)
     @ApiOperation(value = "修改sim卡号", notes = "修改sim卡号")
     public BaseEnvelop updSim(@ApiParam(name = "sim", value = "sim")

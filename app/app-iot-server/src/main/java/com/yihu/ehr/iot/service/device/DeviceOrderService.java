@@ -83,6 +83,20 @@ public class DeviceOrderService extends BaseService{
     }
 
     /**
+     * 删除采购订单
+     * @param id
+     * @return
+     * @throws IOException
+     */
+    public Envelop<IotOrderPurchaseVO> delPurchase(String id) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.DeviceOrder.DelPurchase, params);
+        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
      * 修改订单
      * @param jsonData
      * @return
