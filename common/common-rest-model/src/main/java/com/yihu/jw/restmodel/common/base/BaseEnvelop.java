@@ -1,7 +1,6 @@
 package com.yihu.jw.restmodel.common.base;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -64,6 +63,7 @@ public class BaseEnvelop {
     public static BaseEnvelop getSuccess(String message) {
         BaseEnvelop envelop = new BaseEnvelop();
         envelop.setSuccessMsg(message);
+        envelop.setStatus(200);
         return envelop;
     }
 

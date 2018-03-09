@@ -8,6 +8,7 @@ import com.yihu.iot.dao.device.IotDeviceQualityInspectionPlanDao;
 import com.yihu.iot.dao.device.IotOrderPurchaseDao;
 import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
+import com.yihu.jw.iot.device.IotDeviceDO;
 import com.yihu.jw.iot.device.IotDeviceOrderDO;
 import com.yihu.jw.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -25,7 +26,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author yeshijie on 2017/12/8.
@@ -123,13 +127,39 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
     }
 
     /**
-     * 删除
+     * 删除采购订单
      * @param id
      */
-    public void delOrder(String id){
+    public int delPurchase(String id){
+        int re = 1;
+        IotOrderPurchaseDO purchaseDO = iotOrderPurchaseDao.findById(id);
+        List<IotDeviceDO> deviceDOList = iotDeviceDao.findListByPurchaseId(id);
+        if(deviceDOList!=null&&deviceDOList.size()>0){
+            //有关联设备不能删除
+            re = -1;
+        }else {
+            purchaseDO.setDel(0);
+            iotOrderPurchaseDao.save(purchaseDO);
+        }
+        return re;
+    }
+
+    /**
+     * 删除订单
+     * @param id
+     */
+    public int delOrder(String id){
+        int re = 1;
         IotDeviceOrderDO order = iotDeviceOrderDao.findById(id);
-        order.setDel(0);
-        iotDeviceOrderDao.save(order);
+        List<IotDeviceDO> deviceDOList = iotDeviceDao.findListByOrderId(id);
+        if(deviceDOList!=null&&deviceDOList.size()>0){
+            //有关联设备不能删除
+            re = -1;
+        }else {
+            order.setDel(0);
+            iotDeviceOrderDao.save(order);
+        }
+       return re;
     }
 
     /**
@@ -150,14 +180,19 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         iotDeviceOrderDO.setSaasId(iotDeviceOrderDOOld.getSaasId());
         iotDeviceOrderDO.setDel(1);
         iotDeviceOrderDO.setYmd(iotDeviceOrderDOOld.getYmd());
+        iotDeviceOrderDO.setPurchaseTime(DateUtil.strToDate(iotDeviceOrderVO.getPurchaseTime()));
         iotDeviceOrderDao.save(iotDeviceOrderDO);
         //采购清单
         orderPurchaseDOList.forEach(purchase->{
-            IotOrderPurchaseDO purchaseDOOld = iotOrderPurchaseDao.findById(purchase.getId());
             purchase.setDel(1);
-            purchase.setOrderId(purchaseDOOld.getOrderId());
-            purchase.setOrderNo(purchaseDOOld.getOrderNo());
-            purchase.setSaasId(purchaseDOOld.getSaasId());
+            purchase.setOrderId(iotDeviceOrderDOOld.getId());
+            purchase.setOrderNo(iotDeviceOrderDOOld.getOrderNo());
+            if(StringUtils.isNotBlank(purchase.getId())){
+                IotOrderPurchaseDO purchaseDOOld = iotOrderPurchaseDao.findById(purchase.getId());
+                purchase.setSaasId(purchaseDOOld.getSaasId());
+            }else {
+                purchase.setSaasId(getCode());
+            }
         });
         iotOrderPurchaseDao.save(orderPurchaseDOList);
     }

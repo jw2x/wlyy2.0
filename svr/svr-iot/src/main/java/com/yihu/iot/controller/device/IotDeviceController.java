@@ -48,7 +48,7 @@ public class IotDeviceController extends EnvelopRestController{
 
     @PostMapping(value = IotRequestMapping.Device.api_create)
     @ApiOperation(value = "创建设备", notes = "创建设备")
-    public Envelop<IotDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
+    public Envelop<IotDeviceVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                           @RequestParam String jsonData) {
         try {
             IotDeviceDO iotDevice = toEntity(jsonData, IotDeviceDO.class);
@@ -69,6 +69,36 @@ public class IotDeviceController extends EnvelopRestController{
         }
     }
 
+    @PostMapping(value = IotRequestMapping.Device.api_delete)
+    @ApiOperation(value = "删除设备", notes = "删除设备")
+    public Envelop<IotDeviceVO> delDevice(@ApiParam(name = "id", value = "id")
+                                           @RequestParam(value = "id", required = true) String id
+    ) {
+        try {
+            Integer re = iotDeviceService.delDevice(id);
+            if(re==1){
+                return Envelop.getSuccess(IotRequestMapping.Device.message_success_find);
+            }else {
+                return Envelop.getError(IotRequestMapping.Device.del_message_fail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.api_update)
+    @ApiOperation(value = "修改设备", notes = "修改设备")
+    public BaseEnvelop updDevice(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+                                     @RequestParam String jsonData) {
+        try {
+            IotDeviceVO iotDevice = toEntity(jsonData, IotDeviceVO.class);
+            return iotDeviceService.updDevice(iotDevice);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseEnvelop.getError(e.getMessage());
+        }
+    }
 
     @GetMapping(value = IotRequestMapping.Device.api_getById)
     @ApiOperation(value = "根据code查找设备", notes = "根据code查找设备")

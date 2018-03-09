@@ -67,6 +67,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
             IotOrderPurchaseDO purchaseDO = iotOrderPurchaseDao.findById(iotDevice.getPurchaseId());
             iotDevice.setName(purchaseDO.getDeviceName());
             iotDevice.setOrderNo(purchaseDO.getOrderNo());
+            iotDevice.setOrderId(purchaseDO.getOrderId());
             iotDevice.setProductId(purchaseDO.getProductId());
             iotDevice.setSupplierId(purchaseDO.getSupplierId());
             iotDevice.setSupplierName(purchaseDO.getSupplierName());
@@ -94,6 +95,39 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      */
     public IotDeviceDO findById(String id) {
         return iotDeviceDao.findById(id);
+    }
+
+    /**
+     * 删除设备
+     * @param id
+     * @return
+     */
+    public int delDevice(String id){
+        int re = 1;
+        IotDeviceDO deviceDO = iotDeviceDao.findById(id);
+        List<IotPatientDeviceDO> patientDeviceDOList = iotPatientDeviceDao.findByDeviceId(id);
+        if(patientDeviceDOList!=null&&patientDeviceDOList.size()>0){
+            re = -1;
+        }else {
+            deviceDO.setDel(0);
+            iotDeviceDao.save(deviceDO);
+        }
+        return re;
+    }
+
+    /**
+     * 修改设备
+     * @param deviceVO
+     * @return
+     */
+    public BaseEnvelop updDevice(IotDeviceVO deviceVO){
+        IotDeviceDO deviceDO = iotDeviceDao.findById(deviceVO.getId());
+        deviceDO.setSimNo(deviceVO.getSimNo());
+        deviceDO.setDeviceSn(deviceVO.getDeviceSn());
+        deviceDO.setHospitalName(deviceVO.getHospitalName());
+        deviceDO.setHospital(deviceVO.getHospital());
+        iotDeviceDao.save(deviceDO);
+        return BaseEnvelop.getSuccess("修改成功");
     }
 
     /**

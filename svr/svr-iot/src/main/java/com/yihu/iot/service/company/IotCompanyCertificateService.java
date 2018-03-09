@@ -52,18 +52,15 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
      * @throws ParseException
      */
     public Envelop<IotCompanyCertificateVO> queryPage(Integer page, Integer size,String name,String companyId) throws ParseException {
-        String filters = "";
+        String filters = "del=1;";
         String semicolon = "";
         if(StringUtils.isNotBlank(companyId)){
-            filters = "companyId="+companyId;
+            filters += "companyId="+companyId;
             semicolon = ";";
         }
         if(StringUtils.isNotBlank(name)){
-            filters = "name?"+name;
+            filters += semicolon+"name?"+name;
             semicolon = ";";
-        }
-        if(StringUtils.isBlank(filters)){
-            filters+= semicolon + "del=1";
         }
         String sorts = "-updateTime";
         //得到list数据

@@ -29,4 +29,7 @@ public interface IotDeviceDao extends PagingAndSortingRepository<IotDeviceDO, St
 
     @Query("from IotDeviceDO w where w.purchaseId =?1 and w.del=1")
     List<IotDeviceDO> findListByPurchaseId(String purchaseId);
+
+    @Query("from IotDeviceDO w where w.orderId =?1 and w.del=1")
+    List<IotDeviceDO> findListByOrderId(String orderId);
 }

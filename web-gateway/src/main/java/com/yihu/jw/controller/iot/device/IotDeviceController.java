@@ -33,6 +33,21 @@ public class IotDeviceController extends EnvelopRestController{
         return iotDeviceFeign.create(jsonData);
     }
 
+    @PostMapping(value = IotRequestMapping.Device.api_delete)
+    @ApiOperation(value = "删除设备", notes = "删除设备")
+    public Envelop<IotDeviceVO> delDevice(@ApiParam(name = "id", value = "id")
+                                          @RequestParam(value = "id", required = true) String id
+    ) {
+        return iotDeviceFeign.delDevice(id);
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.api_update)
+    @ApiOperation(value = "修改设备", notes = "修改设备")
+    public BaseEnvelop updDevice(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+                                 @RequestParam String jsonData) {
+        return iotDeviceFeign.updDevice(jsonData);
+    }
+
 
     @GetMapping(value = IotRequestMapping.Device.api_getById)
     @ApiOperation(value = "根据code查找设备", notes = "根据code查找设备")

@@ -59,4 +59,9 @@ public interface IotDeviceFeign{
            @RequestParam(value = "page", required = false) Integer page,
            @RequestParam(value = "size", required = false) Integer size);
 
+    @PostMapping(value = IotRequestMapping.Device.api_delete)
+    Envelop<IotDeviceVO> delDevice(@RequestParam(value = "id", required = true) String id);
+
+    @PostMapping(value = IotRequestMapping.Device.api_update)
+    BaseEnvelop updDevice(@RequestParam(value = "jsonData", required = true) String jsonData);
 }

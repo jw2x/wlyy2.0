@@ -24,26 +24,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IotDeviceOrderFeign {
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder)
-    public Envelop<IotOrderVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
+    Envelop<IotOrderVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findById)
-    public Envelop<IotDeviceOrderVO> findByCode(@RequestParam(value = "id", required = true) String id);
+    Envelop<IotDeviceOrderVO> findByCode(@RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPage)
-    public Envelop<IotDeviceOrderVO> findPage(
+    Envelop<IotDeviceOrderVO> findPage(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.delOrder)
-    public Envelop<IotDeviceOrderVO> delOrder(@RequestParam(value = "id", required = true) String id);
+    Envelop<IotDeviceOrderVO> delOrder(@RequestParam(value = "id", required = true) String id);
+
+    @PostMapping(value = IotRequestMapping.DeviceOrder.delPurchase)
+    Envelop<IotOrderPurchaseVO> delPurchase(@RequestParam(value = "id", required = true) String id);
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.updOrder)
-    public Envelop<IotOrderVO> updOrder(@RequestParam(value = "jsonData", required = false)String jsonData);
+    Envelop<IotOrderVO> updOrder(@RequestParam(value = "jsonData", required = false)String jsonData);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharsePage)
-    public Envelop<IotOrderPurchaseVO> findPurcharsePage(
+    Envelop<IotOrderPurchaseVO> findPurcharsePage(
             @RequestParam(value = "orderId", required = true) String orderId,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
