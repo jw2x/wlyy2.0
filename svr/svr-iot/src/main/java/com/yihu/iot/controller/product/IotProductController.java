@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class IotProductController extends EnvelopRestController {
     private IotProductBaseInfoService iotProductBaseInfoService;
     @Autowired
     private IotSystemDictService iotSystemDictService;
+    @Autowired
+    private HttpServletRequest request;
 
 
     @GetMapping(value = IotRequestMapping.Product.findProductPage)
@@ -145,6 +148,10 @@ public class IotProductController extends EnvelopRestController {
     public Envelop<IotProductVO> findByCode(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
+            String userAgent = request.getHeader("userAgent");
+            if (StringUtils.isEmpty(userAgent)) {
+                userAgent = request.getHeader("User-Agent");
+            }
             IotProductVO vo = iotProductBaseInfoService.findProductById(id);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, vo);
         } catch (Exception e) {
