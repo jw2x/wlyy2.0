@@ -1,5 +1,6 @@
 package com.yihu.ehr.iot.service.common;
 
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.ehr.agModel.user.UserDetailModel;
@@ -65,14 +66,28 @@ public class BaseService {
      * 获取当前登录用户，当前已登录的用户都缓存在session中
      * @return
      */
-    public UserDetailModel getCurrentUser(){
+    public JSONObject getCurrentUser(){
+        JSONObject json = new JSONObject();
         String sessionId = request.getSession().getId();
         UserDetailModel user = null;
         SessionInformation sessionInformation = sessionRegistry.getSessionInformation(sessionId);
         if(null != sessionInformation.getPrincipal()){
             user = (UserDetailModel)sessionInformation.getPrincipal();
+            json.put("id",user.getId());
+            json.put("code",user.getLoginCode());
+            json.put("name",user.getRealName());
         }
-        return user;
+        return json;
+    }
+
+    /**
+     * 获取登录信息
+     * @return
+     */
+    public Map<String,Object> getLoginHeader(){
+        Map<String, Object> header = new HashMap<>();
+        header.put("User-Agent",getCurrentUser());
+        return header;
     }
 
     public String readFile(String filePath, String charSet) {

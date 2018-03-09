@@ -130,7 +130,7 @@ public class ProductService extends BaseService {
     public Envelop<IotProductVO> findByCode(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductById, params);
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductById, params,getLoginHeader());
         Envelop<IotProductVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }

@@ -35,6 +35,7 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
     @Autowired
     private IotSystemDictService iotSystemDictService;
 
+
     /**
      * 按id查找产品详情
      * @param id

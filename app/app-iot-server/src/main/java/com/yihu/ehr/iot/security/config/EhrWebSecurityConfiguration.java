@@ -1,6 +1,7 @@
 package com.yihu.ehr.iot.security.config;
 
 import com.yihu.ehr.iot.security.core.*;
+import com.yihu.ehr.iot.security.entryPoint.LoginEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -38,7 +39,8 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     //private EhrWebAccessDecisionManager ehrWebAccessDecisionManager;
     @Autowired
     private SessionRegistry sessionRegistry;
-
+    @Autowired
+    private LoginEntryPoint loginEntryPoint;
     @Autowired
     private EhrWebContextLogoutHandler ehrWebContextLogoutHandler;
 
@@ -75,6 +77,7 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/front/views/**").hasRole("USER")
                 .antMatchers("/**").hasRole("USER")
                 .and().formLogin().loginPage("/login")
+                .and().exceptionHandling().authenticationEntryPoint(loginEntryPoint)
                 .and().logout().addLogoutHandler(ehrWebContextLogoutHandler).logoutUrl("/logout").logoutSuccessUrl("/login")
                 .and().headers().frameOptions().disable()
                 .and().csrf().disable();
@@ -111,6 +114,12 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     EhrWebContextLogoutHandler ehrWebContextLogoutHandler(){
         return new EhrWebContextLogoutHandler();
     }
+
+    @Bean
+    LoginEntryPoint loginEntryPoint(){
+        return new LoginEntryPoint("/login");
+    }
+
     /**
     @Bean
     EhrWebAccessDecisionManager ehrWebAccessDecisionManager() {
