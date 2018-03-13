@@ -148,10 +148,6 @@ public class IotProductController extends EnvelopRestController {
     public Envelop<IotProductVO> findByCode(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
-            String userAgent = request.getHeader("userAgent");
-            if (StringUtils.isEmpty(userAgent)) {
-                userAgent = request.getHeader("User-Agent");
-            }
             IotProductVO vo = iotProductBaseInfoService.findProductById(id);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, vo);
         } catch (Exception e) {

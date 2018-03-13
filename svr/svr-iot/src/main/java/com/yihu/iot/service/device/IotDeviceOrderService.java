@@ -362,6 +362,29 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
     }
 
     /**
+     * 字典翻译
+     * @param list
+     */
+    public List<IotOrderPurchaseVO> transForList(List<IotOrderPurchaseDO> list){
+        List<IotOrderPurchaseVO> iotOrderPurchaseVOList = new ArrayList<>();
+        if(list!=null&&list.size()>0){
+            Map<String,String> qualityStatusMap = iotSystemDictService.findByDictName("QUALITY_STATUS");
+            list.forEach(one->{
+                IotOrderPurchaseVO orderPurchaseVO = convertToModel(one,IotOrderPurchaseVO.class);
+                if(one.getNextQualityTime()!=null){
+                    orderPurchaseVO.setNextQualityTime(DateUtil.dateToStrShort(one.getNextQualityTime()));
+                }
+                if(StringUtils.isNotBlank(one.getQualityStatus())){
+                    orderPurchaseVO.setQualityStatusName(qualityStatusMap.get(one.getQualityStatus()));
+                }
+                iotOrderPurchaseVOList.add(orderPurchaseVO);
+            });
+        }
+
+        return iotOrderPurchaseVOList;
+    }
+
+    /**
      * 按类型分页查找
      * @param page
      * @param size
@@ -399,8 +422,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         long count = Long.valueOf(countList.get(0).get("count").toString());
 
         //DO转VO
-        List<IotOrderPurchaseVO> iotOrderPurchaseVOList = convertToModels(list,new ArrayList<>(list.size()),IotOrderPurchaseVO.class);
-        translateForList(iotOrderPurchaseVOList);
+        List<IotOrderPurchaseVO> iotOrderPurchaseVOList = transForList(list);
 
         return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotOrderPurchaseVOList, page, size,count);
     }

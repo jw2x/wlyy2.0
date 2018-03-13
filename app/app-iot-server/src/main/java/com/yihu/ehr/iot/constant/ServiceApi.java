@@ -100,6 +100,7 @@ public class ServiceApi {
         public static final String DelQualityPlan = Base +"delQualityPlan";
         public static final String UpdQualityPlan = Base +"updQualityPlan";
         public static final String CompleteQualityPlan = Base +"completeQualityPlan";
+        public static final String CompletePlanByPurchaseId = Base +"completePlanByPurchaseId";
         public static final String QueryQualityPlanPage = Base +"queryQualityPlanPage";
         public static final String FindById = Base +"findById";
 

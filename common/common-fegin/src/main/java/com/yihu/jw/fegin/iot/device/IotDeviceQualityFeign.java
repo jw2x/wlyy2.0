@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IotDeviceQualityFeign{
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.addQualityPlan)
-    public Envelop<IotDeviceQualityInspectionPlanVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
+    Envelop<IotDeviceQualityInspectionPlanVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.findById)
-    public Envelop<IotDeviceQualityInspectionPlanVO> findByCode(@RequestParam(value = "id", required = true) String id);
+    Envelop<IotDeviceQualityInspectionPlanVO> findByCode(@RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
-    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
+    Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
            @RequestParam(value = "purcharseId", required = false) String purcharseId,
            @RequestParam(value = "orderNo", required = false) String orderNo,
            @RequestParam(value = "startTime", required = false) String startTime,
@@ -37,11 +37,16 @@ public interface IotDeviceQualityFeign{
            @RequestParam(value = "size", required = false) Integer size);
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.delQualityPlan)
-    public Envelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(@RequestParam(value = "id", required = true) String id);
+    Envelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(@RequestParam(value = "id", required = true) String id);
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.completeQualityPlan)
-    public Envelop<IotDeviceQualityInspectionPlanVO> completeQualityPlan(
+    Envelop<IotDeviceQualityInspectionPlanVO> completeQualityPlan(
         @RequestParam(value = "actualTime", required = true) String actualTime,
         @RequestParam(value = "id", required = true) String id);
 
+
+    @PostMapping(value = IotRequestMapping.DeviceQuality.completePlanByPurchaseId)
+    Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(
+            @RequestParam(value = "actualTime", required = true) String actualTime,
+            @RequestParam(value = "purchaseId", required = true) String purchaseId);
 }

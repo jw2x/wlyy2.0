@@ -71,6 +71,16 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
                 tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
+
+            @Override
+            public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(
+                    @RequestParam(value = "actualTime", required = true) String actualTime,
+                    @RequestParam(value = "purchaseId", required = true) String purchaseId) {
+                tracer.getCurrentSpan().logEvent("完成质检计划(按采购id)失败:原因:" + e.getMessage());
+                tracer.getCurrentSpan().logEvent("actualTime:" + actualTime);
+                tracer.getCurrentSpan().logEvent("purchaseId:" + purchaseId);
+                return null;
+            }
         };
     }
 

@@ -209,7 +209,9 @@ public class IotDeviceOrderController extends EnvelopRestController{
         try {
             IotOrderPurchaseDO iotOrderPurchaseDO = iotDeviceOrderService.findPurchaseById(id);
             IotOrderPurchaseVO orderPurchaseVO = convertToModel(iotOrderPurchaseDO,IotOrderPurchaseVO.class);
-
+            if(iotOrderPurchaseDO.getNextQualityTime()!=null){
+                orderPurchaseVO.setNextQualityTime(DateUtil.dateToStrShort(iotOrderPurchaseDO.getNextQualityTime()));
+            }
             return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find,orderPurchaseVO);
         } catch (Exception e) {
             e.printStackTrace();

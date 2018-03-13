@@ -221,6 +221,7 @@ public class IotRequestMapping {
         public static final String delQualityPlan = "delQualityPlan";
         public static final String updQualityPlan = "updQualityPlan";
         public static final String completeQualityPlan = "completeQualityPlan";
+        public static final String completePlanByPurchaseId = "completePlanByPurchaseId";
         public static final String queryQualityPlanPage = "queryQualityPlanPage";
         public static final String findById = "findById";
 

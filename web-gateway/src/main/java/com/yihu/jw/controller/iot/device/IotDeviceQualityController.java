@@ -72,4 +72,13 @@ public class IotDeviceQualityController extends EnvelopRestController{
         return iotDeviceQualityFeign.completeQualityPlan(actualTime,id);
     }
 
+    @PostMapping(value = IotRequestMapping.DeviceQuality.completePlanByPurchaseId)
+    @ApiOperation(value = "完成质检计划(按采购id)", notes = "完成质检计划(按采购id)")
+    public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
+                                                                              @RequestParam(value = "actualTime", required = true) String actualTime,
+                                                                              @ApiParam(name = "purchaseId", value = "purchaseId")
+                                                                              @RequestParam(value = "purchaseId", required = true) String purchaseId) {
+        return iotDeviceQualityFeign.completePlanByPurchaseId(actualTime,purchaseId);
+    }
+
 }
