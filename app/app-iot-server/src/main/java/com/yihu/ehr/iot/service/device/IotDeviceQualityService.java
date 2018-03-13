@@ -26,7 +26,7 @@ public class IotDeviceQualityService extends BaseService{
     public Envelop<IotDeviceQualityInspectionPlanVO> create(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
-        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Quality.CreateDevice, params);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Quality.AddQualityPlan, params);
         Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }
@@ -92,6 +92,22 @@ public class IotDeviceQualityService extends BaseService{
         params.put("actualTime", actualTime);
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Quality.CompleteQualityPlan, params);
+        Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
+     * 完成质检计划(按采购id)
+     * @param actualTime
+     * @param purchaseId
+     * @return
+     * @throws IOException
+     */
+    public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(String actualTime,String purchaseId) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("actualTime", actualTime);
+        params.put("purchaseId", purchaseId);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Quality.CompletePlanByPurchaseId, params);
         Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }

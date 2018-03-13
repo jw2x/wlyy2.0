@@ -6,9 +6,11 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
+import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +29,15 @@ public class IotDeviceQualityController extends EnvelopRestController{
     public Envelop<IotDeviceQualityInspectionPlanVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                           @RequestParam String jsonData) {
         try {
-            IotDeviceQualityInspectionPlanDO iotDeviceQualityInspectionPlan = toEntity(jsonData, IotDeviceQualityInspectionPlanDO.class);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, iotDeviceQualityInspectionPlanService.create(iotDeviceQualityInspectionPlan));
+            IotDeviceQualityInspectionPlanVO planVO = toEntity(jsonData, IotDeviceQualityInspectionPlanVO.class);
+            IotDeviceQualityInspectionPlanDO planDO = convertToModel(planVO,IotDeviceQualityInspectionPlanDO.class);
+            if(StringUtils.isNotBlank(planVO.getPlanTime())){
+                planDO.setPlanTime(DateUtil.strToDate(planVO.getPlanTime()));
+            }
+            if(StringUtils.isNotBlank(planVO.getActualTime())){
+                planDO.setActualTime(DateUtil.strToDate(planVO.getActualTime()));
+            }
+            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, iotDeviceQualityInspectionPlanService.create(planDO));
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -42,7 +51,7 @@ public class IotDeviceQualityController extends EnvelopRestController{
     ) {
         try {
             IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanService.findById(id);
-            IotDeviceQualityInspectionPlanVO planVO = convertToModel(planDO,IotDeviceQualityInspectionPlanVO.class);
+            IotDeviceQualityInspectionPlanVO planVO = iotDeviceQualityInspectionPlanService.transforOne(planDO);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, planVO);
         } catch (Exception e) {
             e.printStackTrace();
@@ -133,6 +142,21 @@ public class IotDeviceQualityController extends EnvelopRestController{
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             iotDeviceQualityInspectionPlanService.completePlan(id,actualTime);
+            return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.DeviceQuality.completePlanByPurchaseId)
+    @ApiOperation(value = "完成质检计划(按采购id)", notes = "完成质检计划(按采购id)")
+    public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
+                                                                @RequestParam(value = "actualTime", required = true) String actualTime,
+                                                                @ApiParam(name = "purchaseId", value = "purchaseId")
+                                                                @RequestParam(value = "purchaseId", required = true) String purchaseId) {
+        try {
+            iotDeviceQualityInspectionPlanService.completePlanByPurchaseId(purchaseId,actualTime);
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
         } catch (Exception e) {
             e.printStackTrace();
