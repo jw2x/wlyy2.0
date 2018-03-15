@@ -66,14 +66,14 @@ fast-dfs:
     max-size: 20
     wait-time: 500
 
-
-hadoop:
-  hbase-properties:
-    hbase.zookeeper.property.clientPort: 2181
-    zookeeper.znode.parent: /hbase-unsecure
-    hbase.zookeeper.quorum:  node1.hde.h3c.com,node2.hde.h3c.com,node3.hde.h3c.com
-  user:
-    name: root
+#暂时先不用hbase，先注释掉
+#hadoop:
+#  hbase-properties:
+#    hbase.zookeeper.property.clientPort: 2181
+#    zookeeper.znode.parent: /hbase-unsecure
+#    hbase.zookeeper.quorum:  node1.hde.h3c.com,node2.hde.h3c.com,node3.hde.h3c.com
+#  user:
+#    name: root
 
 
 

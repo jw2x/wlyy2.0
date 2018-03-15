@@ -7,8 +7,9 @@ import com.yihu.iot.datainput.enums.DataTypeEnum;
 import com.yihu.iot.datainput.service.DataStandardConvertService;
 import com.yihu.jw.iot.datainput.Data;
 import com.yihu.jw.iot.datainput.StepInfoDO;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.hadoop.hbase.util.CollectionUtils;
+//import org.apache.hadoop.hbase.util.CollectionUtils;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
@@ -76,7 +77,7 @@ public class ElasticSearchQueryGenerator {
         searchSourceBuilder.from((page -1)*size);
         searchSourceBuilder.size(size);
         //排序
-        if(CollectionUtils.notEmpty(sort)){
+        if(!CollectionUtils.isEmpty(sort)){
             for(Object obj:sort){
                 JSONObject object = JSONObject.parseObject(obj.toString());
                 FieldSortBuilder fieldSortBuilder = null;
