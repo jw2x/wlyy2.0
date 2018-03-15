@@ -133,6 +133,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
+        <!--暂时环境不用hbase，先注释掉-->
        <!-- <dependency>
             <groupId>com.yihu.base</groupId>
             <artifactId>common-data-hbase</artifactId>
