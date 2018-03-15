@@ -11,8 +11,6 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 远程监测健康平台-访问wlyy
  * @author yeshijie on 2018/2/11.
@@ -38,7 +36,7 @@ public class MonitoringHealthPlatformController extends BaseController{
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
     @ApiOperation(value = "根据idCard查询设备地址", notes = "根据idCard查询设备地址")
-    public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(
+    public Envelop<LocationDataVO> findDeviceLocationsByIdCard(
             @ApiParam(name = "diseaseCondition", value = "病情：0绿标，1黄标，2红标,-1没有标注的居民", defaultValue = "")
             @RequestParam(value = "diseaseCondition",required = false) Integer diseaseCondition,
             @ApiParam(name = "type", value = "1高血压 2糖尿病", defaultValue = "")

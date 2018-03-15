@@ -14,8 +14,6 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * @author yeshijie on 2018/2/8.
  */
@@ -116,7 +114,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
     @ApiOperation(value = "根据idCard查询设备地址", notes = "根据idCard查询设备地址")
-    public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
+    public Envelop<LocationDataVO> findDeviceLocationsByIdCard(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
         return iotPatientDeviceFeign.findDeviceLocationsByIdCard(jsonData);
     }

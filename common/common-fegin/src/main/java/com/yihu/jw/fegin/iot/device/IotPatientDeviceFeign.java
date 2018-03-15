@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 /**
  * @author yeshijie on 2018/2/8.
  */
@@ -68,5 +66,5 @@ public interface IotPatientDeviceFeign{
             @RequestParam(value = "sim",required = true) String sim);
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
-    public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(@RequestParam(value = "jsonData",required = true) String jsonData);
+    public Envelop<LocationDataVO> findDeviceLocationsByIdCard(@RequestParam(value = "jsonData",required = true) String jsonData);
 }

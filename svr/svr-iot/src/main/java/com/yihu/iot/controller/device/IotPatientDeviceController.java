@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author yeshijie on 2018/2/8.
@@ -92,7 +93,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
             List<IotPatientDeviceDO> list = iotPatientDeviceService.findByPatientAndDeviceSn(patient,deviceSn);
             //DO转VO
             List<IotPatientDeviceVO> iotPatientDeviceVOList = convertToModels(list,new ArrayList<>(list.size()),IotPatientDeviceVO.class);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,iotPatientDeviceVOList);
+            return Envelop.getSuccessList(IotRequestMapping.Device.message_success_create,iotPatientDeviceVOList);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -201,7 +202,11 @@ public class IotPatientDeviceController extends EnvelopRestController{
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             List<LocationDataVO> list = iotPatientDeviceService.findDeviceLocationsByIdCard(jsonData);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,list,iotPatientDeviceService.getESCount(jsonData));
+            Random random = new Random();
+            list.forEach(one->{
+                one.setLabel(random.nextInt(4)+"");
+            });
+            return Envelop.getSuccessList(IotRequestMapping.Device.message_success_create,list,iotPatientDeviceService.getESCount(jsonData));
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

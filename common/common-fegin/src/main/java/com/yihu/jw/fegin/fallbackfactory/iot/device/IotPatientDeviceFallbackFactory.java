@@ -11,8 +11,6 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.List;
-
 /**
  * @author yeshijie on 2018/2/8.
  */
@@ -113,7 +111,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(
+            public Envelop<LocationDataVO> findDeviceLocationsByIdCard(
                     @RequestParam(value = "jsonData",required = true) String jsonData) {
                 tracer.getCurrentSpan().logEvent("查询设备地址失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);

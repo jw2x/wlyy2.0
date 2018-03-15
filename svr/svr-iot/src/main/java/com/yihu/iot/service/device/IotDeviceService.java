@@ -176,7 +176,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      */
     public Envelop<IotDeviceVO> queryPage(String sn,String hospital,String orderId,String purcharseId,Integer page,Integer size) throws Exception{
         String filters = "";
-        String semicolon = "";
+        String semicolon = "del=1;";
         if(StringUtils.isNotBlank(orderId)){
             filters += semicolon +"orderId="+orderId;
             semicolon = ";";
@@ -190,11 +190,8 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
             semicolon = ";";
         }
         if(StringUtils.isNotBlank(sn)){
-            filters = "deviceSn?"+sn+" g1;name?"+sn+" g1";
+            filters += semicolon + "deviceSn?"+sn+" g1;name?"+sn+" g1";
             semicolon = ";";
-        }
-        if(StringUtils.isBlank(filters)){
-            filters+= semicolon + "del=1";
         }
         String sorts = "-updateTime";
         //得到list数据
@@ -240,8 +237,8 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
             args.add(orderId);
         }
         if(StringUtils.isNotBlank(purcharseId)){
-            sql.append(" and c.purcharse_id = ? ");
-            sqlCount.append(" and c.purcharse_id = '").append(purcharseId).append("'");
+            sql.append(" and c.purchase_id = ? ");
+            sqlCount.append(" and c.purchase_id = '").append(purcharseId).append("'");
             args.add(purcharseId);
         }
         if(StringUtils.isNotBlank(hospital)){
@@ -334,8 +331,8 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
         List<Object> args = new ArrayList<>();
 
         if(StringUtils.isNotBlank(purcharseId)){
-            sql.append(" and c.purcharse_id=? ");
-            sqlCount.append(" and c.purcharse_id='").append(purcharseId).append("' ");
+            sql.append(" and c.purchase_id=? ");
+            sqlCount.append(" and c.purchase_id='").append(purcharseId).append("' ");
             args.add(purcharseId);
         }
         sql.append("order by c.update_time desc limit ").append((page-1)*size).append(",").append(size);

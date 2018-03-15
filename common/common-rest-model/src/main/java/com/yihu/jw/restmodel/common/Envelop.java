@@ -154,4 +154,13 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
         envelop.setStatus(200);
         return envelop;
     }
+
+    public static Envelop getSuccessList(String message, List objList,Integer total) {
+        Envelop envelop = new Envelop();
+        envelop.setSuccessMsg(message);
+        envelop.setDetailModelList(objList);
+        envelop.setTotalCount(total);
+        envelop.setStatus(200);
+        return envelop;
+    }
 }

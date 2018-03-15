@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,8 +44,9 @@ public class MonitoringHealthService extends BaseService{
      * @param diseaseCondition
      * @return
      */
-    public Envelop<List<LocationDataVO>> findDeviceLocations(Integer diseaseCondition,Integer page,Integer size,String type) throws IOException {
-        Envelop<List<LocationDataVO>> envelop = null;
+    public Envelop<LocationDataVO> findDeviceLocations(Integer diseaseCondition,Integer page,Integer size,String type) throws IOException {
+        Envelop<LocationDataVO> envelop = new Envelop<>();
+        Envelop<LocationDataVO> envelopTmp = null;
         JSONArray jsonArray = new JSONArray();
         Integer total = 0;
         if(StringUtils.isNotBlank(type)){
@@ -57,14 +57,26 @@ public class MonitoringHealthService extends BaseService{
                 total = data.getInteger("total");
                 JSONArray list = data.getJSONArray("list");
                 for(int i=0;i<list.size();i++){
+                    JSONArray jsonArrayTemp = new JSONArray();
                     JSONObject deviceSn = new JSONObject();
                     deviceSn.put("andOr","or");
                     deviceSn.put("field","deviceSn");
                     deviceSn.put("condition","=");
                     deviceSn.put("value",list.getString(i));
-                    jsonArray.add(deviceSn);
+                    jsonArrayTemp.add(deviceSn);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("filter",jsonArray);
+                    jsonObject.put("page",page);
+                    jsonObject.put("size",size);
+                    Map<String, Object> params = new HashMap<>();
+                    params.put("jsonData", jsonObject.toString());
+                    HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.PatientDevice.findLocationByIdCard, params);
+                    envelopTmp = objectMapper.readValue(response.getBody(),Envelop.class);
+                    envelop.getDetailModelList().addAll(envelopTmp.getDetailModelList());
                 }
             }
+            envelop.setTotalCount(total);
+            return envelop;
         }else {
             //查找全部
             if(diseaseCondition!=null){
@@ -75,19 +87,16 @@ public class MonitoringHealthService extends BaseService{
                 json.put("value",diseaseCondition);
                 jsonArray.add(json);
             }
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("filter",jsonArray);
+            jsonObject.put("page",page);
+            jsonObject.put("size",size);
+            Map<String, Object> params = new HashMap<>();
+            params.put("jsonData", jsonObject.toString());
+            HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.PatientDevice.findLocationByIdCard, params);
+            envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+            return envelop;
         }
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("filter",jsonArray);
-        jsonObject.put("page",page);
-        jsonObject.put("size",size);
-        Map<String, Object> params = new HashMap<>();
-        params.put("jsonData", jsonObject.toString());
-        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.PatientDevice.findLocationByIdCard, params);
-        envelop = objectMapper.readValue(response.getBody(),Envelop.class);
-        if(envelop.getTotalCount()==0){
-            envelop.setTotalCount(total);
-        }
-        return envelop;
     }
 
     /**
