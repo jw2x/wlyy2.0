@@ -49,18 +49,15 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @throws ParseException
      */
     public Envelop<IotCompanyVO> queryPage(Integer page,Integer size,String status,String name) throws ParseException {
-        String filters = "";
+        String filters = "del=1;";
         String semicolon = "";
         if(StringUtils.isNotBlank(name)){
-            filters = "name?"+name+" g1;contactsName?"+name+" g1";
+            filters += "name?"+name+" g1;contactsName?"+name+" g1";
             semicolon = ";";
         }
         if(StringUtils.isNotBlank(status)){
             filters += semicolon +"status="+status;
             semicolon = ";";
-        }
-        if(StringUtils.isBlank(filters)){
-            filters+= semicolon + "del=1";
         }
         String sorts = "-updateTime";
         //得到list数据
@@ -99,6 +96,9 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @return
      */
     public IotCompanyVO convertToModelVO(IotCompanyDO iotCompanyDO){
+        if(iotCompanyDO==null){
+            return null;
+        }
         IotCompanyVO target = new IotCompanyVO();
         BeanUtils.copyProperties(iotCompanyDO, target);
         target.setBusinessEndTime(DateUtil.dateToStrShort(iotCompanyDO.getBusinessEndTime()));
@@ -153,8 +153,8 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
             args.add(name);
         }
         if(StringUtils.isNotBlank(type)){
-            sql.append(" and t.type=? ");
-            sqlCount.append(" and t.type='").append(type).append("' ");
+            sql.append(" and c.id = t.company_id and t.type=? ");
+            sqlCount.append(" and c.id = t.company_id and t.type='").append(type).append("' ");
             args.add(type);
         }
         sql.append("order by c.update_time desc limit ").append((page-1)*size).append(",").append(size);

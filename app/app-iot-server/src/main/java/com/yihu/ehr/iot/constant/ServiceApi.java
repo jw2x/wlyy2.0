@@ -61,6 +61,8 @@ public class ServiceApi {
         public static final String GetDeviceById = Base +"getDeviceById";
         public static final String QueryDevicePage = Base +"queryDevicePage";
         public static final String GetDeviceList = Base +"getDeviceList";
+        public static final String DelDevice = Base +"delDevice";
+        public static final String UpdDevice = Base +"updDevice";
 
         public static final String IsSnExist = Base +"isSnExist";
         public static final String IsSimExist = Base +"isSimExist";
@@ -79,10 +81,13 @@ public class ServiceApi {
         public static final String FindPage = Base +"findPage";
         public static final String FindById = Base +"findById";
         public static final String DelOrder = Base +"delOrder";
+        public static final String DelPurchase = Base +"delPurchase";
         public static final String UpdOrder = Base +"updOrder";
         public static final String CreateOrder = Base +"createOrder";
 
         public static final String FindPurcharsePage = Base +"findPurcharsePage";
+        public static final String FindPurcharseById = Base +"findPurcharseById";
+        public static final String FindQualityPage = Base +"findQualityPage";
 
         public DeviceOrder() {
         }
@@ -95,6 +100,7 @@ public class ServiceApi {
         public static final String DelQualityPlan = Base +"delQualityPlan";
         public static final String UpdQualityPlan = Base +"updQualityPlan";
         public static final String CompleteQualityPlan = Base +"completeQualityPlan";
+        public static final String CompletePlanByPurchaseId = Base +"completePlanByPurchaseId";
         public static final String QueryQualityPlanPage = Base +"queryQualityPlanPage";
         public static final String FindById = Base +"findById";
 

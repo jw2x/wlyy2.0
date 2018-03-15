@@ -49,14 +49,21 @@ public class IotDeviceQualityController extends BaseController{
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
     @ApiOperation(value = "分页获取设备质检计划", notes = "分页获取设备质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(@ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
-                                                           @RequestParam(value = "purcharseId", required = true) String purcharseId,
-                                                           @ApiParam(name = "page", value = "第几页", defaultValue = "")
-                                                           @RequestParam(value = "page", required = false) Integer page,
-                                                           @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
-                                                           @RequestParam(value = "size", required = false) Integer size){
+    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
+            @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
+            @RequestParam(value = "purcharseId", required = false) String purcharseId,
+            @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
+            @RequestParam(value = "orderNo", required = false) String orderNo,
+            @ApiParam(name = "startTime", value = "开始时间", defaultValue = "")
+            @RequestParam(value = "startTime", required = false) String startTime,
+            @ApiParam(name = "endTime", value = "结束时间", defaultValue = "")
+            @RequestParam(value = "endTime", required = false) String endTime,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
         try {
-            return iotDeviceQualityService.queryQualityPlanPage(purcharseId, page, size);
+            return iotDeviceQualityService.queryQualityPlanPage(purcharseId, orderNo, startTime, endTime, page, size);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -83,6 +90,20 @@ public class IotDeviceQualityController extends BaseController{
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             return iotDeviceQualityService.completeQualityPlan(actualTime, id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.DeviceQuality.completePlanByPurchaseId)
+    @ApiOperation(value = "完成质检计划(按采购id)", notes = "完成质检计划(按采购id)")
+    public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
+                                                                              @RequestParam(value = "actualTime", required = true) String actualTime,
+                                                                              @ApiParam(name = "purchaseId", value = "purchaseId")
+                                                                              @RequestParam(value = "purchaseId", required = true) String purchaseId) {
+        try {
+            return iotDeviceQualityService.completePlanByPurchaseId(actualTime, purchaseId);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

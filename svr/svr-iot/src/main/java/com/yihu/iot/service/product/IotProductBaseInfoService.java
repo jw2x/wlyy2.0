@@ -2,15 +2,18 @@ package com.yihu.iot.service.product;
 
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.product.*;
+import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.jw.iot.product.*;
 import com.yihu.jw.restmodel.iot.product.*;
 import com.yihu.jw.util.date.DateUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author yeshijie on 2018/1/16.
@@ -29,6 +32,9 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
     private IotProductDataTransmissionDao iotProductDataTransmissionDao;
     @Autowired
     private IotProductExtendInfoDao iotProductExtendInfoDao;
+    @Autowired
+    private IotSystemDictService iotSystemDictService;
+
 
     /**
      * 按id查找产品详情
@@ -48,6 +54,8 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         //日期单独处理
         baseInfoVO.setStartTime(DateUtil.dateToStrShort(baseInfoDO.getStartTime()));
         baseInfoVO.setEndTime(DateUtil.dateToStrShort(baseInfoDO.getEndTime()));
+        //字典翻译
+        translateDictForOne(baseInfoVO);
 
         IotProductExtendInfoVO extendInfoVO = convertToModel(extendInfoDO,IotProductExtendInfoVO.class);
         List<IotProductAttachmentVO> attachmentVOList =
@@ -136,10 +144,14 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         iotProductBaseInfoDao.save(baseInfoDO);
         //扩展信息
         IotProductExtendInfoDO extendInfoDOOld = iotProductExtendInfoDao.findByProductId(productId);
-        extendInfoDO.setSaasId(extendInfoDOOld.getSaasId());
-        extendInfoDO.setDel(1);
-        extendInfoDO.setProductId(productId);
-        iotProductExtendInfoDao.save(extendInfoDO);
+        extendInfoDOOld.setContraindication(extendInfoDO.getContraindication());
+        extendInfoDOOld.setDescription(extendInfoDO.getDescription());
+        extendInfoDOOld.setProductImg(extendInfoDO.getProductImg());
+        extendInfoDOOld.setSpecification(extendInfoDO.getSpecification());
+        extendInfoDOOld.setStandard(extendInfoDO.getStandard());
+        extendInfoDOOld.setUseRange(extendInfoDO.getUseRange());
+        extendInfoDOOld.setVersion(extendInfoDO.getVersion());
+        iotProductExtendInfoDao.save(extendInfoDOOld);
         //附件
         List<IotProductAttachmentDO> attachmentDOOldList = iotProductAttachmentDao.findByProductId(productId);
         iotProductAttachmentDao.delete(attachmentDOOldList);
@@ -225,5 +237,58 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
         iotProductDataTransmissionDao.save(dataTransmissionDOList);
     }
 
+    /**
+     * 产品字典翻译
+     * @param iotCompanyVOList
+     */
+    public void translateDictForList(List<IotProductBaseInfoVO> iotCompanyVOList){
+        if(iotCompanyVOList.size()>0){
+            //字典翻译
+            Map<String,String> product68Map = iotSystemDictService.findByDictName("PRODUCT_68_TYPE");
+            Map<String,String> productTypeMap = iotSystemDictService.findByDictName("PRODUCT_TYPE");
+            Map<String,String> originTypeMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
+            Map<String,String> productSmallMap = iotSystemDictService.findByDictName("PRODUCT_SMALL_TYPE");
+            iotCompanyVOList.forEach(infoVO->{
+                if(StringUtils.isNotBlank(infoVO.getType())){
+                    infoVO.setTypeName(productTypeMap.get(infoVO.getType()));
+                }
+                if(StringUtils.isNotBlank(infoVO.getInstrumentClassify())){
+                    infoVO.setInstrumentClassifyName(product68Map.get(infoVO.getInstrumentClassify()));
+                }
+                if(StringUtils.isNotBlank(infoVO.getProductSubclass())){
+                    infoVO.setProductSubclassName(productSmallMap.get(infoVO.getProductSubclass()));
+                }
+                if(infoVO.getOriginType()!=null){
+                    infoVO.setOriginTypeName(originTypeMap.get(infoVO.getOriginType().toString()));
+                }
+            });
+        }
+    }
+
+    /**
+     * 产品字典翻译
+     * @param infoVO
+     */
+    public void translateDictForOne(IotProductBaseInfoVO infoVO){
+        if(infoVO!=null){
+            //字典翻译
+            Map<String,String> product68Map = iotSystemDictService.findByDictName("PRODUCT_68_TYPE");
+            Map<String,String> productTypeMap = iotSystemDictService.findByDictName("PRODUCT_TYPE");
+            Map<String,String> productSmallMap = iotSystemDictService.findByDictName("PRODUCT_SMALL_TYPE");
+            Map<String,String> originTypeMap = iotSystemDictService.findByDictName("ORIGIN_TYPE");
+            if(StringUtils.isNotBlank(infoVO.getType())){
+                infoVO.setTypeName(productTypeMap.get(infoVO.getType()));
+            }
+            if(StringUtils.isNotBlank(infoVO.getInstrumentClassify())){
+                infoVO.setInstrumentClassifyName(product68Map.get(infoVO.getInstrumentClassify()));
+            }
+            if(StringUtils.isNotBlank(infoVO.getProductSubclass())){
+                infoVO.setProductSubclassName(productSmallMap.get(infoVO.getProductSubclass()));
+            }
+            if(infoVO.getOriginType()!=null){
+                infoVO.setOriginTypeName(originTypeMap.get(infoVO.getOriginType().toString()));
+            }
+        }
+    }
 
 }

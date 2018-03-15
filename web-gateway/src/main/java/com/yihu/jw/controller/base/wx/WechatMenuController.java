@@ -2,9 +2,9 @@ package com.yihu.jw.controller.base.wx;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.yihu.jw.commnon.base.wx.WechatContants;
+import com.yihu.jw.common.base.wx.WechatContants;
 import com.yihu.jw.exception.business.JiWeiException;
-import com.yihu.jw.feign.base.wx.WechatMenuFeign;
+import com.yihu.jw.fegin.base.wx.WechatMenuFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

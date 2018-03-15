@@ -61,6 +61,8 @@ public class IotProductBaseInfoVO extends BaseVO implements Serializable {
     private String originPlace;
     @ApiModelProperty("产地类型(1国产，2进口)")
     private Integer originType;
+    @ApiModelProperty("产地类型名称")
+    private String originTypeName;
     @ApiModelProperty("是否需要冷链(1是，0否)")
     private Integer isColdChain;
     @ApiModelProperty("授权id")
@@ -268,5 +270,13 @@ public class IotProductBaseInfoVO extends BaseVO implements Serializable {
 
     public void setInstrumentClassifyName(String instrumentClassifyName) {
         this.instrumentClassifyName = instrumentClassifyName;
+    }
+
+    public String getOriginTypeName() {
+        return originTypeName;
+    }
+
+    public void setOriginTypeName(String originTypeName) {
+        this.originTypeName = originTypeName;
     }
 }

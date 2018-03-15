@@ -1,7 +1,7 @@
 package com.yihu.jw.controller.iot.device;
 
-import com.yihu.jw.commnon.iot.IotCommonContants;
-import com.yihu.jw.feign.iot.device.IotDeviceQualityFeign;
+import com.yihu.jw.common.iot.IotCommonContants;
+import com.yihu.jw.fegin.iot.device.IotDeviceQualityFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
@@ -40,13 +40,20 @@ public class IotDeviceQualityController extends EnvelopRestController{
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
     @ApiOperation(value = "分页获取设备质检计划", notes = "分页获取设备质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(@ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
-                                                           @RequestParam(value = "purcharseId", required = true) String purcharseId,
-                                                           @ApiParam(name = "page", value = "第几页", defaultValue = "")
-                                                           @RequestParam(value = "page", required = false) Integer page,
-                                                           @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
-                                                           @RequestParam(value = "size", required = false) Integer size){
-        return iotDeviceQualityFeign.queryQualityPlanPage(purcharseId,page,size);
+    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
+            @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
+            @RequestParam(value = "purcharseId", required = false) String purcharseId,
+            @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
+            @RequestParam(value = "orderNo", required = false) String orderNo,
+            @ApiParam(name = "startTime", value = "开始时间", defaultValue = "")
+            @RequestParam(value = "startTime", required = false) String startTime,
+            @ApiParam(name = "endTime", value = "结束时间", defaultValue = "")
+            @RequestParam(value = "endTime", required = false) String endTime,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
+        return iotDeviceQualityFeign.queryQualityPlanPage(purcharseId, orderNo, startTime, endTime, page, size);
     }
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.delQualityPlan)
@@ -63,6 +70,15 @@ public class IotDeviceQualityController extends EnvelopRestController{
                                             @ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         return iotDeviceQualityFeign.completeQualityPlan(actualTime,id);
+    }
+
+    @PostMapping(value = IotRequestMapping.DeviceQuality.completePlanByPurchaseId)
+    @ApiOperation(value = "完成质检计划(按采购id)", notes = "完成质检计划(按采购id)")
+    public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
+                                                                              @RequestParam(value = "actualTime", required = true) String actualTime,
+                                                                              @ApiParam(name = "purchaseId", value = "purchaseId")
+                                                                              @RequestParam(value = "purchaseId", required = true) String purchaseId) {
+        return iotDeviceQualityFeign.completePlanByPurchaseId(actualTime,purchaseId);
     }
 
 }

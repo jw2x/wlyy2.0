@@ -26,7 +26,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,7 +48,7 @@ public class IotDeviceController extends EnvelopRestController{
 
     @PostMapping(value = IotRequestMapping.Device.api_create)
     @ApiOperation(value = "创建设备", notes = "创建设备")
-    public Envelop<IotDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
+    public Envelop<IotDeviceVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                           @RequestParam String jsonData) {
         try {
             IotDeviceDO iotDevice = toEntity(jsonData, IotDeviceDO.class);
@@ -70,6 +69,36 @@ public class IotDeviceController extends EnvelopRestController{
         }
     }
 
+    @PostMapping(value = IotRequestMapping.Device.api_delete)
+    @ApiOperation(value = "删除设备", notes = "删除设备")
+    public Envelop<IotDeviceVO> delDevice(@ApiParam(name = "id", value = "id")
+                                           @RequestParam(value = "id", required = true) String id
+    ) {
+        try {
+            Integer re = iotDeviceService.delDevice(id);
+            if(re==1){
+                return Envelop.getSuccess(IotRequestMapping.Device.message_success_find);
+            }else {
+                return Envelop.getError(IotRequestMapping.Device.del_message_fail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.api_update)
+    @ApiOperation(value = "修改设备", notes = "修改设备")
+    public BaseEnvelop updDevice(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+                                     @RequestParam String jsonData) {
+        try {
+            IotDeviceVO iotDevice = toEntity(jsonData, IotDeviceVO.class);
+            return iotDeviceService.updDevice(iotDevice);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return BaseEnvelop.getError(e.getMessage());
+        }
+    }
 
     @GetMapping(value = IotRequestMapping.Device.api_getById)
     @ApiOperation(value = "根据code查找设备", notes = "根据code查找设备")
@@ -79,6 +108,7 @@ public class IotDeviceController extends EnvelopRestController{
         try {
             IotDeviceDO iotDeviceDO = iotDeviceService.findById(id);
             IotDeviceVO iotDeviceVO = convertToModel(iotDeviceDO,IotDeviceVO.class);
+            iotDeviceService.translateDictForOne(iotDeviceVO);
             return Envelop.getSuccess(IotRequestMapping.Device.message_success_find, iotDeviceVO);
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,7 +169,9 @@ public class IotDeviceController extends EnvelopRestController{
                                                            @ApiParam(name = "orderId", value = "订单id", defaultValue = "")
                                                            @RequestParam(value = "orderId", required = false) String orderId,
                                                            @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
-                                                           @RequestParam(value = "purcharseId", required = true) String purcharseId,
+                                                           @RequestParam(value = "purcharseId", required = false) String purcharseId,
+                                                           @ApiParam(name = "isBinding", value = "是否绑定（1已绑定，2未绑定）", defaultValue = "")
+                                                           @RequestParam(value = "isBinding", required = false) Integer isBinding,
                                                            @ApiParam(name = "page", value = "第几页", defaultValue = "")
                                                            @RequestParam(value = "page", required = false) Integer page,
                                                            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
@@ -151,37 +183,11 @@ public class IotDeviceController extends EnvelopRestController{
             if(size == null){
                 size = 10;
             }
-            String filters = "";
-            String semicolon = "";
-            if(StringUtils.isNotBlank(orderId)){
-                filters += semicolon +"orderId="+orderId;
-                semicolon = ";";
+            if(isBinding==null){
+                return iotDeviceService.queryPage(sn, hospital, orderId, purcharseId, page, size);
+            }else {
+                return iotDeviceService.queryPage(sn, hospital, orderId, purcharseId, isBinding, page, size);
             }
-            if(StringUtils.isNotBlank(purcharseId)){
-                filters += semicolon +"purcharseId="+purcharseId;
-                semicolon = ";";
-            }
-            if(StringUtils.isNotBlank(hospital)){
-                filters += semicolon +"hospital="+hospital;
-                semicolon = ";";
-            }
-            if(StringUtils.isNotBlank(sn)){
-                filters = "deviceSn?"+sn+" g1;simNo?"+sn+" g1";
-                semicolon = ";";
-            }
-            if(StringUtils.isBlank(filters)){
-                filters+= semicolon + "del=1";
-            }
-            String sorts = "-updateTime";
-            //得到list数据
-            List<IotDeviceDO> list = iotDeviceService.search(null, filters, sorts, page, size);
-            //获取总数
-            long count = iotDeviceService.getCount(filters);
-
-            //DO转VO
-            List<IotDeviceVO> iotDeviceVOList = convertToModels(list,new ArrayList<>(list.size()),IotDeviceVO.class);
-
-            return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotDeviceVOList, page, size,count);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

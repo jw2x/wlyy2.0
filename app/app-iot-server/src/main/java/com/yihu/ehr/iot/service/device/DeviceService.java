@@ -16,13 +16,8 @@ import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
-import com.yihu.jw.rm.iot.IotRequestMapping;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -45,8 +40,7 @@ public class DeviceService extends BaseService{
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceVO> create(@ApiParam(name = "json_data", value = "", defaultValue = "")
-                          @RequestBody String jsonData) throws IOException {
+    public Envelop<IotDeviceVO> create(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.CreateDevice, params);
@@ -60,8 +54,6 @@ public class DeviceService extends BaseService{
      * @return
      * @throws IOException
      */
-    @GetMapping(value = IotRequestMapping.Device.api_getById)
-    @ApiOperation(value = "根据code查找设备", notes = "根据code查找设备")
     public Envelop<IotDeviceVO> findByCode(String id)throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
@@ -107,7 +99,34 @@ public class DeviceService extends BaseService{
     public BaseEnvelop updSim(String sim,String id) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("sim", sim);
-        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.UpdSim, params);
+        params.put("id", id);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.UpdSim, params);
+        BaseEnvelop envelop = objectMapper.readValue(response.getBody(),BaseEnvelop.class);
+        return envelop;
+    }
+
+    /**
+     * 删除
+     * @param id
+     * @return
+     */
+    public Envelop<IotDeviceVO> delDevice(String id) throws IOException{
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.DelDevice, params);
+        Envelop<IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
+     * 修改设备
+     * @param jsonData
+     * @return
+     */
+    public BaseEnvelop updDevice(String jsonData) throws IOException{
+        Map<String, Object> params = new HashMap<>();
+        params.put("jsonData", jsonData);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.UpdDevice, params);
         BaseEnvelop envelop = objectMapper.readValue(response.getBody(),BaseEnvelop.class);
         return envelop;
     }
@@ -124,12 +143,13 @@ public class DeviceService extends BaseService{
      * @throws IOException
      */
     public Envelop<IotDeviceVO> findProductPageByCompanyId(String sn,String hospital,String orderId,
-                String purcharseId,Integer page,Integer size) throws IOException{
+                String purcharseId,Integer isBinding,Integer page,Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("sn", sn);
         params.put("hospital", hospital);
         params.put("orderId", orderId);
         params.put("purcharseId", purcharseId);
+        params.put("isBinding", isBinding);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.QueryDevicePage, params);
@@ -224,4 +244,5 @@ public class DeviceService extends BaseService{
         Envelop<IotDeviceImportRecordVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }
+
 }

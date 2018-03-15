@@ -1,7 +1,7 @@
 package com.yihu.jw.controller.iot.device;
 
-import com.yihu.jw.commnon.iot.IotCommonContants;
-import com.yihu.jw.feign.iot.device.IotDeviceFeign;
+import com.yihu.jw.common.iot.IotCommonContants;
+import com.yihu.jw.fegin.iot.device.IotDeviceFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
@@ -31,6 +31,21 @@ public class IotDeviceController extends EnvelopRestController{
     public Envelop<IotDeviceVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                           @RequestParam(value = "jsonData", required = true) String jsonData) {
         return iotDeviceFeign.create(jsonData);
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.api_delete)
+    @ApiOperation(value = "删除设备", notes = "删除设备")
+    public Envelop<IotDeviceVO> delDevice(@ApiParam(name = "id", value = "id")
+                                          @RequestParam(value = "id", required = true) String id
+    ) {
+        return iotDeviceFeign.delDevice(id);
+    }
+
+    @PostMapping(value = IotRequestMapping.Device.api_update)
+    @ApiOperation(value = "修改设备", notes = "修改设备")
+    public BaseEnvelop updDevice(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+                                 @RequestParam String jsonData) {
+        return iotDeviceFeign.updDevice(jsonData);
     }
 
 
@@ -75,12 +90,14 @@ public class IotDeviceController extends EnvelopRestController{
                                                            @ApiParam(name = "orderId", value = "订单id", defaultValue = "")
                                                            @RequestParam(value = "orderId", required = false) String orderId,
                                                            @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
-                                                           @RequestParam(value = "purcharseId", required = true) String purcharseId,
+                                                           @RequestParam(value = "purcharseId", required = false) String purcharseId,
+                                                           @ApiParam(name = "isBinding", value = "是否绑定（1已绑定，2未绑定）", defaultValue = "")
+                                                           @RequestParam(value = "isBinding", required = false) Integer isBinding,
                                                            @ApiParam(name = "page", value = "第几页", defaultValue = "")
                                                            @RequestParam(value = "page", required = false) Integer page,
                                                            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
                                                            @RequestParam(value = "size", required = false) Integer size){
-        return iotDeviceFeign.findProductPageByCompanyId(sn,hospital,orderId,purcharseId,page,size);
+        return iotDeviceFeign.findProductPageByCompanyId(sn,hospital,orderId,purcharseId,isBinding,page,size);
     }
 
     @GetMapping(value = IotRequestMapping.Device.isImportDevice)

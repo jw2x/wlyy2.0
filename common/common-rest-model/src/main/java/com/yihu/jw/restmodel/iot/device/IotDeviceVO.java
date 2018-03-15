@@ -3,11 +3,13 @@ package com.yihu.jw.restmodel.iot.device;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yihu.jw.restmodel.iot.common.BaseVO;
+import com.yihu.jw.restmodel.iot.product.IotProductDataTransmissionVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 设备表
@@ -25,10 +27,16 @@ public class IotDeviceVO extends BaseVO implements Serializable {
     private String deviceSn;
     @ApiModelProperty("是否复合型(1是，0否即设备为单一功能)")
     private Integer isComposite;
+    @ApiModelProperty("是否绑定（1已绑定，2未绑定）")
+    private Integer isBinding;
+    @ApiModelProperty("是否绑定（1已绑定，2未绑定）")
+    private String isBindingName;
     @ApiModelProperty("是否平台型(1是，0否)")
     private Integer isPlatform;
     @ApiModelProperty("设备来源(1采购订单关联,2居民绑定,3管理员新增)")
     private String deviceSource;
+    @ApiModelProperty("设备来源(1采购订单关联,2居民绑定,3管理员新增)")
+    private String deviceSourceName;
     @ApiModelProperty("供应商code")
     private String supplierId;
     @ApiModelProperty("供应商名称")
@@ -48,12 +56,18 @@ public class IotDeviceVO extends BaseVO implements Serializable {
     @ApiModelProperty("设备状态(1正常、2报废、3检修)")
     private String status;
     @ApiModelProperty("下次质检时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
     private Date nextQualityTime;
     @ApiModelProperty("采购id")
     private String purchaseId;
     @ApiModelProperty("sim卡号")
     private String simNo;
+    @ApiModelProperty("质检状态")
+    private String qualityStatus;
+    @ApiModelProperty("数据传输方式")
+    private List<IotProductDataTransmissionVO> dataTransmissionVOList;
+    @ApiModelProperty("关联居民")
+    private List<IotPatientDeviceVO> patientDeviceVOList;
 
     public String getName() {
         return name;
@@ -197,5 +211,53 @@ public class IotDeviceVO extends BaseVO implements Serializable {
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public Integer getIsBinding() {
+        return isBinding;
+    }
+
+    public void setIsBinding(Integer isBinding) {
+        this.isBinding = isBinding;
+    }
+
+    public String getIsBindingName() {
+        return isBindingName;
+    }
+
+    public void setIsBindingName(String isBindingName) {
+        this.isBindingName = isBindingName;
+    }
+
+    public String getDeviceSourceName() {
+        return deviceSourceName;
+    }
+
+    public void setDeviceSourceName(String deviceSourceName) {
+        this.deviceSourceName = deviceSourceName;
+    }
+
+    public List<IotProductDataTransmissionVO> getDataTransmissionVOList() {
+        return dataTransmissionVOList;
+    }
+
+    public void setDataTransmissionVOList(List<IotProductDataTransmissionVO> dataTransmissionVOList) {
+        this.dataTransmissionVOList = dataTransmissionVOList;
+    }
+
+    public String getQualityStatus() {
+        return qualityStatus;
+    }
+
+    public void setQualityStatus(String qualityStatus) {
+        this.qualityStatus = qualityStatus;
+    }
+
+    public List<IotPatientDeviceVO> getPatientDeviceVOList() {
+        return patientDeviceVOList;
+    }
+
+    public void setPatientDeviceVOList(List<IotPatientDeviceVO> patientDeviceVOList) {
+        this.patientDeviceVOList = patientDeviceVOList;
     }
 }

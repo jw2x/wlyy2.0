@@ -11,6 +11,7 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.device.LocationDataVO;
 import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -44,17 +45,37 @@ public class MonitoringHealthService extends BaseService{
      * @param diseaseCondition
      * @return
      */
-    public Envelop<List<LocationDataVO>> findDeviceLocations(Integer diseaseCondition,Integer page,Integer size) throws IOException {
+    public Envelop<List<LocationDataVO>> findDeviceLocations(Integer diseaseCondition,Integer page,Integer size,String type) throws IOException {
+        Envelop<List<LocationDataVO>> envelop = null;
         JSONArray jsonArray = new JSONArray();
-        if(diseaseCondition!=null){
-            JSONObject json = new JSONObject();
-            json.put("andOr","and");
-            json.put("field","diseaseCondition");
-            json.put("condition","=");
-            json.put("value",diseaseCondition);
-            jsonArray.add(json);
+        Integer total = 0;
+        if(StringUtils.isNotBlank(type)){
+            String re = searchpatientdevicesn(type, page, size);
+            JSONObject json = JSON.parseObject(re);
+            if(json.getInteger("status")==200){
+                JSONObject data = json.getJSONObject("data");
+                total = data.getInteger("total");
+                JSONArray list = data.getJSONArray("list");
+                for(int i=0;i<list.size();i++){
+                    JSONObject deviceSn = new JSONObject();
+                    deviceSn.put("andOr","or");
+                    deviceSn.put("field","deviceSn");
+                    deviceSn.put("condition","=");
+                    deviceSn.put("value",list.getString(i));
+                    jsonArray.add(deviceSn);
+                }
+            }
+        }else {
+            //查找全部
+            if(diseaseCondition!=null){
+                JSONObject json = new JSONObject();
+                json.put("andOr","and");
+                json.put("field","diseaseCondition");
+                json.put("condition","=");
+                json.put("value",diseaseCondition);
+                jsonArray.add(json);
+            }
         }
-
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("filter",jsonArray);
         jsonObject.put("page",page);
@@ -62,8 +83,24 @@ public class MonitoringHealthService extends BaseService{
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonObject.toString());
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.PatientDevice.findLocationByIdCard, params);
-        Envelop<List<LocationDataVO>> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        if(envelop.getTotalCount()==0){
+            envelop.setTotalCount(total);
+        }
         return envelop;
+    }
+
+    /**
+     * 根据病种类型，搜索已绑定设备的居民设备SN码
+     * 类型(1高血压 2糖尿病)
+     */
+    public String searchpatientdevicesn(String type,Integer page,Integer size){
+        String url = "/wlyygc/iot_monitoring/searchpatientdevicesn";
+        Map<String, Object> params = new HashMap<>();
+        params.put("type",type);
+        params.put("page",page);
+        params.put("pageSize",size);
+        return sendGet(url,params);
     }
 
 

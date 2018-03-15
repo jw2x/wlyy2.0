@@ -1,7 +1,7 @@
 package com.yihu.jw.controller.iot.device;
 
-import com.yihu.jw.commnon.iot.IotCommonContants;
-import com.yihu.jw.feign.iot.device.IotDeviceOrderFeign;
+import com.yihu.jw.common.iot.IotCommonContants;
+import com.yihu.jw.fegin.iot.device.IotDeviceOrderFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
@@ -59,6 +59,13 @@ public class IotDeviceOrderController extends EnvelopRestController{
         return iotDeviceOrderFeign.delOrder(id);
     }
 
+    @PostMapping(value = IotRequestMapping.DeviceOrder.delPurchase)
+    @ApiOperation(value = "删除采购订单", notes = "删除采购订单")
+    public Envelop<IotOrderPurchaseVO> delPurchase(@ApiParam(name = "id", value = "id")
+                                                   @RequestParam(value = "id", required = true) String id) {
+        return iotDeviceOrderFeign.delPurchase(id);
+    }
+
     @PostMapping(value = IotRequestMapping.DeviceOrder.updOrder)
     @ApiOperation(value = "修改订单", notes = "修改订单")
     public Envelop<IotOrderVO> updOrder(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
@@ -77,4 +84,29 @@ public class IotDeviceOrderController extends EnvelopRestController{
         return iotDeviceOrderFeign.findPurcharsePage(orderId,page,size);
     }
 
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharseById)
+    @ApiOperation(value = "根据id查找采购订单", notes = "根据id查找采购订单")
+    public Envelop<IotOrderPurchaseVO>  findPurcharseById(@ApiParam(name = "id", value = "id")
+                                                          @RequestParam(value = "id", required = true) String id
+    ) {
+        return iotDeviceOrderFeign.findPurcharseById(id);
+    }
+
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findQualityPage)
+    @ApiOperation(value = "质检管理", notes = "质检管理")
+    public Envelop<IotOrderPurchaseVO> findQualityPage(
+            @ApiParam(name = "qualityStatus", value = "质检状态", defaultValue = "")
+            @RequestParam(value = "qualityStatus", required = false) String qualityStatus,
+            @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
+            @RequestParam(value = "orderNo", required = false) String orderNo,
+            @ApiParam(name = "startTime", value = "开始时间", defaultValue = "")
+            @RequestParam(value = "startTime", required = false) String startTime,
+            @ApiParam(name = "endTime", value = "结束时间", defaultValue = "")
+            @RequestParam(value = "endTime", required = false) String endTime,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
+        return iotDeviceOrderFeign.findQualityPage(qualityStatus, orderNo, startTime, endTime, page, size);
+    }
 }

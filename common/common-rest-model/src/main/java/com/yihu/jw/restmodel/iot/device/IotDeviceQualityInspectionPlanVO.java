@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 设备质检计划表
@@ -35,12 +34,14 @@ public class IotDeviceQualityInspectionPlanVO extends BaseVO implements Serializ
     private String qualityLeaderPhone;
     @ApiModelProperty("计划质检时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date planTime;
+    private String planTime;
     @ApiModelProperty("实际质检时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date actualTime;
+    private String actualTime;
     @ApiModelProperty("质检状态(1未检，2已检)")
     private String status;
+    @ApiModelProperty("质检状态(1未检，2已检)")
+    private String statusName;
 
     public String getPurchaseId() {
         return purchaseId;
@@ -106,19 +107,19 @@ public class IotDeviceQualityInspectionPlanVO extends BaseVO implements Serializ
         this.qualityLeaderPhone = qualityLeaderPhone;
     }
 
-    public Date getPlanTime() {
+    public String getPlanTime() {
         return planTime;
     }
 
-    public void setPlanTime(Date planTime) {
+    public void setPlanTime(String planTime) {
         this.planTime = planTime;
     }
 
-    public Date getActualTime() {
+    public String getActualTime() {
         return actualTime;
     }
 
-    public void setActualTime(Date actualTime) {
+    public void setActualTime(String actualTime) {
         this.actualTime = actualTime;
     }
 
@@ -128,5 +129,13 @@ public class IotDeviceQualityInspectionPlanVO extends BaseVO implements Serializ
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 }

@@ -4,6 +4,7 @@ import com.yihu.iot.service.company.IotCompanyService;
 import com.yihu.iot.service.device.IotDeviceOrderService;
 import com.yihu.jw.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.iot.device.IotDeviceOrderDO;
+import com.yihu.jw.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
@@ -11,6 +12,7 @@ import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
+import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -39,8 +41,8 @@ public class IotDeviceOrderController extends EnvelopRestController{
                           @RequestParam String jsonData) {
         try {
             IotOrderVO iotOrderVO = toEntity(jsonData, IotOrderVO.class);
-            iotDeviceOrderService.create(iotOrderVO);
-            return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_create);
+            IotDeviceOrderDO deviceOrderDO = iotDeviceOrderService.create(iotOrderVO);
+            return Envelop.getSuccess(deviceOrderDO.getOrderNo());
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -56,9 +58,14 @@ public class IotDeviceOrderController extends EnvelopRestController{
             IotDeviceOrderDO iotDeviceOrderDO = iotDeviceOrderService.findById(id);
             IotDeviceOrderVO deviceOrderVO = convertToModel(iotDeviceOrderDO,IotDeviceOrderVO.class);
             //获取企业类型
-            List<IotCompanyTypeDO> companyTypeDOList = iotCompanyService.findTypeByCompanyId(deviceOrderVO.getSupplierId());
-            List<IotCompanyTypeVO> companyTypeVOList = convertToModels(companyTypeDOList,new ArrayList<>(companyTypeDOList.size()),IotCompanyTypeVO.class);
-            deviceOrderVO.setTypeList(companyTypeVOList);
+            if(deviceOrderVO!=null){
+                List<IotCompanyTypeDO> companyTypeDOList = iotCompanyService.findTypeByCompanyId(deviceOrderVO.getSupplierId());
+                List<IotCompanyTypeVO> companyTypeVOList = convertToModels(companyTypeDOList,new ArrayList<>(companyTypeDOList.size()),IotCompanyTypeVO.class);
+                deviceOrderVO.setTypeList(companyTypeVOList);
+                if(iotDeviceOrderDO.getPurchaseTime()!=null){
+                    deviceOrderVO.setPurchaseTime(DateUtil.dateToStrShort(iotDeviceOrderDO.getPurchaseTime()));
+                }
+            }
             return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find,deviceOrderVO);
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,13 +101,34 @@ public class IotDeviceOrderController extends EnvelopRestController{
         }
     }
 
+    @PostMapping(value = IotRequestMapping.DeviceOrder.delPurchase)
+    @ApiOperation(value = "删除采购订单", notes = "删除采购订单")
+    public Envelop<IotOrderPurchaseVO> delPurchase(@ApiParam(name = "id", value = "id")
+                                              @RequestParam(value = "id", required = true) String id) {
+        try {
+            Integer re =  iotDeviceOrderService.delPurchase(id);
+            if(re==1){
+                return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find);
+            }else {
+                return Envelop.getError(IotRequestMapping.DeviceOrder.delete_purchase_fail_message_device);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
     @PostMapping(value = IotRequestMapping.DeviceOrder.delOrder)
     @ApiOperation(value = "删除订单", notes = "删除订单")
     public Envelop<IotDeviceOrderVO> delOrder(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
-            iotDeviceOrderService.delOrder(id);
-            return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find);
+            Integer re =  iotDeviceOrderService.delOrder(id);
+            if(re==1){
+                return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find);
+            }else {
+                return Envelop.getError(IotRequestMapping.DeviceOrder.delete_order_fail_message_device);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -123,12 +151,13 @@ public class IotDeviceOrderController extends EnvelopRestController{
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharsePage)
     @ApiOperation(value = "分页查找采购清单", notes = "分页查找采购清单")
-    public Envelop<IotOrderPurchaseVO> findPurcharsePage(@ApiParam(name = "orderId", value = "订单id", defaultValue = "")
-                                                     @RequestParam(value = "orderId", required = true) String orderId,
-                                                         @ApiParam(name = "page", value = "第几页", defaultValue = "")
-                                                     @RequestParam(value = "page", required = false) Integer page,
-                                                         @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
-                                                     @RequestParam(value = "size", required = false) Integer size){
+    public Envelop<IotOrderPurchaseVO> findPurcharsePage(
+            @ApiParam(name = "orderId", value = "订单id", defaultValue = "")
+            @RequestParam(value = "orderId", required = true) String orderId,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
         try {
             if(page == null|| page < 0){
                 page = 1;
@@ -137,6 +166,53 @@ public class IotDeviceOrderController extends EnvelopRestController{
                 size = 10;
             }
             return iotDeviceOrderService.queryPurcharsePage(page,size,orderId,"1");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findQualityPage)
+    @ApiOperation(value = "质检管理", notes = "质检管理")
+    public Envelop<IotOrderPurchaseVO> findQualityPage(
+            @ApiParam(name = "qualityStatus", value = "质检状态", defaultValue = "")
+            @RequestParam(value = "qualityStatus", required = false) String qualityStatus,
+            @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
+            @RequestParam(value = "orderNo", required = false) String orderNo,
+            @ApiParam(name = "startTime", value = "开始时间", defaultValue = "")
+            @RequestParam(value = "startTime", required = false) String startTime,
+            @ApiParam(name = "endTime", value = "结束时间", defaultValue = "")
+            @RequestParam(value = "endTime", required = false) String endTime,
+            @ApiParam(name = "page", value = "第几页", defaultValue = "")
+            @RequestParam(value = "page", required = false) Integer page,
+            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+            @RequestParam(value = "size", required = false) Integer size){
+        try {
+            if(page == null|| page < 0){
+                page = 1;
+            }
+            if(size == null){
+                size = 10;
+            }
+            return iotDeviceOrderService.queryPurcharsePage(page, size, qualityStatus, orderNo, startTime, endTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharseById)
+    @ApiOperation(value = "根据id查找采购订单", notes = "根据id查找采购订单")
+    public Envelop<IotOrderPurchaseVO> findPurcharseById(@ApiParam(name = "id", value = "id")
+                                                 @RequestParam(value = "id", required = true) String id
+    ) {
+        try {
+            IotOrderPurchaseDO iotOrderPurchaseDO = iotDeviceOrderService.findPurchaseById(id);
+            IotOrderPurchaseVO orderPurchaseVO = convertToModel(iotOrderPurchaseDO,IotOrderPurchaseVO.class);
+            if(iotOrderPurchaseDO.getNextQualityTime()!=null){
+                orderPurchaseVO.setNextQualityTime(DateUtil.dateToStrShort(iotOrderPurchaseDO.getNextQualityTime()));
+            }
+            return Envelop.getSuccess(IotRequestMapping.DeviceOrder.message_success_find,orderPurchaseVO);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

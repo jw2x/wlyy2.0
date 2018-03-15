@@ -157,9 +157,9 @@ public class IotRequestMapping {
      */
     public static class Device{
         public static final String api_create = "createDevice";
-        public static final String api_delete = "device";
+        public static final String api_delete = "delDevice";
         public static final String api_getById = "getDeviceById";
-        public static final String api_update = "device";
+        public static final String api_update = "updDevice";
         public static final String api_queryPage = "queryDevicePage";
         public static final String api_getList = "getDeviceList";
 
@@ -174,6 +174,7 @@ public class IotRequestMapping {
         public static final String message_success_update = "device update success";
         public static final String message_success_delete = "device delete success";
         public static final String message_success_find = "device find success";
+        public static final String del_message_fail = "该设备已绑定居民，不允许删除";
         public static final String message_success_create = "device create success";
         public static final String message_success_find_functions = "device find success";
 
@@ -186,10 +187,13 @@ public class IotRequestMapping {
         public static final String findPage = "findPage";
         public static final String findById = "findById";
         public static final String delOrder = "delOrder";
+        public static final String delPurchase = "delPurchase";
         public static final String updOrder = "updOrder";
         public static final String createOrder = "createOrder";
 
         public static final String findPurcharsePage = "findPurcharsePage";
+        public static final String findPurcharseById = "findPurcharseById";
+        public static final String findQualityPage = "findQualityPage";
 
         public static final String api_create = "deviceOrder";
         public static final String api_delete = "deviceOrder";
@@ -203,6 +207,8 @@ public class IotRequestMapping {
         public static final String message_success_find = "deviceOrder find success";
         public static final String message_success_create = "deviceOrder create success";
         public static final String message_success_find_functions = "deviceOrder find success";
+        public static final String delete_order_fail_message_device = "该订单有关联设备，不允许删除";
+        public static final String delete_purchase_fail_message_device = "该采购清单有关联设备，不允许删除";
 
     }
 
@@ -215,6 +221,7 @@ public class IotRequestMapping {
         public static final String delQualityPlan = "delQualityPlan";
         public static final String updQualityPlan = "updQualityPlan";
         public static final String completeQualityPlan = "completeQualityPlan";
+        public static final String completePlanByPurchaseId = "completePlanByPurchaseId";
         public static final String queryQualityPlanPage = "queryQualityPlanPage";
         public static final String findById = "findById";
 

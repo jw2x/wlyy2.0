@@ -90,7 +90,7 @@ app:
   oauth2InnerUrl: http://172.19.103.73:10260/
   oauth2OuterUrl: http://27.154.233.186:10260/
 service-gateway:
-  iotUrl: http://172.19.103.88:8088/svr-iot/
+  iotUrl: http://172.19.103.33:8088/svr-iot/
   profileInnerUrl: http://172.19.103.73:10000/api/v1.0/admin
   profileOuterUrl: http://27.154.233.186:10000/api/v1.0/admin
   portalInnerUrl: http://172.19.103.73:10280/api/v1.0/portal

@@ -165,13 +165,13 @@ public class IotPatientDeviceController extends EnvelopRestController{
     public Envelop<IotPatientDeviceVO> updatePatientDevice(
             @ApiParam(name = "patient", value = "sn码", defaultValue = "")
             @RequestParam(value = "patient",required = true) String patient,
-            @ApiParam(name = "deviceSN", value = "设备类型", defaultValue = "")
+            @ApiParam(name = "deviceSN", value = "旧sn码", defaultValue = "")
             @RequestParam(value = "deviceSN",required = true) String deviceSN,
-            @ApiParam(name = "newDeviceSN", value = "设备类型", defaultValue = "")
+            @ApiParam(name = "newDeviceSN", value = "新sn码", defaultValue = "")
             @RequestParam(value = "newDeviceSN",required = true) String newDeviceSN,
-            @ApiParam(name = "userType", value = "sn码", defaultValue = "")
+            @ApiParam(name = "userType", value = "按键号", defaultValue = "")
             @RequestParam(value = "userType",required = true) String userType,
-            @ApiParam(name = "sim", value = "按键号", defaultValue = "")
+            @ApiParam(name = "sim", value = "sim卡号", defaultValue = "")
             @RequestParam(value = "sim",required = true) String sim) {
         try {
             iotPatientDeviceService.updatePatientDevice(patient, deviceSN, newDeviceSN, userType, sim);
@@ -201,7 +201,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             List<LocationDataVO> list = iotPatientDeviceService.findDeviceLocationsByIdCard(jsonData);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,list);
+            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,list,iotPatientDeviceService.getESCount(jsonData));
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

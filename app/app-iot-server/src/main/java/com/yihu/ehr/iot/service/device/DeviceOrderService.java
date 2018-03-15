@@ -83,6 +83,20 @@ public class DeviceOrderService extends BaseService{
     }
 
     /**
+     * 删除采购订单
+     * @param id
+     * @return
+     * @throws IOException
+     */
+    public Envelop<IotOrderPurchaseVO> delPurchase(String id) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.DeviceOrder.DelPurchase, params);
+        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
      * 修改订单
      * @param jsonData
      * @return
@@ -111,6 +125,43 @@ public class DeviceOrderService extends BaseService{
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindPurcharsePage, params);
         Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
+     * 根据id查找采购订单
+     * @param id
+     * @return
+     */
+    public Envelop<IotOrderPurchaseVO> findPurcharseById(String id) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("id", id);
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindPurcharseById, params);
+        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        return envelop;
+    }
+
+    /**
+     * 质检管理
+     * @param qualityStatus
+     * @param orderNo
+     * @param startTime
+     * @param endTime
+     * @param page
+     * @param size
+     * @return
+     */
+    public Envelop<IotOrderPurchaseVO> findQualityPage(String qualityStatus,
+            String orderNo,String startTime,String endTime,Integer page,Integer size) throws IOException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("qualityStatus", qualityStatus);
+        params.put("orderNo", orderNo);
+        params.put("startTime", startTime);
+        params.put("endTime", endTime);
+        params.put("page", page);
+        params.put("size", size);
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindQualityPage, params);
+        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(), Envelop.class);
         return envelop;
     }
 
