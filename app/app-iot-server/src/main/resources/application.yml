@@ -24,8 +24,6 @@ spring:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/front/,classpath:/
 #    cache-period: 0
 
-
-
 permissions:
   info: admin
 
