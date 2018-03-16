@@ -21,6 +21,7 @@ public class IotRequestMapping {
         public static final String quality = api_iot_common + "/quality";
         public static final String patientDevice = api_iot_common + "/patientDevice";
         public static final String wlyy = api_iot_common + "/wlyy";
+        public static final String figereLabel = api_iot_common + "/figereLabel";
 
 
         public static final String message_success_update = "update success";
@@ -262,6 +263,17 @@ public class IotRequestMapping {
         public static final String message_success_find = "deviceLabelInfo find success";
         public static final String message_success_create = "deviceLabelInfo create success";
         public static final String message_success_find_functions = "deviceLabelInfo find success";
+
+    }
+
+    /**
+     * 居民标签信息模块常量
+     */
+    public static class FigureLabelInfo{
+        public static final String api_getByIdcard = "getLabelByIdcard";
+        public static final String api_getByTypeAndCode = "getLabelByTypeAndCode";
+
+        public static final String message_success_find = "FigureLabelInfo find success";
 
     }
 
