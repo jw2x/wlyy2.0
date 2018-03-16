@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
 import com.yihu.base.es.config.model.SaveModel;
-import com.yihu.base.hbase.HBaseAdmin;
-import com.yihu.base.hbase.HBaseHelper;
+//import com.yihu.base.hbase.HBaseAdmin;
+//import com.yihu.base.hbase.HBaseHelper;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
@@ -15,8 +15,9 @@ import com.yihu.jw.iot.datainput.WeRunDataDO;
 import com.yihu.jw.iot.device.IotDeviceDO;
 import com.yihu.jw.restmodel.iot.datainput.WeRunDataVO;
 import com.yihu.jw.util.date.DateUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.hadoop.hbase.util.CollectionUtils;
+//import org.apache.hadoop.hbase.util.CollectionUtils;
 import org.apache.http.client.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,11 +45,10 @@ public class DataInputService {
     @Autowired
     private ElastricSearchHelper elastricSearchHelper;
 
-    @Autowired
-    private HBaseHelper hBaseHelper;
-
-    @Autowired
-    private HBaseAdmin hBaseAdmin;
+//    @Autowired
+//    private HBaseHelper hBaseHelper;
+//    @Autowired
+//    private HBaseAdmin hBaseAdmin;
 
     /**
      * 居民设备注册及绑定
@@ -191,11 +191,11 @@ public class DataInputService {
         elastricSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, jsonObject.toJSONString());
 
         try {
-            boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
-            if (!tableExists) {
-                hBaseAdmin.createTable(ConstantUtils.tableName,ConstantUtils.familyB);
-            }
-            hBaseHelper.addBulk(ConstantUtils.tableName, rowkeyList, familyList);
+//            boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
+//            if (!tableExists) {
+//                hBaseAdmin.createTable(ConstantUtils.tableName,ConstantUtils.familyB);
+//            }
+//            hBaseHelper.addBulk(ConstantUtils.tableName, rowkeyList, familyList);
         } catch (Exception e) {
             e.printStackTrace();
             //保存日志
