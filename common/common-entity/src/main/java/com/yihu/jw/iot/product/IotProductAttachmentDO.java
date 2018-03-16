@@ -25,6 +25,8 @@ public class IotProductAttachmentDO extends IdEntityWithOperation implements Ser
     private String type;//附件类型（1产品说明书，2其他附件）
     @Column(name = "attachment")
     private String attachment;//附件
+    @Column(name = "name")
+    private String name;//附件名称
     @Column(name = "del")
     private Integer del;//删除标志
 
@@ -74,5 +76,13 @@ public class IotProductAttachmentDO extends IdEntityWithOperation implements Ser
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
