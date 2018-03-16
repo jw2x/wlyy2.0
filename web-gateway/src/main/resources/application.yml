@@ -37,9 +37,11 @@ hystrix:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 8000  #命令执行超时时间，默认1000ms
+            timeoutInMilliseconds: 308000  #命令执行超时时间，默认1000ms
 
-
+ribbon:
+  ReadTimeout: 300000
+  ConnectTimeout: 5000
 
 
 #zuul 默认会代理所有的微服务  路径 /{appliction.name}/**

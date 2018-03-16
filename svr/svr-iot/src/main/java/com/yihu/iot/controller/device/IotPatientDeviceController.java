@@ -1,9 +1,13 @@
 package com.yihu.iot.controller.device;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.iot.service.device.IotPatientDeviceService;
+import com.yihu.iot.service.label.FigureLabelSerachService;
 import com.yihu.jw.iot.device.IotPatientDeviceDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.iot.device.FigureLabelDataModelVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
 import com.yihu.jw.restmodel.iot.device.LocationDataVO;
@@ -17,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * @author yeshijie on 2018/2/8.
@@ -29,6 +32,8 @@ public class IotPatientDeviceController extends EnvelopRestController{
 
     @Autowired
     private IotPatientDeviceService iotPatientDeviceService;
+    @Autowired
+    private FigureLabelSerachService figureLabelSerachService;
 
 
     @PostMapping(value = IotRequestMapping.PatientDevice.addPatientDevice)
@@ -202,15 +207,59 @@ public class IotPatientDeviceController extends EnvelopRestController{
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             List<LocationDataVO> list = iotPatientDeviceService.findDeviceLocationsByIdCard(jsonData);
-            Random random = new Random();
             list.forEach(one->{
-                one.setLabel(random.nextInt(4)+"");
+                JSONArray jsonArray = new JSONArray();
+                JSONObject json = new JSONObject();
+                field("and","idcard","=",one.getIdCard(),jsonArray);
+                field("and","labelType","=","3",jsonArray);
+                json.put("filter",jsonArray);
+
+                boolean isTNB = false;//是否糖尿病
+                boolean isGXY = false;//是否高血压
+                List<FigureLabelDataModelVO> labelList = figureLabelSerachService.getFigureLabelByIdcard(json.toString());
+                for (FigureLabelDataModelVO vo:labelList) {
+                    if("1".equals(vo.getLabelCode())){
+                        isGXY = true;
+                    }
+                    if("2".equals(vo.getLabelCode())){
+                        isTNB = true;
+                    }
+                }
+                //0无，1高血压，2糖尿病，3高血压糖尿病都有
+                if(isTNB&&isGXY){
+                    one.setLabel("3");
+                }else if(isTNB){
+                    one.setLabel("2");
+                }else if(isGXY){
+                    one.setLabel("1");
+                }else {
+                    one.setLabel("0");
+                }
+
             });
             return Envelop.getSuccessList(IotRequestMapping.Device.message_success_create,list,iotPatientDeviceService.getESCount(jsonData));
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
         }
+    }
+
+    /**
+     * 添加条件
+     * 参数格式：[{"andOr":"and|or","condition":">|=|<|>=|<=|?","field":"<field>","value":"<value>"},<{...}>]
+     * @param andOr
+     * @param field
+     * @param condition
+     * @param value
+     * @param jsonArray
+     */
+    private void field(String andOr,String field,String condition,String value,JSONArray jsonArray){
+        JSONObject json = new JSONObject();
+        json.put("andOr",andOr);
+        json.put("field",field);
+        json.put("condition",condition);
+        json.put("value",value);
+        jsonArray.add(json);
     }
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findLocationBySn)
