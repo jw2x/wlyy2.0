@@ -105,7 +105,7 @@ public class IotProductController extends EnvelopRestController {
                 size = 10;
             }
 //            String filters = "supplierId="+companyId+";productClassify=1;del=1";
-            String filters = "supplierId="+companyId+";del=1";
+            String filters = "companyId="+companyId+";del=1";
             String semicolon = ";";
             if(StringUtils.isNotBlank(name)){
                 filters += semicolon + "name?"+name;

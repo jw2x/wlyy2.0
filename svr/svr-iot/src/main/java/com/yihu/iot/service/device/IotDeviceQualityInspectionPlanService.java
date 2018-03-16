@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Map;
  * @author yeshijie on 2017/12/8.
  */
 @Service
+@Transactional
 public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDeviceQualityInspectionPlanDO,IotDeviceQualityInspectionPlanDao> {
 
     @Autowired
@@ -88,6 +90,7 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
         IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanDao.findById(id);
         planDO.setDel(0);
         iotDeviceQualityInspectionPlanDao.save(planDO);
+        updatePurchase(planDO.getPurchaseId());
     }
 
     /**

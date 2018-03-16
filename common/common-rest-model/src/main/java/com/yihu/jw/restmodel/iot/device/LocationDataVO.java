@@ -29,6 +29,9 @@ public class LocationDataVO extends SaveModel {
     @ApiModelProperty("设备绑定时间")
     private String deviceTime;
 
+    @ApiModelProperty("疾病标签：0无，1高血压，2糖尿病，3高血压糖尿病都有")
+    private String label;
+
     @ApiModelProperty("病情：0绿标，1黄标，2红标")
     private Integer diseaseCondition;
 
@@ -94,6 +97,14 @@ public class LocationDataVO extends SaveModel {
     public void setLocation(Double lat, Double lng) {
         GeoPoint geoPoint = new GeoPoint(lat, lng);
         this.location = geoPoint;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 }
 

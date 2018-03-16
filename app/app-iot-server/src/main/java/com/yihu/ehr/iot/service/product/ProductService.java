@@ -28,7 +28,7 @@ import java.util.Map;
 public class ProductService extends BaseService {
 
 //    @Value("ehr.metadata.domain")
-    private String version = "5a6feb15fb05";//版本
+    private String version = "59083976eebd";//版本
     private String reference = "000000065a965615966b3a40c86ceba7";//标准来源
 
     /**
@@ -130,7 +130,7 @@ public class ProductService extends BaseService {
     public Envelop<IotProductVO> findByCode(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductById, params,getLoginHeader());
+        HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductById, params);
         Envelop<IotProductVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }

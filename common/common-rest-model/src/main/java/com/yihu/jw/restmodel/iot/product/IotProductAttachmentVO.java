@@ -19,6 +19,8 @@ public class IotProductAttachmentVO extends BaseVO implements Serializable {
     private String type;
     @ApiModelProperty("附件链接")
     private String attachment;
+    @ApiModelProperty("附件名称")
+    private String name;
 
     public String getType() {
         return type;
@@ -34,5 +36,13 @@ public class IotProductAttachmentVO extends BaseVO implements Serializable {
 
     public void setAttachment(String attachment) {
         this.attachment = attachment;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
