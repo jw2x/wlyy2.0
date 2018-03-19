@@ -1,6 +1,7 @@
 package com.yihu.iot.service.product;
 
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.iot.dao.device.IotOrderPurchaseDao;
 import com.yihu.iot.dao.product.*;
 import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.jw.iot.product.*;
@@ -34,6 +35,8 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
     private IotProductExtendInfoDao iotProductExtendInfoDao;
     @Autowired
     private IotSystemDictService iotSystemDictService;
+    @Autowired
+    private IotOrderPurchaseDao iotOrderPurchaseDao;
 
 
     /**
@@ -100,7 +103,10 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
      * 删除产品
      * @param id
      */
-    public void delProduct(String id){
+    public Integer delProduct(String id){
+        if(iotOrderPurchaseDao.countByProductId(id)>0){
+            return -1;
+        }
         IotProductBaseInfoDO baseInfoDO = iotProductBaseInfoDao.findById(id);
         IotProductExtendInfoDO extendInfoDO = iotProductExtendInfoDao.findByProductId(id);
 
@@ -109,6 +115,7 @@ public class IotProductBaseInfoService extends BaseJpaService<IotProductBaseInfo
 
         iotProductBaseInfoDao.save(baseInfoDO);
         iotProductExtendInfoDao.save(extendInfoDO);
+        return 0;
     }
 
     /**

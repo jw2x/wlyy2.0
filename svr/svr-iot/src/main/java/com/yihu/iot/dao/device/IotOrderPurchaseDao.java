@@ -12,4 +12,7 @@ public interface IotOrderPurchaseDao extends PagingAndSortingRepository<IotOrder
 
     @Query("from IotOrderPurchaseDO w where w.id =?1")
     IotOrderPurchaseDO findById(String id);
+
+    @Query("select count(*) from IotOrderPurchaseDO a where  a.del = 1 and a.productId = ?1 ")
+    long countByProductId(String productId);
 }

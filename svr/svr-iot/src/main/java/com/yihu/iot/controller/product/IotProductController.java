@@ -175,8 +175,12 @@ public class IotProductController extends EnvelopRestController {
     public Envelop<IotProductVO> delCompany(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
-            iotProductBaseInfoService.delProduct(id);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
+            Integer re = iotProductBaseInfoService.delProduct(id);
+            if(re==-1){
+                return Envelop.getError("该产品已有关联订单，不允许删除",-1);
+            }else {
+                return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
