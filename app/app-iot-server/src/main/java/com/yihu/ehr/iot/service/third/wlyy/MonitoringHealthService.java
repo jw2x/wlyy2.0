@@ -198,12 +198,13 @@ public class MonitoringHealthService extends BaseService{
      * @param pageSize
      * @return
      */
-    public String searchPatient(String name,Integer page,Integer pageSize){
+    public String searchPatient(String name,Integer page,Integer pageSize,String idcards){
         String url = "/wlyygc/iot_monitoring/searchPatient";
         Map<String, Object> params = new HashMap<>();
         params.put("name",name);
         params.put("page",page);
         params.put("pageSize",pageSize);
+        params.put("idcards",idcards);
         return sendGet(url,params);
     }
 
