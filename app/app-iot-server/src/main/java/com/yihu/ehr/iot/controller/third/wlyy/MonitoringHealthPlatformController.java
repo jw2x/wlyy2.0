@@ -78,6 +78,8 @@ public class MonitoringHealthPlatformController extends BaseController{
     public String searchPatient(
             @ApiParam(name="name",value="姓名")
             @RequestParam(value="name",required = false) String name,
+            @ApiParam(name="idcards",value="身份证(多个用逗号间隔)")
+            @RequestParam(value="idcards",required = false) String idcards,
             @ApiParam(name="page",value="第几页(默认第一页)",defaultValue = "1")
             @RequestParam(value="page",required = false) Integer page,
             @ApiParam(name="pageSize",value="每页几行(默认10条记录)",defaultValue = "10")
@@ -89,7 +91,7 @@ public class MonitoringHealthPlatformController extends BaseController{
             if(pageSize==null){
                 pageSize = 10;
             }
-            return monitoringHealthService.searchPatient(name,page,pageSize);
+            return monitoringHealthService.searchPatient(name,page,pageSize,idcards);
         }catch (Exception e){
             e.printStackTrace();
             return error(-1,"查询失败");
