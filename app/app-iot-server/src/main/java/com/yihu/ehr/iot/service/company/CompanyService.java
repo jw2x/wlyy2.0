@@ -11,6 +11,7 @@ import com.yihu.ehr.iot.util.http.HttpResponse;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -24,7 +25,8 @@ import java.util.Map;
 @Service
 public class CompanyService extends BaseService {
 
-    private String roleId = "10268";//物联网默认用户角色
+    @Value("${ehr.user.roleId}")
+    private String roleId;//物联网默认用户角色
 
     /**
      * 分页查找企业

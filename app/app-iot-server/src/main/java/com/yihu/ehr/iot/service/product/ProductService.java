@@ -14,6 +14,7 @@ import com.yihu.jw.restmodel.iot.product.IotProductVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -27,9 +28,10 @@ import java.util.Map;
 @Service
 public class ProductService extends BaseService {
 
-//    @Value("ehr.metadata.domain")
-    private String version = "59083976eebd";//版本
-    private String reference = "000000065a965615966b3a40c86ceba7";//标准来源
+    @Value("${ehr.metadata.version}")
+    private String version;//版本 59083976eebd
+    @Value("${ehr.metadata.reference}")
+    private String reference;//标准来源 000000065a965615966b3a40c86ceba7
 
     /**
      * 测量数据（ehr标准规范管理-平台标准-标准数据集）
