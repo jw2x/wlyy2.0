@@ -68,6 +68,12 @@ third:
     url: http://ehr.yihu.com/wlyy/
     appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
     appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
+ehr:
+  user:
+    roleId: 10268
+  metadata:
+    version: 59083976eebd
+    reference: 000000065a965615966b3a40c86ceba7
 
 fast-dfs:
   tracker-server: 172.19.103.54:22122
@@ -98,6 +104,12 @@ third:
     url: http://ehr.yihu.com/wlyy/
     appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
     appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
+ehr:
+  user:
+    roleId: 10268
+  metadata:
+    version: 59083976eebd
+    reference: 000000065a965615966b3a40c86ceba7
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
@@ -126,6 +138,12 @@ third:
     url: http://www.yihu.com/wlyy/
     appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
     appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
+ehr:
+  user:
+    roleId: 10268
+  metadata:
+    version: 59083976eebd
+    reference: 000000065a965615966b3a40c86ceba7
 fast-dfs:
   tracker-server: 11.1.2.9:22122
   accessUrl: http://11.1.2.9
