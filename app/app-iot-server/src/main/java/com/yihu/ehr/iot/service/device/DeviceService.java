@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.yihu.base.fastdfs.FastDFSHelper;
 import com.yihu.ehr.iot.constant.ServiceApi;
 import com.yihu.ehr.iot.service.common.BaseService;
+import com.yihu.ehr.iot.service.common.FileUploadService;
 import com.yihu.ehr.iot.util.excel.AExcelReader;
 import com.yihu.ehr.iot.util.excel.reader.IotDeviceImportVOReader;
 import com.yihu.ehr.iot.util.http.HttpHelper;
@@ -13,13 +14,16 @@ import com.yihu.ehr.iot.util.http.HttpResponse;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
+import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +37,10 @@ public class DeviceService extends BaseService{
 
     @Autowired
     private FastDFSHelper fastDFSHelper;
+    @Value("${neiwang.enable}")
+    private Boolean isneiwang;  //如果不是内网项目要转到到内网在上传
+    @Autowired
+    private FileUploadService fileUploadService;
 
     /**
      * 创建设备
@@ -186,7 +194,7 @@ public class DeviceService extends BaseService{
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceImportRecordVO> uploadStream(MultipartFile file,String purcharseId) throws Exception {
+    public Envelop<IotDeviceImportRecordVO> uploadStream(MultipartFile file,String purcharseId,HttpServletRequest request) throws Exception {
         String res = isImporting(purcharseId);
         JSONObject json = JSON.parseObject(res);
         if(json.getInteger("status")==200){
@@ -208,22 +216,31 @@ public class DeviceService extends BaseService{
         String fileName = fullName.substring(0, fullName.lastIndexOf("."));
 
         //上传到fastdfs
-        ObjectNode objectNode = fastDFSHelper.upload(file.getInputStream(), fileType, "");
+        ObjectNode objectNode = null;
+        Map<String, Object> params = params = new HashMap<>();;
+
+        if(isneiwang){
+            objectNode = fastDFSHelper.upload(file.getInputStream(), fileType, "");
+
+            params.put("url", objectNode.get("fid").toString().replaceAll("\"", ""));
+        }else {
+            UploadVO uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
+            if(uploadVO==null){
+                return Envelop.getError("文件上传失败");
+            }
+            params.put("url", uploadVO.getFullUri());
+        }
 
         //解析excel封装对象
         AExcelReader excelReader = new IotDeviceImportVOReader();
         excelReader.read(file.getInputStream());
         List<IotDeviceImportVO> correctLs = excelReader.getCorrectLs();
-
-        Map<String, Object> params = new HashMap<>();
         params.put("purcharseId", purcharseId);
         params.put("jsonData", JSONObject.toJSONString(correctLs));
         params.put("fileName", fileName);
-        params.put("url", objectNode.get("fid").toString().replaceAll("\"", ""));
+
         String ret = HttpHelper.postBody(iotUrl + ServiceApi.Device.ImportDevice,JSONObject.toJSONString(params));
         Envelop<IotDeviceImportRecordVO> envelop = objectMapper.readValue(ret,Envelop.class);
-//        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.ImportDevice, params);
-//        Envelop<IotDeviceImportRecordVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }
 

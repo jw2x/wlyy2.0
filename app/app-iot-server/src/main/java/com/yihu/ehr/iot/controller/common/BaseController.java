@@ -2,8 +2,10 @@ package com.yihu.ehr.iot.controller.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.ehr.util.rest.Envelop;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +20,8 @@ public class BaseController {
     protected String clientId;
     @Value("${server.contextPath}")
     protected String contextPath;
+    @Autowired
+    protected HttpServletRequest request;
 
     public Envelop failed(String errMsg) {
         Envelop envelop = new Envelop();
