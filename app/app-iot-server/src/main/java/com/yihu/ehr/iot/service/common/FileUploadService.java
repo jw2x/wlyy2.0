@@ -1,18 +1,22 @@
 package com.yihu.ehr.iot.service.common;
 
-import com.yihu.ehr.iot.constant.ServiceApi;
-import com.yihu.ehr.iot.util.http.HttpHelper;
-import com.yihu.ehr.iot.util.http.HttpResponse;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
-import io.swagger.annotations.ApiParam;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * @author yeshijie on 2017/12/7.
@@ -20,60 +24,64 @@ import java.util.Map;
 @Service
 public class FileUploadService extends BaseService{
 
-    /**
-     * 文件流上传图片
-     * @param file
-     * @return
-     */
-    public Envelop<UploadVO> uploadImg(MultipartFile file) throws IOException{
-        Map<String, Object> params = new HashMap<>();
-        params.put("file", file);
-        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.FileUpload.UploadImg, params);
-        Envelop<UploadVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
-        return envelop;
-    }
+    @Value("${neiwang.wlyy}")
+    private String neiwangWlyy;  //内网的项目地址
 
 
     /**
-     * 文件流上传附件
-     * @param file
+     * 通用的文件上传
+     * @param request
+     * @param in
+     * @param fileName
      * @return
-     * @throws Exception
      */
-    public Envelop<UploadVO> uploadAttachment(MultipartFile file) throws Exception{
-        Map<String, Object> params = new HashMap<>();
-        params.put("file", file);
-        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.FileUpload.UploadattAchment, params);
-        Envelop<UploadVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
-        return envelop;
-    }
+    public UploadVO request(HttpServletRequest request, InputStream in, String fileName) {
+        String url = neiwangWlyy + "/svr-iot/fileUpload/commonUpload";//uri请求路径 http://172.19.103.88/wlyy/upload/chat
 
-    /**
-     * 文件流上传文件
-     * @param file
-     * @return
-     * @throws Exception
-     */
-    public Envelop<UploadVO> uploadStream(MultipartFile file) throws Exception {
-        Map<String, Object> params = new HashMap<>();
-        params.put("file", file);
-        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.FileUpload.UploadStream, params);
-        Envelop<UploadVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
-        return envelop;
+        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        String result = "";
+        UploadVO uploadVO = null;
+        try {
+            HttpPost httpPost = new HttpPost(url);
+            MultipartEntityBuilder builder = MultipartEntityBuilder.create();
+            builder.addBinaryBody("file", in, ContentType.MULTIPART_FORM_DATA, fileName);// 文件流
+            builder.addTextBody("filename", fileName);// 类似浏览器表单提交，对应input的name和value
+            if (!org.springframework.util.StringUtils.isEmpty(request.getParameter("type"))) {
+                builder.addTextBody("type", request.getParameter("type")); //发送类型
+            }
+            HttpEntity entity = builder.build();
+            httpPost.setEntity(entity);
+            HttpResponse response = httpClient.execute(httpPost);// 执行提交
+            HttpEntity responseEntity = response.getEntity();
+            if (responseEntity != null) {
+                // 将响应内容转换为字符串
+                result = EntityUtils.toString(responseEntity, Charset.forName("UTF-8"));
+            }
+            JSONObject jsonObject = JSONObject.parseObject(result);
+            if(jsonObject.getInteger("status")==200){
+                JSONObject obj = jsonObject.getJSONObject("obj");
+                uploadVO = new UploadVO();
+                uploadVO.setFileName(obj.getString("groupName"));
+                uploadVO.setFileType(obj.getString("remoteFileName"));
+                uploadVO.setFullUri(obj.getString("fid"));
+                uploadVO.setFullUrl(obj.getString("fileUrl"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                httpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return uploadVO;
     }
-
-    /**
-     * base64上传图片
-     * @param jsonData
-     * @return
-     * @throws Exception
-     */
-    public Envelop<UploadVO> uploadImages(@ApiParam(name = "jsonData", value = "头像转化后的输入流") @RequestBody String jsonData) throws Exception {
-        Map<String, Object> params = new HashMap<>();
-        params.put("jsonData", jsonData);
-        HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.FileUpload.UploadString, params);
-        Envelop<UploadVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
-        return envelop;
-    }
-
 }

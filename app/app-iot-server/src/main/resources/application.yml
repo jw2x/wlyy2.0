@@ -81,7 +81,10 @@ fast-dfs:
 logging:
   path: /data/logger
   file: app-iot-server
-
+##如果是外网项目就是flase 内网是true
+neiwang:
+  enable: true
+  wlyy: http://localhost:9099/iot/
 ---
 spring:
   profiles: jwtest
@@ -116,7 +119,10 @@ fast-dfs:
 logging:
   path: /data/logger
   file: app-iot-server
-
+##如果是外网项目就是flase,false会调用内网http接口项目提交  内网是true直接上传fastDfs
+neiwang:
+  enable: true
+  wlyy: http://172.19.103.88:9099/iot/
 ---
 spring:
   profiles: jwprod
@@ -150,6 +156,9 @@ fast-dfs:
 logging:
   path: /data/logger
   file: app-iot-server
-
+##如果是外网项目就是flase 内网是true
+neiwang:
+  enable: false
+  wlyy: http://59.61.92.90:9099/iot/
 #单点登录
 #GET http://172.19.103.73:10260/oauth/sso?response_type=token&client_id=uzs5G0HgTp&state=sxy&scope=read&redirect_uri=http://192.168.1.221:8010/ehr/browser/common/login/signin?idCardNo=362321200108017313&user=admin
