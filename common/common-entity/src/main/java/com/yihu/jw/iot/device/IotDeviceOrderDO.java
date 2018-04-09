@@ -23,7 +23,7 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
     private String orderNo;//订单编号
 
     @Column(name = "order_status")
-    private String orderStatus;//订单状态(1新增、2已采购、3已入库)
+    private String orderStatus;//订单状态(1草稿、2生效、3已完成、4作废)
 
     @Column(name = "purchase_time")
     private Date purchaseTime;//采购时间
@@ -68,9 +68,10 @@ public class IotDeviceOrderDO extends IdEntityWithOperation implements Serializa
     private Integer del;//删除标志
 
     public enum DeviceOrderStatus {
-        create("新增", "1"),
-        purchased("已采购", "2"),
-        storaged("已入库", "3");
+        create("草稿", "1"),
+        effected("生效", "2"),
+        completed("已完成", "3"),
+        canceled("作废", "4");
         private String name;
         private String value;
 

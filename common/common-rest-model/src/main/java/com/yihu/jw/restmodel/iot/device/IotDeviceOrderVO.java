@@ -20,7 +20,7 @@ public class IotDeviceOrderVO extends BaseVO implements Serializable{
 
     @ApiModelProperty("订单编号")
     private String orderNo;
-    @ApiModelProperty("订单状态")
+    @ApiModelProperty("订单状态(1草稿、2生效、3已完成、4作废)")
     private String orderStatus;
     @ApiModelProperty("采购时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
