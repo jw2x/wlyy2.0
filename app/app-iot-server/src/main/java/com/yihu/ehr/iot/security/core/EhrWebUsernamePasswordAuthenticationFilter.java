@@ -70,18 +70,16 @@ public class EhrWebUsernamePasswordAuthenticationFilter extends AbstractAuthenti
                     HttpResponse httpResponse = HttpHelper.post(oauth2InnerUrl + "/oauth/validToken", params);
                     if(httpResponse.getStatusCode() == 200) {
                         Map<String, Object> map = objectMapper.readValue(httpResponse.getBody(), Map.class);
-                        if ((Boolean) map.get("successFlg")) {
-                            String loginName = (String) map.get("user");
-                            //验证通过。赋值session中的用户信息
-                            params.clear();
-                            params.put("login_code", loginName);
-                            httpResponse = HttpHelper.get(profileInnerUrl + "/users/" + loginName, params);
-                            Envelop envelop = this.objectMapper.readValue(httpResponse.getBody(), Envelop.class);
-                            String user = this.objectMapper.writeValueAsString(envelop.getObj());
-                            UserDetailModel userDetailModel = this.objectMapper.readValue(user, UserDetailModel.class);
-                            username = userDetailModel.getLoginCode();
-                            password = userDetailModel.getPassword();
-                        }
+                        String loginName = (String) map.get("user");
+                        //验证通过。赋值session中的用户信息
+                        params.clear();
+                        params.put("login_code", loginName);
+                        httpResponse = HttpHelper.get(profileInnerUrl + "/users/" + loginName, params);
+                        Envelop envelop = this.objectMapper.readValue(httpResponse.getBody(), Envelop.class);
+                        String user = this.objectMapper.writeValueAsString(envelop.getObj());
+                        UserDetailModel userDetailModel = this.objectMapper.readValue(user, UserDetailModel.class);
+                        username = userDetailModel.getLoginCode();
+                        password = userDetailModel.getPassword();
                     }else {
                         logger.error(httpResponse.getBody());
                     }
