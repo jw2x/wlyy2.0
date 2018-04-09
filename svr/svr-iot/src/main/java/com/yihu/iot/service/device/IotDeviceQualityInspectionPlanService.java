@@ -121,8 +121,13 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
             IotDeviceQualityInspectionPlanDO last = iotDeviceQualityInspectionPlanDao.findLastByPurchaseId(purchaseId,IotDeviceQualityInspectionPlanDO.QualityPlanStatus.complete.getValue());
             IotOrderPurchaseDO purchaseDO = iotOrderPurchaseDao.findById(purchaseId);
             purchaseDO.setQualityStatus(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.complete.getValue());
-            purchaseDO.setNextQualityTime(last.getPlanTime());
-            purchaseDO.setQualityLeader(last.getQualityLeader());
+            if(last==null){
+                purchaseDO.setNextQualityTime(null);
+                purchaseDO.setQualityLeader(null);
+            }else{
+                purchaseDO.setNextQualityTime(last.getPlanTime());
+                purchaseDO.setQualityLeader(last.getQualityLeader());
+            }
             iotOrderPurchaseDao.save(purchaseDO);
         }else {
             IotDeviceQualityInspectionPlanDO last = list.get(0);

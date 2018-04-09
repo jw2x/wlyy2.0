@@ -55,6 +55,8 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
     private IotSystemDictService iotSystemDictService;
     @Autowired
     private IotProductDataTransmissionDao iotProductDataTransmissionDao;
+    @Autowired
+    private IotDeviceOrderDao iotDeviceOrderDao;
 
     /**
      * 新增
@@ -81,11 +83,22 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
             if(planDO!=null){
                 iotDevice.setNextQualityTime(planDO.getPlanTime());//下次质检时间
             }
+
+            //计算是否已经完成订单
+            Integer num = iotDeviceDao.countByPurchaseId(iotDevice.getPurchaseId());//订单已经采购的数量
+            Integer purchaseNum = iotOrderPurchaseDao.sumByOrderId(purchaseDO.getOrderId());//订单需采购的数量
+            if((num+1)>=purchaseNum){
+                //采购订单已经完成
+                IotDeviceOrderDO iotDeviceOrderDO = iotDeviceOrderDao.findById(purchaseDO.getOrderId());
+                iotDeviceOrderDO.setOrderStatus(IotDeviceOrderDO.DeviceOrderStatus.completed.getValue());
+                iotDeviceOrderDao.save(iotDeviceOrderDO);
+            }
         }
 
         iotDevice.setSaasId(getCode());
         iotDevice.setDel(1);
-        return iotDeviceDao.save(iotDevice);
+        iotDeviceDao.save(iotDevice);
+        return iotDevice;
     }
 
     /**
