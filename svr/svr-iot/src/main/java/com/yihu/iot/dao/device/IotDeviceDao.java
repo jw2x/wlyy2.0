@@ -2,9 +2,11 @@ package com.yihu.iot.dao.device;
 
 import com.yihu.jw.iot.device.IotDeviceDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +22,10 @@ public interface IotDeviceDao extends PagingAndSortingRepository<IotDeviceDO, St
 
     @Query("select count(*) from IotDeviceDO w where w.purchaseId =?1 and w.del=1")
     int countByPurchaseId(String purchaseId);
+
+    @Modifying
+    @Query("update IotDeviceDO w set w.nextQualityTime=?1 where w.purchaseId =?2 and w.del=1")
+    int updateQualityTime(Date nextQualityTime, String purchaseId);
 
     @Query("select count(*) from IotDeviceDO w where w.orderId =?1 and w.del=1")
     int countByOrderId(String orderId);
