@@ -1,4 +1,4 @@
-package com.yihu.jw.wlyy.specialist;
+package com.yihu.jw.entity.specialist;
 
 import com.yihu.jw.IdEntityWithOperation;
 
