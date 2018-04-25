@@ -14,10 +14,20 @@ import java.io.Serializable;
 @Table(name = "wlyy_patient_hospital_record")
 public class PatientHospitalRecordDO extends IdEntityWithOperation implements Serializable {
 
+    private String saasId;
     private String code;//智业记录code
     private String patient;//患者
     private String patientName;//患者姓名
     private String type;//出院：1；住院：0
+
+    @Column(name = "saas_id")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
 
     @Column(name = "code")
     public String getCode() {

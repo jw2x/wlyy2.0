@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Table(name = "wlyy_specialist_consult")
 public class SpecialistConsultDO extends IdEntityWithOperation implements Serializable {
 
+    private String saasId;
     private String consult;//关联咨询code
     private String doctor;//专科医生
     private String doctorName;//专科医生姓名
@@ -23,6 +24,15 @@ public class SpecialistConsultDO extends IdEntityWithOperation implements Serial
     private String status;// 1.咨询完成，0.咨询进行中
     private String reply;// 1.专科医生已经参与；0.~未参与
     private String content;//咨询内容
+
+    @Column(name = "saas_id")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
 
     @Column(name = "consult")
     public String getConsult() {

@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Table(name = "wlyy_specialist")
 public class SpecialistDO extends IdEntityWithOperation implements Serializable {
 
+    private String saasId;
     private String name; //专科医生姓名
     private String profession; //专业
     private String professionName; // 专业名称
@@ -22,6 +23,15 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
     private String hospital;//医院
     private String hospitalName;//医院名称
     private String del;//1：有效；0：删除
+
+    @Column(name = "saas_id")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
 
     @Column(name = "name")
     public String getName() {
