@@ -15,6 +15,7 @@ import java.util.Date;
 @Table(name = "wlyy_specialist_patient_relation")
 public class SpecialistPatientRelationDO extends IdEntityWithOperation implements Serializable {
 
+    private String saasId;
     private String dischargeRecord;//最新出院记录
     private String doctor;//专科医生
     private String doctorName;//专科医生姓名
@@ -29,6 +30,15 @@ public class SpecialistPatientRelationDO extends IdEntityWithOperation implement
     private String signYear;//签约年度
     private Integer teamCode;//签约团队
     private Date signDate;//签约日期
+
+    @Column(name = "saas_id")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
 
     @Column(name = "discharge_record")
     public String getDischargeRecord() {
