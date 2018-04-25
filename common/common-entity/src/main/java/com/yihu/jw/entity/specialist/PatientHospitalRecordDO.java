@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Table(name = "wlyy_patient_hospital_record")
 public class PatientHospitalRecordDO extends IdEntityWithOperation implements Serializable {
 
-    private String saasId;
+    private String saasId;//
     private String code;//智业记录code
     private String patient;//患者
     private String patientName;//患者姓名
