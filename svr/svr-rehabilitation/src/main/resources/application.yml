@@ -1,34 +1,34 @@
-##Èç¹ûÓĞÅäÖÃ·şÎñµÄ»°£¬Ô¶³Ì·şÎñÆ÷ºÍ±¾µØ·şÎñÆ÷ÅäÖÃ²»Ò»ÖÂµÄÇé¿öÏÂ£¬ÓÅÏÈÔ¶³ÌµÄÎªÖ÷  gitÉÏ svr-base ->  git application ->±¾µØ appliction ->±¾µØ bootstarp
+##å¦‚æœæœ‰é…ç½®æœåŠ¡çš„è¯ï¼Œè¿œç¨‹æœåŠ¡å™¨å’Œæœ¬åœ°æœåŠ¡å™¨é…ç½®ä¸ä¸€è‡´çš„æƒ…å†µä¸‹ï¼Œä¼˜å…ˆè¿œç¨‹çš„ä¸ºä¸»  gitä¸Š svr-base ->  git application ->æœ¬åœ° appliction ->æœ¬åœ° bootstarp
 server:
   port: 10051
 
 spring:
   application:
-    name:  svr-rehabilitation  #×¢²áµ½·¢ÏÖ·şÎñµÄid Èç¹ûidÒ»Ñù eurika»á×Ô¶¯×ö¸ºÔØ
+    name:  svr-rehabilitation  #æ³¨å†Œåˆ°å‘ç°æœåŠ¡çš„id å¦‚æœidä¸€æ · eurikaä¼šè‡ªåŠ¨åšè´Ÿè½½
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     max-active: 50
-    max-idle: 50 #×î´ó¿ÕÏĞÁ¬½Ó
-    min-idle: 10 #×îĞ¡¿ÕÏĞÁ¬½Ó
+    max-idle: 50 #æœ€å¤§ç©ºé—²è¿æ¥
+    min-idle: 10 #æœ€å°ç©ºé—²è¿æ¥
     validation-query-timeout: 20
     log-validation-errors: true
-    validation-interval: 60000 #±ÜÃâ¹ı¶ÈÑéÖ¤£¬±£Ö¤ÑéÖ¤²»³¬¹ıÕâ¸öÆµÂÊ¡ª¡ªÒÔºÁÃëÎªµ¥Î»¡£Èç¹ûÒ»¸öÁ¬½ÓÓ¦¸Ã±»ÑéÖ¤£¬µ«ÉÏ´ÎÑéÖ¤Î´´ïµ½Ö¸¶¨¼ä¸ô£¬½«²»ÔÙ´ÎÑéÖ¤¡£
-    validation-query: SELECT 1 #SQL ²éÑ¯£¬ ÓÃÀ´ÑéÖ¤´ÓÁ¬½Ó³ØÈ¡³öµÄÁ¬½Ó£¬ ÔÚ½«Á¬½Ó·µ»Ø¸øµ÷ÓÃÕßÖ®Ç°¡£ Èç¹ûÖ¸¶¨£¬ Ôò²éÑ¯±ØĞëÊÇÒ»¸öSQL SELECT ²¢ÇÒ±ØĞë·µ»ØÖÁÉÙÒ»ĞĞ¼ÇÂ¼
-    test-on-borrow: true #Ö¸Ã÷ÊÇ·ñÔÚ´Ó³ØÖĞÈ¡³öÁ¬½ÓÇ°½øĞĞ¼ìÑé£¬ Èç¹û¼ìÑéÊ§°Ü£¬ Ôò´Ó³ØÖĞÈ¥³ıÁ¬½Ó²¢³¢ÊÔÈ¡³öÁíÒ»¸ö¡£×¢Òâ£º ÉèÖÃÎªtrue ºóÈç¹ûÒªÉúĞ§£¬validationQuery ²ÎÊı±ØĞëÉèÖÃÎª·Ç¿Õ×Ö·û´®
-    test-on-return: true #Ö¸Ã÷ÊÇ·ñÔÚ¹é»¹µ½³ØÖĞÇ°½øĞĞ¼ìÑé ×¢Òâ£º ÉèÖÃÎªtrue ºóÈç¹ûÒªÉúĞ§validationQuery ²ÎÊı±ØĞëÉèÖÃÎª·Ç¿Õ×Ö·û´®
+    validation-interval: 60000 #é¿å…è¿‡åº¦éªŒè¯ï¼Œä¿è¯éªŒè¯ä¸è¶…è¿‡è¿™ä¸ªé¢‘ç‡â€”â€”ä»¥æ¯«ç§’ä¸ºå•ä½ã€‚å¦‚æœä¸€ä¸ªè¿æ¥åº”è¯¥è¢«éªŒè¯ï¼Œä½†ä¸Šæ¬¡éªŒè¯æœªè¾¾åˆ°æŒ‡å®šé—´éš”ï¼Œå°†ä¸å†æ¬¡éªŒè¯ã€‚
+    validation-query: SELECT 1 #SQL æŸ¥è¯¢ï¼Œ ç”¨æ¥éªŒè¯ä»è¿æ¥æ± å–å‡ºçš„è¿æ¥ï¼Œ åœ¨å°†è¿æ¥è¿”å›ç»™è°ƒç”¨è€…ä¹‹å‰ã€‚ å¦‚æœæŒ‡å®šï¼Œ åˆ™æŸ¥è¯¢å¿…é¡»æ˜¯ä¸€ä¸ªSQL SELECT å¹¶ä¸”å¿…é¡»è¿”å›è‡³å°‘ä¸€è¡Œè®°å½•
+    test-on-borrow: true #æŒ‡æ˜æ˜¯å¦åœ¨ä»æ± ä¸­å–å‡ºè¿æ¥å‰è¿›è¡Œæ£€éªŒï¼Œ å¦‚æœæ£€éªŒå¤±è´¥ï¼Œ åˆ™ä»æ± ä¸­å»é™¤è¿æ¥å¹¶å°è¯•å–å‡ºå¦ä¸€ä¸ªã€‚æ³¨æ„ï¼š è®¾ç½®ä¸ºtrue åå¦‚æœè¦ç”Ÿæ•ˆï¼ŒvalidationQuery å‚æ•°å¿…é¡»è®¾ç½®ä¸ºéç©ºå­—ç¬¦ä¸²
+    test-on-return: true #æŒ‡æ˜æ˜¯å¦åœ¨å½’è¿˜åˆ°æ± ä¸­å‰è¿›è¡Œæ£€éªŒ æ³¨æ„ï¼š è®¾ç½®ä¸ºtrue åå¦‚æœè¦ç”Ÿæ•ˆvalidationQuery å‚æ•°å¿…é¡»è®¾ç½®ä¸ºéç©ºå­—ç¬¦ä¸²
     idle-timeout: 30000
     connection-test-query: SELECT 1
-    num-tests-per-eviction-run: 50 #ÔÚÃ¿´Î¿ÕÏĞÁ¬½Ó»ØÊÕÆ÷Ïß³Ì(Èç¹ûÓĞ)ÔËĞĞÊ±¼ì²éµÄÁ¬½ÓÊıÁ¿£¬×îºÃºÍmaxActive
-    test-while-idle: true #Ö¸Ã÷Á¬½ÓÊÇ·ñ±»¿ÕÏĞÁ¬½Ó»ØÊÕÆ÷(Èç¹ûÓĞ)½øĞĞ¼ìÑé£¬Èç¹û¼ì²âÊ§°Ü£¬ÔòÁ¬½Ó½«±»´Ó³ØÖĞÈ¥³ı
-    min-evictable-idle-time-millis: 3600000 #Á¬½Ó³ØÖĞÁ¬½Ó£¬ÔÚÊ±¼ä¶ÎÄÚÒ»Ö±¿ÕÏĞ£¬±»Öğ³öÁ¬½Ó³ØµÄÊ±¼ä(1000*60*60)£¬ÒÔºÁÃëÎªµ¥Î»
-    time-between-eviction-runs-millis: 300000 #ÔÚ¿ÕÏĞÁ¬½Ó»ØÊÕÆ÷Ïß³ÌÔËĞĞÆÚ¼äĞİÃßµÄÊ±¼äÖµ,ÒÔºÁÃëÎªµ¥Î»£¬Ò»°ã±ÈminEvictableIdleTimeMillisĞ¡
+    num-tests-per-eviction-run: 50 #åœ¨æ¯æ¬¡ç©ºé—²è¿æ¥å›æ”¶å™¨çº¿ç¨‹(å¦‚æœæœ‰)è¿è¡Œæ—¶æ£€æŸ¥çš„è¿æ¥æ•°é‡ï¼Œæœ€å¥½å’ŒmaxActive
+    test-while-idle: true #æŒ‡æ˜è¿æ¥æ˜¯å¦è¢«ç©ºé—²è¿æ¥å›æ”¶å™¨(å¦‚æœæœ‰)è¿›è¡Œæ£€éªŒï¼Œå¦‚æœæ£€æµ‹å¤±è´¥ï¼Œåˆ™è¿æ¥å°†è¢«ä»æ± ä¸­å»é™¤
+    min-evictable-idle-time-millis: 3600000 #è¿æ¥æ± ä¸­è¿æ¥ï¼Œåœ¨æ—¶é—´æ®µå†…ä¸€ç›´ç©ºé—²ï¼Œè¢«é€å‡ºè¿æ¥æ± çš„æ—¶é—´(1000*60*60)ï¼Œä»¥æ¯«ç§’ä¸ºå•ä½
+    time-between-eviction-runs-millis: 300000 #åœ¨ç©ºé—²è¿æ¥å›æ”¶å™¨çº¿ç¨‹è¿è¡ŒæœŸé—´ä¼‘çœ çš„æ—¶é—´å€¼,ä»¥æ¯«ç§’ä¸ºå•ä½ï¼Œä¸€èˆ¬æ¯”minEvictableIdleTimeMilliså°
 
   data:
     elasticsearch: #ElasticsearchProperties
-      cluster-name: jkzl #Ä¬ÈÏ¼´Îªelasticsearch  ¼¯ÈºÃû
-      cluster-nodes: 172.19.103.68:9300 #ÅäÖÃes½ÚµãĞÅÏ¢£¬¶ººÅ·Ö¸ô£¬Èç¹ûÃ»ÓĞÖ¸¶¨£¬ÔòÆô¶¯ClientNode
-      local: false #ÊÇ·ñ±¾µØÁ¬½Ó
+      cluster-name: jkzl #é»˜è®¤å³ä¸ºelasticsearch  é›†ç¾¤å
+      cluster-nodes: 172.19.103.68:9300 #é…ç½®esèŠ‚ç‚¹ä¿¡æ¯ï¼Œé€—å·åˆ†éš”ï¼Œå¦‚æœæ²¡æœ‰æŒ‡å®šï¼Œåˆ™å¯åŠ¨ClientNode
+      local: false #æ˜¯å¦æœ¬åœ°è¿æ¥
       properties: # Additional properties used to configure the client.
         enable: true
   # JEST (Elasticsearch HTTP client) (JestProperties)
@@ -43,7 +43,7 @@ spring:
 #      proxy.port:  # Proxy port the HTTP client should use.
 #      proxy.host:  # Proxy host the HTTP client should use.
 
-#hibernate ÅäÖÃ
+#hibernate é…ç½®
 hibernate:
   dialect: org.hibernate.dialect.MySQL5Dialect
   show_sql: true
@@ -51,15 +51,15 @@ hibernate:
     naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
 
 fast-dfs:
-  tracker-server: 172.19.103.54:22122 #·şÎñÆ÷µØÖ·
-  connect-timeout: 2 #Á´½Ó³¬Ê±Ê±¼ä
+  tracker-server: 172.19.103.54:22122 #æœåŠ¡å™¨åœ°å€
+  connect-timeout: 2 #é“¾æ¥è¶…æ—¶æ—¶é—´
   network-timeout: 30
-  charset: ISO8859-1 #±àÂë
+  charset: ISO8859-1 #ç¼–ç 
   http:
     tracker-http-port: 80
     anti-steal-token: no
     secret-key: FastDFS1234567890
-  pool: #Á¬½Ó³Ø´óĞ¡
+  pool: #è¿æ¥æ± å¤§å°
     init-size: 5
     max-size: 20
     wait-time: 500

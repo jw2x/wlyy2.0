@@ -14,7 +14,7 @@ import java.util.Date;
  * @author humingfen on 2018/4/26.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "企业表", description = "企业表")
+@ApiModel(value = "就诊记录表", description = "就诊记录表")
 public class RehabilitationInformationVO extends BaseVO implements Serializable {
 
     @ApiModelProperty("居民id")
