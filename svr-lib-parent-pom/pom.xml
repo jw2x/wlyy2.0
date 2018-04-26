@@ -44,6 +44,7 @@
         <module>../svr/svr-wlyy</module><!--i健康微服务-->
         <!--<module>../svr/svr-manage</module>&lt;!&ndash;后台管理系统&ndash;&gt;-->
         <module>../svr/svr-iot</module><!--物联网平台-->
+        <module>../svr/svr-rehabilitation</module><!--专科医生康复计划-->
 
         <!--网关-->
         <module>../web-gateway</module><!--web网关-->
