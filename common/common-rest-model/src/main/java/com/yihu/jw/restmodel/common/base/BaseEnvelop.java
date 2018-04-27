@@ -11,8 +11,6 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "基础实体")
 public class BaseEnvelop {
 
-    @ApiModelProperty("错误编码")
-    protected String errorCode;
     @ApiModelProperty("成功信息")
     protected String errorMsg;
     @ApiModelProperty("成功信息")
@@ -24,7 +22,6 @@ public class BaseEnvelop {
     }
 
     public BaseEnvelop(String errorCode, String errorMsg) {
-        this.errorCode = errorCode;
         this.errorMsg = errorMsg;
     }
 
@@ -52,13 +49,7 @@ public class BaseEnvelop {
         this.successMsg = successMsg;
     }
 
-    public String getErrorCode() {
-        return errorCode;
-    }
 
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
 
     public static BaseEnvelop getSuccess(String message) {
         BaseEnvelop envelop = new BaseEnvelop();
