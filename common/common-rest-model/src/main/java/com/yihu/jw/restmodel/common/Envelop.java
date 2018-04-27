@@ -100,14 +100,14 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
 
     public static Envelop getSuccess(String message) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setStatus(200);
         return envelop;
     }
 
     public static Envelop getSuccess(String message, Object obj) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setObj(obj);
         envelop.setStatus(200);
         return envelop;
@@ -115,7 +115,7 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
 
     public static Envelop getSuccess(String message, Object obj,Integer total) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setObj(obj);
         envelop.setTotalCount(total);
         envelop.setStatus(200);
@@ -124,7 +124,7 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
 
     public static Envelop getSuccessListWithPage(String message, List detailModelList, int page, int size, Long count) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setPageSize(size);
         envelop.setDetailModelList(detailModelList);
         envelop.setCurrPage(page);
@@ -135,21 +135,21 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
 
     public static Envelop getError(String message, int errorCode) {
         Envelop envelop = new Envelop();
-        envelop.setErrorMsg(message);
+        envelop.setMessage(message);
         envelop.setStatus(errorCode);
         return envelop;
     }
 
     public static Envelop getError(String message) {
         Envelop envelop = new Envelop();
-        envelop.setErrorMsg(message);
+        envelop.setMessage(message);
         envelop.setStatus(-1);
         return envelop;
     }
 
     public static Envelop getSuccessList(String message, List objList) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setDetailModelList(objList);
         envelop.setStatus(200);
         return envelop;
@@ -157,7 +157,7 @@ public class Envelop<T> extends BaseEnvelop implements Serializable {
 
     public static Envelop getSuccessList(String message, List objList,Integer total) {
         Envelop envelop = new Envelop();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setDetailModelList(objList);
         envelop.setTotalCount(total);
         envelop.setStatus(200);
