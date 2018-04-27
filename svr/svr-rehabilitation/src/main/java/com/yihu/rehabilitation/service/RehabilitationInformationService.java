@@ -1,11 +1,9 @@
 package com.yihu.rehabilitation.service;
 
 import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.iot.company.IotCompanyDO;
 import com.yihu.jw.rehabilitation.RehabilitationInformationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationInformationVO;
-import com.yihu.jw.rm.iot.IotRequestMapping;
 import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
 import com.yihu.rehabilitation.dao.RehabilitationInformationDao;
 import org.apache.commons.lang.StringUtils;
@@ -40,20 +38,20 @@ public class RehabilitationInformationService extends BaseJpaService<Rehabilitat
      * @return
      */
     public Envelop<RehabilitationInformationVO> queryPage(Integer page, Integer size, String patientId, String hospital){
-        StringBuffer sql = new StringBuffer("SELECT DISTINCT w.* from rehabilitation_information w ");
-        StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT w.id) count from rehabilitation_information w ");
+        StringBuffer sql = new StringBuffer("SELECT DISTINCT w.* from rehabilitation_information w where 1 = 1 ");
+        StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT w.id) count from rehabilitation_information w where 1 = 1 ");
         List<Object> args = new ArrayList<>();
         if(StringUtils.isNotBlank(patientId)){
             sql.append(" and w.patientId = ? ");
-            sqlCount.append(" and w.patientId = '").append(patientId).append("' ");
-            args.add(patientId);
+            sqlCount.append(" and w.patientId = '%").append(patientId).append("%' ");
+            args.add('%'+ patientId + '%');
         }
         if(StringUtils.isNotBlank(hospital)){
             sql.append(" and w.hospital like ? ");
-            sqlCount.append(" and w.hospital like '").append(hospital).append("' ");
-            args.add(hospital);
+            sqlCount.append(" and w.hospital like '%").append(hospital).append("%' ");
+            args.add('%'+ hospital + '%');
         }
-        sql.append("order by c.update_time desc limit ").append((page-1)*size).append(",").append(size);
+        sql.append("order by w.update_time desc limit ").append((page-1)*size).append(",").append(size);
 
         List<RehabilitationInformationDO> list = jdbcTempalte.query(sql.toString(),args.toArray(),new BeanPropertyRowMapper(RehabilitationInformationDO.class));
         List<Map<String,Object>> countList = jdbcTempalte.queryForList(sqlCount.toString());

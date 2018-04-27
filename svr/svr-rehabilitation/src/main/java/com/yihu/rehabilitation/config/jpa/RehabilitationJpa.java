@@ -18,27 +18,27 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * Created by chenweida on 2017/4/6.
+ * Created by humingfen on 2018/4/27.
  */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "wlyySpecialistEntityManagerFactory",
-        transactionManagerRef = "wlyySpecialistTransactionManager",
-        basePackages = {"com.yihu.jw.dao"})   //设置Repository所在位置
-public class WlyySpecialistJpa {
+        entityManagerFactoryRef = "rehabilitationEntityManagerFactory",
+        transactionManagerRef = "rehabilitationTransactionManager",
+        basePackages = {"com.yihu.rehabilitation.dao"})   //设置Repository所在位置
+public class RehabilitationJpa {
 
     @Autowired
     private HibernateProperties hibernateProperties;
 
-    @Bean(name = "wlyySpecialistEntityManagerFactory")
+    @Bean(name = "rehabilitationEntityManagerFactory")
     @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryPrimary(DataSource dataSource) {
 
         LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
         emfb.setDataSource(dataSource);
-        emfb.setPackagesToScan("com.yihu.jw.entity");
-        emfb.setPersistenceUnitName("specialist");
+        emfb.setPackagesToScan("com.yihu.jw.rehabilitation");
+        emfb.setPersistenceUnitName("rehabilitation");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emfb.setJpaVendorAdapter(vendorAdapter);
         Properties properties = hibernateProperties.hibProperties();
@@ -49,10 +49,10 @@ public class WlyySpecialistJpa {
     }
 
 
-    @Bean(name = "wlyySpecialistTransactionManager")
+    @Bean(name = "rehabilitationTransactionManager")
     @Primary
     JpaTransactionManager transactionManagerSecondary(
-            @Qualifier("wlyySpecialistEntityManagerFactory") EntityManagerFactory builder) {
+            @Qualifier("rehabilitationEntityManagerFactory") EntityManagerFactory builder) {
         return new JpaTransactionManager(builder);
     }
 }

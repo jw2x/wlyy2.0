@@ -15,12 +15,13 @@ public class RehabilitationRequestMapping {
     }
 
     public static class Information {
-        public static final String api_create = "information";
-        public static final String api_delete = "information";
+        public static final String api_create = "createInformation";
+        public static final String api_delete = "delInformation";
         public static final String api_getById = "getInformationById";
-        public static final String api_update = "information";
+        public static final String api_update = "updateInformation";
 
         public static final String findInformationById = "findInformationById";
+        public static final String findInformationByPatientId = "findInformationByPatientId";
         public static final String findInformationPage = "findInformationPage";
 
         public static final String message_success_update = "information update success";
