@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "基础实体")
 public class BaseEnvelop {
 
-    @ApiModelProperty("成功信息")
+    @ApiModelProperty("失败信息")
     protected String errorMsg;
     @ApiModelProperty("成功信息")
     protected String successMsg;
