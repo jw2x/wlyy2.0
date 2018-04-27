@@ -11,19 +11,14 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "基础实体")
 public class BaseEnvelop {
 
-    @ApiModelProperty("失败信息")
-    protected String errorMsg;
-    @ApiModelProperty("成功信息")
-    protected String successMsg;
+    @ApiModelProperty("信息")
+    protected String message;
     @ApiModelProperty("状态（200成功，-1是失败）")
     protected Integer status;
 
     public BaseEnvelop() {
     }
 
-    public BaseEnvelop(String errorCode, String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
 
     public Integer getStatus() {
         return status;
@@ -33,41 +28,31 @@ public class BaseEnvelop {
         this.status = status;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
+    public void setMessage(String message) {
+        this.message = message;
     }
-
-    public String getSuccessMsg() {
-        return successMsg;
-    }
-
-    public void setSuccessMsg(String successMsg) {
-        this.successMsg = successMsg;
-    }
-
-
 
     public static BaseEnvelop getSuccess(String message) {
         BaseEnvelop envelop = new BaseEnvelop();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setStatus(200);
         return envelop;
     }
 
     public static BaseEnvelop getError(String message, int errorCode) {
         BaseEnvelop envelop = new BaseEnvelop();
-        envelop.setErrorMsg(message);
+        envelop.setMessage(message);
         envelop.setStatus(errorCode);
         return envelop;
     }
 
     public static BaseEnvelop getError(String message) {
         BaseEnvelop envelop = new BaseEnvelop();
-        envelop.setErrorMsg(message);
+        envelop.setMessage(message);
         envelop.setStatus(-1);
         return envelop;
     }
