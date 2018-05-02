@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
 /**
- * 就诊信息表
+ * 治疗方案表
  * @author humingfen on 2018/4/27.
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)

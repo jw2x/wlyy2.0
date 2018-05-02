@@ -49,4 +49,18 @@ public class RehabilitationRequestMapping {
 
         public static final String findTreatmentProgramById = "findTreatmentProgramById";
     }
+
+    public static class Planning {
+        public static final String planning = api_rehabilitation_common + "/planning";
+
+        public static final String findPlanningPage = "findPlanningPage";
+        public static final String findTreatmentByProgramId = "findTreatmentByProgramId";
+
+        public static final String api_create = "createPlanning";
+        public static final String api_delete = "delPlanning";
+        public static final String api_getById = "getPlanningById";
+        public static final String api_update = "updatePlanning";
+
+        public static final String findPlanningById = "findPlanningById";
+    }
 }
