@@ -60,7 +60,7 @@ public class RehabilitationInformationService extends BaseJpaService<Rehabilitat
         //DO转VO
         List<RehabilitationInformationVO> informationVOList = convertToModels(list,new ArrayList<>(list.size()), RehabilitationInformationVO.class);
 
-        return Envelop.getSuccessListWithPage(RehabilitationRequestMapping.Information.message_success_find_functions,informationVOList, page, size,count);
+        return Envelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,informationVOList, page, size,count);
     }
 
     /**

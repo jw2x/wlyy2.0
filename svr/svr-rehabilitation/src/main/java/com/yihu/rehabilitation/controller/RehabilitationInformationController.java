@@ -17,7 +17,7 @@ import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
  * @author humingfen on 2018/4/25.
  */
 @RestController
-@RequestMapping(value = RehabilitationRequestMapping.Common.information)
+@RequestMapping(value = RehabilitationRequestMapping.Information.information)
 @Api(tags = "就诊信息相关操作", description = "就诊信息相关操作")
 public class RehabilitationInformationController extends EnvelopRestController {
 
@@ -56,7 +56,7 @@ public class RehabilitationInformationController extends EnvelopRestController {
         try {
             RehabilitationInformationVO informationVO = toEntity(jsonData, RehabilitationInformationVO.class);
             RehabilitationInformationDO informationDO = rehabilitationInformationService.convertToModel(informationVO, RehabilitationInformationDO.class);
-            return Envelop.getSuccess(RehabilitationRequestMapping.Information.message_success_create, rehabilitationInformationService.create(informationDO));
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_create, rehabilitationInformationService.create(informationDO));
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -70,7 +70,7 @@ public class RehabilitationInformationController extends EnvelopRestController {
         try {
             RehabilitationInformationDO informationDO = rehabilitationInformationService.findById(id);
             RehabilitationInformationVO informationVO = rehabilitationInformationService.convertToModel(informationDO, RehabilitationInformationVO.class);
-            return Envelop.getSuccess(RehabilitationRequestMapping.Information.message_success_find, informationVO);
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, informationVO);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -84,7 +84,7 @@ public class RehabilitationInformationController extends EnvelopRestController {
         try {
             RehabilitationInformationDO informationDO = rehabilitationInformationService.findByPatientId(patientId);
             RehabilitationInformationVO informationVO = rehabilitationInformationService.convertToModel(informationDO, RehabilitationInformationVO.class);
-            return Envelop.getSuccess(RehabilitationRequestMapping.Information.message_success_find, informationVO);
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, informationVO);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -99,7 +99,7 @@ public class RehabilitationInformationController extends EnvelopRestController {
             RehabilitationInformationVO informationVO = toEntity(jsonData, RehabilitationInformationVO.class);
             RehabilitationInformationDO informationDO = rehabilitationInformationService.convertToModel(informationVO, RehabilitationInformationDO.class);
             rehabilitationInformationService.update(informationDO);
-            return Envelop.getSuccess(RehabilitationRequestMapping.Information.message_success_update);
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_update);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -112,7 +112,7 @@ public class RehabilitationInformationController extends EnvelopRestController {
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             rehabilitationInformationService.delete(id);
-            return Envelop.getSuccess(RehabilitationRequestMapping.Information.message_success_delete);
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_delete);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());

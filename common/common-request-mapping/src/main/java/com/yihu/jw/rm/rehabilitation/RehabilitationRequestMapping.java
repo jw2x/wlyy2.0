@@ -11,10 +11,17 @@ public class RehabilitationRequestMapping {
      * 公共模块
      */
     public static class Common {
-        public static final String information = api_rehabilitation_common + "/information";
+        public static final String message_success_update = "update success";
+        public static final String message_success_delete = "delete success";
+        public static final String message_success_find = "find success";
+        public static final String message_success_create = "create success";
+
+        public static final String message_success_find_functions = "message_success_find_functions";
     }
 
     public static class Information {
+        public static final String information = api_rehabilitation_common + "/information";
+
         public static final String api_create = "createInformation";
         public static final String api_delete = "delInformation";
         public static final String api_getById = "getInformationById";
@@ -24,11 +31,22 @@ public class RehabilitationRequestMapping {
         public static final String findInformationByPatientId = "findInformationByPatientId";
         public static final String findInformationPage = "findInformationPage";
 
-        public static final String message_success_update = "information update success";
-        public static final String message_success_delete = "information delete success";
-        public static final String message_success_find = "information find success";
-        public static final String message_success_create = "information create success";
+    }
 
-        public static final String message_success_find_functions = "message_success_find_functions";
+    public static class Performance {
+        public static final String performance = api_rehabilitation_common + "/performance";
+    }
+
+    public static class TreatmentProgram {
+        public static final String treatmentProgram = api_rehabilitation_common + "/treatmentProgram";
+
+        public static final String findTreatmentProgramPage = "findTreatmentProgramPage";
+
+        public static final String api_create = "createTreatmentProgram";
+        public static final String api_delete = "delTreatmentProgram";
+        public static final String api_getById = "getTreatmentProgramById";
+        public static final String api_update = "updateTreatmentProgram";
+
+        public static final String findTreatmentProgramById = "findTreatmentProgramById";
     }
 }
