@@ -7,6 +7,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface RehabilitationTreatmentProgramDao extends PagingAndSortingRepository<RehabilitationTreatmentProgramDO, String>,
         JpaSpecificationExecutor<RehabilitationTreatmentProgramDO> {
+
     @Query("from RehabilitationTreatmentProgramDO w where w.id = ?1")
     RehabilitationTreatmentProgramDO findById(String id);
 }

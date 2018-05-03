@@ -22,7 +22,7 @@ public class RehabilitationPlanningService extends BaseJpaService<Rehabilitation
     private RehabilitationPlanningDao planningDao;
 
     /**
-     * 分页查找健康档案
+     * 分页查找康复计划
      * @param page
      * @param size
      * @param patientId
@@ -40,7 +40,7 @@ public class RehabilitationPlanningService extends BaseJpaService<Rehabilitation
             filters += semicolon + "programId="+programId+"";
             semicolon = ";";
         }
-        String sorts = "-createTime";
+        String sorts = "-updateTime";
         //得到list数据
         List<RehabilitationPlanningDO> list = search(null, filters, sorts, page, size);
 

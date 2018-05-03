@@ -54,8 +54,7 @@ public class RehabilitationInformationController extends EnvelopRestController {
     public Envelop<RehabilitationInformationVO> create(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                                            @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
-            RehabilitationInformationVO informationVO = toEntity(jsonData, RehabilitationInformationVO.class);
-            RehabilitationInformationDO informationDO = rehabilitationInformationService.convertToModel(informationVO, RehabilitationInformationDO.class);
+            RehabilitationInformationDO informationDO = toEntity(jsonData, RehabilitationInformationDO.class);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_create, rehabilitationInformationService.create(informationDO));
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,12 +64,11 @@ public class RehabilitationInformationController extends EnvelopRestController {
 
     @GetMapping(value = RehabilitationRequestMapping.Information.findInformationById)
     @ApiOperation(value = "根据id查找就诊信息", notes = "根据id查找就诊信息")
-    public Envelop<RehabilitationInformationVO> findById(@ApiParam(name = "id", value = "id")
+    public Envelop<RehabilitationInformationDO> findById(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             RehabilitationInformationDO informationDO = rehabilitationInformationService.findById(id);
-            RehabilitationInformationVO informationVO = rehabilitationInformationService.convertToModel(informationDO, RehabilitationInformationVO.class);
-            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, informationVO);
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, informationDO);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -79,12 +77,11 @@ public class RehabilitationInformationController extends EnvelopRestController {
 
     @GetMapping(value = RehabilitationRequestMapping.Information.findInformationByPatientId)
     @ApiOperation(value = "根据patientId查找就诊信息", notes = "根据patientId查找就诊信息")
-    public Envelop<RehabilitationInformationVO> findByPatientId(@ApiParam(name = "patientId", value = "patientId")
+    public Envelop<RehabilitationInformationDO> findByPatientId(@ApiParam(name = "patientId", value = "patientId")
                                                            @RequestParam(value = "patientId", required = true) String patientId) {
         try {
             RehabilitationInformationDO informationDO = rehabilitationInformationService.findByPatientId(patientId);
-            RehabilitationInformationVO informationVO = rehabilitationInformationService.convertToModel(informationDO, RehabilitationInformationVO.class);
-            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, informationVO);
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, informationDO);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -96,8 +93,7 @@ public class RehabilitationInformationController extends EnvelopRestController {
     public Envelop<RehabilitationInformationVO> updateInformation(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
-            RehabilitationInformationVO informationVO = toEntity(jsonData, RehabilitationInformationVO.class);
-            RehabilitationInformationDO informationDO = rehabilitationInformationService.convertToModel(informationVO, RehabilitationInformationDO.class);
+            RehabilitationInformationDO informationDO = toEntity(jsonData, RehabilitationInformationDO.class);
             rehabilitationInformationService.update(informationDO);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_update);
         } catch (Exception e) {

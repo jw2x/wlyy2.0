@@ -53,11 +53,10 @@ public class RehabilitationPlanningController extends EnvelopRestController {
 
     @GetMapping(value = RehabilitationRequestMapping.Planning.api_create)
     @ApiOperation(value = "创建康复计划", notes = "创建康复计划")
-    public Envelop<RehabilitationPlanningDO> createPlanning(@ApiParam(name = "jsonData", value = "方案基本信息Json", defaultValue = "")
+    public Envelop<RehabilitationPlanningDO> createPlanning(@ApiParam(name = "jsonData", value = "基本信息Json", defaultValue = "")
                                                                             @RequestParam(value = "jsonData", required = false) String jsonData) {
         try {
-            RehabilitationPlanningVO planningVO = toEntity(jsonData, RehabilitationPlanningVO.class);
-            RehabilitationPlanningDO planningDO = convertToModel(planningVO, RehabilitationPlanningDO.class);
+            RehabilitationPlanningDO planningDO = toEntity(jsonData, RehabilitationPlanningDO.class);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_create, planningService.create(planningDO));
         }catch (Exception e){
             e.printStackTrace();
@@ -96,8 +95,7 @@ public class RehabilitationPlanningController extends EnvelopRestController {
     public Envelop updatePlanning(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                           @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
-            RehabilitationPlanningVO planningVO = toEntity(jsonData, RehabilitationPlanningVO.class);
-            RehabilitationPlanningDO planningDO = planningService.convertToModel(planningVO, RehabilitationPlanningDO.class);
+            RehabilitationPlanningDO planningDO = toEntity(jsonData, RehabilitationPlanningDO.class);
             planningService.update(planningDO);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_update);
         } catch (Exception e) {

@@ -40,10 +40,9 @@ public class RehabilitationTreatmentProgramService extends BaseJpaService<Rehabi
             filters = "name?"+name+"";
             semicolon = ";";
         }
-        String sorts = "-createTime";
+        String sorts = "-updateTime";
         //得到list数据
         List<RehabilitationTreatmentProgramDO> list = search(null, filters, sorts, page, size);
-
         //获取总数
         long count = getCount(filters);
         //DO转VO
@@ -65,14 +64,14 @@ public class RehabilitationTreatmentProgramService extends BaseJpaService<Rehabi
 
     /**
      * 修改
-     * @param treatmentProgramVO
+     * @param treatmentProgramDO
      */
-    public void update(RehabilitationTreatmentProgramVO treatmentProgramVO){
-        RehabilitationTreatmentProgramDO treatmentProgramDO = treatmentProgramDao.findById(treatmentProgramVO.getId());
-        treatmentProgramDO.setName(treatmentProgramVO.getName());
-        treatmentProgramDO.setFrequency(treatmentProgramVO.getFrequency());
-        treatmentProgramDO.setTimesDaily(treatmentProgramVO.getTimesDaily());
-        treatmentProgramDO.setDescription(treatmentProgramVO.getDescription());
-        treatmentProgramDao.save(treatmentProgramDO);
+    public void update(RehabilitationTreatmentProgramDO treatmentProgramDO){
+        RehabilitationTreatmentProgramDO oldTreatmentProgramDO = treatmentProgramDao.findById(treatmentProgramDO.getId());
+        oldTreatmentProgramDO.setName(treatmentProgramDO.getName());
+        oldTreatmentProgramDO.setFrequency(treatmentProgramDO.getFrequency());
+        oldTreatmentProgramDO.setTimesDaily(treatmentProgramDO.getTimesDaily());
+        oldTreatmentProgramDO.setDescription(treatmentProgramDO.getDescription());
+        treatmentProgramDao.save(oldTreatmentProgramDO);
     }
 }

@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.rehabilitation;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.yihu.jw.restmodel.iot.common.BaseVO;
 import io.swagger.annotations.ApiModel;
@@ -22,6 +23,7 @@ public class RehabilitationPlanningVO extends BaseVO implements Serializable {
     private String programId;
 
     @ApiModelProperty("复检时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
     private Date recheckTime;
 
     @ApiModelProperty("附加说明")

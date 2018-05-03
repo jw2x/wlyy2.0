@@ -18,7 +18,7 @@ public class RehabilitationTreatmentProgramVO extends BaseVO implements Serializ
     private String name;
     @ApiModelProperty("训练次数/时间")
     private String frequency;
-    @ApiModelProperty("方案名称")
+    @ApiModelProperty("每日次数")
     private Integer timesDaily;
     @ApiModelProperty("附加说明")
     private String description;

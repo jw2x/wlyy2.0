@@ -33,10 +33,6 @@ public class RehabilitationRequestMapping {
 
     }
 
-    public static class Performance {
-        public static final String performance = api_rehabilitation_common + "/performance";
-    }
-
     public static class TreatmentProgram {
         public static final String treatmentProgram = api_rehabilitation_common + "/treatmentProgram";
 
@@ -62,5 +58,18 @@ public class RehabilitationRequestMapping {
         public static final String api_update = "updatePlanning";
 
         public static final String findPlanningById = "findPlanningById";
+    }
+
+    public static class Performance {
+        public static final String performance = api_rehabilitation_common + "/performance";
+
+        public static final String findPerformancePage = "findPerformancePage";
+
+        public static final String api_create = "createPerformance";
+        public static final String api_delete = "delPerformance";
+        public static final String api_getById = "getPerformanceById";
+        public static final String api_update = "updatePerformance";
+
+        public static final String findPerformanceById = "findPerformanceById";
     }
 }

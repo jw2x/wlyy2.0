@@ -63,12 +63,11 @@ public class RehabilitationTreatmentProgramController extends EnvelopRestControl
 
     @GetMapping(value = RehabilitationRequestMapping.TreatmentProgram.findTreatmentProgramById)
     @ApiOperation(value = "根据id查找治疗方案", notes = "根据id查找治疗方案")
-    public Envelop<RehabilitationTreatmentProgramVO> findById(@ApiParam(name = "id", value = "id")
+    public Envelop<RehabilitationTreatmentProgramDO> findById(@ApiParam(name = "id", value = "id")
                                                          @RequestParam(value = "id", required = true) String id) {
         try {
             RehabilitationTreatmentProgramDO treatmentProgramDO = treatmentProgramService.findById(id);
-            RehabilitationTreatmentProgramVO treatmentProgramVO = treatmentProgramService.convertToModel(treatmentProgramDO, RehabilitationTreatmentProgramVO.class);
-            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, treatmentProgramVO);
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, treatmentProgramDO);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(e.getMessage());
@@ -80,9 +79,8 @@ public class RehabilitationTreatmentProgramController extends EnvelopRestControl
     public Envelop updateTreatmentProgram(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                                                   @RequestParam(value = "jsonData", required = true)String jsonData) {
         try {
-            RehabilitationTreatmentProgramVO treatmentProgramVO = toEntity(jsonData, RehabilitationTreatmentProgramVO.class);
-//            RehabilitationTreatmentProgramDO treatmentProgramDO = treatmentProgramService.convertToModel(treatmentProgramVO, RehabilitationTreatmentProgramDO.class);
-            treatmentProgramService.update(treatmentProgramVO);
+            RehabilitationTreatmentProgramDO treatmentProgramDO = toEntity(jsonData, RehabilitationTreatmentProgramDO.class);
+            treatmentProgramService.update(treatmentProgramDO);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_update);
         } catch (Exception e) {
             e.printStackTrace();
