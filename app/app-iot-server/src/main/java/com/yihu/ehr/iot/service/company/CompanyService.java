@@ -70,34 +70,34 @@ public class CompanyService extends BaseService {
         Result login_code = existence("login_code",iotCompany.getAccount());
         if(login_code.isSuccessFlg()){
             envelop.setStatus(-1);
-            envelop.setErrorMsg("该账号已存在");
+            envelop.setMessage("该账号已存在");
             return envelop;
         }
         //验证身份证
         Result id_card_no = existence("id_card_no",iotCompany.getContactsIdcard());
         if(id_card_no.isSuccessFlg()){
             envelop.setStatus(-1);
-            envelop.setErrorMsg("该身份证号已被注册，请确认。");
+            envelop.setMessage("该身份证号已被注册，请确认。");
             return envelop;
         }
         //验证邮件
         Result email = existence("email",iotCompany.getContactsEmail());
         if(email.isSuccessFlg()){
             envelop.setStatus(-1);
-            envelop.setErrorMsg("该邮箱已存在");
+            envelop.setMessage("该邮箱已存在");
             return envelop;
         }
         //验证手机号
         Result telephone = existence("telephone",iotCompany.getContactsMobile());
         if(telephone.isSuccessFlg()){
             envelop.setStatus(-1);
-            envelop.setErrorMsg("该手机号码已存在");
+            envelop.setMessage("该手机号码已存在");
             return envelop;
         }
         Envelop<UserModel> userModelEnvelop = updateUser(iotCompany);
         if(userModelEnvelop.getStatus()!=200){
             envelop.setStatus(-1);
-            envelop.setErrorMsg(userModelEnvelop.getErrorMsg());
+            envelop.setMessage(userModelEnvelop.getMessage());
             return envelop;
         }
 
@@ -117,22 +117,22 @@ public class CompanyService extends BaseService {
     private Envelop<IotCompanyVO> userVerification(IotCompanyVO iotCompany,Envelop<IotCompanyVO> envelop){
         if(StringUtils.isEmpty(iotCompany.getAccount())){
             envelop.setStatus(-1);
-            envelop.setErrorMsg("账号不能为空");
+            envelop.setMessage("账号不能为空");
             return envelop;
         }
         if(StringUtils.isEmpty(iotCompany.getContactsIdcard())){
             envelop.setStatus(-1);
-            envelop.setErrorMsg("身份证号不能为空");
+            envelop.setMessage("身份证号不能为空");
             return envelop;
         }
         if(StringUtils.isEmpty(iotCompany.getContactsEmail())){
             envelop.setStatus(-1);
-            envelop.setErrorMsg("邮箱不能为空");
+            envelop.setMessage("邮箱不能为空");
             return envelop;
         }
         if(StringUtils.isEmpty(iotCompany.getContactsMobile())){
             envelop.setStatus(-1);
-            envelop.setErrorMsg("手机号码账号不能为空");
+            envelop.setMessage("手机号码账号不能为空");
             return envelop;
         }
 
@@ -191,13 +191,13 @@ public class CompanyService extends BaseService {
                 envelop.setStatus(200);
             }else {
                 envelop.setStatus(-1);
-                envelop.setErrorMsg(result.getErrorMsg());
+                envelop.setMessage(result.getErrorMsg());
             }
             return envelop;
         } catch (Exception e) {
             e.printStackTrace();
             envelop.setStatus(-1);
-            envelop.setErrorMsg(ErrorCode.SystemError.toString());
+            envelop.setMessage(ErrorCode.SystemError.toString());
             return envelop;
         }
     }
@@ -219,16 +219,16 @@ public class CompanyService extends BaseService {
             ObjectResult result = toModel(response.getBody(),ObjectResult.class);
             if(result.isSuccessFlg()){
                 envelop.setStatus(200);
-                envelop.setSuccessMsg("修改成功");
+                envelop.setMessage("修改成功");
             }else {
                 envelop.setStatus(-1);
-                envelop.setErrorMsg(result.getErrorMsg());
+                envelop.setMessage(result.getErrorMsg());
             }
             return envelop;
         } catch (Exception e) {
             e.printStackTrace();
             envelop.setStatus(-1);
-            envelop.setErrorMsg(ErrorCode.SystemError.toString());
+            envelop.setMessage(ErrorCode.SystemError.toString());
             return envelop;
         }
     }
