@@ -1,6 +1,6 @@
 package com.yihu.rehabilitation.config;
 
-import com.yihu.jw.rm.archives.PatientArchivesMapping;
+import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -14,27 +14,27 @@ import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
 @EnableSwagger2
-@ComponentScan("com.yihu.jw.**")
+@ComponentScan("com.yihu.rehabilitation.**")
 public class SwaggerConfig {
-    public static final String archives_API = "archives";
+    public static final String rehabilitation_API = "rehabilitation";
 
     @Bean
-    public Docket wlyyAPI() {
+    public Docket rehabilitationAPI() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName(archives_API)
+                .groupName(rehabilitation_API)
                 .useDefaultResponseMessages(false)
                 .forCodeGeneration(false)
                 .pathMapping("/")
                 .select()
                 .paths(or(
-                        regex("/" + PatientArchivesMapping.api_archives_common + "/.*")
+                        regex("/" + RehabilitationRequestMapping.api_rehabilitation_common + "/.*")
                 ))
                 .build()
-                .apiInfo(wlyyApiInfo());
+                .apiInfo(rehabilitationApiInfo());
     }
 
-    private ApiInfo wlyyApiInfo() {
-        ApiInfo wlyyInfo = new ApiInfo("基卫2.0API",
+    private ApiInfo rehabilitationApiInfo() {
+        ApiInfo rehabilitationInfo = new ApiInfo("基卫2.0API",
                 "基卫2.0API，提供基础卫生相关服务。",
                 "1.0",
                 "No terms of service",
@@ -43,8 +43,7 @@ public class SwaggerConfig {
                 "http://www.apache.org/licenses/LICENSE-2.0.html"
         );
 
-        return wlyyInfo;
+        return rehabilitationInfo;
     }
-
 
 }
