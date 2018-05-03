@@ -16,7 +16,10 @@ import java.util.UUID;
 public class LatitudeUtils {
 
 
-    public static final String KEY_1 = "7d9fbeb43e975cd1e9477a7e5d5e192a";
+    /**
+     * 没有ak有的服务请求获取不到地址
+     */
+    public static final String ak = "wm9Cih17l010vL91nOfTbu8M";
 
 
 
@@ -30,7 +33,7 @@ public class LatitudeUtils {
         try {
             //将地址转换成utf-8的16进制
             address = URLEncoder.encode(address, "UTF-8");
-            URL tirc = new URL("http://api.map.baidu.com/geocoder?address="+ address +"&output=json&key="+ UUID.randomUUID().toString().replace("-",""));
+            URL tirc = new URL("http://api.map.baidu.com/geocoder/v2/?address="+ address +"&output=json&key="+ UUID.randomUUID().toString().replace("-","")+"&ak="+ak);
 
 
             in = new BufferedReader(new InputStreamReader(tirc.openStream(),"UTF-8"));
@@ -58,7 +61,9 @@ public class LatitudeUtils {
             e.printStackTrace();
         }finally{
             try {
-                in.close();
+                if(in!=null){
+                    in.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
