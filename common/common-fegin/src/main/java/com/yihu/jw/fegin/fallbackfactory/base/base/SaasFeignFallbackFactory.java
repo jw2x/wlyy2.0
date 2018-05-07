@@ -16,6 +16,11 @@ public class SaasFeignFallbackFactory implements FallbackFactory<SaasFeign> {
             public Envelop getList(@RequestParam(value = "fields") String fields, @RequestParam(value = "filters") String filters, @RequestParam(value = "sorts") String sorts) {
                 return null;
             }
+
+            @Override
+            public Envelop findByCode(@RequestParam(value = "id") String id) {
+                return null;
+            }
         };
     }
 }

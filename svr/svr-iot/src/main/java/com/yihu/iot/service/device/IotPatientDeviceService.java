@@ -76,6 +76,7 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
             }
 
             Map<String, String> json = LatitudeUtils.getGeocoderLatitude(deviceVO.getAddress().replace("G.", "").replace("（糖友网）", "").replace("（高友网）", ""));
+            logger.info("地址:," + deviceVO.getAddress());
             if (json == null) {
                 if(!StringUtils.isEmpty(deviceVO.getHospitalName())){
                     json = LatitudeUtils.getGeocoderLatitude(deviceVO.getHospitalName().replace("G.", "").replace("（糖友网）", "").replace("（高友网）", ""));

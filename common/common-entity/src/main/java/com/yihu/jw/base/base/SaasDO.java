@@ -20,6 +20,7 @@ public class SaasDO extends IdEntityWithOperation implements java.io.Serializabl
 	private String name;//名称
 	private Integer status;//状态 -1 已删除 0待审核 1审核通过 2 审核不通过
 	private String remark;//备注
+	private String familyTel;
 	// Constructors
 
 	/** default constructor */
@@ -52,5 +53,14 @@ public class SaasDO extends IdEntityWithOperation implements java.io.Serializabl
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	@Column(name = "family_tel", length = 100)
+	public String getFamilyTel() {
+		return familyTel;
+	}
+
+	public void setFamilyTel(String familyTel) {
+		this.familyTel = familyTel;
 	}
 }
