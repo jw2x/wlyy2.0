@@ -65,7 +65,7 @@ service-gateway:
 
 third:
   wlyy:
-    url: http://ehr.yihu.com/wlyy/
+    url: http://172.19.103.88:9092/wlyy/
     appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
     appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
 ehr:
@@ -104,7 +104,7 @@ service-gateway:
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
 third:
   wlyy:
-    url: http://ehr.yihu.com/wlyy/
+    url: http://172.19.103.88:9092/wlyy/
     appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
     appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
 ehr:
