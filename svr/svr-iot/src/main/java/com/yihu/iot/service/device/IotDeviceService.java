@@ -63,6 +63,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * @param iotDevice
      * @return
      */
+    @Transactional
     public IotDeviceDO create(IotDeviceDO iotDevice) {
 
         if(iotDevice.getPurchaseId()!=null){
@@ -188,8 +189,8 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * @return
      */
     public Envelop<IotDeviceVO> queryPage(String sn,String hospital,String orderId,String purcharseId,Integer page,Integer size) throws Exception{
-        String filters = "";
-        String semicolon = "del=1;";
+        String filters = "del=1;";
+        String semicolon = "";
         if(StringUtils.isNotBlank(orderId)){
             filters += semicolon +"orderId="+orderId;
             semicolon = ";";
@@ -406,6 +407,11 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
             IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanDao.findByDeviceId(iotDeviceVO.getId());
             if(planDO!=null){
                 iotDeviceVO.setQualityStatus(qualityStatusMap.get(planDO.getStatus()));//质检状态
+            }else if(StringUtils.isNotBlank(iotDeviceVO.getPurchaseId())){
+                IotOrderPurchaseDO purchaseDO = iotOrderPurchaseDao.findById(iotDeviceVO.getPurchaseId());
+                if(purchaseDO!=null&&StringUtils.isNotBlank(purchaseDO.getQualityStatus())){
+                    iotDeviceVO.setQualityStatus(qualityStatusMap.get(purchaseDO.getQualityStatus()));//质检状态
+                }
             }
             //数据来源
             if(StringUtils.isNotBlank(iotDeviceVO.getPurchaseId())){

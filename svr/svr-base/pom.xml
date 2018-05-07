@@ -60,10 +60,6 @@
             <groupId>com.yihu.base</groupId>
             <artifactId>common-data-mysql</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.yihu.base</groupId>-->
-            <!--<artifactId>common-security</artifactId>-->
-        <!--</dependency>-->
 
         <!--公共的 end-->
         <dependency>

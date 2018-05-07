@@ -59,13 +59,6 @@ public class EnvelopPage<T> extends BaseEnvelop implements Serializable {
         this.detailModelList = detailModelList;
     }
 
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
 
 
     public int getPageSize() {
@@ -97,23 +90,15 @@ public class EnvelopPage<T> extends BaseEnvelop implements Serializable {
         this.totalPage = totalPage;
     }
 
-    public String getSuccessMsg() {
-        return successMsg;
-    }
-
-    public void setSuccessMsg(String successMsg) {
-        this.successMsg = successMsg;
-    }
-
     public static EnvelopPage getSuccess(String message) {
         EnvelopPage envelop = new EnvelopPage();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         return envelop;
     }
 
     public static EnvelopPage getSuccessListWithPage(String message, List detailModelList, int page, int size, Long count) {
         EnvelopPage envelop = new EnvelopPage();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setPageSize(size);
         envelop.setDetailModelList(detailModelList);
         envelop.setCurrPage(page);
@@ -123,13 +108,13 @@ public class EnvelopPage<T> extends BaseEnvelop implements Serializable {
 
     public static EnvelopPage getError(String message, int errorCode) {
         EnvelopPage envelop = new EnvelopPage();
-        envelop.setErrorMsg(message);
+        envelop.setMessage(message);
         return envelop;
     }
 
     public static EnvelopPage getSuccessList(String message, List objList) {
         EnvelopPage envelop = new EnvelopPage();
-        envelop.setSuccessMsg(message);
+        envelop.setMessage(message);
         envelop.setDetailModelList(objList);
         return envelop;
     }

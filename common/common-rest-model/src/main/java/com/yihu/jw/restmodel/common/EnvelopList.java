@@ -29,9 +29,6 @@ public class EnvelopList<T> extends BaseEnvelop implements Serializable {
     @ApiModelProperty("列表内容")
     private List<T> detailModelList;
 
-    public EnvelopList(String errorMsg, String successMsg) {
-        super(errorMsg, successMsg);
-    }
 
     public List<T> getDetailModelList() {
         return detailModelList;
