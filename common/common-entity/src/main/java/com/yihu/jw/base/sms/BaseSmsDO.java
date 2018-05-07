@@ -21,11 +21,11 @@ public class BaseSmsDO extends IdEntityWithOperation implements java.io.Serializ
 	private String mobile;	//电话号码
 	private String ip;	//发送短信的ip地址
 	private Integer type;	//发送短信的类别
-	private String captcha;	//验证码 1微信端注册，2微信端找回密码，3医生端找回密码，4患者登录，5医生登录
+	private String captcha;	//验证码 1居民端注册，2居民端找回密码，3医生端找回密码，4居民登录，5医生登录
 	private String content;	// 短信内容
 	private Date deadline;	//过期时间
 	private Integer status;	//短信状态 状态，0未发送，1已发送
-	private Date czrq;//操作日期
+//	private Date czrq;//操作日期
 
 	// Constructors
 
@@ -133,12 +133,12 @@ public class BaseSmsDO extends IdEntityWithOperation implements java.io.Serializ
 		this.status = status;
 	}
 
-	@Column(name = "czrq")
-	public Date getCzrq() {
-		return czrq;
-	}
-
-	public void setCzrq(Date czrq) {
-		this.czrq = czrq;
-	}
+//	@Column(name = "czrq")
+//	public Date getCzrq() {
+//		return czrq;
+//	}
+//
+//	public void setCzrq(Date czrq) {
+//		this.czrq = czrq;
+//	}
 }

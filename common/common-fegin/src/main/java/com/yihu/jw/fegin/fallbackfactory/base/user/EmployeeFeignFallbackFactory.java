@@ -97,6 +97,10 @@ public class EmployeeFeignFallbackFactory  implements FallbackFactory<EmployFeig
                 throw new JiWeiException(e);
             }
 
+            @Override
+            public Envelop getEmployeeByPhoneAndSaasId(String phone, String saasId){
+                return null;
+            }
         };
     }
 }

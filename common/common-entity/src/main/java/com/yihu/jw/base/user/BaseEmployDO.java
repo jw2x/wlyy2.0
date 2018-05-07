@@ -20,12 +20,16 @@ public class BaseEmployDO extends IdEntityWithOperation implements java.io.Seria
 	private String saasId; //saasIDF
 	private String name; //名字
 	private String pyCode; //拼音
+	private String ssc;//医保卡号
 	private String sex; //性别
 	private String photo; //头像
 	private String skill;//专长
 	private String workPortal;//医生门户首页
 	private String email;//邮箱
 	private String phone;//联系电话
+	private String password;//账户密码
+	private String salt;//账户密码的盐
+	private String idcard;//身份证号
 	private String secondPhone;//备用电话
 	private String familyTel;//家庭电话（固）
 	private String officeTel;//办公电话（固）
@@ -211,5 +215,39 @@ public class BaseEmployDO extends IdEntityWithOperation implements java.io.Seria
 		this.status = status;
 	}
 
+	@Column(name = "password")
+	public String getPassword() {
+		return password;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Column(name = "salt")
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	@Column(name = "idcard")
+	public String getIdcard() {
+		return idcard;
+	}
+
+	public void setIdcard(String idcard) {
+		this.idcard = idcard;
+	}
+
+	@Column(name = "ssc")
+	public String getSsc() {
+		return ssc;
+	}
+
+	public void setSsc(String ssc) {
+		this.ssc = ssc;
+	}
 }
