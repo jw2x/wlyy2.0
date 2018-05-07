@@ -6,6 +6,7 @@ import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,7 @@ public class ModuleFunController extends EnvelopRestController {
 
     @PutMapping(value =  BaseRequestMapping.ModuleFun.api_changeFun,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "模块更新功能")
-    public Envelop changeFun (@RequestBody String jsonData) {
+    public Envelop changeFun (@RequestBody String jsonData) throws JSONException {
         moduleFunService.changeFun(jsonData);
         return Envelop.getSuccess("更新成功",null);
     }

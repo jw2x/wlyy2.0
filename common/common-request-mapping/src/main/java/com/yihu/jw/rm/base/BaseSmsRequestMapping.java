@@ -21,7 +21,7 @@ public class BaseSmsRequestMapping {
         public static final String message_fail_id_is_null="id is null";
 
 
-        public static final String api_create="sms";
+        public static final String api_sms_send="send";
         public static final String api_update="sms";
 
         public static final String api_getSmss="getSmss";

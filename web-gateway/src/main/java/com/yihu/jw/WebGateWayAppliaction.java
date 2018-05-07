@@ -13,7 +13,9 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * Created by chenweida on 2017/5/10.
  */
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
+@SpringBootApplication(
+        exclude = {DataSourceAutoConfiguration.class,
+                HibernateJpaAutoConfiguration.class})
 //@SpringBootApplication
 @EnableDiscoveryClient//服务注册到发现服务
 @EnableHystrix //启动断路器

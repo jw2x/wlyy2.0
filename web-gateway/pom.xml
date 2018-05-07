@@ -38,10 +38,11 @@
             <artifactId>common-swagger</artifactId>
         </dependency>
 
-        <!--<dependency>-->
-            <!--<groupId>com.yihu.base</groupId>-->
-            <!--<artifactId>common-security</artifactId>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.yihu</groupId>
+            <artifactId>common-security-starter</artifactId>
+            <version>1.0.5</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -68,10 +69,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-      <!--  <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -162,6 +163,10 @@
             <groupId>com.sun.jna</groupId>
             <artifactId>jna</artifactId>
             <version>3.0.9</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-entity</artifactId>
         </dependency>
     </dependencies>
     <build>

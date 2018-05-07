@@ -6,6 +6,8 @@ import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
         name = CommonContants.svr_base // name值是eurika的实例名字
         ,fallbackFactory  = EmployeeFeignFallbackFactory.class
 )
-@RequestMapping(value = BaseRequestMapping.api_base_common)
+@RequestMapping(value = BaseUserRequestMapping.api_user_common)
 public interface EmployFeign {
 
     @RequestMapping(value = BaseUserRequestMapping.BaseEmploy.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
@@ -57,5 +59,8 @@ public interface EmployFeign {
 
     @RequestMapping(value = BaseUserRequestMapping.BaseEmployRole.api_getListNoPage,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
     Envelop getRoleList(@RequestBody String jsonData) throws JiWeiException;
+
+    @GetMapping(value = BaseUserRequestMapping.BaseEmploy.api_getByPhone)
+    Envelop getEmployeeByPhoneAndSaasId(@RequestParam(value = "phone", required = true) String phone,@RequestParam(value = "saasId", required = true) String saasId);
 }
 

@@ -2,6 +2,7 @@ package com.yihu.jw.rm.base;
 
 public class BaseLoginRequestMapping {
     public static final String api_common = BaseRequestMapping.api_base_common + "/login";
+    public static final String api_gateway_common = BaseRequestMapping.api_base_common + "/gateway/login";
 
     /**
      * 用户账号类型
@@ -12,6 +13,10 @@ public class BaseLoginRequestMapping {
         public static final String api_delete = "/baseLoginAccount/{ids}";
         public static final String api_getById = "/baseLoginAccount/{id}";
         public static final String api_getOne="/baseLoginAccount";
+        public static final String mobileSendSms = "/code/sms";
+        public static final String api_checkoutInfo = "/register/checkInfo";
+        public static final String api_accountSub = "/register/accountSub";
+        public static final String api_login= "/authentication/form";
 
         public static final String message_success_create = "baseLoginAccount create success";
         public static final String message_success_update = "baseLoginAccount update success";
