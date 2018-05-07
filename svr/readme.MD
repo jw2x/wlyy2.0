@@ -6,3 +6,4 @@ svr 相关的db设计
     svr-iot 医疗物联网服务
     svr-manage 基卫后台管理系统   (独立的系统不注册到发现服务)
     svr-wlyy-archives 居民档案建立服务
+    svr-rehabilitation 居民康复计划
