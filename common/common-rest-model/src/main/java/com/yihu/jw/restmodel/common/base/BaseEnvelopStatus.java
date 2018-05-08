@@ -5,7 +5,11 @@ package com.yihu.jw.restmodel.common.base;
  */
 public enum BaseEnvelopStatus {
     success("请求成功", 200),
-    ;
+    status_10100("账号不存在", 10100),
+    status_10101("密码错误", 10101),
+    status_10102("用户未登录", 10102),
+    status_10103("登陆超时", 10103),
+    status_10104("账号被挤", 10104),;
 
     BaseEnvelopStatus(String name, Integer code) {
         this.name = name;
