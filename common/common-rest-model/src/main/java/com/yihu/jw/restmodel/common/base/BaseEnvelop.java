@@ -14,7 +14,7 @@ public class BaseEnvelop {
     @ApiModelProperty("信息")
     protected String message;
     @ApiModelProperty("状态（200成功，-1是失败）")
-    protected Integer status;
+    protected Integer status = BaseEnvelopStatus.success.getCode();
 
     public BaseEnvelop() {
     }
