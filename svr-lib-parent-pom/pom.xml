@@ -81,7 +81,7 @@
         <version.joda-time>2.8.2</version.joda-time>
         <version.solr>5.5.1</version.solr>
         <version.fastdfs>1.25</version.fastdfs>
-
+        <version.spring-boot-admin>1.5.7</version.spring-boot-admin>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <asciidoctor.maven.plugin.version>1.5.5</asciidoctor.maven.plugin.version>
@@ -91,6 +91,17 @@
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
         <dependencies>
+            <!--服务器监监听-->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server</artifactId>
+                <version>${version.spring-boot-admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server-ui</artifactId>
+                <version>${version.spring-boot-admin}</version>
+            </dependency>
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
