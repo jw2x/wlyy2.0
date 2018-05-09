@@ -30,31 +30,31 @@ public class ModuleController extends EnvelopRestController {
     @Autowired
     private ModuleService moduleService;
 
-    @PostMapping(value = BaseRequestMapping.Module.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建模块", notes = "创建单个模块")
-    public Envelop createModule(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
-        try {
-            ModuleDO module = toEntity(jsonData, ModuleDO.class);
-            return Envelop.getSuccess(BaseRequestMapping.Module.message_success_create, moduleService.createModule(module));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
-        }
-    }
+//    @PostMapping(value = BaseRequestMapping.Module.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    @ApiOperation(value = "创建模块", notes = "创建单个模块")
+//    public Envelop createModule(
+//            @ApiParam(name = "json_data", value = "", defaultValue = "")
+//            @RequestBody String jsonData) {
+//        try {
+//            ModuleDO module = toEntity(jsonData, ModuleDO.class);
+//            return Envelop.getSuccess(BaseRequestMapping.Module.message_success_create, moduleService.createModule(module));
+//        } catch (ApiException e) {
+//            return Envelop.getError(e.getMessage(), e.getErrorCode());
+//        }
+//    }
 
-    @PutMapping(value = BaseRequestMapping.Module.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "修改模块", notes = "修改模块")
-    public Envelop updateModule(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
-        try {
-            ModuleDO module = toEntity(jsonData, ModuleDO.class);
-            return Envelop.getSuccess(BaseRequestMapping.Module.message_success_update, moduleService.updateModule(module));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
-        }
-    }
+//    @PutMapping(value = BaseRequestMapping.Module.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    @ApiOperation(value = "修改模块", notes = "修改模块")
+//    public Envelop updateModule(
+//            @ApiParam(name = "json_data", value = "", defaultValue = "")
+//            @RequestBody String jsonData) {
+//        try {
+//            ModuleDO module = toEntity(jsonData, ModuleDO.class);
+//            return Envelop.getSuccess(BaseRequestMapping.Module.message_success_update, moduleService.updateModule(module));
+//        } catch (ApiException e) {
+//            return Envelop.getError(e.getMessage(), e.getErrorCode());
+//        }
+//    }
 
     @DeleteMapping(value = BaseRequestMapping.Module.api_delete)
     @ApiOperation(value = "删除模块", notes = "删除模块")

@@ -98,6 +98,11 @@ public class BaseRoleFeignFallbackFactory implements FallbackFactory<BaseRoleFei
                 throw new JiWeiException(e);
             }
 
+            @Override
+            public Envelop getPhoneAndSaasId(String phone, String saasId) {
+                return null;
+            }
+
         };
     }
 }

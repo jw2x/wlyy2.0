@@ -5,8 +5,10 @@ import com.yihu.jw.base.login.BaseLoginAccountDO;
 import com.yihu.jw.base.user.BaseEmployDO;
 import com.yihu.jw.business.user.dao.EmployDao;
 import com.yihu.jw.business.user.service.EmployService;
+import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
+import com.yihu.jw.restmodel.common.base.BaseEnvelopStatus;
 import com.yihu.jw.rm.base.BaseLoginRequestMapping;
 import com.yihu.jw.util.common.ConvertToSpellUtils;
 import com.yihu.jw.util.security.MD5;
@@ -50,7 +52,7 @@ public class LoginService  extends BaseJpaService<BaseEmployDO,EmployDao> {
     }
 
     @Transactional
-    public Envelop register(String mobilePhone,String password,String saasId,String name,String idcard,String ssc){
+    public Envelop register(String mobilePhone,String password,String saasId,String name,String idcard,String ssc) throws Exception {
 
         //判断账号是否重复
         BaseEmployDO baseEmployDO = employDao.findByPhoneAndSaasId(mobilePhone,saasId);
@@ -76,11 +78,8 @@ public class LoginService  extends BaseJpaService<BaseEmployDO,EmployDao> {
     }
 
 
-    public Envelop login(String mobilePhone,String password,String saasId,String captcha){
+    public Envelop login(String mobilePhone,String password,String saasId,String captcha) throws Exception{
         BaseEmployDO baseEmployDO = employService.findByPhoneAndSaasId(mobilePhone,saasId);
-        if(baseEmployDO==null){
-            return Envelop.getError("该账户不存在！");
-        }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", "*/*");
         headers.add("Cache-Control", "no-cache");

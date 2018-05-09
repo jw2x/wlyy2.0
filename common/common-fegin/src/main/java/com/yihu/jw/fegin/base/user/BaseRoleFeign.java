@@ -5,6 +5,8 @@ import com.yihu.jw.fegin.fallbackfactory.base.user.BaseRoleFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -16,15 +18,16 @@ import org.springframework.web.bind.annotation.*;
         name = CommonContants.svr_base // name值是eurika的实例名字
         ,fallbackFactory  = BaseRoleFeignFallbackFactory.class
 )
+@RequestMapping(BaseUserRequestMapping.api_user_common)
 public interface BaseRoleFeign {
-    
-    @RequestMapping(value = BaseUserRequestMapping.BaseRole.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+
+    @RequestMapping(value = BaseUserRequestMapping.BaseRole.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
     Envelop create(@RequestBody String jsonData) throws JiWeiException;
 
-    @RequestMapping(value =  BaseUserRequestMapping.BaseRole.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.PUT)
+    @RequestMapping(value = BaseUserRequestMapping.BaseRole.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.PUT)
     Envelop update(@RequestBody String jsonData) throws JiWeiException;
 
-    @RequestMapping(value =  BaseUserRequestMapping.BaseRole.api_delete,method = RequestMethod.DELETE)
+    @RequestMapping(value = BaseUserRequestMapping.BaseRole.api_delete, method = RequestMethod.DELETE)
     Envelop delete(@PathVariable(value = "id") String id) throws JiWeiException;
 
     @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getById)
@@ -44,16 +47,19 @@ public interface BaseRoleFeign {
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts) throws JiWeiException;
 
-    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
     Envelop createRoleMenus(@RequestBody String jsonData) throws JiWeiException;
 
-    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
     Envelop updateRoleMenus(@RequestBody String jsonData) throws JiWeiException;
 
-    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_delete,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
     Envelop deleteRoleMenus(@RequestBody String jsonData) throws JiWeiException;
 
-    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_getListNoPage,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
+    @RequestMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_getListNoPage, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.POST)
     Envelop getMenuList(@RequestBody String jsonData) throws JiWeiException;
+
+    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getRoleByPhoneAndSaasId, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    Envelop getPhoneAndSaasId(@RequestParam(value = "phone", required = true) String phone, @RequestParam(value = "saasId", required = true) String saasId);
 
 }

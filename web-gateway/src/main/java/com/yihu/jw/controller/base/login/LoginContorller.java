@@ -43,9 +43,10 @@ public class LoginContorller {
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_checkoutInfo, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "注册校验信息", notes = "注册校验姓名、身份证、医保卡号信息")
-    public Envelop checkoutInfo(){
+    public BaseEnvelop checkoutInfo(@ApiParam(name = "ssc", value = "医保卡号", required = true) @RequestParam(value = "ssc", required = true) String ssc,
+                                @ApiParam(name = "idcard", value = "身份证", required = true) @RequestParam(value = "idcard", required = true) String idcard){
 
-        return loginFeign.checkoutInfo();
+        return loginFeign.checkoutInfo(ssc,idcard);
     }
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_accountSub, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

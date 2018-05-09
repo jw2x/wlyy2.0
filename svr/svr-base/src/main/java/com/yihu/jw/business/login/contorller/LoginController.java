@@ -7,6 +7,7 @@ import com.yihu.jw.base.user.BaseEmployDO;
 import com.yihu.jw.business.login.service.LoginService;
 import com.yihu.jw.business.user.dao.EmployDao;
 import com.yihu.jw.business.user.service.EmployService;
+import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.fegin.common.security.LoginSmsFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
@@ -32,6 +33,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.UUID;
 
@@ -49,10 +51,11 @@ public class LoginController extends EnvelopRestController {
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_checkoutInfo, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "注册校验信息", notes = "注册校验姓名、身份证、医保卡号信息")
-    public BaseEnvelop checkoutInfo(){
+    public BaseEnvelop checkoutInfo(@ApiParam(name = "ssc", value = "医保卡号", required = true) @RequestParam(value = "ssc", required = true) String ssc,
+                                    @ApiParam(name = "idcard", value = "身份证", required = true) @RequestParam(value = "idcard", required = true) String idcard) throws ApiException{
 
         //校验姓名、身份证以及医保卡号信息是否正确
-
+//        throw new IOException();
         return null;
     }
 
@@ -69,7 +72,7 @@ public class LoginController extends EnvelopRestController {
      * @return
      */
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_accountSub, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "注册账号", notes = "注册校验姓名、身份证、医保卡号信息")
+    @ApiOperation(value = "注册账号", notes = "注册账号")
     public Envelop register(
             @ApiParam(name = "mobilePhone", value = "电话号码（账号）", required = true) @RequestParam(value = "mobilePhone", required = true) String mobilePhone,
             @ApiParam(name = "saasId", value = "saasID", required = true) @RequestParam(value = "saasId", required = true) String saasId,
@@ -78,19 +81,14 @@ public class LoginController extends EnvelopRestController {
             @ApiParam(name = "name", value = "姓名", required = true) @RequestParam(value = "name", required = true) String name,
             @ApiParam(name = "password", value = "账户密码", required = true) @RequestParam(value = "password", required = true) String password,
             @ApiParam(name = "idcard", value = "身份证", required = true) @RequestParam(value = "idcard", required = true) String idcard,
-            @ApiParam(name = "ssc", value = "医保卡号", required = true) @RequestParam(value = "ssc", required = true) String ssc){
-        try {
-            //判断验证码是否正确
-            Envelop envelop = new Envelop();//smsService.checkSms(mobilePhone,saasId,type,captcha);
-            if(true){//if(envelop.getStatus()==200){
-                return loginService.register(mobilePhone,password,saasId,name,idcard,ssc);
-            }else{
-                return envelop;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            @ApiParam(name = "ssc", value = "医保卡号", required = true) @RequestParam(value = "ssc", required = true) String ssc) throws Exception{
+        //判断验证码是否正确
+        Envelop envelop = new Envelop();//smsService.checkSms(mobilePhone,saasId,type,captcha);
+        if(true){//if(envelop.getStatus()==200){
+            return loginService.register(mobilePhone,password,saasId,name,idcard,ssc);
+        }else{
+            return envelop;
         }
-        return new Envelop();
     }
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_login, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -98,20 +96,28 @@ public class LoginController extends EnvelopRestController {
                       @ApiParam(name = "password", value = "password", required = false) @RequestParam(value = "password", required = false) String password,
                       @ApiParam(name = "saasId", value = "saasID", required = true) @RequestParam(value = "saasId", required = true) String saasId,
                          @ApiParam(name = "captcha", value = "短信验证码", required = false) @RequestParam(value = "captcha", required = false) String captcha){
-       return loginService.login(mobilePhone,password,saasId,captcha);
+       try{
+           return loginService.login(mobilePhone,password,saasId,captcha);
+       }catch (ApiException e){
+           e.printStackTrace();
+           return Envelop.getError(e.getMessage(),e.getErrorCode());
+       }catch (Exception e){
+           e.printStackTrace();
+           return Envelop.getError("",100);
+       }
     }
 
-    @PostMapping("/logout")
-    public Envelop logout(){
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Accept", "*/*");
-        headers.add("Cache-Control", "no-cache");
-        RestTemplate restTemplate = new RestTemplate();
-        MultiValueMap<String, String> params= new LinkedMultiValueMap<String, String>();
-        //设置http请求实体
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-        restTemplate.postForObject("http://localhost:8088/logout", requestEntity, String.class);
-        return new Envelop();
-    }
+//    @PostMapping("/logout")
+//    public Envelop logout(){
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("Accept", "*/*");
+//        headers.add("Cache-Control", "no-cache");
+//        RestTemplate restTemplate = new RestTemplate();
+//        MultiValueMap<String, String> params= new LinkedMultiValueMap<String, String>();
+//        //设置http请求实体
+//        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
+//        restTemplate.postForObject("http://localhost:8088/logout", requestEntity, String.class);
+//        return new Envelop();
+//    }
 
 }

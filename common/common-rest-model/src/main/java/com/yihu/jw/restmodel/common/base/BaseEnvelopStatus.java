@@ -5,6 +5,7 @@ package com.yihu.jw.restmodel.common.base;
  */
 public enum BaseEnvelopStatus {
     success("请求成功", 200),
+    system_error("系统错误",-10000),
     //------------------登陆 权限相关 start ------------------
     status_10100("账号不存在", 10100),
     status_10101("密码错误", 10101),

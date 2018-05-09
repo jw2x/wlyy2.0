@@ -1,6 +1,7 @@
 package com.yihu.jw.fegin.base.login;
 
 import com.yihu.jw.fegin.fallbackfactory.base.base.FunctionFeignFallbackFactory;
+import com.yihu.jw.fegin.fallbackfactory.base.base.LoginFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
@@ -23,13 +24,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 @FeignClient(
         name = CommonContants.svr_base // name值是eurika的实例名字
-//        ,fallbackFactory  = FunctionFeignFallbackFactory.class
+        ,fallbackFactory  = LoginFeignFallbackFactory.class
 )
 @RequestMapping(value = BaseLoginRequestMapping.api_common)
 public interface LoginFeign {
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_checkoutInfo, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop checkoutInfo();
+    BaseEnvelop checkoutInfo(@RequestParam(value = "ssc", required = true) String ssc,@RequestParam(value = "idcard", required = true) String idcard);
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_accountSub, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     Envelop register(
