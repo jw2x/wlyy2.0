@@ -22,7 +22,7 @@ public class RehabilitationTreatmentProgramDO extends IdEntityWithOperation impl
     @Column(name =  "frequency")
     private String frequency;
     @Column(name = "times_daily")
-    private Integer timesDaily;
+    private String timesDaily;
     @Column(name = "description")
     private String description;
 
@@ -50,11 +50,11 @@ public class RehabilitationTreatmentProgramDO extends IdEntityWithOperation impl
         this.frequency = frequency;
     }
 
-    public Integer getTimesDaily() {
+    public String getTimesDaily() {
         return timesDaily;
     }
 
-    public void setTimesDaily(Integer timesDaily) {
+    public void setTimesDaily(String timesDaily) {
         this.timesDaily = timesDaily;
     }
 

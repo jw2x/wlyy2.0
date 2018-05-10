@@ -10,4 +10,7 @@ public interface RehabilitationPerformanceDao extends PagingAndSortingRepository
 
     @Query("from RehabilitationPerformanceDO w where w.id = ?1")
     RehabilitationPerformanceDO findById(String id);
+
+    @Query("from RehabilitationPerformanceDO w where w.createUser = ?1")
+    RehabilitationPerformanceDO findByPatientId(String patientId);
 }

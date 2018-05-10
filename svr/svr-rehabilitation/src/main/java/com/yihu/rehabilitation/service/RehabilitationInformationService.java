@@ -42,9 +42,9 @@ public class RehabilitationInformationService extends BaseJpaService<Rehabilitat
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT w.id) count from rehabilitation_information w where 1 = 1 ");
         List<Object> args = new ArrayList<>();
         if(StringUtils.isNotBlank(patientId)){
-            sql.append(" and w.patientId = ? ");
-            sqlCount.append(" and w.patientId = '%").append(patientId).append("%' ");
-            args.add('%'+ patientId + '%');
+            sql.append(" and w.patient_id = ? ");
+            sqlCount.append(" and w.patient_id = '").append(patientId).append("' ");
+            args.add(patientId);
         }
         if(StringUtils.isNotBlank(hospital)){
             sql.append(" and w.hospital like ? ");

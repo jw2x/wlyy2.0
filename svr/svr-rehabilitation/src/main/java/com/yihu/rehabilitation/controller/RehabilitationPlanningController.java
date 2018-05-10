@@ -51,10 +51,10 @@ public class RehabilitationPlanningController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = RehabilitationRequestMapping.Planning.api_create)
+    @PostMapping(value = RehabilitationRequestMapping.Planning.api_create)
     @ApiOperation(value = "创建康复计划", notes = "创建康复计划")
     public Envelop<RehabilitationPlanningDO> createPlanning(@ApiParam(name = "jsonData", value = "基本信息Json", defaultValue = "")
-                                                                            @RequestParam(value = "jsonData", required = false) String jsonData) {
+                                                                @RequestBody String jsonData) {
         try {
             RehabilitationPlanningDO planningDO = toEntity(jsonData, RehabilitationPlanningDO.class);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_create, planningService.create(planningDO));
@@ -93,7 +93,7 @@ public class RehabilitationPlanningController extends EnvelopRestController {
     @PostMapping(value = RehabilitationRequestMapping.Planning.api_update)
     @ApiOperation(value = "修改治疗方案", notes = "修改治疗方案(记得传入修改id)")
     public Envelop updatePlanning(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
-                                          @RequestParam(value = "jsonData", required = true)String jsonData) {
+                                      @RequestBody String jsonData) {
         try {
             RehabilitationPlanningDO planningDO = toEntity(jsonData, RehabilitationPlanningDO.class);
             planningService.update(planningDO);
