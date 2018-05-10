@@ -24,7 +24,7 @@ public class RehabilitationPlanningController extends EnvelopRestController {
     @Autowired
     private RehabilitationPlanningService planningService;
     @Autowired
-    private RehabilitationTreatmentProgramService TreatmentProgramService;
+    private RehabilitationTreatmentProgramService treatmentProgramService;
 
     @GetMapping(value = RehabilitationRequestMapping.Planning.findPlanningPage)
     @ApiOperation(value = "分页查找康复计划", notes = "分页查找康复计划")
@@ -82,7 +82,7 @@ public class RehabilitationPlanningController extends EnvelopRestController {
     public Envelop<RehabilitationPlanningDO> findTreatmentByProgramId(@ApiParam(name = "programId", value = "programId")
                                                       @RequestParam(value = "programId", required = true) String programId) {
         try {
-            RehabilitationTreatmentProgramDO treatmentProgramDO = TreatmentProgramService.findById(programId);
+            RehabilitationTreatmentProgramDO treatmentProgramDO = treatmentProgramService.findById(programId);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, treatmentProgramDO);
         } catch (Exception e) {
             e.printStackTrace();

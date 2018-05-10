@@ -67,8 +67,8 @@ public class RehabilitationPerformanceService extends BaseJpaService<Rehabilitat
      * @param patientId
      * @return
      */
-    public RehabilitationPerformanceDO findByPatientId(String patientId) {
-        RehabilitationPerformanceDO performanceDO = performanceDao.findByPatientId(patientId);
+    public List<RehabilitationPerformanceDO> findByPatientId(String patientId) {
+        List<RehabilitationPerformanceDO> performanceDO = performanceDao.findByPatientId(patientId);
         return performanceDO;
     }
 

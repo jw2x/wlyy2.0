@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 public interface RehabilitationPerformanceDao extends PagingAndSortingRepository<RehabilitationPerformanceDO, String>,
         JpaSpecificationExecutor<RehabilitationPerformanceDO> {
 
@@ -12,5 +14,5 @@ public interface RehabilitationPerformanceDao extends PagingAndSortingRepository
     RehabilitationPerformanceDO findById(String id);
 
     @Query("from RehabilitationPerformanceDO w where w.createUser = ?1")
-    RehabilitationPerformanceDO findByPatientId(String patientId);
+    List<RehabilitationPerformanceDO> findByPatientId(String patientId);
 }

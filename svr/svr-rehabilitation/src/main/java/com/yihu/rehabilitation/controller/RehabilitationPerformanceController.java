@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author humingfen on 2018/5/2.
  */
@@ -75,7 +77,7 @@ public class RehabilitationPerformanceController extends EnvelopRestController {
     public Envelop<RehabilitationPerformanceDO> findByPatientId(@ApiParam(name = "patientId", value = "patientId")
                                                          @RequestParam(value = "patientId", required = true) String patientId) {
         try {
-            RehabilitationPerformanceDO performanceDO = performanceService.findByPatientId(patientId);
+            List<RehabilitationPerformanceDO> performanceDO = performanceService.findByPatientId(patientId);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, performanceDO);
         } catch (Exception e) {
             e.printStackTrace();
