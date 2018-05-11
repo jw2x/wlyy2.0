@@ -27,10 +27,10 @@
             <groupId>com.yihu.base</groupId>
             <artifactId>common-log</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-exception</artifactId>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>

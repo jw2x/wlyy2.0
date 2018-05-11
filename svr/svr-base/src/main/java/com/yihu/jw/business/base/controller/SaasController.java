@@ -28,31 +28,31 @@ public class SaasController extends EnvelopRestController {
     @Autowired
     private SaasService saasService;
 
-    @PostMapping(value = BaseRequestMapping.Saas.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建Saas配置", notes = "创建单个Saas配置")
-    public Envelop createSaas(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
-        try {
-            SaasDO saas = toEntity(jsonData, SaasDO.class);
-            return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_create, saasService.createSaas(saas));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
-        }
-    }
+//    @PostMapping(value = BaseRequestMapping.Saas.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    @ApiOperation(value = "创建Saas配置", notes = "创建单个Saas配置")
+//    public Envelop createSaas(
+//            @ApiParam(name = "json_data", value = "", defaultValue = "")
+//            @RequestBody String jsonData) {
+//        try {
+//            SaasDO saas = toEntity(jsonData, SaasDO.class);
+//            return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_create, saasService.createSaas(saas));
+//        } catch (ApiException e) {
+//            return Envelop.getError(e.getMessage(), e.getErrorCode());
+//        }
+//    }
 
-    @PutMapping(value = BaseRequestMapping.Saas.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "修改Saas配置", notes = "修改Saas配置")
-    public Envelop updateSaas(
-            @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
-        try {
-            SaasDO saas = toEntity(jsonData, SaasDO.class);
-            return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_update, saasService.updateSaas(saas));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
-        }
-    }
+//    @PutMapping(value = BaseRequestMapping.Saas.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    @ApiOperation(value = "修改Saas配置", notes = "修改Saas配置")
+//    public Envelop updateSaas(
+//            @ApiParam(name = "json_data", value = "", defaultValue = "")
+//            @RequestBody String jsonData) {
+//        try {
+//            SaasDO saas = toEntity(jsonData, SaasDO.class);
+//            return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_update, saasService.updateSaas(saas));
+//        } catch (ApiException e) {
+//            return Envelop.getError(e.getMessage(), e.getErrorCode());
+//        }
+//    }
 
     @DeleteMapping(value = BaseRequestMapping.Saas.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "删除Saas配置", notes = "删除Saas配置")

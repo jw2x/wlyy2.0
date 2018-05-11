@@ -21,6 +21,7 @@ public class BaseRoleDO extends IdEntityWithOperation implements java.io.Seriali
 	private String name;
 	private Integer status;
 	private String remark;
+	private String code;
 
 	// Constructors
 
@@ -74,4 +75,12 @@ public class BaseRoleDO extends IdEntityWithOperation implements java.io.Seriali
 		this.remark = remark;
 	}
 
+	@Column(name = "code", length = 50)
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 }

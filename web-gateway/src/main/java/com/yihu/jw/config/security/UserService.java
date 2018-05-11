@@ -2,6 +2,7 @@ package com.yihu.jw.config.security;
 
 
 import com.yihu.jw.base.user.BaseEmployDO;
+import com.yihu.jw.fegin.base.user.BaseRoleFeign;
 import com.yihu.jw.fegin.base.user.EmployFeign;
 import com.yihu.jw.restmodel.common.Envelop;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +29,8 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private EmployFeign employFeign;
+    @Autowired
+    private BaseRoleFeign baseRoleFeign;
 
 //    @Autowired
 //    private EmployFeign employFeign;
@@ -47,15 +51,23 @@ public class UserService implements UserDetailsService {
         String phone = sp[0];
         String saasId = sp[1];
         Envelop envelop = employFeign.getEmployeeByPhoneAndSaasId(phone,saasId);
-        Map baseEmployDO =  (Map)envelop.getObj();
-        if (!baseEmployDO.isEmpty()) {
+        if (envelop!=null&&!((Map)envelop.getObj()).isEmpty()) {
+            Map baseEmployDO =  (Map)envelop.getObj();
+            Envelop roles =  baseRoleFeign.getPhoneAndSaasId(phone,saasId);
+            String authority ="";
+            if(roles!=null&&!((List<Map>)roles.getObj()).isEmpty()){
+                List<Map> list =  (List<Map>)roles.getObj();
+                for(Map one :list){
+                    authority+=","+one.get("code");
+                }
+            }
             return new User(saasPhone,
                     passwordEncoder.encode(baseEmployDO.get("password")+""),
                     true,
                     true,
                     true,
                     true
-                    , AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER") //权限
+                    , AuthorityUtils.commaSeparatedStringToAuthorityList(authority.startsWith(",")?authority.substring(1):"") //权限
             );
 
         } else {

@@ -41,7 +41,7 @@
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>common-security-starter</artifactId>
-            <version>1.0.5</version>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -167,6 +167,16 @@
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-entity</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.yihu.base</groupId>
+                    <artifactId>common-data-es</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>
