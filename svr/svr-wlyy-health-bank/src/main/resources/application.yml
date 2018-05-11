@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name:  svr-wlyy-specialist-wzn  #注册到发现服务的id 如果id一样 eurika会自动做负载
+    name:  svr-wlyy-health-bank-wzn  #注册到发现服务的id 如果id一样 eurika会自动做负载
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -69,7 +69,7 @@ spring:
   profiles: jwdev
 
   datasource:
-    url: jdbc:mysql://172.19.103.77:3306/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    url: jdbc:mysql://172.19.103.77:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
     password: 123456
 fastDFS:
