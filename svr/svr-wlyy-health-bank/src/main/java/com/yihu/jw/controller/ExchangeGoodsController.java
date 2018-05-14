@@ -34,11 +34,11 @@ public class ExchangeGoodsController extends EnvelopRestController {
 
 
     /**
-     * find exchange goods
+     * 查看兑换的产品
      *
-     * @param exchangeGoods
-     * @param page
-     * @param size
+     * @param exchangeGoods  兑换产品json
+     * @param page 页码
+     * @param size  每页大小
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.findExchangeGoods)

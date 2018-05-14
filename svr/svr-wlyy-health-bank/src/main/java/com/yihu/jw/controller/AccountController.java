@@ -40,7 +40,8 @@ public class AccountController extends EnvelopRestController {
 
     /**
      * 添加账户
-     * @param account
+     * @param account 实体类account
+     *
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.createAccount)
@@ -61,7 +62,7 @@ public class AccountController extends EnvelopRestController {
     /**
      * 获取账户
      *
-     * @param creditsDetail
+     * @param creditsDetail 积分对象
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.selectAccount)
@@ -77,4 +78,32 @@ public class AccountController extends EnvelopRestController {
             return Envelop.getError(e.getMessage());
         }
     }
+
+
+    /**
+     * 查看银行账户信息
+     *
+     * @param account 账户信息对象
+     * @param page 页码
+     * @param size 每页大小
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.findAccount)
+    @ApiOperation(value = "查看账户信息")
+    public Envelop<AccountDO> getAccount(@ApiParam(name = "account",value = "账户JSON")
+                                           @RequestParam(value = "account",required = false)String account,
+                                           @ApiParam(name = "page", value = "第几页，从1开始")
+                                           @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
+                                           @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                           @RequestParam(value = "size", required = false)Integer size){
+        try{
+            AccountDO accountDO = toEntity(account,AccountDO.class);
+            return service.findByCondition(accountDO,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
 }

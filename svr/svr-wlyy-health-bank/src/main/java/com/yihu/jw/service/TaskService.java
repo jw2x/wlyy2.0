@@ -70,8 +70,8 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
                if (taskDetailList != null && taskDetailList.size() != 0){
                    taskDO1.setStatus(1);
                }
-               taskDOList.add(taskDO1);
            }
+           taskDOList.add(taskDO1);
        }
        String sqlcount = new ISqlUtils().getSql(taskDO,0,0,"count");
        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);

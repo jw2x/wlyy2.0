@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -173,7 +174,20 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param creditsDetailDO
      * @return
      */
-    public Envelop<Boolean> insert(CreditsDetailDO creditsDetailDO){
+    public Envelop<CreditsDetailDO> insert(CreditsDetailDO creditsDetailDO){
+        TaskDO taskDO = new TaskDO();
+        taskDO.setTaskCode(creditsDetailDO.getFlag());
+        taskDO.setPatientId(creditsDetailDO.getPatientId());
+        String sql = ISqlUtils.getSql(taskDO,1,1,"*");
+        List<TaskDO> taskDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
+        if (taskDOList != null && taskDOList.size() != 0){
+            creditsDetailDO.setTransactionId(taskDOList.get(0).getId());
+        }
+        String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '"+creditsDetailDO.getPatientId() +"'";
+        List<AccountDO> accountDOList = jdbcTemplate.query(sqlAccount,new BeanPropertyRowMapper(AccountDO.class));
+        if (accountDOList != null && accountDOList.size() != 0){
+            creditsDetailDO.setAccountId(accountDOList.get(0).getId());
+        }
         if (creditsDetailDO.getTradeDirection() == 1){
             if (creditsDetailDO.getTradeType().equals("HEALTH_TASK")){
                 TaskDetailDO taskDetailDO = new TaskDetailDO();
@@ -187,6 +201,9 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             }
         }
         CreditsDetailDO creditsDetailDO1 =credittsLogDetailDao.save(creditsDetailDO);
+        creditsDetailDO1.setFlag(creditsDetailDO.getFlag());
+        List<CreditsDetailDO> creditsDetailDOList = new ArrayList<>();
+        creditsDetailDOList.add(creditsDetailDO1);
         AccountDO accountDO = accountDao.findOne(creditsDetailDO1.getAccountId());
         if (creditsDetailDO1.getTradeDirection() == 1){
             accountDO.setTotal(accountDO.getTotal()+creditsDetailDO1.getIntegrate());
@@ -194,8 +211,8 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             accountDO.setTotal(accountDO.getTotal()-creditsDetailDO1.getIntegrate());
         }
         accountDao.save(accountDO);
-        Envelop<Boolean> envelop = new Envelop<>();
-        envelop.setObj(true);
+        Envelop<CreditsDetailDO> envelop = new Envelop<>();
+        envelop.setDetailModelList(creditsDetailDOList);
         return envelop;
     }
 

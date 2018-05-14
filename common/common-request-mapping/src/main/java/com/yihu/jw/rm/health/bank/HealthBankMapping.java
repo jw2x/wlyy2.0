@@ -12,6 +12,7 @@ public class HealthBankMapping {
     public static class healthBank{
         public static final String createAccount = "/createAccount";
         public static final String selectAccount = "/selectAccount";
+        public static final String findAccount = "/findAccount";
         public static final String createTask = "/createTask";
         public static final String deleteTask ="/deleteTask";
         public static final String findTask = "/findTask";

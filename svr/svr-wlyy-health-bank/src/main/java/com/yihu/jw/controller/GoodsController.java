@@ -33,7 +33,7 @@ public class GoodsController extends EnvelopRestController {
     /**
      * patient publish  gooods
      *
-     * @param goods
+     * @param goods 商品对象
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.createGoods)
@@ -54,9 +54,9 @@ public class GoodsController extends EnvelopRestController {
     /**
      * find health goods
      *
-     * @param goods
-     * @param page
-     * @param size
+     * @param goods 商品对象
+     * @param page 页码
+     * @param size 每页大小
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.findGoods)
@@ -80,7 +80,7 @@ public class GoodsController extends EnvelopRestController {
     /**
      * patient update goods status
      *
-     * @param goods
+     * @param goods 商品对象
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.updateGoods)

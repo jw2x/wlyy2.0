@@ -16,34 +16,34 @@ import java.io.Serializable;
 public class AccountDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId; //saasId
 
     @Column(name = "patient_id")
-    private String patientId;
+    private String patientId;//居民id
 
     @Column(name = "account_name")
-    private String accountName;
+    private String accountName;//账户名
 
     @Column(name = "total")
-    private int total;
+    private int total;//积分总数
 
     @Column(name = "password")
-    private String password;
+    private String password;//密码
 
     @Column(name = "card_number")
-    private String cardNumber;
+    private String cardNumber;//卡号
 
     @Column(name = "hospital_name")
-    private String hospitalName;
+    private String hospitalName;//社区名字
 
     @Column(name = "hospital")
-    private String hospital;
+    private String hospital;//社区
 
     @Transient
-    private String sum;
+    private String sum;//总积分（已用积分和剩余积分）
 
     @Transient
-    private int usedTotal;
+    private int usedTotal;//已用积分
 
     public String getSaasId() {
         return saasId;

@@ -14,13 +14,13 @@ import java.io.Serializable;
 @Table(name = "wlyy_health_bank_activity_rule")
 public class ActivityRuleDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId;//saasid
 
     @Column(name = "activity_id")
-    private String activityId;
+    private String activityId;//活动id
 
     @Column(name = "rule_code")
-    private String ruleCode;
+    private String ruleCode;//规则代码
 
     public String getSaasId() {
         return saasId;

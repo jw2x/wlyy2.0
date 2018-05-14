@@ -20,19 +20,19 @@ import java.io.Serializable;
 public class ExchangeGoodsDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId;//saasid
 
     @Column(name = "goods_id")
-    private String goodsId;
+    private String goodsId;//商品id
 
     @Column(name = "integrate")
-    private String integrate;
+    private String integrate;//积分
 
     @Column(name = "patient_id")
-    private String patientId;
+    private String patientId;//居民id
 
     @Transient
-    private GoodsDO goodsDO;
+    private GoodsDO goodsDO;//商品对象
 
 
     public String getSaasId() {

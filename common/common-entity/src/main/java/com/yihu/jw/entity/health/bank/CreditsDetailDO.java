@@ -16,37 +16,40 @@ import java.io.Serializable;
 public class CreditsDetailDO extends IdEntityWithOperation implements Serializable{
 
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId; //saasid
 
     @Column(name = "trade_type")
-    private String tradeType;
+    private String tradeType; //交易类型
 
     @Column(name = "transaction_id")
-    private String transactionId;
+    private String transactionId;//业务ID
 
     @Column(name="integrate")
-    private int integrate;
+    private int integrate;//积分
 
     @Column(name = "status")
-    private int status;
+    private int status;//状态（有效/无效）
 
     @Column(name = "trade_direction")
-    private int tradeDirection;
+    private int tradeDirection;//交易方向
 
     @Column(name = "account_id")
-    private String accountId;
+    private String accountId;//账户id
 
     @Column(name = "patient_id")
-    private String patientId;
+    private String patientId;//居民id
 
     @Column(name = "hospital")
-    private String hospital;
+    private String hospital;//社区
 
     @Transient
-    private TaskDO taskDO;
+    private TaskDO taskDO;//任务对象
 
     @Transient
-    private ActivityDO activityDO;
+    private ActivityDO activityDO;//活动对象
+
+    @Transient
+    private String flag ; // 标识是什么任务
 
     public String getSaasId() {
         return saasId;
@@ -134,5 +137,13 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     public void setActivityDO(ActivityDO activityDO) {
         this.activityDO = activityDO;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
     }
 }
