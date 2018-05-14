@@ -15,13 +15,13 @@ import java.io.Serializable;
 public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
 
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId; //saasid
 
     @Column(name = "task_id")
-    private String taskId;
+    private String taskId; //任务id
 
     @Column(name = "rule_code")
-    private String ruleCode;
+    private String ruleCode; //任务编码
 
     public String getSaasId() {
         return saasId;

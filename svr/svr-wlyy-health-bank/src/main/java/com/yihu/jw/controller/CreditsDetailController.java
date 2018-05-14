@@ -35,6 +35,14 @@ public class CreditsDetailController extends EnvelopRestController {
     @Autowired
     private CreditsDetailService service;
 
+    /**
+     * 查看积分记录
+     *
+     * @param creditsDetail 积分对象
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
     @PostMapping(value = HealthBankMapping.healthBank.findCreditsLogInfo)
     @ApiOperation(value = "查看积分记录")
     public Envelop<CreditsDetailDO> selectCreditsLogInfo(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
@@ -57,12 +65,12 @@ public class CreditsDetailController extends EnvelopRestController {
     /**
      * 添加积分
      *
-     * @param creditsDetail
+     * @param creditsDetail 积分对象
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.createCreditsDetail)
     @ApiOperation(value = "添加积分记录")
-    public Envelop<Boolean> insert(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
+    public Envelop<CreditsDetailDO> insert(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
                                    @RequestParam(value = "creditsDetail",required = true)String creditsDetail){
         try {
             CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
@@ -74,8 +82,12 @@ public class CreditsDetailController extends EnvelopRestController {
         }
     }
 
-
-
+    /**
+     * 查看积分排行
+     *
+     * @param object {"filter":[""],"page":"","size":""}
+     * @return
+     */
     @PostMapping(value = HealthBankMapping.healthBank.selectByRanking)
     @ApiOperation(value = "查询积分排名")
     public Envelop<AccountDO> selectByRanking(@RequestBody JSONObject object){

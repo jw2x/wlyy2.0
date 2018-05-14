@@ -33,9 +33,9 @@ public class TaskController extends EnvelopRestController {
     private Tracer tracer;
 
     /**
-     * doctor assigning task patient
+     * 指派任务
      *
-     * @param task
+     * @param task 任务对象
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.createTask)
@@ -52,6 +52,14 @@ public class TaskController extends EnvelopRestController {
         }
     }
 
+    /**
+     *  查询任务
+     *
+     * @param task 任务对象
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
     @PostMapping(value = HealthBankMapping.healthBank.findTask)
     @ApiOperation(value = "查询任务")
     public Envelop<TaskDO> assigningTask(@ApiParam(name = "task",value = "健康任务JSON")

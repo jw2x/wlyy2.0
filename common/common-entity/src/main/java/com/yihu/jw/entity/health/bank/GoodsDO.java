@@ -17,33 +17,33 @@ import java.util.Date;
 public class GoodsDO extends IdEntityWithOperation implements Serializable{
 
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId;//saasid
 
     @Column(name = "name")
-    private String name;
+    private String name;//商品名称
 
     @Column(name = "img_url")
-    private String imgUrl;
+    private String imgUrl;//图片地址
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     @Column(name = "start_time")
-    private Date startTime;
+    private Date startTime;//开始时间
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     @Column(name = "over_time")
-    private Date overTime;
+    private Date overTime;//结束时间
 
     @Column(name = "status")
-    private String status;
+    private String status;//状态
 
     @Column(name = "require_integrate")
-    private String requireIntegrate;
+    private String requireIntegrate; //兑换产品所需积分
 
     @Column(name = "content")
-    private String content;
+    private String content;//商品内容
 
     @Column(name = "community")
-    private String community;
+    private String community;//社区字段
 
     public String getSaasId() {
         return saasId;

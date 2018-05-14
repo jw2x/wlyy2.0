@@ -16,28 +16,31 @@ import java.io.Serializable;
 public class TaskDO extends IdEntityWithOperation implements Serializable{
 
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId; //saasid
 
     @Column(name = "task_title")
-    private String taskTitle;
+    private String taskTitle; //任务标题
 
     @Column(name = "task_content")
-    private String taskContent;
+    private String taskContent; //任务内容
 
     @Column(name = "trade_type")
-    private String tradeType;
+    private String tradeType; //交易类型
 
     @Column(name = "transaction_id")
-    private String transactionId;
+    private String transactionId; // 业务id
 
     @Column(name = "period")
-    private int period;
+    private int period; //周期性
 
     @Column(name = "patient_id")
-    private String patientId;
+    private String patientId; //居民id
+
+    @Column(name = "task_code")
+    private String taskCode ; // 标识是什么任务
 
     @Transient
-    private int status;
+    private int status; //状态
 
     public String getSaasId() {
         return saasId;
@@ -101,5 +104,13 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getTaskCode() {
+        return taskCode;
+    }
+
+    public void setTaskCode(String taskCode) {
+        this.taskCode = taskCode;
     }
 }

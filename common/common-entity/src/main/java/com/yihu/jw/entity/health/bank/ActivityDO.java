@@ -17,30 +17,30 @@ import java.util.Date;
 public class ActivityDO extends IdEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId;//saasId
 
     @Column(name = "activity_title")
-    private String activityTitle;
+    private String activityTitle;//活动标题
 
     @Column(name = "activity_content")
-    private String activityContent;
+    private String activityContent;//活动内容
 
     @Column(name = "start_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date startTime;
+    private Date startTime;//开始时间
 
     @Column(name = "over_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date overTime;
+    private Date overTime; //结束时间
 
     @Column(name = "status")
-    private int status;
+    private int status;//状态（上架/下架）
 
     @Column(name = "hospital")
-    private String hospital;
+    private String hospital;//社区
 
     @Column(name = "organizer")
-    private String organizer;
+    private String organizer;//发布者
 
     public String getSaasId() {
         return saasId;

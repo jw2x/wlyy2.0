@@ -32,9 +32,9 @@ public class TaskDetailController extends EnvelopRestController {
 
 
     /**
-     * doctor assigning task patient
+     * 居民参加活动
      *
-     * @param taskDetail
+     * @param taskDetail 任务
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.createTaskDetail)

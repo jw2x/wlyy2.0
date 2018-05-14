@@ -35,7 +35,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
     /**
      * insert activityDO
      *
-     * @param activityDO
+     * @param activityDO 活动参数对象
      * @return
      */
     public Envelop<Boolean> insert(ActivityDO activityDO){
@@ -49,9 +49,9 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
     /**
      *  find by condition
      *
-     * @param activityDO
-     * @param page
-     * @param size
+     * @param activityDO 活动参数对象
+     * @param page 页码
+     * @param size 每页大小
      * @return
      * @throws ParseException
      */
@@ -71,7 +71,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
     /**
      * update activityDO
      *
-     * @param activityDO
+     * @param activityDO 活动采参数对象
      * @return
      */
     public Envelop<Boolean> update(ActivityDO activityDO){

@@ -33,7 +33,7 @@ public class ActivityController extends EnvelopRestController{
     /**
      *  publish activity
      *
-     * @param activity
+     * @param activity 活动对象
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.createActivity)
@@ -53,9 +53,9 @@ public class ActivityController extends EnvelopRestController{
     /**
      * find health activity
      *
-     * @param activity
-     * @param page
-     * @param size
+     * @param activity 活动对象
+     * @param page 页码
+     * @param size 分页大小
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.findActivity)
@@ -80,7 +80,7 @@ public class ActivityController extends EnvelopRestController{
     /**
      * out activity
      *
-     * @param activity
+     * @param activity 活动对象
      * @return
      */
     @PostMapping(value = HealthBankMapping.healthBank.updateActivity)

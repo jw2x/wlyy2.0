@@ -15,25 +15,25 @@ import java.io.Serializable;
 public class TaskDetailDO extends IdEntityWithOperation implements Serializable{
 
     @Column(name = "saas_id")
-    private String saasId;
+    private String saasId; //saasid
 
     @Column(name = "status")
-    private String status;
+    private String status;//状态（完成/未完成）
 
     @Column(name = "patient_id")
-    private String patientId;
+    private String patientId;//居民id
 
     @Column(name = "doctor_id")
-    private String doctorId;
+    private String doctorId;//医生id
 
     @Column(name = "integrate")
-    private int integrate;
+    private int integrate;//积分
 
     @Column(name = "trade_direction")
-    private int tradeDirection;
+    private int tradeDirection;//交易方向
 
     @Column(name = "task_id")
-    private String taskId;
+    private String taskId;//任务id
 
     public String getSaasId() {
         return saasId;
