@@ -72,10 +72,20 @@ public class JKZLMailNotifier extends MailNotifier {
         EvaluationContext context = new StandardEvaluationContext(event);
 
         SimpleMailMessage message = new SimpleMailMessage();
+        //发送给别人  支持多个接收人
         message.setTo(to);
+        //发送人 可配置
         message.setFrom(from);
+        //发送的邮件名称  默认是 微服务ID + 状态
+        // 例如
+        // SPRING-CLOUD-SVR-SIMPLE1 (9ac26abe) is OFFLINE
         message.setSubject(subject.getValue(context, String.class));
+        //邮件内容  默认是微服务 +状态
+        // 例如
+        // SPRING-CLOUD-SVR-SIMPLE1 (9ac26abe) status changed from UNKNOWN to OFFLINE
+        // http://MS-20180328WODJ:8080/health
         message.setText(text.getValue(context, String.class));
+        // 抄送  为null  不需要填写
         message.setCc(cc);
 
         sender.send(message);

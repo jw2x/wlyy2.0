@@ -1,6 +1,5 @@
 package com.yihu.admin;
 
-import com.yihu.admin.email.MyMailNotifier;
 import de.codecentric.boot.admin.config.EnableAdminServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
