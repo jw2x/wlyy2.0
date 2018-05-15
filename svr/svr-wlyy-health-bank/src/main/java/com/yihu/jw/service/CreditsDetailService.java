@@ -127,6 +127,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             for (int i=0;i<patientIds.size();i++){
                 buffer.append("'"+patientIds.get(i)+"'").append(",");
             }
+            buffer.deleteCharAt(buffer.length()-1);
         }
         buffer.append(") AND");
         String sql = "SELECT" +
