@@ -23,24 +23,7 @@ spring:
     test-while-idle: true #指明连接是否被空闲连接回收器(如果有)进行检验，如果检测失败，则连接将被从池中去除
     min-evictable-idle-time-millis: 3600000 #连接池中连接，在时间段内一直空闲，被逐出连接池的时间(1000*60*60)，以毫秒为单位
     time-between-eviction-runs-millis: 300000 #在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位，一般比minEvictableIdleTimeMillis小
-  data:
-    elasticsearch: #ElasticsearchProperties
-      cluster-name: jkzl #默认即为elasticsearch  集群名
-      cluster-nodes: 172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
-      local: false #是否本地连接
-      properties: # Additional properties used to configure the client.
-        enable: true
-  # JEST (Elasticsearch HTTP client) (JestProperties)
-  elasticsearch:
-    jest:
-      uris: http://172.19.103.68:9200
-  #   uris: http://172.19.103.68:9200
-      connection-timeout: 60000 # Connection timeout in milliseconds.
-      multi-threaded: true # Enable connection requests from multiple execution threads.
-#      username: # Login user.
-#      password: # Login password.
-#      proxy.port:  # Proxy port the HTTP client should use.
-#      proxy.host:  # Proxy host the HTTP client should use.
+
 #hibernate 配置
 hibernate:
   dialect: org.hibernate.dialect.MySQL5Dialect
@@ -70,6 +53,24 @@ spring:
     url: jdbc:mysql://172.19.103.77:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
     password: 123456
+  data:
+    elasticsearch: #ElasticsearchProperties
+      cluster-name: jkzl #默认即为elasticsearch  集群名
+      cluster-nodes: 172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      local: false #是否本地连接
+      properties: # Additional properties used to configure the client.
+        enable: true
+    # JEST (Elasticsearch HTTP client) (JestProperties)
+  elasticsearch:
+    jest:
+      uris: http://172.19.103.68:9200
+#     uris: [图片]http://172.19.103.68:9200
+      connection-timeout: 60000 # Connection timeout in milliseconds.
+      multi-threaded: true # Enable connection requests from multiple execution threads.
+      username: # Login user.
+      password: # Login password.
+      proxy.port:  # Proxy port the HTTP client should use.
+      proxy.host:  # Proxy host the HTTP client should use.
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
@@ -80,16 +81,52 @@ spring:
     url: jdbc:mysql://172.19.103.77:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
     password: 123456
+  data:
+    elasticsearch: #ElasticsearchProperties
+      cluster-name: jkzl #默认即为elasticsearch  集群名
+      cluster-nodes: 172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      local: false #是否本地连接
+      properties: # Additional properties used to configure the client.
+        enable: true
+  # JEST (Elasticsearch HTTP client) (JestProperties)
+  elasticsearch:
+    jest:
+      uris: http://172.19.103.68:9200
+#      uris: [图片]http://172.19.103.68:9200
+      connection-timeout: 60000 # Connection timeout in milliseconds.
+      multi-threaded: true # Enable connection requests from multiple execution threads.
+      username: # Login user.
+      password: # Login password.
+      proxy.port:  # Proxy port the HTTP client should use.
+      proxy.host:  # Proxy host the HTTP client should use.
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
 ---
 spring:
-  profiles: jwprod
+  profiles: prod
 
   datasource:
     url: jdbc:mysql://59.61.92.90:9069/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: wlyy
     password: jkzlehr@123
+  data:
+    elasticsearch: #ElasticsearchProperties
+      cluster-name: jkzl #默认即为elasticsearch  集群名
+      cluster-nodes: 59.61.92.90:9066,59.61.92.90:9068 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      local: false #是否本地连接
+      properties: # Additional properties used to configure the client.
+        enable: true
+    # JEST (Elasticsearch HTTP client) (JestProperties)
+  elasticsearch:
+    jest:
+      uris: http://59.61.92.90:9065,http://59.61.92.90:9067
+  #     uris: [图片]http://172.19.103.68:9200
+      connection-timeout: 60000 # Connection timeout in milliseconds.
+      multi-threaded: true # Enable connection requests from multiple execution threads.
+  #      username: # Login user.
+  #      password: # Login password.
+  #      proxy.port:  # Proxy port the HTTP client should use.
+  #      proxy.host:  # Proxy host the HTTP client should use.
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
