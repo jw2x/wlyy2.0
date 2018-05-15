@@ -191,47 +191,64 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param creditsDetailDO
      * @return
      */
-    public Envelop<CreditsDetailDO> insert(CreditsDetailDO creditsDetailDO){
 
-        TaskDO taskDO = new TaskDO();
-        taskDO.setTaskCode(creditsDetailDO.getFlag());
-        taskDO.setPatientId(creditsDetailDO.getPatientId());
-        String sql = ISqlUtils.getSql(taskDO,1,1,"*");
-        List<TaskDO> taskDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
-        if (taskDOList != null && taskDOList.size() != 0){
-            creditsDetailDO.setTransactionId(taskDOList.get(0).getId());
-        }
-        String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '"+creditsDetailDO.getPatientId() +"'";
-        List<AccountDO> accountDOList = jdbcTemplate.query(sqlAccount,new BeanPropertyRowMapper(AccountDO.class));
-        if (accountDOList != null && accountDOList.size() != 0){
-            creditsDetailDO.setAccountId(accountDOList.get(0).getId());
-        }
-        if (creditsDetailDO.getTradeDirection() == 1){
-            if (creditsDetailDO.getTradeType().equals("HEALTH_TASK")){
-                TaskDetailDO taskDetailDO = new TaskDetailDO();
-                taskDetailDO.setIntegrate(creditsDetailDO.getIntegrate());
-                taskDetailDO.setTaskId(creditsDetailDO.getTransactionId());
-                taskDetailDO.setSaasId(creditsDetailDO.getSaasId());
-                taskDetailDO.setPatientId(creditsDetailDO.getPatientId());
-                taskDetailDO.setTradeDirection(creditsDetailDO.getTradeDirection());
-                taskDetailDO.setStatus("1");
-                taskDetailDao.save(taskDetailDO);
+    public Envelop<CreditsDetailDO> insert(CreditsDetailDO creditsDetailDO){
+        try {
+            synchronized (creditsDetailDO.getPatientId()){
+                TaskDO taskDO = new TaskDO();
+                taskDO.setTaskCode(creditsDetailDO.getFlag());
+                taskDO.setPatientId(creditsDetailDO.getPatientId());
+                String sql = ISqlUtils.getSql(taskDO,1,1,"*");
+                List<TaskDO> taskDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
+                if (taskDOList != null && taskDOList.size() != 0){
+                    creditsDetailDO.setTransactionId(taskDOList.get(0).getId());
+                }
+                String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '"+creditsDetailDO.getPatientId() +"'";
+                List<AccountDO> accountDOList = jdbcTemplate.query(sqlAccount,new BeanPropertyRowMapper(AccountDO.class));
+                if (accountDOList != null && accountDOList.size() != 0){
+                    creditsDetailDO.setAccountId(accountDOList.get(0).getId());
+                }
+                if (creditsDetailDO.getTradeDirection() == 1){
+                    if (creditsDetailDO.getTradeType().equals("HEALTH_TASK")){
+                        TaskDetailDO taskDetailDO = new TaskDetailDO();
+                        taskDetailDO.setIntegrate(creditsDetailDO.getIntegrate());
+                        taskDetailDO.setTaskId(creditsDetailDO.getTransactionId());
+                        taskDetailDO.setSaasId(creditsDetailDO.getSaasId());
+                        taskDetailDO.setPatientId(creditsDetailDO.getPatientId());
+                        taskDetailDO.setTradeDirection(creditsDetailDO.getTradeDirection());
+                        taskDetailDO.setStatus("1");
+                        taskDetailDO.setCreateTime(new Date());
+                        taskDetailDO.setUpdateTime(new Date());
+                        taskDetailDao.save(taskDetailDO);
+                    }
+                }
+                creditsDetailDO.setCreateTime(new Date());
+                creditsDetailDO.setUpdateTime(new Date());
+                CreditsDetailDO creditsDetailDO1 =credittsLogDetailDao.save(creditsDetailDO);
+                creditsDetailDO1.setFlag(creditsDetailDO.getFlag());
+                List<CreditsDetailDO> creditsDetailDOList = new ArrayList<>();
+                creditsDetailDOList.add(creditsDetailDO1);
+                AccountDO accountDO = accountDao.findOne(creditsDetailDO1.getAccountId());
+                if (creditsDetailDO1.getTradeDirection() == 1){
+                    accountDO.setTotal(accountDO.getTotal()+creditsDetailDO1.getIntegrate());
+                }else if (creditsDetailDO.getTradeDirection() == -1){
+                    accountDO.setTotal(accountDO.getTotal()-creditsDetailDO1.getIntegrate());
+                }
+                AccountDO accountDO1 = accountDao.save(accountDO);
+                List<CreditsDetailDO> creditsDetailDOS = new ArrayList<>();
+                for (CreditsDetailDO creditsDetailDO2:creditsDetailDOList){
+                    creditsDetailDO2.setTotal(accountDO1.getTotal());
+                    creditsDetailDOS.add(creditsDetailDO2);
+                }
+                Envelop<CreditsDetailDO> envelop = new Envelop<>();
+                envelop.setDetailModelList(creditsDetailDOS);
+                return envelop;
             }
+        }catch (Exception e){
+            e.printStackTrace();
+            Envelop<CreditsDetailDO> envelop = new Envelop<>();
+            return envelop;
         }
-        CreditsDetailDO creditsDetailDO1 =credittsLogDetailDao.save(creditsDetailDO);
-        creditsDetailDO1.setFlag(creditsDetailDO.getFlag());
-        List<CreditsDetailDO> creditsDetailDOList = new ArrayList<>();
-        creditsDetailDOList.add(creditsDetailDO1);
-        AccountDO accountDO = accountDao.findOne(creditsDetailDO1.getAccountId());
-        if (creditsDetailDO1.getTradeDirection() == 1){
-            accountDO.setTotal(accountDO.getTotal()+creditsDetailDO1.getIntegrate());
-        }else if (creditsDetailDO.getTradeDirection() == -1){
-            accountDO.setTotal(accountDO.getTotal()-creditsDetailDO1.getIntegrate());
-        }
-        accountDao.save(accountDO);
-        Envelop<CreditsDetailDO> envelop = new Envelop<>();
-        envelop.setDetailModelList(creditsDetailDOList);
-        return envelop;
     }
 
 }
