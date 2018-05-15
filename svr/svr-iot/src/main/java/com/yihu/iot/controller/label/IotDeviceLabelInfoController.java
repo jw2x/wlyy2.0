@@ -36,8 +36,8 @@ public class IotDeviceLabelInfoController extends EnvelopRestController {
         try {
             IotDeviceLabelInfoDO iotDeviceLabelInfo = toEntity(jsonData, IotDeviceLabelInfoDO.class);
             return Envelop.getSuccess(IotRequestMapping.DeviceLabelInfo.message_success_create, iotDeviceLabelInfoService.create(iotDeviceLabelInfo));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -49,8 +49,8 @@ public class IotDeviceLabelInfoController extends EnvelopRestController {
     ) {
         try {
             return Envelop.getSuccess(IotRequestMapping.DeviceLabelInfo.message_success_find, iotDeviceLabelInfoService.findById(id));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            return Envelop.getError(e.getMessage());
         }
     }
 
