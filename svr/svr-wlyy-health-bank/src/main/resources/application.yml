@@ -4,7 +4,7 @@ server:
 
 spring:
   application:
-    name:  svr-wlyy-health-bank-wzn  #注册到发现服务的id 如果id一样 eurika会自动做负载
+    name:  svr-wlyy-health-bank-test  #注册到发现服务的id 如果id一样 eurika会自动做负载
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
