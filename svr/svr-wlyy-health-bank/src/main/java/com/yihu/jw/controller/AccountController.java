@@ -88,7 +88,7 @@ public class AccountController extends EnvelopRestController {
      * @param size 每页大小
      * @return
      */
-    @PostMapping(value = HealthBankMapping.healthBank.findAccount)
+/*    @PostMapping(value = HealthBankMapping.healthBank.findAccount)
     @ApiOperation(value = "查看账户信息")
     public Envelop<AccountDO> getAccount(@ApiParam(name = "account",value = "账户JSON")
                                            @RequestParam(value = "account",required = false)String account,
@@ -104,6 +104,6 @@ public class AccountController extends EnvelopRestController {
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError(e.getMessage());
         }
-    }
+    }*/
 
 }
