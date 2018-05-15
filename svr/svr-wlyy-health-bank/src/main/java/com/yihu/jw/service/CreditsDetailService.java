@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -87,6 +88,8 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             accountDO1.setHospital("海沧区");
             accountDO1.setPassword("321321312321");
             accountDO1.setHospitalName("haichan");
+            accountDO1.setCreateTime(new Date());
+            accountDO1.setUpdateTime(new Date());
             accountDao.save(accountDO1);
         }
         List<AccountDO>  accountDOS1 = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(AccountDO.class));
@@ -129,7 +132,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             }
             buffer.deleteCharAt(buffer.length()-1);
         }
-        buffer.append(") AND");
+        buffer.append(") ");
         String sql = "SELECT" +
                 " ba.patient_id AS patient_id, " +
                 " ba.account_name AS account_name," +
@@ -138,7 +141,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 " ba.create_time AS create_time, " +
                 " (ba.total +(cd1.total)) AS sum " +
                 " FROM " +
-                " wlyy_health_bank_account ba, " +
+                " wlyy_health_bank_account ba LEFT JOIN " +
                 " ( " +
                 " SELECT " +
                 " SUM(cd.integrate) AS total, " +
@@ -149,17 +152,16 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 " cd.trade_direction = - 1 " +
                 " GROUP BY " +
                 " cd.patient_id " +
-                " ) cd1 " +
+                " ) cd1  ON cd1.patient_id = ba.patient_id " +
                 "WHERE " + buffer +
-                " cd1.patient_id = ba.patient_id " +
-                "ORDER BY " +
+                " ORDER BY " +
                 " ba.create_time, " +
                 " (ba.total + cd1.total) DESC " +
                 "LIMIT "+(page-1)*size+","+size;
         List<AccountDO> accountDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(AccountDO.class));
         String sqlCount = "SELECT count(1) AS total"+
                 " FROM " +
-                " wlyy_health_bank_account ba, " +
+                " wlyy_health_bank_account ba LEFT JOIN " +
                 " ( " +
                 " SELECT " +
                 " SUM(cd.integrate) AS total, " +
@@ -170,10 +172,9 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 " cd.trade_direction = - 1 " +
                 " GROUP BY " +
                 " cd.patient_id " +
-                " ) cd1 " +
+                " ) cd1 ON cd1.patient_id = ba.patient_id " +
                 "WHERE " + buffer +
-                " cd1.patient_id = ba.patient_id " +
-                "ORDER BY " +
+                " ORDER BY " +
                 " ba.create_time, " +
                 " (ba.total + cd1.total) DESC ";
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlCount);
