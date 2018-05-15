@@ -76,7 +76,21 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @return
      */
     public Envelop<AccountDO> findByTradeDirection(CreditsDetailDO creditsDetailDO){
-        AccountDO accountDO = accountDao.findOne(creditsDetailDO.getAccountId());
+        AccountDO accountDO1 = new AccountDO();
+        accountDO1.setPatientId(creditsDetailDO.getPatientId());
+        String sql1  = ISqlUtils.getAllSql(accountDO1);
+        List<AccountDO>  accountDOS = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(AccountDO.class));
+        if (accountDOS == null || accountDOS.size() == 0){
+            accountDO1.setTotal(0);
+            accountDO1.setAccountName("jw");
+            accountDO1.setCardNumber("jw");
+            accountDO1.setHospital("海沧区");
+            accountDO1.setPassword("321321312321");
+            accountDO1.setHospitalName("haichan");
+            accountDao.save(accountDO1);
+        }
+        List<AccountDO>  accountDOS1 = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(AccountDO.class));
+        AccountDO accountDO = accountDOS1.get(0);
         String sql = "SELECT SUM(cd.integrate) as total FROM wlyy_health_bank_credits_detail cd where cd.trade_direction = "+creditsDetailDO.getTradeDirection();
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
         if (rstotal!= null && rstotal.size()>0){
@@ -106,14 +120,15 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
 */
     public Envelop<AccountDO> selectByRanking(List<String> patientIds, Integer page, Integer size){
         StringBuffer buffer = new StringBuffer();
-        if (patientIds !=null && patientIds.size()!=0){
-            buffer.append(" ba.patient_id in(");
+        buffer.append(" ba.patient_id in(");
+        if (patientIds == null || patientIds.size() == 0){
+            buffer.append("''");
+        }else {
             for (int i=0;i<patientIds.size();i++){
                 buffer.append("'"+patientIds.get(i)+"'").append(",");
             }
-            buffer.append(")");
-            buffer.deleteCharAt(buffer.length()-2);
         }
+        buffer.append(") AND");
         String sql = "SELECT" +
                 " ba.patient_id AS patient_id, " +
                 " ba.account_name AS account_name," +
@@ -135,7 +150,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 " cd.patient_id " +
                 " ) cd1 " +
                 "WHERE " + buffer +
-                "AND cd1.patient_id = ba.patient_id " +
+                " cd1.patient_id = ba.patient_id " +
                 "ORDER BY " +
                 " ba.create_time, " +
                 " (ba.total + cd1.total) DESC " +
@@ -156,7 +171,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 " cd.patient_id " +
                 " ) cd1 " +
                 "WHERE " + buffer +
-                "AND cd1.patient_id = ba.patient_id " +
+                " cd1.patient_id = ba.patient_id " +
                 "ORDER BY " +
                 " ba.create_time, " +
                 " (ba.total + cd1.total) DESC ";
@@ -175,6 +190,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @return
      */
     public Envelop<CreditsDetailDO> insert(CreditsDetailDO creditsDetailDO){
+
         TaskDO taskDO = new TaskDO();
         taskDO.setTaskCode(creditsDetailDO.getFlag());
         taskDO.setPatientId(creditsDetailDO.getPatientId());

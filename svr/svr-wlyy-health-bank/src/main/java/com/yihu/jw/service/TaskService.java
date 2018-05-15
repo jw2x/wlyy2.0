@@ -37,6 +37,7 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
     @Autowired
     private TaskDetailDao taskDetailDao;
 
+
     public Envelop<Boolean> insert(TaskDO taskDO){
         taskDao.save(taskDO);
         Envelop<Boolean> envelop = new Envelop<>();
@@ -58,6 +59,13 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
 
    public Envelop<TaskDO> selectByCondition(TaskDO taskDO,Integer page,Integer size){
        String sql = new ISqlUtils().getSql(taskDO,page,size,"*");
+       List<TaskDO> taskDOS1 = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
+       if (taskDOS1 == null || taskDOS1.size() ==0){
+           List<TaskDO> taskDOList = getTasks(taskDO.getPatientId());
+           for (TaskDO taskDO1:taskDOList){
+                taskDao.save(taskDO1);
+           }
+       }
        List<TaskDO> taskDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
        List<TaskDO> taskDOList = new ArrayList<>();
        for (TaskDO taskDO1 : taskDOS){
@@ -81,4 +89,26 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
        }
        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDOList,page,size,count);
    }
+    public List<TaskDO> getTasks(String patientId){
+       List<TaskDO> taskDOList = new ArrayList<>();
+       TaskDO taskDO = new TaskDO();
+       taskDO.setPatientId(patientId);
+       taskDO.setTaskCode("BIND");
+       taskDO.setPeriod(1);
+       taskDO.setTaskTitle("首次绑定");
+       taskDO.setTaskContent("（使用社区发放的已关联您身份信息的设备,登录厦门i健康绑定设备）");
+       taskDO.setTradeType("activity");
+       taskDO.setTransactionId("402885e96324a409016324c0a45a0006");
+       taskDOList.add(taskDO);
+       TaskDO taskDO1 = new TaskDO();
+       taskDO1.setPatientId(patientId);
+       taskDO1.setTaskCode("MEASURE");
+       taskDO1.setPeriod(0);
+       taskDO1.setTaskTitle("每日测量");
+       taskDO1.setTaskContent("（使用社区发放的已关联您身份信息的设备，绑定后每天完成测量）");
+       taskDO1.setTradeType("activity");
+       taskDO1.setTransactionId("402885e96324a409016324c0a45a0006");
+       taskDOList.add(taskDO1);
+       return taskDOList;
+    }
 }
