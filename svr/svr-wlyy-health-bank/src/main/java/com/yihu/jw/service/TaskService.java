@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -99,6 +100,8 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
        taskDO.setTaskContent("（使用社区发放的已关联您身份信息的设备,登录厦门i健康绑定设备）");
        taskDO.setTradeType("activity");
        taskDO.setTransactionId("402885e96324a409016324c0a45a0006");
+       taskDO.setCreateTime(new Date());
+       taskDO.setUpdateTime(new Date());
        taskDOList.add(taskDO);
        TaskDO taskDO1 = new TaskDO();
        taskDO1.setPatientId(patientId);
@@ -108,6 +111,8 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
        taskDO1.setTaskContent("（使用社区发放的已关联您身份信息的设备，绑定后每天完成测量）");
        taskDO1.setTradeType("activity");
        taskDO1.setTransactionId("402885e96324a409016324c0a45a0006");
+       taskDO1.setCreateTime(new Date());
+       taskDO1.setUpdateTime(new Date());
        taskDOList.add(taskDO1);
        return taskDOList;
     }
