@@ -8,7 +8,6 @@ import com.yihu.jw.business.user.service.EmployService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
-import com.yihu.jw.restmodel.common.base.BaseEnvelopStatus;
 import com.yihu.jw.rm.base.BaseLoginRequestMapping;
 import com.yihu.jw.util.common.ConvertToSpellUtils;
 import com.yihu.jw.util.security.MD5;
@@ -55,7 +54,7 @@ public class LoginService  extends BaseJpaService<BaseEmployDO,EmployDao> {
     public Envelop register(String mobilePhone,String password,String saasId,String name,String idcard,String ssc) throws Exception {
 
         //判断账号是否重复
-        BaseEmployDO baseEmployDO = employDao.findByPhoneAndSaasId(mobilePhone,saasId);
+        BaseEmployDO baseEmployDO = employService.findByPhoneAndSaasId(mobilePhone,saasId);
         if(baseEmployDO!=null){
             return Envelop.getError("该手机号已注册！");
         }

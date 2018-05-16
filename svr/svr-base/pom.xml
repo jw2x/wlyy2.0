@@ -21,6 +21,10 @@
             <artifactId>common-entity</artifactId>
             <exclusions>
                 <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>com.yihu.base</groupId>
                     <artifactId>common-data-es</artifactId>
                 </exclusion>
@@ -171,6 +175,11 @@
             <!--<groupId>org.springframework.boot</groupId>-->
             <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
         <!--</dependency>-->
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>svr-base</finalName>
