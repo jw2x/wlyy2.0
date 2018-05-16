@@ -22,12 +22,12 @@ eureka:
 
 
 #eurika界面的账号密码
-security:
-  basic:
-    enabled: true
-  user:
-    name: jw
-    password: jkzl
+#security:
+#  basic:
+#    enabled: true
+#  user:
+#    name: jw
+#    password: jkzl
 
 
 ---

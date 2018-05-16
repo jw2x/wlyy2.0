@@ -39,7 +39,7 @@ import java.util.Map;
  * Created by 刘文彬 on 2018/5/4.
  */
 @RestController
-@RequestMapping("/aa")
+@RequestMapping("/token")
 @Api(value = "权限token模块", description = "权限token模块")
 public class TokenController {
 
