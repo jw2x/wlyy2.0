@@ -51,6 +51,9 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     @Transient
     private String flag ; // 标识是什么任务
 
+    @Transient
+    private Integer total;  //总积分
+
     public String getSaasId() {
         return saasId;
     }
@@ -145,5 +148,13 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     public void setFlag(String flag) {
         this.flag = flag;
+    }
+
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
     }
 }
