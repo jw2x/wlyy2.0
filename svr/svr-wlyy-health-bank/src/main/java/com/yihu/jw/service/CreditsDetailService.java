@@ -133,31 +133,39 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             buffer.deleteCharAt(buffer.length()-1);
         }
         buffer.append(") ");
-        String sql = "SELECT" +
-                " ba.patient_id AS patient_id, " +
-                " ba.account_name AS account_name," +
-                " ba.hospital AS hospital, " +
-                " ba.total AS total, " +
-                " ba.create_time AS create_time, " +
-                " (ba.total +(cd1.total)) AS sum " +
-                " FROM " +
-                " wlyy_health_bank_account ba LEFT JOIN " +
-                " ( " +
-                " SELECT " +
-                " SUM(cd.integrate) AS total, " +
-                " cd.patient_id AS patient_id " +
-                " FROM " +
-                " wlyy_health_bank_credits_detail cd " +
-                " WHERE " +
-                " cd.trade_direction = - 1 " +
-                " GROUP BY " +
-                " cd.patient_id " +
-                " ) cd1  ON cd1.patient_id = ba.patient_id " +
-                "WHERE " + buffer +
-                " ORDER BY " +
-                " ba.create_time, " +
-                " (ba.total + cd1.total) DESC " +
-                "LIMIT "+(page-1)*size+","+size;
+        String sql =
+                "SELECT ba1.patient_id AS patient_id," +
+                        "ba1.account_name AS account_name," +
+                        "ba1.hospital AS hospital," +
+                        "ba1.total AS total," +
+                        "ba1.create_time AS create_time," +
+                        "ba1.sum AS sum" +
+                        " FROM" +
+                        "( SELECT " +
+                        "ba.patient_id AS patient_id," +
+                        "ba.account_name AS account_name," +
+                        "ba.hospital AS hospital," +
+                        "ba.total AS total," +
+                        "ba.create_time AS create_time," +
+                        "(ba.total +(cd1.total)) AS sum" +
+                        " FROM" +
+                        " wlyy_health_bank_account ba" +
+                        " LEFT JOIN ( " +
+                        "SELECT" +
+                        " SUM(cd.integrate) AS total," +
+                        " cd.patient_id AS patient_id" +
+                        " FROM" +
+                        " wlyy_health_bank_credits_detail cd" +
+                        " WHERE " +
+                        "cd.trade_direction = - 1" +
+                        " GROUP BY " +
+                        " cd.patient_id ) cd1 ON cd1.patient_id = ba.patient_id\n" +
+                        " WHERE " + buffer +
+                        " ORDER BY" +
+                        " ba.create_time DESC " +
+                        "LIMIT "+(page-1)*size+","+size +")ba1" +
+                        " ORDER BY " +
+                        " ba1.sum DESC";
         List<AccountDO> accountDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(AccountDO.class));
         String sqlCount = "SELECT count(1) AS total"+
                 " FROM " +
