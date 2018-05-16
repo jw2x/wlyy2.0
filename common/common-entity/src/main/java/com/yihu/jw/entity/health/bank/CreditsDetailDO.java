@@ -54,6 +54,9 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     @Transient
     private Integer total;  //总积分
 
+    @Transient
+    private String name; //居民名称
+
     public String getSaasId() {
         return saasId;
     }
@@ -156,5 +159,13 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     public void setTotal(Integer total) {
         this.total = total;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -83,7 +83,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         List<AccountDO>  accountDOS = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(AccountDO.class));
         if (accountDOS == null || accountDOS.size() == 0){
             accountDO1.setTotal(0);
-            accountDO1.setAccountName("jw");
+            accountDO1.setAccountName(creditsDetailDO.getName());
             accountDO1.setCardNumber("jw");
             accountDO1.setHospital("海沧区");
             accountDO1.setPassword("321321312321");
@@ -94,7 +94,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         }
         List<AccountDO>  accountDOS1 = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(AccountDO.class));
         AccountDO accountDO = accountDOS1.get(0);
-        String sql = "SELECT SUM(cd.integrate) as total FROM wlyy_health_bank_credits_detail cd where cd.trade_direction = "+creditsDetailDO.getTradeDirection();
+        String sql = "SELECT SUM(cd.integrate) as total FROM wlyy_health_bank_credits_detail cd where cd.trade_direction = "+creditsDetailDO.getTradeDirection() +" AND cd.patient_id = '" +creditsDetailDO.getPatientId()+"'";
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
         if (rstotal!= null && rstotal.size()>0){
             if (rstotal.get(0).get("total") == null){
@@ -195,6 +195,25 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
     public Envelop<CreditsDetailDO> insert(CreditsDetailDO creditsDetailDO){
         try {
             synchronized (creditsDetailDO.getPatientId()){
+                String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '"+creditsDetailDO.getPatientId() +"'";
+                List<AccountDO> accountDOList = jdbcTemplate.query(sqlAccount,new BeanPropertyRowMapper(AccountDO.class));
+                if (accountDOList != null && accountDOList.size() != 0){
+                    creditsDetailDO.setAccountId(accountDOList.get(0).getId());
+                }else {
+                    AccountDO accountDO1 = new AccountDO();
+                    accountDO1.setPatientId(creditsDetailDO.getPatientId());
+                    accountDO1.setTotal(0);
+                    accountDO1.setAccountName(creditsDetailDO.getName());
+                    accountDO1.setCardNumber("jw");
+                    accountDO1.setHospital("海沧区");
+                    accountDO1.setPassword("321321312321");
+                    accountDO1.setHospitalName("haichan");
+                    accountDO1.setCreateTime(new Date());
+                    accountDO1.setUpdateTime(new Date());
+                    accountDao.save(accountDO1);
+                    List<AccountDO> accountDOS = jdbcTemplate.query(sqlAccount,new BeanPropertyRowMapper(AccountDO.class));
+                    creditsDetailDO.setAccountId(accountDOS.get(0).getId());
+                }
                 TaskDO taskDO = new TaskDO();
                 taskDO.setTaskCode(creditsDetailDO.getFlag());
                 taskDO.setPatientId(creditsDetailDO.getPatientId());
@@ -202,11 +221,13 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 List<TaskDO> taskDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
                 if (taskDOList != null && taskDOList.size() != 0){
                     creditsDetailDO.setTransactionId(taskDOList.get(0).getId());
-                }
-                String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '"+creditsDetailDO.getPatientId() +"'";
-                List<AccountDO> accountDOList = jdbcTemplate.query(sqlAccount,new BeanPropertyRowMapper(AccountDO.class));
-                if (accountDOList != null && accountDOList.size() != 0){
-                    creditsDetailDO.setAccountId(accountDOList.get(0).getId());
+                }else {
+                    List<TaskDO> taskDOS = getTasks(taskDO.getPatientId());
+                    for (TaskDO taskDO1:taskDOS){
+                        taskDao.save(taskDO1);
+                    }
+                    List<TaskDO> taskDOList1 = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
+                    creditsDetailDO.setTransactionId(taskDOList1.get(0).getId());
                 }
                 if (creditsDetailDO.getTradeDirection() == 1){
                     if (creditsDetailDO.getTradeType().equals("HEALTH_TASK")){
@@ -249,6 +270,40 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             Envelop<CreditsDetailDO> envelop = new Envelop<>();
             return envelop;
         }
+    }
+
+
+    /**
+     * 固定数据
+     *
+     * @param patientId
+     * @return
+     */
+    public List<TaskDO> getTasks(String patientId){
+        List<TaskDO> taskDOList = new ArrayList<>();
+        TaskDO taskDO = new TaskDO();
+        taskDO.setPatientId(patientId);
+        taskDO.setTaskCode("BIND");
+        taskDO.setPeriod(1);
+        taskDO.setTaskTitle("首次绑定");
+        taskDO.setTaskContent("（使用社区发放的已关联您身份信息的设备,登录厦门i健康绑定设备）");
+        taskDO.setTradeType("activity");
+        taskDO.setTransactionId("402885e96324a409016324c0a45a0006");
+        taskDO.setCreateTime(new Date());
+        taskDO.setUpdateTime(new Date());
+        taskDOList.add(taskDO);
+        TaskDO taskDO1 = new TaskDO();
+        taskDO1.setPatientId(patientId);
+        taskDO1.setTaskCode("MEASURE");
+        taskDO1.setPeriod(0);
+        taskDO1.setTaskTitle("每日测量");
+        taskDO1.setTaskContent("（使用社区发放的已关联您身份信息的设备，绑定后每天完成测量）");
+        taskDO1.setTradeType("activity");
+        taskDO1.setTransactionId("402885e96324a409016324c0a45a0006");
+        taskDO1.setCreateTime(new Date());
+        taskDO1.setUpdateTime(new Date());
+        taskDOList.add(taskDO1);
+        return taskDOList;
     }
 
 }
