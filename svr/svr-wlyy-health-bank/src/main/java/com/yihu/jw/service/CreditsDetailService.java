@@ -294,7 +294,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         taskDO.setTaskCode("BIND");
         taskDO.setPeriod(1);
         taskDO.setTaskTitle("首次绑定");
-        taskDO.setTaskContent("（使用社区发放的已关联您身份信息的设备,登录厦门i健康绑定设备）");
+        taskDO.setTaskContent("（绑定社区登记发放的设备，可获得各类型设备的首绑奖励。）");
         taskDO.setTradeType("activity");
         taskDO.setTransactionId("402885e96324a409016324c0a45a0006");
         taskDO.setCreateTime(new Date());
