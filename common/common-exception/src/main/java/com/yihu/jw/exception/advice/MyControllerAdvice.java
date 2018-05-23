@@ -2,7 +2,6 @@ package com.yihu.jw.exception.advice;
 
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
-import com.yihu.jw.restmodel.common.base.BaseEnvelopStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +47,6 @@ public class MyControllerAdvice {
         logger.error(ex.getMessage());
         return BaseEnvelop.getError(ex.getMessage());
     }
+
+
 }

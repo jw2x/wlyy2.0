@@ -12,7 +12,8 @@ public enum BaseEnvelopStatus {
     status_10102("用户未登录", 10102),
     status_10103("登陆超时", 10103),
     status_10104("账号被挤", 10104),
-    status_10105("账号没权限", 10105),;
+    status_10105("账号没权限", 10105),
+    status_10106("账号已存在", 10106),;
     //------------------登陆 权限相关 end ------------------
 
     BaseEnvelopStatus(String name, Integer code) {

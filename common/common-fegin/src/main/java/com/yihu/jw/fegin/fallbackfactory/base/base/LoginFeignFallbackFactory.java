@@ -30,7 +30,7 @@ public class LoginFeignFallbackFactory implements FallbackFactory<LoginFeign> {
             @Override
             public BaseEnvelop checkoutInfo(String ssc,String idcard) {
                 tracer.getCurrentSpan().logEvent("校验医保卡、身份证、手机号接口错误:原因:"+e.getMessage());
-                return Envelop.getError(e.getMessage(),BaseEnvelopStatus.system_error.getCode());
+                return Envelop.getError(e.getMessage(), BaseEnvelopStatus.system_error.getCode());
             }
 
             /**
