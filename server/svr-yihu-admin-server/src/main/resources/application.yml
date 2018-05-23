@@ -29,6 +29,11 @@ spring:
 #  path: G:\idea_workspace\jkzl_git\jkzl-start\logs\
 #  level:
 #    root: INFO
+logging:
+  file: ${logging.path}svr-yihu-admin-server.log
+  path: G:\idea_workspace\jkzl_git\jkzl-start\logs\
+  level:
+    root: INFO
 
 ---
 spring:
