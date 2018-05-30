@@ -11,7 +11,7 @@
 
 	<groupId>com.yihu.rehabilitation</groupId>
 	<artifactId>svr-rehabilitation</artifactId>
-	<version>${parent.version}</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<dependencies>
