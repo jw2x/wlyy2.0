@@ -61,7 +61,7 @@ public class EnvelopRestController {
     }
 
     //Json转实体类
-    public <T> T toEntity(String json, Class<T> entityCls) throws Exception{
+    public <T> T toEntity(String json, Class<T> entityCls) {
 //        try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.setDateFormat(new SimpleDateFormat(DateUtil.yyyy_MM_dd_HH_mm_ss));

@@ -11,7 +11,7 @@
 
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-lib-parent-pom</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
     <developers>
         <developer>
@@ -54,7 +54,7 @@
     <properties>
         <version.mysql>5.1.38</version.mysql>
         <version.jackson>2.8.1</version.jackson>
-        <version.myCommon>1.0.0</version.myCommon>
+        <version.myCommon>1.0.2</version.myCommon>
         <version.spring-data-hadoop>2.3.0.RELEASE</version.spring-data-hadoop>
         <version.springside>4.2.3-GA</version.springside>
         <version.zipkin>1.24.0</version.zipkin>
@@ -140,7 +140,7 @@
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-async</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.base</groupId>
@@ -169,33 +169,28 @@
             </dependency>
             <dependency>
                 <groupId>com.yihu.jw</groupId>
-                <artifactId>svr-base</artifactId>
-                <version>${version.myCommon}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.yihu.jw</groupId>
                 <artifactId>common-util</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-swagger</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-data-mysql</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-log</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-quartz</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <!--数据库驱动 start-->
             <dependency>
@@ -269,7 +264,7 @@
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-data-fastdfs</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.csource</groupId>
