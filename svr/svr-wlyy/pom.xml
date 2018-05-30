@@ -6,13 +6,13 @@
     <parent>
         <groupId>com.yihu.jw</groupId>
         <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>${version.wlyy2.0}</version>
         <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-wlyy</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
 
     <dependencies>
         <dependency>

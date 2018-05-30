@@ -39,7 +39,7 @@ spring:
       server:
         git:
           uri: http://192.168.1.220:10080/jiwei/wlyy2.0.config.git
-        default-label: master
+        default-label: jwdev
 
 
 ---

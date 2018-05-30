@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>com.yihu.jw</groupId>
 		<artifactId>svr-lib-parent-pom</artifactId>
-		<version>1.0.0</version>
+		<version>${version.wlyy2.0}</version>
 		<relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
 	</parent>
 
 	<groupId>com.yihu.rehabilitation</groupId>
 	<artifactId>svr-rehabilitation</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${parent.version}</version>
 	<packaging>jar</packaging>
 
 	<dependencies>

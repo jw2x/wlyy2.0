@@ -6,37 +6,40 @@
     <parent>
         <groupId>com.yihu.jw</groupId>
         <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>${version.wlyy2.0}</version>
         <relativePath>../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>com.yihu.jw</groupId>
     <artifactId>web-gateway</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
     <packaging>war</packaging>
 
     <dependencies>
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>admin-client-starter</artifactId>
-            <version>1.1.0</version>
+            <version>${version.yihu.admin}</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-fegin</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-exception</artifactId>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-request-mapping</artifactId>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-rest-model</artifactId>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.base</groupId>
