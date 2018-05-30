@@ -246,6 +246,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model-es</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

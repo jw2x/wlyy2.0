@@ -28,6 +28,10 @@
             <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model-es</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.yihu.base</groupId>
             <artifactId>common-swagger</artifactId>
         </dependency>
