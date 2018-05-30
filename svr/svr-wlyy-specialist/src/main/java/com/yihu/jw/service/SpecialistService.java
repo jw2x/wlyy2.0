@@ -1,15 +1,15 @@
 package com.yihu.jw.service;
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.*;
 import com.yihu.jw.entity.specialist.SpecialistArticleDO;
 import com.yihu.jw.entity.specialist.SpecialistConsultDO;
 import com.yihu.jw.entity.specialist.SpecialistDO;
 import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.specialist.SpecialistPatientRelationVO;
+import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.BooleanSupplier;
 
 /**
  * Created by Trick on 2018/4/25.
@@ -39,6 +38,8 @@ public class SpecialistService{
     private PatientHospitalRecordDao patientHospitalRecordDao;
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Value("${basedb.name}")
+    private String basedb;
 
     public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){
         specialistDao.save(info);
@@ -95,5 +96,29 @@ public class SpecialistService{
         return Envelop.getSuccessListWithPage(SpecialistMapping.api_success,specialistPatientRelationVOs,page,size,count);
     }
 
+    public Envelop<Long> findSpecialistPatientRelationCout(String doctor){
+        String sql = "SELECT " +
+                " count(1) AS total " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r " +
+                " WHERE " +
+                " r.patient " +
+                " NOT IN ( " +
+                " SELECT " +
+                " patient " +
+                " FROM " +
+                " "+basedb+".wlyy_sign_patient_label_info i " +
+                " WHERE " +
+                " i.label_type = '5' " +
+                " )";
+        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
+        Long count = 0L;
+        if(rstotal!=null&&rstotal.size()>0){
+            count = (Long) rstotal.get(0).get("total");
+        }
+        return Envelop.getSuccess(SpecialistMapping.api_success,count);
+    }
+
+//    public Envelop<PatientRelationVO>
 
 }
