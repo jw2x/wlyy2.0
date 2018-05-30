@@ -64,6 +64,8 @@ fast-dfs:
     max-size: 20
     wait-time: 500
 
+basedb: #base数据基础数据数据源，用于跨库查询
+  name: wlyy
 ---
 spring:
   profiles: jwdev
