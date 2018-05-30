@@ -19,6 +19,7 @@
 
         <module>../common/common-entity</module>
         <module>../common/common-rest-model</module>
+        <module>../common/common-rest-model-es</module>
         <module>../common/common-exception</module>
         <module>../common/common-request-mapping</module>
         <module>../common/common-util</module>

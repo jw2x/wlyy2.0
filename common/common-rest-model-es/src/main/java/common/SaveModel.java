@@ -1,4 +1,4 @@
-package com.yihu.jw.restmodel.iot.common;
+package common;
 
 import io.searchbox.annotations.JestId;
 

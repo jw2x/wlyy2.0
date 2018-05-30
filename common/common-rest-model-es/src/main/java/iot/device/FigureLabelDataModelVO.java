@@ -1,4 +1,4 @@
-package com.yihu.jw.restmodel.iot.device;
+package iot.device;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.searchbox.annotations.JestId;
