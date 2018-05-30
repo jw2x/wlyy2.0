@@ -11,6 +11,7 @@
     </parent>
 
     <properties>
+        <!--common 的统一控制版本配置-->
         <common.verion>1.0.2</common.verion>
     </properties>
     <groupId>com.yihu.base</groupId>
