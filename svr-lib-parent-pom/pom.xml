@@ -26,10 +26,15 @@
     </developers>
     <!--deploy 的时候发布到这个服务器-->
     <distributionManagement>
-        <repository>
+        <!--<repository>
             <id>test</id>
             <name>testRespository</name>
             <url>http://172.19.103.43:8081/nexus/content/repositories/test/</url>
+        </repository>-->
+        <repository>
+            <id>jkzlRepositories</id>
+            <name>jkzlRepositories</name>
+            <url>http://172.19.103.43:8081/nexus/content/repositories/jkzlRepositories/</url>
         </repository>
     </distributionManagement>
     <modules>
