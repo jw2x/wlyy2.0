@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.yihu.base</groupId>
         <artifactId>common-lib-parent-pom</artifactId>
-        <version>${common.verion}</version>
+        <version>1.0.2</version>
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
@@ -18,6 +18,12 @@
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model</artifactId>
+            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.base</groupId>
@@ -38,10 +44,6 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-rest-model</artifactId>
         </dependency>
 
         <dependency>

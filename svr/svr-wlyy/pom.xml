@@ -12,7 +12,7 @@
 
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-wlyy</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
 
     <dependencies>
         <dependency>

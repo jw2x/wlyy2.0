@@ -12,7 +12,7 @@
 
     <groupId>com.yihu.iot</groupId>
     <artifactId>svr-iot</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
     <packaging>war</packaging>
 
     <dependencies>

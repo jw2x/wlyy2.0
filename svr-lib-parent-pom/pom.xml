@@ -88,10 +88,26 @@
         <asciidoctor.maven.plugin.version>1.5.5</asciidoctor.maven.plugin.version>
         <asciidoctorj.version>1.5.5</asciidoctorj.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+        <version.yihu.admin>1.2.0</version.yihu.admin>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-client-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-server-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-server-ui-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
             <!--服务器监监听-->
             <dependency>
                 <groupId>de.codecentric</groupId>
