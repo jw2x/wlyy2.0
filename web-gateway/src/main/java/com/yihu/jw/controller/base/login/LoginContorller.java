@@ -59,6 +59,10 @@ public class LoginContorller {
     private EmployFeign employFeign;
     @Value("${server.web-gateway-port}")
     private String port;
+    @Autowired
+    private RestTemplate restTemplate ;
+    @Value("${spring.application.name}")
+    private String appName;
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_checkoutInfo, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "注册校验信息", notes = "注册校验姓名、身份证、医保卡号信息")
@@ -155,15 +159,13 @@ public class LoginContorller {
             params.add("password", MD5.GetMD5Code(password+employMap.get("salt")));
             //设置http请求实体
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-            RestTemplate restTemplate = new RestTemplate();
-            token = restTemplate.postForObject("http://localhost:"+port+"/authentication/form", requestEntity, String.class);
+            token = restTemplate.postForObject("http://"+appName.toUpperCase()+"/authentication/form", requestEntity, String.class);
         }else{
             params.add("mobile", mobilePhone+","+saasId);
             params.add("sms", captcha);
             //设置http请求实体
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(params, headers);
-            RestTemplate restTemplate = new RestTemplate();
-            token = restTemplate.postForObject("http://localhost:"+port+"/authentication/mobile", requestEntity, String.class);
+            token = restTemplate.postForObject("http://"+appName.toUpperCase()+"/authentication/mobile", requestEntity, String.class);
         }
 
         if(!StringUtils.isEmpty(token)){
