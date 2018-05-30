@@ -18,12 +18,6 @@
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-rest-model</artifactId>
-            <version>${parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.base</groupId>
