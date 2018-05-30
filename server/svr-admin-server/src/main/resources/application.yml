@@ -1,0 +1,40 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: svr-admin-server
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 1501877145@qq.com
+    protocol: smtp
+    password: uihqhvqtrnkwhdhf #QQ的授权码
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+           class: javax.net.ssl.SSLSocketFactory
+          starttls: true
+          required: true
+  boot:
+    admin:
+      url: http://localhost:${server.port}
+      notify:
+        mail:
+          to: 494679975@qq.com
+          from: 1501877145@qq.com
+      routes:
+        endpoints: env,metrics,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream.
+
+  jackson:
+    serialization:
+      indent_output: true
+
+
+management:
+  security:
+    enabled: false
+
+

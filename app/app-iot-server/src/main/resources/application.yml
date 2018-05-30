@@ -65,9 +65,15 @@ service-gateway:
 
 third:
   wlyy:
-    url: http://ehr.yihu.com/wlyy/
+    url: http://172.19.103.88:9092/wlyy/
     appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
     appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
+ehr:
+  user:
+    roleId: 10268
+  metadata:
+    version: 59083976eebd
+    reference: 000000065a965615966b3a40c86ceba7
 
 fast-dfs:
   tracker-server: 172.19.103.54:22122
@@ -75,7 +81,10 @@ fast-dfs:
 logging:
   path: /data/logger
   file: app-iot-server
-
+##如果是外网项目就是flase 内网是true
+neiwang:
+  enable: true
+  wlyy: http://localhost:9099/iot/
 ---
 spring:
   profiles: jwtest
@@ -95,16 +104,25 @@ service-gateway:
   portalOuterUrl: http://27.154.233.186:10280/api/v1.0/portal
 third:
   wlyy:
-    url: http://ehr.yihu.com/wlyy/
+    url: http://172.19.103.88:9092/wlyy/
     appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
     appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
+ehr:
+  user:
+    roleId: 10268
+  metadata:
+    version: 59083976eebd
+    reference: 000000065a965615966b3a40c86ceba7
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
 logging:
   path: /data/logger
   file: app-iot-server
-
+##如果是外网项目就是flase,false会调用内网http接口项目提交  内网是true直接上传fastDfs
+neiwang:
+  enable: true
+  wlyy: http://172.19.103.88:9099/iot/
 ---
 spring:
   profiles: jwprod
@@ -126,12 +144,21 @@ third:
     url: http://www.yihu.com/wlyy/
     appid: 915d0345-5b1d-11e6-8344-fa163e8aee61
     appsecret: 915d0345-5b1d-11e6-8344-fa163e8aee57
+ehr:
+  user:
+    roleId: 10268
+  metadata:
+    version: 59083976eebd
+    reference: 000000065a965615966b3a40c86ceba7
 fast-dfs:
   tracker-server: 11.1.2.9:22122
   accessUrl: http://11.1.2.9
 logging:
   path: /data/logger
   file: app-iot-server
-
+##如果是外网项目就是flase 内网是true
+neiwang:
+  enable: false
+  wlyy: http://59.61.92.90:9099/iot/
 #单点登录
 #GET http://172.19.103.73:10260/oauth/sso?response_type=token&client_id=uzs5G0HgTp&state=sxy&scope=read&redirect_uri=http://192.168.1.221:8010/ehr/browser/common/login/signin?idCardNo=362321200108017313&user=admin

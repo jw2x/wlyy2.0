@@ -164,7 +164,7 @@ public class IotDeviceController extends BaseController{
                                           @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
                                           @RequestParam(value = "purcharseId", required = true) String purcharseId) {
         try {
-            return deviceService.uploadStream(file,purcharseId);
+            return deviceService.uploadStream(file,purcharseId,request);
         } catch (Exception e) {
             e.printStackTrace();
             return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);

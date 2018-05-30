@@ -1,7 +1,6 @@
 package com.yihu.iot.controller.label;
 
 import com.yihu.iot.service.label.FigureLabelSerachService;
-import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -11,7 +10,10 @@ import io.swagger.annotations.ApiParam;
 import iot.device.FigureLabelDataModelVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -32,8 +34,8 @@ public class FigureLabelSearchController extends EnvelopRestController {
     public Envelop<List<FigureLabelDataModelVO>> findByIdcard(@ApiParam(name = "jsonData", value = "", defaultValue = "") @RequestBody String jsonData) {
         try {
             return Envelop.getSuccess(IotRequestMapping.FigureLabelInfo.message_success_find, figureLabelSerachService.getFigureLabelByIdcard(jsonData));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            return Envelop.getError(e.getMessage());
         }
     }
 
@@ -43,8 +45,8 @@ public class FigureLabelSearchController extends EnvelopRestController {
     public Envelop<List<FigureLabelDataModelVO>> findByTypeAndCode(@ApiParam(name = "jsonData", value = "", defaultValue = "") @RequestBody String jsonData) {
         try {
             return Envelop.getSuccess(IotRequestMapping.FigureLabelInfo.message_success_find, figureLabelSerachService.getFigureLabelByLabel(jsonData));
-        } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        } catch (Exception e) {
+            return Envelop.getError(e.getMessage());
         }
     }
 

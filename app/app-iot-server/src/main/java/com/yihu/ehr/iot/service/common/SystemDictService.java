@@ -57,13 +57,13 @@ public class SystemDictService extends BaseService{
                 envelop.setStatus(200);
             }else {
                 envelop.setStatus(-1);
-                envelop.setErrorMsg(result.getErrorMsg());
+                envelop.setMessage(result.getErrorMsg());
             }
             return envelop;
         } catch (Exception e) {
             e.printStackTrace();
             envelop.setStatus(-1);
-            envelop.setErrorMsg(ErrorCode.SystemError.toString());
+            envelop.setMessage(ErrorCode.SystemError.toString());
             return envelop;
         }
     }

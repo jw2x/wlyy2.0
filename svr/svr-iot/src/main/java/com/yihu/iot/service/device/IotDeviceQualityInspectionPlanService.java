@@ -1,6 +1,7 @@
 package com.yihu.iot.service.device;
 
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.iot.dao.device.IotDeviceDao;
 import com.yihu.iot.dao.device.IotDeviceOrderDao;
 import com.yihu.iot.dao.device.IotDeviceQualityInspectionPlanDao;
 import com.yihu.iot.dao.device.IotOrderPurchaseDao;
@@ -43,12 +44,15 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
     private JdbcTemplate jdbcTempalte;
     @Autowired
     private IotSystemDictService iotSystemDictService;
+    @Autowired
+    private IotDeviceDao iotDeviceDao;
 
     /**
      * 新增
      * @param iotDeviceQualityInspectionPlan
      * @return
      */
+    @Transactional
     public IotDeviceQualityInspectionPlanDO create(IotDeviceQualityInspectionPlanDO iotDeviceQualityInspectionPlan) {
 
         IotOrderPurchaseDO purchaseDO = iotOrderPurchaseDao.findById(iotDeviceQualityInspectionPlan.getPurchaseId());
@@ -62,12 +66,14 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
         iotDeviceQualityInspectionPlan.setStatus(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.create.getValue());
         iotDeviceQualityInspectionPlan.setDel(1);
         //更新采购清单的质检信息
-        if(StringUtils.isBlank(purchaseDO.getQualityStatus())
+        if(StringUtils.isBlank(purchaseDO.getQualityStatus())||purchaseDO.getQualityStatus().equals(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.complete.getValue())
                 ||(iotDeviceQualityInspectionPlan.getPlanTime().getTime()-purchaseDO.getNextQualityTime().getTime())<0){
             purchaseDO.setQualityStatus(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.create.getValue());
             purchaseDO.setNextQualityTime(iotDeviceQualityInspectionPlan.getPlanTime());
             purchaseDO.setQualityLeader(iotDeviceQualityInspectionPlan.getQualityLeader());
             iotOrderPurchaseDao.save(purchaseDO);
+
+            iotDeviceDao.updateQualityTime(iotDeviceQualityInspectionPlan.getPlanTime(),purchaseDO.getId());
         }
 
         return iotDeviceQualityInspectionPlanDao.save(iotDeviceQualityInspectionPlan);
@@ -98,7 +104,7 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
      * @param purchaseId
      */
     public void completePlanByPurchaseId(String purchaseId,String time){
-        IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanDao.findLastByPurchaseId(purchaseId,IotDeviceQualityInspectionPlanDO.QualityPlanStatus.create.getValue());
+        IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanDao.findFirstByPurchaseId(purchaseId,IotDeviceQualityInspectionPlanDO.QualityPlanStatus.create.getValue());
         if(planDO!=null){
             planDO.setStatus(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.complete.getValue());
             planDO.setActualTime(DateUtil.strToDate(time));
@@ -120,10 +126,17 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
         if(list==null||list.size()==0){
             IotDeviceQualityInspectionPlanDO last = iotDeviceQualityInspectionPlanDao.findLastByPurchaseId(purchaseId,IotDeviceQualityInspectionPlanDO.QualityPlanStatus.complete.getValue());
             IotOrderPurchaseDO purchaseDO = iotOrderPurchaseDao.findById(purchaseId);
-            purchaseDO.setQualityStatus(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.complete.getValue());
-            purchaseDO.setNextQualityTime(last.getPlanTime());
-            purchaseDO.setQualityLeader(last.getQualityLeader());
+            if(last==null){
+                purchaseDO.setNextQualityTime(null);
+                purchaseDO.setQualityLeader(null);
+                purchaseDO.setQualityStatus(null);
+            }else{
+                purchaseDO.setNextQualityTime(last.getPlanTime());
+                purchaseDO.setQualityLeader(last.getQualityLeader());
+                purchaseDO.setQualityStatus(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.complete.getValue());
+            }
             iotOrderPurchaseDao.save(purchaseDO);
+            iotDeviceDao.updateQualityTime(purchaseDO.getNextQualityTime(),purchaseDO.getId());
         }else {
             IotDeviceQualityInspectionPlanDO last = list.get(0);
             IotOrderPurchaseDO purchaseDO = iotOrderPurchaseDao.findById(purchaseId);
@@ -131,6 +144,7 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
             purchaseDO.setNextQualityTime(last.getPlanTime());
             purchaseDO.setQualityLeader(last.getQualityLeader());
             iotOrderPurchaseDao.save(purchaseDO);
+            iotDeviceDao.updateQualityTime(purchaseDO.getNextQualityTime(),purchaseDO.getId());
         }
     }
 

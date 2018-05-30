@@ -25,4 +25,7 @@ public interface BaseRoleDao extends PagingAndSortingRepository<BaseRoleDO, Stri
 
     @Query("from BaseRoleDO b where b.name like %?1%")
     List<BaseRoleDO> findAllByName(String name);
+
+    @Query(value="select b.* from base_role b,base_employ e,base_employ_role r where r.role_id=b.id and r.employ_id=e.id and e.phone= ?1 and e.saas_id= ?2",nativeQuery = true)
+    List<BaseRoleDO> findByPhoneAndSaasId(String phone,String saasId);
 }

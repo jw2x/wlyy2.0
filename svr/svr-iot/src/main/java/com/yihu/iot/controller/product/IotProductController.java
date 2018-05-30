@@ -56,10 +56,10 @@ public class IotProductController extends EnvelopRestController {
             if(size == null){
                 size = 10;
             }
-            String filters = "";
-            String semicolon = "del=1;";
+            String filters = "del=1;";
+            String semicolon = "";
             if(StringUtils.isNotBlank(name)){
-                filters = "name?"+name+" g1;registerCertificate?"+name+" g1";
+                filters += "name?"+name+" g1;registerCertificate?"+name+" g1";
                 semicolon = ";";
             }
             if(StringUtils.isNotBlank(companyId)){

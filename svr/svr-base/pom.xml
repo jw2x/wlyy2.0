@@ -6,19 +6,44 @@
     <parent>
         <groupId>com.yihu.jw</groupId>
         <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
         <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-base</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
     <packaging>war</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>com.yihu</groupId>
+            <artifactId>admin-client-starter</artifactId>
+            <version>${version.yihu.admin}</version>
+        </dependency>
         <!--公共的 start-->
         <dependency>
             <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
             <artifactId>common-entity</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.yihu.base</groupId>
+                    <artifactId>common-data-es</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
@@ -31,10 +56,6 @@
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
             <groupId>com.yihu.base</groupId>
@@ -53,28 +74,28 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </exclusion>
-            </exclusions>
+            <!--<exclusions>-->
+            <!--<exclusion>-->
+            <!--<groupId>org.springframework.boot</groupId>-->
+            <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+            <!--</exclusion>-->
+            <!--</exclusions>-->
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-servlet-api</artifactId>
             <version>8.5.28</version>
-            <!--tomcat 启动时 打开注释 end-->
-        </dependency>
-        <!--<dependency>
+            &lt;!&ndash;tomcat 启动时 打开注释 end&ndash;&gt;
+        </dependency>-->
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -97,7 +118,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-eureka</artifactId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -150,10 +171,19 @@
             <artifactId>jsr311-api</artifactId>
             <version>1.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-fegin</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
         <!--</dependency>-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <finalName>svr-base</finalName>

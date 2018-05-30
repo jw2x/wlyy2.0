@@ -22,10 +22,10 @@ public class EmployeeFeignFallbackFactory  implements FallbackFactory<EmployFeig
     public EmployFeign create(Throwable e) {
         return new EmployFeign() {
             @Override
-            public Envelop create(@RequestBody String jsonData) throws JiWeiException {
+            public Envelop create(@RequestBody String jsonData){
                 tracer.getCurrentSpan().logEvent("创建用户失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
-                throw new JiWeiException(e);
+                return null;
             }
 
             @Override
@@ -97,6 +97,10 @@ public class EmployeeFeignFallbackFactory  implements FallbackFactory<EmployFeig
                 throw new JiWeiException(e);
             }
 
+            @Override
+            public Envelop getEmployeeByPhoneAndSaasId(String phone, String saasId){
+                return null;
+            }
         };
     }
 }

@@ -6,6 +6,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.rm.base.BaseRequestMapping;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +44,7 @@ public class ModuleFunService extends BaseJpaService<ModuleFunctionDO, ModuleFun
      * 更改模块关联的功能
      * @param jsonData
      */
-    public void changeFun(String jsonData) {
+    public void changeFun(String jsonData) throws JSONException {
         JSONObject jsonObject =  new JSONObject(jsonData);
         if(!jsonObject.has("moduleCode")){
             throw new ApiException(BaseRequestMapping.ModuleFun.moduleId_is_null, ExceptionCode.common_error_params_code);

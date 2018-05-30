@@ -74,6 +74,7 @@ public class EhrWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/front/views/signin.html").permitAll()
                 .antMatchers("/login/**").permitAll()
                 .antMatchers("/svr-iot/wlyy/**").permitAll()//健康监测平台没有做登录（这里添加免登录验证）
+                .antMatchers("/svr-iot/fileUpload/commonUpload").permitAll()//公共的文件上传（这里添加免登录验证）
                 .antMatchers("/front/views/**").hasRole("USER")
                 .antMatchers("/**").hasRole("USER")
                 .and().formLogin().loginPage("/login")

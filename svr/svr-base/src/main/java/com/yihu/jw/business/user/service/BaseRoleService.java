@@ -171,4 +171,14 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao>{
         baseRoleDO.setStatus(-1);
         this.baseRoleDao.save(baseRoleDO);
     }
+
+    /**
+     * 根据phone（账号）和saasId查询角色列表
+     * @param phone
+     * @param saasId
+     * @return
+     */
+    public List<BaseRoleDO> findByPhoneAndSaasId(String phone,String saasId){
+        return this.baseRoleDao.findByPhoneAndSaasId(phone,saasId);
+    }
 }

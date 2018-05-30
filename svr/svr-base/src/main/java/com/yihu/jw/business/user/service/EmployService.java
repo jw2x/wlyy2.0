@@ -3,17 +3,22 @@ package com.yihu.jw.business.user.service;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.base.user.BaseEmployDO;
 import com.yihu.jw.base.user.BaseRoleDO;
-import com.yihu.jw.business.user.dao.BaseRoleDao;
 import com.yihu.jw.business.user.dao.EmployDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
+import com.yihu.jw.restmodel.common.base.BaseEnvelopStatus;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.Servlet;
 import java.util.List;
 
 /**
@@ -67,7 +72,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @param id
      * @return
      */
-    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
+//    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
     public BaseEmployDO findById(String id){
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null,ExceptionCode.common_error_params_code);
@@ -86,14 +91,10 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @param saasId
      * @return
      */
-    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
-    public BaseEmployDO findByPhoneAndSaasId(String phone,String saasId){
-        if (StringUtils.isEmpty(phone)) {
-            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null,ExceptionCode.common_error_params_code);
-        }
+    public BaseEmployDO findByPhoneAndSaasId(String phone,String saasId) throws ApiException{
         BaseEmployDO BaseEmployDO = this.employDao.findByPhoneAndSaasId(phone,saasId);
         if (null == BaseEmployDO) {
-            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_no_exist,ExceptionCode.common_error_params_code);
+            throw new ApiException(BaseEnvelopStatus.status_10100.getName(), BaseEnvelopStatus.status_10100.getCode());
         }
         return BaseEmployDO;
     }

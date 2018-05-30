@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface DemoFeign {
 
-    @RequestMapping(value = Contants.patient.findByCode, method = RequestMethod.GET)
+    @RequestMapping(value = "/demo/findByCode", method = RequestMethod.GET)
     String findByCode(@RequestParam(value = "code", required = true) String code);
 
 }
