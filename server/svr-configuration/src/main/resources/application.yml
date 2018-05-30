@@ -22,6 +22,11 @@ management:
   security:
     enabled: false
 
+logging:
+  file: ${logging.path}svr-configuration.log
+  path: G:\idea_workspace\jkzl_git\jkzl-start\logs\
+  level:
+    root: INFO
 
 ---
 spring:

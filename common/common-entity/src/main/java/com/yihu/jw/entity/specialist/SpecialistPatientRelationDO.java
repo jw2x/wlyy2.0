@@ -21,7 +21,10 @@ public class SpecialistPatientRelationDO extends IdEntityWithOperation implement
     private String doctorName;//专科医生姓名
     private String patient;// 居民（患者）
     private String patientName;//居民（患者）姓名
+    private String healthAssistant;//计管师
+    private String healthAssistantName;//计管师
     private String status;//1.已经分配，0，待分配
+    private String pkCode; //服务包code
     private String signCode;//签约code
     private String signDoctor;//签约医生
     private String signDoctorName;//签约医生
@@ -166,5 +169,32 @@ public class SpecialistPatientRelationDO extends IdEntityWithOperation implement
 
     public void setTeamCode(Integer teamCode) {
         this.teamCode = teamCode;
+    }
+
+    @Column(name = "health_assistant")
+    public String getHealthAssistant() {
+        return healthAssistant;
+    }
+
+    public void setHealthAssistant(String healthAssistant) {
+        this.healthAssistant = healthAssistant;
+    }
+
+    @Column(name = "health_assistant_name")
+    public String getHealthAssistantName() {
+        return healthAssistantName;
+    }
+
+    public void setHealthAssistantName(String healthAssistantName) {
+        this.healthAssistantName = healthAssistantName;
+    }
+
+    @Column(name = "pk_code")
+    public String getPkCode() {
+        return pkCode;
+    }
+
+    public void setPkCode(String pkCode) {
+        this.pkCode = pkCode;
     }
 }
