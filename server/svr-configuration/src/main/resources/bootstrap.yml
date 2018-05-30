@@ -6,10 +6,10 @@ spring:
 
 
 
-security:
-  user:
-    name: jw
-    password:  jkzl
+#security:
+#  user:
+#    name: jw
+#    password:  jkzl
 
 eureka:
   client:

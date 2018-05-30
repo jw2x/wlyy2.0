@@ -60,17 +60,6 @@ public class EnvelopRestController {
         return envelop;
     }
 
-    //Json转实体类
-    public <T> T toEntity(String json, Class<T> entityCls) {
-//        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.setDateFormat(new SimpleDateFormat(DateUtil.yyyy_MM_dd_HH_mm_ss));
-            T entity = objectMapper.readValue(json, entityCls);
-            return entity;
-//        } catch (IOException ex) {
-//            throw new ApiException("Unable to parse json, " + ex.getMessage(), ExceptionCode.common_error_params_code);
-//        }
-    }
 
     /**
      * 将实体集合转换为模型集合。

@@ -24,28 +24,43 @@
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-fegin</artifactId>
-            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-exception</artifactId>
-            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-request-mapping</artifactId>
-            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-entity</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.yihu.base</groupId>
+                    <artifactId>common-data-es</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-rest-model</artifactId>
-            <version>1.0.2</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.yihu.base</groupId>
             <artifactId>common-swagger</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>common-security-starter</artifactId>
@@ -89,24 +104,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <!--  <dependency>
-              <groupId>org.springframework.boot</groupId>
-              <artifactId>spring-boot-starter-actuator</artifactId>
-          </dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-security</artifactId>-->
-        <!--</dependency>-->
-        <!--   <dependency>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-starter-data-redis</artifactId>
-           </dependency>-->
-
-
-        <!--  <dependency>
-              <groupId>org.springframework.cloud</groupId>
-              <artifactId>spring-cloud-starter-oauth2</artifactId>
-          </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>
@@ -154,11 +155,6 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
         </dependency>
-        <!--    <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>RELEASE</version>
-            </dependency>-->
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
@@ -173,18 +169,8 @@
             <version>3.0.9</version>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-entity</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.data</groupId>
-                    <artifactId>spring-data-elasticsearch</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.yihu.base</groupId>
-                    <artifactId>common-data-es</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
         </dependency>
     </dependencies>
     <build>

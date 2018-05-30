@@ -143,8 +143,8 @@
                 <version>1.0.0</version>
             </dependency>
             <dependency>
-                <groupId>com.yihu.base</groupId>
-                <artifactId>common-security</artifactId>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-fegin</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
             <dependency>

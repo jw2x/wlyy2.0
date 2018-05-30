@@ -26,78 +26,13 @@ import javax.servlet.http.HttpServletRequest;
 @Api(description = "demo例子")
 @RefreshScope
 public class DemoController {
-    private Logger logger = LoggerFactory.getLogger(DemoController.class);
-    @Autowired
-    private DemoFeign patientFegin;
-    @Autowired
-    private Tracer tracer;
-//    @Value("${test.aaa}")
-    private String aaaa;
-
-    @GetMapping("/hello")
-    @ResponseBody
-    public Envelop hello1(@RequestParam(name = "id") Integer id,
-                          @RequestParam(name = "name") String name,
-                          HttpServletRequest request
-    ) throws Exception {
-        tracer.getCurrentSpan().logEvent("logEvent");
-        tracer.getCurrentSpan().tag("test","tag");
-        tracer.getCurrentSpan().setBaggageItem("test","BaggageItem");
-
-        switch (id) {
-            case 1: {
-                throw new ManageException("后台管理系统异常");
-            }
-            case 2: {
-                throw new SecurityException("权限异常");
-            }
-            case 3: {
-                throw new SystemException("后台系统异常");
-            }
-        }
-
-        return Envelop.getSuccess("请求成功");
-    }
-
-    @GetMapping("/hello2")
-    @ResponseBody
-    public String hello2(String id) throws Exception {
-        System.out.println("haha2.........");
-        return "hello2";
-    }
-
-    @GetMapping("/refresh")
-    @ResponseBody
-    public String refresh(HttpServletRequest request) throws Exception {
-        return aaaa;
-    }
-
 
     @ApiOperation(value = "根据code查找患者")
     @GetMapping(value = "findByCode")
-    //配置HystrixProperty 则调用的方法和fallback是同一个线程 否则就不是
-    //@HystrixCommand(fallbackMethod = "findByCodeFallback",commandProperties = @HystrixProperty(name = "execution.isolation.strategy",value = "SEMAPHORE"))
-//   @HystrixCommand(fallbackMethod = "findByCodeFallback" )
-    @HystrixCommand(commandProperties = {
-            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "-1"),//超时时间
-            @HystrixProperty(name = "execution.timeout.enabled", value = "false")})
-    public String findByCode(
+    public Envelop findByCode(
             @ApiParam(name = "code", value = "患者code", required = true) @RequestParam(value = "code", required = true) String code) {
-        tracer.getCurrentSpan().logEvent("开始调用微服务查询患者");
-        String text1 = patientFegin.findByCode(code);
-        tracer.getCurrentSpan().logEvent("查询调用微服务找患者结束");
-        return text1;
+
+        return  Envelop.getSuccess(code);
     }
-
-//    /**
-//     * 参数要一致 返回值类型也要一致
-//     *
-//     * @param code
-//     * @return
-//     */
-//    public String findByCodeFallback(String code) {
-//        return "启动断路器";
-//    }
-
 
 }

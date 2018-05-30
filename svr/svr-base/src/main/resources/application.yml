@@ -33,7 +33,11 @@ endpoints:
   info:
     enabled: true
 
-
+yihu:
+  admin:
+    client:
+      advice:
+        sql: true
 
 ---
 spring:
