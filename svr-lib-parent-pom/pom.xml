@@ -170,7 +170,7 @@
             <dependency>
                 <groupId>com.yihu.jw</groupId>
                 <artifactId>common-rest-model-es</artifactId>
-                <version>1.0.0</version>
+                <version>${version.myCommon}</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.jw</groupId>
