@@ -9,21 +9,21 @@ import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchRe
 import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.elasticsearch.jest.JestAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.JdbcTemplateAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 
 /**
  * Created by chenweida on 2017/8/15.
  */
-@SpringBootApplication
-@EnableAutoConfiguration(exclude = {
-        DataSourceAutoConfiguration.class,
-        HibernateJpaAutoConfiguration.class,
+@SpringBootApplication(exclude = {
+        JestAutoConfiguration.class,
         ElasticsearchAutoConfiguration.class,
         ElasticsearchRepositoriesAutoConfiguration.class,
         ElasticsearchDataAutoConfiguration.class,
-        RedisRepositoriesAutoConfiguration.class,
-        JestAutoConfiguration.class
+        DataSourceAutoConfiguration.class,
+        JdbcTemplateAutoConfiguration.class,
+        HibernateJpaAutoConfiguration.class
 })
 public class YihuAdminServer {
 

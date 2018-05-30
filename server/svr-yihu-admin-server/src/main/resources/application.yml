@@ -1,5 +1,6 @@
 server:
   port: 8999  ##端口修改 前端工程也需要改造
+
 spring:
   application:
     name: svr-yihu-admin-server
@@ -12,7 +13,10 @@ spring:
         multith-readed: true #开启多线程
         max-total-connection: 50 ##最大连接
         max-connection-idle-time: 50 #最大等待时间
-
+  elasticsearch:
+    jest:
+      read-timeout: ${spring.data.elasticsearch.jest.read-timeout}
+      multith-readed: ${spring.data.elasticsearch.jest.multith-readed}
 
 
 logging:
@@ -24,6 +28,12 @@ logging:
 
 
 
+
+management:
+  health:
+    db:
+      enabled: false
+
 ---
 spring:
   profiles: jwdev
@@ -31,7 +41,10 @@ spring:
     elasticsearch:
       cluster-name: jkzl #es集群的名字
       cluster-nodes: 172.19.103.68:9300  #多个逗号分割
-      cluster-nodes-jest: http://172.19.103.68:9200  #多个逗号分割
+      cluster-nodes-jest:  http://172.19.103.68:9200 #多个逗号分割
+  elasticsearch:
+    jest:
+      uris: ${spring.data.elasticsearch.cluster-nodes-jest}
 
 
 ---
