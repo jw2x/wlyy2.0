@@ -4,6 +4,8 @@ package com.yihu.jw.restmodel.common;
 import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.yihu.jw.exception.ApiException;
 //import com.yihu.jw.exception.code.ExceptionCode;
+import com.yihu.jw.exception.ApiException;
+import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.util.date.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,14 +64,14 @@ public class EnvelopRestController {
 
     //Json转实体类
     public <T> T toEntity(String json, Class<T> entityCls) {
-//        try {
+        try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.setDateFormat(new SimpleDateFormat(DateUtil.yyyy_MM_dd_HH_mm_ss));
             T entity = objectMapper.readValue(json, entityCls);
             return entity;
-//        } catch (IOException ex) {
-//            throw new ApiException("Unable to parse json, " + ex.getMessage(), ExceptionCode.common_error_params_code);
-//        }
+        } catch (IOException ex) {
+            throw new ApiException("Unable to parse json, " + ex.getMessage(), ExceptionCode.common_error_params_code);
+        }
     }
 
     /**
