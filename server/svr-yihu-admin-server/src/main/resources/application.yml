@@ -6,11 +6,7 @@ spring:
     name: svr-yihu-admin-server
   data:
     elasticsearch:
-      cluster-name: jkzl #es集群的名字
-      cluster-nodes: 172.19.103.68:9300  #多个逗号分割
-      cluster-nodes-jest:  http://172.19.103.68:9200 #多个逗号分割
       jest:
-      uris: ${spring.data.elasticsearch.cluster-nodes-jest}
         discovery-enabled: false #开启嗅探
         conn-timeout: 60 # 连接时间单位是秒
         read-timeout: 60 # 读取时间单位是秒
