@@ -38,6 +38,8 @@ yihu:
     client:
       advice:
         sql: true
+        http: true
+        hibernateSql: true #默认false
 
 ---
 spring:
