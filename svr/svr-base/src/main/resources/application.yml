@@ -37,9 +37,13 @@ yihu:
   admin:
     client:
       advice:
-        sql: true
-        http: true
-        hibernateSql: true #默认false
+        http: true #默认true
+        sql:
+          hibernate: true ##默认false
+          springJDBC: true ##默认true
+      server:
+        ip: 192.168.131.102
+        port: 8082
 
 ---
 spring:
