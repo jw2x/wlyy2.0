@@ -49,6 +49,7 @@ public class FigureLabelSerachService implements Serializable {
                 JSONObject json = new JSONObject();
                 field("and","idcard","=",one.getIdCard(),jsonArray);
                 field("and","labelType","=","3",jsonArray);
+                field("and","dictCode","=","people_category_dict",jsonArray);
                 json.put("filter",jsonArray);
 
                 boolean isTNB = false;//是否糖尿病
