@@ -1,0 +1,17 @@
+##发现服务的地址
+eureka:
+  client:
+    serviceUrl:
+      #http://账号:密码@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@127.0.0.1:8761//eureka/
+
+  instance:
+    #eurika使用IP不使用host
+    prefer-ip-address: true
+    #定制化在eurika中显示的名称
+    ##instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+management:
+  security:
+    enabled: false

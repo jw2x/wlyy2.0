@@ -64,4 +64,31 @@
             <artifactId>servo-core</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>svr-admin-server</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                    <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.yihu.admin.AdminServer</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

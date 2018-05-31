@@ -36,16 +36,16 @@ public class EmployController extends EnvelopRestController {
     @Autowired
     private EmployService employService;
 
-//    @PostMapping(value = BaseUserRequestMapping.BaseEmploy.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    @ApiOperation(value = "创建用户", notes = "创建单个用户")
-//    public Envelop createBaseEmployDO(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
-//        try{
-//            BaseEmployDO baseEmployDO = toEntity(jsonData,BaseEmployDO.class);
-//            return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_create,employService.createBaseEmployDO(baseEmployDO));
-//        } catch (ApiException e){
-//            return Envelop.getError(e.getMessage(), e.getErrorCode());
-//        }
-//    }
+    @PostMapping(value = BaseUserRequestMapping.BaseEmploy.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建用户", notes = "创建单个用户")
+    public Envelop createBaseEmployDO(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+        try{
+            BaseEmployDO baseEmployDO = toEntity(jsonData,BaseEmployDO.class);
+            return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_create,employService.createBaseEmployDO(baseEmployDO));
+        } catch (Exception e){
+            return Envelop.getError(e.getMessage());
+        }
+    }
 
 //    @PostMapping(value = BaseUserRequestMapping.BaseEmploy.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "修改用户", notes = "修改用户")

@@ -3,12 +3,18 @@ package com.yihu.jw.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableSwagger2
@@ -19,10 +25,12 @@ public class SwaggerConfig {
     public static final String login_API = "login";
     public static final String iot_API = "iot";
 
+    final String userAgentJson = "{\"id\":int,\"uid\":string,\"openid\":string,\"token\":string,\"lastUid\":string,\"platform\":int}";
+
 
     @Bean
     public Docket baseAPI() {
-
+        List<Parameter> pars = addToken();
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(base_API)
                 .useDefaultResponseMessages(false)
@@ -30,7 +38,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller.base"))
                 .paths(PathSelectors.any())
-                .build();
+                .build().globalOperationParameters(pars);
     }
 
     private ApiInfo baseApiInfo() {
@@ -46,10 +54,20 @@ public class SwaggerConfig {
         return apiInfo;
     }
 
+    private List<Parameter> addToken() {
+        ParameterBuilder tokenPar = new ParameterBuilder();
+        ParameterBuilder userAgentPar = new ParameterBuilder();
+        List<Parameter> pars = new ArrayList<Parameter>();
+        userAgentPar.name("Authorization").description("\"Authorization\":\"bearer 5fe6b2c3-f69c-4ddc-a36a-367cdf9479a3\"").modelRef(new ModelRef("string")).parameterType("header").required(false).defaultValue("").build();
+        tokenPar.name("accesstoken").description("accesstoken").modelRef(new ModelRef("string")).parameterType("header").required(false).defaultValue("").build();
+        pars.add(tokenPar.build());
+        pars.add(userAgentPar.build());
+        return pars;
+    }
 
     @Bean
     public Docket wlyyAPI() {
-
+        List<Parameter> pars = addToken();
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(wlyy_API)
                 .useDefaultResponseMessages(false)
@@ -57,7 +75,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller.wlyy"))
                 .paths(PathSelectors.any())
-                .build();
+                .build().globalOperationParameters(pars);
     }
 
     private ApiInfo wlyyApiInfo() {
@@ -76,7 +94,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket loginAPI() {
-
+        List<Parameter> pars = addToken();
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(login_API)
                 .useDefaultResponseMessages(false)
@@ -84,7 +102,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller.login"))
                 .paths(PathSelectors.any())
-                .build();
+                .build().globalOperationParameters(pars);
     }
 
     private ApiInfo loginApiInfo() {
@@ -102,7 +120,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket iotAPI() {
-
+        List<Parameter> pars = addToken();
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName(iot_API)
                 .useDefaultResponseMessages(false)
@@ -110,7 +128,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.yihu.jw.controller.iot"))
                 .paths(PathSelectors.any())
-                .build();
+                .build().globalOperationParameters(pars);
     }
 
     private ApiInfo iotApiInfo() {

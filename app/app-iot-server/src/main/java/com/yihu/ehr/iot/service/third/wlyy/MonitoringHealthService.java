@@ -8,9 +8,9 @@ import com.yihu.ehr.iot.service.common.BaseService;
 import com.yihu.ehr.iot.util.http.HttpHelper;
 import com.yihu.ehr.iot.util.http.HttpResponse;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.iot.device.LocationDataVO;
 import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.ApiOperation;
+import iot.device.LocationDataVO;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +44,7 @@ public class MonitoringHealthService extends BaseService{
      * @param diseaseCondition
      * @return
      */
-    public Envelop<LocationDataVO> findDeviceLocations(Integer diseaseCondition,Integer page,Integer size,String type) throws IOException {
+    public Envelop<LocationDataVO> findDeviceLocations(Integer diseaseCondition, Integer page, Integer size, String type) throws IOException {
         Envelop<LocationDataVO> envelop = new Envelop<>();
         Envelop<LocationDataVO> envelopTmp = null;
         JSONArray jsonArray = new JSONArray();

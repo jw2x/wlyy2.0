@@ -3,11 +3,11 @@ package com.yihu.ehr.iot.controller.third.wlyy;
 import com.yihu.ehr.iot.controller.common.BaseController;
 import com.yihu.ehr.iot.service.third.wlyy.MonitoringHealthService;
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.iot.device.LocationDataVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import iot.device.LocationDataVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
