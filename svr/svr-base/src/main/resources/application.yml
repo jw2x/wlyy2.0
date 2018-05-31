@@ -40,7 +40,7 @@ yihu:
         http: true #默认true
         sql:
           hibernate: true ##默认false
-          springJDBC: true ##默认true
+          springJDBC: true ##默认false
       server:
         ip: 192.168.131.102
         port: 8082
