@@ -1,5 +1,7 @@
 package com.yihu.jw.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.entity.specialist.SpecialistArticleDO;
@@ -8,6 +10,8 @@ import com.yihu.jw.entity.specialist.SpecialistDO;
 import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.specialist.AssistantVO;
+import com.yihu.jw.restmodel.specialist.PatientRelationVO;
 import com.yihu.jw.restmodel.specialist.SpecialistPatientRelationVO;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
@@ -107,5 +111,41 @@ public class SpecialistController extends EnvelopRestController {
         }
     }
 
+    @GetMapping(value = SpecialistMapping.specialist.findSpecialistPatientRelationCout)
+    @ApiOperation(value = "获取专科医生下未分配标签居民数目")
+    public Envelop<Long> findSpecialistPatientRelationCout(String doctor){
+        try {
+            return specialistService.findSpecialistPatientRelationCout(doctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.findNoLabelPatientRelation)
+    @ApiOperation(value = "获取专科医生下未分配标签居民")
+    public Envelop<PatientRelationVO> findNoLabelPatientRelation(String doctor){
+        try {
+            return specialistService.findNoLabelPatientRelation(doctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.saveHealthAssistant)
+    @ApiOperation(value = "保存配置居民计管师居民")
+    public Envelop<Boolean> saveHealthAssistant(String json){
+        try {
+            List<SpecialistPatientRelationDO> info = (List<SpecialistPatientRelationDO>) JSONArray.parseArray(json, SpecialistPatientRelationDO.class);
+            return specialistService.saveHealthAssistant(info);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 
 }

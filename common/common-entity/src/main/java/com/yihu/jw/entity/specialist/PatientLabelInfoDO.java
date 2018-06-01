@@ -14,14 +14,20 @@ import java.io.Serializable;
 @Table(name = "wlyy_patient_label_info")
 public class PatientLabelInfoDO extends IdEntityWithOperation implements Serializable {
 
+    @Column(name = "saas_id")
     private String saasId;
+    @Column(name = "patient")
     private String patient;//居民code',
+    @Column(name = "label_name")
     private String labelName;//标签名称',
+    @Column(name = "label_code")
     private String labelCode;//标签code',
+    @Column(name = "label_type")
     private String labelType;//标签类别',
+    @Column(name = "team_code")
     private String teamCode;//团队code',
 
-    @Column(name = "saas_id")
+
     public String getSaasId() {
         return saasId;
     }
@@ -30,7 +36,7 @@ public class PatientLabelInfoDO extends IdEntityWithOperation implements Seriali
         this.saasId = saasId;
     }
 
-    @Column(name = "patient")
+
     public String getPatient() {
         return patient;
     }
@@ -39,7 +45,7 @@ public class PatientLabelInfoDO extends IdEntityWithOperation implements Seriali
         this.patient = patient;
     }
 
-    @Column(name = "label_name")
+
     public String getLabelName() {
         return labelName;
     }
@@ -48,7 +54,7 @@ public class PatientLabelInfoDO extends IdEntityWithOperation implements Seriali
         this.labelName = labelName;
     }
 
-    @Column(name = "label_code")
+
     public String getLabelCode() {
         return labelCode;
     }
@@ -57,7 +63,7 @@ public class PatientLabelInfoDO extends IdEntityWithOperation implements Seriali
         this.labelCode = labelCode;
     }
 
-    @Column(name = "label_type")
+
     public String getLabelType() {
         return labelType;
     }
@@ -66,7 +72,7 @@ public class PatientLabelInfoDO extends IdEntityWithOperation implements Seriali
         this.labelType = labelType;
     }
 
-    @Column(name = "team_code")
+
     public String getTeamCode() {
         return teamCode;
     }
