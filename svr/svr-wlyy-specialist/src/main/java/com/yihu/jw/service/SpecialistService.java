@@ -80,7 +80,7 @@ public class SpecialistService{
                 "FROM " +
                 " wlyy_specialist_patient_relation r " +
                 "WHERE " +
-                " r.doctor = '"+doctor+"' ORDER BY r.create_time DESC LIMIT "+(page-1)*size+","+size+";";
+                " r.doctor = '"+doctor+"' ORDER BY r.create_time DESC LIMIT "+(page-1)*size+","+size;
         List<SpecialistPatientRelationVO> specialistPatientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SpecialistPatientRelationVO.class));
 
         String sqlcount = "SELECT count(1) AS total " +
@@ -109,7 +109,8 @@ public class SpecialistService{
                 " FROM " +
                 " "+basedb+".wlyy_sign_patient_label_info i " +
                 " WHERE " +
-                " i.label_type = '5' " +
+                " i.label_type = '5' AND " +
+                " i.status = 1 " +
                 " )";
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
         Long count = 0L;
@@ -119,6 +120,57 @@ public class SpecialistService{
         return Envelop.getSuccess(SpecialistMapping.api_success,count);
     }
 
-//    public Envelop<PatientRelationVO>
+    public Envelop<PatientRelationVO> findNoLabelPatientRelation(String doctor){
+        String sql ="SELECT " +
+                " r.patient, " +
+                " r.patient_name AS patientName, " +
+                " IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
+                " p.photo, " +
+                " rd.create_time AS createTime " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r JOIN "+basedb+".wlyy_patient p ON p.code = r.patient  " +
+                " LEFT JOIN wlyy_patient_hospital_record rd ON r.discharge_record = rd.id " +
+                " WHERE " +
+                " r.patient " +
+                " NOT IN ( " +
+                "  SELECT " +
+                "   i.patient " +
+                "  FROM " +
+                "   wlyy.wlyy_sign_patient_label_info i " +
+                "  WHERE " +
+                "   i.label_type = '5' AND " +
+                "   i.status = 1 " +
+                " )";
+        List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
 
+        return Envelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+    }
+
+    public Envelop<Boolean> saveHealthAssistant(List<SpecialistPatientRelationDO> specialistPatientRelationDOs){
+        for(SpecialistPatientRelationDO r : specialistPatientRelationDOs){
+            SpecialistPatientRelationDO relationDO = specialistPatientRelationDao.findByDoctorAndPatient(r.getDoctor(),r.getPatient());
+            if(relationDO!=null){
+                relationDO.setHealthAssistant(r.getHealthAssistant());
+                relationDO.setHealthAssistantName(r.getHealthAssistantName());
+                specialistPatientRelationDao.save(relationDO);
+            }
+        }
+        return Envelop.getSuccess(SpecialistMapping.api_success,true);
+    }
+
+    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(String assistant,Integer page,Integer size){
+        String sql ="SELECT " +
+                " r.patient, " +
+                " r.patient_name AS patientName, " +
+                " IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
+                " p.photo " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r JOIN "+basedb+".wlyy_patient p ON p.`code` = r.patient " +
+                " WHERE " +
+                " r.health_assistant = '"+assistant+"' LIMIT "+(page-1)*size+","+size;
+
+        List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
+
+        return Envelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+    }
 }
