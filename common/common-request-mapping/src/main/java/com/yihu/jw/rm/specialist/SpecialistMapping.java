@@ -19,6 +19,7 @@ public class SpecialistMapping {
         public static final String findSpecialistPatientRelationCout = "/findSpecialistPatientRelationCout";
         public static final String findNoLabelPatientRelation ="/findNoLabelPatientRelation";
         public static final String saveHealthAssistant ="/saveHealthAssistant";
+        public static final String findPatientRelatioByAssistant ="/findPatientRelatioByAssistant";
 
     }
 }

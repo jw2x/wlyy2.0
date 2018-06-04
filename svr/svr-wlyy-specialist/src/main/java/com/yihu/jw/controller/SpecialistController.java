@@ -113,7 +113,7 @@ public class SpecialistController extends EnvelopRestController {
 
     @GetMapping(value = SpecialistMapping.specialist.findSpecialistPatientRelationCout)
     @ApiOperation(value = "获取专科医生下未分配标签居民数目")
-    public Envelop<Long> findSpecialistPatientRelationCout(String doctor){
+    public Envelop<Long> findSpecialistPatientRelationCout(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor){
         try {
             return specialistService.findSpecialistPatientRelationCout(doctor);
         }catch (Exception e){
@@ -125,7 +125,7 @@ public class SpecialistController extends EnvelopRestController {
 
     @GetMapping(value = SpecialistMapping.specialist.findNoLabelPatientRelation)
     @ApiOperation(value = "获取专科医生下未分配标签居民")
-    public Envelop<PatientRelationVO> findNoLabelPatientRelation(String doctor){
+    public Envelop<PatientRelationVO> findNoLabelPatientRelation(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor){
         try {
             return specialistService.findNoLabelPatientRelation(doctor);
         }catch (Exception e){
@@ -137,10 +137,24 @@ public class SpecialistController extends EnvelopRestController {
 
     @GetMapping(value = SpecialistMapping.specialist.saveHealthAssistant)
     @ApiOperation(value = "保存配置居民计管师居民")
-    public Envelop<Boolean> saveHealthAssistant(String json){
+    public Envelop<Boolean> saveHealthAssistant(@ApiParam(name = "json", value = "计管师居民实体") @RequestParam(required = true)String json){
         try {
             List<SpecialistPatientRelationDO> info = (List<SpecialistPatientRelationDO>) JSONArray.parseArray(json, SpecialistPatientRelationDO.class);
             return specialistService.saveHealthAssistant(info);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.findPatientRelatioByAssistant)
+    @ApiOperation(value = "根据计管师获取居民")
+    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(@ApiParam(name = "assistant", value = "计管师") @RequestParam(required = true)String assistant,
+                                                                    @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
+                                                                    @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
+        try {
+            return specialistService.findPatientRelatioByAssistant(assistant,page,size);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
