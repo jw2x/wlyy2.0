@@ -149,7 +149,7 @@ public class SpecialistController extends EnvelopRestController {
     }
 
     @GetMapping(value = SpecialistMapping.specialist.findPatientRelatioByAssistant)
-    @ApiOperation(value = "根据计管师获取居民")
+    @ApiOperation(value = "根据计管师获取居民信息")
     public Envelop<PatientRelationVO> findPatientRelatioByAssistant(@ApiParam(name = "assistant", value = "计管师") @RequestParam(required = true)String assistant,
                                                                     @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
                                                                     @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
