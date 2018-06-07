@@ -1,6 +1,5 @@
-package com.yihu.jw.iot.datainput;
+package com.yihu.jw.datainput;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 /**
  * 微信运动具体时间步数实体类
  * @author lith on 2018/01/17.

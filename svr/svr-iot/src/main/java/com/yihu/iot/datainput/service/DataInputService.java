@@ -3,17 +3,15 @@ package com.yihu.iot.datainput.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
-import com.yihu.base.es.config.model.SaveModel;
 //import com.yihu.base.hbase.HBaseAdmin;
 //import com.yihu.base.hbase.HBaseHelper;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
-import com.yihu.jw.iot.datainput.DataBodySignsDO;
-import com.yihu.jw.iot.datainput.WeRunDataDO;
+import com.yihu.jw.datainput.DataBodySignsDO;
+import com.yihu.jw.datainput.WeRunDataDO;
 import com.yihu.jw.iot.device.IotDeviceDO;
-import com.yihu.jw.restmodel.iot.datainput.WeRunDataVO;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -278,10 +276,10 @@ public class DataInputService {
             familyList.add(family);
         }
         DataBodySignsDO bodySignsDO = JSONObject.parseObject(jsonObject.toJSONString(),DataBodySignsDO.class);
-        List<SaveModel> list = new ArrayList<>();
-        list.add(bodySignsDO);
+        JSONArray saveArray = new JSONArray();
+        saveArray.add(bodySignsDO);
         //将数据存入es
-        elastricSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, list);
+        elastricSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, saveArray.toJSONString());
 
         /*try {
             boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
