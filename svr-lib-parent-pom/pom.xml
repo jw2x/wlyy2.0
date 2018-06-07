@@ -58,8 +58,6 @@
         <version.spring-data-hadoop>2.3.0.RELEASE</version.spring-data-hadoop>
         <version.springside>4.2.3-GA</version.springside>
         <version.zipkin>1.24.0</version.zipkin>
-        <version.hibernate>5.0.12.Final</version.hibernate>
-        <version.hibernate-jpa>1.0.0.Final</version.hibernate-jpa>
         <version.servlet-api>3.1.0</version.servlet-api>
         <version.swagger>2.7.0</version.swagger>
         <version.swagger-ui>2.7.0</version.swagger-ui>
@@ -170,7 +168,7 @@
             <dependency>
                 <groupId>com.yihu.jw</groupId>
                 <artifactId>common-rest-model-es</artifactId>
-                <version>1.0.0</version>
+                <version>${version.myCommon}</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.jw</groupId>
@@ -258,16 +256,16 @@
                 <classifier>GA</classifier>
             </dependency>
             <!--hibernate start-->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>${version.hibernate}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>${version.hibernate-jpa}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.hibernate</groupId>-->
+                <!--<artifactId>hibernate-core</artifactId>-->
+                <!--<version>${version.hibernate}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.hibernate.javax.persistence</groupId>-->
+                <!--<artifactId>hibernate-jpa-2.1-api</artifactId>-->
+                <!--<version>${version.hibernate-jpa}</version>-->
+            <!--</dependency>-->
             <!--hibernate end-->
 
             <!--fastdfs start-->

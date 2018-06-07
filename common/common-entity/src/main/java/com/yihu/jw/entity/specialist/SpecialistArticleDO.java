@@ -14,14 +14,20 @@ import java.io.Serializable;
 @Table(name = "wlyy_specialist_Article")
 public class SpecialistArticleDO extends IdEntityWithOperation implements Serializable {
 
+    @Column(name = "saas_id")
     private String saasId;
+    @Column(name = "patient")
     private String patient;//居民
+    @Column(name = "patient_name")
     private String patientName;//居民
+    @Column(name = "doctor")
     private String doctor;//医生
+    @Column(name = "doctor_name")
     private String doctorName;//医生
+    @Column(name = "article")
     private String article;//文章
 
-    @Column(name = "saas_id")
+
     public String getSaasId() {
         return saasId;
     }
@@ -30,7 +36,7 @@ public class SpecialistArticleDO extends IdEntityWithOperation implements Serial
         this.saasId = saasId;
     }
 
-    @Column(name = "patient")
+
     public String getPatient() {
         return patient;
     }
@@ -39,7 +45,7 @@ public class SpecialistArticleDO extends IdEntityWithOperation implements Serial
         this.patient = patient;
     }
 
-    @Column(name = "patient_name")
+
     public String getPatientName() {
         return patientName;
     }
@@ -48,7 +54,7 @@ public class SpecialistArticleDO extends IdEntityWithOperation implements Serial
         this.patientName = patientName;
     }
 
-    @Column(name = "doctor")
+
     public String getDoctor() {
         return doctor;
     }
@@ -57,7 +63,7 @@ public class SpecialistArticleDO extends IdEntityWithOperation implements Serial
         this.doctor = doctor;
     }
 
-    @Column(name = "doctor_name")
+
     public String getDoctorName() {
         return doctorName;
     }
@@ -66,7 +72,7 @@ public class SpecialistArticleDO extends IdEntityWithOperation implements Serial
         this.doctorName = doctorName;
     }
 
-    @Column(name = "article")
+
     public String getArticle() {
         return article;
     }

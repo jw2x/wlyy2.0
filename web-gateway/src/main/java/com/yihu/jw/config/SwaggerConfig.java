@@ -16,6 +16,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.google.common.base.Predicates.or;
+import static springfox.documentation.builders.PathSelectors.regex;
+
 @Configuration
 @EnableSwagger2
 @ComponentScan("com.yihu.jw.controller.**")
@@ -134,6 +137,35 @@ public class SwaggerConfig {
     private ApiInfo iotApiInfo() {
         ApiInfo apiInfo = new ApiInfo("基卫2.0API",
                 "基卫2.0API，提供物联网相关服务。",
+                "1.0",
+                "No terms of service",
+                "wenfujian@jkzl.com",
+                "The Apache License, Version 2.0",
+                "http://www.apache.org/licenses/LICENSE-2.0.html"
+        );
+
+        return apiInfo;
+    }
+
+    @Bean
+    public Docket allAPL() {
+        List<Parameter> pars = addToken();
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("all")
+                .useDefaultResponseMessages(false)
+                .apiInfo(wlyyApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.any()) // 对所有api进行监控
+                .paths(or(
+                        regex("/.*")
+                ))
+                .paths(PathSelectors.any())
+                .build().globalOperationParameters(pars);
+    }
+
+    private ApiInfo appApiInfo() {
+        ApiInfo apiInfo = new ApiInfo("基卫2.0API",
+                "基卫2.0API，提供基础卫生相关服务。",
                 "1.0",
                 "No terms of service",
                 "wenfujian@jkzl.com",

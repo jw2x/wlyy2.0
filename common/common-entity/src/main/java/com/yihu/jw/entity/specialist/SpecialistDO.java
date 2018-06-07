@@ -13,18 +13,27 @@ import java.io.Serializable;
 @Entity
 @Table(name = "wlyy_specialist")
 public class SpecialistDO extends IdEntityWithOperation implements Serializable {
-
+    @Column(name = "saas_id")
     private String saasId;
+    @Column(name = "name")
     private String name; //专科医生姓名
+    @Column(name = "profession")
     private String profession; //专业
+    @Column(name = "profession_name")
     private String professionName; // 专业名称
+    @Column(name = "dept")
     private String dept; //科室
+    @Column(name = "dept_name")
     private String deptName; //科室名称
+
+    @Column(name = "hospital")
     private String hospital;//医院
+    @Column(name = "hospital_name")
     private String hospitalName;//医院名称
+    @Column(name = "del")
     private String del;//1：有效；0：删除
 
-    @Column(name = "saas_id")
+
     public String getSaasId() {
         return saasId;
     }
@@ -33,7 +42,7 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
         this.saasId = saasId;
     }
 
-    @Column(name = "name")
+
     public String getName() {
         return name;
     }
@@ -42,7 +51,7 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
         this.name = name;
     }
 
-    @Column(name = "profession")
+
     public String getProfession() {
         return profession;
     }
@@ -51,7 +60,7 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
         this.profession = profession;
     }
 
-    @Column(name = "profession_name")
+
     public String getProfessionName() {
         return professionName;
     }
@@ -61,7 +70,7 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
         this.professionName = professionName;
     }
 
-    @Column(name = "dept")
+
     public String getDept() {
         return dept;
     }
@@ -70,7 +79,7 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
         this.dept = dept;
     }
 
-    @Column(name = "dept_name")
+
     public String getDeptName() {
         return deptName;
     }
@@ -79,7 +88,6 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
         this.deptName = deptName;
     }
 
-    @Column(name = "hospital")
     public String getHospital() {
         return hospital;
     }
@@ -88,7 +96,7 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
         this.hospital = hospital;
     }
 
-    @Column(name = "hospital_name")
+
     public String getHospitalName() {
         return hospitalName;
     }
@@ -97,7 +105,7 @@ public class SpecialistDO extends IdEntityWithOperation implements Serializable 
         this.hospitalName = hospitalName;
     }
 
-    @Column(name = "del")
+
     public String getDel() {
         return del;
     }
