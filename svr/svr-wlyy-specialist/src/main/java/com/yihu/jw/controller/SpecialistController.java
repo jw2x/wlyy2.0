@@ -11,6 +11,7 @@ import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.specialist.AssistantVO;
+import com.yihu.jw.restmodel.specialist.PatientLabelVO;
 import com.yihu.jw.restmodel.specialist.PatientRelationVO;
 import com.yihu.jw.restmodel.specialist.SpecialistPatientRelationVO;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
@@ -155,6 +156,49 @@ public class SpecialistController extends EnvelopRestController {
                                                                     @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
         try {
             return specialistService.findPatientRelatioByAssistant(assistant,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.getPatientByLabel)
+    @ApiOperation(value = "根据标签获取居民信息")
+    public Envelop<PatientLabelVO>  getPatientByLabel(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor,
+                                                      @ApiParam(name = "labelType", value = "标签类型") @RequestParam(required = true)String labelType,
+                                                      @ApiParam(name = "labelCode", value = "标签code") @RequestParam(required = true)String labelCode,
+                                                      @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
+                                                      @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size){
+        try {
+            return specialistService.getPatientByLabel(doctor,labelType,labelCode,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
+    @GetMapping(value = SpecialistMapping.specialist.getLabelpatientCount)
+    @ApiOperation(value = "根据标签获取居民数量")
+    public Envelop<Long> getLabelpatientCount(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor,
+                                              @ApiParam(name = "labelType", value = "标签类型") @RequestParam(required = true)String labelType,
+                                              @ApiParam(name = "labelCode", value = "标签code") @RequestParam(required = true)String labelCode) {
+        try {
+            return specialistService.getLabelpatientCount(doctor,labelType,labelCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.getAssistantPatientCount)
+    @ApiOperation(value = "根据计管获取居民数量")
+    public Envelop<Long> getAssistantPatientCount(@ApiParam(name = "doctor", value = "计管师医生") @RequestParam(required = true)String doctor) {
+        try {
+            return specialistService.getAssistantPatientCount(doctor);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

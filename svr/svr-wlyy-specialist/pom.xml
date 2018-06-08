@@ -13,6 +13,7 @@
     <groupId>com.yihu.specialist</groupId>
     <artifactId>svr-wlyy-specialist</artifactId>
     <version>${parent.version}</version>
+    <packaging>war</packaging>
 
     <dependencies>
         <dependency>
