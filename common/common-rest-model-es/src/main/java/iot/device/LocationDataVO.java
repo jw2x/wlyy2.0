@@ -1,7 +1,7 @@
 package iot.device;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import common.SaveModel;
+import io.searchbox.annotations.JestId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.elasticsearch.core.geo.GeoPoint;
@@ -12,7 +12,10 @@ import org.springframework.data.elasticsearch.core.geo.GeoPoint;
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(value = "设备地址信息", description = "设备地址信息")
-public class LocationDataVO extends SaveModel {
+public class LocationDataVO {
+
+    @JestId
+    private String id;
 
     @ApiModelProperty("设备绑定的居民身份证")
     private String idCard;
@@ -37,6 +40,14 @@ public class LocationDataVO extends SaveModel {
 
     @ApiModelProperty("创建时间")
     private String createTime;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getIdCard() {
         return idCard;
