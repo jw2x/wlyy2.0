@@ -23,6 +23,7 @@ public class SpecialistMapping {
         public static final String getPatientByLabel ="/getPatientByLabel";
         public static final String getLabelpatientCount ="/getLabelpatientCount";
         public static final String getAssistantPatientCount ="/getAssistantPatientCount";
+        public static final String getDoctorPatientByName ="/getDoctorPatientByName";
 
     }
 }
