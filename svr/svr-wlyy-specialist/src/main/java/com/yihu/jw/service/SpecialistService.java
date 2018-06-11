@@ -1,10 +1,7 @@
 package com.yihu.jw.service;
 
 import com.yihu.jw.dao.*;
-import com.yihu.jw.entity.specialist.SpecialistArticleDO;
-import com.yihu.jw.entity.specialist.SpecialistConsultDO;
-import com.yihu.jw.entity.specialist.SpecialistDO;
-import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
+import com.yihu.jw.entity.specialist.*;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
@@ -26,14 +23,14 @@ import java.util.Map;
 @Transactional
 public class SpecialistService{
 
-    @Autowired
-    private SpecialistArticleDao specialistArticleDao;
-    @Autowired
-    private SpecialistConsultDao specialistConsultDao;
+//    @Autowired
+//    private SpecialistArticleDao specialistArticleDao;
+//    @Autowired
+//    private SpecialistConsultDao specialistConsultDao;
+//    @Autowired
+//    private SpecialistDao specialistDao;
     @Autowired
     private SpecialistPatientRelationDao specialistPatientRelationDao;
-    @Autowired
-    private SpecialistDao specialistDao;
     @Autowired
     private PatientHospitalRecordDao patientHospitalRecordDao;
     @Autowired
@@ -41,23 +38,8 @@ public class SpecialistService{
     @Value("${basedb.name}")
     private String basedb;
 
-    public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){
-        specialistDao.save(info);
-        return Envelop.getSuccess(SpecialistMapping.api_success,true);
-    }
-
     public Envelop<Boolean> createSpecialistsPatientRelation(SpecialistPatientRelationDO specialistPatientRelationDO){
         specialistPatientRelationDao.save(specialistPatientRelationDO);
-        return Envelop.getSuccess(SpecialistMapping.api_success,true);
-    }
-
-    public Envelop<Boolean> createSpecialistArticle(SpecialistArticleDO articleDO){
-        specialistArticleDao.save(articleDO);
-        return Envelop.getSuccess(SpecialistMapping.api_success,true);
-    }
-
-    public Envelop<Boolean> createSpscialistConsult(SpecialistConsultDO consultDO){
-        specialistConsultDao.save(consultDO);
         return Envelop.getSuccess(SpecialistMapping.api_success,true);
     }
 
@@ -126,7 +108,8 @@ public class SpecialistService{
                 " r.patient_name AS patientName, " +
                 " IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
                 " p.photo, " +
-                " rd.create_time AS createTime " +
+                " rd.create_time AS createTime ," +
+                " p.sex " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r JOIN "+basedb+".wlyy_patient p ON p.code = r.patient  " +
                 " LEFT JOIN wlyy_patient_hospital_record rd ON r.discharge_record = rd.id " +
@@ -138,7 +121,7 @@ public class SpecialistService{
                 "  FROM " +
                 "   wlyy.wlyy_sign_patient_label_info i " +
                 "  WHERE " +
-                "   i.label_type = '5' AND " +
+                "   i.label_type = '7' AND " +
                 "   i.status = 1 " +
                 " )";
         List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
@@ -173,4 +156,132 @@ public class SpecialistService{
 
         return Envelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
     }
+
+
+    public Envelop<PatientLabelVO>  getPatientByLabel(String doctor,String labelType, String labelCode, Integer page, Integer size){
+        String sql="SELECT " +
+                " p. NAME, " +
+                " p. CODE, " +
+                " IFNULL( " +
+                "  YEAR ( " +
+                "   from_days(datediff(now(), p.birthday)) " +
+                "  ), " +
+                "  '未知' " +
+                " ) age, " +
+                " lb.labelName, " +
+                " lb.labelType, " +
+                " lb.label, " +
+                " p.photo, " +
+                " h.label_name as health, " +
+                " h.label AS healthcode " +
+                " FROM " +
+                " ( " +
+                "  SELECT " +
+                "   i.label_type AS labelType, " +
+                "   i.label, " +
+                "   i.label_name AS labelName, " +
+                "   i.patient " +
+                "  FROM " +
+                "   "+basedb+".wlyy_sign_patient_label_info i " +
+                "  WHERE " +
+                "   i.label = '"+labelCode+"' " +
+                "  AND i.label_type = '"+labelType+"' " +
+                "  AND i.`status` = '1' " +
+                " ) lb " +
+                " JOIN "+basedb+".wlyy_patient p ON p. CODE = lb.patient " +
+                " JOIN wlyy_specialist_patient_relation s ON s.patient = lb.patient " +
+                " LEFT JOIN ( " +
+                " SELECT " +
+                "  t.label, " +
+                "  t.label_name, " +
+                "  t.patient " +
+                " FROM " +
+                "  "+basedb+".wlyy_sign_patient_label_info t " +
+                " WHERE " +
+                "  t.label_type = '8' " +
+                " AND t.`status` = '1' " +
+                " ) h ON h.patient = lb.patient " +
+                " WHERE s.doctor ='"+doctor+"'"+
+                " LIMIT "+(page-1)*size+","+size;
+
+        List<PatientLabelVO> PatientLabelVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientLabelVO.class));
+
+        return Envelop.getSuccess(SpecialistMapping.api_success,PatientLabelVOs);
+    }
+
+    public Envelop<Long> getLabelpatientCount(String doctor,String label,String labelType){
+        String sql = "SELECT " +
+                " COUNT(1) as total " +
+                " FROM " +
+                " ( " +
+                "  SELECT " +
+                "   i.label_type AS labelType, " +
+                "   i.label, " +
+                "   i.label_name AS labelName, " +
+                "   i.patient " +
+                "  FROM " +
+                "   "+basedb+".wlyy_sign_patient_label_info i " +
+                "  WHERE " +
+                "   i.label = '"+label+"' "+
+                "  AND i.label_type = '"+labelType+"' " +
+                "  AND i.`status` = '1' " +
+                " ) lb " +
+                " JOIN wlyy_specialist_patient_relation s ON s.patient = lb.patient " +
+                " WHERE " +
+                " s.doctor = '"+doctor+"' ";
+        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
+        Long count = 0L;
+        if(rstotal!=null&&rstotal.size()>0){
+            count = (Long) rstotal.get(0).get("total");
+        }
+        return Envelop.getSuccess(SpecialistMapping.api_success,count);
+    }
+
+    public Envelop<Long> getAssistantPatientCount(String doctor){
+
+        String sql = "SELECT COUNT(1) AS total FROM wlyy_specialist_patient_relation r WHERE r.health_assistant = '"+doctor+"' AND r.`status` <> '-1' ";
+
+        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
+        Long count = 0L;
+        if(rstotal!=null&&rstotal.size()>0){
+            count = (Long) rstotal.get(0).get("total");
+        }
+        return Envelop.getSuccess(SpecialistMapping.api_success,count);
+    }
+
+    public Envelop<PatientRelationVO> getDoctorPatientByName(String doctor,String nameKey,Integer page,Integer size){
+        String sql ="SELECT " +
+                " p.code AS patient, " +
+                " p.`name` AS patientName, " +
+                " p.photo, " +
+                " IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
+                " p.sex " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r " +
+                " JOIN "+basedb+".wlyy_patient p ON r.patient = p.`code` " +
+                " WHERE " +
+                " r.doctor='"+doctor+"' " +
+                " AND r.`status`<>'-1'" +
+                " AND r.patient_name LIKE '%"+nameKey+"%' "+
+                " LIMIT "+(page-1)*size+","+size;
+
+        List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
+
+        return Envelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+    }
+
+//    public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){
+//        specialistDao.save(info);
+//        return Envelop.getSuccess(SpecialistMapping.api_success,true);
+//    }
+
+//    public Envelop<Boolean> createSpecialistArticle(SpecialistArticleDO articleDO){
+//        specialistArticleDao.save(articleDO);
+//        return Envelop.getSuccess(SpecialistMapping.api_success,true);
+//    }
+//
+//    public Envelop<Boolean> createSpscialistConsult(SpecialistConsultDO consultDO){
+//        specialistConsultDao.save(consultDO);
+//        return Envelop.getSuccess(SpecialistMapping.api_success,true);
+//    }
 }

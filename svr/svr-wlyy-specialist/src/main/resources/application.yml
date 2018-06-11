@@ -80,9 +80,23 @@ fastDFS:
 ---
 spring:
   profiles: jwtest
+
+  datasource:
+    url: jdbc:mysql://172.17.110.160/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: ssgg
+    password: ssgg
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
+---
+spring:
+  profiles: jwdevtest
 
+  datasource:
+    url: jdbc:mysql://172.19.103.85/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: linzhou
+    password: linzhou
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
 ---
 spring:
   profiles: jwprod
