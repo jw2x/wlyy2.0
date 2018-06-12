@@ -2,9 +2,6 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/4/27.
  */
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.yihu.jw.entity.health.bank.AccountDO;
 import com.yihu.jw.entity.health.bank.CreditsDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
@@ -15,10 +12,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author wangzhinan
@@ -47,9 +44,9 @@ public class CreditsDetailController extends EnvelopRestController {
     @ApiOperation(value = "查看积分记录")
     public Envelop<CreditsDetailDO> selectCreditsLogInfo(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
                                                           @RequestParam(value = "creditsDetail",required = false)String creditsDetail,
-                                                            @ApiParam(name = "page", value = "第几页，从1开始")
+                                                         @ApiParam(name = "page", value = "第几页，从1开始")
                                                           @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
-                                                            @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                                         @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                                           @RequestParam(value = "size", required = false)Integer size){
         try{
             CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
@@ -60,6 +57,7 @@ public class CreditsDetailController extends EnvelopRestController {
             return Envelop.getError(e.getMessage());
         }
     }
+
 
 
     /**
@@ -82,13 +80,46 @@ public class CreditsDetailController extends EnvelopRestController {
         }
     }
 
+
+    /**
+     * 根据活动查找积分
+     *
+     * @param activityId 活动id
+     *
+     * @param patientId 居民id
+     *
+     * @param page 页码
+     *
+     * @param size 分页大小
+     *
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.selectByActivity)
+    @ApiOperation(value = "根据活动查找积分")
+    public Envelop<CreditsDetailDO> seletcByActivity(@ApiParam(name = "activityId",value = "活动id")
+                                                         @RequestParam(value = "activityId",required = true)String activityId,
+                                                         @ApiParam(name = "patientId",value = "居民id")
+                                                         @RequestParam(value = "patientId",required = true) String patientId,
+                                                         @ApiParam(name = "page", value = "第几页，从1开始")
+                                                         @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
+                                                         @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                                         @RequestParam(value = "size", required = false)Integer size){
+        try{
+            return service.selectByActivity(activityId,patientId,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
     /**
      * 查看积分排行
      *
      * @param object {"filter":[""],"page":"","size":""}
      * @return
      */
-    @PostMapping(value = HealthBankMapping.healthBank.selectByRanking)
+  /*  @PostMapping(value = HealthBankMapping.healthBank.selectByRanking)
     @ApiOperation(value = "查询积分排名")
     public Envelop<AccountDO> selectByRanking(@RequestBody JSONObject object){
         try{
@@ -105,7 +136,7 @@ public class CreditsDetailController extends EnvelopRestController {
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError(e.getMessage());
         }
-    }
+    }*/
 
 
 }

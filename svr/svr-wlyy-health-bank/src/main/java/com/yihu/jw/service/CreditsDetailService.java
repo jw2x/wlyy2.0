@@ -7,6 +7,7 @@ import com.yihu.jw.dao.*;
 import com.yihu.jw.entity.health.bank.*;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
+import com.yihu.jw.util.DateUtils;
 import com.yihu.jw.util.ISqlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -41,23 +42,23 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
     @Autowired
     private AccountDao accountDao;
     @Autowired
-    private TaskDetailDao taskDetailDao;
+    private TaskPatientDetailDao taskPatientDetailDao;
+    @Autowired
+    private TaskRuleDao taskRuleDao;
+
    /**
      *  find creditsLogInfo
      *
      * @return
      * @throws ParseException
      */
-    public Envelop<CreditsDetailDO> findByCondition(CreditsDetailDO creditsDetailDO, Integer page, Integer size) throws ParseException {
+   public Envelop<CreditsDetailDO> findByCondition(CreditsDetailDO creditsDetailDO, Integer page, Integer size) throws ParseException {
         String sql = new ISqlUtils().getSql(creditsDetailDO,page,size,"*");
         List<CreditsDetailDO> creditsDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(CreditsDetailDO.class));
         for (CreditsDetailDO creditsDetailDO1 : creditsDetailDOS){
             if (creditsDetailDO1.getTradeType().equalsIgnoreCase("HEALTH_TASK")){
                 TaskDO taskDO = taskDao.findOne(creditsDetailDO1.getTransactionId());
                 creditsDetailDO1.setTaskDO(taskDO);
-            }else if(creditsDetailDO1.getTradeType().equalsIgnoreCase("HEALTH_ACTIVITY")){
-                ActivityDO activityDO = activityDao.findOne(creditsDetailDO1.getTransactionId());
-                creditsDetailDO1.setActivityDO(activityDO);
             }
         }
         String sqlcount = new ISqlUtils().getSql(creditsDetailDO,0,0,"count");
@@ -105,7 +106,6 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         }
         return Envelop.getSuccess(HealthBankMapping.api_success,accountDO);
     }
-
 
 
 
@@ -224,31 +224,42 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 }
                 TaskDO taskDO = new TaskDO();
                 taskDO.setTaskCode(creditsDetailDO.getFlag());
-                taskDO.setPatientId(creditsDetailDO.getPatientId());
+                taskDO.setId(creditsDetailDO.getTransactionId());
+                /*taskDO.setPatientId(creditsDetailDO.getPatientId());*/
                 String sql = ISqlUtils.getSql(taskDO,1,1,"*");
                 List<TaskDO> taskDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
-                if (taskDOList != null && taskDOList.size() != 0){
-                    creditsDetailDO.setTransactionId(taskDOList.get(0).getId());
-                }else {
-                    List<TaskDO> taskDOS = getTasks(taskDO.getPatientId());
-                    for (TaskDO taskDO1:taskDOS){
-                        taskDao.save(taskDO1);
-                    }
-                    List<TaskDO> taskDOList1 = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
-                    creditsDetailDO.setTransactionId(taskDOList1.get(0).getId());
-                }
-                if (creditsDetailDO.getTradeDirection() == 1){
-                    if (creditsDetailDO.getTradeType().equals("HEALTH_TASK")){
-                        TaskDetailDO taskDetailDO = new TaskDetailDO();
-                        taskDetailDO.setIntegrate(creditsDetailDO.getIntegrate());
-                        taskDetailDO.setTaskId(creditsDetailDO.getTransactionId());
-                        taskDetailDO.setSaasId(creditsDetailDO.getSaasId());
-                        taskDetailDO.setPatientId(creditsDetailDO.getPatientId());
-                        taskDetailDO.setTradeDirection(creditsDetailDO.getTradeDirection());
-                        taskDetailDO.setStatus("1");
-                        taskDetailDO.setCreateTime(new Date());
-                        taskDetailDO.setUpdateTime(new Date());
-                        taskDetailDao.save(taskDetailDO);
+                creditsDetailDO.setTransactionId(taskDOList.get(0).getId());
+                TaskRuleDO taskRuleDO = taskRuleDao.findOne(taskDOList.get(0).getRuleCode());
+                creditsDetailDO.setIntegrate(taskRuleDO.getIntegrate());
+                creditsDetailDO.setTradeDirection(taskRuleDO.getTradeDirection());
+                String taskSql = "select * from wlyy_health_bank_task_patient_detail where task_id = '"+taskDOList.get(0).getId()+"' and patient_id = '" + creditsDetailDO.getPatientId() +"'";
+                List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(taskSql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+                if (taskPatientDetailDOS == null || taskPatientDetailDOS.size() ==0){
+                    TaskPatientDetailDO taskPatientDetailDO = new TaskPatientDetailDO();
+                    taskPatientDetailDO.setTaskId(creditsDetailDO.getTransactionId());
+                    taskPatientDetailDO.setSaasId(creditsDetailDO.getSaasId());
+                    taskPatientDetailDO.setPatientId(creditsDetailDO.getPatientId());
+                    taskPatientDetailDO.setPatientIdcard(creditsDetailDO.getIdCard());
+                    taskPatientDetailDO.setPatientOpenid(creditsDetailDO.getOpenId());
+                    taskPatientDetailDO.setStatus(Integer.parseInt("0"));
+                    taskPatientDetailDO.setCreateTime(new Date());
+                    taskPatientDetailDO.setUpdateTime(new Date());
+                    taskPatientDetailDao.save(taskPatientDetailDO);
+                }else if (taskPatientDetailDOS != null && taskDOList.get(0).getPeriod() == 0){
+                    String taskSql1 = "select * from wlyy_health_bank_task_patient_detail where task_id = '"+taskDOList.get(0).getId()+
+                            "' and patient_id = '"+creditsDetailDO.getPatientId()+"' and create_time > '" + DateUtils.getDayBegin() +"' and create_time < '"+ DateUtils.getDayEnd() +"'";
+                    List<TaskPatientDetailDO> taskPatientDetailDOS1 = jdbcTemplate.query(taskSql1,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+                    if (taskPatientDetailDOS1 == null || taskPatientDetailDOS1.size() == 0){
+                        TaskPatientDetailDO taskPatientDetailDO = new TaskPatientDetailDO();
+                        taskPatientDetailDO.setTaskId(creditsDetailDO.getTransactionId());
+                        taskPatientDetailDO.setSaasId(creditsDetailDO.getSaasId());
+                        taskPatientDetailDO.setPatientId(creditsDetailDO.getPatientId());
+                        taskPatientDetailDO.setPatientIdcard(creditsDetailDO.getIdCard());
+                        taskPatientDetailDO.setPatientOpenid(creditsDetailDO.getOpenId());
+                        taskPatientDetailDO.setStatus(Integer.parseInt("0"));
+                        taskPatientDetailDO.setCreateTime(new Date());
+                        taskPatientDetailDO.setUpdateTime(new Date());
+                        taskPatientDetailDao.save(taskPatientDetailDO);
                     }
                 }
                 creditsDetailDO.setCreateTime(new Date());
@@ -280,17 +291,67 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         }
     }
 
+    /**
+     * 根据活动查询积分
+     *
+     * @param activityId 活动id
+     *
+     * @param patientId 居民id
+     *
+     * @param page 页码
+     *
+     * @param size 分页大小
+     * @return
+     */
+    public Envelop<CreditsDetailDO> selectByActivity(String activityId,String patientId,Integer page,Integer size){
+        String sql="SELECT * " +
+                "FROM " +
+                " wlyy_health_bank_credits_detail " +
+                "WHERE" +
+                " transaction_id IN ( " +
+                " SELECT " +
+                " bt.id " +
+                " FROM " +
+                " wlyy_health_bank_task bt " +
+                " WHERE " +
+                " transaction_id = '"+activityId +"' " +
+                " ) " +
+                " and patient_id = '" +patientId+
+                "' LIMIT "+(page-1)*size +","+size;
+        List<CreditsDetailDO> creditsDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(CreditsDetailDO.class));
+        String sqlcount = "SELECT count(1) AS" +
+                " total FROM " +
+                " wlyy_health_bank_credits_detail " +
+                "WHERE" +
+                " transaction_id IN ( " +
+                " SELECT " +
+                " bt.id " +
+                " FROM " +
+                " wlyy_health_bank_task bt " +
+                " WHERE " +
+                " transaction_id = '"+activityId +"' " +
+                " ) " +
+                " and patient_id = '" +patientId+
+                "'";
+        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
+        Long count = 0L;
+        if(rstotal!=null&&rstotal.size()>0){
+            count = (Long) rstotal.get(0).get("total");
+        }
+        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,creditsDetailDOS,page,size,count);
+    }
+
 
     /**
      * 固定数据
      *
      * @param patientId
      * @return
-     */
+     *//*
     public List<TaskDO> getTasks(String patientId){
         List<TaskDO> taskDOList = new ArrayList<>();
         TaskDO taskDO = new TaskDO();
-        taskDO.setPatientId(patientId);
+        *//*taskDO.setPatientId(patientId);*//*
         taskDO.setTaskCode("BIND");
         taskDO.setPeriod(1);
         taskDO.setTaskTitle("首次绑定");
@@ -301,7 +362,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         taskDO.setUpdateTime(new Date());
         taskDOList.add(taskDO);
         TaskDO taskDO1 = new TaskDO();
-        taskDO1.setPatientId(patientId);
+        *//*taskDO1.setPatientId(patientId);*//*
         taskDO1.setTaskCode("MEASURE");
         taskDO1.setPeriod(0);
         taskDO1.setTaskTitle("每日测量");
@@ -313,5 +374,5 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         taskDOList.add(taskDO1);
         return taskDOList;
     }
-
+*/
 }

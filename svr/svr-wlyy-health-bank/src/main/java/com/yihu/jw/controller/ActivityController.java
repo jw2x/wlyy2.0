@@ -96,4 +96,33 @@ public class ActivityController extends EnvelopRestController{
             return Envelop.getError(e.getMessage());
         }
     }
+
+
+    /**
+     * 查看参与的活动
+     *
+     * @param activity 活动对象
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.selectByPatient)
+    @ApiOperation(value = "参与的活动")
+    public Envelop<ActivityDO> selectByPatient(@ApiParam(name = "activity",value = "健康活动JSON")
+                                           @RequestParam(value = "activity",required = false)String activity,
+                                           @ApiParam(name = "page", value = "第几页，从1开始")
+                                           @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
+                                           @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                           @RequestParam(value = "size", required = false)Integer size){
+        try{
+            ActivityDO activityDO = toEntity(activity,ActivityDO.class);
+            return service.selectByPatient(activityDO,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
 }

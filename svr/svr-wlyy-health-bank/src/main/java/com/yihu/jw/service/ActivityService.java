@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
      * @return
      */
     public Envelop<Boolean> insert(ActivityDO activityDO){
+        activityDO.setCreateTime(new Date());
+        activityDO.setUpdateTime(new Date());
         activityDao.save(activityDO);
         Envelop<Boolean> envelop = new Envelop<>();
         envelop.setObj(true);
@@ -71,7 +74,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
     /**
      * update activityDO
      *
-     * @param activityDO 活动采参数对象
+     * @param activityDO 活动参数对象
      * @return
      */
     public Envelop<Boolean> update(ActivityDO activityDO){
@@ -79,5 +82,48 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
         Envelop<Boolean> envelop = new Envelop<>();
         envelop.setObj(true);
         return envelop;
+    }
+
+    /**
+     * 获取参与的活动
+     *
+     * @param activityDO 活动对象
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
+    public Envelop<ActivityDO> selectByPatient(ActivityDO activityDO,Integer page,Integer size){
+        String sql ="SELECT * " +
+                " FROM wlyy_health_bank_activity " +
+                "WHERE " +
+                "id IN ( " +
+                "SELECT bt.transaction_id " +
+                "FROM wlyy_health_bank_task bt " +
+                "WHERE id IN (" +
+                " SELECT task_id FROM " +
+                "wlyy_health_bank_task_patient_detail" +
+                " WHERE " +
+                " patient_openid = '"+activityDO.getOpenId()+ "' )" +
+                " )" +
+                " LIMIT "+(page-1)*size +","+size;
+        List<ActivityDO> activityDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(ActivityDO.class));
+        String sqlcount = "SELECT count(1) AS total" +
+                " FROM wlyy_health_bank_activity " +
+                "WHERE " +
+                "id IN ( " +
+                "SELECT bt.transaction_id " +
+                "FROM wlyy_health_bank_task bt " +
+                "WHERE id IN (" +
+                " SELECT task_id FROM " +
+                "wlyy_health_bank_task_patient_detail" +
+                " WHERE " +
+                " patient_openid = '"+activityDO.getOpenId()+ "' )" +
+                " )";
+        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
+        Long count = 0L;
+        if(rstotal!=null&&rstotal.size()>0){
+            count = (Long) rstotal.get(0).get("total");
+        }
+        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,activityDOS,page,size,count);
     }
 }

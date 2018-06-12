@@ -6,6 +6,7 @@ import com.yihu.jw.IdEntityWithOperation;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,28 +20,49 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "saas_id")
     private String saasId;//saasId
 
-    @Column(name = "activity_title")
-    private String activityTitle;//活动标题
+    @Column(name = "organizer")
+    private String organizer; // 主办方&&发布机构
 
-    @Column(name = "activity_content")
-    private String activityContent;//活动内容
+    @Column(name = "title")
+    private String title;//活动标题
+
+    @Column(name = "description")
+    private String description;//活动说明
+
+    @Column(name = "location")
+    private String location;//活动地点
+
+    @Column(name = "img")
+    private String img;//活动图片
 
     @Column(name = "start_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date startTime;//开始时间
 
-    @Column(name = "over_time")
+    @Column(name = "end_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    private Date overTime; //结束时间
+    private Date endTime; //结束时间
 
     @Column(name = "status")
-    private int status;//状态（上架/下架）
+    private int status;//状态（1代表有效，0代表无效,-1代表过期）
 
-    @Column(name = "hospital")
-    private String hospital;//社区
+    @Column(name = "is_flag")
+    private String isFlag;//标识是否有问卷（1：有，-1：没有）
 
-    @Column(name = "organizer")
-    private String organizer;//发布者
+    @Column(name = "area")
+    private String area;//区域
+
+    @Column(name = "area_type")
+    private int areaType; //区域类型
+
+    @Column(name = "remark")
+    private String remark;//活动备注
+
+    @Transient
+    private String patientId;//居民id
+
+    @Transient
+    private String openId;//微信编码
 
     public String getSaasId() {
         return saasId;
@@ -48,38 +70,6 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
 
     public void setSaasId(String saasId) {
         this.saasId = saasId;
-    }
-
-    public String getActivityTitle() {
-        return activityTitle;
-    }
-
-    public void setActivityTitle(String activityTitle) {
-        this.activityTitle = activityTitle;
-    }
-
-    public String getActivityContent() {
-        return activityContent;
-    }
-
-    public void setActivityContent(String activityContent) {
-        this.activityContent = activityContent;
-    }
-
-    public Date getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getOverTime() {
-        return overTime;
-    }
-
-    public void setOverTime(Date overTime) {
-        this.overTime = overTime;
     }
 
     public String getOrganizer() {
@@ -90,6 +80,47 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.organizer = organizer;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+
     public int getStatus() {
         return status;
     }
@@ -98,11 +129,61 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.status = status;
     }
 
-    public String getHospital() {
-        return hospital;
+    public String getIsFlag() {
+        return isFlag;
     }
 
-    public void setHospital(String hospital) {
-        this.hospital = hospital;
+    public void setIsFlag(String isFlag) {
+        this.isFlag = isFlag;
+    }
+
+
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
+    }
+
+    public int getAreaType() {
+        return areaType;
+    }
+
+    public void setAreaType(int areaType) {
+        this.areaType = areaType;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(String patientId) {
+        this.patientId = patientId;
     }
 }

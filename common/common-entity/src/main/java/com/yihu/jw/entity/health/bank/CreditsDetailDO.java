@@ -19,7 +19,7 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     private String saasId; //saasid
 
     @Column(name = "trade_type")
-    private String tradeType; //交易类型
+    private String tradeType; //交易类型交易类型:普通任务(NORMAL_TASK）、活动任务(ACTIVITY_TASK)、兑换商品(EXCHANGE_GOODS)
 
     @Column(name = "transaction_id")
     private String transactionId;//业务ID
@@ -56,6 +56,12 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     @Transient
     private String name; //居民名称
+
+    @Transient
+    private String idCard; //身份证号码
+
+    @Transient
+    private String openId;//微信编号
 
     public String getSaasId() {
         return saasId;
@@ -167,5 +173,21 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
     }
 }

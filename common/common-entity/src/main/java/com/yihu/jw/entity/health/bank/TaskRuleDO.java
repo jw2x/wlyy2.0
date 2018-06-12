@@ -17,11 +17,27 @@ public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
     @Column(name = "saas_id")
     private String saasId; //saasid
 
-    @Column(name = "task_id")
-    private String taskId; //任务id
+    @Column(name = "name")
+    private String name;//规则名称
 
-    @Column(name = "rule_code")
-    private String ruleCode; //任务编码
+    @Column(name = "description")
+    private String description;//规则描述
+
+    @Column(name = "integrate")
+    private int integrate; //积分
+
+    @Column(name = "trade_direction")
+    private int tradeDirection;//交易方向 1增、-1减、0清零
+
+    @Column(name = "type")
+    private String type;//规则类型：NORMAL-手动,AUTO-自动
+
+    @Column(name = "status")
+    private int status; //状态
+
+    @Column(name = "java_class_path")
+    private String javaClassPath;//java反射类路径
+
 
     public String getSaasId() {
         return saasId;
@@ -31,19 +47,59 @@ public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
         this.saasId = saasId;
     }
 
-    public String getTaskId() {
-        return taskId;
+    public String getName() {
+        return name;
     }
 
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getRuleCode() {
-        return ruleCode;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRuleCode(String ruleCode) {
-        this.ruleCode = ruleCode;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getIntegrate() {
+        return integrate;
+    }
+
+    public void setIntegrate(int integrate) {
+        this.integrate = integrate;
+    }
+
+    public int getTradeDirection() {
+        return tradeDirection;
+    }
+
+    public void setTradeDirection(int tradeDirection) {
+        this.tradeDirection = tradeDirection;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getJavaClassPath() {
+        return javaClassPath;
+    }
+
+    public void setJavaClassPath(String javaClassPath) {
+        this.javaClassPath = javaClassPath;
     }
 }

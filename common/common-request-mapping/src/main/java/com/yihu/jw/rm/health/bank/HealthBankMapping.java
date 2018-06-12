@@ -17,7 +17,22 @@ public class HealthBankMapping {
         public static final String deleteTask ="/deleteTask";
         public static final String findTask = "/findTask";
         public static final String updateTask ="/updateTask";
+        public static final String selectByCode ="/selectByCode";
         public static final String createTaskDetail = "/createTaskDetail";
+        public static final String createTaskRule = "/createTaskRule";
+        public static final String updateTaskRule = "/updateTaskRule";
+        public static final String findTaskRule ="/findTaskRule";
+        public static final String createTaskDict = "/createTaskDict";
+        public static final String updateTaskDict = "/updateTaskDict";
+        public static final String findTaskDict ="/findTaskDict";
+        public static final String createTaskGoods = "/createTaskGoods";
+        public static final String updateTaskGoods = "/updateTaskGoods";
+        public static final String findTaskGoods ="/findTaskGoods";
+        public static final String createTaskRang = "/createTaskRang";
+        public static final String updateTaskRang = "/updateTaskRang";
+        public static final String findTaskRang = "/findTaskRang";
+        public static final String attendTask = "/attendTask";
+        public static final String selectByPatient = "/selectByPatient";
         public static final String createActivity="/createActivity";
         public static final String findActivity="/findActivity";
         public static final String updateActivity="/updateActivity";
@@ -29,9 +44,14 @@ public class HealthBankMapping {
         public static final String updateGoods ="/updateGoods";
         public static final String createCreditsDetail = "/createCreditsDetail";
         public static final String findCreditsLogInfo ="/findCreditsLogInfo";
+        public static final String selectByActivity = "/selectByActivity";
         public static final String selectByRanking = "/selectByRanking";
         public static final String updateCreditsLogInfo ="/updateCreditsLogInfo";
         public static final String exchangeGoods = "/exchangeGoods";
         public static final String findExchangeGoods="/findExchangeGoods";
+        public static final String updateRule = "/updateRule";
+        public static final String insertRule = "/insertRule";
+        public static final String deleteRule = "/deleteRule";
+        public static final String findRules = "/findRules";
     }
 }
