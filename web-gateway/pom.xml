@@ -6,25 +6,24 @@
     <parent>
         <groupId>com.yihu.jw</groupId>
         <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
         <relativePath>../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>com.yihu.jw</groupId>
     <artifactId>web-gateway</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
     <packaging>war</packaging>
 
     <dependencies>
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>admin-client-starter</artifactId>
-            <version>1.1.0</version>
+            <version>${version.yihu.admin}</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-fegin</artifactId>
-            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
@@ -36,17 +35,41 @@
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
+            <artifactId>common-entity</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.yihu.base</groupId>
+                    <artifactId>common-data-es</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
             <artifactId>common-rest-model</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.yihu.base</groupId>
             <artifactId>common-swagger</artifactId>
         </dependency>
-
+        <dependency>
+        <groupId>com.yihu</groupId>
+        <artifactId>common-security-starter</artifactId>
+        <version>1.0.7</version>
+        </dependency>
         <dependency>
             <groupId>com.yihu</groupId>
-            <artifactId>common-security-starter</artifactId>
-            <version>1.0.7</version>
+            <artifactId>common-router-starter</artifactId>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -86,24 +109,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
-        <!--  <dependency>
-              <groupId>org.springframework.boot</groupId>
-              <artifactId>spring-boot-starter-actuator</artifactId>
-          </dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-security</artifactId>-->
-        <!--</dependency>-->
-        <!--   <dependency>
-               <groupId>org.springframework.boot</groupId>
-               <artifactId>spring-boot-starter-data-redis</artifactId>
-           </dependency>-->
-
-
-        <!--  <dependency>
-              <groupId>org.springframework.cloud</groupId>
-              <artifactId>spring-cloud-starter-oauth2</artifactId>
-          </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-eureka</artifactId>
@@ -133,6 +142,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-ribbon</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-sleuth-zipkin</artifactId>
         </dependency>
         <dependency>
@@ -151,11 +164,6 @@
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
         </dependency>
-        <!--    <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-core</artifactId>
-                <version>RELEASE</version>
-            </dependency>-->
         <dependency>
             <groupId>commons-collections</groupId>
             <artifactId>commons-collections</artifactId>
@@ -170,18 +178,8 @@
             <version>3.0.9</version>
         </dependency>
         <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-entity</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.data</groupId>
-                    <artifactId>spring-data-elasticsearch</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.yihu.base</groupId>
-                    <artifactId>common-data-es</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
         </dependency>
     </dependencies>
     <build>

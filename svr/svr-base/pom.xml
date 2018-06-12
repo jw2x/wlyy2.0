@@ -6,21 +6,31 @@
     <parent>
         <groupId>com.yihu.jw</groupId>
         <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
         <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-base</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
     <packaging>war</packaging>
 
     <dependencies>
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>admin-client-starter</artifactId>
-            <version>1.1.0</version>
+            <version>${version.yihu.admin}</version>
         </dependency>
         <!--公共的 start-->
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.data</groupId>
+                    <artifactId>spring-data-elasticsearch</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-entity</artifactId>
@@ -35,12 +45,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!--<dependency>-->
-        <!--<groupId>com.yihu</groupId>-->
-        <!--<artifactId>common-data-es-starter</artifactId>-->
-        <!--<version>1.1.0</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-request-mapping</artifactId>
@@ -52,10 +56,6 @@
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
             <groupId>com.yihu.base</groupId>
@@ -181,9 +181,8 @@
         <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
         <!--</dependency>-->
         <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-rest-model</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
         </dependency>
     </dependencies>
     <build>

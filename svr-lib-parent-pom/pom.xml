@@ -11,7 +11,7 @@
 
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-lib-parent-pom</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <packaging>pom</packaging>
     <developers>
         <developer>
@@ -54,12 +54,10 @@
     <properties>
         <version.mysql>5.1.38</version.mysql>
         <version.jackson>2.8.1</version.jackson>
-        <version.myCommon>1.0.0</version.myCommon>
+        <version.myCommon>1.0.2</version.myCommon>
         <version.spring-data-hadoop>2.3.0.RELEASE</version.spring-data-hadoop>
         <version.springside>4.2.3-GA</version.springside>
         <version.zipkin>1.24.0</version.zipkin>
-        <version.hibernate>5.0.12.Final</version.hibernate>
-        <version.hibernate-jpa>1.0.0.Final</version.hibernate-jpa>
         <version.servlet-api>3.1.0</version.servlet-api>
         <version.swagger>2.7.0</version.swagger>
         <version.swagger-ui>2.7.0</version.swagger-ui>
@@ -88,10 +86,26 @@
         <asciidoctor.maven.plugin.version>1.5.5</asciidoctor.maven.plugin.version>
         <asciidoctorj.version>1.5.5</asciidoctorj.version>
         <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+        <version.yihu.admin>1.2.0</version.yihu.admin>
     </properties>
     <!--dependencyManagement作用子配置不写版本默认继承父配置-->
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-client-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-server-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-server-ui-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
             <!--服务器监监听-->
             <dependency>
                 <groupId>de.codecentric</groupId>
@@ -124,11 +138,11 @@
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-async</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
-                <groupId>com.yihu.base</groupId>
-                <artifactId>common-security</artifactId>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-fegin</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
             <dependency>
@@ -153,6 +167,11 @@
             </dependency>
             <dependency>
                 <groupId>com.yihu.jw</groupId>
+                <artifactId>common-rest-model-es</artifactId>
+                <version>${version.myCommon}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
                 <artifactId>svr-base</artifactId>
                 <version>${version.myCommon}</version>
             </dependency>
@@ -164,22 +183,22 @@
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-swagger</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-data-mysql</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-log</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-quartz</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <!--数据库驱动 start-->
             <dependency>
@@ -237,23 +256,23 @@
                 <classifier>GA</classifier>
             </dependency>
             <!--hibernate start-->
-            <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>${version.hibernate}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.hibernate.javax.persistence</groupId>
-                <artifactId>hibernate-jpa-2.1-api</artifactId>
-                <version>${version.hibernate-jpa}</version>
-            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.hibernate</groupId>-->
+                <!--<artifactId>hibernate-core</artifactId>-->
+                <!--<version>${version.hibernate}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.hibernate.javax.persistence</groupId>-->
+                <!--<artifactId>hibernate-jpa-2.1-api</artifactId>-->
+                <!--<version>${version.hibernate-jpa}</version>-->
+            <!--</dependency>-->
             <!--hibernate end-->
 
             <!--fastdfs start-->
             <dependency>
                 <groupId>com.yihu.base</groupId>
                 <artifactId>common-data-fastdfs</artifactId>
-                <version>${version.myCommon}</version>
+                <version>1.0.0</version>
             </dependency>
             <dependency>
                 <groupId>org.csource</groupId>
@@ -487,6 +506,21 @@
                     <target>1.8</target>
                 </configuration>
                 <version>3.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!--编译插件 end-->
             <plugin>
