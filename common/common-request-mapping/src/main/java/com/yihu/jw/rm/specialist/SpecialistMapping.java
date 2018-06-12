@@ -16,5 +16,14 @@ public class SpecialistMapping {
         public static final String createConsult = "/createConsult";
         public static final String createArticle = "/createArticle";
         public static final String findSpecialistPatientRelation = "/findSpecialistPatientRelation";
+        public static final String findSpecialistPatientRelationCout = "/findSpecialistPatientRelationCout";
+        public static final String findNoLabelPatientRelation ="/findNoLabelPatientRelation";
+        public static final String saveHealthAssistant ="/saveHealthAssistant";
+        public static final String findPatientRelatioByAssistant ="/findPatientRelatioByAssistant";
+        public static final String getPatientByLabel ="/getPatientByLabel";
+        public static final String getLabelpatientCount ="/getLabelpatientCount";
+        public static final String getAssistantPatientCount ="/getAssistantPatientCount";
+        public static final String getDoctorPatientByName ="/getDoctorPatientByName";
+
     }
 }

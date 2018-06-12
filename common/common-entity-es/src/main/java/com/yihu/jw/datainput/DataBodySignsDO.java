@@ -1,6 +1,7 @@
-package com.yihu.jw.iot.datainput;
+package com.yihu.jw.datainput;
 
-import com.yihu.base.es.config.model.SaveModel;
+
+import io.searchbox.annotations.JestId;
 
 import java.util.List;
 
@@ -8,9 +9,10 @@ import java.util.List;
  * 体征数据实体类，新的标准的数据格式
  * @author lith on 2018/01/17.
  */
-public class DataBodySignsDO extends SaveModel {
+public class DataBodySignsDO {
 
-
+    @JestId
+    private String id;
     private String access_token; //访问token
     private String data_source; //数据来源
     private String sn;          //设备序列码
@@ -21,6 +23,14 @@ public class DataBodySignsDO extends SaveModel {
     private String idCard;      //设备绑定的用户身份证号
     private String username;    //用户名
     private String usercode;    //用户在系统中的code，唯一识别
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getAccess_token() {
         return access_token;

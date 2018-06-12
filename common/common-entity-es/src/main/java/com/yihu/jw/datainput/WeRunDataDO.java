@@ -1,4 +1,4 @@
-package com.yihu.jw.iot.datainput;
+package com.yihu.jw.datainput;
 
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.yihu.jw.iot.datainput;
+package com.yihu.jw.datainput;
 /**
  * 具体各项体征指标数据值
  * @author lith on 2018/01/17.

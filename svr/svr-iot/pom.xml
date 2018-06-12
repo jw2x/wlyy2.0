@@ -146,7 +146,7 @@
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>common-data-es-starter</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
@@ -162,6 +162,11 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.15-beta1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-entity-es</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
     <build>

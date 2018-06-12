@@ -60,7 +60,10 @@ hystrix:
 ribbon:
   ReadTimeout: 300000
   ConnectTimeout: 5000
-
+#  restclient:
+#    enabled: false
+#  okhttp:
+#    enabled: true
 
 #zuul 默认会代理所有的微服务  路径 /{appliction.name}/**
 #zuul:
@@ -85,16 +88,19 @@ ribbon:
 
 
 
+
 yihu:
   admin:
     client:
       advice:
-        sql: false
+        sql:
+          hibernate: false
+          springJDBC: false
         http: true
         zuul:
           pre: true
           post: true
-
+          route: false ##目前有bug先改成false
 
 ---
 spring:

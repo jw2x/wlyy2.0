@@ -30,6 +30,7 @@ spring:
     elasticsearch: #ElasticsearchProperties
       cluster-name: jkzl #默认即为elasticsearch  集群名
       cluster-nodes: 172.19.103.45:9300,172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+      cluster-nodes-jest: http://172.19.103.45:9200,http://172.19.103.68:9200  #多个逗号分割
       local: false #是否本地连接
       properties: # Additional properties used to configure the client.
         enable: true

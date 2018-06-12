@@ -1,13 +1,15 @@
 package com.yihu.jw.controller;
 
+import com.alibaba.fastjson.JSONArray;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.entity.specialist.SpecialistArticleDO;
-import com.yihu.jw.entity.specialist.SpecialistConsultDO;
-import com.yihu.jw.entity.specialist.SpecialistDO;
 import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.specialist.AssistantVO;
+import com.yihu.jw.restmodel.specialist.PatientLabelVO;
+import com.yihu.jw.restmodel.specialist.PatientRelationVO;
 import com.yihu.jw.restmodel.specialist.SpecialistPatientRelationVO;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
@@ -34,20 +36,6 @@ public class SpecialistController extends EnvelopRestController {
     @Autowired
     private Tracer tracer;
 
-    @PostMapping(value = SpecialistMapping.specialist.createSpecialists)
-    @ApiOperation(value = "创建专科医生")
-    public Envelop<Boolean> createSpecialists(@ApiParam(name = "specialists", value = "专科医生实体")
-                                                  @RequestParam(value = "code", required = false)String specialists){
-        try {
-            List<SpecialistDO> infos = new ObjectMapper().readValue(specialists, new TypeReference<List<SpecialistDO>>(){});
-            return specialistService.createSpecialists(infos);
-        }catch (Exception e){
-            e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
-        }
-    }
-
     @PostMapping(value = SpecialistMapping.specialist.createSpecialistRelation)
     @ApiOperation(value = "创建专科医生与患者匹配关系")
     public Envelop<Boolean> createSpecialistPatientRelation(@ApiParam(name = "specialistPatientRelation", value = "实体JSON")
@@ -55,34 +43,6 @@ public class SpecialistController extends EnvelopRestController {
         try {
             SpecialistPatientRelationDO ps = toEntity(specialistPatientRelation, SpecialistPatientRelationDO.class);
             return specialistService.createSpecialistsPatientRelation(ps);
-        }catch (Exception e){
-            e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
-        }
-    }
-
-    @PostMapping(value = SpecialistMapping.specialist.createConsult)
-    @ApiOperation(value = "创建专科医生咨询")
-    public Envelop<Boolean> createSpscialistConsult(@ApiParam(name = "specialistConsult", value = "专科医生咨询实体JSON")
-                                                        @RequestParam(value = "specialistConsult", required = false)String specialistConsult){
-        try {
-            SpecialistConsultDO ps = toEntity(specialistConsult, SpecialistConsultDO.class);
-            return specialistService.createSpscialistConsult(ps);
-        }catch (Exception e){
-            e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
-        }
-    }
-
-    @PostMapping(value = SpecialistMapping.specialist.createArticle)
-    @ApiOperation(value = "创建专科医生健康文章")
-    public Envelop<Boolean> createSpecialistArticle(@ApiParam(name = "specialistArticle", value = "专科医生健康文章JSON")
-                                                        @RequestParam(value = "specialistArticle", required = false)String specialistArticle){
-        try {
-            SpecialistArticleDO ps = toEntity(specialistArticle, SpecialistArticleDO.class);
-            return specialistService.createSpecialistArticle(ps);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -107,5 +67,155 @@ public class SpecialistController extends EnvelopRestController {
         }
     }
 
+    @GetMapping(value = SpecialistMapping.specialist.findSpecialistPatientRelationCout)
+    @ApiOperation(value = "获取专科医生下未分配标签居民数目")
+    public Envelop<Long> findSpecialistPatientRelationCout(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor){
+        try {
+            return specialistService.findSpecialistPatientRelationCout(doctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 
+    @GetMapping(value = SpecialistMapping.specialist.findNoLabelPatientRelation)
+    @ApiOperation(value = "获取专科医生下未分配标签居民")
+    public Envelop<PatientRelationVO> findNoLabelPatientRelation(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor){
+        try {
+            return specialistService.findNoLabelPatientRelation(doctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.specialist.saveHealthAssistant)
+    @ApiOperation(value = "保存配置居民计管师居民")
+    public Envelop<Boolean> saveHealthAssistant(@ApiParam(name = "json", value = "计管师居民实体") @RequestParam(required = true)String json){
+        try {
+            List<SpecialistPatientRelationDO> info = (List<SpecialistPatientRelationDO>) JSONArray.parseArray(json, SpecialistPatientRelationDO.class);
+            return specialistService.saveHealthAssistant(info);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.findPatientRelatioByAssistant)
+    @ApiOperation(value = "根据计管师获取居民信息")
+    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(@ApiParam(name = "assistant", value = "计管师") @RequestParam(required = true)String assistant,
+                                                                    @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
+                                                                    @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
+        try {
+            return specialistService.findPatientRelatioByAssistant(assistant,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.getPatientByLabel)
+    @ApiOperation(value = "根据标签获取居民信息")
+    public Envelop<PatientLabelVO>  getPatientByLabel(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor,
+                                                      @ApiParam(name = "labelType", value = "标签类型") @RequestParam(required = true)String labelType,
+                                                      @ApiParam(name = "labelCode", value = "标签code") @RequestParam(required = true)String labelCode,
+                                                      @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
+                                                      @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size){
+        try {
+            return specialistService.getPatientByLabel(doctor,labelType,labelCode,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
+    @GetMapping(value = SpecialistMapping.specialist.getLabelpatientCount)
+    @ApiOperation(value = "根据标签获取居民数量")
+    public Envelop<Long> getLabelpatientCount(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor,
+                                              @ApiParam(name = "labelType", value = "标签类型") @RequestParam(required = true)String labelType,
+                                              @ApiParam(name = "labelCode", value = "标签code") @RequestParam(required = true)String labelCode) {
+        try {
+            return specialistService.getLabelpatientCount(doctor,labelType,labelCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.getAssistantPatientCount)
+    @ApiOperation(value = "根据计管获取居民数量")
+    public Envelop<Long> getAssistantPatientCount(@ApiParam(name = "doctor", value = "计管师医生") @RequestParam(required = true)String doctor) {
+        try {
+            return specialistService.getAssistantPatientCount(doctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.getDoctorPatientByName)
+    @ApiOperation(value = "搜索专科医生居民")
+    public Envelop<PatientRelationVO> getDoctorPatientByName(@ApiParam(name = "doctor", value = "医生code") @RequestParam(required = true)String doctor,
+                                                             @ApiParam(name = "name", value = "居民姓名模糊") @RequestParam(required = false)String nameKey,
+                                                             @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
+                                                             @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
+        try {
+            return specialistService.getDoctorPatientByName(doctor,nameKey,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
+//    @PostMapping(value = SpecialistMapping.specialist.createArticle)
+//    @ApiOperation(value = "创建专科医生健康文章")
+//    public Envelop<Boolean> createSpecialistArticle(@ApiParam(name = "specialistArticle", value = "专科医生健康文章JSON")
+//                                                    @RequestParam(value = "specialistArticle", required = false)String specialistArticle){
+//        try {
+//            SpecialistArticleDO ps = toEntity(specialistArticle, SpecialistArticleDO.class);
+//            return specialistService.createSpecialistArticle(ps);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            tracer.getCurrentSpan().logEvent(e.getMessage());
+//            return Envelop.getError(e.getMessage());
+//        }
+//    }
+
+//    @PostMapping(value = SpecialistMapping.specialist.createConsult)
+//    @ApiOperation(value = "创建专科医生咨询")
+//    public Envelop<Boolean> createSpscialistConsult(@ApiParam(name = "specialistConsult", value = "专科医生咨询实体JSON")
+//                                                    @RequestParam(value = "specialistConsult", required = false)String specialistConsult){
+//        try {
+//            SpecialistConsultDO ps = toEntity(specialistConsult, SpecialistConsultDO.class);
+//            return specialistService.createSpscialistConsult(ps);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            tracer.getCurrentSpan().logEvent(e.getMessage());
+//            return Envelop.getError(e.getMessage());
+//        }
+//    }
+
+//    @PostMapping(value = SpecialistMapping.specialist.createSpecialists)
+//    @ApiOperation(value = "创建专科医生")
+//    public Envelop<Boolean> createSpecialists(@ApiParam(name = "specialists", value = "专科医生实体")
+//                                              @RequestParam(value = "code", required = false)String specialists){
+//        try {
+//            List<SpecialistDO> infos = new ObjectMapper().readValue(specialists, new TypeReference<List<SpecialistDO>>(){});
+//            return specialistService.createSpecialists(infos);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            tracer.getCurrentSpan().logEvent(e.getMessage());
+//            return Envelop.getError(e.getMessage());
+//        }
+//    }
 }

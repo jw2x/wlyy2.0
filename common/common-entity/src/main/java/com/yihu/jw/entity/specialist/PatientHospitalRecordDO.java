@@ -13,29 +13,48 @@ import java.io.Serializable;
 @Entity
 @Table(name = "wlyy_patient_hospital_record")
 public class PatientHospitalRecordDO extends IdEntityWithOperation implements Serializable {
-
+    @Column(name = "saas_id")
     private String saasId;//
+    @Column(name = "third_code")
     private String thirdCode;//智业记录code
+    @Column(name = "event_code")
     private String eventCode; // 事件code
+    @Column(name = "patient")
     private String patient;//患者
+    @Column(name = "patient_name")
     private String patientName;//患者姓名
+    @Column(name = "type")
     private String type;//出院：1；住院：0
+    @Column(name = "hospital")
     private String hospital; //医院
+    @Column(name = "hospital_name")
     private String hospitalName;
+    @Column(name = "doctor")
     private String doctor; //医生
+    @Column(name = "doctor_name")
     private String doctorName;
+    @Column(name = "city")
     private String city; //城市
+    @Column(name = "city_name")
     private String cityName;
+    @Column(name = "town")
     private String town; //城镇
+    @Column(name = "town_name")
     private String townName;
+    @Column(name = "remark")
     private String remark; //备注
+    @Column(name = "diagnosis")
     private String diagnosis; //诊断
+    @Column(name = "label")
     private String label; //标签
+    @Column(name = "label_name")
     private String labelName;
+    @Column(name = "dept")
     private String dept;//部门
+    @Column(name = "dept_name")
     private String deptName;
 
-    @Column(name = "saas_id")
+
     public String getSaasId() {
         return saasId;
     }
@@ -44,7 +63,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.saasId = saasId;
     }
 
-    @Column(name = "third_code")
+
     public String getThirdCode() {
         return thirdCode;
     }
@@ -53,7 +72,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.thirdCode = thirdCode;
     }
 
-    @Column(name = "event_code")
+
     public String getEventCode() {
         return eventCode;
     }
@@ -62,7 +81,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.eventCode = eventCode;
     }
 
-    @Column(name = "hospital")
+
     public String getHospital() {
         return hospital;
     }
@@ -71,7 +90,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.hospital = hospital;
     }
 
-    @Column(name = "hospital_name")
+
     public String getHospitalName() {
         return hospitalName;
     }
@@ -80,7 +99,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.hospitalName = hospitalName;
     }
 
-    @Column(name = "doctor")
+
     public String getDoctor() {
         return doctor;
     }
@@ -89,7 +108,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.doctor = doctor;
     }
 
-    @Column(name = "doctor_name")
+
     public String getDoctorName() {
         return doctorName;
     }
@@ -98,7 +117,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.doctorName = doctorName;
     }
 
-    @Column(name = "city")
+
     public String getCity() {
         return city;
     }
@@ -107,7 +126,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.city = city;
     }
 
-    @Column(name = "city_name")
+
     public String getCityName() {
         return cityName;
     }
@@ -116,7 +135,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.cityName = cityName;
     }
 
-    @Column(name = "town")
+
     public String getTown() {
         return town;
     }
@@ -125,7 +144,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.town = town;
     }
 
-    @Column(name = "town_name")
+
     public String getTownName() {
         return townName;
     }
@@ -134,7 +153,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.townName = townName;
     }
 
-    @Column(name = "remark")
+
     public String getRemark() {
         return remark;
     }
@@ -143,7 +162,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.remark = remark;
     }
 
-    @Column(name = "diagnosis")
+
     public String getDiagnosis() {
         return diagnosis;
     }
@@ -152,7 +171,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.diagnosis = diagnosis;
     }
 
-    @Column(name = "label")
+
     public String getLabel() {
         return label;
     }
@@ -161,7 +180,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.label = label;
     }
 
-    @Column(name = "label_name")
+
     public String getLabelName() {
         return labelName;
     }
@@ -170,7 +189,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.labelName = labelName;
     }
 
-    @Column(name = "dept")
+
     public String getDept() {
         return dept;
     }
@@ -179,7 +198,6 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.dept = dept;
     }
 
-    @Column(name = "dept_ame")
     public String getDeptName() {
         return deptName;
     }
@@ -188,7 +206,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.deptName = deptName;
     }
 
-    @Column(name = "patient")
+
     public String getPatient() {
         return patient;
     }
@@ -197,7 +215,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.patient = patient;
     }
 
-    @Column(name = "patient_name")
+
     public String getPatientName() {
         return patientName;
     }
@@ -206,7 +224,7 @@ public class PatientHospitalRecordDO extends IdEntityWithOperation implements Se
         this.patientName = patientName;
     }
 
-    @Column(name = "type")
+
     public String getType() {
         return type;
     }
