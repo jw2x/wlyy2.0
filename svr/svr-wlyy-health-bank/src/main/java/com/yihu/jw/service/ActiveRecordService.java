@@ -55,12 +55,12 @@ public class ActiveRecordService extends BaseJpaService<ActiveRecordDO,ActiveRec
         if(!StringUtils.isEmpty(taskId)){
             activeRecordDO.setTaskId(taskId);
             TaskDO taskDO = taskDao.findOne(taskId);
-            activeRecordDO.setTaskTitle(taskDO!=null?taskDO.getTaskTitle():null);
+            activeRecordDO.setTaskTitle(taskDO!=null?taskDO.getTitle():null);
         }
         if(!StringUtils.isEmpty(activityId)){
             activeRecordDO.setActivityId(activityId);
             ActivityDO activityDO = activityDao.findOne(activityId);
-            activeRecordDO.setActivityTitle(activityDO!=null?activityDO.getActivityTitle():null);
+            activeRecordDO.setActivityTitle(activityDO!=null?activityDO.getTitle():null);
         }
         activeRecordDO.setOriginalStatus(originalStatus);
         activeRecordDO.setCurrentStatus(currentStatus);

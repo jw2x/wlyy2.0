@@ -53,5 +53,6 @@ public class HealthBankMapping {
         public static final String insertRule = "/insertRule";
         public static final String deleteRule = "/deleteRule";
         public static final String findRules = "/findRules";
+        public static final String createActiveRecord="/createActiveRecord";
     }
 }

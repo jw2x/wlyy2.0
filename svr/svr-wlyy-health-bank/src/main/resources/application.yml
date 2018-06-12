@@ -28,8 +28,10 @@ spring:
 hibernate:
   dialect: org.hibernate.dialect.MySQL5Dialect
   show_sql: true
-  ejb:
-    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+#  ejb:
+#    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy #springJPA使用驼峰式(hibernate5以上使用)
+  implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
 
 fast-dfs:
   tracker-server: 172.19.103.54:22122 #服务器地址
@@ -50,7 +52,7 @@ spring:
   profiles: jwdev
 
   datasource:
-    url: jdbc:mysql://172.19.103.77:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    url: jdbc:mysql://172.19.103.77:3306/health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
     password: 123456
   data:
