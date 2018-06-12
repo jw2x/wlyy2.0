@@ -4,8 +4,8 @@ package com.yihu.jw.service;/**
 
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.CredittsLogDetailDao;
-import com.yihu.jw.dao.TaskDetailDao;
-import com.yihu.jw.entity.health.bank.TaskDetailDO;
+import com.yihu.jw.dao.TaskPatientDetailDao;
+import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,9 +21,9 @@ import java.text.ParseException;
  **/
 @Service
 @Transactional
-public class TaskDetailService extends BaseJpaService<TaskDetailDO,TaskDetailDao> {
+public class TaskDetailService extends BaseJpaService<TaskPatientDetailDO,TaskPatientDetailDao> {
     @Autowired
-    private TaskDetailDao taskDetailDao;
+    private TaskPatientDetailDao taskPatientDetailDao;
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
@@ -33,11 +33,11 @@ public class TaskDetailService extends BaseJpaService<TaskDetailDO,TaskDetailDao
     /**
      * 参与任务
      *
-     * @param taskDetailDO
+     * @param taskPatientDetailDO
      * @return
      */
-    public Envelop<Boolean> insert(TaskDetailDO taskDetailDO){
-        taskDetailDao.save(taskDetailDO);
+    public Envelop<Boolean> insert(TaskPatientDetailDO taskPatientDetailDO){
+        taskPatientDetailDao.save(taskPatientDetailDO);
         Envelop<Boolean> envelop = new Envelop<>();
         envelop.setObj(true);
         return envelop;
@@ -48,8 +48,8 @@ public class TaskDetailService extends BaseJpaService<TaskDetailDO,TaskDetailDao
      * @param taskDetailDO
      * @return
      *//*
-    public Envelop<Boolean> insert(TaskDetailDO taskDetailDO){
-        taskDetailDao.save(taskDetailDO);
+    public Envelop<Boolean> insert(TaskPatientDetailDO taskDetailDO){
+        taskPatientDetailDao.save(taskDetailDO);
         Envelop<Boolean> envelop = new Envelop<>();
         envelop.setObj(true);
         return envelop;
@@ -64,12 +64,12 @@ public class TaskDetailService extends BaseJpaService<TaskDetailDO,TaskDetailDao
      * @return
      * @throws ParseException
      *//*
-    public Envelop<TaskDetailDO> findTaskByPatient(String patientId, String doctorId, Integer page, Integer size) throws ParseException {
-        TaskDetailDO taskDetailDO = new TaskDetailDO();
+    public Envelop<TaskPatientDetailDO> findTaskByPatient(String patientId, String doctorId, Integer page, Integer size) throws ParseException {
+        TaskPatientDetailDO taskDetailDO = new TaskPatientDetailDO();
         taskDetailDO.setDoctorId(doctorId);
         taskDetailDO.setPatientId(patientId);
         String sql = new ISqlUtils().getSql(taskDetailDO,page,size,"*");
-        List<TaskDetailDO> taskDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDetailDO.class));
+        List<TaskPatientDetailDO> taskDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
 
         String sqlcount = new ISqlUtils().getSql(taskDetailDO,0,0,"count");
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
@@ -86,11 +86,11 @@ public class TaskDetailService extends BaseJpaService<TaskDetailDO,TaskDetailDao
      * @param taskDetailDO
      * @return
      *//*
-    public Envelop<Boolean> update(TaskDetailDO taskDetailDO){
-        TaskDetailDO taskDetailDO1 = taskDetailDao.findOne(taskDetailDO.getId());
+    public Envelop<Boolean> update(TaskPatientDetailDO taskDetailDO){
+        TaskPatientDetailDO taskDetailDO1 = taskPatientDetailDao.findOne(taskDetailDO.getId());
         String sql = "select cl.status as status,cl.total as total from health_bank_credits_log cl order by cl.update_time desc";
         List<CreditsDetailDO> creditsLogDetailDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(CreditsDetailDO.class));
-        taskDetailDao.save(taskDetailDO);
+        taskPatientDetailDao.save(taskDetailDO);
         if (taskDetailDO.getStatus().equalsIgnoreCase("finished")&&!taskDetailDO1.getStatus().equalsIgnoreCase("unfinished")){
             CreditsDetailDO creditsLogDetailDO = new CreditsDetailDO();
             if (creditsLogDetailDOList == null || creditsLogDetailDOList.size() ==0){

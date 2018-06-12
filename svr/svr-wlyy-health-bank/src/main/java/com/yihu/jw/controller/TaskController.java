@@ -2,6 +2,8 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/4/27.
  */
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.entity.health.bank.TaskDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
@@ -12,10 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author wangzhinan
@@ -78,6 +77,48 @@ public class TaskController extends EnvelopRestController {
         }
     }
 
+    /**
+     * 根据编码查询
+     *
+     * @param object
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.selectByCode)
+    @ApiOperation(value = "根据编码查询")
+    public Envelop<TaskDO> selectByCode(@RequestBody JSONObject object){
+        try {
+            JSONArray array = object.getJSONArray("taskCode");
+            String patientId = object.getString("patientId");
+            Integer page = object.getInteger("page");
+            Integer size = object.getInteger("size");
+            return service.selectByTask(array,patientId,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    /**
+     * 更新任务
+     *
+     * @param task 任务对象
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.updateTask)
+    @ApiOperation(value = "更新任务")
+    public Envelop<Boolean> udpateTask(@ApiParam(name = "task",value = "健康任务JSON")
+                                          @RequestParam(value = "task",required = true)String task){
+        try {
+            TaskDO taskDO = toEntity(task,TaskDO.class);
+            return service.update(taskDO);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
 
 
     /**//**
@@ -90,7 +131,7 @@ public class TaskController extends EnvelopRestController {
      *//*
     @GetMapping(value = HealthBankMapping.healthBank.findTask)
     @ApiOperation(value = "查看健康任务")
-    public Envelop<TaskDetailDO> getTaskByPatient(@ApiParam(name = "patientId",value = "居民Id")
+    public Envelop<TaskPatientDetailDO> getTaskByPatient(@ApiParam(name = "patientId",value = "居民Id")
                                                 @RequestParam(value = "patientId",required = false)String patientId,
                                                   @ApiParam(name = "doctorId",value = "家庭医生Id")
                                                 @RequestParam(value = "doctorId",required = false)String doctorId,
@@ -112,7 +153,7 @@ public class TaskController extends EnvelopRestController {
     public Envelop<Boolean> updateTask(@ApiParam(name = "taskInfo",value = "健康任务JSON")
                                                 @RequestParam(value = "taskInfo",required = true)String taskInfo){
         try{
-            TaskDetailDO taskDetailDO = toEntity(taskInfo,TaskDetailDO.class);
+            TaskPatientDetailDO taskDetailDO = toEntity(taskInfo,TaskPatientDetailDO.class);
             return service.update(taskDetailDO);
         }catch (Exception e){
             e.printStackTrace();

@@ -2,11 +2,14 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/5/10.
  */
 
+import com.alibaba.fastjson.JSONArray;
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.jw.dao.ActivityDao;
 import com.yihu.jw.dao.TaskDao;
-import com.yihu.jw.dao.TaskDetailDao;
+import com.yihu.jw.dao.TaskPatientDetailDao;
+import com.yihu.jw.entity.health.bank.ActivityDO;
 import com.yihu.jw.entity.health.bank.TaskDO;
-import com.yihu.jw.entity.health.bank.TaskDetailDO;
+import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.DateUtils;
@@ -36,15 +39,40 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired
-    private TaskDetailDao taskDetailDao;
+    private TaskPatientDetailDao taskPatientDetailDao;
+    @Autowired
+    private ActivityDao activityDao;
 
 
+    /**
+     * 添加任务
+     *
+     * @param taskDO 任务对象
+     * @return
+     */
     public Envelop<Boolean> insert(TaskDO taskDO){
+        taskDO.setCreateTime(new Date());
+        taskDO.setUpdateTime(new Date());
         taskDao.save(taskDO);
         Envelop<Boolean> envelop = new Envelop<>();
         envelop.setObj(true);
         return envelop;
     }
+
+    /**
+     *  更新任务
+     *
+     * @param taskDO
+     * @return
+     */
+    public Envelop<Boolean> update(TaskDO taskDO){
+        String sql = ISqlUtils.getUpdateSql(taskDO);
+        jdbcTemplate.update(sql);
+        Envelop<Boolean> envelop = new Envelop<>();
+        envelop.setObj(true);
+        return envelop;
+    }
+
 
    /* public Envelop<CreditsDetailDO> findByCondition(TaskDO taskDO, Integer page, Integer size) throws ParseException {
         String sql = new ISqlUtils().getSql(taskDO,page,size,"*");
@@ -58,29 +86,37 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
         return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, creditsDetailDOS,page,size,count);
     }*/
 
+    /**
+     * 查找数据
+     *
+     * @param taskDO 任务对象
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
    public Envelop<TaskDO> selectByCondition(TaskDO taskDO,Integer page,Integer size){
        String sql = new ISqlUtils().getSql(taskDO,page,size,"*");
-       List<TaskDO> taskDOS1 = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
-       if (taskDOS1 == null || taskDOS1.size() ==0){
-           List<TaskDO> taskDOList = getTasks(taskDO.getPatientId());
-           for (TaskDO taskDO1:taskDOList){
-                taskDao.save(taskDO1);
-           }
-       }
        List<TaskDO> taskDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
-       List<TaskDO> taskDOList = new ArrayList<>();
-       for (TaskDO taskDO1 : taskDOS){
-           if (taskDO1.getPeriod() == 0){
-               String taskSql1 = "SELECT * FROM wlyy_health_bank_task_detail td WHERE" +
-                       " td.task_id = '" +taskDO1.getId()+
-                       "' AND td.create_time > '" + DateUtils.getDayBegin()+
-                       "' AND td.create_time < '"+DateUtils.getDayEnd()+"'";
-               List<TaskDetailDO> taskDetailList = jdbcTemplate.query(taskSql1,new BeanPropertyRowMapper(TaskDetailDO.class));
-               if (taskDetailList != null && taskDetailList.size() != 0){
-                   taskDO1.setStatus(1);
-               }
+       for (TaskDO taskDO1:taskDOS){
+           if (taskDO1.getType().equalsIgnoreCase("ACTIVITY_TASK")){
+               ActivityDO activityDO = activityDao.findOne(taskDO1.getTransactionId());
+               taskDO1.setActivityDO(activityDO);
            }
-           taskDOList.add(taskDO1);
+           //参与活动的详情
+           String taskSql = "select * from wlyy_health_bank_task_patient_detail where task_id = '"+taskDO1.getId()+
+                   "' and patient_openid = '"+taskDO.getOpenId()+"'";
+           List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(taskSql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+           taskDO1.setTaskPatientDetailDOS(taskPatientDetailDOS);
+           //参与人数
+           String taskSql1 = "select count(1) as total from wlyy_health_bank_task_patient_detail where task_id = '"+taskDO1.getId()+"'";
+           List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(taskSql1);
+           Long count = 0L;
+           if(rstotal!=null&&rstotal.size()>0){
+               count = (Long) rstotal.get(0).get("total");
+           }
+           taskDO1.setTotal(count);
+           taskDO1.setPatientId(taskDO.getPatientId());
+
        }
        String sqlcount = new ISqlUtils().getSql(taskDO,0,0,"count");
        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
@@ -88,12 +124,65 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
        if(rstotal!=null&&rstotal.size()>0){
            count = (Long) rstotal.get(0).get("total");
        }
+       return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDOS,page,size,count);
+   }
+
+    /**
+     * 查看当前的任务
+     * @param array taskCode集合
+     * @param patientId 居民id
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
+   public Envelop<TaskDO> selectByTask(JSONArray array,String patientId,Integer page,Integer size){
+       StringBuffer buffer = new StringBuffer();
+       List<String> taskCodes = new ArrayList<>();
+       for (int i=0;i<array.size();i++){
+           taskCodes.add(array.getString(i));
+       }
+       buffer.append(" bt.task_code in(");
+       if (taskCodes == null || taskCodes.size() == 0){
+           buffer.append("''");
+       }else {
+           for (int i=0;i<taskCodes.size();i++){
+               buffer.append("'"+taskCodes.get(i)+"'").append(",");
+           }
+           buffer.deleteCharAt(buffer.length()-1);
+       }
+       buffer.append(") ");
+       String sql = "select * from wlyy_health_bank_task bt where "+buffer +" ORDER BY update_time DESC LIMIT "+(page-1)*size+","+size;
+       List<TaskDO> taskDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
+       for (TaskDO taskDO:taskDOList){
+           if (taskDO.getType().equalsIgnoreCase("ACTIVITY_TASK")){
+               ActivityDO activityDO = activityDao.findOne(taskDO.getTransactionId());
+               taskDO.setActivityDO(activityDO);
+           }
+           if (taskDO.getPeriod() == 1){
+               String taskSql = "select * from wlyy_health_bank_task_patient_detail where task_id = '"+taskDO.getId()+
+                       "' and patient_id = '"+patientId+"'";
+               List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(taskSql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+               taskDO.setTaskPatientDetailDOS(taskPatientDetailDOS);
+           }else if (taskDO.getPeriod() == 0){
+               String taskSql = "select * from wlyy_health_bank_task_patient_detail where task_id = '"+taskDO.getId()+
+                       "' and patient_id = '"+patientId+"' and create_time > '" + DateUtils.getDayBegin() +"' and create_time < '"+ DateUtils.getDayEnd() +"'";
+               List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(taskSql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+               taskDO.setTaskPatientDetailDOS(taskPatientDetailDOS);
+           }
+           taskDO.setPatientId(patientId);
+       }
+       String sqlcount = "select COUNT(1) AS  total from wlyy_health_bank_task bt where "+buffer ;
+       List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
+       Long count = 0L;
+       if(rstotal!=null&&rstotal.size()>0){
+           count = (Long) rstotal.get(0).get("total");
+       }
        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDOList,page,size,count);
    }
-    public List<TaskDO> getTasks(String patientId){
+   /* public List<TaskDO> getTasks(String patientId){
        List<TaskDO> taskDOList = new ArrayList<>();
        TaskDO taskDO = new TaskDO();
-       taskDO.setPatientId(patientId);
+       *//*taskDO.setPatientId(patientId);*//*
        taskDO.setTaskCode("BIND");
        taskDO.setPeriod(1);
        taskDO.setTaskTitle("首次绑定");
@@ -104,7 +193,7 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
        taskDO.setUpdateTime(new Date());
        taskDOList.add(taskDO);
        TaskDO taskDO1 = new TaskDO();
-       taskDO1.setPatientId(patientId);
+   *//*    taskDO1.setPatientId(patientId);*//*
        taskDO1.setTaskCode("MEASURE");
        taskDO1.setPeriod(0);
        taskDO1.setTaskTitle("每日测量");
@@ -115,5 +204,5 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
        taskDO1.setUpdateTime(new Date());
        taskDOList.add(taskDO1);
        return taskDOList;
-    }
+    }*/
 }

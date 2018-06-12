@@ -2,6 +2,8 @@ package com.yihu.jw.util;/**
  * Created by nature of king on 2018/4/27.
  */
 
+import com.alibaba.fastjson.JSONObject;
+
 import javax.persistence.Column;
 import javax.persistence.Table;
 import java.lang.reflect.Field;
@@ -87,6 +89,42 @@ public class ISqlUtils {
                 sb.append(" and ").append(columeName +"=" ).append(value+"");
             }
         }
+        return sb.toString();
+    }
+
+    public static  String getUpdateSql(Object object){
+        StringBuffer sb = new StringBuffer();
+        Class c = object.getClass();
+        Table table = (Table)c.getAnnotation(Table.class);
+        String tableName = table.name();
+        sb.append("update ").append(tableName).append(" set ");
+        Field[] fArray = c.getDeclaredFields();
+        for (Field f:fArray){
+            String getMethoName = "";
+            boolean isCExist = f.isAnnotationPresent(Column.class);
+            if (isCExist){
+                Column mc = f.getAnnotation(Column.class);
+                String columeName = mc.name();
+                String name = f.getName();
+                Object value= null;
+                getMethoName = "get" + name.substring(0,1).toUpperCase()+name.substring(1);
+                try {
+                    Method m = c.getMethod(getMethoName);
+                    value = (Object)m.invoke(object);
+                    if (value == null || "".equals(value)||value.equals(Integer.parseInt("0"))){
+                        continue;
+                    }
+                    else if (value instanceof  String){
+                        value = "' "+value+"'";
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                sb.append(columeName + "=").append(value+"");
+            }
+        }
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(object);
+        sb.append(" where ").append("id = ").append(jsonObject.get("id"));
         return sb.toString();
     }
 }
