@@ -2,7 +2,7 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/4/27.
  */
 
-import com.yihu.jw.entity.health.bank.TaskDetailDO;
+import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
@@ -42,8 +42,8 @@ public class TaskDetailController extends EnvelopRestController {
     public Envelop<Boolean> assigningTask(@ApiParam(name = "taskDetail",value = "健康任务JSON")
                                           @RequestParam(value = "taskDetail",required = true)String taskDetail){
         try {
-            TaskDetailDO taskDetailDO = toEntity(taskDetail,TaskDetailDO.class);
-            return service.insert(taskDetailDO);
+            TaskPatientDetailDO taskPatientDetailDO = toEntity(taskDetail,TaskPatientDetailDO.class);
+            return service.insert(taskPatientDetailDO);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -62,7 +62,7 @@ public class TaskDetailController extends EnvelopRestController {
      *//*
     @GetMapping(value = HealthBankMapping.healthBank.findTask)
     @ApiOperation(value = "查看健康任务")
-    public Envelop<TaskDetailDO> getTaskByPatient(@ApiParam(name = "patientId",value = "居民Id")
+    public Envelop<TaskPatientDetailDO> getTaskByPatient(@ApiParam(name = "patientId",value = "居民Id")
                                                 @RequestParam(value = "patientId",required = false)String patientId,
                                                   @ApiParam(name = "doctorId",value = "家庭医生Id")
                                                 @RequestParam(value = "doctorId",required = false)String doctorId,
@@ -84,7 +84,7 @@ public class TaskDetailController extends EnvelopRestController {
     public Envelop<Boolean> updateTask(@ApiParam(name = "taskInfo",value = "健康任务JSON")
                                                 @RequestParam(value = "taskInfo",required = true)String taskInfo){
         try{
-            TaskDetailDO taskDetailDO = toEntity(taskInfo,TaskDetailDO.class);
+            TaskPatientDetailDO taskDetailDO = toEntity(taskInfo,TaskPatientDetailDO.class);
             return service.update(taskDetailDO);
         }catch (Exception e){
             e.printStackTrace();

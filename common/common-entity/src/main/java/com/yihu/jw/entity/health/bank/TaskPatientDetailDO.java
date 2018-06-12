@@ -11,29 +11,30 @@ import java.io.Serializable;
  * Created by wamg zhinan 2018/4/27.
  */
 @Entity
-@Table(name = "wlyy_health_bank_task_detail")
-public class TaskDetailDO extends IdEntityWithOperation implements Serializable{
+@Table(name = "wlyy_health_bank_task_patient_detail")
+public class TaskPatientDetailDO extends IdEntityWithOperation implements Serializable{
 
     @Column(name = "saas_id")
     private String saasId; //saasid
 
     @Column(name = "status")
-    private String status;//状态（完成/未完成）
+    private int status;//任务完整状态：1完成，0参与，-1作废
 
     @Column(name = "patient_id")
     private String patientId;//居民id
 
+    @Column(name = "patient_idcard")
+    private String patientIdcard;//居民身份证
+
+    @Column(name = "patient_openid")
+    private String patientOpenid;//居民openid
+
     @Column(name = "doctor_id")
     private String doctorId;//医生id
 
-    @Column(name = "integrate")
-    private int integrate;//积分
-
-    @Column(name = "trade_direction")
-    private int tradeDirection;//交易方向
-
     @Column(name = "task_id")
     private String taskId;//任务id
+
 
     public String getSaasId() {
         return saasId;
@@ -43,11 +44,11 @@ public class TaskDetailDO extends IdEntityWithOperation implements Serializable{
         this.saasId = saasId;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -59,28 +60,28 @@ public class TaskDetailDO extends IdEntityWithOperation implements Serializable{
         this.patientId = patientId;
     }
 
+    public String getPatientIdcard() {
+        return patientIdcard;
+    }
+
+    public void setPatientIdcard(String patientIdcard) {
+        this.patientIdcard = patientIdcard;
+    }
+
+    public String getPatientOpenid() {
+        return patientOpenid;
+    }
+
+    public void setPatientOpenid(String patientOpenid) {
+        this.patientOpenid = patientOpenid;
+    }
+
     public String getDoctorId() {
         return doctorId;
     }
 
     public void setDoctorId(String doctorId) {
         this.doctorId = doctorId;
-    }
-
-    public int getIntegrate() {
-        return integrate;
-    }
-
-    public void setIntegrate(int integrate) {
-        this.integrate = integrate;
-    }
-
-    public int getTradeDirection() {
-        return tradeDirection;
-    }
-
-    public void setTradeDirection(int tradeDirection) {
-        this.tradeDirection = tradeDirection;
     }
 
     public String getTaskId() {
@@ -90,4 +91,5 @@ public class TaskDetailDO extends IdEntityWithOperation implements Serializable{
     public void setTaskId(String taskId) {
         this.taskId = taskId;
     }
+
 }
