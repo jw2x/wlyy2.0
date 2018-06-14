@@ -147,7 +147,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         "ba.hospital AS hospital," +
                         "ba.total AS total," +
                         "ba.create_time AS create_time," +
-                        "(ba.total +(cd1.total)) AS sum" +
+                        "(ba.total +COALESCE((cd1.total),0)) AS sum" +
                         " FROM" +
                         " wlyy_health_bank_account ba" +
                         " LEFT JOIN ( " +
@@ -159,7 +159,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         " WHERE " +
                         "cd.trade_direction = - 1" +
                         " GROUP BY " +
-                        " cd.patient_id ) cd1 ON cd1.patient_id = ba.patient_id\n" +
+                        " cd.patient_id ) cd1 ON cd1.patient_id = ba.patient_id " +
                         " WHERE " + buffer +
                         " ORDER BY" +
                         " ba.create_time DESC " +
@@ -184,7 +184,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 "WHERE " + buffer +
                 " ORDER BY " +
                 " ba.create_time, " +
-                " (ba.total + cd1.total) DESC ";
+                " (ba.total + COALESCE(cd1.total,0)) DESC ";
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlCount);
         Long count = 0L;
         if(rstotal!=null&&rstotal.size()>0){
@@ -244,6 +244,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     taskPatientDetailDO.setStatus(Integer.parseInt("0"));
                     taskPatientDetailDO.setCreateTime(new Date());
                     taskPatientDetailDO.setUpdateTime(new Date());
+                    taskPatientDetailDO.setTotal(Long.parseLong("0"));
                     taskPatientDetailDao.save(taskPatientDetailDO);
                 }else if (taskPatientDetailDOS != null && taskDOList.get(0).getPeriod() == 0){
                     String taskSql1 = "select * from wlyy_health_bank_task_patient_detail where task_id = '"+taskDOList.get(0).getId()+
@@ -259,6 +260,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         taskPatientDetailDO.setStatus(Integer.parseInt("0"));
                         taskPatientDetailDO.setCreateTime(new Date());
                         taskPatientDetailDO.setUpdateTime(new Date());
+                        taskPatientDetailDO.setTotal(Long.parseLong("0"));
                         taskPatientDetailDao.save(taskPatientDetailDO);
                     }
                 }
@@ -268,6 +270,18 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 creditsDetailDO1.setFlag(creditsDetailDO.getFlag());
                 List<CreditsDetailDO> creditsDetailDOList = new ArrayList<>();
                 creditsDetailDOList.add(creditsDetailDO1);
+                TaskPatientDetailDO taskPatientDetailDO = new TaskPatientDetailDO();
+                taskPatientDetailDO.setPatientId(creditsDetailDO1.getPatientId());
+                taskPatientDetailDO.setTaskId(creditsDetailDO1.getTransactionId());
+                String taskSql1 = ISqlUtils.getAllSql(taskPatientDetailDO);
+                List<TaskPatientDetailDO> taskPatientDetailDOS1 = jdbcTemplate.query(taskSql1,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+                TaskPatientDetailDO taskPatientDetailDO1 = taskPatientDetailDOS1.get(0);
+                if (creditsDetailDO1.getTradeDirection() == 1){
+                    taskPatientDetailDO1.setTotal(taskPatientDetailDO1.getTotal()+creditsDetailDO1.getIntegrate());
+                }else if (creditsDetailDO.getTradeDirection() == -1){
+                    taskPatientDetailDO1.setTotal(taskPatientDetailDO1.getTotal()-creditsDetailDO1.getIntegrate());
+                }
+                taskPatientDetailDao.save(taskPatientDetailDO1);
                 AccountDO accountDO = accountDao.findOne(creditsDetailDO1.getAccountId());
                 if (creditsDetailDO1.getTradeDirection() == 1){
                     accountDO.setTotal(accountDO.getTotal()+creditsDetailDO1.getIntegrate());
@@ -290,6 +304,88 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             return envelop;
         }
     }
+
+    /**
+     * 活动排名
+     *
+     * @param activityId 活动id
+     * @param ids 微信编码
+     *
+     * @param page 页码
+     *
+     * @param size 分页大小
+     * @return
+     */
+    public Envelop<TaskPatientDetailDO> selectByActivityRanking(String activityId,List<String> ids,Integer page,Integer size){
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("(");
+        if (ids == null || ids.size() == 0){
+            buffer.append("''");
+        }else {
+            for (int i=0;i<ids.size();i++){
+                buffer.append("'"+ids.get(i)+"'").append(",");
+            }
+            buffer.deleteCharAt(buffer.length()-1);
+        }
+        buffer.append(") ");
+        String sql = "SELECT " +
+                " * " +
+                "FROM " +
+                " ( " +
+                " SELECT " +
+                " SUM(ptpd.total) AS total, " +
+                " ptpd.patient_openid AS patient_openid, " +
+                " ptpd.task_id AS task_id, " +
+                " ptpd.activity_id AS activity_id, " +
+                " ptpd.create_time as create_time, " +
+                " ptpd.patient_id AS patient_id " +
+                " FROM " +
+                " wlyy_health_bank_task_patient_detail ptpd " +
+                " WHERE " +
+                " activity_id = '" + activityId +
+                "' GROUP BY " +
+                " patient_openid " +
+                " ORDER BY ptpd.create_time DESC " +
+                " )btpd1 " +
+                " WHERE  patient_openid IN "+buffer+
+                " ORDER BY btpd1.total DESC "+" LIMIT " + (page-1)*size+","+size;
+        List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+        for (TaskPatientDetailDO taskPatientDetailDO : taskPatientDetailDOS){
+            String accountSql = "select * from wlyy_health_bank_account where patient_id = '"+taskPatientDetailDO.getPatientId()+"'";
+            List<AccountDO> accountDOS = jdbcTemplate.query(accountSql,new BeanPropertyRowMapper(AccountDO.class));
+            taskPatientDetailDO.setAccountDO(accountDOS.get(0));
+        }
+        String sqlCount =  "SELECT " +
+                " count(1) AS total " +
+                "FROM " +
+                " ( " +
+                " SELECT " +
+                " SUM(ptpd.total) AS total, " +
+                " ptpd.patient_openid AS patient_openid, " +
+                " ptpd.task_id AS task_id, " +
+                " ptpd.activity_id AS activity_id, " +
+                " ptpd.create_time as create_time, " +
+                " ptpd.patient_id AS patient_id " +
+                " FROM " +
+                " wlyy_health_bank_task_patient_detail ptpd " +
+                " WHERE " +
+                " activity_id = '" + activityId+
+                "' GROUP BY " +
+                " patient_openid " +
+                " ORDER BY ptpd.create_time DESC " +
+                " )btpd1 " +
+                "WHERE  patient_openid IN "+buffer+
+                " ORDER BY btpd1.total DESC ";
+        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlCount);
+        Long count = 0L;
+        if(rstotal!=null&&rstotal.size()>0){
+            count = (Long) rstotal.get(0).get("total");
+        }
+        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskPatientDetailDOS,page,size,count);
+
+    }
+
+
 
     /**
      * 根据活动查询积分
@@ -319,6 +415,10 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 " and patient_id = '" +patientId+
                 "' LIMIT "+(page-1)*size +","+size;
         List<CreditsDetailDO> creditsDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(CreditsDetailDO.class));
+        for (CreditsDetailDO creditsDetailDO : creditsDetailDOS){
+            TaskDO taskDO = taskDao.findOne(creditsDetailDO.getTransactionId());
+            creditsDetailDO.setTaskDO(taskDO);
+        }
         String sqlcount = "SELECT count(1) AS" +
                 " total FROM " +
                 " wlyy_health_bank_credits_detail " +

@@ -63,6 +63,7 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     @Transient
     private String openId;//微信编号
 
+
     public String getSaasId() {
         return saasId;
     }

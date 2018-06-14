@@ -5,6 +5,7 @@ package com.yihu.jw.service;/**
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.ActivityDao;
 import com.yihu.jw.entity.health.bank.ActivityDO;
+import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
@@ -61,7 +62,29 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
     public Envelop<ActivityDO> findByCondition(ActivityDO activityDO,Integer page, Integer size) throws ParseException {
         String sql = new ISqlUtils().getSql(activityDO,page,size,"*");
         List<ActivityDO> activityDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(ActivityDO.class));
-
+        for (ActivityDO activityDO1:activityDOS){
+            String taskSql = "SELECT" +
+                    " COUNT(1) AS total1 " +
+                    "FROM " +
+                    " ( " +
+                    " SELECT DISTINCT " +
+                    "  (btpd.patient_openid) " +
+                    "  FROM " +
+                    "  wlyy_health_bank_task_patient_detail btpd " +
+                    "  WHERE " +
+                    "  activity_id = '" +activityDO1.getId()+
+                    "' ) btpd1";
+            List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(taskSql);
+            Long count = 0L;
+            if(rstotal!=null&&rstotal.size()>0){
+                count = (Long) rstotal.get(0).get("total1");
+            }
+            activityDO1.setTotal(count);
+            String taskSql1 = "select * from wlyy_health_bank_task_patient_detail btpd where activity_id = '"+activityDO1.getId()
+                    +"' and patient_openid = '"+activityDO.getOpenId()+"'";
+            List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(taskSql1,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+            activityDO1.setTaskPatientDetailDOS(taskPatientDetailDOS);
+        }
         String sqlcount = new ISqlUtils().getSql(activityDO,0,0,"count");
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
         Long count = 0L;

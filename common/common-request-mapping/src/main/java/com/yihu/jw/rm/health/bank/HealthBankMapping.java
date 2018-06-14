@@ -13,6 +13,7 @@ public class HealthBankMapping {
         public static final String createAccount = "/createAccount";
         public static final String selectAccount = "/selectAccount";
         public static final String findAccount = "/findAccount";
+        public static final String findAccounByCondition ="/findAccounByCondition";
         public static final String createTask = "/createTask";
         public static final String deleteTask ="/deleteTask";
         public static final String findTask = "/findTask";
@@ -46,6 +47,7 @@ public class HealthBankMapping {
         public static final String findCreditsLogInfo ="/findCreditsLogInfo";
         public static final String selectByActivity = "/selectByActivity";
         public static final String selectByRanking = "/selectByRanking";
+        public static final String selectByActivityRanking = "/selectByActivityRanking";
         public static final String updateCreditsLogInfo ="/updateCreditsLogInfo";
         public static final String exchangeGoods = "/exchangeGoods";
         public static final String findExchangeGoods="/findExchangeGoods";

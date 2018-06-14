@@ -2,6 +2,8 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/5/10.
  */
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.entity.health.bank.AccountDO;
 import com.yihu.jw.entity.health.bank.CreditsDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -14,10 +16,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wangzhinan
@@ -131,5 +133,36 @@ public class AccountController extends EnvelopRestController {
             return Envelop.getError(e.getMessage());
         }
     }*/
+
+
+    /**
+     * 筛选用户
+     * @param object
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.findAccounByCondition)
+    @ApiOperation(value = "按条件获取用户信息")
+    public Envelop<AccountDO> select(@RequestBody JSONObject object){
+        try{
+            JSONArray patientIds = object.getJSONArray("patientIds");
+            JSONArray deviceTypes = object.getJSONArray("deviceTypes");
+            int bindStatus = object.getInteger("bindStatus");
+            Integer page = object.getInteger("page");
+            Integer size = object.getInteger("size");
+            List<String> patientIds1 = new ArrayList<>();
+            for (int i=0;patientIds != null && patientIds.size()!=0&& i<patientIds.size();i++){
+                patientIds1.add(patientIds.getString(i));
+            }
+            List<String> deviceTypes1 = new ArrayList<>();
+            for (int i=0;deviceTypes != null && deviceTypes.size()!=0&& i<deviceTypes.size();i++){
+                deviceTypes1.add(deviceTypes.getString(i));
+            }
+            return service.findByCondition1(patientIds1,bindStatus,deviceTypes1,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 
 }

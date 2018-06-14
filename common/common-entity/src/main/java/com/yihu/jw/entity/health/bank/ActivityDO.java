@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wang zhinan on 2018/4/26.
@@ -58,11 +59,20 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "remark")
     private String remark;//活动备注
 
+    @Column(name = "type")
+    private String type;//活动类型
+
     @Transient
     private String patientId;//居民id
 
     @Transient
     private String openId;//微信编码
+
+    @Transient
+    private Long total;//参加总数
+
+    @Transient
+    private List<TaskPatientDetailDO> taskPatientDetailDOS;//参与活动详情
 
     public String getSaasId() {
         return saasId;
@@ -185,5 +195,29 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
 
     public void setPatientId(String patientId) {
         this.patientId = patientId;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<TaskPatientDetailDO> getTaskPatientDetailDOS() {
+        return taskPatientDetailDOS;
+    }
+
+    public void setTaskPatientDetailDOS(List<TaskPatientDetailDO> taskPatientDetailDOS) {
+        this.taskPatientDetailDOS = taskPatientDetailDOS;
     }
 }
