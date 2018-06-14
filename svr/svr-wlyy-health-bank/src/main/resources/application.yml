@@ -28,8 +28,10 @@ spring:
 hibernate:
   dialect: org.hibernate.dialect.MySQL5Dialect
   show_sql: true
-  ejb:
-    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+#  ejb:
+#    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy #springJPA使用驼峰式(hibernate5以上使用)
+  implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
 
 fast-dfs:
   tracker-server: 172.19.103.54:22122 #服务器地址

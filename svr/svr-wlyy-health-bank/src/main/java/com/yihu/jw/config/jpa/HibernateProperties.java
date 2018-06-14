@@ -16,14 +16,20 @@ public class HibernateProperties {
     private String dialect;
     @Value("${hibernate.show_sql}")
     private String show_sql;
-    @Value("${hibernate.ejb.naming_strategy}")
-    private String naming_strategy;
+//    @Value("${hibernate.ejb.naming_strategy}")
+//    private String naming_strategy;
+    @Value("${hibernate.physical_naming_strategy}")
+    private String physical_naming_strategy;
+    @Value("${hibernate.implicit_naming_strategy}")
+    private String implicit_naming_strategy;
 
     public  Properties hibProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.dialect",dialect);
         properties.put("hibernate.show_sql", show_sql);
-        properties.put("hibernate.ejb.naming_strategy", naming_strategy);
+//        properties.put("hibernate.ejb.naming_strategy", naming_strategy);
+        properties.put("hibernate.physical_naming_strategy", physical_naming_strategy);
+        properties.put("hibernate.implicit_naming_strategy", implicit_naming_strategy);
         return properties;
     }
 }
