@@ -164,7 +164,7 @@ public class SpecialistController extends EnvelopRestController {
     @GetMapping(value = SpecialistMapping.specialist.getDoctorPatientByName)
     @ApiOperation(value = "搜索专科医生居民")
     public Envelop<PatientRelationVO> getDoctorPatientByName(@ApiParam(name = "doctor", value = "医生code") @RequestParam(required = true)String doctor,
-                                                             @ApiParam(name = "name", value = "居民姓名模糊") @RequestParam(required = false)String nameKey,
+                                                             @ApiParam(name = "nameKey", value = "居民姓名模糊") @RequestParam(required = false)String nameKey,
                                                              @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
                                                              @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
         try {

@@ -149,9 +149,23 @@ public class SpecialistService{
                 " r.patient, " +
                 " r.patient_name AS patientName, " +
                 " IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
-                " p.photo " +
+                " p.photo ," +
+                " p.sex," +
+                " h.label_name as health, " +
+                " h.label AS healthcode " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r JOIN "+basedb+".wlyy_patient p ON p.`code` = r.patient " +
+                " LEFT JOIN ( " +
+                " SELECT " +
+                "  t.label, " +
+                "  t.label_name, " +
+                "  t.patient " +
+                " FROM " +
+                "  "+basedb+".wlyy_sign_patient_label_info t " +
+                " WHERE " +
+                "  t.label_type = '8' " +
+                " AND t.`status` = '1' " +
+                " ) h ON h.patient = r.patient " +
                 " WHERE " +
                 " r.health_assistant = '"+assistant+"' LIMIT "+(page-1)*size+","+size;
 
@@ -165,6 +179,7 @@ public class SpecialistService{
         String sql="SELECT " +
                 " p. NAME, " +
                 " p. CODE, " +
+                " p.sex," +
                 " IFNULL( " +
                 "  YEAR ( " +
                 "   from_days(datediff(now(), p.birthday)) " +
@@ -258,10 +273,23 @@ public class SpecialistService{
                 " p.`name` AS patientName, " +
                 " p.photo, " +
                 " IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
-                " p.sex " +
+                " p.sex ," +
+                " h.label_name as health, " +
+                " h.label AS healthcode " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
                 " JOIN "+basedb+".wlyy_patient p ON r.patient = p.`code` " +
+                " LEFT JOIN ( " +
+                " SELECT " +
+                "  t.label, " +
+                "  t.label_name, " +
+                "  t.patient " +
+                " FROM " +
+                "  "+basedb+".wlyy_sign_patient_label_info t " +
+                " WHERE " +
+                "  t.label_type = '8' " +
+                " AND t.`status` = '1' " +
+                " ) h ON h.patient = r.patient " +
                 " WHERE " +
                 " r.doctor='"+doctor+"' " +
                 " AND r.`status`<>'-1'" +
@@ -295,10 +323,23 @@ public class SpecialistService{
                 " p.`name` AS patientName, " +
                 " p.photo, " +
                 " IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
-                " p.sex " +
+                " p.sex, " +
+                " h.label_name as health, " +
+                " h.label AS healthcode " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
                 " JOIN "+basedb+".wlyy_patient p ON r.patient = p.`code` " +
+                " LEFT JOIN ( " +
+                " SELECT " +
+                "  t.label, " +
+                "  t.label_name, " +
+                "  t.patient " +
+                " FROM " +
+                "  "+basedb+".wlyy_sign_patient_label_info t " +
+                " WHERE " +
+                "  t.label_type = '8' " +
+                " AND t.`status` = '1' " +
+                " ) h ON h.patient = r.patient " +
                 " WHERE " +
                 " r.doctor='"+doctor+"' " +
                 " AND r.`status`<>'-1'" +
