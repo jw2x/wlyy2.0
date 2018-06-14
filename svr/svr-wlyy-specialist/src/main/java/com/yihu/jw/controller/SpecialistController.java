@@ -176,6 +176,21 @@ public class SpecialistController extends EnvelopRestController {
         }
     }
 
+    @GetMapping(value = SpecialistMapping.specialist.findPatientNoAssistant)
+    @ApiOperation(value = "获取未分配计管师居民列表")
+    public Envelop<PatientRelationVO> findPatientNoAssistant(@ApiParam(name = "doctor", value = "医生code") @RequestParam(required = true)String doctor,
+                                                             @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
+                                                             @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size){
+        try {
+            return specialistService.findPatientNoAssistant(doctor,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
 
 //    @PostMapping(value = SpecialistMapping.specialist.createArticle)
 //    @ApiOperation(value = "创建专科医生健康文章")

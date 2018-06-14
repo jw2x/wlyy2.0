@@ -7,6 +7,7 @@ import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -84,14 +85,15 @@ public class SpecialistService{
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
                 " WHERE " +
-                " r.patient " +
+                " r.doctor ='"+doctor+"'" +
+                " AND r.patient " +
                 " NOT IN ( " +
                 " SELECT " +
                 " patient " +
                 " FROM " +
                 " "+basedb+".wlyy_sign_patient_label_info i " +
                 " WHERE " +
-                " i.label_type = '5' AND " +
+                " i.label_type = '7' AND " +
                 " i.status = 1 " +
                 " )";
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
@@ -114,7 +116,8 @@ public class SpecialistService{
                 " wlyy_specialist_patient_relation r JOIN "+basedb+".wlyy_patient p ON p.code = r.patient  " +
                 " LEFT JOIN wlyy_patient_hospital_record rd ON r.discharge_record = rd.id " +
                 " WHERE " +
-                " r.patient " +
+                " r.doctor = '"+doctor+"'" +
+                " AND r.patient " +
                 " NOT IN ( " +
                 "  SELECT " +
                 "   i.patient " +
@@ -268,6 +271,43 @@ public class SpecialistService{
         List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
 
         return Envelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+    }
+
+    public Envelop<PatientRelationVO> findPatientNoAssistant(String doctor, Integer page,Integer size){
+
+        String sqlTotal ="SELECT " +
+                " COUNT(1) AS total" +
+                " FROM " +
+                " wlyy_specialist_patient_relation r " +
+                " JOIN "+basedb+".wlyy_patient p ON r.patient = p.`code` " +
+                " WHERE " +
+                " r.doctor='"+doctor+"' " +
+                " AND r.`status`<>'-1'" +
+                " AND r.health_assistant IS NULL ";
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sqlTotal);
+        Long total = 0L;
+        if(list!=null&&list.size()>0){
+            total =  (Long) list.get(0).get("total");
+        }
+
+        String sql ="SELECT " +
+                " p.code AS patient, " +
+                " p.`name` AS patientName, " +
+                " p.photo, " +
+                " IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
+                " p.sex " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r " +
+                " JOIN "+basedb+".wlyy_patient p ON r.patient = p.`code` " +
+                " WHERE " +
+                " r.doctor='"+doctor+"' " +
+                " AND r.`status`<>'-1'" +
+                " AND r.health_assistant IS NULL "+
+                " LIMIT "+(page-1)*size+","+size;
+        List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
+
+        return Envelop.getSuccessList(SpecialistMapping.api_success,patientRelationVOs,total.intValue());
+
     }
 
 //    public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){
