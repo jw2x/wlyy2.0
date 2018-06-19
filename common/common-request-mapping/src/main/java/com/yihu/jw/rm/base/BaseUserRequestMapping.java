@@ -16,6 +16,7 @@ public class BaseUserRequestMapping {
         public static final String api_getOne="/baseRole/getOne";
         public static final String api_getListPage="/baseRole/list";
         public static final String api_getMenusByroleId="/baseMenus/{roleId}";
+        public static final String api_getRoleByPhoneAndSaasId="/baseRole/phoneAndSaasId";
 
         public static final String message_success_create = "baseRole create success";
         public static final String message_success_update = "baseRole update success";

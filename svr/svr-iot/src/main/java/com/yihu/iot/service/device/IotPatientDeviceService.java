@@ -2,18 +2,17 @@ package com.yihu.iot.service.device;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.es.config.ElastricSearchHelper;
-import com.yihu.base.es.config.model.SaveModel;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.device.IotPatientDeviceDao;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.service.common.ElasticSearchQueryGenerator;
+import com.yihu.jw.device.LocationDataDO;
 import com.yihu.jw.iot.device.IotPatientDeviceDO;
-import com.yihu.jw.iot.device.LocationDataDO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
-import com.yihu.jw.restmodel.iot.device.LocationDataVO;
 import com.yihu.jw.util.common.LatitudeUtils;
 import com.yihu.jw.util.date.DateUtil;
 import io.searchbox.client.JestResult;
+import iot.device.LocationDataVO;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author yeshijie on 2018/1/16.
@@ -227,18 +223,18 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      * @return
      */
     public boolean deleteLocationsByIdcardOrSn(String jsonData){
-        List<SaveModel> saveModelList = new ArrayList<>();
+        List<Map<String,Object>> idList = new ArrayList<>();
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
         JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
         List<LocationDataVO> resultList = getESResultBeanList(esResult);
         for(LocationDataVO locationDataVO : resultList){
-            SaveModel saveModel = new SaveModel();
-            saveModel.setId(locationDataVO.getId());
-            saveModelList.add(saveModel);
+                Map<String,Object> map = new HashMap<>();
+                map.put("id",locationDataVO.getId());
+                idList.add(map);
         }
         boolean bool = true;
         try {
-            elastricSearchHelper.deleteData(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,saveModelList);
+            elastricSearchHelper.delete(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,idList);
         }catch (Exception e){
             bool = false;
         }
@@ -252,16 +248,16 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      * @return
      */
     public boolean updateLocationsByIdcardOrSn(String jsonData){
-        List<SaveModel> saveModelList = new ArrayList<>();
+        List<Map<String,Object>> idList = new ArrayList<>();
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
         JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
         List<LocationDataVO> resultList = getESResultBeanList(esResult);
         for(LocationDataVO locationDataVO : resultList){
-            SaveModel saveModel = new SaveModel();
-            saveModel.setId(locationDataVO.getId());
-            saveModelList.add(saveModel);
+            Map<String,Object> map = new HashMap<>();
+            map.put("_id",locationDataVO.getId());
+            idList.add(map);
         }
-        boolean bool = elastricSearchHelper.update(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,saveModelList);
+        boolean bool = elastricSearchHelper.updateByMap(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,idList);
         return bool;
     }
 

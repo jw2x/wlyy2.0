@@ -1,46 +1,45 @@
-//package com.yihu.jw.business.user.contorller;
-//
-//import com.yihu.jw.base.user.BaseEmployRoleDO;
-//import com.yihu.jw.base.user.BaseMenuDO;
-//import com.yihu.jw.base.user.BaseRoleDO;
-//import com.yihu.jw.base.user.BaseRoleMenuDO;
-//import com.yihu.jw.business.user.service.BaseRoleMenuService;
-//import com.yihu.jw.business.user.service.BaseRoleService;
-//import com.yihu.jw.exception.ApiException;
-//import com.yihu.jw.exception.code.ExceptionCode;
-//import com.yihu.jw.restmodel.base.user.BaseEmployVO;
-//import com.yihu.jw.restmodel.base.user.BaseRoleVO;
-//import com.yihu.jw.restmodel.common.Envelop;
-//import com.yihu.jw.restmodel.common.EnvelopRestController;
-//import com.yihu.jw.rm.base.BaseUserRequestMapping;
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
-//import io.swagger.annotations.ApiParam;
-//import org.apache.commons.lang.StringUtils;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.MediaType;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import java.text.ParseException;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-///**
-// * Created by LiTaohong on 2017/11/28.
-// */
-//@RestController
-//@RequestMapping(BaseUserRequestMapping.api_user_common)
-//@Api(description = "基础角色")
-//public class BaseRoleController extends EnvelopRestController {
-//
-//    @Autowired
-//    private BaseRoleService baseRoleService;
-//
+package com.yihu.jw.business.user.contorller;
+
+import com.yihu.jw.base.user.BaseEmployRoleDO;
+import com.yihu.jw.base.user.BaseMenuDO;
+import com.yihu.jw.base.user.BaseRoleDO;
+import com.yihu.jw.base.user.BaseRoleMenuDO;
+import com.yihu.jw.business.user.service.BaseRoleService;
+import com.yihu.jw.exception.ApiException;
+import com.yihu.jw.exception.code.ExceptionCode;
+import com.yihu.jw.restmodel.base.user.BaseEmployVO;
+import com.yihu.jw.restmodel.base.user.BaseRoleVO;
+import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.rm.base.BaseUserRequestMapping;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by LiTaohong on 2017/11/28.
+ */
+@RestController
+@RequestMapping(BaseUserRequestMapping.api_user_common)
+@Api(description = "基础角色")
+public class BaseRoleController extends EnvelopRestController {
+
+    @Autowired
+    private BaseRoleService baseRoleService;
+
 //    @Autowired
 //    private BaseRoleMenuService baseRoleMenuService;
-//
+
 //    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "创建角色", notes = "创建单个角色")
 //    public Envelop createRole(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
@@ -51,7 +50,7 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
+
 //    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "修改角色", notes = "修改角色")
 //    public Envelop updateBaseRole(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
@@ -62,7 +61,7 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
+
 //    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "查询单个角色", notes = "根据角色id查询角色信息")
 //    public Envelop getOneRoleById(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
@@ -73,7 +72,7 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
+
 //    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getOne, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "查询单个角色", notes = "根据平台和角色名称查询角色信息")
 //    public Envelop getOneRoleBySaasIdAndName(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
@@ -84,7 +83,7 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
+
 //    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getlistNoPage, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "查询多个角色", notes = "根据平台id查询所有角色信息，不分页")
 //    public Envelop getRoleListBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
@@ -95,38 +94,38 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
-//    @ApiOperation(value = "根据指定条件查询所有角色列表，分页")
-//    @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getListPage)
-//    public Envelop getRoleListPage(@ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,remark") @RequestParam(value = "fields", required = false) String fields,
-//                                              @ApiParam(name = "filters", value = "过滤器，为空检索所有条件") @RequestParam(value = "filters", required = false) String filters,
-//                                              @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime") @RequestParam(value = "sorts", required = false) String sorts,
-//                                              @ApiParam(name = "size", value = "分页大小", defaultValue = "15") @RequestParam(value = "size", required = false) int size,
-//                                              @ApiParam(name = "page", value = "页码", defaultValue = "1") @RequestParam(value = "page", required = false) int page,
-//                                              HttpServletRequest request, HttpServletResponse response) throws ParseException {
-//        if (StringUtils.isBlank(filters)) {
-//            return Envelop.getError(BaseUserRequestMapping.BaseRole.message_fail_params_not_present, ExceptionCode.common_error_params_code);
-//        } else {
-//            filters = "status<>-1;" + filters;
-//        }
-//        if (StringUtils.isBlank(sorts)) {
-//            sorts = "-updateTime";
-//        }
-//
-//        //得到list数据
-//        List<BaseRoleVO> list = baseRoleService.search(fields, filters, sorts, page, size);
-//
-//        //获取总数
-//        long count = baseRoleService.getCount(filters);
-//        //封装头信息
-//        pagedResponse(request, response, count, page, size);
-//        //封装返回格式
-//        List<BaseRoleVO> mFunctions = convertToModels(list, new ArrayList<>(list.size()), BaseRoleVO.class, fields);
-//
-//        return Envelop.getSuccessListWithPage(BaseUserRequestMapping.BaseRole.message_success_find, mFunctions, page, size, count);
-//    }
-//
-//
+
+    @ApiOperation(value = "根据指定条件查询所有角色列表，分页")
+    @GetMapping(value = BaseUserRequestMapping.BaseRole.api_getListPage)
+    public Envelop getRoleListPage(@ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,name,remark") @RequestParam(value = "fields", required = false) String fields,
+                                              @ApiParam(name = "filters", value = "过滤器，为空检索所有条件") @RequestParam(value = "filters", required = false) String filters,
+                                              @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime") @RequestParam(value = "sorts", required = false) String sorts,
+                                              @ApiParam(name = "size", value = "分页大小", defaultValue = "15") @RequestParam(value = "size", required = false) int size,
+                                              @ApiParam(name = "page", value = "页码", defaultValue = "1") @RequestParam(value = "page", required = false) int page,
+                                              HttpServletRequest request, HttpServletResponse response) throws ParseException {
+        if (StringUtils.isBlank(filters)) {
+            return Envelop.getError(BaseUserRequestMapping.BaseRole.message_fail_params_not_present, ExceptionCode.common_error_params_code);
+        } else {
+            filters = "status<>-1;" + filters;
+        }
+        if (StringUtils.isBlank(sorts)) {
+            sorts = "-updateTime";
+        }
+
+        //得到list数据
+        List<BaseRoleVO> list = baseRoleService.search(fields, filters, sorts, page, size);
+
+        //获取总数
+        long count = baseRoleService.getCount(filters);
+        //封装头信息
+        pagedResponse(request, response, count, page, size);
+        //封装返回格式
+        List<BaseRoleVO> mFunctions = convertToModels(list, new ArrayList<>(list.size()), BaseRoleVO.class, fields);
+
+        return Envelop.getSuccessListWithPage(BaseUserRequestMapping.BaseRole.message_success_find, mFunctions, page, size, count);
+    }
+
+
 //    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "删除角色", notes = "根据角色id删除角色")
 //    public Envelop deleteRole(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
@@ -138,7 +137,7 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
+
 //    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_deleteBySaasId, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "批量删除角色", notes = "删除某一平台下所有角色信息")
 //    public Envelop deleteRolesBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
@@ -150,7 +149,19 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
+
+    @PostMapping(value = BaseUserRequestMapping.BaseRole.api_getRoleByPhoneAndSaasId, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "根据phone和saasid获取role", notes = "根据phone和saasid获取role")
+    public Envelop getPhoneAndSaasId(@ApiParam(name = "phone", value = "电话号码（账号）") @RequestParam(value = "phone", required = true) String phone,
+                                     @ApiParam(name = "saasId", value = "saasId") @RequestParam(value = "saasId", required = true) String saasId){
+        try{
+            List<BaseRoleDO> result = baseRoleService.findByPhoneAndSaasId(phone,saasId);
+            return Envelop.getSuccess("获取数据成功！",result);
+        } catch (ApiException e){
+            return Envelop.getError(e.getMessage(), e.getErrorCode());
+        }
+    }
+
 //    @ApiOperation(value = "給角色添加菜单", notes = "給角色添加菜单")
 //    @PostMapping(value = BaseUserRequestMapping.BaseRoleMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    public Envelop addMenuForRole(@ApiParam(name = "roleId", value = "", defaultValue = "") @RequestBody String roleId,
@@ -216,5 +227,5 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
-//}
+
+}

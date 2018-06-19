@@ -35,7 +35,6 @@ public class DemoController {
     private String aaaa;
 
     @GetMapping("/hello")
-    @ResponseBody
     public Envelop hello1(@RequestParam(name = "id") Integer id,
                           @RequestParam(name = "name") String name,
                           HttpServletRequest request
@@ -60,14 +59,11 @@ public class DemoController {
     }
 
     @GetMapping("/hello2")
-    @ResponseBody
-    public String hello2(String id) throws Exception {
-        System.out.println("haha2.........");
-        return "hello2";
+    public Envelop hello2(String id) throws Exception {
+        return Envelop.getSuccess("hahaha");
     }
 
     @GetMapping("/refresh")
-    @ResponseBody
     public String refresh(HttpServletRequest request) throws Exception {
         return aaaa;
     }

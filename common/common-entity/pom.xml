@@ -6,12 +6,12 @@
     <parent>
         <groupId>com.yihu.base</groupId>
         <artifactId>common-lib-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
         <relativePath>../../common-lib-parent-pom/pom.xml</relativePath>
     </parent>
     <groupId>com.yihu.jw</groupId>
     <artifactId>common-entity</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
 
 
     <dependencies>
@@ -35,26 +35,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.searchbox</groupId>
-            <artifactId>jest-common</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.searchbox</groupId>
-            <artifactId>jest-common</artifactId>
-            <version>2.4.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-elasticsearch</artifactId>
-            <version>2.1.9.RELEASE</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-data-es</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>

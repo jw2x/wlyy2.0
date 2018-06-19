@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public interface EmployFeign {
 
     @RequestMapping(value = BaseUserRequestMapping.BaseEmploy.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
-    Envelop create(@RequestBody String jsonData) throws JiWeiException;
+    Envelop create(@RequestBody String jsonData);
 
     @RequestMapping(value =  BaseUserRequestMapping.BaseEmploy.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.PUT)
     Envelop update(@RequestBody String jsonData) throws JiWeiException;

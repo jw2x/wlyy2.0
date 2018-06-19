@@ -11,5 +11,7 @@ import java.util.List;
  */
 public interface SpecialistPatientRelationDao extends PagingAndSortingRepository<SpecialistPatientRelationDO, String>,
         JpaSpecificationExecutor<SpecialistPatientRelationDO> {
-    public List<SpecialistPatientRelationDO> findByDoctor(String doctor);
+    public List<SpecialistPatientRelationDO> findByDoctorAndStatus(String doctor,String status);
+
+    public SpecialistPatientRelationDO findByDoctorAndPatient(String doctor,String patient);
 }

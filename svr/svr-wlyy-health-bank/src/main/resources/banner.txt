@@ -1,0 +1,8 @@
+${AnsiColor.BRIGHT_YELLOW}
+    _                           __   _       _            _                             _
+   FJ___      ____      ___ _   LJ  FJ_     FJ___        FJ___      ___ _    _ ___     FJ __
+  J  __ `.   F __ J    F __` L  FJ J  _|   J  __ `.     J  __ J    F __` L  J '__ J   J |/ /L
+  | |--| |  | _____J  | |--| | J  L| |-'   | |--| |     | |--| |  | |--| |  | |__| |  |    \
+  F L  J J  F L___--. F L__J J J  LF |__-. F L  J J     F L__J J  F L__J J  F L  J J  F L:\ J
+ J__L  J__LJ\______/FJ\____,__LJ__L\_____/J__L  J__L   J__,____/LJ\____,__LJ__L  J__LJ__L \\_J.
+ |__L  J__| J______F  J____,__F|__|J_____F|__L  J__|   J__,____F  J____,__F|__L  J__||__L  \L_|

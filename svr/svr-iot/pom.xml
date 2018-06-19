@@ -6,13 +6,13 @@
     <parent>
         <groupId>com.yihu.jw</groupId>
         <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.2</version>
         <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>com.yihu.iot</groupId>
     <artifactId>svr-iot</artifactId>
-    <version>1.0.0</version>
+    <version>${parent.version}</version>
     <packaging>war</packaging>
 
     <dependencies>
@@ -35,6 +35,10 @@
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-rest-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model-es</artifactId>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
@@ -142,7 +146,7 @@
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>common-data-es-starter</artifactId>
-            <version>1.0.1</version>
+            <version>1.1.2</version>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
@@ -158,6 +162,11 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
             <version>3.15-beta1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-entity-es</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
     <build>
