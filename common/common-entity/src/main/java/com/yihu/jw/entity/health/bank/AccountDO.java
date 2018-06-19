@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by wang zhinan on 2018/4/26.
@@ -40,10 +41,28 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
     private String hospital;//社区
 
     @Transient
-    private String sum;//总积分（已用积分和剩余积分）
+    private Long sum;//总积分（已用积分和剩余积分）
 
     @Transient
     private int usedTotal;//已用积分
+
+    @Transient
+    private Long nowTotal;//今日获取积分
+
+    @Transient
+    private Long activityTotal;//参与活动数;
+
+    @Transient
+    private Long taskTotal;//参与任务数;
+
+    @Transient
+    private int teamRanking;//团队排名
+
+    @Transient
+    private int cityRanking;//全市排名
+
+    @Transient
+    private List<String> patientIds;//团队居民id
 
     public String getSaasId() {
         return saasId;
@@ -117,11 +136,59 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.hospitalName = hospitalName;
     }
 
-    public String getSum() {
+    public Long getSum() {
         return sum;
     }
 
-    public void setSum(String sum) {
+    public void setSum(Long sum) {
         this.sum = sum;
+    }
+
+    public Long getNowTotal() {
+        return nowTotal;
+    }
+
+    public void setNowTotal(Long nowTotal) {
+        this.nowTotal = nowTotal;
+    }
+
+    public Long getActivityTotal() {
+        return activityTotal;
+    }
+
+    public void setActivityTotal(Long activityTotal) {
+        this.activityTotal = activityTotal;
+    }
+
+    public Long getTaskTotal() {
+        return taskTotal;
+    }
+
+    public void setTaskTotal(Long taskTotal) {
+        this.taskTotal = taskTotal;
+    }
+
+    public int getTeamRanking() {
+        return teamRanking;
+    }
+
+    public void setTeamRanking(int teamRanking) {
+        this.teamRanking = teamRanking;
+    }
+
+    public int getCityRanking() {
+        return cityRanking;
+    }
+
+    public void setCityRanking(int cityRanking) {
+        this.cityRanking = cityRanking;
+    }
+
+    public List<String> getPatientIds() {
+        return patientIds;
+    }
+
+    public void setPatientIds(List<String> patientIds) {
+        this.patientIds = patientIds;
     }
 }

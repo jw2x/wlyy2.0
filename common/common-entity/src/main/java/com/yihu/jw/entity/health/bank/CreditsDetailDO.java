@@ -42,8 +42,14 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     @Column(name = "hospital")
     private String hospital;//社区
 
+    @Column(name = "description")
+    private String description;//积分获取说明
+
     @Transient
     private TaskDO taskDO;//任务对象
+
+    @Transient
+    private String activityId;//活动ID
 
     @Transient
     private ActivityDO activityDO;//活动对象
@@ -62,6 +68,13 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     @Transient
     private String openId;//微信编号
+
+    @Transient
+    private Long stepNumber;//步数
+
+    @Transient
+    private String unionId;
+
 
     public String getSaasId() {
         return saasId;
@@ -189,5 +202,37 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     public void setOpenId(String openId) {
         this.openId = openId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getStepNumber() {
+        return stepNumber;
+    }
+
+    public void setStepNumber(Long stepNumber) {
+        this.stepNumber = stepNumber;
+    }
+
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 }

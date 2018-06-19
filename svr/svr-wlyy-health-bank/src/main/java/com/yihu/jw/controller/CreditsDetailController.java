@@ -2,7 +2,11 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/4/27.
  */
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.yihu.jw.entity.health.bank.AccountDO;
 import com.yihu.jw.entity.health.bank.CreditsDetailDO;
+import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
@@ -10,12 +14,13 @@ import com.yihu.jw.service.CreditsDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import javafx.beans.binding.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wangzhinan
@@ -119,7 +124,7 @@ public class CreditsDetailController extends EnvelopRestController {
      * @param object {"filter":[""],"page":"","size":""}
      * @return
      */
-  /*  @PostMapping(value = HealthBankMapping.healthBank.selectByRanking)
+    @PostMapping(value = HealthBankMapping.healthBank.selectByRanking)
     @ApiOperation(value = "查询积分排名")
     public Envelop<AccountDO> selectByRanking(@RequestBody JSONObject object){
         try{
@@ -136,7 +141,96 @@ public class CreditsDetailController extends EnvelopRestController {
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError(e.getMessage());
         }
-    }*/
+    }
+
+    /**
+     * 活动排名
+     * @param object
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.selectByActivityRanking)
+    @ApiOperation(value = "活动排名")
+    public Envelop<TaskPatientDetailDO> selectByActivityRanking(@RequestBody JSONObject object){
+        try{
+            JSONArray array = object.getJSONArray("filter");
+            String activityId = object.getString("activityId");
+            Integer page = object.getInteger("page");
+            Integer size = object.getInteger("size");
+            List<String> ids = new ArrayList<>();
+            for (int i=0;array != null && array.size()!=0&& i<array.size();i++){
+                ids.add(array.getString(i));
+            }
+            return service.selectByActivityRanking(activityId,ids,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    /**
+     * 根据活动id查找全部活动
+     *
+     * @param activityId 活动ID
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.selectByActivityRanking1)
+    @ApiOperation(value = "根据活动id查找全部排行")
+    public Envelop<TaskPatientDetailDO> selectByActivityRanking1(@ApiParam(name = "activityId",value = "活动id")
+                                                     @RequestParam(value = "activityId",required = true)String activityId,
+                                                     @ApiParam(name = "page", value = "第几页，从1开始")
+                                                     @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
+                                                     @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                                     @RequestParam(value = "size", required = false)Integer size){
+        try{
+            return service.selectByActivityRanking1(activityId,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = HealthBankMapping.healthBank.doctorAddIntegrate)
+    @ApiOperation(value = "添加积分记录")
+    public Envelop<Boolean> doctorAddIntegrate(@RequestBody JSONObject object){
+        try {
+            JSONArray array = object.getJSONArray("patientIds");
+            String ruleId = object.getString("ruleId");
+            String description = object.getString("description");
+            List<String> ids = new ArrayList<>();
+            for (int i=0;array != null && array.size()!=0&& i<array.size();i++){
+                ids.add(array.getString(i));
+            }
+            return service.doctorAddIntegrate(ids,ruleId,description);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    /**
+     * 步数获取积分
+     *
+     * @param creditsDetail 积分对象
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.addStepIntegrate)
+    @ApiOperation(value = "步数获取积分")
+    public Envelop<CreditsDetailDO> addStepIntegrate(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
+                                                 @RequestParam(value = "creditsDetail",required = true)String creditsDetail){
+        try {
+            CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
+            return service.stepAddIntegrate(creditsDetailDO);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 
 
 }
