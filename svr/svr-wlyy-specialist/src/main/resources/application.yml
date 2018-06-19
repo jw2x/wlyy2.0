@@ -99,6 +99,10 @@ fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 ---
 spring:
-  profiles: jwprod
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://59.61.92.90:9069/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: wlyy
+    password: jkzlehr@123
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/

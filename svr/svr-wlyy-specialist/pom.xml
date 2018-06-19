@@ -15,6 +15,26 @@
     <version>${parent.version}</version>
     <packaging>war</packaging>
 
+    <build>
+        <finalName>svr-wlyy-specialist</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.yihu.jw.SvrWlyySpecialistApplication</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
         <dependency>
             <groupId>com.yihu.jw</groupId>

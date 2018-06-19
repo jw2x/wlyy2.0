@@ -25,6 +25,8 @@ public class PatientLabelVO {
     private String health;
     @ApiModelProperty("居民健康情况code")
     private String healthcode;
+    @ApiModelProperty("性别")
+    private String sex;
 
     public String getCode() {
         return code;
@@ -96,5 +98,13 @@ public class PatientLabelVO {
 
     public void setHealthcode(String healthcode) {
         this.healthcode = healthcode;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
     }
 }

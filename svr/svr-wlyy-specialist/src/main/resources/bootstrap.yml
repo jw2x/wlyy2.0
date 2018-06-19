@@ -26,7 +26,6 @@ eureka:
 spring:
   profiles: jwtest
 
-
 eureka:
   client:
     serviceUrl:
@@ -37,7 +36,6 @@ eureka:
 spring:
   profiles: jwdevtest
 
-
 eureka:
   client:
     serviceUrl:
@@ -46,11 +44,10 @@ eureka:
 
 ---
 spring:
-  profiles: jwprod
-
+  profiles: prod
 
 eureka:
   client:
     serviceUrl:
       #http://账号:密码@127.0.0.1:8761/eureka/
-      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/
+      defaultZone: http://jw:jkzl@192.168.120.153:8761/eureka/
