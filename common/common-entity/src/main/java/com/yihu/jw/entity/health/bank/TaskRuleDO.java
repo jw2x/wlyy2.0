@@ -38,6 +38,9 @@ public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
     @Column(name = "java_class_path")
     private String javaClassPath;//java反射类路径
 
+    @Column(name = "period")
+    private int period;//周期性
+
 
     public String getSaasId() {
         return saasId;
@@ -101,5 +104,13 @@ public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
 
     public void setJavaClassPath(String javaClassPath) {
         this.javaClassPath = javaClassPath;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
     }
 }

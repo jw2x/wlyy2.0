@@ -52,7 +52,7 @@ spring:
   profiles: jwdev
 
   datasource:
-    url: jdbc:mysql://172.19.103.77:3306/health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    url: jdbc:mysql://172.19.103.77:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
     password: 123456
   data:
