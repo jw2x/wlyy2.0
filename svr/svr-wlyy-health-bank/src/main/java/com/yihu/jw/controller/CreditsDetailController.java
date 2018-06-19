@@ -197,14 +197,10 @@ public class CreditsDetailController extends EnvelopRestController {
     @ApiOperation(value = "添加积分记录")
     public Envelop<Boolean> doctorAddIntegrate(@RequestBody JSONObject object){
         try {
-            JSONArray array = object.getJSONArray("patientIds");
+            JSONArray array = object.getJSONArray("patient");
             String ruleId = object.getString("ruleId");
             String description = object.getString("description");
-            List<String> ids = new ArrayList<>();
-            for (int i=0;array != null && array.size()!=0&& i<array.size();i++){
-                ids.add(array.getString(i));
-            }
-            return service.doctorAddIntegrate(ids,ruleId,description);
+            return service.doctorAddIntegrate(array,ruleId,description);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
