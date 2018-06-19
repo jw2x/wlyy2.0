@@ -126,10 +126,66 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
                 " SELECT task_id FROM " +
                 "wlyy_health_bank_task_patient_detail" +
                 " WHERE " +
-                " patient_openid = '"+activityDO.getOpenId()+ "' )" +
+                " patient_openid = '"+activityDO.getOpenId()+ "' AND patient_idcard = '"+activityDO.getPatientIdcard()+"' AND union_id = '"+ activityDO.getUnionId()+"')" +
                 " )" +
                 " LIMIT "+(page-1)*size +","+size;
         List<ActivityDO> activityDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(ActivityDO.class));
+        for (ActivityDO activityDO1:activityDOS){
+            String activitySql ="SELECT btpd1.sum AS total FROM (SELECT " +
+                    " SUM(total) AS sum , " +
+                    " patient_id, " +
+                    " patient_openid, " +
+                    " patient_idcard, " +
+                    " activity_id," +
+                    " union_id " +
+                    " FROM " +
+                    " wlyy_health_bank_task_patient_detail " +
+                    "GROUP BY patient_openid,patient_idcard,union_id)btpd1 " +
+                    "WHERE " +
+                    " btpd1.activity_id = '"+activityDO1.getId() +"' AND patient_openid = '"+activityDO.getOpenId()+ "' AND patient_idcard = '"+activityDO.getPatientIdcard()+"' AND union_id = '"+ activityDO.getUnionId()+"'";
+            List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(activitySql);
+            Long count = 0L;
+            if(rstotal!=null&&rstotal.size()>0){
+                Object object =  rstotal.get(0).get("total");
+                count = Long.parseLong(object.toString());
+            }
+            activityDO1.setSum(count);
+            String rankingSql = "SELECT count(1)+1 AS total FROM (SELECT " +
+                    " SUM(total) AS sum , " +
+                    " patient_id, " +
+                    " patient_openid, " +
+                    " patient_idcard, " +
+                    " activity_id " +
+                    "FROM " +
+                    " wlyy_health_bank_task_patient_detail " +
+                    "GROUP BY patient_openid,patient_idcard,union_id)btpd1 " +
+                    "WHERE " +
+                    " btpd1.activity_id = '"+activityDO1.getId()+"' AND btpd1.sum >" +activityDO1.getSum() ;
+            List<Map<String,Object>> rstotal1 = jdbcTemplate.queryForList(rankingSql);
+            Integer count1 = 0;
+            if(rstotal1!=null&&rstotal1.size()>0){
+                Object object =  rstotal1.get(0).get("total");
+                count1 = Integer.parseInt(object.toString());
+            }
+            activityDO1.setActivityRanking(count1);
+            String taskSql = "SELECT" +
+                    " COUNT(1) AS total1 " +
+                    "FROM " +
+                    " ( " +
+                    " SELECT DISTINCT " +
+                    "  (btpd.patient_openid) " +
+                    "  FROM " +
+                    "  wlyy_health_bank_task_patient_detail btpd " +
+                    "  WHERE " +
+                    "  activity_id = '" +activityDO1.getId()+
+                    "' ) btpd1";
+            List<Map<String,Object>> rstotal2 = jdbcTemplate.queryForList(taskSql);
+            Long count2 = 0L;
+            if(rstotal2!=null&&rstotal2.size()>0){
+                count2 = (Long) rstotal2.get(0).get("total1");
+            }
+            activityDO1.setTotal(count2);
+        }
         String sqlcount = "SELECT count(1) AS total" +
                 " FROM wlyy_health_bank_activity " +
                 "WHERE " +
@@ -140,7 +196,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
                 " SELECT task_id FROM " +
                 "wlyy_health_bank_task_patient_detail" +
                 " WHERE " +
-                " patient_openid = '"+activityDO.getOpenId()+ "' )" +
+                " patient_openid = '"+activityDO.getOpenId()+ "' AND patient_idcard = '"+activityDO.getPatientIdcard()+"' AND union_id = '"+ activityDO.getUnionId()+"' )" +
                 " )";
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
         Long count = 0L;

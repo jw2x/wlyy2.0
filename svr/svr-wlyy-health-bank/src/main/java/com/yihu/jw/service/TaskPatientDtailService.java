@@ -75,13 +75,14 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
         String activitySql = "select * from wlyy_health_bank_task where transaction_id = '" + taskPatientDetailDO.getActivityId() +"'";
         List<TaskDO> taskDOList = jdbcTemplate.query(activitySql,new BeanPropertyRowMapper(TaskDO.class));
         StringBuffer buffer = new StringBuffer();
-        buffer.append(" and task_id in (");
+        buffer.append(" and task_id IN (");
         for (TaskDO taskDO : taskDOList){
             buffer.append("'"+taskDO.getId()+"'").append(",");
         }
         buffer.deleteCharAt(buffer.length()-1);
         buffer.append(")");
-        String sql = "select * from wlyy_health_bank_task_patient_detail where patient_openid = '"+taskPatientDetailDO.getPatientOpenid()+"'"+buffer;
+        String sql = "select * from wlyy_health_bank_task_patient_detail where patient_openid = '"+taskPatientDetailDO.getPatientOpenid()+"' " +
+                "AND patient_idcard = '"+taskPatientDetailDO.getPatientIdcard()+"' AND union_id = '"+taskPatientDetailDO.getUnionId()+"'"+buffer;
         List<TaskPatientDetailDO> taskPatientDetailDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
         if (taskPatientDetailDOList != null && taskPatientDetailDOList.size() !=0){
             throw new Exception("该微信账号已报名过！");

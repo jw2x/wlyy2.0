@@ -14,6 +14,7 @@ import com.yihu.jw.service.CreditsDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import javafx.beans.binding.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
@@ -166,5 +167,70 @@ public class CreditsDetailController extends EnvelopRestController {
             return Envelop.getError(e.getMessage());
         }
     }
+
+    /**
+     * 根据活动id查找全部活动
+     *
+     * @param activityId 活动ID
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.selectByActivityRanking1)
+    @ApiOperation(value = "根据活动id查找全部排行")
+    public Envelop<TaskPatientDetailDO> selectByActivityRanking1(@ApiParam(name = "activityId",value = "活动id")
+                                                     @RequestParam(value = "activityId",required = true)String activityId,
+                                                     @ApiParam(name = "page", value = "第几页，从1开始")
+                                                     @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
+                                                     @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                                     @RequestParam(value = "size", required = false)Integer size){
+        try{
+            return service.selectByActivityRanking1(activityId,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = HealthBankMapping.healthBank.doctorAddIntegrate)
+    @ApiOperation(value = "添加积分记录")
+    public Envelop<Boolean> doctorAddIntegrate(@RequestBody JSONObject object){
+        try {
+            JSONArray array = object.getJSONArray("patientIds");
+            String ruleId = object.getString("ruleId");
+            String description = object.getString("description");
+            List<String> ids = new ArrayList<>();
+            for (int i=0;array != null && array.size()!=0&& i<array.size();i++){
+                ids.add(array.getString(i));
+            }
+            return service.doctorAddIntegrate(ids,ruleId,description);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    /**
+     * 步数获取积分
+     *
+     * @param creditsDetail 积分对象
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.addStepIntegrate)
+    @ApiOperation(value = "步数获取积分")
+    public Envelop<CreditsDetailDO> addStepIntegrate(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
+                                                 @RequestParam(value = "creditsDetail",required = true)String creditsDetail){
+        try {
+            CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
+            return service.stepAddIntegrate(creditsDetailDO);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
 
 }

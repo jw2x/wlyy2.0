@@ -69,10 +69,22 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
     private String openId;//微信编码
 
     @Transient
+    private String unionId;
+
+    @Transient
+    private String patientIdcard;//身份证号
+
+    @Transient
     private Long total;//参加总数
 
     @Transient
+    private int activityRanking;//活动中的排名
+
+    @Transient
     private List<TaskPatientDetailDO> taskPatientDetailDOS;//参与活动详情
+
+    @Transient
+    private Long sum;//活动积分总数
 
     public String getSaasId() {
         return saasId;
@@ -219,5 +231,37 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
 
     public void setTaskPatientDetailDOS(List<TaskPatientDetailDO> taskPatientDetailDOS) {
         this.taskPatientDetailDOS = taskPatientDetailDOS;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
+    }
+
+    public String getPatientIdcard() {
+        return patientIdcard;
+    }
+
+    public void setPatientIdcard(String patientIdcard) {
+        this.patientIdcard = patientIdcard;
+    }
+
+    public int getActivityRanking() {
+        return activityRanking;
+    }
+
+    public void setActivityRanking(int activityRanking) {
+        this.activityRanking = activityRanking;
+    }
+
+    public Long getSum() {
+        return sum;
+    }
+
+    public void setSum(Long sum) {
+        this.sum = sum;
     }
 }

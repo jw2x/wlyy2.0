@@ -42,6 +42,9 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
     @Column(name = "total")
     private Long total;//活动中获取的积分
 
+    @Column(name = "union_id")
+    private String unionId;
+
     @Transient
     private AccountDO accountDO;//账户信息
 
@@ -123,5 +126,13 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
 
     public void setAccountDO(AccountDO accountDO) {
         this.accountDO = accountDO;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 }
