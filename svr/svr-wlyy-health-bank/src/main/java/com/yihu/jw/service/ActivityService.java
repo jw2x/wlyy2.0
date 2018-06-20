@@ -126,7 +126,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
                 " SELECT task_id FROM " +
                 "wlyy_health_bank_task_patient_detail" +
                 " WHERE " +
-                " patient_openid = '"+activityDO.getOpenId()+ "' AND patient_idcard = '"+activityDO.getPatientIdcard()+"' AND union_id = '"+ activityDO.getUnionId()+"')" +
+                " patient_openid = '"+activityDO.getOpenId()+ "' AND patient_idcard = '"+activityDO.getPatientIdcard()+"' OR union_id = '"+ activityDO.getUnionId()+"')" +
                 " )" +
                 " LIMIT "+(page-1)*size +","+size;
         List<ActivityDO> activityDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(ActivityDO.class));
@@ -172,13 +172,12 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
                     " COUNT(1) AS total1 " +
                     "FROM " +
                     " ( " +
-                    " SELECT DISTINCT " +
-                    "  (btpd.patient_openid) " +
+                    " SELECT * " +
                     "  FROM " +
                     "  wlyy_health_bank_task_patient_detail btpd " +
                     "  WHERE " +
                     "  activity_id = '" +activityDO1.getId()+
-                    "' ) btpd1";
+                    "' GROUP BY patient_openid,patient_idcard,union_id) btpd1";
             List<Map<String,Object>> rstotal2 = jdbcTemplate.queryForList(taskSql);
             Long count2 = 0L;
             if(rstotal2!=null&&rstotal2.size()>0){

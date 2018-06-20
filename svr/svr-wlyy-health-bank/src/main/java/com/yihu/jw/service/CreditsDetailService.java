@@ -11,6 +11,8 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.DateUtils;
 import com.yihu.jw.util.ISqlUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,6 +34,7 @@ import java.util.Map;
 @Transactional
 public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,CredittsLogDetailDao> {
 
+    private Logger logger = LoggerFactory.getLogger(CreditsDetailService.class);
 
     @Autowired
     private CredittsLogDetailDao credittsLogDetailDao;
@@ -231,7 +234,9 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 String sql = ISqlUtils.getSql(taskDO,1,1,"*");
                 List<TaskDO> taskDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
                 creditsDetailDO.setTransactionId(taskDOList.get(0).getId());
-                TaskRuleDO taskRuleDO = taskRuleDao.findOne(taskDOList.get(0).getRuleCode());
+                String ruleSql = "SELECT * FROM wlyy_health_bank_task_rule WHERE id= '"+taskDOList.get(0).getRuleCode()+"'";
+                List<TaskRuleDO> taskRuleDOS = jdbcTemplate.query(ruleSql,new BeanPropertyRowMapper(TaskRuleDO.class));
+                TaskRuleDO taskRuleDO = taskRuleDOS.get(0);
                 creditsDetailDO.setIntegrate(taskRuleDO.getIntegrate());
                 creditsDetailDO.setTradeDirection(taskRuleDO.getTradeDirection());
                 String taskSql = "select * from wlyy_health_bank_task_patient_detail where task_id = '"+taskDOList.get(0).getId()+"' and patient_id = '" + creditsDetailDO.getPatientId() +"'";
@@ -475,7 +480,9 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 " )btpd1 " +
                 " ORDER BY btpd1.total DESC "+" LIMIT " + (page-1)*size+","+size;
         List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
-        for (TaskPatientDetailDO taskPatientDetailDO : taskPatientDetailDOS){
+        logger.info(taskPatientDetailDOS.toString()+""+taskPatientDetailDOS.size());
+        for (int i = 0;taskPatientDetailDOS != null&&taskPatientDetailDOS.size()!=0 && i<taskPatientDetailDOS.size();i++){
+            TaskPatientDetailDO taskPatientDetailDO = taskPatientDetailDOS.get(i);
             String accountSql = "select * from wlyy_health_bank_account where patient_id = '"+taskPatientDetailDO.getPatientId()+"'";
             List<AccountDO> accountDOS = jdbcTemplate.query(accountSql,new BeanPropertyRowMapper(AccountDO.class));
             taskPatientDetailDO.setAccountDO(accountDOS.get(0));
