@@ -75,7 +75,7 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
             String activitySql = "SELECT  COUNT(*) AS total FROM ( SELECT * FROM " +
                     "wlyy_health_bank_task_patient_detail " +
                     " WHERE patient_id = '" + accountDO1.getPatientId()+
-                    "' GROUP BY activity_id ) btpd1";
+                    "'AND activity_id != '' GROUP BY activity_id ) btpd1";
             List<Map<String,Object>> rstotal1 = jdbcTemplate.queryForList(activitySql);
             Long activityCount = 0L;
             if(rstotal1!=null&&rstotal1.size()>0){
