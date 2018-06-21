@@ -106,11 +106,12 @@ public class SpecialistController extends EnvelopRestController {
 
     @GetMapping(value = SpecialistMapping.specialist.findPatientRelatioByAssistant)
     @ApiOperation(value = "根据计管师获取居民信息")
-    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(@ApiParam(name = "assistant", value = "计管师") @RequestParam(required = true)String assistant,
+    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor,
+                                                                    @ApiParam(name = "assistant", value = "计管师") @RequestParam(required = true)String assistant,
                                                                     @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
                                                                     @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
         try {
-            return specialistService.findPatientRelatioByAssistant(assistant,page,size);
+            return specialistService.findPatientRelatioByAssistant(doctor,assistant,page,size);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -151,9 +152,10 @@ public class SpecialistController extends EnvelopRestController {
 
     @GetMapping(value = SpecialistMapping.specialist.getAssistantPatientCount)
     @ApiOperation(value = "根据计管获取居民数量")
-    public Envelop<Long> getAssistantPatientCount(@ApiParam(name = "doctor", value = "计管师医生") @RequestParam(required = true)String doctor) {
+    public Envelop<Long> getAssistantPatientCount(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor,
+                                                  @ApiParam(name = "assistant", value = "计管师医生") @RequestParam(required = true)String assistant) {
         try {
-            return specialistService.getAssistantPatientCount(doctor);
+            return specialistService.getAssistantPatientCount(doctor,assistant);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

@@ -144,7 +144,7 @@ public class SpecialistService{
         return Envelop.getSuccess(SpecialistMapping.api_success,true);
     }
 
-    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(String assistant,Integer page,Integer size){
+    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(String doctor ,String assistant,Integer page,Integer size){
         String sql ="SELECT " +
                 " r.patient, " +
                 " r.patient_name AS patientName, " +
@@ -167,7 +167,8 @@ public class SpecialistService{
                 " AND t.`status` = '1' " +
                 " ) h ON h.patient = r.patient " +
                 " WHERE " +
-                " r.health_assistant = '"+assistant+"' LIMIT "+(page-1)*size+","+size;
+                "  r.doctor = '"+doctor+"'"+
+                " AND r.health_assistant = '"+assistant+"' LIMIT "+(page-1)*size+","+size;
 
         List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
 
@@ -191,7 +192,9 @@ public class SpecialistService{
                 " lb.label, " +
                 " p.photo, " +
                 " h.label_name as health, " +
-                " h.label AS healthcode " +
+                " h.label AS healthcode ," +
+                " s.health_assistant AS healthAssistant," +
+                " s.health_assistant_name AS healthAssistantName" +
                 " FROM " +
                 " ( " +
                 "  SELECT " +
@@ -255,9 +258,9 @@ public class SpecialistService{
         return Envelop.getSuccess(SpecialistMapping.api_success,count);
     }
 
-    public Envelop<Long> getAssistantPatientCount(String doctor){
+    public Envelop<Long> getAssistantPatientCount(String doctor,String assistant){
 
-        String sql = "SELECT COUNT(1) AS total FROM wlyy_specialist_patient_relation r WHERE r.health_assistant = '"+doctor+"' AND r.`status` <> '-1' ";
+        String sql = "SELECT COUNT(1) AS total FROM wlyy_specialist_patient_relation r WHERE r.doctor ='"+doctor+"'  AND r.health_assistant = '"+assistant+"' AND r.`status` <> '-1' ";
 
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
         Long count = 0L;
@@ -308,6 +311,17 @@ public class SpecialistService{
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
                 " JOIN "+basedb+".wlyy_patient p ON r.patient = p.`code` " +
+                " JOIN ( " +
+                " SELECT " +
+                "  t.label, " +
+                "  t.label_name, " +
+                "  t.patient " +
+                " FROM " +
+                "  "+basedb+".wlyy_sign_patient_label_info t " +
+                " WHERE " +
+                "  t.label_type = '8' " +
+                " AND t.`status` = '1' " +
+                " ) h ON h.patient = r.patient " +
                 " WHERE " +
                 " r.doctor='"+doctor+"' " +
                 " AND r.`status`<>'-1'" +
@@ -329,7 +343,7 @@ public class SpecialistService{
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
                 " JOIN "+basedb+".wlyy_patient p ON r.patient = p.`code` " +
-                " LEFT JOIN ( " +
+                " JOIN ( " +
                 " SELECT " +
                 "  t.label, " +
                 "  t.label_name, " +
