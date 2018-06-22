@@ -144,20 +144,14 @@ public class AccountController extends EnvelopRestController {
     @ApiOperation(value = "按条件获取用户信息")
     public Envelop<AccountDO> select(@RequestBody JSONObject object){
         try{
-            JSONArray patientIds = object.getJSONArray("patientIds");
+            JSONArray patientIds = object.getJSONArray("patients");
             JSONArray deviceTypes = object.getJSONArray("deviceTypes");
             int bindStatus = object.getInteger("bindStatus");
+            String ruleId = object.getString("ruleId");
             Integer page = object.getInteger("page");
             Integer size = object.getInteger("size");
-            List<String> patientIds1 = new ArrayList<>();
-            for (int i=0;patientIds != null && patientIds.size()!=0&& i<patientIds.size();i++){
-                patientIds1.add(patientIds.getString(i));
-            }
             List<String> deviceTypes1 = new ArrayList<>();
-            for (int i=0;deviceTypes != null && deviceTypes.size()!=0&& i<deviceTypes.size();i++){
-                deviceTypes1.add(deviceTypes.getString(i));
-            }
-            return service.findByCondition1(patientIds1,bindStatus,deviceTypes1,page,size);
+            return service.findByCondition1(patientIds,ruleId,page,size);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

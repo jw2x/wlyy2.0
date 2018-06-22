@@ -80,8 +80,8 @@ spring:
   profiles: jwtest
   datasource:
     url: jdbc:mysql://172.17.110.160:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
-    username: linzhou
-    password: linzhou
+    username: ssgg
+    password: ssgg
   data:
     elasticsearch: #ElasticsearchProperties
       cluster-name: jkzl #默认即为elasticsearch  集群名
