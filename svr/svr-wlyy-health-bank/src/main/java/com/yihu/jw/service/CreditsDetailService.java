@@ -152,7 +152,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         "ba.hospital AS hospital," +
                         "ba.total AS total," +
                         "ba.create_time AS create_time," +
-                        "(ba.total +COALESCE((cd1.total),0)) AS sum" +
+                        " if(ba.total=0,ba.total,(ba.total +COALESCE((cd1.total),0))) AS sum" +
                         " FROM" +
                         " wlyy_health_bank_account ba" +
                         " LEFT JOIN ( " +
