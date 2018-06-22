@@ -25,6 +25,10 @@ public class ISqlUtils {
         }else if(isFlag.equalsIgnoreCase("*")){
             sb.append("select * from ").append(tableName).append(" where 1=1 ");
         }
+        JSONObject object1  = (JSONObject) JSONObject.toJSON(object);
+        if (object1.getString("id") !=null){
+            sb.append(" and id = '" + object1.getString("id")+"' ");
+        }
         Field[] fArray= c.getDeclaredFields();
         for(Field f:fArray){
                 //拿到字段后与实体类中的属性匹配，并得到其get方法，用来获取他的属性值
@@ -52,7 +56,7 @@ public class ISqlUtils {
                 }
         }
         if(isFlag.equalsIgnoreCase("*")){
-            sb.append("ORDER BY update_time DESC ").append("LIMIT ").append((page-1)*size+",").append(size);
+            sb.append(" ORDER BY update_time DESC ").append("LIMIT ").append((page-1)*size+",").append(size);
         }
         return sb.toString();
     }

@@ -191,4 +191,5 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
     public void setOpenId(String openId) {
         this.openId = openId;
     }
+
 }

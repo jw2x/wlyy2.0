@@ -6,7 +6,6 @@ import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.ActivityDao;
 import com.yihu.jw.dao.TaskDao;
 import com.yihu.jw.dao.TaskPatientDetailDao;
-import com.yihu.jw.entity.health.bank.ActivityDO;
 import com.yihu.jw.entity.health.bank.TaskDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.entity.health.bank.TaskRangDO;
@@ -73,12 +72,25 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
         taskPatientDetailDO.setCreateTime(new Date());
         taskPatientDetailDO.setUpdateTime(new Date());
         taskPatientDetailDO.setStatus(Integer.parseInt("0"));
-        String sql = "select * from wlyy_health_bank_task_patient_detail where patient_openid = '"+taskPatientDetailDO.getPatientOpenid()+"'";
+        String activitySql = "select * from wlyy_health_bank_task where transaction_id = '" + taskPatientDetailDO.getActivityId() +"'";
+        List<TaskDO> taskDOList = jdbcTemplate.query(activitySql,new BeanPropertyRowMapper(TaskDO.class));
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(" and task_id IN (");
+        for (TaskDO taskDO : taskDOList){
+            buffer.append("'"+taskDO.getId()+"'").append(",");
+        }
+        buffer.deleteCharAt(buffer.length()-1);
+        buffer.append(")");
+        String sql = "select * from wlyy_health_bank_task_patient_detail where patient_openid = '"+taskPatientDetailDO.getPatientOpenid()+"'"+buffer;
         List<TaskPatientDetailDO> taskPatientDetailDOList = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
         if (taskPatientDetailDOList != null && taskPatientDetailDOList.size() !=0){
             throw new Exception("该微信账号已报名过！");
         }
-        taskPatientDetailDao.save(taskPatientDetailDO);
+        for (TaskDO taskDO : taskDOList){
+            taskPatientDetailDO.setTotal(Long.parseLong("0"));
+            taskPatientDetailDO.setTaskId(taskDO.getId());
+            taskPatientDetailDao.save(taskPatientDetailDO);
+        }
         envelop.setObj(true);
         return envelop;
     }
@@ -99,29 +111,4 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
     }
 
 
-    /**
-     * 我参与的活动
-     *
-     * @param taskPatientDetailDO 参与信息对象
-     * @param page 页码
-     * @param size 分页大小
-     * @return
-     */
-    public Envelop<TaskPatientDetailDO> selectByPatient(TaskPatientDetailDO taskPatientDetailDO,Integer page,Integer size){
-        String sql = new ISqlUtils().getSql(taskPatientDetailDO,page,size,"*");
-        List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
-        for (TaskPatientDetailDO taskPatientDetailDO1:taskPatientDetailDOS){
-            TaskDO taskDO = taskDao.findOne(taskPatientDetailDO1.getTaskId());
-            ActivityDO activityDO = activityDao.findOne(taskDO.getTransactionId());
-            taskDO.setActivityDO(activityDO);
-            taskPatientDetailDO1.setTaskDO(taskDO);
-        }
-        String sqlcount = new ISqlUtils().getSql(taskPatientDetailDO,0,0,"count");
-        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
-        Long count = 0L;
-        if(rstotal!=null&&rstotal.size()>0){
-            count = (Long) rstotal.get(0).get("total");
-        }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskPatientDetailDOS,page,size,count);
-    }
 }

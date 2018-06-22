@@ -1,5 +1,7 @@
 package com.yihu.jw.rm.health.bank;
 
+import javax.print.DocFlavor;
+
 /**
  * Created by Trick on 2018/2/7.
  */
@@ -13,6 +15,7 @@ public class HealthBankMapping {
         public static final String createAccount = "/createAccount";
         public static final String selectAccount = "/selectAccount";
         public static final String findAccount = "/findAccount";
+        public static final String findAccounByCondition ="/findAccounByCondition";
         public static final String createTask = "/createTask";
         public static final String deleteTask ="/deleteTask";
         public static final String findTask = "/findTask";
@@ -46,6 +49,8 @@ public class HealthBankMapping {
         public static final String findCreditsLogInfo ="/findCreditsLogInfo";
         public static final String selectByActivity = "/selectByActivity";
         public static final String selectByRanking = "/selectByRanking";
+        public static final String selectByActivityRanking = "/selectByActivityRanking";
+        public static final String selectByActivityRanking1 = "/selectByActivityRanking1";
         public static final String updateCreditsLogInfo ="/updateCreditsLogInfo";
         public static final String exchangeGoods = "/exchangeGoods";
         public static final String findExchangeGoods="/findExchangeGoods";
@@ -54,5 +59,7 @@ public class HealthBankMapping {
         public static final String deleteRule = "/deleteRule";
         public static final String findRules = "/findRules";
         public static final String createActiveRecord="/createActiveRecord";
+        public static final String doctorAddIntegrate = "/doctorAddIntegrate";
+        public static final String addStepIntegrate = "/addStepIntegrate";
     }
 }

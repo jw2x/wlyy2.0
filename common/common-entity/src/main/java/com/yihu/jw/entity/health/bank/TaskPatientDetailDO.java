@@ -5,6 +5,7 @@ import com.yihu.jw.IdEntityWithOperation;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -35,6 +36,17 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
     @Column(name = "task_id")
     private String taskId;//任务id
 
+    @Column(name = "activity_id")
+    private String activityId;//活动id
+
+    @Column(name = "total")
+    private Long total;//活动中获取的积分
+
+    @Column(name = "union_id")
+    private String unionId;
+
+    @Transient
+    private AccountDO accountDO;//账户信息
 
     public String getSaasId() {
         return saasId;
@@ -92,4 +104,35 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
         this.taskId = taskId;
     }
 
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
+    }
+
+    public Long getTotal() {
+        return total;
+    }
+
+    public void setTotal(Long total) {
+        this.total = total;
+    }
+
+    public AccountDO getAccountDO() {
+        return accountDO;
+    }
+
+    public void setAccountDO(AccountDO accountDO) {
+        this.accountDO = accountDO;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
+    }
 }
