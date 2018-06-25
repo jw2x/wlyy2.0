@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -152,7 +153,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         "ba.hospital AS hospital," +
                         "ba.total AS total," +
                         "ba.create_time AS create_time," +
-                        "(ba.total +COALESCE((cd1.total),0)) AS sum" +
+                        " if(ba.total=0,ba.total,(ba.total +COALESCE((cd1.total),0))) AS sum" +
                         " FROM" +
                         " wlyy_health_bank_account ba" +
                         " LEFT JOIN ( " +
@@ -252,6 +253,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     taskPatientDetailDO.setStatus(Integer.parseInt("0"));
                     taskPatientDetailDO.setCreateTime(new Date());
                     taskPatientDetailDO.setUpdateTime(new Date());
+                    taskPatientDetailDO.setActivityId(taskDO.getTransactionId());
                     taskPatientDetailDO.setTotal(Long.parseLong("0"));
                     taskPatientDetailDao.save(taskPatientDetailDO);
                 }else if (taskPatientDetailDOS != null && taskDOList.get(0).getPeriod() == 0){
@@ -265,6 +267,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         taskPatientDetailDO.setPatientId(creditsDetailDO.getPatientId());
                         taskPatientDetailDO.setPatientIdcard(creditsDetailDO.getIdCard());
                         taskPatientDetailDO.setPatientOpenid(creditsDetailDO.getOpenId());
+                        taskPatientDetailDO.setActivityId(taskDO.getTransactionId());
                         taskPatientDetailDO.setStatus(Integer.parseInt("0"));
                         taskPatientDetailDO.setCreateTime(new Date());
                         taskPatientDetailDO.setUpdateTime(new Date());
@@ -352,10 +355,10 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 " WHERE " +
                 " activity_id = '" + activityId +
                 "' GROUP BY " +
-                " patient_openid " +
+                " patient_id " +
                 " ORDER BY ptpd.create_time DESC " +
                 " )btpd1 " +
-                " WHERE  patient_openid IN "+buffer+
+                " WHERE  patient_id IN "+buffer+
                 " ORDER BY btpd1.total DESC "+" LIMIT " + (page-1)*size+","+size;
         List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
         for (TaskPatientDetailDO taskPatientDetailDO : taskPatientDetailDOS){
@@ -525,7 +528,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param ruleId 规则id
      * @return
      */
-    public Envelop<Boolean> doctorAddIntegrate(JSONArray array, String ruleId, String description){
+    public Envelop<Boolean> doctorAddIntegrate(JSONArray array, String ruleId, String description) throws Exception {
         Envelop<Boolean> envelop = new Envelop<>();
         for (int i=0;i<array.size();i++){
             TaskRuleDO taskRuleDO = taskRuleDao.findOne(ruleId);
@@ -553,6 +556,24 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 taskDO1 = taskDao.save(taskDO);
             }else {
                 taskDO1 = taskDOList.get(0);
+            }
+            if (taskRuleDO.getPeriod() == 1){
+                    String sql = "select * from wlyy_health_bank_task_patient_detail where patient_id = '"+patientId+"'AND task_id ='"+taskDO1.getId()+"'";
+                    List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+                    if (taskPatientDetailDOS != null && taskPatientDetailDOS.size() != 0){
+                        throw new Exception("已奖励过");
+                    }
+            }else if (taskRuleDO.getPeriod() == 0){
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = new Date();
+                    String date1 = dateFormat.format(date);
+                    String begin = DateUtils.getMinMonthDate(date1);
+                    String end = DateUtils.getMaxMonthDate(date1);
+                    String sql = "select * from wlyy_health_bank_task_patient_detail where patient_id = '"+patientId+"'AND task_id ='"+taskDO1.getId()+"' AND create_time > '"+begin+"' AND create_time < '"+end+"'";
+                    List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+                    if (taskPatientDetailDOS != null && taskPatientDetailDOS.size() != 0){
+                        throw new Exception("已奖励过");
+                    }
             }
             String sql1 = "select * from wlyy_health_bank_task_patient_detail where task_id = '"+taskDO1.getId()+"' " +
                     "AND patient_idcard = '"+idCard+"' AND patient_openid = '"+openId+"' AND union_id = '"+unionId+"'";
@@ -583,23 +604,23 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     creditsDetailDO.setStatus(0);
                     creditsDetailDO.setDescription(description);
                     credittsLogDetailDao.save(creditsDetailDO);
-                    CreditsDetailDO creditsDetailDO1 = new CreditsDetailDO();
-                    creditsDetailDO1.setStatus(1);
-                    creditsDetailDO1.setAccountId(accountDOS.get(0).getId());
-                    creditsDetailDO1.setHospital("350205");
-                    creditsDetailDO1.setPatientId(patientId);
-                    creditsDetailDO1.setIntegrate(taskRuleDO.getIntegrate());
-                    creditsDetailDO1.setTradeDirection(taskRuleDO.getTradeDirection());
-                    creditsDetailDO1.setDescription(description);
-                    creditsDetailDO1.setCreateTime(new Date());
-                    creditsDetailDO1.setUpdateTime(new Date());
-                    creditsDetailDO1.setTransactionId(taskDO1.getId());
-                    creditsDetailDO1.setTradeType("HEALTH_TASK");
-                    credittsLogDetailDao.save(creditsDetailDO);
                     AccountDO accountDO = accountDOS.get(0);
                     accountDO.setTotal(0);
                     accountDao.save(accountDO);
                 }
+                CreditsDetailDO creditsDetailDO1 = new CreditsDetailDO();
+                creditsDetailDO1.setStatus(1);
+                creditsDetailDO1.setAccountId(accountDOS.get(0).getId());
+                creditsDetailDO1.setHospital("350205");
+                creditsDetailDO1.setPatientId(patientId);
+                creditsDetailDO1.setIntegrate(taskRuleDO.getIntegrate());
+                creditsDetailDO1.setTradeDirection(taskRuleDO.getTradeDirection());
+                creditsDetailDO1.setDescription(description);
+                creditsDetailDO1.setCreateTime(new Date());
+                creditsDetailDO1.setUpdateTime(new Date());
+                creditsDetailDO1.setTransactionId(taskDO1.getId());
+                creditsDetailDO1.setTradeType("HEALTH_TASK");
+                credittsLogDetailDao.save(creditsDetailDO1);
             }else{
                 CreditsDetailDO creditsDetailDO = new CreditsDetailDO();
                 creditsDetailDO.setStatus(1);
@@ -701,7 +722,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 if (creditsDetailDOS != null && creditsDetailDOS.size() != 0){
                     CreditsDetailDO creditsDetailDO1 = creditsDetailDOS.get(0);
                     TaskRuleDO taskRuleDO = taskRuleDao.findOne(taskDO.getRuleCode());
-                    if (creditsDetailDO.getStepNumber() == 5000){
+                    if (creditsDetailDO.getStepNumber() == 50){
                         creditsDetailDO1.setIntegrate(1);
                         creditsDetailDO1.setTradeDirection(1);
                         CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
@@ -713,7 +734,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         taskPatientDetailDao.save(taskPatientDetailDO);
                         creditsDetailDOS.clear();
                         creditsDetailDOS.add(creditsDetailDO2);
-                    }else if (creditsDetailDO.getStepNumber() == 10000){
+                    }else if (creditsDetailDO.getStepNumber() == 100){
                         creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+2);
                         creditsDetailDO1.setTradeDirection(1);
                         CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
@@ -725,8 +746,12 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         taskPatientDetailDao.save(taskPatientDetailDO);
                         creditsDetailDOS.clear();
                         creditsDetailDOS.add(creditsDetailDO2);
-                    }else if (creditsDetailDO.getStepNumber() == 50000){
-                        creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+5);
+                    }else if (creditsDetailDO.getStepNumber() == 500){
+                        if (creditsDetailDO1.getIntegrate() == 1){
+                            creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+7);
+                        }else if(creditsDetailDO1.getIntegrate() == 3){
+                            creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+5);
+                        }
                         creditsDetailDO1.setTradeDirection(1);
                         CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
                         AccountDO accountDO = accountDao.findOne(creditsDetailDO2.getAccountId());
@@ -739,14 +764,14 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     }
                 }else{
                     CreditsDetailDO creditsDetailDO1 = new CreditsDetailDO();
-                    if (creditsDetailDO.getStepNumber() == 5000){
+                    if (creditsDetailDO.getStepNumber() == 50){
                         creditsDetailDO1.setIntegrate(1);
                         creditsDetailDO1.setTradeDirection(1);
 
-                    }else if (creditsDetailDO.getStepNumber() == 10000){
+                    }else if (creditsDetailDO.getStepNumber() == 100){
                         creditsDetailDO1.setIntegrate(3);
                         creditsDetailDO1.setTradeDirection(1);
-                    }else if (creditsDetailDO.getStepNumber() == 50000){
+                    }else if (creditsDetailDO.getStepNumber() == 500){
                         creditsDetailDO1.setIntegrate(8);
                         creditsDetailDO1.setTradeDirection(1);
                     }

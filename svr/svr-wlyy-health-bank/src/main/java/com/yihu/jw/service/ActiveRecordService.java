@@ -56,6 +56,9 @@ public class ActiveRecordService extends BaseJpaService<ActiveRecordDO,ActiveRec
             activeRecordDO.setTaskId(taskId);
             TaskDO taskDO = taskDao.findOne(taskId);
             activeRecordDO.setTaskTitle(taskDO!=null?taskDO.getTitle():null);
+            if(StringUtils.isEmpty(activityId)&&"ACTIVITY_TASK".equals(taskDO.getType())){
+                activityId = taskDO.getTransactionId();
+            }
         }
         if(!StringUtils.isEmpty(activityId)){
             activeRecordDO.setActivityId(activityId);

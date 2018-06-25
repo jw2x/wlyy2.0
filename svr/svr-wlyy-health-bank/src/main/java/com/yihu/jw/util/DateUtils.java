@@ -30,4 +30,30 @@ public  class DateUtils {
           cal.set(Calendar.SECOND, 59);
           return sdf.format(cal.getTime());
       }
+    // 获得当前月--开始日期
+    public static String getMinMonthDate(String date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(dateFormat.parse(date));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMinimum(Calendar.DAY_OF_MONTH));
+            return dateFormat.format(calendar.getTime());
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    // 获得当前月--结束日期
+    public static String getMaxMonthDate(String date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar = Calendar.getInstance();
+        try {
+            calendar.setTime(dateFormat.parse(date));
+            calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
+            return dateFormat.format(calendar.getTime());
+        }  catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
