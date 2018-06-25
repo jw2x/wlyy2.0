@@ -74,9 +74,10 @@ public class ActiveRecordService extends BaseJpaService<ActiveRecordDO,ActiveRec
             activeRecordDO.setPatientName(result.get("name")+"");
         }
         String sql2 = "select f.* from wlyy.wlyy_sign_family f where f.patient='"+patientId+"' and f.status=1 and f.expenses_status=1";
-        Map<String,Object> result2 = jdbcTemplate.queryForMap(sql2);
-        if(result2!=null){
-            activeRecordDO.setTeamId(result2.get("admin_team_code")!=null?(Integer)result2.get("admin_team_code"):null);;
+//        Map<String,Object> result2 = jdbcTemplate.queryForMap(sql2);
+        List<Map<String, Object>> result2 = jdbcTemplate.queryForList(sql2);
+        if(result2!=null&&result2.size()>0){
+            activeRecordDO.setTeamId(result2.get(0).get("admin_team_code")!=null?(Integer)result2.get(0).get("admin_team_code"):null);;
         }
         return activeRecordDao.save(activeRecordDO);
     }
