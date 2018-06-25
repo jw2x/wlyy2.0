@@ -180,12 +180,14 @@ public class CreditsDetailController extends EnvelopRestController {
     @ApiOperation(value = "根据活动id查找全部排行")
     public Envelop<TaskPatientDetailDO> selectByActivityRanking1(@ApiParam(name = "activityId",value = "活动id")
                                                      @RequestParam(value = "activityId",required = true)String activityId,
+                                                     @ApiParam(name = "patientId",value = "居民id")
+                                                     @RequestParam(value = "patientId",required = true)String patientId,
                                                      @ApiParam(name = "page", value = "第几页，从1开始")
                                                      @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
                                                      @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                                      @RequestParam(value = "size", required = false)Integer size){
         try{
-            return service.selectByActivityRanking1(activityId,page,size);
+            return service.selectByActivityRanking1(activityId,patientId,page,size);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

@@ -72,8 +72,8 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
         List<AccountDO> accountDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(AccountDO.class));
         for (AccountDO accountDO1:accountDOS){
             String sql1 = "select COALESCE(sum(bcd.integrate),0) as total from wlyy_health_bank_credits_detail bcd where bcd.trade_direction = 1" +
-                    " AND bcd.create_time > '"+ DateUtils.getDayBegin()+"' AND bcd.create_time < '"+DateUtils.getDayEnd()+"' AND bcd.patient_id = " +
-                    " '"+ accountDO1.getPatientId() +"'";
+                    " AND bcd.create_time > '"+ DateUtils.getDayBegin()+"' AND bcd.create_time < '"+DateUtils.getDayEnd()+"' AND bcd.patient_id = '" + accountDO1.getPatientId() +"'"
+                    +"AND transaction_id = '"+accountDO.getTaskId()+"'";
             List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql1);
             Long count = 0L;
             if(rstotal!=null&&rstotal.size()>0){
@@ -81,6 +81,17 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
                 count = Long.parseLong(object.toString());
             }
             accountDO1.setNowTotal(count);
+            String activitySql1 =" SELECT " +
+                    " SUM(ptpd.total) AS total FROM wlyy_health_bank_task_patient_detail ptpd " +
+                    " WHERE " +" task_id = '" + accountDO.getTaskId() + "' " +
+                    "and patient_id = '"+accountDO1.getPatientId()+"'";
+            List<Map<String,Object>> rstotal6 = jdbcTemplate.queryForList(activitySql1);
+            Long activityIntegrate = 0L;
+            if(rstotal6!=null&&rstotal6.size()>0){
+                Object object = rstotal6.get(0).get("total");
+                activityIntegrate = Long.parseLong(object.toString());
+            }
+            accountDO1.setActivityIntegrate(activityIntegrate);
             String activitySql = "SELECT  COUNT(*) AS total FROM ( SELECT * FROM " +
                     "wlyy_health_bank_task_patient_detail " +
                     " WHERE patient_id = '" + accountDO1.getPatientId()+
