@@ -110,5 +110,20 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
         return envelop;
     }
 
-
+    /**
+     * 获取参与活动信息
+     *
+     * @param openId 微信id
+     * @param idCard 身份证号
+     * @param unionId
+     * @param taskCode 任务标识
+     * @return
+     */
+    public TaskPatientDetailDO selectByPatientId(String openId,String idCard,String unionId,String taskCode){
+        String sql ="select * from wlyy_health_bank_task_patient_detail where patient_openid = '"+openId+"'" +
+                " AND patient_idcard = '"+idCard+"' AND union_id ='"+unionId+"' AND task_id = " +
+                "(select id from wlyy_health_bank_task where task_code = '"+taskCode+"' )";
+        List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+        return taskPatientDetailDOS.get(0);
+    }
 }
