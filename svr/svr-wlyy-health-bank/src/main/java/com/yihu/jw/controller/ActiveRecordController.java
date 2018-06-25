@@ -26,7 +26,7 @@ public class ActiveRecordController extends EnvelopRestController {
 
     @PostMapping(value = HealthBankMapping.healthBank.createActiveRecord)
     @ApiOperation(value = "添加健康银行活动活跃记录")
-    public Envelop<ActiveRecordDO> addActiveRecord(@ApiParam(name = "saasId",value = "saasId")@RequestParam(value = "saasId",required = true)String saasId,
+    public Envelop<ActiveRecordDO> addActiveRecord(@ApiParam(name = "saasId",value = "saasId")@RequestParam(value = "saasId",required = false)String saasId,
                                                    @ApiParam(name = "taskId",value = "任务id")@RequestParam(value = "taskId",required = false)String taskId,
                                                    @ApiParam(name = "activityId",value = "活动的id")@RequestParam(value = "activityId",required = false)String activityId,
                                                    @ApiParam(name = "originalStatus",value = "原有状态")@RequestParam(value = "originalStatus",required = true)Integer originalStatus,
