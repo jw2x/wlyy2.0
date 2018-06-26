@@ -93,8 +93,8 @@ spring:
 
   datasource:
     url: jdbc:mysql://172.19.103.85/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
-    username: linzhou
-    password: linzhou
+    username: ssgg
+    password: ssgg
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 ---
