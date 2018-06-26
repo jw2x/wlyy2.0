@@ -78,7 +78,9 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
             Long count = 0L;
             if(rstotal!=null&&rstotal.size()>0){
                 Object object = rstotal.get(0).get("total");
-                count = Long.parseLong(object.toString());
+                if (object != null){
+                    count = Long.parseLong(object.toString());
+                }
             }
             accountDO1.setNowTotal(count);
             String activitySql1 =" SELECT " +
@@ -89,7 +91,9 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
             Long activityIntegrate = 0L;
             if(rstotal6!=null&&rstotal6.size()>0){
                 Object object = rstotal6.get(0).get("total");
-                activityIntegrate = Long.parseLong(object.toString());
+                if (object!=null){
+                    activityIntegrate = Long.parseLong(object.toString());
+                }
             }
             accountDO1.setActivityIntegrate(activityIntegrate);
             String activitySql = "SELECT  COUNT(*) AS total FROM ( SELECT * FROM " +
@@ -100,7 +104,9 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
             Long activityCount = 0L;
             if(rstotal1!=null&&rstotal1.size()>0){
                 Object object = rstotal1.get(0).get("total");
-                activityCount = Long.parseLong(object.toString());
+                if (object != null){
+                    activityCount = Long.parseLong(object.toString());
+                }
             }
             accountDO1.setActivityTotal(activityCount);
             String taskSql = "SELECT  COUNT(*) AS total FROM ( SELECT * FROM " +
@@ -111,7 +117,9 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
             Long taskCount = 0L;
             if(rstotal2!=null&&rstotal2.size()>0){
                 Object object = rstotal2.get(0).get("total");
-                taskCount = Long.parseLong(object.toString());
+                if (object != null ){
+                    taskCount = Long.parseLong(object.toString());
+                }
             }
             accountDO1.setTaskTotal(taskCount);
             if (accountDO.getPatientIds() != null && accountDO.getPatientIds().size() != 0){
@@ -145,7 +153,9 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
                     Long Count = 0L;
                     if(rstotal3!=null&&rstotal3.size()>0){
                         Object object = rstotal3.get(0).get("total");
-                        Count = Long.parseLong(object.toString());
+                        if (object!=null){
+                            Count = Long.parseLong(object.toString());
+                        }
                     }
                     accountDO1.setSum(Count);
                     StringBuffer buffer1 = new StringBuffer();
@@ -161,10 +171,10 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
                             " ( " +
                             " SELECT " +
                             " ba.id AS id, " +
-                            " ba.total + COALESCE (bacd1.sum, 0) AS sum " +
+                            " ba.total /*+ COALESCE (bacd1.sum, 0)*/ AS sum " +
                             " FROM " +
                             " wlyy_health_bank_account ba " +
-                            " LEFT JOIN ( " +
+                            /*" LEFT JOIN ( " +
                             " SELECT " +
                             " COALESCE (SUM(bacd.integrate), 0) AS sum, " +
                             " bacd.account_id " +
@@ -173,7 +183,7 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
                             " WHERE " +
                             " bacd.trade_direction = - 1 " +
                             " GROUP BY " +
-                            " bacd.account_id ) bacd1 ON ba.id = bacd1.account_id " +
+                            " bacd.account_id ) bacd1 ON ba.id = bacd1.account_id "+*/
                             " WHERE " +
                             " ba.id IN " +buffer1+
                             " )ba1 WHERE ba1.sum > "+accountDO1.getSum();
@@ -181,7 +191,10 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
                     Integer Count1 = 0;
                     if(rstotal4!=null&&rstotal4.size()>0){
                         Object object = rstotal4.get(0).get("total");
-                        Count1 = Integer.parseInt(object.toString());
+                        if (object != null){
+                            Count1 = Integer.parseInt(object.toString());
+                        }
+
                     }
                     accountDO1.setTeamRanking(Count1);
 
@@ -191,10 +204,10 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
                             " ( " +
                             " SELECT " +
                             " ba.id AS id, " +
-                            " ba.total + COALESCE (bacd1.sum, 0) AS sum " +
+                            " ba.total /*+ COALESCE (bacd1.sum, 0)*/ AS sum " +
                             " FROM " +
                             " wlyy_health_bank_account ba " +
-                            " LEFT JOIN ( " +
+                            /*" LEFT JOIN ( " +
                             " SELECT " +
                             " COALESCE (SUM(bacd.integrate), 0) AS sum, " +
                             " bacd.account_id " +
@@ -203,13 +216,15 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
                             " WHERE " +
                             " bacd.trade_direction = - 1 " +
                             " GROUP BY " +
-                            " bacd.account_id ) bacd1 ON ba.id = bacd1.account_id " +
+                            " bacd.account_id ) bacd1 ON ba.id = bacd1.account_id " +*/
                             " )ba1 WHERE ba1.sum > "+accountDO1.getSum();
                     List<Map<String,Object>> rstotal5 = jdbcTemplate.queryForList(sql4);
                     Integer Count2 = 0;
                     if(rstotal5!=null&&rstotal5.size()>0){
                         Object object = rstotal5.get(0).get("total");
-                        Count2 = Integer.parseInt(object.toString());
+                        if (object != null){
+                            Count2 = Integer.parseInt(object.toString());
+                        }
                     }
                     accountDO1.setCityRanking(Count2);
                 }
