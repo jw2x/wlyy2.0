@@ -5,6 +5,7 @@ package com.yihu.jw.service;/**
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.ActivityDao;
 import com.yihu.jw.entity.health.bank.ActivityDO;
+import com.yihu.jw.entity.health.bank.TaskDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
@@ -84,6 +85,9 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
                     +"' and patient_openid = '"+activityDO.getOpenId()+"'";
             List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(taskSql1,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
             activityDO1.setTaskPatientDetailDOS(taskPatientDetailDOS);
+            String tasksql = "select * from wlyy_health_bank_task where transaction_id = '"+activityDO1.getId()+"'";
+            List<TaskDO> taskDOList = jdbcTemplate.query(tasksql,new BeanPropertyRowMapper(TaskDO.class));
+            activityDO1.setTaskDOS(taskDOList);
         }
         String sqlcount = new ISqlUtils().getSql(activityDO,0,0,"count");
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);

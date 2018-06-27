@@ -2,6 +2,7 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/4/27.
  */
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.mysql.query.BaseJpaService;
@@ -11,9 +12,11 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.DateUtils;
 import com.yihu.jw.util.ISqlUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -37,6 +40,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
 
     private Logger logger = LoggerFactory.getLogger(CreditsDetailService.class);
 
+    private static String STEP = "health:blank:step";
     @Autowired
     private CredittsLogDetailDao credittsLogDetailDao;
     @Autowired
@@ -51,6 +55,8 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
     private TaskPatientDetailDao taskPatientDetailDao;
     @Autowired
     private TaskRuleDao taskRuleDao;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
    /**
      *  find creditsLogInfo
@@ -622,7 +628,8 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             String sql = "select * from wlyy_health_bank_account where patient_id = '"+patientId+"'";
             List<AccountDO> accountDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(AccountDO.class));
             if (taskRuleDO.getTradeDirection() == -1 && taskRuleDO.getIntegrate() == 0){
-                String integrateSql = "select * from wlyy_health_bank_credits_detail where patient_id = '"+patientId+"'";
+                String integrateSql = "select * from wlyy_health_bank_credits_detail where patient_id = '"+patientId+"' " +
+                        "AND transaction_id IN (SELECT id FROM wlyy_health_bank_task WHERE task_code IN ('BP_BIND','GLU_BIND','BP_MEASURE','GLU_MEASURE'))";
                 List<CreditsDetailDO> creditsDetailDOS = jdbcTemplate.query(integrateSql,new BeanPropertyRowMapper(CreditsDetailDO.class));
                 for (CreditsDetailDO creditsDetailDO:creditsDetailDOS){
                     creditsDetailDO.setStatus(0);
@@ -743,10 +750,18 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         "transaction_id = '"+creditsDetailDO.getTransactionId()+"' AND create_time > '"+DateUtils.getDayBegin() +"' AND" +
                         " create_time < '"+DateUtils.getDayEnd()+"'";
                 List<CreditsDetailDO> creditsDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CreditsDetailDO.class));
+                String step = redisTemplate.opsForValue().get(STEP);
+                if (StringUtils.isEmpty(step)){
+                    throw new Exception("获取步数失败！");
+                }
+                JSONObject object = JSONObject.parseObject(step);
+                int step1 = object.getInteger("step1");
+                int step2 = object.getInteger("step2");
+                int step3 = object.getInteger("step3");
                 if (creditsDetailDOS != null && creditsDetailDOS.size() != 0){
                     CreditsDetailDO creditsDetailDO1 = creditsDetailDOS.get(0);
                     TaskRuleDO taskRuleDO = taskRuleDao.findOne(taskDO.getRuleCode());
-                    if (creditsDetailDO.getStepNumber() == 50){
+                    if (creditsDetailDO.getStepNumber() == step1){
                         creditsDetailDO1.setIntegrate(1);
                         creditsDetailDO1.setTradeDirection(1);
                         CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
@@ -758,7 +773,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         taskPatientDetailDao.save(taskPatientDetailDO);
                         creditsDetailDOS.clear();
                         creditsDetailDOS.add(creditsDetailDO2);
-                    }else if (creditsDetailDO.getStepNumber() == 100){
+                    }else if (creditsDetailDO.getStepNumber() == step2){
                         creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+2);
                         creditsDetailDO1.setTradeDirection(1);
                         CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
@@ -770,7 +785,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         taskPatientDetailDao.save(taskPatientDetailDO);
                         creditsDetailDOS.clear();
                         creditsDetailDOS.add(creditsDetailDO2);
-                    }else if (creditsDetailDO.getStepNumber() == 500){
+                    }else if (creditsDetailDO.getStepNumber() == step3){
                         if (creditsDetailDO1.getIntegrate() == 1){
                             creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+7);
                             creditsDetailDO1.setTradeDirection(1);
@@ -800,13 +815,13 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     }
                 }else{
                     CreditsDetailDO creditsDetailDO1 = new CreditsDetailDO();
-                    if (creditsDetailDO.getStepNumber() == 50){
+                    if (creditsDetailDO.getStepNumber() == step1){
                         creditsDetailDO1.setIntegrate(1);
                         creditsDetailDO1.setTradeDirection(1);
-                    }else if (creditsDetailDO.getStepNumber() == 100){
+                    }else if (creditsDetailDO.getStepNumber() == step2){
                         creditsDetailDO1.setIntegrate(3);
                         creditsDetailDO1.setTradeDirection(1);
-                    }else if (creditsDetailDO.getStepNumber() == 500){
+                    }else if (creditsDetailDO.getStepNumber() == step3){
                         creditsDetailDO1.setIntegrate(8);
                         creditsDetailDO1.setTradeDirection(1);
                     }
