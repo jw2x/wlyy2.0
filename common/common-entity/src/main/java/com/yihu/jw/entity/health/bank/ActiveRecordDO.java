@@ -124,7 +124,7 @@ public class ActiveRecordDO extends IdEntity implements Serializable {
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    @Column(name = "create_time", nullable = true, length = 0,updatable = false)
+    @Column(name = "create_time", nullable = false, length = 0,updatable = false)
     public Date getCreateTime() {
         return createTime;
     }
