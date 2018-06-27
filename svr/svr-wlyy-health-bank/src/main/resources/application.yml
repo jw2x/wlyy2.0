@@ -75,6 +75,9 @@ spring:
       password: # Login password.
       proxy.port:  # Proxy port the HTTP client should use.
       proxy.host:  # Proxy host the HTTP client should use.
+  redis:
+      host: 172.19.103.88 # Redis server host.
+      port: 6379 # Redis server port.
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
@@ -83,8 +86,8 @@ spring:
   profiles: jwtest
   datasource:
     url: jdbc:mysql://172.17.110.160:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
-    username: ssgg
-    password: ssgg
+    username: linzhou
+    password: linzhou
   data:
     elasticsearch: #ElasticsearchProperties
       cluster-name: jkzl #默认即为elasticsearch  集群名
@@ -103,6 +106,9 @@ spring:
       password: # Login password.
       proxy.port:  # Proxy port the HTTP client should use.
       proxy.host:  # Proxy host the HTTP client should use.
+  redis:
+      host: 172.19.103.88 # Redis server host.
+      port: 6379 # Redis server port.
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
@@ -128,6 +134,10 @@ spring:
   #     uris: [图片]http://172.19.103.68:9200
       connection-timeout: 60000 # Connection timeout in milliseconds.
       multi-threaded: true # Enable connection requests from multiple execution threads.
+  redis:
+       host: 59.61.92.90 # Redis server host.
+       port: 9054  # Redis server port.
+       password: jkzlehr
   #      username: # Login user.
   #      password: # Login password.
   #      proxy.port:  # Proxy port the HTTP client should use.
