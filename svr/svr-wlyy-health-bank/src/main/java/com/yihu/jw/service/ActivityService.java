@@ -82,7 +82,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
             }
             activityDO1.setTotal(count);
             String taskSql1 = "select * from wlyy_health_bank_task_patient_detail btpd where activity_id = '"+activityDO1.getId()
-                    +"' and patient_openid = '"+activityDO.getOpenId()+"'";
+                    +"' and (patient_idcard = '"+activityDO.getPatientIdcard()+"' OR union_id = '"+activityDO.getUnionId()+"')";
             List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(taskSql1,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
             activityDO1.setTaskPatientDetailDOS(taskPatientDetailDOS);
             String tasksql = "select * from wlyy_health_bank_task where transaction_id = '"+activityDO1.getId()+"'";
