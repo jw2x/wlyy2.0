@@ -33,29 +33,29 @@ public class ISqlUtils {
         }
         Field[] fArray= c.getDeclaredFields();
         for(Field f:fArray){
-                //拿到字段后与实体类中的属性匹配，并得到其get方法，用来获取他的属性值
-                String getMethodName ="";
-                boolean isCExist =f.isAnnotationPresent(Column.class);
-                if(isCExist){
-                    Column mc =f.getAnnotation(Column.class);
-                    String columeName =mc.name();  //字段对应数据库名字
-                    String name =f.getName();       //字段名字
-                    Object value=null;              //字段值
-                    getMethodName="get"+name.substring(0,1).toUpperCase()+name.substring(1);//拼接属性的get方法
-                    try {
-                        Method m =c.getMethod(getMethodName);
-                        value =(Object)m.invoke(object);     //拿到属性的值
-                        if(value == null || "".equals(value) /*|| value.equals(Integer.parseInt("0"))*/){  //如果属性没值，不拼接sql
-                            continue;
-                        }
-                        else if(value instanceof String){
-                            value ="'%"+value+"%'";
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+            //拿到字段后与实体类中的属性匹配，并得到其get方法，用来获取他的属性值
+            String getMethodName ="";
+            boolean isCExist =f.isAnnotationPresent(Column.class);
+            if(isCExist){
+                Column mc =f.getAnnotation(Column.class);
+                String columeName =mc.name();  //字段对应数据库名字
+                String name =f.getName();       //字段名字
+                Object value=null;              //字段值
+                getMethodName="get"+name.substring(0,1).toUpperCase()+name.substring(1);//拼接属性的get方法
+                try {
+                    Method m =c.getMethod(getMethodName);
+                    value =(Object)m.invoke(object);     //拿到属性的值
+                    if(value == null || "".equals(value) || value.equals(Integer.parseInt("0"))){  //如果属性没值，不拼接sql
+                        continue;
                     }
-                    sb.append(" and ").append(columeName +" like " ).append(value+"");
+                    else if(value instanceof String){
+                        value ="'"+value+"'";
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+                sb.append(" and ").append(columeName +"=" ).append(value+"");
+            }
         }
         if(isFlag.equalsIgnoreCase("*")){
             sb.append(" ORDER BY update_time DESC ").append("LIMIT ").append((page-1)*size+",").append(size);
