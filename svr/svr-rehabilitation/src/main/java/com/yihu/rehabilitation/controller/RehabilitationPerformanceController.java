@@ -12,6 +12,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author humingfen on 2018/5/2.
  */
@@ -44,10 +46,10 @@ public class RehabilitationPerformanceController extends EnvelopRestController {
         }
     }
 
-    @GetMapping(value = RehabilitationRequestMapping.Performance.api_create)
+    @PostMapping(value = RehabilitationRequestMapping.Performance.api_create)
     @ApiOperation(value = "创建康复计划执行情况", notes = "创建康复计划执行情况")
     public Envelop<RehabilitationPerformanceDO> createPerformance(@ApiParam(name = "jsonData", value = "基本信息Json", defaultValue = "")
-                                                            @RequestParam(value = "jsonData", required = false) String jsonData) {
+                                                            @RequestBody String jsonData) {
         try {
             RehabilitationPerformanceDO performanceDO = toEntity(jsonData, RehabilitationPerformanceDO.class);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_create, performanceService.create(performanceDO));
@@ -70,10 +72,23 @@ public class RehabilitationPerformanceController extends EnvelopRestController {
         }
     }
 
+    @GetMapping(value = RehabilitationRequestMapping.Performance.findPerformanceByPatientId)
+    @ApiOperation(value = "根据patientId查找康复计划执行情况", notes = "根据patientId查找康复计划执行情况")
+    public Envelop<RehabilitationPerformanceDO> findByPatientId(@ApiParam(name = "patientId", value = "patientId")
+                                                         @RequestParam(value = "patientId", required = true) String patientId) {
+        try {
+            List<RehabilitationPerformanceDO> performanceDO = performanceService.findByPatientId(patientId);
+            return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, performanceDO);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
     @PostMapping(value = RehabilitationRequestMapping.Performance.api_update)
     @ApiOperation(value = "修改康复计划执行情况", notes = "修改康复计划执行情况(记得传入修改id)")
     public Envelop updatePerformance(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
-                                  @RequestParam(value = "jsonData", required = true)String jsonData) {
+                                  @RequestBody String jsonData) {
         try {
             RehabilitationPerformanceDO PerformanceDO = toEntity(jsonData, RehabilitationPerformanceDO.class);
             performanceService.update(PerformanceDO);
