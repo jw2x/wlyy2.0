@@ -2,7 +2,6 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/4/27.
  */
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.mysql.query.BaseJpaService;
@@ -869,4 +868,22 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             return envelop;
         }
     }
+
+  /*  public JSONObject getStepNumber(){
+        String step = redisTemplate.opsForValue().get(STEP);
+        logger.info("redis数据:"+step);
+        String sql = ""
+        String step1 = systemDictDao.
+        logger.info("数据库的数据:"+step1);
+        if (step != null && step.equalsIgnoreCase(step1)){
+            JSONObject jsonObject = JSONObject.parseObject(step);
+            logger.info("数据不一致:"+jsonObject.toString());
+            return jsonObject;
+        }else {
+            JSONObject jsonObject = JSONObject.parseObject(step);
+            redisTemplate.opsForValue().set(STEP,step1);
+            logger.info("数据一致:"+jsonObject.toString());
+            return jsonObject;
+        }
+    }*/
 }

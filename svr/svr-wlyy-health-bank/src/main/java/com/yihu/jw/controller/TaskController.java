@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author wangzhinan
  * @create 2018-04-27 9:29
@@ -119,6 +122,33 @@ public class TaskController extends EnvelopRestController {
         }
     }
 
+
+    /**
+     * 删除任务
+     *
+     * @param ids id集合[]
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.batchTask)
+    @ApiOperation(value = "批量删除任务")
+    public Envelop<Boolean> batchDelete(@ApiParam(name="ids",value = "id集合[]")
+                                        @RequestParam(value = "ids",required = false)String ids){
+        try{
+            Envelop<Boolean> envelop = new Envelop<>();
+            JSONArray array = JSONArray.parseArray(ids);
+            List<String> taskIds = new ArrayList<>();
+            for (int i = 0;i<array.size();i++){
+                taskIds.add(array.getString(i));
+            }
+            service.batchDelete(taskIds);
+            envelop.setObj(true);
+            return envelop;
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 
 
     /**//**
