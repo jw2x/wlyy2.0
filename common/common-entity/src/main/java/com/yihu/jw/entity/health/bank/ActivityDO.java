@@ -84,6 +84,9 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
     private List<TaskPatientDetailDO> taskPatientDetailDOS;//参与活动详情
 
     @Transient
+    private List<TaskDO> taskDOS;//活动任务列表
+
+    @Transient
     private Long sum;//活动积分总数
 
     public String getSaasId() {
@@ -263,5 +266,13 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
 
     public void setSum(Long sum) {
         this.sum = sum;
+    }
+
+    public List<TaskDO> getTaskDOS() {
+        return taskDOS;
+    }
+
+    public void setTaskDOS(List<TaskDO> taskDOS) {
+        this.taskDOS = taskDOS;
     }
 }

@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,9 @@ public class ActiveRecordService extends BaseJpaService<ActiveRecordDO,ActiveRec
             activeRecordDO.setTaskId(taskId);
             TaskDO taskDO = taskDao.findOne(taskId);
             activeRecordDO.setTaskTitle(taskDO!=null?taskDO.getTitle():null);
+            if(StringUtils.isEmpty(activityId)&&"ACTIVITY_TASK".equals(taskDO.getType())){
+                activityId = taskDO.getTransactionId();
+            }
         }
         if(!StringUtils.isEmpty(activityId)){
             activeRecordDO.setActivityId(activityId);
@@ -71,10 +75,12 @@ public class ActiveRecordService extends BaseJpaService<ActiveRecordDO,ActiveRec
             activeRecordDO.setPatientName(result.get("name")+"");
         }
         String sql2 = "select f.* from wlyy.wlyy_sign_family f where f.patient='"+patientId+"' and f.status=1 and f.expenses_status=1";
-        Map<String,Object> result2 = jdbcTemplate.queryForMap(sql2);
-        if(result2!=null){
-            activeRecordDO.setTeamId(result2.get("admin_team_code")!=null?(Integer)result2.get("admin_team_code"):null);;
+//        Map<String,Object> result2 = jdbcTemplate.queryForMap(sql2);
+        List<Map<String, Object>> result2 = jdbcTemplate.queryForList(sql2);
+        if(result2!=null&&result2.size()>0){
+            activeRecordDO.setTeamId(result2.get(0).get("admin_team_code")!=null?(Integer)result2.get(0).get("admin_team_code"):null);;
         }
+        activeRecordDO.setCreateTime(new Date());
         return activeRecordDao.save(activeRecordDO);
     }
 

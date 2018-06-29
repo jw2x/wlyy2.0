@@ -205,4 +205,25 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
        taskDOList.add(taskDO1);
        return taskDOList;
     }*/
+
+    /**
+     * 删除任务
+     *
+     * @param ids taskId集合[]
+     * @return
+     */
+    public Envelop<Boolean> batchDelete(List<String> ids){
+        Envelop<Boolean> envelop = new Envelop<>();
+        for (int i =0;i<ids.size();i++){
+            List<TaskPatientDetailDO> taskPatientDetailDOS = taskPatientDetailDao.selectByTaskId(ids.get(i));
+            for(TaskPatientDetailDO taskPatientDetailDO:taskPatientDetailDOS){
+                taskPatientDetailDO.setStatus(-1);
+                taskPatientDetailDao.save(taskPatientDetailDO);
+            }
+            TaskDO taskDO = taskDao.findOne(ids.get(i));
+            taskDO.setStatus(0);
+            taskDao.save(taskDO);
+        }
+        return envelop;
+    }
 }
