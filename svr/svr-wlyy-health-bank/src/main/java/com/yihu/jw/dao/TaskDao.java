@@ -17,4 +17,7 @@ import java.util.List;
 public interface TaskDao extends PagingAndSortingRepository<TaskDO,String>,JpaSpecificationExecutor<TaskDO> {
     @Query("select t from TaskDO t where t.transactionId = ?1 and t.type='ACTIVITY_TASK'")
     List<TaskDO> selectByActivityId(String transactionId);
+
+    @Query("select t from TaskDO t where t.transactionId = ?1 and t.type='RULE_TASK'")
+    TaskDO selectByTaskRuleId(String transactionId);
 }

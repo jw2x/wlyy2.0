@@ -95,10 +95,11 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
      * @return
      */
    public Envelop<TaskDO> selectByCondition(TaskDO taskDO,Integer page,Integer size){
+       TaskDO taskDO2 = new TaskDO();
        String sql = new ISqlUtils().getSql(taskDO,page,size,"*");
        List<TaskDO> taskDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
        for (TaskDO taskDO1:taskDOS){
-           if (taskDO1.getType().equalsIgnoreCase("ACTIVITY_TASK")){
+           if (taskDO1.getType()!= null && taskDO1.getType().equalsIgnoreCase("ACTIVITY_TASK")){
                ActivityDO activityDO = activityDao.findOne(taskDO1.getTransactionId());
                taskDO1.setActivityDO(activityDO);
            }
@@ -218,10 +219,14 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
             List<TaskPatientDetailDO> taskPatientDetailDOS = taskPatientDetailDao.selectByTaskId(ids.get(i));
             for(TaskPatientDetailDO taskPatientDetailDO:taskPatientDetailDOS){
                 taskPatientDetailDO.setStatus(-1);
+                taskPatientDetailDO.setCreateTime(new Date());
+                taskPatientDetailDO.setUpdateTime(new Date());
                 taskPatientDetailDao.save(taskPatientDetailDO);
             }
             TaskDO taskDO = taskDao.findOne(ids.get(i));
             taskDO.setStatus(0);
+            taskDO.setCreateTime(new Date());
+            taskDO.setUpdateTime(new Date());
             taskDao.save(taskDO);
         }
         return envelop;

@@ -98,10 +98,16 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         if (accountDOS == null || accountDOS.size() == 0){
             accountDO1.setTotal(0);
             accountDO1.setAccountName(creditsDetailDO.getName());
-            accountDO1.setCardNumber("jw");
-            accountDO1.setHospital("海沧区");
-            accountDO1.setPassword("321321312321");
-            accountDO1.setHospitalName("haichan");
+            if(creditsDetailDO.getIdCard().length()>=4){// 判断是否长度大于等于4
+                String cardNumber=creditsDetailDO.getIdCard().substring(creditsDetailDO.getIdCard().length()- 4,creditsDetailDO.getIdCard().length());//截取两个数字之间的部分
+                int random = (int)((Math.random()*9+1)*100000);
+                accountDO1.setCardNumber(cardNumber+Integer.toString(random));
+            }
+            accountDO1.setHospital(creditsDetailDO.getHospital());
+            accountDO1.setPassword("123456");
+            accountDO1.setHospitalName(creditsDetailDO.getHospitalName());
+            accountDO1.setStatus(1);
+            accountDO1.setSaasId("dev");
             accountDO1.setCreateTime(new Date());
             accountDO1.setUpdateTime(new Date());
             accountDao.save(accountDO1);
@@ -225,10 +231,15 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     accountDO1.setPatientId(creditsDetailDO.getPatientId());
                     accountDO1.setTotal(0);
                     accountDO1.setAccountName(creditsDetailDO.getName());
-                    accountDO1.setCardNumber(creditsDetailDO.getIdCard());
-                    accountDO1.setHospital("350205");
-                    accountDO1.setPassword("321321312321");
-                    accountDO1.setHospitalName("海沧区");
+                    if(creditsDetailDO.getIdCard().length()>=4){// 判断是否长度大于等于4
+                        String cardNumber=creditsDetailDO.getIdCard().substring(creditsDetailDO.getIdCard().length()- 4,creditsDetailDO.getIdCard().length());//截取两个数字之间的部分
+                        int random = (int)((Math.random()*9+1)*100000);
+                        accountDO1.setCardNumber(cardNumber+Integer.toString(random));
+                    }
+                    accountDO1.setHospital(creditsDetailDO.getHospital());
+                    accountDO1.setPassword("123456");
+                    accountDO1.setHospitalName(creditsDetailDO.getHospitalName());
+                    accountDO1.setStatus(1);
                     accountDO1.setCreateTime(new Date());
                     accountDO1.setUpdateTime(new Date());
                     accountDao.save(accountDO1);
@@ -568,6 +579,8 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             String idCard = object.getString("idcard");
             String unionId = object.getString("unionid");
             String openId = object.getString("openid");
+            String hospital = object.getString("hospital");
+            String hospitalName = object.getString("hospitalName");
             String taskSql = "select * from wlyy_health_bank_task bt where type = 'RULE_TASK' AND transaction_id = '"+ruleId +"'";
             List<TaskDO> taskDOList = jdbcTemplate.query(taskSql,new BeanPropertyRowMapper(TaskDO.class));
             TaskDO taskDO1 = new TaskDO();
@@ -645,8 +658,10 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 }
                 CreditsDetailDO creditsDetailDO1 = new CreditsDetailDO();
                 creditsDetailDO1.setStatus(1);
+                creditsDetailDO1.setSaasId("dev");
                 creditsDetailDO1.setAccountId(accountDOS.get(0).getId());
-                creditsDetailDO1.setHospital("350205");
+                creditsDetailDO1.setHospital(hospital);
+                creditsDetailDO1.setHospitalName(hospitalName);
                 creditsDetailDO1.setPatientId(patientId);
                 creditsDetailDO1.setIntegrate(taskRuleDO.getIntegrate());
                 creditsDetailDO1.setTradeDirection(taskRuleDO.getTradeDirection());
@@ -659,8 +674,10 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             }else{
                 CreditsDetailDO creditsDetailDO = new CreditsDetailDO();
                 creditsDetailDO.setStatus(1);
+                creditsDetailDO.setSaasId("dev");
                 creditsDetailDO.setAccountId(accountDOS.get(0).getId());
-                creditsDetailDO.setHospital("350205");
+                creditsDetailDO.setHospital(hospital);
+                creditsDetailDO.setHospitalName(hospitalName);
                 creditsDetailDO.setPatientId(patientId);
                 creditsDetailDO.setIntegrate(taskRuleDO.getIntegrate());
                 creditsDetailDO.setTradeDirection(taskRuleDO.getTradeDirection());
@@ -739,12 +756,18 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 }else {
                     AccountDO accountDO1 = new AccountDO();
                     accountDO1.setPatientId(creditsDetailDO.getPatientId());
+                    accountDO1.setSaasId("dev");
                     accountDO1.setTotal(0);
                     accountDO1.setAccountName(creditsDetailDO.getName());
-                    accountDO1.setCardNumber("jw");
-                    accountDO1.setHospital("350205");
-                    accountDO1.setPassword("321321312321");
-                    accountDO1.setHospitalName("海沧区");
+                    if(creditsDetailDO.getIdCard().length()>=4){// 判断是否长度大于等于4
+                        String cardNumber=creditsDetailDO.getIdCard().substring(creditsDetailDO.getIdCard().length()- 4,creditsDetailDO.getIdCard().length());//截取两个数字之间的部分
+                        int random = (int)((Math.random()*9+1)*100000);
+                        accountDO1.setCardNumber(cardNumber+Integer.toString(random));
+                    }
+                    accountDO1.setHospital(creditsDetailDO.getHospital());
+                    accountDO1.setPassword("123456");
+                    accountDO1.setHospitalName(creditsDetailDO.getHospitalName());
+                    accountDO1.setStatus(1);
                     accountDO1.setCreateTime(new Date());
                     accountDO1.setUpdateTime(new Date());
                     accountDao.save(accountDO1);
@@ -838,7 +861,8 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     creditsDetailDO1.setSaasId("dev");
                     creditsDetailDO1.setTradeType("ACTIVITY_TASK");
                     creditsDetailDO1.setPatientId(creditsDetailDO.getPatientId());
-                    creditsDetailDO1.setHospital("350205");
+                    creditsDetailDO1.setHospital(creditsDetailDO.getHospital());
+                    creditsDetailDO1.setHospitalName(creditsDetailDO.getHospitalName());
                     creditsDetailDO1.setAccountId(creditsDetailDO.getAccountId());
                     creditsDetailDO1.setStatus(1);
                     creditsDetailDO1.setCreateTime(new Date());

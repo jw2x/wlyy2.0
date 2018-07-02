@@ -40,7 +40,10 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     private String patientId;//居民id
 
     @Column(name = "hospital")
-    private String hospital;//社区
+    private String hospital;//社区编码
+
+    @Column(name = "hospital_name")
+    private String hospitalName;//社区名称
 
     @Column(name = "description")
     private String description;//积分获取说明
@@ -74,6 +77,7 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     @Transient
     private String unionId;
+
 
 
     public String getSaasId() {
@@ -234,5 +238,13 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     public void setUnionId(String unionId) {
         this.unionId = unionId;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 }

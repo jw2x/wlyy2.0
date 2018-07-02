@@ -230,15 +230,21 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
             List<TaskDO> taskDOList = taskDao.selectByActivityId(ids.get(i));
             for (TaskDO taskDO:taskDOList){
                 taskDO.setStatus(0);
+                taskDO.setCreateTime(new Date());
+                taskDO.setUpdateTime(new Date());
                 taskDao.save(taskDO);
             }
             List<TaskPatientDetailDO> taskPatientDetailDOS = taskPatientDetailDao.selectByActivityId(ids.get(i));
             for(TaskPatientDetailDO taskPatientDetailDO:taskPatientDetailDOS){
                 taskPatientDetailDO.setStatus(-1);
+                taskPatientDetailDO.setCreateTime(new Date());
+                taskPatientDetailDO.setUpdateTime(new Date());
                 taskPatientDetailDao.save(taskPatientDetailDO);
             }
             ActivityDO activityDO = activityDao.findOne(ids.get(i));
             activityDO.setStatus(-1);
+            activityDO.setCreateTime(new Date());
+            activityDO.setUpdateTime(new Date());
             activityDao.save(activityDO);
         }
         return envelop;
