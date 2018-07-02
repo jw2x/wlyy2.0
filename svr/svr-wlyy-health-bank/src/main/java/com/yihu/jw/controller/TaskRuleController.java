@@ -2,6 +2,7 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/6/8.
  */
 
+import com.alibaba.fastjson.JSONArray;
 import com.yihu.jw.entity.health.bank.TaskRuleDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wangzhinan
@@ -93,6 +97,34 @@ public class TaskRuleController extends EnvelopRestController {
         try {
             TaskRuleDO taskRuleDO = toEntity(taskRule,TaskRuleDO.class);
             return service.selectByCondition(taskRuleDO,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 批量删除任务规则
+     *
+     * @param ids []
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.batchTaskRule)
+    @ApiOperation(value = "批量删除任务规则")
+    public Envelop<Boolean> batchDelete(@ApiParam(name="ids",value = "id集合[]")
+                                        @RequestParam(value = "ids",required = false)String ids){
+        try{
+            Envelop<Boolean> envelop = new Envelop<>();
+            JSONArray array = JSONArray.parseArray(ids);
+            List<String> taskRuleIds = new ArrayList<>();
+            for (int i = 0;i<array.size();i++){
+                taskRuleIds.add(array.getString(i));
+            }
+            service.batchDelete(taskRuleIds);
+            envelop.setObj(true);
+            return envelop;
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

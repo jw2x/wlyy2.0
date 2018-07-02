@@ -34,13 +34,13 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
     private String transactionId; // 业务id
 
     @Column(name = "period")
-    private int period; //周期性
+    private Integer period; //周期性
 
     @Column(name = "task_code")
     private String taskCode ; // 标识是什么任务
 
     @Column(name = "status")
-    private int status; //状态
+    private Integer status; //状态
 
     @Column(name = "rule_code")
     private String ruleCode;//规则code
@@ -104,11 +104,11 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.transactionId = transactionId;
     }
 
-    public int getPeriod() {
+    public Integer getPeriod() {
         return period;
     }
 
-    public void setPeriod(int period) {
+    public void setPeriod(Integer period) {
         this.period = period;
     }
 
@@ -120,11 +120,11 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.taskCode = taskCode;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

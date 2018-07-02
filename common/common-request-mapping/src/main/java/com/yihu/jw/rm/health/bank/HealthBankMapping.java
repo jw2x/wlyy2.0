@@ -24,6 +24,7 @@ public class HealthBankMapping {
         public static final String createTaskRule = "/createTaskRule";
         public static final String updateTaskRule = "/updateTaskRule";
         public static final String findTaskRule ="/findTaskRule";
+        public static final String batchTaskRule = "/batchTaskRule";
         public static final String createTaskDict = "/createTaskDict";
         public static final String updateTaskDict = "/updateTaskDict";
         public static final String findTaskDict ="/findTaskDict";
@@ -54,10 +55,6 @@ public class HealthBankMapping {
         public static final String updateCreditsLogInfo ="/updateCreditsLogInfo";
         public static final String exchangeGoods = "/exchangeGoods";
         public static final String findExchangeGoods="/findExchangeGoods";
-        public static final String updateRule = "/updateRule";
-        public static final String insertRule = "/insertRule";
-        public static final String deleteRule = "/deleteRule";
-        public static final String findRules = "/findRules";
         public static final String createActiveRecord="/createActiveRecord";
         public static final String doctorAddIntegrate = "/doctorAddIntegrate";
         public static final String addStepIntegrate = "/addStepIntegrate";
