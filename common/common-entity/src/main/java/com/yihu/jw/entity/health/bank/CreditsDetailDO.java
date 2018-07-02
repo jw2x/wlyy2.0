@@ -25,13 +25,13 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     private String transactionId;//业务ID
 
     @Column(name="integrate")
-    private int integrate;//积分
+    private Integer integrate;//积分
 
     @Column(name = "status")
-    private int status;//状态（有效/无效）
+    private Integer status;//状态（有效/无效）
 
     @Column(name = "trade_direction")
-    private int tradeDirection;//交易方向
+    private Integer tradeDirection;//交易方向
 
     @Column(name = "account_id")
     private String accountId;//账户id
@@ -88,19 +88,19 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
         this.saasId = saasId;
     }
 
-    public int getIntegrate() {
+    public Integer getIntegrate() {
         return integrate;
     }
 
-    public void setIntegrate(int integrate) {
+    public void setIntegrate(Integer integrate) {
         this.integrate = integrate;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -128,11 +128,11 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
         this.hospital = hospital;
     }
 
-    public int getTradeDirection() {
+    public Integer getTradeDirection() {
         return tradeDirection;
     }
 
-    public void setTradeDirection(int tradeDirection) {
+    public void setTradeDirection(Integer tradeDirection) {
         this.tradeDirection = tradeDirection;
     }
 

@@ -19,7 +19,7 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
     private String saasId; //saasid
 
     @Column(name = "status")
-    private int status;//任务完整状态：1完成，0参与，-1作废
+    private Integer status;//任务完整状态：1完成，0参与，-1作废
 
     @Column(name = "patient_id")
     private String patientId;//居民id
@@ -49,7 +49,7 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
     private AccountDO accountDO;//账户信息
 
     @Transient
-    private int isFlag;//标识是否为当前用户
+    private Integer isFlag;//标识是否为当前用户
 
     @Transient
     private String taskCode;//任务标识
@@ -62,11 +62,11 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
         this.saasId = saasId;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -142,11 +142,11 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
         this.unionId = unionId;
     }
 
-    public int getIsFlag() {
+    public Integer getIsFlag() {
         return isFlag;
     }
 
-    public void setIsFlag(int isFlag) {
+    public void setIsFlag(Integer isFlag) {
         this.isFlag = isFlag;
     }
 

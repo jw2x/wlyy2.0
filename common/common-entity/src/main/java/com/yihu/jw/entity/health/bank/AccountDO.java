@@ -26,7 +26,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
     private String accountName;//账户名
 
     @Column(name = "total")
-    private int total;//积分总数
+    private Integer total;//积分总数
 
     @Column(name = "password")
     private String password;//密码
@@ -50,7 +50,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
     private Long sum;//总积分（已用积分和剩余积分）
 
     @Transient
-    private int usedTotal;//已用积分
+    private Integer usedTotal;//已用积分
 
     @Transient
     private Long nowTotal;//今日获取积分
@@ -62,10 +62,10 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
     private Long taskTotal;//参与任务数;
 
     @Transient
-    private int teamRanking;//团队排名
+    private Integer teamRanking;//团队排名
 
     @Transient
-    private int cityRanking;//全市排名
+    private Integer cityRanking;//全市排名
 
     @Transient
     private List<String> patientIds;//团队居民id
@@ -103,11 +103,11 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.accountName = accountName;
     }
 
-    public int getTotal() {
+    public Integer getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(Integer total) {
         this.total = total;
     }
 
@@ -119,11 +119,11 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.hospital = hospital;
     }
 
-    public int getUsedTotal() {
+    public Integer getUsedTotal() {
         return usedTotal;
     }
 
-    public void setUsedTotal(int usedTotal) {
+    public void setUsedTotal(Integer usedTotal) {
         this.usedTotal = usedTotal;
     }
 
@@ -183,19 +183,19 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.taskTotal = taskTotal;
     }
 
-    public int getTeamRanking() {
+    public Integer getTeamRanking() {
         return teamRanking;
     }
 
-    public void setTeamRanking(int teamRanking) {
+    public void setTeamRanking(Integer teamRanking) {
         this.teamRanking = teamRanking;
     }
 
-    public int getCityRanking() {
+    public Integer getCityRanking() {
         return cityRanking;
     }
 
-    public void setCityRanking(int cityRanking) {
+    public void setCityRanking(Integer cityRanking) {
         this.cityRanking = cityRanking;
     }
 
