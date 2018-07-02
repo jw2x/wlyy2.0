@@ -18,14 +18,13 @@ import java.util.Date;
 public class RehabilitationPlanningVO extends BaseVO implements Serializable {
     @ApiModelProperty("居民id")
     private String patientId;
-
     @ApiModelProperty("治疗方案id")
     private String programId;
-
+    @ApiModelProperty("计划执行状态")
+    private Integer status;
     @ApiModelProperty("复检时间")
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
     private Date recheckTime;
-
     @ApiModelProperty("附加说明")
     private String description;
 
@@ -43,6 +42,14 @@ public class RehabilitationPlanningVO extends BaseVO implements Serializable {
 
     public void setProgramId(String programId) {
         this.programId = programId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getRecheckTime() {

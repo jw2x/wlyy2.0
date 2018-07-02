@@ -45,16 +45,16 @@ public class ISqlUtils {
                     try {
                         Method m =c.getMethod(getMethodName);
                         value =(Object)m.invoke(object);     //拿到属性的值
-                        if(value == null || "".equals(value) || value.equals(Integer.parseInt("0"))){  //如果属性没值，不拼接sql
+                        if(value == null || "".equals(value) /*|| value.equals(Integer.parseInt("0"))*/){  //如果属性没值，不拼接sql
                             continue;
                         }
                         else if(value instanceof String){
-                            value ="'"+value+"'";
+                            value ="'%"+value+"%'";
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    sb.append(" and ").append(columeName +"=" ).append(value+"");
+                    sb.append(" and ").append(columeName +" like " ).append(value+"");
                 }
         }
         if(isFlag.equalsIgnoreCase("*")){
