@@ -39,8 +39,11 @@ public class SpecialistPatientRelationDO extends IdEntityWithOperation implement
     @Column(name = "health_assistant_name")
     private String healthAssistantName;//计管师
 
+    @Column(name = "sign_status")
+    private String signStatus;//居民与专科医生签约状态： -2 医生拒绝,-1 已经取消，0待审核，1同意',
+
     @Column(name = "status")
-    private String status;//1.已经分配，0，待分配
+    private String status;//1.已经分配，0，待分配,-1失效
 
     @Column(name = "pk_code")
     private String pkCode; //服务包code
@@ -64,10 +67,12 @@ public class SpecialistPatientRelationDO extends IdEntityWithOperation implement
     private String signYear;//签约年度
 
     @Column(name = "team_code")
-    private Integer teamCode;//签约团队
+    private Integer teamCode;//专科医生签约团队',
 
     @Column(name = "sign_date")
     private Date signDate;//签约日期
+    @Column(name = "remark")
+    private String remark;//记录专科医生审核原因等
 
 
     public String getSaasId() {
@@ -214,5 +219,21 @@ public class SpecialistPatientRelationDO extends IdEntityWithOperation implement
 
     public void setPkCode(String pkCode) {
         this.pkCode = pkCode;
+    }
+
+    public String getSignStatus() {
+        return signStatus;
+    }
+
+    public void setSignStatus(String signStatus) {
+        this.signStatus = signStatus;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.specialist.AssistantVO;
-import com.yihu.jw.restmodel.specialist.PatientLabelVO;
-import com.yihu.jw.restmodel.specialist.PatientRelationVO;
-import com.yihu.jw.restmodel.specialist.SpecialistPatientRelationVO;
+import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.SpecialistService;
@@ -185,6 +182,36 @@ public class SpecialistController extends EnvelopRestController {
                                                              @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size){
         try {
             return specialistService.findPatientNoAssistant(doctor,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.specialist.signSpecialistTeam)
+    @ApiOperation(value = "提交专科医生签约")
+    public Envelop<SpecialistTeamVO> signSpecialistTeam(@ApiParam(name = "patient", value = "居民code") @RequestParam(required = true)String patient,
+                                                        @ApiParam(name = "patientName", value = "居民姓名") @RequestParam(required = true)String patientName,
+                                                        @ApiParam(name = "doctor", value = "医生code") @RequestParam(required = true)String doctor,
+                                                        @ApiParam(name = "doctorName", value = "医生姓名") @RequestParam(required = true)String doctorName,
+                                                        @ApiParam(name = "teamCode", value = "团队code") @RequestParam(required = true)Long teamCode) {
+        try {
+            return specialistService.signSpecialistTeam( patient,  patientName,  doctor,  doctorName,  teamCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.specialist.agreeSpecialistTeam)
+    @ApiOperation(value = "专科医生审核")
+    public Envelop<Boolean> agreeSpecialistTeam(@ApiParam(name = "state", value = "状态0为拒绝，1为同意") @RequestParam(required = true)String state,
+                                                @ApiParam(name = "relationCode", value = "关联code") @RequestParam(required = true)String relationCode,
+                                                @ApiParam(name = "remark", value = "审核失败原因") @RequestParam(required = false)String remark) {
+        try {
+            return specialistService.agreeSpecialistTeam(state,relationCode,remark);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

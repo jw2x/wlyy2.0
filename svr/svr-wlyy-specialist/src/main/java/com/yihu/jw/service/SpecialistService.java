@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -363,6 +364,111 @@ public class SpecialistService{
 
         return Envelop.getSuccessList(SpecialistMapping.api_success,patientRelationVOs,total.intValue());
 
+    }
+
+    public Envelop<SpecialistTeamVO> signSpecialistTeam(String patient,String patientName,String doctor,String doctorName,Long teamCode){
+
+        //1.查询该居民是否已经与该专科医生签约
+        String checkDoctorSql = "SELECT " +
+                " r.patient, " +
+                " r.patient_name AS patientName, " +
+                " r.team_code AS teamCode, " +
+                " t.`name`, " +
+                " d.photo " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r " +
+                " JOIN "+basedb+".wlyy_admin_team t ON t.id = r.team_code " +
+                " JOIN "+basedb+".wlyy_doctor d ON d. CODE = r.doctor " +
+                " WHERE " +
+                " r.patient = '"+patient+"' " +
+                " AND r.doctor = '"+doctor+"' " +
+                " AND r.`status` >= '0' " +
+                " AND r.sign_status >= '0' " +
+                " AND t.available = '1' ";
+        List<SpecialistTeamVO> specialistTeamVOs = jdbcTemplate.query(checkDoctorSql,new BeanPropertyRowMapper(SpecialistTeamVO.class));
+
+        if(specialistTeamVOs!=null&&specialistTeamVOs.size()>0){
+
+            for(SpecialistTeamVO specialistTeamVO:specialistTeamVOs){
+                String menberSql = "SELECT " +
+                        " m.doctor_code AS doctorCode, " +
+                        " d.`name` AS doctorName " +
+                        " FROM " +
+                        " "+basedb+".wlyy_admin_team_member m " +
+                        " JOIN "+basedb+".wlyy_doctor d ON m.doctor_code = d.`code` " +
+                        " WHERE  " +
+                        " m.available='1' " +
+                        " AND m.team_id="+specialistTeamVO.getTeamCode();
+                List<AdminTeamMemberVO> adminTeamMemberVOs = jdbcTemplate.query(menberSql,new BeanPropertyRowMapper(AdminTeamMemberVO.class));
+                specialistTeamVO.setMembers(adminTeamMemberVOs);
+            }
+            return Envelop.getSuccess(SpecialistMapping.doctor_exist,specialistTeamVOs);
+        }
+
+        //验证团队是否已经签约
+        String checkTeamSql = "SELECT " +
+                " r.patient, " +
+                " r.patient_name AS patientName, " +
+                " r.team_code AS teamCode, " +
+                " t.`name`, " +
+                " d.photo " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r " +
+                " JOIN "+basedb+".wlyy_admin_team t ON t.id = r.team_code " +
+                " JOIN "+basedb+".wlyy_doctor d ON d. CODE = r.doctor " +
+                " WHERE " +
+                " r.patient = '"+patient+"' " +
+                " AND r.team_code = " +teamCode+
+                " AND r.`status` >='0' " +
+                " AND r.sign_status >='0' " +
+                " AND t.available = '1' ";
+        List<SpecialistTeamVO> teamVOs = jdbcTemplate.query(checkTeamSql,new BeanPropertyRowMapper(SpecialistTeamVO.class));
+        if(teamVOs!=null&&teamVOs.size()>0){
+
+            for(SpecialistTeamVO specialistTeamVO:teamVOs){
+                String menberSql = "SELECT " +
+                        " m.doctor_code AS doctorCode, " +
+                        " d.`name` AS doctorName " +
+                        " FROM " +
+                        " "+basedb+".wlyy_admin_team_member m " +
+                        " JOIN "+basedb+".wlyy_doctor d ON m.doctor_code = d.`code` " +
+                        " WHERE  " +
+                        " m.available='1' " +
+                        " AND m.team_id="+specialistTeamVO.getTeamCode();
+                List<AdminTeamMemberVO> adminTeamMemberVOs = jdbcTemplate.query(menberSql,new BeanPropertyRowMapper(AdminTeamMemberVO.class));
+                specialistTeamVO.setMembers(adminTeamMemberVOs);
+            }
+            return Envelop.getSuccess(SpecialistMapping.team_exist,teamVOs);
+        }
+
+        //存储签约关系
+        SpecialistPatientRelationDO relation = new SpecialistPatientRelationDO();
+        relation.setDoctor(doctor);
+        relation.setDoctorName(doctorName);
+        relation.setPatient(patient);
+        relation.setPatientName(patientName);
+        relation.setTeamCode(teamCode.intValue());
+        relation.setStatus("0");
+        relation.setSignStatus("0");
+        relation.setCreateTime(new Date());
+        SpecialistPatientRelationDO relationDO = specialistPatientRelationDao.save(relation);
+
+        return Envelop.getSuccess(SpecialistMapping.api_success,relationDO.getId());
+    }
+
+    public Envelop<Boolean> agreeSpecialistTeam(String state,String relationCode,String remark){
+
+        SpecialistPatientRelationDO relation = specialistPatientRelationDao.findOne(relationCode);
+
+        if("0".equals(state)){
+            relation.setSignStatus("-2");
+            relation.setRemark(remark);
+            specialistPatientRelationDao.save(relation);
+        }else{
+            relation.setSignStatus("1");
+            specialistPatientRelationDao.save(relation);
+        }
+        return Envelop.getSuccess(SpecialistMapping.api_success);
     }
 
 //    public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){
