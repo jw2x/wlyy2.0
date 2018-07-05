@@ -37,6 +37,10 @@ public class PatientSignInfoVO {
     private Long teamCode;
     @ApiModelProperty("创建时间")
     private Date createTime;
+    @ApiModelProperty("签约状态")
+    private String signStatus;
+    @ApiModelProperty("记录状态")
+    private String status;
 
     public String getPatient() {
         return patient;
@@ -132,5 +136,21 @@ public class PatientSignInfoVO {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getSignStatus() {
+        return signStatus;
+    }
+
+    public void setSignStatus(String signStatus) {
+        this.signStatus = signStatus;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

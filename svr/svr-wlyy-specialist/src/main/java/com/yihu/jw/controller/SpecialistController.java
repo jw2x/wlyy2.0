@@ -219,6 +219,31 @@ public class SpecialistController extends EnvelopRestController {
         }
     }
 
+    @GetMapping(value = SpecialistMapping.specialist.findPatientSigninfo)
+    @ApiOperation(value = "获取签约信息")
+    public Envelop<PatientSignInfoVO> findPatientSigninfo(String code){
+        try {
+            return specialistService.findPatientSigninfo(code);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.findPatientTeamList)
+    @ApiOperation(value = "获取居民所有有效签约信息")
+    public Envelop<SpecialistTeamVO> findPatientTeamList(@ApiParam(name = "patient", value = "居民code") @RequestParam(required = true)String patient){
+        try {
+            return specialistService.findPatientTeamList(patient);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
 
 
 //    @PostMapping(value = SpecialistMapping.specialist.createArticle)
