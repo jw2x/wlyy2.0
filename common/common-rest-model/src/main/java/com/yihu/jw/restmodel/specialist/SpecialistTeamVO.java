@@ -14,6 +14,8 @@ import java.util.List;
 @ApiModel(value = "专科医生团队与居民匹配关系", description = "专科医生团队与居民匹配关系")
 public class SpecialistTeamVO {
 
+    @ApiModelProperty("签约code")
+    private String relationCode;
     @ApiModelProperty("居民code")
     private String patient;
     @ApiModelProperty("居民姓名")
@@ -126,6 +128,14 @@ public class SpecialistTeamVO {
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public String getRelationCode() {
+        return relationCode;
+    }
+
+    public void setRelationCode(String relationCode) {
+        this.relationCode = relationCode;
     }
 
     public List<AdminTeamMemberVO> getMembers() {

@@ -370,11 +370,14 @@ public class SpecialistService{
 
         //1.查询该居民是否已经与该专科医生签约
         String checkDoctorSql = "SELECT " +
+                " r.id AS relationCode," +
                 " r.patient, " +
                 " r.patient_name AS patientName, " +
                 " r.team_code AS teamCode, " +
                 " t.`name`, " +
-                " d.photo " +
+                " d.photo ," +
+                " d.code AS doctor," +
+                " d.name AS doctorName" +
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
                 " JOIN "+basedb+".wlyy_admin_team t ON t.id = r.team_code " +
@@ -407,6 +410,7 @@ public class SpecialistService{
 
         //验证团队是否已经签约
         String checkTeamSql = "SELECT " +
+                " r.id AS relationCode," +
                 " r.patient, " +
                 " r.patient_name AS patientName, " +
                 " r.team_code AS teamCode, " +
@@ -468,7 +472,7 @@ public class SpecialistService{
             relation.setSignStatus("1");
             specialistPatientRelationDao.save(relation);
         }
-        return Envelop.getSuccess(SpecialistMapping.api_success);
+        return Envelop.getSuccess(SpecialistMapping.api_success,relation);
     }
 
     public Envelop<PatientSignInfoVO> findPatientSigninfo(String code){
@@ -499,6 +503,7 @@ public class SpecialistService{
 
     public Envelop<SpecialistTeamVO> findPatientTeamList(String patient){
         String sql = "SELECT " +
+                " r.id AS relationCode, " +
                 " r.patient, " +
                 " r.patient_name AS patientName, " +
                 " r.team_code, " +
