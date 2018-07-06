@@ -64,6 +64,15 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
     @Transient
     private List<String> patientIds;//团队居民id
 
+    @Transient
+    private String taskId;//任务id
+
+    @Transient
+    private Long activityRanking;//活动排名
+
+    @Transient
+    private Long activityIntegrate;//活动积分
+
     public String getSaasId() {
         return saasId;
     }
@@ -190,5 +199,29 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
 
     public void setPatientIds(List<String> patientIds) {
         this.patientIds = patientIds;
+    }
+
+    public String getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public Long getActivityRanking() {
+        return activityRanking;
+    }
+
+    public void setActivityRanking(Long activityRanking) {
+        this.activityRanking = activityRanking;
+    }
+
+    public Long getActivityIntegrate() {
+        return activityIntegrate;
+    }
+
+    public void setActivityIntegrate(Long activityIntegrate) {
+        this.activityIntegrate = activityIntegrate;
     }
 }

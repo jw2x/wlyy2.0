@@ -461,7 +461,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param size 分页大小
      * @return
      */
-    public Envelop<TaskPatientDetailDO> selectByActivityRanking1(String activityId,Integer page,Integer size){
+    public Envelop<TaskPatientDetailDO> selectByActivityRanking1(String activityId,String patientId,Integer page,Integer size){
         String sql = "SELECT " +
                 " * " +
                 "FROM " +
@@ -488,6 +488,30 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             TaskPatientDetailDO taskPatientDetailDO = taskPatientDetailDOS.get(i);
             String accountSql = "select * from wlyy_health_bank_account where patient_id = '"+taskPatientDetailDO.getPatientId()+"'";
             List<AccountDO> accountDOS = jdbcTemplate.query(accountSql,new BeanPropertyRowMapper(AccountDO.class));
+            if (taskPatientDetailDOS.get(i).getPatientId().equalsIgnoreCase(patientId)){
+                /*String taskSql = "select count(1)+1 as total from (" +
+                        "select *  from (SELECT " +
+                        " SUM(ptpd.total) AS total, " +
+                        " ptpd.patient_openid AS patient_openid, " +
+                        " ptpd.task_id AS task_id, " +
+                        " ptpd.activity_id AS activity_id, " +
+                        " ptpd.create_time as create_time, " +
+                        " ptpd.patient_id AS patient_id " +
+                        " FROM " +
+                        " wlyy_health_bank_task_patient_detail ptpd " +
+                        " WHERE " +
+                        " activity_id = '" + activityId + "')ptpd1 where" +
+                        " ptpd1.patient_id = '"+patientId+"' AND ptpd1.total > "+taskPatientDetailDOS.get(i).getTotal()+") ptpd2";
+                List<Map<String,Object>> rstotal1 = jdbcTemplate.queryForList(taskSql);
+                Long count = 0L;
+                if(rstotal1!=null&&rstotal1.size()>0){
+                    count = (Long) rstotal1.get(0).get("total");
+                }
+                accountDOS.get(0).setActivityRanking(count);*/
+                taskPatientDetailDO.setIsFlag(1);
+            }else {
+                taskPatientDetailDO.setIsFlag(0);
+            }
             taskPatientDetailDO.setAccountDO(accountDOS.get(0));
         }
         String sqlCount =  "SELECT " +
