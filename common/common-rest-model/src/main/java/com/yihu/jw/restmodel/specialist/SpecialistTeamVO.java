@@ -3,6 +3,7 @@ package com.yihu.jw.restmodel.specialist;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -23,6 +24,18 @@ public class SpecialistTeamVO {
     private String name;
     @ApiModelProperty("医生头像")
     private String photo;
+    @ApiModelProperty("医生code")
+    private String doctor;
+    @ApiModelProperty("医生")
+    private String doctorName;
+    @ApiModelProperty("科室code")
+    private String dept;
+    @ApiModelProperty("科室")
+    private String deptName;
+    @ApiModelProperty("社区code")
+    private String hospital;
+    @ApiModelProperty("社区")
+    private String hospitalName;
     @ApiModelProperty("医生团队成员")
     private List<AdminTeamMemberVO> members;
 
@@ -65,6 +78,54 @@ public class SpecialistTeamVO {
 
     public void setPhoto(String photo) {
         this.photo = photo;
+    }
+
+    public String getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(String doctor) {
+        this.doctor = doctor;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
+    }
+
+    public String getDept() {
+        return dept;
+    }
+
+    public void setDept(String dept) {
+        this.dept = dept;
+    }
+
+    public String getDeptName() {
+        return deptName;
+    }
+
+    public void setDeptName(String deptName) {
+        this.deptName = deptName;
+    }
+
+    public String getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(String hospital) {
+        this.hospital = hospital;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 
     public List<AdminTeamMemberVO> getMembers() {

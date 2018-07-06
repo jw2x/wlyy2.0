@@ -41,6 +41,8 @@ public class PatientSignInfoVO {
     private String signStatus;
     @ApiModelProperty("记录状态")
     private String status;
+    @ApiModelProperty("医生角色")
+    private String level;
 
     public String getPatient() {
         return patient;
@@ -152,5 +154,13 @@ public class PatientSignInfoVO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }

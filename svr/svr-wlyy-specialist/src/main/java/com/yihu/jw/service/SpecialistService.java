@@ -503,7 +503,7 @@ public class SpecialistService{
                 " r.patient_name AS patientName, " +
                 " r.team_code, " +
                 " t.`name` AS name," +
-                " d.photo " +
+                " d.photo" +
                 " FROM " +
                 " wlyy_specialist_patient_relation r  " +
                 " JOIN wlyy.wlyy_admin_team t ON t.id = r.team_code " +
@@ -531,6 +531,30 @@ public class SpecialistService{
         }
         return Envelop.getSuccess(SpecialistMapping.api_success,specialistTeamVOs);
     }
+
+    public Envelop findPatientSignSpecialist(String patient){
+        String sql = "SELECT " +
+                " r.patient, " +
+                " r.patient_name AS patientName, " +
+                " d.name AS doctorName, " +
+                " d.code AS doctor, " +
+                " d.photo, " +
+                " d.dept, " +
+                " d.dept_name AS deptName, " +
+                " d.hospital, " +
+                " d.hospital_name AS hospital_name, " +
+                " d.`level` " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r " +
+                "  JOIN wlyy.wlyy_doctor d ON r.doctor = d.`code` " +
+                " WHERE  " +
+                " r.patient ='"+patient+"' " +
+                " AND r.`status`>=0 " +
+                " AND r.sign_status >0";
+        List<PatientSignInfoVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientSignInfoVO.class));
+        return Envelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs);
+    }
+
 
 //    public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){
 //        specialistDao.save(info);

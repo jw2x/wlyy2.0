@@ -31,6 +31,8 @@ public class SpecialistMapping {
         public static final String agreeSpecialistTeam ="/agreeSpecialistTeam";
         public static final String findPatientSigninfo ="/findPatientSigninfo";
         public static final String findPatientTeamList ="/findPatientTeamList";
+        public static final String findPatientSignSpecialist ="/findPatientSignSpecialist";
+
 
 
 
