@@ -8,6 +8,8 @@ public class SpecialistMapping {
     public static final String api_specialist_common = "svr-specialist";
     public static final Integer api_specialist_fail = -1;
     public static final String api_success ="succes";
+    public static final String doctor_exist ="doctor_exist";
+    public static final String team_exist ="team_exist";
 
     public static class specialist{
 
@@ -25,5 +27,15 @@ public class SpecialistMapping {
         public static final String getAssistantPatientCount ="/getAssistantPatientCount";
         public static final String getDoctorPatientByName ="/getDoctorPatientByName";
         public static final String findPatientNoAssistant ="/findPatientNoAssistant";
+        public static final String signSpecialistTeam ="/signSpecialistTeam";
+        public static final String agreeSpecialistTeam ="/agreeSpecialistTeam";
+        public static final String findPatientSigninfo ="/findPatientSigninfo";
+        public static final String findPatientTeamList ="/findPatientTeamList";
+        public static final String findPatientSignSpecialist ="/findPatientSignSpecialist";
+
+
+
+
+
     }
 }

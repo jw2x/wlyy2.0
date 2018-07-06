@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.restmodel.specialist.AssistantVO;
-import com.yihu.jw.restmodel.specialist.PatientLabelVO;
-import com.yihu.jw.restmodel.specialist.PatientRelationVO;
-import com.yihu.jw.restmodel.specialist.SpecialistPatientRelationVO;
+import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.SpecialistService;
@@ -106,11 +103,12 @@ public class SpecialistController extends EnvelopRestController {
 
     @GetMapping(value = SpecialistMapping.specialist.findPatientRelatioByAssistant)
     @ApiOperation(value = "根据计管师获取居民信息")
-    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(@ApiParam(name = "assistant", value = "计管师") @RequestParam(required = true)String assistant,
+    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor,
+                                                                    @ApiParam(name = "assistant", value = "计管师") @RequestParam(required = true)String assistant,
                                                                     @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
                                                                     @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
         try {
-            return specialistService.findPatientRelatioByAssistant(assistant,page,size);
+            return specialistService.findPatientRelatioByAssistant(doctor,assistant,page,size);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -151,9 +149,10 @@ public class SpecialistController extends EnvelopRestController {
 
     @GetMapping(value = SpecialistMapping.specialist.getAssistantPatientCount)
     @ApiOperation(value = "根据计管获取居民数量")
-    public Envelop<Long> getAssistantPatientCount(@ApiParam(name = "doctor", value = "计管师医生") @RequestParam(required = true)String doctor) {
+    public Envelop<Long> getAssistantPatientCount(@ApiParam(name = "doctor", value = "医生") @RequestParam(required = true)String doctor,
+                                                  @ApiParam(name = "assistant", value = "计管师医生") @RequestParam(required = true)String assistant) {
         try {
-            return specialistService.getAssistantPatientCount(doctor);
+            return specialistService.getAssistantPatientCount(doctor,assistant);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -189,6 +188,73 @@ public class SpecialistController extends EnvelopRestController {
             return Envelop.getError(e.getMessage());
         }
     }
+
+    @PostMapping(value = SpecialistMapping.specialist.signSpecialistTeam)
+    @ApiOperation(value = "提交专科医生签约")
+    public Envelop<SpecialistTeamVO> signSpecialistTeam(@ApiParam(name = "patient", value = "居民code") @RequestParam(required = true)String patient,
+                                                        @ApiParam(name = "patientName", value = "居民姓名") @RequestParam(required = true)String patientName,
+                                                        @ApiParam(name = "doctor", value = "医生code") @RequestParam(required = true)String doctor,
+                                                        @ApiParam(name = "doctorName", value = "医生姓名") @RequestParam(required = true)String doctorName,
+                                                        @ApiParam(name = "teamCode", value = "团队code") @RequestParam(required = true)Long teamCode) {
+        try {
+            return specialistService.signSpecialistTeam( patient,  patientName,  doctor,  doctorName,  teamCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.specialist.agreeSpecialistTeam)
+    @ApiOperation(value = "专科医生审核")
+    public Envelop<Boolean> agreeSpecialistTeam(@ApiParam(name = "state", value = "状态0为拒绝，1为同意") @RequestParam(required = true)String state,
+                                                @ApiParam(name = "relationCode", value = "关联code") @RequestParam(required = true)String relationCode,
+                                                @ApiParam(name = "remark", value = "审核失败原因") @RequestParam(required = false)String remark) {
+        try {
+            return specialistService.agreeSpecialistTeam(state,relationCode,remark);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.findPatientSigninfo)
+    @ApiOperation(value = "获取签约信息")
+    public Envelop<PatientSignInfoVO> findPatientSigninfo(String code){
+        try {
+            return specialistService.findPatientSigninfo(code);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.findPatientTeamList)
+    @ApiOperation(value = "获取居民所有有效签约团队信息")
+    public Envelop<SpecialistTeamVO> findPatientTeamList(@ApiParam(name = "patient", value = "居民code") @RequestParam(required = true)String patient){
+        try {
+            return specialistService.findPatientTeamList(patient);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.specialist.findPatientSignSpecialist)
+    @ApiOperation(value = "获取居民所有有效签约医生信息")
+    public Envelop findPatientSignSpecialist(String patient){
+        try {
+            return specialistService.findPatientSignSpecialist(patient);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
 
 
 
