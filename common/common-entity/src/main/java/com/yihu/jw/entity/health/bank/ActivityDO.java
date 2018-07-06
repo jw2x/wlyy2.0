@@ -78,7 +78,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
     private Long total;//参加总数
 
     @Transient
-    private int activityRanking;//活动中的排名
+    private Integer activityRanking;//活动中的排名
 
     @Transient
     private List<TaskPatientDetailDO> taskPatientDetailDOS;//参与活动详情
@@ -252,11 +252,11 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.patientIdcard = patientIdcard;
     }
 
-    public int getActivityRanking() {
+    public Integer getActivityRanking() {
         return activityRanking;
     }
 
-    public void setActivityRanking(int activityRanking) {
+    public void setActivityRanking(Integer activityRanking) {
         this.activityRanking = activityRanking;
     }
 
