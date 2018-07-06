@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author wangzhinan
@@ -38,21 +40,26 @@ public class ISqlUtils {
                     Column mc =f.getAnnotation(Column.class);
                     String columeName =mc.name();  //字段对应数据库名字
                     String name =f.getName();       //字段名字
+                    Class a= f.getType();          //字段类型
                     Object value=null;              //字段值
                     getMethodName="get"+name.substring(0,1).toUpperCase()+name.substring(1);//拼接属性的get方法
                     try {
                         Method m =c.getMethod(getMethodName);
                         value =(Object)m.invoke(object);     //拿到属性的值
-                        if(value == null || "".equals(value) || value.equals(Integer.parseInt("0"))){  //如果属性没值，不拼接sql
+                        if(value == null || "".equals(value)){  //如果属性没值，不拼接sql
                             continue;
                         }
-                        else if(value instanceof String){
-                            value ="'"+value+"'";
+                        else if(value instanceof String ){
+                            value ="'%"+value+"%'";
+                            sb.append(" and ").append(columeName +" like " ).append(value+"");
+                        }else if (value instanceof Integer){
+                            value = value;
+                            sb.append(" and ").append(columeName +" = " ).append(value+"");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    sb.append(" and ").append(columeName +"=" ).append(value+"");
+
                 }
         }
         if(isFlag.equalsIgnoreCase("*")){
@@ -110,25 +117,32 @@ public class ISqlUtils {
                 Column mc = f.getAnnotation(Column.class);
                 String columeName = mc.name();
                 String name = f.getName();
+                Class a= f.getType();
                 Object value= null;
                 getMethoName = "get" + name.substring(0,1).toUpperCase()+name.substring(1);
                 try {
                     Method m = c.getMethod(getMethoName);
-                    value = (Object)m.invoke(object);
+                    if (Date.class.isAssignableFrom(a)){
+                        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        value = sdf.format((Object)m.invoke(object));
+                    }else {
+                        value = (Object)m.invoke(object);
+                    }
                     if (value == null || "".equals(value)||value.equals(Integer.parseInt("0"))){
                         continue;
                     }
                     else if (value instanceof  String){
-                        value = "' "+value+"'";
+                        value = "'"+value+"'";
                     }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
-                sb.append(columeName + "=").append(value+"");
+                sb.append(columeName + "=").append(value+"").append(",");
             }
         }
+        sb.deleteCharAt(sb.length()-1);
         JSONObject jsonObject = (JSONObject) JSONObject.toJSON(object);
-        sb.append(" where ").append("id = ").append(jsonObject.get("id"));
+        sb.append(" where ").append("id = ").append("'"+jsonObject.get("id")+"'");
         return sb.toString();
     }
 }

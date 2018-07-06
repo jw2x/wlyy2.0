@@ -51,6 +51,9 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
     @Transient
     private int isFlag;//标识是否为当前用户
 
+    @Transient
+    private String taskCode;//任务标识
+
     public String getSaasId() {
         return saasId;
     }
@@ -145,5 +148,13 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
 
     public void setIsFlag(int isFlag) {
         this.isFlag = isFlag;
+    }
+
+    public String getTaskCode() {
+        return taskCode;
+    }
+
+    public void setTaskCode(String taskCode) {
+        this.taskCode = taskCode;
     }
 }

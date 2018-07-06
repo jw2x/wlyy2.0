@@ -2,6 +2,7 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/4/27.
  */
 
+import com.alibaba.fastjson.JSONArray;
 import com.yihu.jw.entity.health.bank.ActivityDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
@@ -12,7 +13,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wangzhinan
@@ -117,6 +124,33 @@ public class ActivityController extends EnvelopRestController{
         try{
             ActivityDO activityDO = toEntity(activity,ActivityDO.class);
             return service.selectByPatient(activityDO,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+    /**
+     * 批量删除数据
+     *
+     * @param ids id集合[""]
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.batchActivity)
+    @ApiOperation(value = "批量删除活动")
+    public Envelop<Boolean> batchDelete(@ApiParam(name="ids",value = "id集合")
+                                        @RequestParam(value = "ids",required = false)String ids){
+        try{
+            Envelop<Boolean> envelop = new Envelop<>();
+            JSONArray array = JSONArray.parseArray(ids);
+            List<String> activityIds = new ArrayList<>();
+            for (int i = 0;i<array.size();i++){
+                activityIds.add(array.getString(i));
+            }
+            service.batchDelete(activityIds);
+            envelop.setObj(true);
+            return envelop;
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

@@ -45,16 +45,16 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
     private Date endTime; //结束时间
 
     @Column(name = "status")
-    private int status;//状态（1代表有效，0代表无效,-1代表过期）
+    private Integer status;//状态（1代表有效，0代表无效,-1代表过期）
 
     @Column(name = "is_flag")
-    private String isFlag;//标识是否有问卷（1：有，-1：没有）
+    private Integer isFlag;//标识是否有问卷（1：有，-1：没有）
 
     @Column(name = "area")
     private String area;//区域
 
     @Column(name = "area_type")
-    private int areaType; //区域类型
+    private Integer areaType; //区域类型
 
     @Column(name = "remark")
     private String remark;//活动备注
@@ -82,6 +82,9 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
 
     @Transient
     private List<TaskPatientDetailDO> taskPatientDetailDOS;//参与活动详情
+
+    @Transient
+    private List<TaskDO> taskDOS;//活动任务列表
 
     @Transient
     private Long sum;//活动积分总数
@@ -143,19 +146,19 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
     }
 
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
-    public String getIsFlag() {
+    public Integer getIsFlag() {
         return isFlag;
     }
 
-    public void setIsFlag(String isFlag) {
+    public void setIsFlag(Integer isFlag) {
         this.isFlag = isFlag;
     }
 
@@ -185,11 +188,11 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.area = area;
     }
 
-    public int getAreaType() {
+    public Integer getAreaType() {
         return areaType;
     }
 
-    public void setAreaType(int areaType) {
+    public void setAreaType(Integer areaType) {
         this.areaType = areaType;
     }
 
@@ -263,5 +266,13 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
 
     public void setSum(Long sum) {
         this.sum = sum;
+    }
+
+    public List<TaskDO> getTaskDOS() {
+        return taskDOS;
+    }
+
+    public void setTaskDOS(List<TaskDO> taskDOS) {
+        this.taskDOS = taskDOS;
     }
 }

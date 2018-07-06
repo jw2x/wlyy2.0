@@ -4,7 +4,8 @@ server:
 
 spring:
   jmx:
-    default-domain: jkzl_specialist
+    default-domain: jkzl_bank
+
   application:
     name:  svr-wlyy-health-bank  #注册到发现服务的id 如果id一样 eurika会自动做负载
 

@@ -24,22 +24,22 @@ public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
     private String description;//规则描述
 
     @Column(name = "integrate")
-    private int integrate; //积分
+    private Integer integrate; //积分
 
     @Column(name = "trade_direction")
-    private int tradeDirection;//交易方向 1增、-1减、0清零
+    private Integer tradeDirection;//交易方向 1增、-1减、0清零
 
     @Column(name = "type")
     private String type;//规则类型：NORMAL-手动,AUTO-自动
 
     @Column(name = "status")
-    private int status; //状态
+    private Integer status; //状态
 
     @Column(name = "java_class_path")
     private String javaClassPath;//java反射类路径
 
     @Column(name = "period")
-    private int period;//周期性
+    private Integer period;//周期性
 
 
     public String getSaasId() {
@@ -66,19 +66,19 @@ public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
         this.description = description;
     }
 
-    public int getIntegrate() {
+    public Integer getIntegrate() {
         return integrate;
     }
 
-    public void setIntegrate(int integrate) {
+    public void setIntegrate(Integer integrate) {
         this.integrate = integrate;
     }
 
-    public int getTradeDirection() {
+    public Integer getTradeDirection() {
         return tradeDirection;
     }
 
-    public void setTradeDirection(int tradeDirection) {
+    public void setTradeDirection(Integer tradeDirection) {
         this.tradeDirection = tradeDirection;
     }
 
@@ -90,11 +90,11 @@ public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
         this.type = type;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -106,11 +106,11 @@ public class TaskRuleDO extends IdEntityWithOperation implements Serializable{
         this.javaClassPath = javaClassPath;
     }
 
-    public int getPeriod() {
+    public Integer getPeriod() {
         return period;
     }
 
-    public void setPeriod(int period) {
+    public void setPeriod(Integer period) {
         this.period = period;
     }
 }

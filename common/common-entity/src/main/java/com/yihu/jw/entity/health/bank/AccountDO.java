@@ -40,6 +40,12 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "hospital")
     private String hospital;//社区
 
+    @Column(name = "status")
+    private Integer status;//状态（1有效，-1失效）
+
+    @Transient
+    private String idCard;//身份证号码
+
     @Transient
     private Long sum;//总积分（已用积分和剩余积分）
 
@@ -223,5 +229,21 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
 
     public void setActivityIntegrate(Long activityIntegrate) {
         this.activityIntegrate = activityIntegrate;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

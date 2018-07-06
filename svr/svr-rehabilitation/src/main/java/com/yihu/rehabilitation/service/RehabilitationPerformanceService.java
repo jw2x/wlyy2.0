@@ -63,6 +63,16 @@ public class RehabilitationPerformanceService extends BaseJpaService<Rehabilitat
     }
 
     /**
+     * 根据居民id查找康复计划执行情况
+     * @param patientId
+     * @return
+     */
+    public List<RehabilitationPerformanceDO> findByPatientId(String patientId) {
+        List<RehabilitationPerformanceDO> performanceDO = performanceDao.findByPatientId(patientId);
+        return performanceDO;
+    }
+
+    /**
      * 修改
      * @param performanceDO
      */

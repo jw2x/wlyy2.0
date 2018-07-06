@@ -3,7 +3,11 @@ package com.yihu.jw.service;/**
  */
 
 import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.jw.dao.TaskDao;
+import com.yihu.jw.dao.TaskPatientDetailDao;
 import com.yihu.jw.dao.TaskRuleDao;
+import com.yihu.jw.entity.health.bank.TaskDO;
+import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.entity.health.bank.TaskRuleDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
@@ -30,6 +34,10 @@ public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao>{
     private JdbcTemplate jdbcTemplate;
     @Autowired
     private TaskRuleDao taskRuleDao;
+    @Autowired
+    private TaskDao taskDao;
+    @Autowired
+    private TaskPatientDetailDao taskPatientDetailDao;
 
     /**
      * 获取任务规则列表
@@ -77,6 +85,37 @@ public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao>{
         String sql =  ISqlUtils.getUpdateSql(taskRuleDO);
         jdbcTemplate.update(sql);
         envelop.setObj(true);
+        return envelop;
+    }
+
+
+    /**
+     * 批量删除规则
+     *
+     * @param ids []
+     * @return
+     */
+    public Envelop<Boolean> batchDelete(List<String> ids){
+        Envelop<Boolean> envelop = new Envelop<>();
+        for (int i =0;i<ids.size();i++){
+            TaskDO taskDO = taskDao.selectByTaskRuleId(ids.get(i));
+            taskDO.setStatus(0);
+            taskDO.setCreateTime(new Date());
+            taskDO.setUpdateTime(new Date());
+            taskDao.save(taskDO);
+            List<TaskPatientDetailDO> taskPatientDetailDOS = taskPatientDetailDao.selectByTaskId(taskDO.getId());
+            for (TaskPatientDetailDO taskPatientDetailDO:taskPatientDetailDOS){
+                taskPatientDetailDO.setStatus(-1);
+                taskPatientDetailDO.setCreateTime(new Date());
+                taskPatientDetailDO.setUpdateTime(new Date());
+                taskPatientDetailDao.save(taskPatientDetailDO);
+            }
+            TaskRuleDO taskRuleDO = taskRuleDao.findOne(ids.get(i));
+            taskRuleDO.setStatus(0);
+            taskRuleDO.setCreateTime(new Date());
+            taskRuleDO.setUpdateTime(new Date());
+            taskRuleDao.save(taskRuleDO);
+        }
         return envelop;
     }
 }

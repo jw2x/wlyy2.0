@@ -22,6 +22,7 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -79,6 +80,7 @@ public class ActiveRecordService extends BaseJpaService<ActiveRecordDO,ActiveRec
         if(result2!=null&&result2.size()>0){
             activeRecordDO.setTeamId(result2.get(0).get("admin_team_code")!=null?(Integer)result2.get(0).get("admin_team_code"):null);;
         }
+        activeRecordDO.setCreateTime(new Date());
         return activeRecordDao.save(activeRecordDO);
     }
 

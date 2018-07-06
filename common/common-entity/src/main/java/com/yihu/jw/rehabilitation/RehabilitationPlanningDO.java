@@ -23,6 +23,8 @@ public class RehabilitationPlanningDO extends IdEntityWithOperation implements S
     private String patientId;//居民ID
     @Column(name = "program_id")
     private String programId;//治疗方案ID,可多个用逗号隔开
+    @Column(name = "status")
+    private Integer status;//计划执行状态，0执行1终止
     @Column(name = "recheck_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date recheckTime;//复检时间
@@ -51,6 +53,14 @@ public class RehabilitationPlanningDO extends IdEntityWithOperation implements S
 
     public void setProgramId(String programId) {
         this.programId = programId;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getRecheckTime() {

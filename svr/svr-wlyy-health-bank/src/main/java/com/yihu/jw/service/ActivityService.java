@@ -4,18 +4,23 @@ package com.yihu.jw.service;/**
 
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.ActivityDao;
+import com.yihu.jw.dao.TaskDao;
+import com.yihu.jw.dao.TaskPatientDetailDao;
 import com.yihu.jw.entity.health.bank.ActivityDO;
+import com.yihu.jw.entity.health.bank.TaskDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +37,12 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
     @Autowired
     private ActivityDao activityDao;
     @Autowired
+    private TaskPatientDetailDao taskPatientDetailDao;
+    @Autowired
+    private TaskDao taskDao;
+    @Autowired
     private JdbcTemplate jdbcTemplate;
+
 
     /**
      * insert activityDO
@@ -81,9 +91,12 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
             }
             activityDO1.setTotal(count);
             String taskSql1 = "select * from wlyy_health_bank_task_patient_detail btpd where activity_id = '"+activityDO1.getId()
-                    +"' and patient_openid = '"+activityDO.getOpenId()+"'";
+                    +"' and (patient_idcard = '"+activityDO.getPatientIdcard()+"' OR union_id = '"+activityDO.getUnionId()+"')";
             List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(taskSql1,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
             activityDO1.setTaskPatientDetailDOS(taskPatientDetailDOS);
+            String tasksql = "select * from wlyy_health_bank_task where transaction_id = '"+activityDO1.getId()+"'";
+            List<TaskDO> taskDOList = jdbcTemplate.query(tasksql,new BeanPropertyRowMapper(TaskDO.class));
+            activityDO1.setTaskDOS(taskDOList);
         }
         String sqlcount = new ISqlUtils().getSql(activityDO,0,0,"count");
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sqlcount);
@@ -126,7 +139,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
                 " SELECT task_id FROM " +
                 "wlyy_health_bank_task_patient_detail" +
                 " WHERE " +
-                " patient_openid = '"+activityDO.getOpenId()+ "' AND patient_idcard = '"+activityDO.getPatientIdcard()+"' OR union_id = '"+ activityDO.getUnionId()+"')" +
+                " patient_openid = '"+activityDO.getOpenId()+ "' AND patient_idcard = '"+activityDO.getPatientIdcard()+"' AND union_id = '"+ activityDO.getUnionId()+"')" +
                 " )" +
                 " LIMIT "+(page-1)*size +","+size;
         List<ActivityDO> activityDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(ActivityDO.class));
@@ -203,5 +216,37 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
             count = (Long) rstotal.get(0).get("total");
         }
         return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,activityDOS,page,size,count);
+    }
+
+    /**
+     * 批量删除活动
+     *
+     * @param ids 活动id集合
+     * @return
+     */
+    public Envelop<Boolean> batchDelete(List<String> ids){
+        Envelop<Boolean> envelop = new Envelop<>();
+        for (int i =0;i<ids.size();i++){
+            List<TaskDO> taskDOList = taskDao.selectByActivityId(ids.get(i));
+            for (TaskDO taskDO:taskDOList){
+                taskDO.setStatus(0);
+                taskDO.setCreateTime(new Date());
+                taskDO.setUpdateTime(new Date());
+                taskDao.save(taskDO);
+            }
+            List<TaskPatientDetailDO> taskPatientDetailDOS = taskPatientDetailDao.selectByActivityId(ids.get(i));
+            for(TaskPatientDetailDO taskPatientDetailDO:taskPatientDetailDOS){
+                taskPatientDetailDO.setStatus(-1);
+                taskPatientDetailDO.setCreateTime(new Date());
+                taskPatientDetailDO.setUpdateTime(new Date());
+                taskPatientDetailDao.save(taskPatientDetailDO);
+            }
+            ActivityDO activityDO = activityDao.findOne(ids.get(i));
+            activityDO.setStatus(-1);
+            activityDO.setCreateTime(new Date());
+            activityDO.setUpdateTime(new Date());
+            activityDao.save(activityDO);
+        }
+        return envelop;
     }
 }
