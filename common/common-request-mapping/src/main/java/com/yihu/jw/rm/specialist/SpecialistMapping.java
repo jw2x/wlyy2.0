@@ -38,4 +38,10 @@ public class SpecialistMapping {
 
 
     }
+
+    public static class screen{
+        public static final String getScreenResult ="/getScreenResult";
+        public static final String getScreenCount = "/getScreenCount";
+        public static final String getScreenResultDetail = "/getScreenResultDetail";
+    }
 }
