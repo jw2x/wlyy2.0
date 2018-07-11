@@ -24,12 +24,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class
-
-
-
-
-SpecialistScreenResultService {
+public class SpecialistScreenResultService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Value("${basedb.name}")
@@ -38,7 +33,7 @@ SpecialistScreenResultService {
 
 
     public Envelop<SurveyScreenResultVo> getScreenList(String doctor,int type,Integer page,Integer size)throws ParseException {
-        String sql = "SELECT ssr.id,ssr.`code`,ssr.template_code templateCode,ssr.template_title templateTitle,ssr.disease,ssr.doctor,ssr.parent_code patientCode,ssr.patient_name patientName,ssr.screen_result_code screenResultCode,ssr.screen_result_score screenResultScore,ssr.screen_result screenResult,ssr.is_danger isDanger,ssr.`order`,ssr.following,ssr.is_educate isEducate,ssr.over,ssr.reservation_code reservationCode,ssr.czrq,ssr.is_again isAgain,ssr.parent_code parentCode,ssr.origin_code originCode,ssr.advice_code adviceCode,ssr.other_advice otherAdvice,ssr.source" +
+        String sql = "SELECT ssr.id,ssr.`code`,ssr.template_code templateCode,ssr.template_title templateTitle,ssr.disease,ssr.doctor,ssr.parent_code patientCode,ssr.patient_name patientName,ssr.screen_result_code screenResultCode,ssr.screen_result_score screenResultScore,ssr.screen_result screenResult,ssr.is_danger isDanger,ssr.is_order isOrder,ssr.following,ssr.is_educate isEducate,ssr.over,ssr.reservation_code reservationCode,ssr.czrq,ssr.is_again isAgain,ssr.parent_code parentCode,ssr.origin_code originCode,ssr.advice_code adviceCode,ssr.other_advice otherAdvice,ssr.source" +
                     " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1";
         if (type==1){
             sql +=" AND ssr.following =1";
@@ -72,7 +67,7 @@ SpecialistScreenResultService {
     public Envelop<Map<String,Object>> getScreenResultDetail(String code)throws Exception{
         Map<String,Object> map = new HashedMap();
         //登记信息
-        String infoSql = "SELECT ssr.id,ssr.`code`,ssr.template_code templateCode,ssr.template_title templateTitle,ssr.disease,ssr.doctor,ssr.parent_code patientCode,ssr.patient_name patientName,ssr.screen_result_code screenResultCode,ssr.screen_result_score screenResultScore,ssr.screen_result screenResult,ssr.is_danger isDanger,ssr.is_order,ssr.following,ssr.is_educate isEducate,ssr.over,ssr.reservation_code reservationCode,ssr.czrq,ssr.is_again isAgain,ssr.parent_code parentCode,ssr.origin_code originCode,ssr.advice_code adviceCode,ssr.other_advice otherAdvice,ssr.source" +
+        String infoSql = "SELECT ssr.id,ssr.`code`,ssr.template_code templateCode,ssr.template_title templateTitle,ssr.disease,ssr.doctor,ssr.parent_code patientCode,ssr.patient_name patientName,ssr.screen_result_code screenResultCode,ssr.screen_result_score screenResultScore,ssr.screen_result screenResult,ssr.is_danger isDanger,ssr.is_order isOrder,ssr.following,ssr.is_educate isEducate,ssr.over,ssr.reservation_code reservationCode,ssr.czrq,ssr.is_again isAgain,ssr.parent_code parentCode,ssr.origin_code originCode,ssr.advice_code adviceCode,ssr.other_advice otherAdvice,ssr.source" +
                 " FROM "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN " +basedb+
                 ".wlyy_patient p ON ssr.patient_code=p.code where ssr.code ='"+code+"'";
         List<SurveyScreenResultVo> surveyScreenResultVoList = jdbcTemplate.query(infoSql,new BeanPropertyRowMapper<>(SurveyScreenResultVo.class));

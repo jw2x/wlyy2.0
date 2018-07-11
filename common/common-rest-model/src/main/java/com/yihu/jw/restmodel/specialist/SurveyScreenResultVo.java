@@ -55,7 +55,7 @@ public class SurveyScreenResultVo{
     private Integer isDanger;
     //是否预约（0未预约 1已预约）
     @ApiModelProperty("是否预约（0未预约 1已预约）")
-    private Integer order;
+    private Integer isOrder;
     //是否跟踪（0未跟踪 1已跟踪）
     @ApiModelProperty("是否跟踪（0未跟踪 1已跟踪）")
     private Integer following;
@@ -204,12 +204,12 @@ public class SurveyScreenResultVo{
         this.isDanger = isDanger;
     }
 
-    public Integer getOrder() {
-        return order;
+    public Integer getIsOrder() {
+        return isOrder;
     }
 
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setIsOrder(Integer isOrder) {
+        this.isOrder = isOrder;
     }
 
     public Integer getFollowing() {
@@ -306,5 +306,13 @@ public class SurveyScreenResultVo{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
     }
 }
