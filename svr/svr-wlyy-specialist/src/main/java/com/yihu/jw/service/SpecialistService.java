@@ -95,8 +95,10 @@ public class SpecialistService{
                 " "+basedb+".wlyy_sign_patient_label_info i " +
                 " WHERE " +
                 " i.label_type = '7' AND " +
-                " i.status = 1 AND r.status >=0  AND r.sign_status >0" +
-                " )";
+                " i.status = 1" +
+                " )" +
+                " AND r. STATUS >= 0 " +
+                " AND r.sign_status > 0";
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
         Long count = 0L;
         if(rstotal!=null&&rstotal.size()>0){
