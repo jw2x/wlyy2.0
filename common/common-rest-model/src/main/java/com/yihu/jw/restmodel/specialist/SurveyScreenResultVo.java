@@ -97,6 +97,12 @@ public class SurveyScreenResultVo{
     @ApiModelProperty("身份证号码")
     private String idcard;
 
+    @ApiModelProperty("性别（1男2女3未知）")
+    private String sex;
+
+    @ApiModelProperty("年龄")
+    private int age;
+
     public SurveyScreenResultVo() {
     }
 
@@ -314,5 +320,21 @@ public class SurveyScreenResultVo{
 
     public void setIdcard(String idcard) {
         this.idcard = idcard;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }

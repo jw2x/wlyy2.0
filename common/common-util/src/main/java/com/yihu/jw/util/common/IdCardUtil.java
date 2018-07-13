@@ -11,6 +11,13 @@ import java.util.Date;
  * 身份证工具类
  */
 public class IdCardUtil {
+    //二级维度的性别
+    public static String level_sex_1="1";
+    public static String level_sex_2="2";
+    public static String level_sex_3="3";
+    public static String level_sex_1_name="男";
+    public static String level_sex_2_name="女";
+    public static String level_sex_3_name="未知";
 
 
 //    /**
@@ -145,4 +152,39 @@ public class IdCardUtil {
         return false;
     }
 
+    /**
+     * 根据身份证的号码算出当前身份证持有者的性别
+     * 1 男 2 女 3未知
+     *
+     * @return
+     * @throws Exception
+     */
+    public static String getSexForIdcard_new(String CardCode)
+            throws Exception {
+        String sex = level_sex_3;
+        try {
+            if (CardCode.length() == 18) {
+                if (Integer.parseInt(CardCode.substring(16).substring(0, 1)) % 2 == 0) {// 判断性别
+                    // modifid by lyr 2016-09-29
+                    sex = level_sex_2;
+                    // modifid by lyr 2016-09-29
+                } else {
+                    // modifid by lyr 2016-09-29
+                    sex = level_sex_1;
+                    // modifid by lyr 2016-09-29
+                }
+            } else if (CardCode.length() == 15) {
+                String usex = CardCode.substring(14, 15);// 用户的性别
+                if (Integer.parseInt(usex) % 2 == 0) {
+                    sex = level_sex_2;
+                } else {
+                    sex = level_sex_1;
+                }
+            }
+            return sex;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sex;
+    }
 }
