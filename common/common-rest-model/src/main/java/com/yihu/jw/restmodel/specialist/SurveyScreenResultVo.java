@@ -103,6 +103,12 @@ public class SurveyScreenResultVo{
     @ApiModelProperty("年龄")
     private int age;
 
+    @ApiModelProperty("医生类型：1专科医生，2全科医生，3健康管理师")
+    private int level;
+
+    @ApiModelProperty("筛查家庭医生姓名")
+    private String doctorName;
+
     public SurveyScreenResultVo() {
     }
 
@@ -336,5 +342,21 @@ public class SurveyScreenResultVo{
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public String getDoctorName() {
+        return doctorName;
+    }
+
+    public void setDoctorName(String doctorName) {
+        this.doctorName = doctorName;
     }
 }
