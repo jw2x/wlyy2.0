@@ -81,6 +81,12 @@ public class SpecialistScreenResultService {
         String idcard = surveyScreenResultVo.getIdcard();
         surveyScreenResultVo.setSex(IdCardUtil.getSexForIdcard_new(idcard));
         surveyScreenResultVo.setAge(IdCardUtil.getAgeForIdcard(idcard));
+        String doctorSql="select * from "+basedb+".wlyy_doctor where code ='"+surveyScreenResultVo.getDoctor()+"'";
+        List<Map<String,Object>> doctorList = jdbcTemplate.queryForList(doctorSql);
+        if (doctorList!=null && doctorList.size()>0){
+            surveyScreenResultVo.setLevel(Integer.valueOf(String.valueOf(doctorList.get(0).get("level"))));
+            surveyScreenResultVo.setDoctorName(String.valueOf(doctorList.get(0).get("name")));
+        }
         map.put("info",surveyScreenResultVo);
         //json.put("info",surveyScreenResultVo);
 
@@ -88,7 +94,7 @@ public class SpecialistScreenResultService {
         String questionSql = "select code,title,question_comment questionComment,question_type questionType,template_code templateCode,sort,del from "+basedb+".wlyy_survey_template_questions where template_code='"+templateCode+"' and del=1";
         Map<String,Object> answerMap = new HashMap<>();
         List<SurveyTemplateQuestionsVo> questionList = jdbcTemplate.query(questionSql,new BeanPropertyRowMapper<>(SurveyTemplateQuestionsVo.class));
-        String sql = "SELECT soa.*,sto.score FROM "+basedb+".wlyy_survey_option_answers soa LEFT JOIN "+basedb+".wlyy_survey_template_options sto ON soa.options_code= sto.code WHERE soa.screen_result_code=? AND soa.patient=? AND soa.survey_code=?";
+        String sql = "SELECT soa.*,sto.score,sto.content FROM "+basedb+".wlyy_survey_option_answers soa LEFT JOIN "+basedb+".wlyy_survey_template_options sto ON soa.options_code= sto.code WHERE soa.screen_result_code=? AND soa.patient=? AND soa.survey_code=?";
         List<Map<String,Object>> optionAnswersList = jdbcTemplate.queryForList(sql,new Object[]{code,patientCode,templateCode});
         for (SurveyTemplateQuestionsVo surveyTemplateQuestionsVo : questionList){
             Map<String,Object> Qusmap = new HashMap<>();
