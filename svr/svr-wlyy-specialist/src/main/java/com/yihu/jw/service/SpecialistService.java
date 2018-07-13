@@ -510,11 +510,14 @@ public class SpecialistService{
                 " r.patient_name AS patientName, " +
                 " r.team_code, " +
                 " t.`name` AS name," +
-                " d.photo" +
+                " d.photo," +
+                " md.code AS doctor," +
+                " md.name AS doctorName" +
                 " FROM " +
                 " wlyy_specialist_patient_relation r  " +
                 " JOIN wlyy.wlyy_admin_team t ON t.id = r.team_code " +
                 " JOIN wlyy.wlyy_doctor d ON t.leader_code = d.`code` " +
+                " JOIN wlyy.wlyy_doctor md ON md.code = r.doctor " +
                 " WHERE " +
                 " r.patient = '"+patient+"' " +
                 " AND r.`status` >=0  " +
