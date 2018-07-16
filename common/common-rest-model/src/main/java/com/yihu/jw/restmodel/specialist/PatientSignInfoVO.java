@@ -13,6 +13,8 @@ import java.util.Date;
 @ApiModel(value = "居民专病签约信息", description = "居民专病签约信息")
 public class PatientSignInfoVO {
 
+    @ApiModelProperty("签约Code")
+    private String relationCode;
     @ApiModelProperty("居民code")
     private String patient;
     @ApiModelProperty("居民")
@@ -43,6 +45,18 @@ public class PatientSignInfoVO {
     private String status;
     @ApiModelProperty("医生角色")
     private String level;
+    @ApiModelProperty("计管师code")
+    private String healthAssistant;
+    @ApiModelProperty("计管师")
+    private String healthAssistantName;
+
+    public String getRelationCode() {
+        return relationCode;
+    }
+
+    public void setRelationCode(String relationCode) {
+        this.relationCode = relationCode;
+    }
 
     public String getPatient() {
         return patient;
@@ -162,5 +176,21 @@ public class PatientSignInfoVO {
 
     public void setLevel(String level) {
         this.level = level;
+    }
+
+    public String getHealthAssistant() {
+        return healthAssistant;
+    }
+
+    public void setHealthAssistant(String healthAssistant) {
+        this.healthAssistant = healthAssistant;
+    }
+
+    public String getHealthAssistantName() {
+        return healthAssistantName;
+    }
+
+    public void setHealthAssistantName(String healthAssistantName) {
+        this.healthAssistantName = healthAssistantName;
     }
 }
