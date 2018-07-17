@@ -545,6 +545,7 @@ public class SpecialistService{
     public Envelop findPatientSignSpecialist(String patient){
         String sql = "SELECT " +
                 " r.patient, " +
+                " r.team_code AS teamCode," +
                 " r.patient_name AS patientName, " +
                 " d.name AS doctorName, " +
                 " d.code AS doctor, " +
@@ -556,7 +557,7 @@ public class SpecialistService{
                 " d.`level` " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
-                "  JOIN wlyy.wlyy_doctor d ON r.doctor = d.`code` " +
+                " JOIN wlyy.wlyy_doctor d ON r.doctor = d.`code` " +
                 " WHERE  " +
                 " r.patient ='"+patient+"' " +
                 " AND r.`status`>=0 " +
@@ -564,6 +565,35 @@ public class SpecialistService{
         List<PatientSignInfoVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientSignInfoVO.class));
         return Envelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs);
     }
+
+    public Envelop findPatientSignSpecialistInfo(String patient,String doctor){
+        String sql = "SELECT " +
+                " r.id AS relationCode," +
+                " r.patient, " +
+                " r.team_code AS teamCode," +
+                " r.patient_name AS patientName, " +
+                " r.health_assistant AS healthAssistant," +
+                " r.health_assistant_name AS healthAssistantName," +
+                " d.name AS doctorName, " +
+                " d.code AS doctor, " +
+                " d.photo, " +
+                " d.dept, " +
+                " d.dept_name AS deptName, " +
+                " d.hospital, " +
+                " d.hospital_name AS hospital_name, " +
+                " d.`level` " +
+                " FROM " +
+                " wlyy_specialist_patient_relation r " +
+                " JOIN wlyy.wlyy_doctor d ON r.doctor = d.`code` " +
+                " WHERE  " +
+                " r.patient ='"+patient+"' " +
+                " AND r.doctor ='"+doctor+"' " +
+                " AND r.`status`>=0 " +
+                " AND r.sign_status >0";
+        List<PatientSignInfoVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientSignInfoVO.class));
+        return Envelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs.get(0));
+    }
+
 
 
 //    public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){
