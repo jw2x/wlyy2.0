@@ -574,6 +574,7 @@ public class SpecialistService{
                 " r.patient_name AS patientName, " +
                 " r.health_assistant AS healthAssistant," +
                 " r.health_assistant_name AS healthAssistantName," +
+                " r.create_time AS createTime," +
                 " d.name AS doctorName, " +
                 " d.code AS doctor, " +
                 " d.photo, " +
