@@ -1,4 +1,4 @@
-package com.yihu.jw.iot.device;
+package com.yihu.jw.device;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonFormat;

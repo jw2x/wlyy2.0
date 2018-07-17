@@ -3,6 +3,8 @@ server:
   port: 10051
 
 spring:
+  jmx:
+    default-domain: jkzl_specialist
   application:
     name:  svr-wlyy-specialist-lyx  #注册到发现服务的id 如果id一样 eurika会自动做负载
 
@@ -80,11 +82,29 @@ fastDFS:
 ---
 spring:
   profiles: jwtest
+
+  datasource:
+    url: jdbc:mysql://172.17.110.160/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: ssgg
+    password: ssgg
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
-
 ---
 spring:
-  profiles: jwprod
+  profiles: jwdevtest
+
+  datasource:
+    url: jdbc:mysql://172.19.103.85/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: linzhou
+    password: linzhou
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
+---
+spring:
+  profiles: prod
+  datasource:
+    url: jdbc:mysql://59.61.92.90:9069/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: wlyy
+    password: jkzlehr@123
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/

@@ -3,6 +3,9 @@ server:
   port: 10051
 
 spring:
+  jmx:
+    default-domain: jkzl_bank
+
   application:
     name:  svr-wlyy-health-bank  #注册到发现服务的id 如果id一样 eurika会自动做负载
 
@@ -28,8 +31,10 @@ spring:
 hibernate:
   dialect: org.hibernate.dialect.MySQL5Dialect
   show_sql: true
-  ejb:
-    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+#  ejb:
+#    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
+  physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy #springJPA使用驼峰式(hibernate5以上使用)
+  implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
 
 fast-dfs:
   tracker-server: 172.19.103.54:22122 #服务器地址
@@ -48,7 +53,6 @@ fast-dfs:
 ---
 spring:
   profiles: jwdev
-
   datasource:
     url: jdbc:mysql://172.19.103.77:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
@@ -78,9 +82,9 @@ fastDFS:
 spring:
   profiles: jwtest
   datasource:
-    url: jdbc:mysql://172.19.103.77:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
-    username: root
-    password: 123456
+    url: jdbc:mysql://172.17.110.160:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    username: ssgg
+    password: ssgg
   data:
     elasticsearch: #ElasticsearchProperties
       cluster-name: jkzl #默认即为elasticsearch  集群名

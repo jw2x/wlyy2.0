@@ -17,10 +17,16 @@ public class PatientRelationVO {
     private String patientName;
     @ApiModelProperty("年龄")
     private String age;
+    @ApiModelProperty("性别")
+    private String sex;
     @ApiModelProperty("头像")
     private String photo;
     @ApiModelProperty("出院时间")
     private String createTime;
+    @ApiModelProperty("居民健康情况")
+    private String health;
+    @ApiModelProperty("居民健康情况code")
+    private String healthcode;
 
     public String getPatient() {
         return patient;
@@ -60,5 +66,29 @@ public class PatientRelationVO {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getHealth() {
+        return health;
+    }
+
+    public void setHealth(String health) {
+        this.health = health;
+    }
+
+    public String getHealthcode() {
+        return healthcode;
+    }
+
+    public void setHealthcode(String healthcode) {
+        this.healthcode = healthcode;
     }
 }

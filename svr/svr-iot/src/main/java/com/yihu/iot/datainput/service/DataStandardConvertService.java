@@ -1,17 +1,14 @@
 package com.yihu.iot.datainput.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.iot.datainput.enums.DataDeviceTypeEnum;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
 import com.yihu.iot.datainput.enums.DataTypeEnum;
-import com.yihu.jw.iot.datainput.DataBodySignsDO;
+import com.yihu.jw.datainput.DataBodySignsDO;
 import com.yihu.jw.iot.datainput.DataStandardDO;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.http.client.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

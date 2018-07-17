@@ -2,6 +2,7 @@ package com.yihu.jw.business.demo;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.yihu.jw.business.user.dao.BaseRoleDao;
 import com.yihu.jw.exception.SystemException;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.fegin.DemoFeign;
@@ -26,13 +27,15 @@ import javax.servlet.http.HttpServletRequest;
 @Api(description = "demo例子")
 @RefreshScope
 public class DemoController {
+    @Autowired
+    private BaseRoleDao baseRoleDao;
 
     @ApiOperation(value = "根据code查找患者")
     @GetMapping(value = "findByCode")
     public Envelop findByCode(
-            @ApiParam(name = "code", value = "患者code", required = true) @RequestParam(value = "code", required = true) String code) {
-
-        return  Envelop.getSuccess(code);
+            @ApiParam(name = "code", value = "患者code", required = false) @RequestParam(value = "code", required = false) String code) {
+        baseRoleDao.findAllByName("管理员");
+        return  Envelop.getSuccess("成功");
     }
 
 }

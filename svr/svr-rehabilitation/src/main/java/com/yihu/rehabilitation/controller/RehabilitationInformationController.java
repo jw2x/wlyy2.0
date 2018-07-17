@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
 
+import java.util.List;
+
 /**
  * @author humingfen on 2018/4/25.
  */
@@ -80,7 +82,7 @@ public class RehabilitationInformationController extends EnvelopRestController {
     public Envelop<RehabilitationInformationDO> findByPatientId(@ApiParam(name = "patientId", value = "patientId")
                                                            @RequestParam(value = "patientId", required = true) String patientId) {
         try {
-            RehabilitationInformationDO informationDO = rehabilitationInformationService.findByPatientId(patientId);
+            List<RehabilitationInformationDO> informationDO = rehabilitationInformationService.findByPatientId(patientId);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_find, informationDO);
         } catch (Exception e) {
             e.printStackTrace();

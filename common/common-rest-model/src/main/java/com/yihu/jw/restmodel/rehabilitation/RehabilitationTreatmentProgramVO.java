@@ -19,7 +19,7 @@ public class RehabilitationTreatmentProgramVO extends BaseVO implements Serializ
     @ApiModelProperty("训练次数/时间")
     private String frequency;
     @ApiModelProperty("每日次数")
-    private Integer timesDaily;
+    private String timesDaily;
     @ApiModelProperty("附加说明")
     private String description;
 
@@ -39,11 +39,11 @@ public class RehabilitationTreatmentProgramVO extends BaseVO implements Serializ
         this.frequency = frequency;
     }
 
-    public Integer getTimesDaily() {
+    public String getTimesDaily() {
         return timesDaily;
     }
 
-    public void setTimesDaily(Integer timesDaily) {
+    public void setTimesDaily(String timesDaily) {
         this.timesDaily = timesDaily;
     }
 

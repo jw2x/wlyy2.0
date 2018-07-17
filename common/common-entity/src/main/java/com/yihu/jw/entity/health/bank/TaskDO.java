@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.health.bank;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
@@ -7,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by wamg zhinan 2018/4/27.
@@ -18,29 +21,48 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
     @Column(name = "saas_id")
     private String saasId; //saasid
 
-    @Column(name = "task_title")
-    private String taskTitle; //任务标题
+    @Column(name = "title")
+    private String title; //任务标题
 
-    @Column(name = "task_content")
-    private String taskContent; //任务内容
+    @Column(name = "content")
+    private String content; //任务内容
 
-    @Column(name = "trade_type")
-    private String tradeType; //交易类型
+    @Column(name = "type")
+    private String type; //交易类型
 
     @Column(name = "transaction_id")
     private String transactionId; // 业务id
 
     @Column(name = "period")
-    private int period; //周期性
-
-    @Column(name = "patient_id")
-    private String patientId; //居民id
+    private Integer period; //周期性
 
     @Column(name = "task_code")
     private String taskCode ; // 标识是什么任务
 
+    @Column(name = "status")
+    private Integer status; //状态
+
+    @Column(name = "rule_code")
+    private String ruleCode;//规则code
+
+    @Column(name = "start_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date startTime;//开始时间
+
+    @Column(name = "end_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+    private Date endTime; //结束时间
+
     @Transient
-    private int status; //状态
+    private ActivityDO activityDO;//活动详情
+    @Transient
+    private String patientId;//居民id
+    @Transient
+    private String openId;//微信编码
+    @Transient
+    private Long total;//参加总数
+    @Transient
+    private List<TaskPatientDetailDO> taskPatientDetailDOS;//参与人详情
 
     public String getSaasId() {
         return saasId;
@@ -50,28 +72,28 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.saasId = saasId;
     }
 
-    public String getTaskTitle() {
-        return taskTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTaskTitle(String taskTitle) {
-        this.taskTitle = taskTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getTaskContent() {
-        return taskContent;
+    public String getContent() {
+        return content;
     }
 
-    public void setTaskContent(String taskContent) {
-        this.taskContent = taskContent;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getTradeType() {
-        return tradeType;
+    public String getType() {
+        return type;
     }
 
-    public void setTradeType(String tradeType) {
-        this.tradeType = tradeType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getTransactionId() {
@@ -82,12 +104,60 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.transactionId = transactionId;
     }
 
-    public int getPeriod() {
+    public Integer getPeriod() {
         return period;
     }
 
-    public void setPeriod(int period) {
+    public void setPeriod(Integer period) {
         this.period = period;
+    }
+
+    public String getTaskCode() {
+        return taskCode;
+    }
+
+    public void setTaskCode(String taskCode) {
+        this.taskCode = taskCode;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public String getRuleCode() {
+        return ruleCode;
+    }
+
+    public void setRuleCode(String ruleCode) {
+        this.ruleCode = ruleCode;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
+    public ActivityDO getActivityDO() {
+        return activityDO;
+    }
+
+    public void setActivityDO(ActivityDO activityDO) {
+        this.activityDO = activityDO;
     }
 
     public String getPatientId() {
@@ -98,19 +168,28 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.patientId = patientId;
     }
 
-    public int getStatus() {
-        return status;
+    public List<TaskPatientDetailDO> getTaskPatientDetailDOS() {
+        return taskPatientDetailDOS;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
+    public void setTaskPatientDetailDOS(List<TaskPatientDetailDO> taskPatientDetailDOS) {
+        this.taskPatientDetailDOS = taskPatientDetailDOS;
     }
 
-    public String getTaskCode() {
-        return taskCode;
+    public Long getTotal() {
+        return total;
     }
 
-    public void setTaskCode(String taskCode) {
-        this.taskCode = taskCode;
+    public void setTotal(Long total) {
+        this.total = total;
     }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
 }

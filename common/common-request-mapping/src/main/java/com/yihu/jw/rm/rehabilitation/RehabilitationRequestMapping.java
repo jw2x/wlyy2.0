@@ -71,5 +71,6 @@ public class RehabilitationRequestMapping {
         public static final String api_update = "updatePerformance";
 
         public static final String findPerformanceById = "findPerformanceById";
+        public static final String findPerformanceByPatientId = "findPerformanceByPatientId";
     }
 }

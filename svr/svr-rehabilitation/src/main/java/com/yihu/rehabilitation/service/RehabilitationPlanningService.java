@@ -30,7 +30,7 @@ public class RehabilitationPlanningService extends BaseJpaService<Rehabilitation
      * @throws ParseException
      */
     public Envelop<RehabilitationPlanningVO> queryPlanningPage(Integer page, Integer size, String patientId, String programId) throws ParseException {
-        String filters = "";
+        String filters = "status=0;";
         String semicolon = "";
         if(StringUtils.isNotBlank(patientId)){
             filters = "patientId="+patientId+"";
@@ -52,10 +52,11 @@ public class RehabilitationPlanningService extends BaseJpaService<Rehabilitation
         return Envelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,planningVOs, page, size,count);
     }
 
-    public RehabilitationPlanningDO create(RehabilitationPlanningDO PlanningDO) {
-        PlanningDO.setSaasId(getCode());
-        PlanningDO = planningDao.save(PlanningDO);
-        return PlanningDO;
+    public RehabilitationPlanningDO create(RehabilitationPlanningDO planningDO) {
+        planningDO.setSaasId(getCode());
+        planningDO.setStatus(0);
+        planningDO = planningDao.save(planningDO);
+        return planningDO;
     }
 
     public RehabilitationPlanningDO findById(String id) {

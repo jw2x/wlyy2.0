@@ -48,10 +48,10 @@ public class RehabilitationTreatmentProgramController extends EnvelopRestControl
         }
     }
 
-    @GetMapping(value = RehabilitationRequestMapping.TreatmentProgram.api_create)
+    @PostMapping(value = RehabilitationRequestMapping.TreatmentProgram.api_create)
     @ApiOperation(value = "创建治疗方案", notes = "创建治疗方案")
     public Envelop<RehabilitationTreatmentProgramDO> createTreatmentProgram(@ApiParam(name = "jsonData", value = "方案基本信息Json", defaultValue = "")
-                                                                         @RequestParam(value = "jsonData", required = false) String jsonData) {
+                                                                         @RequestBody String jsonData) {
         try {
             RehabilitationTreatmentProgramDO infos = new ObjectMapper().readValue(jsonData, new TypeReference<RehabilitationTreatmentProgramDO>(){});
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_create, treatmentProgramService.create(infos));
@@ -77,7 +77,7 @@ public class RehabilitationTreatmentProgramController extends EnvelopRestControl
     @PostMapping(value = RehabilitationRequestMapping.TreatmentProgram.api_update)
     @ApiOperation(value = "修改治疗方案", notes = "修改治疗方案(记得传入修改id)")
     public Envelop updateTreatmentProgram(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
-                                                                  @RequestParam(value = "jsonData", required = true)String jsonData) {
+                                              @RequestBody String jsonData) {
         try {
             RehabilitationTreatmentProgramDO treatmentProgramDO = toEntity(jsonData, RehabilitationTreatmentProgramDO.class);
             treatmentProgramService.update(treatmentProgramDO);
@@ -91,7 +91,7 @@ public class RehabilitationTreatmentProgramController extends EnvelopRestControl
     @PostMapping(value = RehabilitationRequestMapping.TreatmentProgram.api_delete)
     @ApiOperation(value = "删除治疗方案", notes = "删除治疗方案")
     public Envelop delTreatmentProgram(@ApiParam(name = "id", value = "id")
-                                                               @RequestParam(value = "id", required = true) String id) {
+                                           @RequestParam(value = "id", required = true) String id) {
         try {
             treatmentProgramService.delete(id);
             return Envelop.getSuccess(RehabilitationRequestMapping.Common.message_success_delete);

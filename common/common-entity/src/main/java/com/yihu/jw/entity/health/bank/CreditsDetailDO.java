@@ -19,19 +19,19 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     private String saasId; //saasid
 
     @Column(name = "trade_type")
-    private String tradeType; //交易类型
+    private String tradeType; //交易类型交易类型:普通任务(NORMAL_TASK）、活动任务(ACTIVITY_TASK)、兑换商品(EXCHANGE_GOODS)
 
     @Column(name = "transaction_id")
     private String transactionId;//业务ID
 
     @Column(name="integrate")
-    private int integrate;//积分
+    private Integer integrate;//积分
 
     @Column(name = "status")
-    private int status;//状态（有效/无效）
+    private Integer status;//状态（有效/无效）
 
     @Column(name = "trade_direction")
-    private int tradeDirection;//交易方向
+    private Integer tradeDirection;//交易方向
 
     @Column(name = "account_id")
     private String accountId;//账户id
@@ -40,10 +40,19 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     private String patientId;//居民id
 
     @Column(name = "hospital")
-    private String hospital;//社区
+    private String hospital;//社区编码
+
+    @Column(name = "hospital_name")
+    private String hospitalName;//社区名称
+
+    @Column(name = "description")
+    private String description;//积分获取说明
 
     @Transient
     private TaskDO taskDO;//任务对象
+
+    @Transient
+    private String activityId;//活动ID
 
     @Transient
     private ActivityDO activityDO;//活动对象
@@ -57,6 +66,20 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     @Transient
     private String name; //居民名称
 
+    @Transient
+    private String idCard; //身份证号码
+
+    @Transient
+    private String openId;//微信编号
+
+    @Transient
+    private Long stepNumber;//步数
+
+    @Transient
+    private String unionId;
+
+
+
     public String getSaasId() {
         return saasId;
     }
@@ -65,19 +88,19 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
         this.saasId = saasId;
     }
 
-    public int getIntegrate() {
+    public Integer getIntegrate() {
         return integrate;
     }
 
-    public void setIntegrate(int integrate) {
+    public void setIntegrate(Integer integrate) {
         this.integrate = integrate;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -105,11 +128,11 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
         this.hospital = hospital;
     }
 
-    public int getTradeDirection() {
+    public Integer getTradeDirection() {
         return tradeDirection;
     }
 
-    public void setTradeDirection(int tradeDirection) {
+    public void setTradeDirection(Integer tradeDirection) {
         this.tradeDirection = tradeDirection;
     }
 
@@ -167,5 +190,61 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getIdCard() {
+        return idCard;
+    }
+
+    public void setIdCard(String idCard) {
+        this.idCard = idCard;
+    }
+
+    public String getOpenId() {
+        return openId;
+    }
+
+    public void setOpenId(String openId) {
+        this.openId = openId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getStepNumber() {
+        return stepNumber;
+    }
+
+    public void setStepNumber(Long stepNumber) {
+        this.stepNumber = stepNumber;
+    }
+
+    public String getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(String activityId) {
+        this.activityId = activityId;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 }

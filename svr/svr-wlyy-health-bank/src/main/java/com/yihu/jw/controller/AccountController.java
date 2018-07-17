@@ -2,6 +2,8 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/5/10.
  */
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.entity.health.bank.AccountDO;
 import com.yihu.jw.entity.health.bank.CreditsDetailDO;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -14,10 +16,10 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wangzhinan
@@ -79,6 +81,32 @@ public class AccountController extends EnvelopRestController {
         }
     }
 
+    /**
+     *  获取银行账户
+     *
+     * @param account 银行账户对象
+     * @param page 页码
+     * @param size 分页大小
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.findAccount)
+    @ApiOperation(value = "获取银行账户信息")
+    public Envelop<AccountDO> select(@ApiParam(name = "account",value = "账户JSON")
+                                     @RequestParam(value = "account",required = false)String account,
+                                     @ApiParam(name = "page", value = "第几页，从1开始")
+                                     @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
+                                     @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                     @RequestParam(value = "size", required = false)Integer size){
+        try{
+            AccountDO accountDO = toEntity(account,AccountDO.class);
+            return service.findByCondition(accountDO,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
 
     /**
      * 查看银行账户信息
@@ -105,5 +133,30 @@ public class AccountController extends EnvelopRestController {
             return Envelop.getError(e.getMessage());
         }
     }*/
+
+
+    /**
+     * 筛选用户
+     * @param object
+     * @return
+     */
+    @PostMapping(value = HealthBankMapping.healthBank.findAccounByCondition)
+    @ApiOperation(value = "按条件获取用户信息")
+    public Envelop<AccountDO> select(@RequestBody JSONObject object){
+        try{
+            JSONArray patientIds = object.getJSONArray("patients");
+            JSONArray deviceTypes = object.getJSONArray("deviceTypes");
+            int bindStatus = object.getInteger("bindStatus");
+            String ruleId = object.getString("ruleId");
+            Integer page = object.getInteger("page");
+            Integer size = object.getInteger("size");
+            List<String> deviceTypes1 = new ArrayList<>();
+            return service.findByCondition1(patientIds,ruleId,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 
 }

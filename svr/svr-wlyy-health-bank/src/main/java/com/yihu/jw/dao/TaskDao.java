@@ -4,7 +4,10 @@ package com.yihu.jw.dao;/**
 
 import com.yihu.jw.entity.health.bank.TaskDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.List;
 
 /**
  * @author wangzhinan
@@ -12,4 +15,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @desc health bank task dao
  **/
 public interface TaskDao extends PagingAndSortingRepository<TaskDO,String>,JpaSpecificationExecutor<TaskDO> {
+    @Query("select t from TaskDO t where t.transactionId = ?1 and t.type='ACTIVITY_TASK'")
+    List<TaskDO> selectByActivityId(String transactionId);
+
+    @Query("select t from TaskDO t where t.transactionId = ?1 and t.type='RULE_TASK'")
+    TaskDO selectByTaskRuleId(String transactionId);
 }
