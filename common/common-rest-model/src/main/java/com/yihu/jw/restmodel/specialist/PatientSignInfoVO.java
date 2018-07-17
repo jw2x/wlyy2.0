@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.specialist;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -146,6 +147,7 @@ public class PatientSignInfoVO {
         this.teamCode = teamCode;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     public Date getCreateTime() {
         return createTime;
     }
