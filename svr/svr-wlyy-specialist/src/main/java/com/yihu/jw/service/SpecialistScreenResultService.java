@@ -58,7 +58,7 @@ public class SpecialistScreenResultService {
                 " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1 AND ssr.following =1";
 
         String orderSwl = "SELECT count(*) orderNumber" +
-                " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN  \"+basedb+\".wlyy_patient_reservation pr ON ssr.reservation_code = pr.`code` WHERE pr.status =1 AND pr.doctor= '"+doctor+"' AND ssr.over = 1 AND ssr.is_order>0";
+                " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN  "+basedb+".wlyy_patient_reservation pr ON ssr.reservation_code = pr.`code` WHERE pr.status =1 AND pr.doctor= '"+doctor+"' AND ssr.over = 1 AND ssr.is_order>0";
 
         Map<String,Object> followMap = jdbcTemplate.queryForMap(followSql);
         Map<String,Object> orderMap = jdbcTemplate.queryForMap(orderSwl);
