@@ -40,7 +40,7 @@ public class SpecialistScreenResultService {
             sql +=" AND ssr.following =1";
         }
         if (type==2){
-            sql +=" AND ssr.is_order = 1";
+            sql +=" AND ssr.is_order>0";
         }
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
         int count = 0;
@@ -57,7 +57,7 @@ public class SpecialistScreenResultService {
                 " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1 AND ssr.following =1";
 
         String orderSwl = "SELECT count(*) orderNumber" +
-                " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1 AND ssr.is_order =1";
+                " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1 AND ssr.is_order>0";
 
         Map<String,Object> followMap = jdbcTemplate.queryForMap(followSql);
         Map<String,Object> orderMap = jdbcTemplate.queryForMap(orderSwl);
