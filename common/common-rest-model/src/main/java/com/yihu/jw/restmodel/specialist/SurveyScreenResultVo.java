@@ -32,6 +32,8 @@ public class SurveyScreenResultVo{
     //
     @ApiModelProperty("全科医生code")
     private String doctor;
+    @ApiModelProperty("家医电话号码")
+    private String doctorMobile;
     //
     @ApiModelProperty("居民code")
     private String patientCode;
@@ -158,6 +160,14 @@ public class SurveyScreenResultVo{
 
     public void setDoctor(String doctor) {
         this.doctor = doctor;
+    }
+
+    public String getDoctorMobile() {
+        return doctorMobile;
+    }
+
+    public void setDoctorMobile(String doctorMobile) {
+        this.doctorMobile = doctorMobile;
     }
 
     public String getPatientCode() {
