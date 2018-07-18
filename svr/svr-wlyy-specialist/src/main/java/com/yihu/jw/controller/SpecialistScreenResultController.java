@@ -61,7 +61,7 @@ public class SpecialistScreenResultController extends EnvelopRestController {
     }
 
     @GetMapping(value = SpecialistMapping.screen.getScreenResultDetail)
-    @ApiOperation(value = "查看筛查结果记录详情")
+    @ApiOperation(value = "查看筛查结果记录详情.")
     public Envelop<Map<String,Object>> getScreenResultDetail(@ApiParam(value = "筛查结果唯一code")@RequestParam(value = "code") String code) {
         try {
             return specialistScreenResultService.getScreenResultDetail(code);

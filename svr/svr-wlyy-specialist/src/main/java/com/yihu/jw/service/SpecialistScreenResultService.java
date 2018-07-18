@@ -89,6 +89,7 @@ public class SpecialistScreenResultService {
         if (doctorList!=null && doctorList.size()>0){
             surveyScreenResultVo.setLevel(Integer.valueOf(String.valueOf(doctorList.get(0).get("level"))));
             surveyScreenResultVo.setDoctorName(String.valueOf(doctorList.get(0).get("name")));
+            surveyScreenResultVo.setDoctorMobile(String.valueOf(doctorList.get(0).get("mobile")));
         }
         map.put("info",surveyScreenResultVo);
         //json.put("info",surveyScreenResultVo);
