@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangzhinan
@@ -790,12 +787,11 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 JSONObject object = JSONObject.parseObject(step);
                 int step1 = object.getInteger("step1");
                 int step2 = object.getInteger("step2");
-                int step3 = object.getInteger("step3");
                 if (creditsDetailDOS != null && creditsDetailDOS.size() != 0){
                     CreditsDetailDO creditsDetailDO1 = creditsDetailDOS.get(0);
                     TaskRuleDO taskRuleDO = taskRuleDao.findOne(taskDO.getRuleCode());
-                    if (creditsDetailDO.getStepNumber() == step1){
-                        creditsDetailDO1.setIntegrate(1);
+                    if (creditsDetailDO.getStepNumber() < step1 && creditsDetailDO.getStepNumber() >0){
+                        creditsDetailDO1.setIntegrate(0);
                         creditsDetailDO1.setTradeDirection(1);
                         CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
                         AccountDO accountDO = accountDao.findOne(creditsDetailDO2.getAccountId());
@@ -806,21 +802,21 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         taskPatientDetailDao.save(taskPatientDetailDO);
                         creditsDetailDOS.clear();
                         creditsDetailDOS.add(creditsDetailDO2);
-                    }else if (creditsDetailDO.getStepNumber() == step2){
-                        creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+2);
+                    }else if (creditsDetailDO.getStepNumber() >= step1 && creditsDetailDO.getStepNumber() < step2){
+                        creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+1);
                         creditsDetailDO1.setTradeDirection(1);
                         CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
                         AccountDO accountDO = accountDao.findOne(creditsDetailDO2.getAccountId());
-                        accountDO.setTotal(accountDO.getTotal()+(creditsDetailDO2.getIntegrate()-1));
+                        accountDO.setTotal(accountDO.getTotal()+(creditsDetailDO2.getIntegrate()));
                         AccountDO accountDO1 = accountDao.save(accountDO);
                         creditsDetailDO2.setTotal(accountDO1.getTotal());
-                        taskPatientDetailDO.setTotal(taskPatientDetailDO.getTotal()+(creditsDetailDO2.getIntegrate()-1));
+                        taskPatientDetailDO.setTotal(taskPatientDetailDO.getTotal()+(creditsDetailDO2.getIntegrate()));
                         taskPatientDetailDao.save(taskPatientDetailDO);
                         creditsDetailDOS.clear();
                         creditsDetailDOS.add(creditsDetailDO2);
-                    }else if (creditsDetailDO.getStepNumber() == step3){
+                    }else if (creditsDetailDO.getStepNumber() >= step2){
                         if (creditsDetailDO1.getIntegrate() == 1){
-                            creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+7);
+                            creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+2);
                             creditsDetailDO1.setTradeDirection(1);
                             CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
                             AccountDO accountDO = accountDao.findOne(creditsDetailDO2.getAccountId());
@@ -831,7 +827,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                             taskPatientDetailDao.save(taskPatientDetailDO);
                             creditsDetailDOS.clear();
                             creditsDetailDOS.add(creditsDetailDO2);
-                        }else if(creditsDetailDO1.getIntegrate() == 3){
+                        }/*else if(creditsDetailDO1.getIntegrate() == 3){
                             creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+5);
                             creditsDetailDO1.setTradeDirection(1);
                             CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
@@ -843,19 +839,18 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                             taskPatientDetailDao.save(taskPatientDetailDO);
                             creditsDetailDOS.clear();
                             creditsDetailDOS.add(creditsDetailDO2);
-                        }
-
+                        }*/
                     }
                 }else{
                     CreditsDetailDO creditsDetailDO1 = new CreditsDetailDO();
-                    if (creditsDetailDO.getStepNumber() == step1){
+                    if (creditsDetailDO.getStepNumber() < step1 && creditsDetailDO.getStepNumber() >0){
+                        creditsDetailDO1.setIntegrate(0);
+                        creditsDetailDO1.setTradeDirection(1);
+                    }else if (creditsDetailDO.getStepNumber() >= step1 && creditsDetailDO.getStepNumber() < step2){
                         creditsDetailDO1.setIntegrate(1);
                         creditsDetailDO1.setTradeDirection(1);
-                    }else if (creditsDetailDO.getStepNumber() == step2){
+                    }else if (creditsDetailDO.getStepNumber() >=step2){
                         creditsDetailDO1.setIntegrate(3);
-                        creditsDetailDO1.setTradeDirection(1);
-                    }else if (creditsDetailDO.getStepNumber() == step3){
-                        creditsDetailDO1.setIntegrate(8);
                         creditsDetailDO1.setTradeDirection(1);
                     }
                     creditsDetailDO1.setSaasId("dev");
@@ -881,7 +876,6 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 }catch (Exception e){
                     logger.error("插入活跃出错:"+e.getMessage());
                 }
-
                 Envelop<CreditsDetailDO> envelop = new Envelop<>();
                 envelop.setDetailModelList(creditsDetailDOS);
                 return envelop;
@@ -893,8 +887,8 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         }
     }
 
-  /*  public JSONObject getStepNumber(){
-        String step = redisTemplate.opsForValue().get(STEP);
+    /*public JSONObject getStepNumber(){
+        String step = redisTemplate.·().get(STEP);
         logger.info("redis数据:"+step);
         String sql = ""
         String step1 = systemDictDao.
@@ -910,4 +904,101 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             return jsonObject;
         }
     }*/
+
+    public Envelop<CreditsDetailDO> weekReward(CreditsDetailDO creditsDetailDO) {
+        try {
+            synchronized (creditsDetailDO.getPatientId()) {
+                String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '" + creditsDetailDO.getPatientId() + "'";
+                List<AccountDO> accountDOList = jdbcTemplate.query(sqlAccount, new BeanPropertyRowMapper(AccountDO.class));
+                if (accountDOList != null && accountDOList.size() != 0) {
+                    creditsDetailDO.setAccountId(accountDOList.get(0).getId());
+                }
+                String creditsSql = "select * from wlyy_health_bank_credits_detail where patient_id = '" + creditsDetailDO.getPatientId() + "' and " +
+                        "DATE_FORMAT(create_time,'%Y-%m-%d') IN " + creditsDetailDO.getWeekTimes()+" and description = '周奖励'";
+                List<CreditsDetailDO> creditsDetailDOS1 = jdbcTemplate.query(creditsSql, new BeanPropertyRowMapper(CreditsDetailDO.class));
+                List<CreditsDetailDO> creditsDetailDOList = new ArrayList<>();
+                Envelop<CreditsDetailDO> envelop = new Envelop<>();
+                if (getWeekOfDate(new Date()).equalsIgnoreCase("星期五")||getWeekOfDate(new Date()).equalsIgnoreCase("星期六")||getWeekOfDate(new Date()).equalsIgnoreCase("星期日")){
+                    String sql = "select sum(integrate) as total from wlyy_health_bank_credits_detail where patient_id = '" + creditsDetailDO.getPatientId() + "' and description = '周奖励'";
+                    List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
+                    Long count = 0L;
+                    if(rstotal!=null&&rstotal.size()>0){
+                        Object object =  rstotal.get(0).get("total");
+                        count = Long.parseLong(object.toString());
+                    }
+                    if (count > 12){
+                        envelop.setMessage("奖励积分已达到12分。不能再奖励了！");
+                        return envelop;
+                    }else{
+                        if (creditsDetailDOS1 == null || creditsDetailDOS1.size() == 0) {
+                            creditsDetailDO.setTradeType("ACTIVITY_TASK");
+                            creditsDetailDO.setSaasId("dev");
+                            creditsDetailDO.setStatus(1);
+                            creditsDetailDO.setTransactionId(creditsDetailDO.getTransactionId());
+                            creditsDetailDO.setCreateTime(new Date());
+                            creditsDetailDO.setUpdateTime(new Date());
+                            creditsDetailDO.setTradeDirection(1);
+                            CreditsDetailDO creditsDetailDO1 = credittsLogDetailDao.save(creditsDetailDO);
+                            creditsDetailDOList.add(creditsDetailDO1);
+                            TaskPatientDetailDO taskPatientDetailDO = new TaskPatientDetailDO();
+                            taskPatientDetailDO.setPatientId(creditsDetailDO1.getPatientId());
+                            taskPatientDetailDO.setTaskId(creditsDetailDO1.getTransactionId());
+                            String taskSql1 = ISqlUtils.getAllSql(taskPatientDetailDO);
+                            List<TaskPatientDetailDO> taskPatientDetailDOS1 = jdbcTemplate.query(taskSql1, new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+                            TaskPatientDetailDO taskPatientDetailDO1 = taskPatientDetailDOS1.get(0);
+                            if (creditsDetailDO1.getTradeDirection() == 1) {
+                                taskPatientDetailDO1.setTotal(taskPatientDetailDO1.getTotal() + creditsDetailDO1.getIntegrate());
+                            } else if (creditsDetailDO.getTradeDirection() == -1) {
+                                taskPatientDetailDO1.setTotal(taskPatientDetailDO1.getTotal() - creditsDetailDO1.getIntegrate());
+                            }
+                            taskPatientDetailDao.save(taskPatientDetailDO1);
+                            AccountDO accountDO = accountDao.findOne(creditsDetailDO1.getAccountId());
+                            if (creditsDetailDO1.getTradeDirection() == 1) {
+                                accountDO.setTotal(accountDO.getTotal() + creditsDetailDO1.getIntegrate());
+                            } else if (creditsDetailDO.getTradeDirection() == -1) {
+                                accountDO.setTotal(accountDO.getTotal() - creditsDetailDO1.getIntegrate());
+                            }
+                            AccountDO accountDO1 = accountDao.save(accountDO);
+                            List<CreditsDetailDO> creditsDetailDOS = new ArrayList<>();
+                            for (CreditsDetailDO creditsDetailDO2 : creditsDetailDOList) {
+                                creditsDetailDO2.setTotal(accountDO1.getTotal());
+                                creditsDetailDO2.setFlag("1");
+                                creditsDetailDOS.add(creditsDetailDO2);
+                            }
+                            envelop.setDetailModelList(creditsDetailDOS);
+                        }else {
+                            for (CreditsDetailDO creditsDetailDO1 : creditsDetailDOS1){
+                                creditsDetailDO1.setFlag("2");
+                            }
+                            envelop.setDetailModelList(creditsDetailDOS1);
+                        }
+                        return envelop;
+                    }
+                }else{
+                    CreditsDetailDO creditsDetailDO1 = new CreditsDetailDO();
+                    creditsDetailDO1.setFlag("0");
+                    creditsDetailDOList.add(creditsDetailDO1);
+                    envelop.setDetailModelList(creditsDetailDOList);
+                    return envelop;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Envelop<CreditsDetailDO> envelop = new Envelop<>();
+            return envelop;
+        }
+    }
+
+
+    public  String getWeekOfDate(Date dt) {
+        String[] weekDays = {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+        return weekDays[w];
+    }
+
+
 }

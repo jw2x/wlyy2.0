@@ -78,6 +78,9 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
     @Transient
     private String unionId;
 
+    @Transient
+    private String weekTimes;//一周的日期
+
 
 
     public String getSaasId() {
@@ -246,5 +249,13 @@ public class CreditsDetailDO extends IdEntityWithOperation implements Serializab
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public String getWeekTimes() {
+        return weekTimes;
+    }
+
+    public void setWeekTimes(String weekTimes) {
+        this.weekTimes = weekTimes;
     }
 }

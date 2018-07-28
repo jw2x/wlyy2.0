@@ -3,6 +3,7 @@ package com.yihu.jw.util;/**
  */
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -49,7 +50,7 @@ public class ISqlUtils {
                         if(value == null || "".equals(value)){  //如果属性没值，不拼接sql
                             continue;
                         }
-                        else if(value instanceof String ){
+                        else if(value instanceof String){
                             value ="'%"+value+"%'";
                             sb.append(" and ").append(columeName +" like " ).append(value+"");
                         }else if (value instanceof Integer){
@@ -62,8 +63,26 @@ public class ISqlUtils {
 
                 }
         }
+        JSONObject jsonObject = (JSONObject) JSONObject.toJSON(object);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date1 = jsonObject.getDate("startTime");
+        Date date2 = jsonObject.getDate("endTime");
+        String startTime = null;
+        String endTime = null;
+        if (date1 != null){
+             startTime = sdf.format(date1);
+        } else if (date2 != null) {
+            endTime = sdf.format(date2);
+        }
+        if (StringUtils.isNoneBlank(startTime)&& StringUtils.isNoneBlank(endTime)){
+            sb.append(" and start_time between "+startTime+" and "+endTime);
+        } else if (StringUtils.isNoneBlank(startTime)&&!StringUtils.isNoneBlank(endTime)) {
+            sb.append(" and start_time > '"+startTime+"'");
+        }else if (StringUtils.isNoneBlank(endTime)&&!StringUtils.isNoneBlank(startTime)){
+            sb.append(" and end_time < '"+endTime+"'");
+        }
         if(isFlag.equalsIgnoreCase("*")){
-            sb.append(" ORDER BY update_time DESC ").append("LIMIT ").append((page-1)*size+",").append(size);
+            sb.append(" ORDER BY create_time DESC ").append("LIMIT ").append((page-1)*size+",").append(size);
         }
         return sb.toString();
     }
@@ -128,7 +147,7 @@ public class ISqlUtils {
                     }else {
                         value = (Object)m.invoke(object);
                     }
-                    if (value == null || "".equals(value)||value.equals(Integer.parseInt("0"))){
+                    if (value == null || "".equals(value)){
                         continue;
                     }
                     else if (value instanceof  String){
