@@ -231,4 +231,20 @@ public class CreditsDetailController extends EnvelopRestController {
     }
 
 
+
+    @PostMapping(value = HealthBankMapping.healthBank.weekReward)
+    @ApiOperation(value = "周奖励")
+    public Envelop<CreditsDetailDO> weekReward(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
+                                                     @RequestParam(value = "creditsDetail",required = true)String creditsDetail){
+        try {
+            CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
+            return service.weekReward(creditsDetailDO);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
+
+
 }

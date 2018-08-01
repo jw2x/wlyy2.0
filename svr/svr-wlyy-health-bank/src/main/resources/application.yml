@@ -57,6 +57,10 @@ spring:
     url: jdbc:mysql://172.19.103.77:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
     password: 123456
+  redis:
+    host: 172.19.103.88 # Redis server host.
+    port: 6379 # Redis server port.
+    #    password: jkzl_ehr
   data:
     elasticsearch: #ElasticsearchProperties
       cluster-name: jkzl #默认即为elasticsearch  集群名
@@ -75,6 +79,7 @@ spring:
       password: # Login password.
       proxy.port:  # Proxy port the HTTP client should use.
       proxy.host:  # Proxy host the HTTP client should use.
+
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
@@ -83,8 +88,12 @@ spring:
   profiles: jwtest
   datasource:
     url: jdbc:mysql://172.17.110.160:3306/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
-    username: ssgg
-    password: ssgg
+    username: linzhou
+    password: linzhou
+  redis:
+    host: 172.19.103.88 # Redis server host.
+    port: 6379 # Redis server port.
+#    password: jkzl_ehr
   data:
     elasticsearch: #ElasticsearchProperties
       cluster-name: jkzl #默认即为elasticsearch  集群名
@@ -114,6 +123,10 @@ spring:
     url: jdbc:mysql://59.61.92.90:9069/wlyy_health_bank?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: wlyy
     password: jkzlehr@123
+  redis:
+    host: 59.61.92.90 # Redis server host.
+    port: 9054  # Redis server port.
+    password: jkzlehr
   data:
     elasticsearch: #ElasticsearchProperties
       cluster-name: jkzl #默认即为elasticsearch  集群名

@@ -11,6 +11,7 @@ import com.yihu.jw.service.TaskPatientDtailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,8 @@ public class ActiveRecordController extends EnvelopRestController {
     private ActiveRecordService activeRecordService;
     @Autowired
     private TaskPatientDtailService taskPatientDtailService;
+    @Autowired
+    private Tracer tracer;
 
     @PostMapping(value = HealthBankMapping.healthBank.createActiveRecord)
     @ApiOperation(value = "添加健康银行活动活跃记录")
@@ -51,6 +54,8 @@ public class ActiveRecordController extends EnvelopRestController {
                 }
             }
         }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError("添加失败");
         }
     }
