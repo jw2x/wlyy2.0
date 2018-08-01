@@ -59,5 +59,6 @@ public class HealthBankMapping {
         public static final String doctorAddIntegrate = "/doctorAddIntegrate";
         public static final String addStepIntegrate = "/addStepIntegrate";
         public static final String weekReward = "/weekReward";
+        public static final String selectByDate = "/selectByDate";
     }
 }

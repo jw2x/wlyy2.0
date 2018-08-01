@@ -772,9 +772,12 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     creditsDetailDO.setAccountId(accountDOS.get(0).getId());
                 }
                 TaskDO taskDO = taskDao.findOne(creditsDetailDO.getTransactionId());
-                String sql1 = "select *  from wlyy_health_bank_task_patient_detail where patient_openid = '"+creditsDetailDO.getOpenId()+"' " +
-                        "AND patient_idcard = '"+creditsDetailDO.getIdCard()+"' AND union_id = '"+creditsDetailDO.getUnionId()+"' AND task_id = '"+creditsDetailDO.getTransactionId()+"'";
+                String sql1 = "select *  from wlyy_health_bank_task_patient_detail where "+
+                        " patient_idcard = '"+creditsDetailDO.getIdCard()+"' AND union_id = '"+creditsDetailDO.getUnionId()+"' AND task_id = '"+creditsDetailDO.getTransactionId()+"'";
                 List<TaskPatientDetailDO> taskPatientDetailDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+                if(taskPatientDetailDOList == null || taskPatientDetailDOList.size()==0){
+                    throw new Exception("该居民参与活动查不到!");
+                }
                 TaskPatientDetailDO taskPatientDetailDO = taskPatientDetailDOList.get(0);
                 String sql = "select * from wlyy_health_bank_credits_detail where patient_id = '"+creditsDetailDO.getPatientId()+"' AND " +
                         "transaction_id = '"+creditsDetailDO.getTransactionId()+"' AND create_time > '"+DateUtils.getDayBegin() +"' AND" +

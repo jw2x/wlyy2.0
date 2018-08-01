@@ -3,20 +3,19 @@ package com.yihu.jw.service;/**
  */
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.ActivityDao;
 import com.yihu.jw.dao.TaskDao;
 import com.yihu.jw.dao.TaskPatientDetailDao;
 import com.yihu.jw.dao.TaskRuleDao;
-import com.yihu.jw.entity.health.bank.ActivityDO;
-import com.yihu.jw.entity.health.bank.TaskDO;
-import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
-import com.yihu.jw.entity.health.bank.TaskRuleDO;
+import com.yihu.jw.entity.health.bank.*;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.DateUtils;
 import com.yihu.jw.util.ISqlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -236,5 +235,31 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao>{
             taskDao.save(taskDO);
         }
         return envelop;
+    }
+
+
+    /**
+     * 查询某个时间任务的积分情况
+     *
+     * @param object{"taskCode":,"startTime":,"endTime":,"patientId":""}
+     * @return
+     */
+    public Envelop<TaskDO> selectByDate(JSONObject object){
+        Envelop<TaskDO> envelop = new Envelop<>();
+        String taskSql = "select * from wlyy_health_bank_task where task_code = '"+object.getString("taskCode")+ "'";
+        List<TaskDO> taskDOList = jdbcTemplate.query(taskSql,new BeanPropertyRowMapper(TaskDO.class));
+        List<TaskDO> taskDOS = new ArrayList<>();
+        if (taskDOList != null && taskDOList.size() != 0){
+            TaskDO taskDO = taskDOList.get(0);
+            String creditSql = "select * from wlyy_health_bank_credits_detail where transaction_id ='"+taskDO.getId()+
+                    "' and DATE_FORMAT(create_time,'%Y-%m-%d') >= '"+object.getString("startTime")+"' and DATE_FORMAT(create_time,'%Y-%m-%d') <= '" +object.getString("endTime")+"'"
+                    +" and patient_id = '"+object.getString("patientId")+"'";
+            List<CreditsDetailDO> creditsDetailDOS = jdbcTemplate.query(creditSql,new BeanPropertyRowMapper(CreditsDetailDO.class));
+            taskDO.setCreditsDetailDOS(creditsDetailDOS);
+            taskDOS.add(taskDO);
+        }
+        envelop.setDetailModelList(taskDOS);
+        return envelop;
+
     }
 }

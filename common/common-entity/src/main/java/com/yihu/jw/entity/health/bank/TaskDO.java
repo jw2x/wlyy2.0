@@ -65,6 +65,8 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
     private List<TaskPatientDetailDO> taskPatientDetailDOS;//参与人详情
     @Transient
     private String ruleName;//规则名称
+    @Transient
+    private List<CreditsDetailDO> creditsDetailDOS;//积分详情列表
 
     public String getSaasId() {
         return saasId;
@@ -200,5 +202,13 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
 
     public void setRuleName(String ruleName) {
         this.ruleName = ruleName;
+    }
+
+    public List<CreditsDetailDO> getCreditsDetailDOS() {
+        return creditsDetailDOS;
+    }
+
+    public void setCreditsDetailDOS(List<CreditsDetailDO> creditsDetailDOS) {
+        this.creditsDetailDOS = creditsDetailDOS;
     }
 }

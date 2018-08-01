@@ -14,6 +14,8 @@ import com.yihu.jw.entity.health.bank.TaskRangDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,6 +34,7 @@ import java.util.Map;
 @Service
 @Transactional
 public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,TaskPatientDetailDao> {
+    private Logger logger = LoggerFactory.getLogger(TaskPatientDtailService.class);
     @Autowired
     private TaskPatientDetailDao taskPatientDetailDao;
     @Autowired
@@ -145,10 +148,13 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
      * @return
      */
     public TaskPatientDetailDO selectByPatientId(String openId,String idCard,String unionId,String taskCode){
-        String sql ="select * from wlyy_health_bank_task_patient_detail where patient_openid = '"+openId+"'" +
-                " AND patient_idcard = '"+idCard+"' AND union_id ='"+unionId+"' AND task_id = " +
+        logger.info("openId:"+openId+"idCard:"+idCard+"unionId:"+unionId+"taskCode:"+taskCode);
+
+        String sql ="select * from wlyy_health_bank_task_patient_detail where " +
+                " (patient_idcard = '"+idCard+"' OR union_id ='"+unionId+"') AND task_id = " +
                 "(select id from wlyy_health_bank_task where task_code = '"+taskCode+"' )";
         List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
+        logger.info("参与信息："+taskPatientDetailDOS);
         return taskPatientDetailDOS.get(0);
     }
 }
