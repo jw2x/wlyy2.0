@@ -54,6 +54,15 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
     @Transient
     private String taskCode;//任务标识
 
+    @Transient
+    private String name;//居民名称
+
+    @Transient
+    private String hospital;//社区
+
+    @Transient
+    private String hospitalName;//社区名称
+
     public String getSaasId() {
         return saasId;
     }
@@ -156,5 +165,29 @@ public class TaskPatientDetailDO extends IdEntityWithOperation implements Serial
 
     public void setTaskCode(String taskCode) {
         this.taskCode = taskCode;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getHospital() {
+        return hospital;
+    }
+
+    public void setHospital(String hospital) {
+        this.hospital = hospital;
+    }
+
+    public String getHospitalName() {
+        return hospitalName;
+    }
+
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 }

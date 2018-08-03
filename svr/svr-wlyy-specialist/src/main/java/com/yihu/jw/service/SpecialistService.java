@@ -468,6 +468,7 @@ public class SpecialistService{
 
         if("0".equals(state)){
             relation.setSignStatus("-2");
+            relation.setStatus("-1");
             relation.setRemark(remark);
             specialistPatientRelationDao.save(relation);
         }else{

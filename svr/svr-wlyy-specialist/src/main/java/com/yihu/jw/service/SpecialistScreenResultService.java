@@ -34,13 +34,15 @@ public class SpecialistScreenResultService {
 
 
     public Envelop<SurveyScreenResultVo> getScreenList(String doctor,int type,Integer page,Integer size)throws ParseException {
-        String sql = "SELECT ssr.id,ssr.`code`,ssr.template_code templateCode,ssr.template_title templateTitle,ssr.disease,ssr.doctor,ssr.patient_code patientCode,ssr.patient_name patientName,ssr.screen_result_code screenResultCode,ssr.screen_result_score screenResultScore,ssr.screen_result screenResult,ssr.is_danger isDanger,ssr.is_order isOrder,ssr.following,ssr.is_educate isEducate,ssr.over,ssr.reservation_code reservationCode,ssr.czrq,ssr.is_again isAgain,ssr.parent_code parentCode,ssr.origin_code originCode,ssr.source" +
-                    " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1";
+        String sql  ="";
         if (type==1){
-            sql +=" AND ssr.following =1";
+            sql ="SELECT ssr.id,ssr.`code`,ssr.template_code templateCode,ssr.template_title templateTitle,ssr.disease,ssr.doctor,ssr.patient_code patientCode,ssr.patient_name patientName,ssr.screen_result_code screenResultCode,ssr.screen_result_score screenResultScore,ssr.screen_result screenResult,ssr.is_danger isDanger,ssr.is_order isOrder,ssr.following,ssr.is_educate isEducate,ssr.over,ssr.reservation_code reservationCode,ssr.czrq,ssr.is_again isAgain,ssr.parent_code parentCode,ssr.origin_code originCode,ssr.source" +
+                    " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1 AND ssr.following =1";
         }
         if (type==2){
-            sql +=" AND ssr.is_order = 1";
+            sql="SELECT ssr.id,ssr.`code`,ssr.template_code templateCode,ssr.template_title templateTitle,ssr.disease,ssr.doctor,ssr.patient_code patientCode,ssr.patient_name patientName,ssr.screen_result_code screenResultCode,ssr.screen_result_score screenResultScore,ssr.screen_result screenResult,ssr.is_danger isDanger,ssr.is_order isOrder,ssr.following,ssr.is_educate isEducate,ssr.over,ssr.reservation_code reservationCode,ssr.czrq,ssr.is_again isAgain,ssr.parent_code parentCode,ssr.origin_code originCode,ssr.source" +
+                    " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN "+basedb+".wlyy_patient_reservation pr ON ssr.reservation_code = pr.`code` WHERE pr.status =1 " +
+                    "  AND pr.doctor_code = (SELECT jw_doctor from wlyy.wlyy_doctor_mapping WHERE doctor_code='"+doctor+"') AND ssr.over = 1 AND ssr.is_order>0";
         }
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
         int count = 0;
@@ -57,7 +59,8 @@ public class SpecialistScreenResultService {
                 " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1 AND ssr.following =1";
 
         String orderSwl = "SELECT count(*) orderNumber" +
-                " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN wlyy_specialist_patient_relation spr ON ssr.patient_code= spr.patient WHERE spr.`status`>=0 AND spr.sign_status>0 AND spr.doctor='"+doctor+"' AND ssr.over=1 AND ssr.is_order =1";
+                " FROM  "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN  "+basedb+".wlyy_patient_reservation pr ON ssr.reservation_code = pr.`code` WHERE pr.status =1 " +
+                " AND pr.doctor_code = (SELECT jw_doctor from wlyy.wlyy_doctor_mapping WHERE doctor_code='"+doctor+"') AND ssr.over = 1 AND ssr.is_order>0";
 
         Map<String,Object> followMap = jdbcTemplate.queryForMap(followSql);
         Map<String,Object> orderMap = jdbcTemplate.queryForMap(orderSwl);
@@ -86,6 +89,7 @@ public class SpecialistScreenResultService {
         if (doctorList!=null && doctorList.size()>0){
             surveyScreenResultVo.setLevel(Integer.valueOf(String.valueOf(doctorList.get(0).get("level"))));
             surveyScreenResultVo.setDoctorName(String.valueOf(doctorList.get(0).get("name")));
+            surveyScreenResultVo.setDoctorMobile(String.valueOf(doctorList.get(0).get("mobile")));
         }
         map.put("info",surveyScreenResultVo);
         //json.put("info",surveyScreenResultVo);

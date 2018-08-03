@@ -78,7 +78,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
                     "FROM " +
                     " ( " +
                     " SELECT DISTINCT " +
-                    "  (btpd.patient_openid) " +
+                    "  (btpd.patient_id) " +
                     "  FROM " +
                     "  wlyy_health_bank_task_patient_detail btpd " +
                     "  WHERE " +
