@@ -778,7 +778,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 TaskPatientDetailDO taskPatientDetailDO = taskPatientDetailDOList.get(0);
                 String sql = "select * from wlyy_health_bank_credits_detail where patient_id = '"+creditsDetailDO.getPatientId()+"' AND " +
                         "transaction_id = '"+creditsDetailDO.getTransactionId()+"' AND create_time > '"+DateUtils.getDayBegin() +"' AND" +
-                        " create_time < '"+DateUtils.getDayEnd()+"'";
+                        " create_time < '"+DateUtils.getDayEnd()+"'AND ISNULL(description)";
                 List<CreditsDetailDO> creditsDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper<>(CreditsDetailDO.class));
                 String step = redisTemplate.opsForValue().get(STEP);
                 if (StringUtils.isEmpty(step)){
@@ -816,7 +816,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         creditsDetailDOS.add(creditsDetailDO2);
                     }else if (creditsDetailDO.getStepNumber() >= step2){
                         if (creditsDetailDO1.getIntegrate() == 1){
-                            creditsDetailDO1.setIntegrate(creditsDetailDO1.getIntegrate()+2);
+                            creditsDetailDO1.setIntegrate(2);
                             creditsDetailDO1.setTradeDirection(1);
                             CreditsDetailDO creditsDetailDO2 = credittsLogDetailDao.save(creditsDetailDO1);
                             AccountDO accountDO = accountDao.findOne(creditsDetailDO2.getAccountId());
@@ -850,7 +850,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         creditsDetailDO1.setIntegrate(1);
                         creditsDetailDO1.setTradeDirection(1);
                     }else if (creditsDetailDO.getStepNumber() >=step2){
-                        creditsDetailDO1.setIntegrate(3);
+                        creditsDetailDO1.setIntegrate(2);
                         creditsDetailDO1.setTradeDirection(1);
                     }
                     creditsDetailDO1.setSaasId("dev");
@@ -924,7 +924,9 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     Long count = 0L;
                     if(rstotal!=null&&rstotal.size()>0){
                         Object object =  rstotal.get(0).get("total");
-                        count = Long.parseLong(object.toString());
+                        if (object != null){
+                            count = Long.parseLong(object.toString());
+                        }
                     }
                     if (count > 12){
                         envelop.setMessage("奖励积分已达到12分。不能再奖励了！");
