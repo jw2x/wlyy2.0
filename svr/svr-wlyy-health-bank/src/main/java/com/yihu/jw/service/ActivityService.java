@@ -139,7 +139,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
                 " SELECT task_id FROM " +
                 "wlyy_health_bank_task_patient_detail" +
                 " WHERE " +
-                " patient_openid = '"+activityDO.getOpenId()+ "' AND patient_idcard = '"+activityDO.getPatientIdcard()+"' AND union_id = '"+ activityDO.getUnionId()+"')" +
+                " patient_idcard = '"+activityDO.getPatientIdcard()+"' AND union_id = '"+ activityDO.getUnionId()+"')" +
                 " )" +
                 " LIMIT "+(page-1)*size +","+size;
         List<ActivityDO> activityDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(ActivityDO.class));
