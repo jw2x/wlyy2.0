@@ -71,15 +71,16 @@ public class ISqlUtils {
         String endTime = null;
         if (date1 != null){
              startTime = sdf.format(date1);
-        } else if (date2 != null) {
+        }
+        if (date2 != null) {
             endTime = sdf.format(date2);
         }
         if (StringUtils.isNoneBlank(startTime)&& StringUtils.isNoneBlank(endTime)){
-            sb.append(" and start_time between "+startTime+" and "+endTime);
+            sb.append(" and start_time >= '"+startTime+"' and end_time <='"+endTime+"'");
         } else if (StringUtils.isNoneBlank(startTime)&&!StringUtils.isNoneBlank(endTime)) {
-            sb.append(" and start_time > '"+startTime+"'");
+            sb.append(" and start_time >= '"+startTime+"'");
         }else if (StringUtils.isNoneBlank(endTime)&&!StringUtils.isNoneBlank(startTime)){
-            sb.append(" and end_time < '"+endTime+"'");
+            sb.append(" and end_time <= '"+endTime+"'");
         }
         if(isFlag.equalsIgnoreCase("*")){
             sb.append(" ORDER BY create_time DESC ").append("LIMIT ").append((page-1)*size+",").append(size);
