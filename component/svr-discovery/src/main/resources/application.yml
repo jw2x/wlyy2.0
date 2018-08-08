@@ -1,12 +1,9 @@
 spring:
-  application:
-    name: svr-discovery
   jmx:
     enabled: false
 
 server:
   port: 8761
-  display-name: svr-discovery
 
 #eureka界面的账号密码
 security:
@@ -25,4 +22,4 @@ eureka:
     registry-fetch-interval-seconds: 30 #定期的更新客户端的服务清单 30秒更新一次
     fetch-registry: false #如果是做高可用的发现服务那就要改成true
     service-url:
-      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka/
