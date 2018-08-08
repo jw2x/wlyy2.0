@@ -120,7 +120,7 @@ public class SaasController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<SaasDO> list = saasService.search(fields, filters, sorts);
+        List<SaasDO> list = saasService.search(filters, sorts);
         //封装返回格式
         List<SaasDO> mSaass = convertToModels(list, new ArrayList<>(list.size()), SaasDO.class, fields);
         return Envelop.getSuccessList(BaseRequestMapping.Saas.message_success_find_saass, mSaass);

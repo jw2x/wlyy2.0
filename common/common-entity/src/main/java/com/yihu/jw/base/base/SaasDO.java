@@ -1,7 +1,6 @@
 package com.yihu.jw.base.base;// default package
 
 
-import com.yihu.jw.IdEntity;
 import com.yihu.jw.IdEntityWithOperation;
 
 import javax.persistence.Column;
@@ -13,20 +12,18 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_saas")
-public class SaasDO extends IdEntityWithOperation implements java.io.Serializable {
+public class SaasDO extends IdEntityWithOperation {
 
 	// Fields
-
 	private String name;//名称
 	private Integer status;//状态 -1 已删除 0待审核 1审核通过 2 审核不通过
 	private String remark;//备注
-	private String familyTel;
+	private String familyTel; //电话号码
 	// Constructors
 
 	/** default constructor */
 	public SaasDO() {
 	}
-
 
 	@Column(name = "name", length = 200)
 	public String getName() {

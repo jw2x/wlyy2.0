@@ -1,6 +1,5 @@
 package com.yihu.jw.business.user.service;
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.base.user.BaseEmployDO;
 import com.yihu.jw.base.user.BaseRoleDO;
 import com.yihu.jw.business.user.dao.EmployDao;
@@ -8,6 +7,7 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.restmodel.common.base.BaseEnvelopStatus;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
 import org.springframework.http.HttpEntity;

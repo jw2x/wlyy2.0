@@ -85,6 +85,7 @@ logging:
 neiwang:
   enable: true
   wlyy: http://localhost:9099/iot/
+
 ---
 spring:
   profiles: jwtest

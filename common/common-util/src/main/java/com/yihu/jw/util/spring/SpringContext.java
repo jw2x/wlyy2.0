@@ -14,7 +14,7 @@ import org.springframework.util.ClassUtils;
  * @version 1.0
  * @created 12-05-2015 17:47:55
  */
-@Component
+//@Component
 public class SpringContext implements ApplicationContextAware {
     private static ApplicationContext springContext = null;
 

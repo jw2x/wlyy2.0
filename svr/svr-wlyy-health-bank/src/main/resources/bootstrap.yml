@@ -1,55 +1,16 @@
-##优先读取 boostarap配置 然后在读取application。yml的配置
 spring:
-  #从发现服务里面取配置服务的信息
+  application:
+    name: svr-wlyy-health-bank
   cloud:
     config:
-      failFast: true #启动快速失败 即链接不到配置服务就启动失败
+      failFast: true
       username: jw
       password: jkzl
-      discovery:
-        enabled: true #使用发现服务
-        service-id: svr-configurations #配置服务的名字
-
-eureka:
-  instance:
-    #eurika使用IP不使用host
-    prefer-ip-address: true
-    #定制化在eurika中显示的名称
-    ##instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
-    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
-    health-check-url-path: /health
-
 
 ---
 spring:
   profiles: jwdev
-
-##发现服务的地址
-eureka:
-  client:
-    serviceUrl:
-#      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
-      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka/
-
----
-spring:
-  profiles: jwtest
-
-
-eureka:
-  client:
-    serviceUrl:
-      #http://账号:密码@127.0.0.1:8761/eureka/
-      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka/
-
-
----
-spring:
-  profiles: prod
-
-
-eureka:
-  client:
-    serviceUrl:
-      #http://账号:密码@127.0.0.1:8761/eureka/
-      defaultZone: http://jw:jkzl@192.168.120.153:8761/eureka/
+  cloud:
+    config:
+      uri: ${wlyy2.0-spring.config.uri:http://172.17.110.212:1221}
+      label: ${wlyy2.0-spring.config.label:jwdev}

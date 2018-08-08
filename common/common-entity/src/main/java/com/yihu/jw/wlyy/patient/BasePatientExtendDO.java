@@ -62,15 +62,6 @@ public class BasePatientExtendDO extends IdEntityWithOperation implements java.i
 	}
 
 	// Property accessors
-	@Id
-	@Column(name = "id", unique = true, nullable = false, length = 50)
-	public String getId() {
-		return this.id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	@Column(name = "patient_id", length = 100)
 	public String getPatientId() {

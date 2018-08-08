@@ -1,7 +1,7 @@
 package com.yihu.iot.controller.common;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.yihu.base.fastdfs.FastDFSHelper;
+import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.restmodel.common.Envelop;
@@ -32,7 +32,7 @@ import java.util.Base64;
 public class FileUploadController extends EnvelopRestController{
 
     @Autowired
-    private FastDFSHelper fastDFSHelper;
+    private FastDFSUtil fastDFSHelper;
     @Value("${fastDFS.fastdfs_file_url}")
     private String fastdfs_file_url;
 
@@ -65,8 +65,8 @@ public class FileUploadController extends EnvelopRestController{
             UploadVO uploadVO = new UploadVO();
             uploadVO.setFileName(fileName);
             uploadVO.setFileType(fileType);
-            uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+            uploadVO.setFullUri(objectNode.get("fileId").toString().replaceAll("\"", ""));
+            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fileId").toString().replaceAll("\"", ""));
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
         }catch (Exception e){
             e.printStackTrace();
@@ -104,8 +104,8 @@ public class FileUploadController extends EnvelopRestController{
             UploadVO uploadVO = new UploadVO();
             uploadVO.setFileName(fileName);
             uploadVO.setFileType(fileType);
-            uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+            uploadVO.setFullUri(objectNode.get("fileId").toString().replaceAll("\"", ""));
+            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fileId").toString().replaceAll("\"", ""));
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
         }catch (Exception e){
             e.printStackTrace();
@@ -128,8 +128,8 @@ public class FileUploadController extends EnvelopRestController{
             UploadVO uploadVO = new UploadVO();
             uploadVO.setFileName(fileName);
             uploadVO.setFileType(fileType);
-            uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+            uploadVO.setFullUri(objectNode.get("fileId").toString().replaceAll("\"", ""));
+            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fileId").toString().replaceAll("\"", ""));
             return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
         } catch (Exception e) {
             e.printStackTrace();
@@ -166,8 +166,8 @@ public class FileUploadController extends EnvelopRestController{
             UploadVO uploadVO = new UploadVO();
             uploadVO.setFileName(remoteFileName);
             uploadVO.setFileType(groupName);
-            uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+            uploadVO.setFullUri(objectNode.get("fileId").toString().replaceAll("\"", ""));
+            uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fileId").toString().replaceAll("\"", ""));
             //返回文件路径
             return Envelop.getSuccess(IotRequestMapping.FileUpload.message_success_upload, uploadVO);
         }catch (ApiException e){

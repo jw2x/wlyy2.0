@@ -2,8 +2,8 @@ package com.yihu.iot.datainput.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.base.es.config.ElastricSearchHelper;
 //import com.yihu.base.hbase.HBaseHelper;
+import com.yihu.elasticsearch.jest.ElastricSearchHelper;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.common.ElasticSearchQueryGenerator;

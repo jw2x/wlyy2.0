@@ -7,7 +7,6 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.util.common.IdCardUtil;
-import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +68,7 @@ public class SpecialistScreenResultService {
     }
 
     public Envelop<Map<String,Object>> getScreenResultDetail(String code)throws Exception{
-        Map<String,Object> map = new HashedMap();
+        Map<String,Object> map = new HashMap<>();
         //登记信息
         String infoSql = "SELECT ssr.id,ssr.`code`,ssr.template_code templateCode,ssr.template_title templateTitle,ssr.disease,ssr.doctor,ssr.patient_code patientCode,ssr.patient_name patientName,ssr.screen_result_code screenResultCode,ssr.screen_result_score screenResultScore,ssr.screen_result screenResult,ssr.is_danger isDanger,ssr.is_order isOrder,ssr.following,ssr.is_educate isEducate,ssr.over,ssr.reservation_code reservationCode,ssr.czrq,ssr.is_again isAgain,ssr.parent_code parentCode,ssr.origin_code originCode,ssr.advice_code adviceCode,ssr.other_advice otherAdvice,ssr.source,p.idcard" +
                 " FROM "+basedb+".wlyy_survey_screen_result ssr LEFT JOIN " +basedb+

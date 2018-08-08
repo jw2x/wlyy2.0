@@ -2,12 +2,12 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/4/27.
  */
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.GoodsDao;
 import com.yihu.jw.entity.health.bank.GoodsDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

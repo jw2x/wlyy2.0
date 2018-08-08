@@ -2,7 +2,6 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/6/8.
  */
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.TaskDao;
 import com.yihu.jw.dao.TaskPatientDetailDao;
 import com.yihu.jw.dao.TaskRuleDao;
@@ -12,6 +11,7 @@ import com.yihu.jw.entity.health.bank.TaskRuleDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -29,7 +29,7 @@ import java.util.Map;
  **/
 @Service
 @Transactional
-public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao>{
+public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao> {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     @Autowired

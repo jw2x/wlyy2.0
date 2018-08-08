@@ -5,45 +5,57 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.yihu.jw</groupId>
-        <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.2</version>
-        <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
+        <artifactId>wlyy-parent-pom</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../../wlyy-parent-pom/pom.xml</relativePath>
     </parent>
+
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-base</artifactId>
-    <version>${parent.version}</version>
     <packaging>war</packaging>
+    <version>${parent.version}</version>
 
     <dependencies>
         <dependency>
-            <groupId>com.yihu</groupId>
-            <artifactId>admin-client-starter</artifactId>
-            <version>${version.yihu.admin}</version>
-        </dependency>
-        <!--公共的 start-->
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-rest-model</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>org.springframework.data</groupId>
-                    <artifactId>spring-data-elasticsearch</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-eureka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-config</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-entity</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework.data</groupId>
-                    <artifactId>spring-data-elasticsearch</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.yihu.base</groupId>
-                    <artifactId>common-data-es</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model</artifactId>
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
@@ -57,150 +69,19 @@
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
+
+        <!-- Jzkl Starter -->
         <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-swagger</artifactId>
+            <groupId>com.yihu</groupId>
+            <artifactId>swagger-starter</artifactId>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-log</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-data-mysql</artifactId>
+            <groupId>com.yihu</groupId>
+            <artifactId>mysql-starter</artifactId>
+            <version>2.0.0</version>
         </dependency>
 
-        <!--公共的 end-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <!--<exclusions>-->
-            <!--<exclusion>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-            <!--</exclusion>-->
-            <!--</exclusions>-->
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-        <!--<dependency>
-            <groupId>org.apache.tomcat</groupId>
-            <artifactId>tomcat-servlet-api</artifactId>
-            <version>8.5.28</version>
-            &lt;!&ndash;tomcat 启动时 打开注释 end&ndash;&gt;
-        </dependency>-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-config</artifactId>
-        </dependency>
-        <!--zipkin支持分布式追踪系统-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-sleuth</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-fegin</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-data-redis</artifactId>-->
-        <!--</dependency>-->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-elasticsearch</artifactId>
-        </dependency>
     </dependencies>
-    <build>
-        <finalName>svr-base</finalName>
-        <plugins>
-            <!--springboot插件 start-->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--springboot插件 en-->
-        </plugins>
-    </build>
+
 </project>

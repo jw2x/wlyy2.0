@@ -2,8 +2,8 @@ package com.yihu.iot.service.label;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.base.es.config.ElasticFactory;
-import com.yihu.base.es.config.ElastricSearchHelper;
+import com.yihu.elasticsearch.jest.ElasticFactory;
+import com.yihu.elasticsearch.jest.ElastricSearchHelper;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.service.common.ElasticSearchQueryGenerator;
 import io.searchbox.client.JestClient;
@@ -119,7 +119,7 @@ public class FigureLabelSerachService implements Serializable {
         //elasticsearch 默认查询上限为10000条，但是我们根据条件查询，不知道数据会有几条，此处给最大值
         jsonObject.put("size",10000);
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonObject.toJSONString());
-        JestResult jestResult = elastricSearchHelper.search(ConstantUtils.figureLabelIndex,ConstantUtils.figureLabelType,queryStr.toString());
+        JestResult jestResult = elastricSearchHelper.search(ConstantUtils.figureLabelIndex, ConstantUtils.figureLabelType, queryStr.toString());
         list = jestResult.getSourceAsObjectList(FigureLabelDataModelVO.class);
         return list;
     }

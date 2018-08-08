@@ -145,7 +145,7 @@ public class ModuleController extends EnvelopRestController {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档", defaultValue = "+name,+createTime")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
-        List<ModuleDO> list = moduleService.search(fields,filters,sorts);
+        List<ModuleDO> list = moduleService.search(filters, sorts);
         //封装返回格式
         List<ModuleVO> ModuleVOs = convertToModels(list, new ArrayList<>(list.size()), ModuleVO.class, fields);
         return Envelop.getSuccessList(BaseRequestMapping.Module.message_success_find_Modules,ModuleVOs);

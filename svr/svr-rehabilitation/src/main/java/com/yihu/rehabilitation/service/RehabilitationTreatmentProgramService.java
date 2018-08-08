@@ -1,10 +1,10 @@
 package com.yihu.rehabilitation.service;
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.rehabilitation.RehabilitationTreatmentProgramDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationTreatmentProgramVO;
 import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
+import com.yihu.mysql.query.BaseJpaService;
 import com.yihu.rehabilitation.dao.RehabilitationTreatmentProgramDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

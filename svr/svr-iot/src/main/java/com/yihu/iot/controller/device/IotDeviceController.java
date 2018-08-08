@@ -3,7 +3,7 @@ package com.yihu.iot.controller.device;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.base.fastdfs.FastDFSHelper;
+import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.iot.dao.device.IotDeviceImportRecordDao;
 import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.iot.device.IotDeviceDO;
@@ -40,7 +40,7 @@ public class IotDeviceController extends EnvelopRestController{
     @Autowired
     private IotDeviceService iotDeviceService;
     @Autowired
-    private FastDFSHelper fastDFSHelper;
+    private FastDFSUtil fastDFSHelper;
     @Value("${fastDFS.fastdfs_file_url}")
     private String fastdfs_file_url;
     @Autowired

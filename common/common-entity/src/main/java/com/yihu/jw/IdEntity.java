@@ -6,14 +6,10 @@
 package com.yihu.jw;
 
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
 
 /**
  * 统一定义id的entity基类.
@@ -23,7 +19,7 @@ import java.util.Date;
 // JPA 基类的标识
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class IdEntity {
+public abstract class IdEntity implements Serializable {
 
 	@Id
 	@GeneratedValue(generator = "uuid")

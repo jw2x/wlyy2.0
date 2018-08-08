@@ -1,12 +1,12 @@
 package com.yihu.iot.service.company;
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.company.IotCompanyCertificateDao;
 import com.yihu.jw.iot.company.IotCompanyCertificateDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import com.yihu.jw.util.date.DateUtil;
+import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
