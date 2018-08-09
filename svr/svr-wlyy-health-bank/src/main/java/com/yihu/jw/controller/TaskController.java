@@ -191,4 +191,19 @@ public class TaskController extends EnvelopRestController {
             return Envelop.getError(e.getMessage());
         }
     }*/
+
+    @PostMapping(value = HealthBankMapping.healthBank.selectByDate)
+    @ApiOperation(value = "某个时刻任务的积分详情")
+    public Envelop<TaskDO> selectByDate(@ApiParam(name="object",value = "id集合[]")
+                                        @RequestParam(value = "object",required = false)String object){
+        try{
+            Envelop<TaskDO> envelop = new Envelop<>();
+            JSONObject jsonObject = JSONObject.parseObject(object);
+            return service.selectByDate(jsonObject);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 }
