@@ -35,6 +35,21 @@
         </repository>
     </distributionManagement>
 
+    <!-- 私有仓库 -->
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>public</name>
+            <url>http://172.19.103.43:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <modules>
         <!-- 基础组件服务 -->
         <module>../component/svr-configuration</module> <!--配置服务-->
