@@ -222,7 +222,7 @@ public class DeviceService extends BaseService {
         if(isneiwang){
             objectNode = fastDFSHelper.upload(file.getInputStream(), fileType, "");
 
-            params.put("url", objectNode.get("fid").toString().replaceAll("\"", ""));
+            params.put("url", objectNode.get("fileId").toString().replaceAll("\"", ""));
         }else {
             UploadVO uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
             if(uploadVO==null){

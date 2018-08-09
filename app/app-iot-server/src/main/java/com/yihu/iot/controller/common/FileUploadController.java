@@ -71,8 +71,8 @@ public class FileUploadController extends BaseController {
                 uploadVO = new UploadVO();
                 uploadVO.setFileName(fileName);
                 uploadVO.setFileType(fileType);
-                uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-                uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+                uploadVO.setFullUri(objectNode.get("fileId").toString().replaceAll("\"", ""));
+                uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fileId").toString().replaceAll("\"", ""));
             }else {
                 uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
                 if(uploadVO==null){
@@ -119,8 +119,8 @@ public class FileUploadController extends BaseController {
                 uploadVO = new UploadVO();
                 uploadVO.setFileName(fileName);
                 uploadVO.setFileType(fileType);
-                uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-                uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+                uploadVO.setFullUri(objectNode.get("fileId").toString().replaceAll("\"", ""));
+                uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fileId").toString().replaceAll("\"", ""));
             }else {
                 uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
                 if(uploadVO==null){
@@ -153,8 +153,8 @@ public class FileUploadController extends BaseController {
                 uploadVO = new UploadVO();
                 uploadVO.setFileName(fileName);
                 uploadVO.setFileType(fileType);
-                uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-                uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+                uploadVO.setFullUri(objectNode.get("fileId").toString().replaceAll("\"", ""));
+                uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fileId").toString().replaceAll("\"", ""));
             }else {
                 uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
                 if(uploadVO==null){
@@ -192,8 +192,8 @@ public class FileUploadController extends BaseController {
                 uploadVO = new UploadVO();
                 uploadVO.setFileName(remoteFileName);
                 uploadVO.setFileType(groupName);
-                uploadVO.setFullUri(objectNode.get("fid").toString().replaceAll("\"", ""));
-                uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fid").toString().replaceAll("\"", ""));
+                uploadVO.setFullUri(objectNode.get("fileId").toString().replaceAll("\"", ""));
+                uploadVO.setFullUrl(fastdfs_file_url + objectNode.get("fileId").toString().replaceAll("\"", ""));
             }else {
                 uploadVO = fileUploadService.request(request,inputStream,"");
                 if(uploadVO ==null){
@@ -245,8 +245,8 @@ public class FileUploadController extends BaseController {
             }
             //解析返回的objectNode
             UploadVO uploadVO = new UploadVO();
-            uploadVO.setFullUri(result.get("fid").toString().replaceAll("\"", ""));
-            uploadVO.setFullUrl(fastdfs_file_url + result.get("fid").toString().replaceAll("\"", ""));
+            uploadVO.setFullUri(result.get("fileId").toString().replaceAll("\"", ""));
+            uploadVO.setFullUrl(fastdfs_file_url + result.get("fileId").toString().replaceAll("\"", ""));
             return Envelop.getSuccess(IotRequestMapping.FileUpload.message_success_upload, result);
         } catch (Exception e) {
             e.printStackTrace();
