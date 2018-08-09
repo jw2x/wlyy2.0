@@ -19,5 +19,6 @@ eureka:
   instance:
     #eurika使用IP不使用host
     prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
 
 
