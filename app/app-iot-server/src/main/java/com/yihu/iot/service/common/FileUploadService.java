@@ -63,7 +63,7 @@ public class FileUploadService extends BaseService{
                 uploadVO = new UploadVO();
                 uploadVO.setFileName(obj.getString("groupName"));
                 uploadVO.setFileType(obj.getString("remoteFileName"));
-                uploadVO.setFullUri(obj.getString("fid"));
+                uploadVO.setFullUri(obj.getString("fileId"));
                 uploadVO.setFullUrl(obj.getString("fileUrl"));
             }
         } catch (IOException e) {

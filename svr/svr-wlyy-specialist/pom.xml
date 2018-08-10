@@ -16,6 +16,7 @@
     <packaging>war</packaging>
 
     <dependencies>
+        <!-- 支持Tomcat启动 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -31,6 +32,16 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+        <!-- 支持Tomcat启动 -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -55,6 +66,11 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>${version.json}</version>
         </dependency>
 
         <dependency>
@@ -81,14 +97,11 @@
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>swagger-starter</artifactId>
-            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>com.yihu</groupId>
             <artifactId>mysql-starter</artifactId>
-            <version>2.0.0</version>
         </dependency>
-
     </dependencies>
 
     <build>

@@ -1,7 +1,6 @@
 package com.yihu.jw.util.common;
 
 import com.yihu.jw.vo.ValidateCode;
-import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.Random;
 

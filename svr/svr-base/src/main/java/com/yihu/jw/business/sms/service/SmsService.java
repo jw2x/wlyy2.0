@@ -8,7 +8,6 @@ import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
 import com.yihu.jw.util.common.SmsValidateCodeUtils;
 import com.yihu.jw.util.date.DateUtil;
-import com.yihu.jw.util.http.HttpClientUtil;
 import com.yihu.jw.vo.ValidateCode;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.http.NameValuePair;
@@ -39,8 +38,6 @@ import java.util.List;
 public class SmsService  extends BaseJpaService<BaseSmsDO, SmsDao> {
     @Autowired
     private SmsDao smsDao;
-    @Autowired
-    private HttpClientUtil httpClientUtil;
     @Autowired
     private SMSHttpVo smsHttpVo;
 

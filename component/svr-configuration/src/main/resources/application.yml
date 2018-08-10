@@ -13,7 +13,7 @@ security:
 eureka:
   client:
     healthcheck:
-      enabled: true #启动监控检查
+      enabled: false #启动监控检查
     serviceUrl:
       defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka
   instance:

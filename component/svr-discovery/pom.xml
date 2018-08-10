@@ -41,6 +41,7 @@
             <artifactId>tomcat-embed-jasper</artifactId>
         </dependency>
         <!-- 支持Tomcat启动 -->
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <!--<artifactId>spring-cloud-starter-eureka-server</artifactId>-->
