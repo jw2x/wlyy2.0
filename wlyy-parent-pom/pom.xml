@@ -74,9 +74,6 @@
         <!-- 应用 -->
         <module>../app/app-iot-server</module>
         <module>../app/public-health-server</module>
-
-        <!-- wlyy common  -->
-        <module>../wlyy-lib-parent-pom</module>
     </modules>
 
     <properties>
