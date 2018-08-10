@@ -22,6 +22,7 @@ public class WxTemplateDO extends IdEntityWithOperation implements java.io.Seria
     @Transient
     private String wechatName;
     private String templateId;//微信模板id
+    private String templateName;//模板名称（模板检索名称）
     private String content;//模板内容
     private String remark;
     private Integer status;  //状态 -1删除 0 冻结 1可用
@@ -59,8 +60,16 @@ public class WxTemplateDO extends IdEntityWithOperation implements java.io.Seria
         this.templateId = templateId;
     }
 
-    @Column(name="content")
+    @Column(name="template_name")
+    public String getTemplateName() {
+        return templateName;
+    }
 
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    @Column(name="content")
     public String getContent() {
         return content;
     }
