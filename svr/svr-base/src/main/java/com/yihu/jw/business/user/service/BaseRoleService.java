@@ -1,13 +1,11 @@
 package com.yihu.jw.business.user.service;
 
-import com.netflix.discovery.converters.Auto;
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.base.user.BaseRoleDO;
 import com.yihu.jw.business.user.dao.BaseRoleDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
-import net.bytebuddy.implementation.bytecode.Throw;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +18,7 @@ import java.util.List;
  * 基础角色功能
  */
 @Service
-public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao>{
+public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
     @Autowired
     private BaseRoleDao baseRoleDao;
 

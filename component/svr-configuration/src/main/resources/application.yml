@@ -1,0 +1,24 @@
+spring:
+  jmx:
+    enabled: false
+
+server:
+  port: 1221
+
+security:
+  user:
+    name: jw
+    password: jkzl
+
+eureka:
+  client:
+    healthcheck:
+      enabled: false #启动监控检查
+    serviceUrl:
+      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka
+  instance:
+    #eurika使用IP不使用host
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
+

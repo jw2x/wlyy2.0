@@ -5,8 +5,6 @@ server:
 spring:
   jmx:
     default-domain: jkzl_specialist
-  application:
-    name:  svr-wlyy-specialist-lyx  #注册到发现服务的id 如果id一样 eurika会自动做负载
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver

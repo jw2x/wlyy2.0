@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.yihu.jw</groupId>
-        <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.2</version>
-        <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
+        <artifactId>wlyy-parent-pom</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../../wlyy-parent-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>com.yihu.health.bank</groupId>
@@ -16,38 +16,7 @@
     <packaging>war</packaging>
 
     <dependencies>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-entity</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-request-mapping</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-exception</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-rest-model</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
-            <artifactId>common-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-data-mysql</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-log</artifactId>
-        </dependency>
+        <!-- 支持Tomcat启动 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -64,40 +33,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+        <!-- 支持Tomcat启动 -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-aop</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-commons</artifactId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -114,11 +61,49 @@
         </dependency>
         <!-- redis end  -->
         <dependency>
-            <groupId>com.sun.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>3.0.9</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-entity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-request-mapping</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-exception</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-rest-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-util</artifactId>
+        </dependency>
+
+        <!-- jkzl starter -->
+        <dependency>
+            <groupId>com.yihu</groupId>
+            <artifactId>swagger-starter</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu</groupId>
+            <artifactId>mysql-starter</artifactId>
+            <version>2.0.0</version>
         </dependency>
     </dependencies>
+
     <build>
         <finalName>svr-wlyy-health-bank</finalName>
         <plugins>
@@ -126,7 +111,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.yihu.jw.SvrWlyyHealthBankApplication</mainClass>
+                    <mainClass>com.yihu.SvrWlyyHealthBankApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>

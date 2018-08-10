@@ -1,67 +1,83 @@
-##如果有配置服务的话，远程服务器和本地服务器配置不一致的情况下，优先远程的为主  git上 svr-base ->  git application ->本地 appliction ->本地 bootstarp
+##如果有配置服务的话，远程服务器和本地服务器配置不一致的情况下，优先远程的为主
+server:
+  #port: ${server.svr-base-port}
+  port: 10020
+
 spring:
-  application:
-    name: svr-base  #注册到发现服务的id 如果id一样 eurika会自动做负载
-#  jmx:
-#    default-domain: svr-base
-  jmx:
-    enabled: true
-
-#  data:
-#    elasticsearch:
-#      cluster-name: jkzl #es集群的名字
-#      cluster-nodes: 172.19.103.68:9300  #多个逗号分割
-#      cluster-nodes-jest: http://172.19.103.68:9200  #多个逗号分割
-#      repositories:
-#        enabled: true
-#      properties:
-#        client:
-#          transport:
-#            sniff: false #开启嗅探集群  用nginx代理一层过后会出现ip解析失败问题
-
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    max-active: 50
+    max-idle: 50 #最大空闲连接
+    min-idle: 10 #最小空闲连接
+    validation-query-timeout: 20
+    log-validation-errors: true
+    validation-interval: 60000 #避免过度验证，保证验证不超过这个频率——以毫秒为单位。如果一个连接应该被验证，但上次验证未达到指定间隔，将不再次验证。
+    validation-query: SELECT 1 #SQL 查询， 用来验证从连接池取出的连接， 在将连接返回给调用者之前。 如果指定， 则查询必须是一个SQL SELECT 并且必须返回至少一行记录
+    test-on-borrow: true #指明是否在从池中取出连接前进行检验， 如果检验失败， 则从池中去除连接并尝试取出另一个。注意： 设置为true 后如果要生效，validationQuery 参数必须设置为非空字符串
+    test-on-return: true #指明是否在归还到池中前进行检验 注意： 设置为true 后如果要生效validationQuery 参数必须设置为非空字符串
+    idle-timeout: 30000
+    connection-test-query: SELECT 1
+    num-tests-per-eviction-run: 50 #在每次空闲连接回收器线程(如果有)运行时检查的连接数量，最好和maxActive
+    test-while-idle: true #指明连接是否被空闲连接回收器(如果有)进行检验，如果检测失败，则连接将被从池中去除
+    min-evictable-idle-time-millis: 3600000 #连接池中连接，在时间段内一直空闲，被逐出连接池的时间(1000*60*60)，以毫秒为单位
+    time-between-eviction-runs-millis: 300000 #在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位，一般比minEvictableIdleTimeMillis小
 
 
-management:
-  security:
-    enabled: false #关闭 refresh的权限认证
+hibernate:
+  dialect: org.hibernate.dialect.MySQL5Dialect
+  show_sql: true
+#  ejb:
+#    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy #springJPA使用驼峰式(hibernate4以下使用)
+  physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy #springJPA使用驼峰式(hibernate5以上使用)
+  implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
 
-health:
-  config:
-    enabled: true
 
-endpoints:
-  info:
-    enabled: true
-
-yihu:
-  admin:
-    client:
-      advice:
-        http: true #默认true
-        sql:
-          hibernate: true ##默认false
-          springJDBC: true ##默认false
-      server:
-        ip: 192.168.131.102
-        port: 8082
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka/
 
 ---
 spring:
   profiles: jwdev
+  datasource:
+    url: jdbc:mysql://172.19.103.77/base?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: 123456
+  zipkin:
+    base-url: http://192.168.131.173:${server.svr-logServer-port} #日志追踪的地址
 
-jw:
-  sms:
-    url: 123
-    code: 123
-    name: 123
-    password: 123
+  sleuth:
+    sampler:
+      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
+
 
 ---
 spring:
   profiles: jwtest
+  datasource:
+    url: jdbc:mysql://172.19.103.77/jw2?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: 123456
+  zipkin:
+    base-url: http://192.168.131.173:${server.svr-logServer-port} #日志追踪的地址
+
+  sleuth:
+    sampler:
+      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
 
 
 ---
 spring:
   profiles: jwprod
+  datasource:
+    url: jdbc:mysql://172.19.103.77/jw2?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: 123456
+  zipkin:
+    base-url: http://192.168.131.173:${server.svr-logServer-port} #日志追踪的地址
+
+  sleuth:
+    sampler:
+      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
 

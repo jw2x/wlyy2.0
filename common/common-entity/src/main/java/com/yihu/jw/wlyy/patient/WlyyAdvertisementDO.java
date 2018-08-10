@@ -26,8 +26,6 @@ public class WlyyAdvertisementDO extends IdEntityWithOperation implements Serial
     private Integer status;//状态 -1 删除 0 禁用 1可用
     private String remark;//备注
 
-
-
     
     @Column(name = "saas_id")
     public String getSaasId() {
