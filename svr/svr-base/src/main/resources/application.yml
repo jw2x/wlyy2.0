@@ -26,7 +26,6 @@ spring:
 hibernate:
   dialect: org.hibernate.dialect.MySQL5Dialect
   show_sql: true
-#  ejb:
 #    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy #springJPA使用驼峰式(hibernate4以下使用)
   physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy #springJPA使用驼峰式(hibernate5以上使用)
   implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
