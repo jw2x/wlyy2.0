@@ -6,6 +6,8 @@ import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.web.model.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
+import com.yihu.jw.web.model.ListEnvelop;
+import com.yihu.jw.web.model.ObjEnvelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,12 +30,12 @@ public class SaasController extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建Saas配置", notes = "创建单个Saas配置")
-    public Envelop create (
+    public ObjEnvelop<SaasDO> create (
             @ApiParam(name = "json_data", value = "Json数据")
             @RequestBody String jsonData) throws Exception {
         SaasDO saas = toEntity(jsonData, SaasDO.class);
-        saasService.save(saas);
-        return success("创建成功");
+        saas = saasService.save(saas);
+        return success(saas);
     }
 
 //    @PutMapping(value = BaseRequestMapping.Saas.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -107,7 +109,7 @@ public class SaasController extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.Saas.api_getSaassNoPage)
     @ApiOperation(value = "获取Saas配置列表，不分页")
-    public com.yihu.jw.restmodel.common.Envelop getAppsNoPage(
+    public ListEnvelop<SaasDO> getAppsNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,id,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -116,8 +118,6 @@ public class SaasController extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         //得到list数据
         List<SaasDO> list = saasService.search(filters, sorts);
-        //封装返回格式
-        List<SaasDO> mSaass = convertToModels(list, new ArrayList<>(list.size()), SaasDO.class, fields);
-        return com.yihu.jw.restmodel.common.Envelop.getSuccessList(BaseRequestMapping.Saas.message_success_find_saass, mSaass);
+        return success(list);
     }
 }

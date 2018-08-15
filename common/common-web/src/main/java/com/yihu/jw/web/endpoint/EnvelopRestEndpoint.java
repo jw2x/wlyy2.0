@@ -22,76 +22,94 @@ public abstract class EnvelopRestEndpoint {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    protected Envelop success(String message) {
-        return success(message, 200);
+    protected Envelop success(String desc) {
+        return success(desc, 200);
     }
 
-    protected Envelop success(String message, int status) {
+    protected Envelop success(String desc, int code) {
         Envelop envelop = new Envelop();
-        envelop.setMessage(message);
-        envelop.setStatus(status);
+        envelop.setDesc(desc);
+        envelop.setCode(code);
         return envelop;
     }
 
-    protected <J> ObjEnvelop<J> success(J obj){
-        return success(obj, "success", 200);
+    protected <J> ObjEnvelop<J> success(J data){
+        return success(data, "success");
     }
 
-    protected <J> ObjEnvelop<J> success(J obj, String message){
-        return success(obj, message, 200);
+    protected <J> ObjEnvelop<J> success(J data, String desc){
+        return success(data, desc, 200);
     }
 
-    protected <J> ObjEnvelop<J> success(J obj, String message, Integer status){
+    protected <J> ObjEnvelop<J> success(J data, String desc, int code){
         ObjEnvelop<J> objEnvelop = new ObjEnvelop<>();
-        objEnvelop.setMessage(message);
-        objEnvelop.setStatus(status);
-        objEnvelop.setObj(obj);
+        objEnvelop.setDesc(desc);
+        objEnvelop.setCode(code);
+        objEnvelop.setData(data);
         return objEnvelop;
     }
 
-    protected <T> ListEnvelop<T> success(List<T> detailModelList){
-        return success(detailModelList, "message", 200);
+    protected <T> ListEnvelop<T> success(List<T> contents){
+        return success(contents, "success");
     }
 
-    protected <T> ListEnvelop<T> success(List<T> detailModelList, String message){
-        return success(detailModelList, message, 200);
+    protected <T> ListEnvelop<T> success(List<T> contents, String desc){
+        return success(contents, desc, 200);
     }
 
-    protected <T> ListEnvelop<T> success(List<T> detailModelList, String message, Integer status){
+    protected <T> ListEnvelop<T> success(List<T> contents, String desc, int code){
         ListEnvelop<T> listEnvelop = new ListEnvelop<>();
-        listEnvelop.setMessage(message);
-        listEnvelop.setStatus(status);
-        listEnvelop.setDetailModelList(detailModelList);
+        listEnvelop.setDesc(desc);
+        listEnvelop.setCode(code);
+        listEnvelop.setContents(contents);
         return listEnvelop;
     }
 
-    protected <T> MixEnvelop success(List<T> detailModelList, int totalCount, int currPage, int rows) {
-        return success(detailModelList, "success", 200, totalCount, currPage, rows);
+    protected <T> MixEnvelop success(List<T> contents, int totalCount, int currPage, int pageSize) {
+        return success(contents, "success", totalCount, currPage, pageSize);
     }
 
-    protected <T> MixEnvelop success(List<T> detailModelList, String message, int totalCount, int currPage, int rows) {
-        return success(detailModelList, message, 200, totalCount, currPage, rows);
+    protected <T> MixEnvelop success(List<T> contents, String desc, int totalCount, int currPage, int pageSize) {
+        return success(contents, desc, 200, totalCount, currPage, pageSize);
     }
 
-    protected <T> MixEnvelop success(List<T> detailModelList, String message, int status, int totalCount, int currPage, int rows) {
-        return success(detailModelList, null, message, status, totalCount, currPage, rows);
+    protected <T> MixEnvelop success(List<T> contents, String desc, int code, int totalCount, int currPage, int pageSize) {
+        return success(contents, null, desc, code, totalCount, currPage, pageSize);
     }
 
-    protected <T, J> MixEnvelop success(List<T> detailModelList, J obj, String message, int status, int totalCount, int currPage, int rows) {
+    protected <T, J> MixEnvelop success(List<T> contents, J obj) {
+        return success(contents, obj, "success");
+    }
+
+    protected <T, J> MixEnvelop success(List<T> contents, J obj, String desc) {
+        return success(contents, obj, desc, 200);
+    }
+
+    protected <T, J> MixEnvelop success(List<T> contents, J data, String desc, int code) {
+        return success(contents, data, desc, code, contents.size(), 1, contents.size());
+    }
+
+    protected <T, J> MixEnvelop success(List<T> contents, J data, String desc, int code, int totalCount, int currPage, int pageSize) {
         MixEnvelop<T, J> mixEnvelop = new MixEnvelop();
-        mixEnvelop.setMessage(message);
-        mixEnvelop.setStatus(status);
-        mixEnvelop.setDetailModelList(detailModelList);
-        mixEnvelop.setObj(obj);
-        mixEnvelop.setTotalCount(totalCount);
+        mixEnvelop.setDesc(desc);
+        mixEnvelop.setCode(code);
         mixEnvelop.setCurrPage(currPage);
-        mixEnvelop.setPageSize(rows);
-        if (totalCount % rows > 0) {
-            mixEnvelop.setTotalPage((totalCount / rows) + 1);
-        } else {
-            mixEnvelop.setTotalPage(totalCount / rows);
-        }
+        mixEnvelop.setPageSize(pageSize);
+        mixEnvelop.setTotalCount(totalCount);
+        mixEnvelop.setContents(contents);
+        mixEnvelop.setData(data);
         return mixEnvelop;
+    }
+
+    protected Envelop failed(String desc) {
+        return failed(desc, 500);
+    }
+
+    protected Envelop failed(String desc, int code) {
+        Envelop envelop = new Envelop();
+        envelop.setDesc(desc);
+        envelop.setCode(code);
+        return envelop;
     }
 
     protected <T> T toEntity(String json, Class<T> target) throws IOException {

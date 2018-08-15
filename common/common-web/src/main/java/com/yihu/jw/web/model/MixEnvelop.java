@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -25,12 +27,11 @@ import java.util.List;
 @ApiModel(value = "ListResult", description = "通用的实体")
 public class MixEnvelop<T, J> extends Envelop {
 
-    private static final long serialVersionUID = 2076324875575488461L;
-    @ApiModelProperty("每页大小 默认10")
-    private int pageSize = 10;
-
     @ApiModelProperty("当前页")
-    private int currPage;
+    private int currPage = 1;
+
+    @ApiModelProperty("每页大小 默认10")
+    private int pageSize = 15;
 
     @ApiModelProperty("总共多少页")
     private int totalPage;
@@ -39,33 +40,18 @@ public class MixEnvelop<T, J> extends Envelop {
     private int totalCount;
 
     @ApiModelProperty("列表内容")
-    private List<T> detailModelList;
+    private List<T> contents = new ArrayList<>(0);
 
     @ApiModelProperty("内容")
-    private J obj;
+    private J data = (J) new HashMap<String, Object>(0);
 
-    public J getObj() {
-        return obj;
+
+    public int getCurrPage() {
+        return currPage;
     }
 
-    public void setObj(J obj) {
-        this.obj = obj;
-    }
-
-    public int getTotalCount() {
-        return totalCount;
-    }
-
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
-    }
-
-    public List<T> getDetailModelList() {
-        return detailModelList;
-    }
-
-    public void setDetailModelList(List<T> detailModelList) {
-        this.detailModelList = detailModelList;
+    public void setCurrPage(int currPage) {
+        this.currPage = currPage;
     }
 
     public int getPageSize() {
@@ -74,14 +60,6 @@ public class MixEnvelop<T, J> extends Envelop {
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
-    }
-
-    public int getCurrPage() {
-        return currPage;
-    }
-
-    public void setCurrPage(int currPage) {
-        this.currPage = currPage;
     }
 
     public int getTotalPage() {
@@ -95,5 +73,29 @@ public class MixEnvelop<T, J> extends Envelop {
 
     public void setTotalPage(int totalPage) {
         this.totalPage = totalPage;
+    }
+
+    public int getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(int totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public List<T> getContents() {
+        return contents;
+    }
+
+    public void setContents(List<T> contents) {
+        this.contents = contents;
+    }
+
+    public J getData() {
+        return data;
+    }
+
+    public void setData(J data) {
+        this.data = data;
     }
 }

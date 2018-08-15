@@ -13,25 +13,26 @@ import java.io.Serializable;
 @ApiModel(description = "基础实体")
 public class Envelop implements Serializable {
 
+    protected static final long serialVersionUID = -67188388306700736L;
+
     @ApiModelProperty("信息")
-    protected String message;
+    protected String desc;
     @ApiModelProperty("状态（200成功，-1是失败）")
-    protected Integer status;
+    protected int code;
 
-    public String getMessage() {
-        return message;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public Integer getStatus() {
-        return status;
+    public int getCode() {
+        return code;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setCode(int code) {
+        this.code = code;
     }
-
 }

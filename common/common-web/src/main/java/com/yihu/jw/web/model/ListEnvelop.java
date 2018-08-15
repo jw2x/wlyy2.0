@@ -1,5 +1,6 @@
 package com.yihu.jw.web.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -7,14 +8,13 @@ import java.util.List;
  */
 public class ListEnvelop<T> extends Envelop {
 
-    private List<T> detailModelList;
+    private List<T> contents = new ArrayList<>(0);
 
-    public List<T> getDetailModelList() {
-        return detailModelList;
+    public List<T> getContents() {
+        return contents;
     }
 
-    public void setDetailModelList(List<T> detailModelList) {
-        this.detailModelList = detailModelList;
+    public void setContents(List<T> contents) {
+        this.contents = contents;
     }
-
 }

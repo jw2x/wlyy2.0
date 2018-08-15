@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Handler - WLYY2.0全局错误
+ * Handler - wlyy2.0全局错误
  * Created by progr1mmer on 2018/1/25.
  */
 @ControllerAdvice
@@ -35,30 +35,30 @@ public class GlobalExceptionHandler {
         Envelop envelop = new Envelop();
         if (e instanceof NoHandlerFoundException) {
             //response.setStatus(HttpStatus.NOT_FOUND.value());
-            envelop.setStatus(HttpStatus.NOT_FOUND.value());
-            envelop.setMessage(e.getMessage());
+            envelop.setDesc(e.getMessage());
+            envelop.setCode(HttpStatus.NOT_FOUND.value());
         } else if (e instanceof HttpRequestMethodNotSupportedException){
             //response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
-            envelop.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
-            envelop.setMessage(e.getMessage());
+            envelop.setDesc(e.getMessage());
+            envelop.setCode(HttpStatus.METHOD_NOT_ALLOWED.value());
         } else if (e instanceof MissingServletRequestParameterException) {
             //response.setStatus(HttpStatus.BAD_REQUEST.value());
-            envelop.setStatus(HttpStatus.BAD_REQUEST.value());
-            envelop.setMessage(e.getMessage());
+            envelop.setDesc(e.getMessage());
+            envelop.setCode(HttpStatus.BAD_REQUEST.value());
         } else if (e instanceof FeignException) { //执行Feign失败的时候默认当前服务做为网关执行请求的时候，从上游服务器接收到无效的响应
             //response.setStatus(HttpStatus.BAD_GATEWAY.value());
-            envelop.setStatus(HttpStatus.BAD_GATEWAY.value());
-            envelop.setMessage("Execute Feign: " + e.getMessage());
+            envelop.setDesc("Execute Feign: " + e.getMessage());
+            envelop.setCode(HttpStatus.BAD_GATEWAY.value());
         } else if (e instanceof ApiException) { //业务逻辑的异常默认为请求成功，但是前端需要判断成功标识
             ApiException apiException = (ApiException) e;
             //response.setStatus(apiException.httpStatus().value());
-            envelop.setStatus(apiException.errorCode());
-            envelop.setMessage(e.getMessage());
+            envelop.setDesc(e.getMessage());
+            envelop.setCode(apiException.errorCode());
             return envelop; //此异常不进行日志记录
         } else {
             //response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            envelop.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-            envelop.setMessage(e.getMessage());
+            envelop.setDesc(e.getMessage());
+            envelop.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
         }
         logger.error(e.getMessage(), e);
         return envelop;
