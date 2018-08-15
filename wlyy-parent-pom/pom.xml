@@ -52,11 +52,11 @@
 
     <modules>
         <!-- 基础组件服务 -->
-        <module>../component/svr-configuration</module> <!--配置服务-->
-        <module>../component/svr-discovery</module><!--发现服务-->
+        <module>../server/svr-configuration</module> <!--配置服务-->
+        <module>../server/svr-discovery</module><!--发现服务-->
         <!-- 暂时保留 -->
-        <!--<module>../component/svr-dashboard</module>--><!--监控服务-->
-        <!--<module>../component/svr-log-server</module>--><!--分布式追踪服务-->
+        <!--<module>../server/svr-dashboard</module>--><!--监控服务-->
+        <!--<module>../server/svr-log-server</module>--><!--分布式追踪服务-->
         <!-- 暂时保留 -->
 
         <!-- 网关服务 -->
