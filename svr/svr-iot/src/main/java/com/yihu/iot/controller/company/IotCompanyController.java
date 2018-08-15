@@ -2,8 +2,8 @@ package com.yihu.iot.controller.company;
 
 import com.yihu.iot.service.company.IotCompanyCertificateService;
 import com.yihu.iot.service.company.IotCompanyService;
-import com.yihu.jw.iot.company.IotCompanyCertificateDO;
-import com.yihu.jw.iot.company.IotCompanyDO;
+import com.yihu.jw.entity.iot.company.IotCompanyCertificateDO;
+import com.yihu.jw.entity.iot.company.IotCompanyDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;

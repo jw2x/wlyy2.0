@@ -159,6 +159,11 @@
                 <artifactId>common-util</artifactId>
                 <version>${version.wlyy-common}</version>
             </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-web</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
 
             <!-- Jkzl Starter -->
             <dependency>

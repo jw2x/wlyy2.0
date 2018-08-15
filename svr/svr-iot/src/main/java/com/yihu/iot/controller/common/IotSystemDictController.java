@@ -2,7 +2,7 @@ package com.yihu.iot.controller.common;
 
 import com.yihu.iot.dao.dict.IotSystemDictDao;
 import com.yihu.iot.service.dict.IotSystemDictService;
-import com.yihu.jw.iot.dict.IotSystemDictDO;
+import com.yihu.jw.entity.iot.dict.IotSystemDictDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.dict.IotSystemDictVO;

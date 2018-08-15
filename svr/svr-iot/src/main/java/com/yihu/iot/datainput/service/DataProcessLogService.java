@@ -1,7 +1,7 @@
 package com.yihu.iot.datainput.service;
 
 import com.yihu.iot.datainput.dao.DataProcessLogDao;
-import com.yihu.jw.iot.datainput.DataProcessLogDO;
+import com.yihu.jw.entity.iot.datainput.DataProcessLogDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

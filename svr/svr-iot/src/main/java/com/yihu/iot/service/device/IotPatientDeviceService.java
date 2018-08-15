@@ -6,7 +6,7 @@ import com.yihu.iot.dao.device.IotPatientDeviceDao;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.service.common.ElasticSearchQueryGenerator;
 import com.yihu.jw.device.LocationDataDO;
-import com.yihu.jw.iot.device.IotPatientDeviceDO;
+import com.yihu.jw.entity.iot.device.IotPatientDeviceDO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
 import com.yihu.jw.util.common.LatitudeUtils;
 import com.yihu.jw.util.date.DateUtil;

@@ -16,12 +16,12 @@ import java.util.List;
  */
 public interface EmployDao extends PagingAndSortingRepository<EmployDO, String>, JpaSpecificationExecutor<EmployDO> {
 
-    @Query("from BaseEmployDO ba where ba.saasId = ?1")
+    @Query("from EmployDO ba where ba.saasId = ?1")
     List<EmployDO> findAllBySaasId(String saasId);
 
-    @Query("from BaseEmployDO ba where ba.name like ?1 and ba.saasId = ?2")
+    @Query("from EmployDO ba where ba.name like ?1 and ba.saasId = ?2")
     List<EmployDO> findAllByNameAndSaasId(String name, String saasId);
 
-    @Query("from BaseEmployDO ba where ba.phone = ?1 and ba.saasId = ?2")
+    @Query("from EmployDO ba where ba.phone = ?1 and ba.saasId = ?2")
     EmployDO findByPhoneAndSaasId(String phone, String saasId);
 }

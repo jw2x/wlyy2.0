@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.version;// default package
 
-import com.yihu.jw.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntity;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 

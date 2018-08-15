@@ -2,7 +2,7 @@ package com.yihu.iot.controller.device;
 
 import com.yihu.iot.service.device.IotPatientDeviceService;
 import com.yihu.iot.service.label.FigureLabelSerachService;
-import com.yihu.jw.iot.device.IotPatientDeviceDO;
+import com.yihu.jw.entity.iot.device.IotPatientDeviceDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;

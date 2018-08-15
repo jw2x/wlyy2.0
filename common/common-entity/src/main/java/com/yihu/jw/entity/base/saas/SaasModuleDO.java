@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.saas;// default package
 
 
-import com.yihu.jw.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntity;
 
 import javax.persistence.*;
 

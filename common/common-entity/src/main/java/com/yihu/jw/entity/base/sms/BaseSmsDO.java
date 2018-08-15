@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.sms;// default package
 
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name = "base_sms")
 @Deprecated
-public class BaseSmsDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class BaseSmsDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
 	// Fields
 

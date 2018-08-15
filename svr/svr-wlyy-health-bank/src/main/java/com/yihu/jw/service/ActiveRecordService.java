@@ -2,26 +2,19 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/5/10.
  */
 
-import com.yihu.jw.dao.AccountDao;
 import com.yihu.jw.dao.ActiveRecordDao;
 import com.yihu.jw.dao.ActivityDao;
 import com.yihu.jw.dao.TaskDao;
-import com.yihu.jw.entity.health.bank.AccountDO;
 import com.yihu.jw.entity.health.bank.ActiveRecordDO;
 import com.yihu.jw.entity.health.bank.ActivityDO;
 import com.yihu.jw.entity.health.bank.TaskDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.rm.health.bank.HealthBankMapping;
-import com.yihu.jw.util.ISqlUtils;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;

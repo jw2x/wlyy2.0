@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.wx;
 
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wx_graphic_message")
-public class WxGraphicMessageDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class WxGraphicMessageDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
     private String saasId;
     private String title;//标题

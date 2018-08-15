@@ -1,7 +1,7 @@
 package com.yihu.iot.controller.device;
 
 import com.yihu.iot.service.device.IotDeviceQualityInspectionPlanService;
-import com.yihu.jw.iot.device.IotDeviceQualityInspectionPlanDO;
+import com.yihu.jw.entity.iot.device.IotDeviceQualityInspectionPlanDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;

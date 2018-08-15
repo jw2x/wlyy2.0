@@ -1,7 +1,7 @@
 package com.yihu.iot.controller.dict;
 
 import com.yihu.iot.service.dict.IotDeviceDictService;
-import com.yihu.jw.iot.dict.IotDeviceDictDO;
+import com.yihu.jw.entity.iot.dict.IotDeviceDictDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.iot.IotRequestMapping;

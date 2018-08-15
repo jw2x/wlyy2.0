@@ -5,8 +5,6 @@ import com.yihu.jw.fegin.fallbackfactory.base.user.BaseRoleFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,5 @@
 package com.yihu.jw.controller;
 
-import com.alibaba.fastjson.JSONArray;
-import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.specialist.*;
@@ -15,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 /**

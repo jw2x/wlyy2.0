@@ -2,9 +2,9 @@ package com.yihu.iot.controller.device;
 
 import com.yihu.iot.service.company.IotCompanyService;
 import com.yihu.iot.service.device.IotDeviceOrderService;
-import com.yihu.jw.iot.company.IotCompanyTypeDO;
-import com.yihu.jw.iot.device.IotDeviceOrderDO;
-import com.yihu.jw.iot.device.IotOrderPurchaseDO;
+import com.yihu.jw.entity.iot.company.IotCompanyTypeDO;
+import com.yihu.jw.entity.iot.device.IotDeviceOrderDO;
+import com.yihu.jw.entity.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;

@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.hospital;// default package
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import java.sql.Timestamp;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_org")
-public class BaseOrgDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class BaseOrgDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
 	// Fields
 

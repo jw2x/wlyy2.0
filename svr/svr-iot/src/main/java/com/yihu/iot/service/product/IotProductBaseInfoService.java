@@ -3,7 +3,7 @@ package com.yihu.iot.service.product;
 import com.yihu.iot.dao.device.IotOrderPurchaseDao;
 import com.yihu.iot.dao.product.*;
 import com.yihu.iot.service.dict.IotSystemDictService;
-import com.yihu.jw.iot.product.*;
+import com.yihu.jw.entity.iot.product.*;
 import com.yihu.jw.restmodel.iot.product.*;
 import com.yihu.jw.util.date.DateUtil;
 import com.yihu.mysql.query.BaseJpaService;

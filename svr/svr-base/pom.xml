@@ -80,6 +80,10 @@
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-web</artifactId>
+        </dependency>
 
         <!-- Jzkl Starter -->
         <dependency>

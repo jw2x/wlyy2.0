@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.patient;// default package
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_patient_extend")
-public class BasePatientExtendDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class BasePatientExtendDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
 	// Fields
 

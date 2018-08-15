@@ -1,21 +1,15 @@
 package com.yihu.jw.fegin.base.sms;
 
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.base.BaseEnvelop;
-import com.yihu.jw.rm.base.BaseLoginRequestMapping;
-import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.rm.base.BaseSmsRequestMapping;
 import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

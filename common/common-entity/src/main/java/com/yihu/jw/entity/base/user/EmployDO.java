@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.user;
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_employ")
-public class EmployDO extends UuidIdentityEntityWithOperation {
+public class EmployDO extends UuidIdentityEntityWithOperator {
 
 	// Fields
 	private String saasId; //saasIDF

@@ -1,14 +1,10 @@
 package com.yihu.jw.service;
 
-import com.yihu.jw.dao.PatientHospitalRecordDao;
-import com.yihu.jw.dao.SpecialistPatientRelationDao;
-import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.util.common.IdCardUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;

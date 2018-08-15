@@ -1,6 +1,6 @@
 package com.yihu.rehabilitation.controller;
 
-import com.yihu.jw.rehabilitation.RehabilitationPerformanceDO;
+import com.yihu.jw.entity.rehabilitation.RehabilitationPerformanceDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationPerformanceVO;

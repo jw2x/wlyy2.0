@@ -1,5 +1,7 @@
 package com.yihu.jw.entity.base.user;
 
+import com.yihu.jw.entity.UuidIdentityEntity;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -8,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_employ_hide_module_function")
-public class EmployHideModuleFunctionDO {
+public class EmployHideModuleFunctionDO extends UuidIdentityEntity {
 
     //用户ID
     private String employId;

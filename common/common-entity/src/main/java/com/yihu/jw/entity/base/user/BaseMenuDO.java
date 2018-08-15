@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.user;
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import java.sql.Timestamp;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_menu")
-public class BaseMenuDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class BaseMenuDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
 	private String saasId;
 	private String parentId; //父级ID

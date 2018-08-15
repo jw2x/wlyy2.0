@@ -2,7 +2,7 @@ package com.yihu.iot.controller.product;
 
 import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.iot.service.product.IotProductBaseInfoService;
-import com.yihu.jw.iot.product.IotProductBaseInfoDO;
+import com.yihu.jw.entity.iot.product.IotProductBaseInfoDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;

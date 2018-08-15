@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.version;// default package
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "wlyy_version")
-public class WlyyVersionDO  extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class WlyyVersionDO  extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
 	// Fields
 

@@ -1,19 +1,14 @@
 package com.yihu.jw.fegin.iot.data_input;
 
-import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.fegin.fallbackfactory.iot.data_input.DataSearchFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.iot.DataRequestMapping;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         name = CommonContants.svr_iot // name值是eurika的实例名字

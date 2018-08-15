@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.health.bank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yihu.jw.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

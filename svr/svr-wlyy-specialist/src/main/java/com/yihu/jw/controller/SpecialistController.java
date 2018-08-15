@@ -1,14 +1,10 @@
 package com.yihu.jw.controller;
 
 import com.alibaba.fastjson.JSONArray;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.entity.specialist.SpecialistPatientRelationDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.specialist.*;
-import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.SpecialistService;
 import io.swagger.annotations.Api;

@@ -2,7 +2,7 @@ package com.yihu.jw.wlyy.hospital;
 
 
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_org_hospital")
-public class BaseOrgHospitalDO extends UuidIdentityEntityWithOperation {
+public class BaseOrgHospitalDO extends UuidIdentityEntityWithOperator {
 
     private static final long serialVersionUID = 5463913446686402252L;
     private String orgId;//

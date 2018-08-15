@@ -1,8 +1,7 @@
 package com.yihu.iot.controller.label;
 
 import com.yihu.iot.service.label.IotDeviceLabelService;
-import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.iot.label.IotDeviceLabelDO;
+import com.yihu.jw.entity.iot.label.IotDeviceLabelDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.iot.IotRequestMapping;

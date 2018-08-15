@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.wx;
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import java.util.Map;
  */
 @Entity
 @Table(name = "wx_wechat")
-public class WxWechatDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
     // Fields
     private String saasId;//'saas配置id'

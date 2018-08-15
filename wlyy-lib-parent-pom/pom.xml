@@ -24,6 +24,7 @@
         <module>../common/common-request-mapping</module>
         <module>../common/common-util</module>
         <module>../common/common-fegin</module>
+        <module>../common/common-web</module>
     </modules>
 
 </project>

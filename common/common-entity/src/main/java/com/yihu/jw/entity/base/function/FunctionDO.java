@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.function;// default package
 
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "base_function")
-public class FunctionDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class FunctionDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
     // Fields
 

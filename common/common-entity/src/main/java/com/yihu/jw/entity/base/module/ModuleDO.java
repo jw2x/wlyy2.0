@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.module;// default package
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "base_module")
-public class ModuleDO extends UuidIdentityEntityWithOperation {
+public class ModuleDO extends UuidIdentityEntityWithOperator {
 
     public enum Status {
         delete,

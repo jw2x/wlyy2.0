@@ -1,7 +1,7 @@
 package com.yihu.iot.service.product;
 
 import com.yihu.iot.dao.product.IotProductAttachmentDao;
-import com.yihu.jw.iot.product.IotProductAttachmentDO;
+import com.yihu.jw.entity.iot.product.IotProductAttachmentDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 

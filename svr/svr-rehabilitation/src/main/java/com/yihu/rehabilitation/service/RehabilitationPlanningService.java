@@ -1,6 +1,6 @@
 package com.yihu.rehabilitation.service;
 
-import com.yihu.jw.rehabilitation.RehabilitationPlanningDO;
+import com.yihu.jw.entity.rehabilitation.RehabilitationPlanningDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationPlanningVO;
 import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;

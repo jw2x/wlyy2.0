@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.user;
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import java.sql.Timestamp;
 import javax.persistence.Column;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_role")
-public class RoleDO extends UuidIdentityEntityWithOperation {
+public class RoleDO extends UuidIdentityEntityWithOperator {
 
 	//saas id
 	private String saasId;
@@ -22,7 +22,6 @@ public class RoleDO extends UuidIdentityEntityWithOperation {
 	private String code;
 	//备注
 	private String remark;
-
 
 	// Constructors
 	/** default constructor */

@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.saas;
 
-import com.yihu.jw.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

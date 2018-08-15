@@ -1,6 +1,6 @@
 package com.yihu.iot.dao.company;
 
-import com.yihu.jw.iot.company.IotCompanyCertificateChangeRecordDO;
+import com.yihu.jw.entity.iot.company.IotCompanyCertificateChangeRecordDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

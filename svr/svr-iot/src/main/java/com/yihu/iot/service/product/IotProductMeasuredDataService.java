@@ -1,7 +1,7 @@
 package com.yihu.iot.service.product;
 
 import com.yihu.iot.dao.dict.IotDeviceDictDao;
-import com.yihu.jw.iot.dict.IotDeviceDictDO;
+import com.yihu.jw.entity.iot.dict.IotDeviceDictDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.wx;
 
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "wx_menu")
-public class WxMenuDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class WxMenuDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
     private String wechatId;//关联的微信code 关联表 Wx_Wechat
     private String supMenuid;//父菜单id 如果是一级菜单 此字段为空

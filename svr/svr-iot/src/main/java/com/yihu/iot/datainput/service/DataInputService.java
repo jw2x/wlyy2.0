@@ -11,7 +11,7 @@ import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.datainput.DataBodySignsDO;
 import com.yihu.jw.datainput.WeRunDataDO;
-import com.yihu.jw.iot.device.IotDeviceDO;
+import com.yihu.jw.entity.iot.device.IotDeviceDO;
 import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang.StringUtils;
 //import org.apache.hadoop.hbase.util.CollectionUtils;

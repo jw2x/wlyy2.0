@@ -1,7 +1,7 @@
 package com.yihu.iot.service.company;
 
 import com.yihu.iot.dao.company.IotCompanyCertificateChangeRecordDao;
-import com.yihu.jw.iot.company.IotCompanyCertificateChangeRecordDO;
+import com.yihu.jw.entity.iot.company.IotCompanyCertificateChangeRecordDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 

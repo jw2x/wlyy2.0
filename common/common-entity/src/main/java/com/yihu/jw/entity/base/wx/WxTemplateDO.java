@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.wx;
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "wx_template")
-public class WxTemplateDO extends UuidIdentityEntityWithOperation implements java.io.Serializable {
+public class WxTemplateDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
     // Fields
     private String title;//模板标题

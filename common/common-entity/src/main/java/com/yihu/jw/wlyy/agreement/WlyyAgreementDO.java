@@ -3,7 +3,7 @@ package com.yihu.jw.wlyy.agreement;
 
 
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  */
 @Entity
 @Table(name = "wlyy_agreement")
-public class WlyyAgreementDO extends UuidIdentityEntityWithOperation implements Serializable{
+public class WlyyAgreementDO extends UuidIdentityEntityWithOperator implements Serializable{
 
     private static final long serialVersionUID = -4343130835307199266L;
 

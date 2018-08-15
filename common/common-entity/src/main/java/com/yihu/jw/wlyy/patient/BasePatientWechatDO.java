@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.patient;// default package
 
-import com.yihu.jw.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntity;
 
 import java.util.Date;
 import javax.persistence.Column;

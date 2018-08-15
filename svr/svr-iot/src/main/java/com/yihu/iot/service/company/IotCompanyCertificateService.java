@@ -1,7 +1,7 @@
 package com.yihu.iot.service.company;
 
 import com.yihu.iot.dao.company.IotCompanyCertificateDao;
-import com.yihu.jw.iot.company.IotCompanyCertificateDO;
+import com.yihu.jw.entity.iot.company.IotCompanyCertificateDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;

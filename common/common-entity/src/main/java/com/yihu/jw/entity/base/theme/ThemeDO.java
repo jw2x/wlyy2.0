@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.theme;
 
-import com.yihu.jw.UuidIdentityEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_theme")
-public class ThemeDO extends UuidIdentityEntityWithOperation {
+public class ThemeDO extends UuidIdentityEntityWithOperator {
 
     private String backgroundColor; //主体背景颜色
     private String fontColor; //主体字体颜色

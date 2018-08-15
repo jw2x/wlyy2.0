@@ -2,7 +2,7 @@ package com.yihu.rehabilitation.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.rehabilitation.RehabilitationTreatmentProgramDO;
+import com.yihu.jw.entity.rehabilitation.RehabilitationTreatmentProgramDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationTreatmentProgramVO;

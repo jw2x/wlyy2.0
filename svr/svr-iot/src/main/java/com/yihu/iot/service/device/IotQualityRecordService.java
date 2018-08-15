@@ -1,7 +1,7 @@
 package com.yihu.iot.service.device;
 
 import com.yihu.iot.dao.device.IotQualityRecordDao;
-import com.yihu.jw.iot.device.IotQualityRecordDO;
+import com.yihu.jw.entity.iot.device.IotQualityRecordDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 
