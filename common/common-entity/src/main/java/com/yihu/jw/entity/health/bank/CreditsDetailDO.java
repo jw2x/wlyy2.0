@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.health.bank;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "wlyy_health_bank_credits_detail")
-public class CreditsDetailDO extends IdEntityWithOperation implements Serializable{
+public class CreditsDetailDO extends UuidIdentityEntityWithOperation implements Serializable{
 
     @Column(name = "saas_id")
     private String saasId; //saasid

@@ -1,6 +1,6 @@
 package com.yihu.jw.iot.product;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "iot_product_data_transmission")
-public class IotProductDataTransmissionDO extends IdEntityWithOperation implements Serializable {
+public class IotProductDataTransmissionDO extends UuidIdentityEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId;//

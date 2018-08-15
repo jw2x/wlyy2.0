@@ -2,7 +2,7 @@ package com.yihu.jw.entity.health.bank;/**
  * Created by nature of king on 2018/6/8.
  */
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import java.io.Serializable;
  **/
 @Entity
 @Table(name = "wlyy_health_bank_task_dict" )
-public class TaskDictDO extends IdEntityWithOperation implements Serializable {
+public class TaskDictDO extends UuidIdentityEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
     private  String saasId;//环境id

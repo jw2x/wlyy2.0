@@ -1,16 +1,12 @@
 package com.yihu.jw.business.user.contorller;
 
-import com.yihu.jw.base.base.FunctionDO;
-import com.yihu.jw.base.user.BaseEmployDO;
-import com.yihu.jw.base.user.BaseEmployRoleDO;
+import com.yihu.jw.entity.base.user.EmployDO;
 import com.yihu.jw.business.user.service.EmployService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
-import com.yihu.jw.restmodel.base.base.FunctionVO;
 import com.yihu.jw.restmodel.base.user.BaseEmployVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
-import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.rm.base.BaseUserRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -40,7 +36,7 @@ public class EmployController extends EnvelopRestController {
     @ApiOperation(value = "创建用户", notes = "创建单个用户")
     public Envelop createBaseEmployDO(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
-            BaseEmployDO baseEmployDO = toEntity(jsonData,BaseEmployDO.class);
+            EmployDO baseEmployDO = toEntity(jsonData,EmployDO.class);
             return Envelop.getSuccess(BaseUserRequestMapping.BaseEmploy.message_success_create,employService.createBaseEmployDO(baseEmployDO));
         } catch (Exception e){
             return Envelop.getError(e.getMessage());

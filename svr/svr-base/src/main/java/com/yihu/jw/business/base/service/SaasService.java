@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.service;
 
-import com.yihu.jw.base.base.SaasDO;
+import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.business.base.dao.SaasDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
@@ -63,7 +63,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         if (saas == null) {
             throw new ApiException(BaseRequestMapping.Saas.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
-        saas.setStatus(-1);
+        saas.setStatus(SaasDO.Status.delete);
     }
 
     public SaasDO findByName(String cityName) {

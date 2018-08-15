@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.service;
 
-import com.yihu.jw.base.base.SystemDictDO;
+import com.yihu.jw.entity.base.system.SystemDictDO;
 import com.yihu.jw.business.base.dao.SystemDictDao;
 import com.yihu.mysql.query.BaseJpaService;
 

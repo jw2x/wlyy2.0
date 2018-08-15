@@ -1,6 +1,6 @@
 package com.yihu.jw.business.user.service;
 
-import com.yihu.jw.base.user.BaseRoleDO;
+import com.yihu.jw.entity.base.user.RoleDO;
 import com.yihu.jw.business.user.dao.BaseRoleDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
@@ -18,7 +18,7 @@ import java.util.List;
  * 基础角色功能
  */
 @Service
-public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
+public class BaseRoleService extends BaseJpaService<RoleDO,BaseRoleDao> {
     @Autowired
     private BaseRoleDao baseRoleDao;
 
@@ -28,7 +28,7 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      * @return
      */
     @Transactional
-    public BaseRoleDO createBaseRole(BaseRoleDO baseRoleDO){
+    public RoleDO createBaseRole(RoleDO baseRoleDO){
         if (StringUtils.isEmpty(baseRoleDO.getId())) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
@@ -47,7 +47,7 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      * @return
      */
     @Transactional
-    public BaseRoleDO updateBaseRole(BaseRoleDO baseRoleDO){
+    public RoleDO updateBaseRole(RoleDO baseRoleDO){
         if (StringUtils.isEmpty(baseRoleDO.getId())) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
@@ -62,11 +62,11 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      * @param id
      * @return
      */
-    public BaseRoleDO findById(String id){
+    public RoleDO findById(String id){
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_id_is_null,ExceptionCode.common_error_params_code);
         }
-        BaseRoleDO baseRoleDO = this.baseRoleDao.findOneById(id);
+        RoleDO baseRoleDO = this.baseRoleDao.findOneById(id);
         if (null == baseRoleDO) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_id_no_exist,ExceptionCode.common_error_params_code);
         }
@@ -78,11 +78,11 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      * @param saasId
      * @return
      */
-    public List<BaseRoleDO> findAllBySaasId(String saasId){
+    public List<RoleDO> findAllBySaasId(String saasId){
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_param_saasid_is_null,ExceptionCode.common_error_params_code);
         }
-        List<BaseRoleDO> list = this.baseRoleDao.findAllBySaasId(saasId);
+        List<RoleDO> list = this.baseRoleDao.findAllBySaasId(saasId);
         if (null == list || list.size() == 0) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_saasid_no_exist,ExceptionCode.common_error_params_code);
         }
@@ -95,14 +95,14 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      * @param name
      * @return
      */
-    public BaseRoleDO findBySaasIdAndName(String saasId,String name){
+    public RoleDO findBySaasIdAndName(String saasId, String name){
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_param_saasid_is_null,ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(name)) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_name_is_null,ExceptionCode.common_error_params_code);
         }
-        BaseRoleDO baseRoleDO = this.baseRoleDao.findOneBySaasIdAndName(name,saasId);
+        RoleDO baseRoleDO = this.baseRoleDao.findOneBySaasIdAndName(name,saasId);
         if (null == baseRoleDO) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_role_no_exist,ExceptionCode.common_error_params_code);
         }
@@ -114,11 +114,11 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      * @param name
      * @return
      */
-    public List<BaseRoleDO> getRoleListByName(String name){
+    public List<RoleDO> getRoleListByName(String name){
         if (StringUtils.isEmpty(name)) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_param_name_is_null,ExceptionCode.common_error_params_code);
         }
-        List<BaseRoleDO> list = this.baseRoleDao.findAllByName(name);
+        List<RoleDO> list = this.baseRoleDao.findAllByName(name);
         if (null == list || list.size() == 0) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_role_no_exist,ExceptionCode.common_error_params_code);
         }
@@ -131,14 +131,13 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      * @param baseRoleDO
      */
     @Transactional
-    public void deleteBaseRole(BaseRoleDO baseRoleDO){
+    public void deleteBaseRole(RoleDO baseRoleDO){
         if (StringUtils.isEmpty(baseRoleDO.getId())) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
         if (StringUtils.isEmpty(baseRoleDO.getSaasId())) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
-        baseRoleDO.setStatus(-1);
         this.baseRoleDao.save(baseRoleDO);
     }
 
@@ -151,9 +150,8 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
         }
-        List<BaseRoleDO> list = this.baseRoleDao.findAllBySaasId(saasId);
-        for(BaseRoleDO baseRoleDO:list){
-            baseRoleDO.setStatus(-1);
+        List<RoleDO> list = this.baseRoleDao.findAllBySaasId(saasId);
+        for(RoleDO baseRoleDO:list){
         }
         this.baseRoleDao.save(list);
     }
@@ -165,8 +163,7 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      */
     @Transactional
     public void deleteBaseRoleByNameAndSaasId(String saasId,String name){
-        BaseRoleDO baseRoleDO = this.findBySaasIdAndName(saasId,name);
-        baseRoleDO.setStatus(-1);
+        RoleDO baseRoleDO = this.findBySaasIdAndName(saasId,name);
         this.baseRoleDao.save(baseRoleDO);
     }
 
@@ -176,7 +173,7 @@ public class BaseRoleService extends BaseJpaService<BaseRoleDO,BaseRoleDao> {
      * @param saasId
      * @return
      */
-    public List<BaseRoleDO> findByPhoneAndSaasId(String phone,String saasId){
+    public List<RoleDO> findByPhoneAndSaasId(String phone, String saasId){
         return this.baseRoleDao.findByPhoneAndSaasId(phone,saasId);
     }
 }

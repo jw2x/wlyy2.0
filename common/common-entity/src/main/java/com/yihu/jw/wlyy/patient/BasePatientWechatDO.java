@@ -1,11 +1,10 @@
 package com.yihu.jw.wlyy.patient;// default package
 
-import com.yihu.jw.IdEntity;
+import com.yihu.jw.UuidIdentityEntity;
 
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -13,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_patient_wechat")
-public class BasePatientWechatDO extends IdEntity implements java.io.Serializable {
+public class BasePatientWechatDO extends UuidIdentityEntity implements java.io.Serializable {
 
     // Fields
 

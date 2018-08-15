@@ -1,13 +1,9 @@
 package com.yihu.jw.business.user.contorller;
 
-import com.yihu.jw.base.user.BaseEmployRoleDO;
-import com.yihu.jw.base.user.BaseMenuDO;
-import com.yihu.jw.base.user.BaseRoleDO;
-import com.yihu.jw.base.user.BaseRoleMenuDO;
+import com.yihu.jw.entity.base.user.RoleDO;
 import com.yihu.jw.business.user.service.BaseRoleService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
-import com.yihu.jw.restmodel.base.user.BaseEmployVO;
 import com.yihu.jw.restmodel.base.user.BaseRoleVO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
@@ -155,7 +151,7 @@ public class BaseRoleController extends EnvelopRestController {
     public Envelop getPhoneAndSaasId(@ApiParam(name = "phone", value = "电话号码（账号）") @RequestParam(value = "phone", required = true) String phone,
                                      @ApiParam(name = "saasId", value = "saasId") @RequestParam(value = "saasId", required = true) String saasId){
         try{
-            List<BaseRoleDO> result = baseRoleService.findByPhoneAndSaasId(phone,saasId);
+            List<RoleDO> result = baseRoleService.findByPhoneAndSaasId(phone,saasId);
             return Envelop.getSuccess("获取数据成功！",result);
         } catch (ApiException e){
             return Envelop.getError(e.getMessage(), e.getErrorCode());

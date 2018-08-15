@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.service;
 
-import com.yihu.jw.base.base.ModuleFunctionDO;
+import com.yihu.jw.entity.base.module.ModuleFunctionDO;
 import com.yihu.jw.business.base.dao.ModuleFunctionDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;

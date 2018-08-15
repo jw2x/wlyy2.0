@@ -1,7 +1,7 @@
 package com.yihu.jw.iot.dict;
 
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "iot_device_dict")
-public class IotDeviceDictDO extends IdEntityWithOperation implements Serializable {
+public class IotDeviceDictDO extends UuidIdentityEntityWithOperation implements Serializable {
 
 
     @Column(name = "saas_id")

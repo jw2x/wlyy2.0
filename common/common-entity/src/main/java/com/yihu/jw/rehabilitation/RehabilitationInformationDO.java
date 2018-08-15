@@ -1,7 +1,7 @@
 package com.yihu.jw.rehabilitation;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "rehabilitation_information")
-public class RehabilitationInformationDO extends IdEntityWithOperation implements Serializable {
+public class RehabilitationInformationDO extends UuidIdentityEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId;

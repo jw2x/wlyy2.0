@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.controller;
 
-import com.yihu.jw.base.base.ModuleDO;
+import com.yihu.jw.entity.base.module.ModuleDO;
 import com.yihu.jw.business.base.service.ModuleService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.base.base.ModuleVO;
@@ -12,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;

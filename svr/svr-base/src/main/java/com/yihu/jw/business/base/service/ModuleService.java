@@ -1,7 +1,7 @@
 package com.yihu.jw.business.base.service;
 
-import com.yihu.jw.base.base.ModuleDO;
-import com.yihu.jw.base.base.SaasModuleDO;
+import com.yihu.jw.entity.base.module.ModuleDO;
+import com.yihu.jw.entity.base.saas.SaasModuleDO;
 import com.yihu.jw.business.base.dao.ModuleDao;
 import com.yihu.jw.business.base.dao.SaasModuleDao;
 import com.yihu.jw.exception.ApiException;
@@ -80,7 +80,7 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
         if (module == null) {
             throw new ApiException(BaseRequestMapping.Module.message_fail_id_no_exist, ExceptionCode.common_error_params_code);
         }
-        module.setStatus(-1);
+        module.setStatus(ModuleDO.Status.delete);
     }
 
     @Transactional

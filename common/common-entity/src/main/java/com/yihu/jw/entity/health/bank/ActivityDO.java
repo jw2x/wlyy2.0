@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.health.bank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "wlyy_health_bank_activity")
-public class ActivityDO extends IdEntityWithOperation implements Serializable {
+public class ActivityDO extends UuidIdentityEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId;//saasId
@@ -162,8 +162,6 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.isFlag = isFlag;
     }
 
-
-
     public String getRemark() {
         return remark;
     }
@@ -196,6 +194,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.areaType = areaType;
     }
 
+    @Transient
     public String getOpenId() {
         return openId;
     }
@@ -204,6 +203,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.openId = openId;
     }
 
+    @Transient
     public String getPatientId() {
         return patientId;
     }
@@ -212,6 +212,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.patientId = patientId;
     }
 
+    @Transient
     public Long getTotal() {
         return total;
     }
@@ -228,6 +229,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.type = type;
     }
 
+    @Transient
     public List<TaskPatientDetailDO> getTaskPatientDetailDOS() {
         return taskPatientDetailDOS;
     }
@@ -236,6 +238,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.taskPatientDetailDOS = taskPatientDetailDOS;
     }
 
+    @Transient
     public String getUnionId() {
         return unionId;
     }
@@ -244,6 +247,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.unionId = unionId;
     }
 
+    @Transient
     public String getPatientIdcard() {
         return patientIdcard;
     }
@@ -252,6 +256,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.patientIdcard = patientIdcard;
     }
 
+    @Transient
     public Integer getActivityRanking() {
         return activityRanking;
     }
@@ -260,6 +265,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.activityRanking = activityRanking;
     }
 
+    @Transient
     public Long getSum() {
         return sum;
     }
@@ -268,6 +274,7 @@ public class ActivityDO extends IdEntityWithOperation implements Serializable {
         this.sum = sum;
     }
 
+    @Transient
     public List<TaskDO> getTaskDOS() {
         return taskDOS;
     }

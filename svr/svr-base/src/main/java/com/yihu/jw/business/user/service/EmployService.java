@@ -1,7 +1,6 @@
 package com.yihu.jw.business.user.service;
 
-import com.yihu.jw.base.user.BaseEmployDO;
-import com.yihu.jw.base.user.BaseRoleDO;
+import com.yihu.jw.entity.base.user.EmployDO;
 import com.yihu.jw.business.user.dao.EmployDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
@@ -10,15 +9,10 @@ import com.yihu.jw.rm.base.BaseUserRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.*;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.Servlet;
 import java.util.List;
 
 /**
@@ -29,7 +23,7 @@ import java.util.List;
 @Service
 @EnableCaching
 @CacheConfig(cacheNames = "employ")
-public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
+public class EmployService extends BaseJpaService<EmployDO,EmployDao> {
     @Autowired
     private EmployDao employDao;
 
@@ -40,7 +34,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      */
     @Cacheable(value = "employ#600#300")
     @Transactional
-    public BaseEmployDO createBaseEmployDO(BaseEmployDO employeeDO){
+    public EmployDO createBaseEmployDO(EmployDO employeeDO){
         if (StringUtils.isEmpty(employeeDO.getId())) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
@@ -57,7 +51,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      */
     @CachePut(value = "employ#600#300",key = "#employeeDO.id")
     @Transactional
-    public BaseEmployDO updateBaseEmployDO(BaseEmployDO employeeDO){
+    public EmployDO updateBaseEmployDO(EmployDO employeeDO){
         if (StringUtils.isEmpty(employeeDO.getId())) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }
@@ -73,11 +67,11 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @return
      */
 //    @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
-    public BaseEmployDO findById(String id){
+    public EmployDO findById(String id){
         if (StringUtils.isEmpty(id)) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null,ExceptionCode.common_error_params_code);
         }
-        BaseEmployDO BaseEmployDO = this.employDao.findOne(id);
+        EmployDO BaseEmployDO = this.employDao.findOne(id);
         if (null == BaseEmployDO) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_no_exist,ExceptionCode.common_error_params_code);
         }
@@ -91,8 +85,8 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @param saasId
      * @return
      */
-    public BaseEmployDO findByPhoneAndSaasId(String phone,String saasId) throws ApiException{
-        BaseEmployDO BaseEmployDO = this.employDao.findByPhoneAndSaasId(phone,saasId);
+    public EmployDO findByPhoneAndSaasId(String phone, String saasId) throws ApiException{
+        EmployDO BaseEmployDO = this.employDao.findByPhoneAndSaasId(phone,saasId);
         if (null == BaseEmployDO) {
             throw new ApiException(BaseEnvelopStatus.status_10100.getName(), BaseEnvelopStatus.status_10100.getCode());
         }
@@ -105,11 +99,11 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @return
      */
     @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
-    public List<BaseEmployDO> findAllBySaasId(String saasId){
+    public List<EmployDO> findAllBySaasId(String saasId){
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_param_saasid_is_null,ExceptionCode.common_error_params_code);
         }
-        List<BaseEmployDO> list = this.employDao.findAllBySaasId(saasId);
+        List<EmployDO> list = this.employDao.findAllBySaasId(saasId);
         if (null == list || list.size() == 0) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_saasid_no_exist,ExceptionCode.common_error_params_code);
         }
@@ -122,11 +116,11 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      * @return
      */
     @Cacheable(value = "employ#600#300",key = "#employeeDO.id")
-    public List<BaseEmployDO> findAllByNameAndSaasId(String name,String saasId){
+    public List<EmployDO> findAllByNameAndSaasId(String name, String saasId){
         if (StringUtils.isEmpty(saasId)) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_param_saasid_is_null,ExceptionCode.common_error_params_code);
         }
-        List<BaseEmployDO> list = this.employDao.findAllByNameAndSaasId(name,saasId);
+        List<EmployDO> list = this.employDao.findAllByNameAndSaasId(name,saasId);
         if (null == list || list.size() == 0) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_saasid_no_exist,ExceptionCode.common_error_params_code);
         }
@@ -140,7 +134,7 @@ public class EmployService extends BaseJpaService<BaseEmployDO,EmployDao> {
      */
     @CacheEvict(key = "#employDO.id")
     @Transactional
-    public void deleteBaseEmploy(BaseEmployDO employDO){
+    public void deleteBaseEmploy(EmployDO employDO){
         if (StringUtils.isEmpty(employDO.getId())) {
             throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null, ExceptionCode.common_error_params_code);
         }

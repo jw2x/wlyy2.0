@@ -1,6 +1,6 @@
 package com.yihu.jw.iot.company;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +16,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "iot_company")
-public class IotCompanyDO extends IdEntityWithOperation implements Serializable {
+public class IotCompanyDO extends UuidIdentityEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId;//
@@ -222,6 +222,7 @@ public class IotCompanyDO extends IdEntityWithOperation implements Serializable 
         this.del = del;
     }
 
+    @Transient
     public List<IotCompanyTypeDO> getTypeList() {
         return typeList;
     }

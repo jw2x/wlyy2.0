@@ -1,8 +1,7 @@
 package com.yihu.jw.wlyy.agreement;
 
 
-import com.yihu.jw.IdEntity;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntity;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -16,7 +15,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_agreement_kpi_log")
-public class WlyyAgreementKpiLogDO extends IdEntity {
+public class WlyyAgreementKpiLogDO extends UuidIdentityEntity {
 
     private static final long serialVersionUID = -3196907595969778396L;
     private String saasId;

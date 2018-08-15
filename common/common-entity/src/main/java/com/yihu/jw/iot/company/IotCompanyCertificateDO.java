@@ -1,7 +1,7 @@
 package com.yihu.jw.iot.company;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +15,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "iot_company_certificate")
-public class IotCompanyCertificateDO extends IdEntityWithOperation implements Serializable {
+public class IotCompanyCertificateDO extends UuidIdentityEntityWithOperation implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId;//

@@ -1,6 +1,6 @@
 package com.yihu.jw.business.sms.dao;
 
-import com.yihu.jw.base.sms.BaseSmsDO;
+import com.yihu.jw.entity.base.sms.BaseSmsDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.health.bank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,39 +16,29 @@ import java.util.List;
  */
 @Entity
 @Table(name = "wlyy_health_bank_task")
-public class TaskDO extends IdEntityWithOperation implements Serializable{
+public class TaskDO extends UuidIdentityEntityWithOperation implements Serializable{
 
     @Column(name = "saas_id")
     private String saasId; //saasid
-
     @Column(name = "title")
     private String title; //任务标题
-
     @Column(name = "content")
     private String content; //任务内容
-
     @Column(name = "type")
     private String type; //交易类型
-
     @Column(name = "transaction_id")
     private String transactionId; // 业务id
-
     @Column(name = "period")
     private Integer period; //周期性
-
     @Column(name = "task_code")
     private String taskCode ; // 标识是什么任务
-
     @Column(name = "status")
     private Integer status; //状态
-
     @Column(name = "rule_code")
     private String ruleCode;//规则code
-
     @Column(name = "start_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date startTime;//开始时间
-
     @Column(name = "end_time")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date endTime; //结束时间
@@ -156,6 +146,7 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.endTime = endTime;
     }
 
+    @Transient
     public ActivityDO getActivityDO() {
         return activityDO;
     }
@@ -164,6 +155,7 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.activityDO = activityDO;
     }
 
+    @Transient
     public String getPatientId() {
         return patientId;
     }
@@ -172,6 +164,7 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.patientId = patientId;
     }
 
+    @Transient
     public List<TaskPatientDetailDO> getTaskPatientDetailDOS() {
         return taskPatientDetailDOS;
     }
@@ -180,6 +173,7 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.taskPatientDetailDOS = taskPatientDetailDOS;
     }
 
+    @Transient
     public Long getTotal() {
         return total;
     }
@@ -188,6 +182,7 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.total = total;
     }
 
+    @Transient
     public String getOpenId() {
         return openId;
     }
@@ -196,6 +191,7 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.openId = openId;
     }
 
+    @Transient
     public String getRuleName() {
         return ruleName;
     }
@@ -204,6 +200,7 @@ public class TaskDO extends IdEntityWithOperation implements Serializable{
         this.ruleName = ruleName;
     }
 
+    @Transient
     public List<CreditsDetailDO> getCreditsDetailDOS() {
         return creditsDetailDOS;
     }

@@ -1,6 +1,6 @@
 package com.yihu.jw.iot.datainput;
 
-import com.yihu.jw.IdEntity;
+import com.yihu.jw.UuidIdentityEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "iot_data_process_log")
-public class DataProcessLogDO extends IdEntity implements Serializable {
+public class DataProcessLogDO extends UuidIdentityEntity implements Serializable {
 
     @Column(name = "data_id")
     private String dataId;

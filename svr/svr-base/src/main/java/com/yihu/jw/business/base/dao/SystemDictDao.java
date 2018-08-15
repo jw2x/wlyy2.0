@@ -1,7 +1,6 @@
 package com.yihu.jw.business.base.dao;
 
-import com.yihu.jw.base.base.SaasModuleDO;
-import com.yihu.jw.base.base.SystemDictDO;
+import com.yihu.jw.entity.base.system.SystemDictDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

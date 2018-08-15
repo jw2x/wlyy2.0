@@ -1,6 +1,6 @@
 package com.yihu.jw.business.base.dao;
 
-import com.yihu.jw.base.base.ModuleFunctionDO;
+import com.yihu.jw.entity.base.module.ModuleFunctionDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

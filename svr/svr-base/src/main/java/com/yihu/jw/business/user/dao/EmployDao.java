@@ -1,6 +1,6 @@
 package com.yihu.jw.business.user.dao;
 
-import com.yihu.jw.base.user.BaseEmployDO;
+import com.yihu.jw.entity.base.user.EmployDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -14,14 +14,14 @@ import java.util.List;
 /**
  * 基础用户类接口
  */
-public interface EmployDao extends PagingAndSortingRepository<BaseEmployDO, String>, JpaSpecificationExecutor<BaseEmployDO> {
+public interface EmployDao extends PagingAndSortingRepository<EmployDO, String>, JpaSpecificationExecutor<EmployDO> {
 
     @Query("from BaseEmployDO ba where ba.saasId = ?1")
-    List<BaseEmployDO> findAllBySaasId(String saasId);
+    List<EmployDO> findAllBySaasId(String saasId);
 
     @Query("from BaseEmployDO ba where ba.name like ?1 and ba.saasId = ?2")
-    List<BaseEmployDO> findAllByNameAndSaasId(String name,String saasId);
+    List<EmployDO> findAllByNameAndSaasId(String name, String saasId);
 
     @Query("from BaseEmployDO ba where ba.phone = ?1 and ba.saasId = ?2")
-    BaseEmployDO findByPhoneAndSaasId(String phone,String saasId);
+    EmployDO findByPhoneAndSaasId(String phone, String saasId);
 }

@@ -3,22 +3,20 @@ package com.yihu.jw.wlyy.agreement;
 
 
 
-import com.yihu.jw.IdEntity;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/1 0001.
  */
 @Entity
 @Table(name = "wlyy_agreement")
-public class WlyyAgreementDO extends IdEntityWithOperation implements Serializable{
+public class WlyyAgreementDO extends UuidIdentityEntityWithOperation implements Serializable{
 
     private static final long serialVersionUID = -4343130835307199266L;
 

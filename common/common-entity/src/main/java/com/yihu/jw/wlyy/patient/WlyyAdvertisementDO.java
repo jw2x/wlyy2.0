@@ -1,21 +1,19 @@
 package com.yihu.jw.wlyy.patient;
 
 
-import com.yihu.jw.IdEntity;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/6 0006.
  */
 @Entity
 @Table(name = "wlyy_advertisement")
-public class WlyyAdvertisementDO extends IdEntityWithOperation implements Serializable {
+public class WlyyAdvertisementDO extends UuidIdentityEntityWithOperation implements Serializable {
 
     private static final long serialVersionUID = 1497635003375865515L;
     private String saasId;//0,为默认广告

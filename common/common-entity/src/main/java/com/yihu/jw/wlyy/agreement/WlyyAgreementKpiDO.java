@@ -2,20 +2,18 @@ package com.yihu.jw.wlyy.agreement;
 
 
 
-import com.yihu.jw.IdEntity;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * Created by Administrator on 2017/6/1 0001.
  */
 @Entity
 @Table(name = "wlyy_agreement_kpi")
-public class WlyyAgreementKpiDO extends IdEntityWithOperation {
+public class WlyyAgreementKpiDO extends UuidIdentityEntityWithOperation {
     private String saasId;//saasId
     private String agreementCode;//套餐代码
     private String kpiName;//服务项名称

@@ -1,8 +1,7 @@
 package com.yihu.jw.wlyy.agreement;
 
 
-import com.yihu.jw.IdEntity;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.UuidIdentityEntityWithOperation;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_sign_family")
-public class WlyySignFamilyDO extends IdEntityWithOperation {
+public class WlyySignFamilyDO extends UuidIdentityEntityWithOperation {
 
     private static final long serialVersionUID = -6759565631854462880L;
     private String saasId;
