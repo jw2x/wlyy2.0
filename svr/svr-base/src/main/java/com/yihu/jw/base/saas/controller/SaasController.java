@@ -3,9 +3,8 @@ package com.yihu.jw.base.saas.controller;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.base.saas.service.SaasService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.web.endpoint.EnvelopRestEndpoint;
-import com.yihu.jw.web.model.BaseEnvelop;
+import com.yihu.jw.web.model.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +28,7 @@ public class SaasController extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建Saas配置", notes = "创建单个Saas配置")
-    public BaseEnvelop create (
+    public Envelop create (
             @ApiParam(name = "json_data", value = "Json数据")
             @RequestBody String jsonData) throws Exception {
         SaasDO saas = toEntity(jsonData, SaasDO.class);
@@ -52,27 +51,27 @@ public class SaasController extends EnvelopRestEndpoint {
 
     @DeleteMapping(value = BaseRequestMapping.Saas.api_delete, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "删除Saas配置", notes = "删除Saas配置")
-    public Envelop deleteSaas(
+    public com.yihu.jw.restmodel.common.Envelop deleteSaas(
             @ApiParam(name = "id", value = "id")
             @RequestParam(value = "id", required = true) String id) {
         try {
             saasService.deleteSaas(id);
-            return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_delete);
+            return com.yihu.jw.restmodel.common.Envelop.getSuccess(BaseRequestMapping.Saas.message_success_delete);
         } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+            return com.yihu.jw.restmodel.common.Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "根据code查找Saas配置", notes = "根据code查找Saas配置")
-    public Envelop findByCode(
+    public com.yihu.jw.restmodel.common.Envelop findByCode(
             @ApiParam(name = "id", value = "id")
             @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(BaseRequestMapping.Saas.message_success_find, saasService.findById(id));
+            return com.yihu.jw.restmodel.common.Envelop.getSuccess(BaseRequestMapping.Saas.message_success_find, saasService.findById(id));
         } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+            return com.yihu.jw.restmodel.common.Envelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
@@ -108,7 +107,7 @@ public class SaasController extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.Saas.api_getSaassNoPage)
     @ApiOperation(value = "获取Saas配置列表，不分页")
-    public Envelop getAppsNoPage(
+    public com.yihu.jw.restmodel.common.Envelop getAppsNoPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "code,name,id,remark")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -119,6 +118,6 @@ public class SaasController extends EnvelopRestEndpoint {
         List<SaasDO> list = saasService.search(filters, sorts);
         //封装返回格式
         List<SaasDO> mSaass = convertToModels(list, new ArrayList<>(list.size()), SaasDO.class, fields);
-        return Envelop.getSuccessList(BaseRequestMapping.Saas.message_success_find_saass, mSaass);
+        return com.yihu.jw.restmodel.common.Envelop.getSuccessList(BaseRequestMapping.Saas.message_success_find_saass, mSaass);
     }
 }

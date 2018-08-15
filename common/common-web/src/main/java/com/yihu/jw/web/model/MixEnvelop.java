@@ -23,7 +23,7 @@ import java.util.List;
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(value = "ListResult", description = "通用的实体")
-public class MultiEnvelop<T, J> extends BaseEnvelop implements Serializable {
+public class MixEnvelop<T, J> extends Envelop {
 
     private static final long serialVersionUID = 2076324875575488461L;
     @ApiModelProperty("每页大小 默认10")

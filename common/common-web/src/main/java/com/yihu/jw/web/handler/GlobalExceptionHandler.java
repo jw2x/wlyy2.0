@@ -1,7 +1,7 @@
 package com.yihu.jw.web.handler;
 
 import com.yihu.jw.web.exception.ApiException;
-import com.yihu.jw.web.model.BaseEnvelop;
+import com.yihu.jw.web.model.Envelop;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,8 +31,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     @ResponseBody
-    public BaseEnvelop handle(HttpServletResponse response, Exception e) throws IOException {
-        BaseEnvelop envelop = new BaseEnvelop();
+    public Envelop handle(HttpServletResponse response, Exception e) throws IOException {
+        Envelop envelop = new Envelop();
         if (e instanceof NoHandlerFoundException) {
             //response.setStatus(HttpStatus.NOT_FOUND.value());
             envelop.setStatus(HttpStatus.NOT_FOUND.value());

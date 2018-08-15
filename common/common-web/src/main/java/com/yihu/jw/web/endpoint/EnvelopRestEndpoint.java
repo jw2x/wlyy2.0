@@ -1,9 +1,9 @@
 package com.yihu.jw.web.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.web.model.BaseEnvelop;
+import com.yihu.jw.web.model.Envelop;
 import com.yihu.jw.web.model.ListEnvelop;
-import com.yihu.jw.web.model.MultiEnvelop;
+import com.yihu.jw.web.model.MixEnvelop;
 import com.yihu.jw.web.model.ObjEnvelop;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,15 +22,15 @@ public abstract class EnvelopRestEndpoint {
     @Autowired
     protected ObjectMapper objectMapper;
 
-    protected BaseEnvelop success(String message) {
+    protected Envelop success(String message) {
         return success(message, 200);
     }
 
-    protected BaseEnvelop success(String message, int status) {
-        BaseEnvelop baseEnvelop = new BaseEnvelop();
-        baseEnvelop.setMessage(message);
-        baseEnvelop.setStatus(status);
-        return baseEnvelop;
+    protected Envelop success(String message, int status) {
+        Envelop envelop = new Envelop();
+        envelop.setMessage(message);
+        envelop.setStatus(status);
+        return envelop;
     }
 
     protected <J> ObjEnvelop<J> success(J obj){
@@ -65,41 +65,41 @@ public abstract class EnvelopRestEndpoint {
         return listEnvelop;
     }
 
-    protected <T> MultiEnvelop success(List<T> detailModelList, int totalCount, int currPage, int rows) {
+    protected <T> MixEnvelop success(List<T> detailModelList, int totalCount, int currPage, int rows) {
         return success(detailModelList, "success", 200, totalCount, currPage, rows);
     }
 
-    protected <T> MultiEnvelop success(List<T> detailModelList, String message, int totalCount, int currPage, int rows) {
+    protected <T> MixEnvelop success(List<T> detailModelList, String message, int totalCount, int currPage, int rows) {
         return success(detailModelList, message, 200, totalCount, currPage, rows);
     }
 
-    protected <T> MultiEnvelop success(List<T> detailModelList, String message, int status, int totalCount, int currPage, int rows) {
+    protected <T> MixEnvelop success(List<T> detailModelList, String message, int status, int totalCount, int currPage, int rows) {
         return success(detailModelList, null, message, status, totalCount, currPage, rows);
     }
 
-    protected <T, J> MultiEnvelop success(List<T> detailModelList, J obj, String message, int status, int totalCount, int currPage, int rows) {
-        MultiEnvelop multiEnvelop = new MultiEnvelop();
-        multiEnvelop.setMessage(message);
-        multiEnvelop.setStatus(status);
-        multiEnvelop.setDetailModelList(detailModelList);
-        multiEnvelop.setObj(obj);
-        multiEnvelop.setTotalCount(totalCount);
-        multiEnvelop.setCurrPage(currPage);
-        multiEnvelop.setPageSize(rows);
+    protected <T, J> MixEnvelop success(List<T> detailModelList, J obj, String message, int status, int totalCount, int currPage, int rows) {
+        MixEnvelop<T, J> mixEnvelop = new MixEnvelop();
+        mixEnvelop.setMessage(message);
+        mixEnvelop.setStatus(status);
+        mixEnvelop.setDetailModelList(detailModelList);
+        mixEnvelop.setObj(obj);
+        mixEnvelop.setTotalCount(totalCount);
+        mixEnvelop.setCurrPage(currPage);
+        mixEnvelop.setPageSize(rows);
         if (totalCount % rows > 0) {
-            multiEnvelop.setTotalPage((totalCount / rows) + 1);
+            mixEnvelop.setTotalPage((totalCount / rows) + 1);
         } else {
-            multiEnvelop.setTotalPage(totalCount / rows);
+            mixEnvelop.setTotalPage(totalCount / rows);
         }
-        return multiEnvelop;
+        return mixEnvelop;
     }
 
-    public <T> T toEntity(String json, Class<T> target) throws IOException {
+    protected <T> T toEntity(String json, Class<T> target) throws IOException {
         T entity = objectMapper.readValue(json, target);
         return entity;
     }
 
-    public <T> T convertToModel(Object source, Class<T> target, String... properties) {
+    protected <T> T convertToModel(Object source, Class<T> target, String... properties) {
         if (source == null) {
             return null;
         }
@@ -108,7 +108,7 @@ public abstract class EnvelopRestEndpoint {
         return _target;
     }
 
-    public <T> List<T> convertToModels(Collection sources, List<T> targets, Class<T> target){
+    protected <T> List<T> convertToModels(Collection sources, List<T> targets, Class<T> target){
         if (null == sources) {
             return null;
         }
@@ -120,7 +120,7 @@ public abstract class EnvelopRestEndpoint {
         return targets;
     }
 
-    public <T> List<T> convertToModels(Collection sources, List<T> targets, Class<T> target, String properties) {
+    protected <T> List<T> convertToModels(Collection sources, List<T> targets, Class<T> target, String properties) {
         if (null == sources) {
             return null;
         }

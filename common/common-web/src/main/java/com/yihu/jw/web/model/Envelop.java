@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(description = "基础实体")
-public class BaseEnvelop implements Serializable {
+public class Envelop implements Serializable {
 
     @ApiModelProperty("信息")
     protected String message;
