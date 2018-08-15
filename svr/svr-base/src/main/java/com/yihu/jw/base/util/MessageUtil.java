@@ -1,4 +1,4 @@
-package com.yihu.jw.util;
+package com.yihu.jw.base.util;
 
 import org.dom4j.Document;
 import org.dom4j.Element;

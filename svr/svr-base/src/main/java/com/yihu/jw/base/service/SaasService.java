@@ -1,7 +1,7 @@
-package com.yihu.jw.base.saas.service;
+package com.yihu.jw.base.service;
 
 import com.yihu.jw.entity.base.saas.SaasDO;
-import com.yihu.jw.base.saas.dao.SaasDao;
+import com.yihu.jw.base.dao.SaasDao;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.rm.base.BaseRequestMapping;

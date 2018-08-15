@@ -1,4 +1,4 @@
-package com.yihu.jw.base.saas.dao;
+package com.yihu.jw.base.dao;
 
 import com.yihu.jw.entity.base.saas.SaasDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

@@ -1,10 +1,9 @@
-package com.yihu.jw.base.saas.controller;
+package com.yihu.jw.base.endpoint;
 
 import com.yihu.jw.entity.base.saas.SaasDO;
-import com.yihu.jw.base.saas.service.SaasService;
+import com.yihu.jw.base.service.SaasService;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.web.endpoint.EnvelopRestEndpoint;
-import com.yihu.jw.web.model.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.web.model.ListEnvelop;
 import com.yihu.jw.web.model.ObjEnvelop;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @Api(value = "Saas配置模块", description = "Saas配置模块接口管理", tags = {"wlyy基础服务 - Saas配置模块接口管理"})
-public class SaasController extends EnvelopRestEndpoint {
+public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
     private SaasService saasService;
