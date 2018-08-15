@@ -34,29 +34,29 @@ public class GlobalExceptionHandler {
     public BaseEnvelop handle(HttpServletResponse response, Exception e) throws IOException {
         BaseEnvelop envelop = new BaseEnvelop();
         if (e instanceof NoHandlerFoundException) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
+            //response.setStatus(HttpStatus.NOT_FOUND.value());
             envelop.setStatus(HttpStatus.NOT_FOUND.value());
             envelop.setMessage(e.getMessage());
         } else if (e instanceof HttpRequestMethodNotSupportedException){
-            response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
+            //response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
             envelop.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
             envelop.setMessage(e.getMessage());
         } else if (e instanceof MissingServletRequestParameterException) {
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
+            //response.setStatus(HttpStatus.BAD_REQUEST.value());
             envelop.setStatus(HttpStatus.BAD_REQUEST.value());
             envelop.setMessage(e.getMessage());
         } else if (e instanceof FeignException) { //执行Feign失败的时候默认当前服务做为网关执行请求的时候，从上游服务器接收到无效的响应
-            response.setStatus(HttpStatus.BAD_GATEWAY.value());
+            //response.setStatus(HttpStatus.BAD_GATEWAY.value());
             envelop.setStatus(HttpStatus.BAD_GATEWAY.value());
             envelop.setMessage("Execute Feign: " + e.getMessage());
         } else if (e instanceof ApiException) { //业务逻辑的异常默认为请求成功，但是前端需要判断成功标识
             ApiException apiException = (ApiException) e;
-            response.setStatus(apiException.httpStatus().value());
+            //response.setStatus(apiException.httpStatus().value());
             envelop.setStatus(apiException.errorCode());
             envelop.setMessage(e.getMessage());
             return envelop; //此异常不进行日志记录
         } else {
-            response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            //response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             envelop.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             envelop.setMessage(e.getMessage());
         }
