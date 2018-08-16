@@ -2,7 +2,7 @@
 //
 //import com.yihu.jw.fegin.fallbackfactory.base.base.SaasFeignFallbackFactory;
 //import com.yihu.jw.restmodel.CommonContants;
-//import com.yihu.jw.restmodel.web.MixEnvelop;
+//import com.yihu.jw.restmodel.common.Envelop;
 //import com.yihu.jw.rm.base.BaseRequestMapping;
 //import org.springframework.cloud.netflix.feign.FeignClient;
 //import org.springframework.http.MediaType;
@@ -19,8 +19,8 @@
 //public interface SaasFeign {
 //
 //    @GetMapping(value = BaseRequestMapping.Saas.api_getSaassNoPage)
-//    MixEnvelop getList(@RequestParam(value = "fields",required = false)String fields, @RequestParam(value = "filters",required = false) String filters, @RequestParam(value = "sorts",required = false) String sorts);
+//    Envelop getList(@RequestParam(value = "fields",required = false)String fields,@RequestParam(value = "filters",required = false) String filters,@RequestParam(value = "sorts",required = false) String sorts);
 //
 //    @GetMapping(value = BaseRequestMapping.Saas.api_getById, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    MixEnvelop findByCode(@RequestParam(value = "id", required = true) String id);
+//    Envelop findByCode(@RequestParam(value = "id", required = true) String id);
 //}

@@ -3,7 +3,7 @@
 //import com.yihu.jw.exception.business.JiWeiException;
 //import com.yihu.jw.fegin.fallbackfactory.base.base.SystemDictFeignFallbackFactory;
 //import com.yihu.jw.restmodel.CommonContants;
-//import com.yihu.jw.restmodel.web.MixEnvelop;
+//import com.yihu.jw.restmodel.common.Envelop;
 //import com.yihu.jw.rm.base.BaseRequestMapping;
 //import org.springframework.cloud.netflix.feign.FeignClient;
 //import org.springframework.http.MediaType;
@@ -18,19 +18,19 @@
 //public interface SystemDictFeign {
 //
 //    @RequestMapping(value = BaseRequestMapping.SystemDict.api_create,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.POST)
-//    MixEnvelop create(@RequestBody String jsonData) throws JiWeiException;
+//    Envelop create(@RequestBody String jsonData) throws JiWeiException;
 //
 //    @RequestMapping(value =  BaseRequestMapping.SystemDict.api_update,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,method = RequestMethod.PUT)
-//    MixEnvelop update(@RequestBody String jsonData) throws JiWeiException;
+//    Envelop update(@RequestBody String jsonData) throws JiWeiException;
 //
 //    @RequestMapping(value =  BaseRequestMapping.SystemDict.api_delete,method = RequestMethod.DELETE)
-//    MixEnvelop delete(@PathVariable(value = "ids", required = true) String ids, @RequestParam(value = "userId") String userId, @RequestParam(value = "userName") String userName) throws JiWeiException;
+//    Envelop delete(@PathVariable(value = "ids", required = true) String ids, @RequestParam(value = "userId") String userId, @RequestParam(value = "userName") String userName) throws JiWeiException;
 //
 //    @GetMapping(value = BaseRequestMapping.SystemDict.api_getById)
-//    MixEnvelop findById(@PathVariable(value = "id", required = true) String id) throws JiWeiException;
+//    Envelop findById(@PathVariable(value = "id", required = true) String id) throws JiWeiException;
 //
 //    @RequestMapping(value = BaseRequestMapping.SystemDict.api_getList, method = RequestMethod.GET)
-//    MixEnvelop getList(
+//    Envelop getList(
 //            @RequestParam(value = "fields", required = false) String fields,
 //            @RequestParam(value = "filters", required = false) String filters,
 //            @RequestParam(value = "sorts", required = false) String sorts,
@@ -38,7 +38,7 @@
 //            @RequestParam(value = "page", required = false) int page) throws JiWeiException;
 //
 //    @GetMapping(value = BaseRequestMapping.SystemDict.api_getListNoPage)
-//    MixEnvelop getListNoPage(
+//    Envelop getListNoPage(
 //            @RequestParam(value = "fields", required = false) String fields,
 //            @RequestParam(value = "filters", required = false) String filters,
 //            @RequestParam(value = "sorts", required = false) String sorts) throws JiWeiException;
