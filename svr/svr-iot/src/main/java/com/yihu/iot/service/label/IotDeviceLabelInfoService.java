@@ -1,8 +1,8 @@
 package com.yihu.iot.service.label;
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.label.IotDeviceLabelInfoDao;
 import com.yihu.jw.iot.label.IotDeviceLabelInfoDO;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

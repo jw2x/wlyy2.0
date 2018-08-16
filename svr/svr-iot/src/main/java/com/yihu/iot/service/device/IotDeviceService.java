@@ -1,7 +1,6 @@
 package com.yihu.iot.service.device;
 
-import com.yihu.base.fastdfs.FastDFSHelper;
-import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.iot.dao.device.*;
 import com.yihu.iot.dao.product.IotProductDataTransmissionDao;
 import com.yihu.iot.service.dict.IotSystemDictService;
@@ -15,6 +14,7 @@ import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
 import com.yihu.jw.restmodel.iot.product.IotProductDataTransmissionVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
+import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
     @Autowired
     private IotDeviceDao iotDeviceDao;
     @Autowired
-    private FastDFSHelper fastDFSHelper;
+    private FastDFSUtil fastDFSHelper;
     @Value("${fastDFS.fastdfs_file_url}")
     private String fastdfs_file_url;
     @Autowired

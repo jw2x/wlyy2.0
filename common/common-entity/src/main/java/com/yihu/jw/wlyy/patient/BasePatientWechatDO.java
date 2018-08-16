@@ -56,17 +56,6 @@ public class BasePatientWechatDO extends IdEntity implements java.io.Serializabl
         this.createTime = createTime;
     }
 
-    // Property accessors
-    @Id
-    @Column(name = "id", unique = true, nullable = false, length = 50)
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     @Column(name = "saas_id", length = 64)
     public String getSaasId() {
         return this.saasId;

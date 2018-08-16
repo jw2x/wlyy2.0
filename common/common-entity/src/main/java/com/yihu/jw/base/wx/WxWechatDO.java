@@ -28,6 +28,7 @@ public class WxWechatDO extends IdEntityWithOperation implements java.io.Seriali
     private String type;//'1：服务号 2 订阅号
     private String appId;//'微信app_id'
     private String appSecret;//'微信app_secret'
+    private String appOriginId;//原始ID
     private String baseUrl;//'微信base_url'
     private String remark;//'备注'
 
@@ -121,6 +122,14 @@ public class WxWechatDO extends IdEntityWithOperation implements java.io.Seriali
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    @Column(name = "app_origin_id", length = 200)
+    public String getAppOriginId() {
+        return appOriginId;
+    }
+    public void setAppOriginId(String appOriginId) {
+        this.appOriginId = appOriginId;
     }
 
     @Column(name = "base_url", length = 200)
