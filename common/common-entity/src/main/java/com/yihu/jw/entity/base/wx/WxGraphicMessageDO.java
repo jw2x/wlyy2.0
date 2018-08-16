@@ -15,32 +15,13 @@ import java.util.Date;
 @Table(name = "wx_graphic_message")
 public class WxGraphicMessageDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
-    private String saasId;
+    private String code;
     private String title;//标题
     private String description;//描述
     private String url;//图文消息url值
     private String picUrl;//图片地址
     private String remark;//备注
     private Integer status;  //状态 -1删除 0 冻结 1可用
-
-
-    public WxGraphicMessageDO() {
-    }
-
-    public WxGraphicMessageDO(String code, String title, String description, String url, String picUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark, Integer status) {
-        this.title = title;
-        this.description = description;
-        this.url = url;
-        this.picUrl = picUrl;
-        this.createUser = createUser;
-        this.createUserName = createUserName;
-        this.createTime = createTime;
-        this.updateUser = updateUser;
-        this.updateUserName = updateUserName;
-        this.updateTime = updateTime;
-        this.remark = remark;
-        this.status = status;
-    }
 
     @Column(name = "title", length = 200)
     public String getTitle() {
@@ -101,12 +82,12 @@ public class WxGraphicMessageDO extends UuidIdentityEntityWithOperator implement
         this.status = status;
     }
 
-    @Column(name = "saas_id", length = 50)
-    public String getSaasId() {
-        return saasId;
+    @Column(name = "code", length = 50)
+    public String getCode() {
+        return code;
     }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
+    @Column(name = "code", length = 50)
+    public void setCode(String code) {
+        this.code = code;
     }
 }

@@ -19,7 +19,6 @@ import java.util.Map;
 public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
     // Fields
-    private String saasId;//'saas配置id'
     private String name;//名称
     private String token;//token
     private String encodingAesKey;//加密密钥
@@ -28,6 +27,7 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
     private String type;//'1：服务号 2 订阅号
     private String appId;//'微信app_id'
     private String appSecret;//'微信app_secret'
+    private String appOriginId;//原始ID
     private String baseUrl;//'微信base_url'
     private String remark;//'备注'
 
@@ -37,25 +37,6 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
     @Transient
     private String state;
 
-    public WxWechatDO(String code, String saasId, String name, String token, String encodingAesKey, Integer encType, Integer status, String type, String appId, String appSecret, String baseUrl, String createUser, String createUserName, Date createTime, String updateUser, String updateUserName, Date updateTime, String remark) {
-        this.saasId = saasId;
-        this.name = name;
-        this.token = token;
-        this.encodingAesKey = encodingAesKey;
-        this.encType = encType;
-        this.status = status;
-        this.type = type;
-        this.appId = appId;
-        this.appSecret = appSecret;
-        this.baseUrl = baseUrl;
-        this.createUser = createUser;
-        this.createUserName = createUserName;
-        this.createTime = createTime;
-        this.updateUser = updateUser;
-        this.updateUserName = updateUserName;
-        this.updateTime = updateTime;
-        this.remark = remark;
-    }
     /**
      * default constructor
      */
@@ -96,15 +77,6 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
 
     public void setEncodingAesKey(String encodingAesKey) {
         this.encodingAesKey = encodingAesKey;
-    }
-
-    @Column(name = "saas_id", length = 50)
-    public String getSaasId() {
-        return this.saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
     }
 
     @Column(name = "name", length = 200)
@@ -150,6 +122,14 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    @Column(name = "app_origin_id", length = 200)
+    public String getAppOriginId() {
+        return appOriginId;
+    }
+    public void setAppOriginId(String appOriginId) {
+        this.appOriginId = appOriginId;
     }
 
     @Column(name = "base_url", length = 200)

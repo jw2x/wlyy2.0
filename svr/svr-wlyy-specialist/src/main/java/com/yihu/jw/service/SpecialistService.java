@@ -124,7 +124,7 @@ public class SpecialistService{
                 "  SELECT " +
                 "   i.patient " +
                 "  FROM " +
-                "   wlyy.wlyy_sign_patient_label_info i " +
+                "   "+basedb+".wlyy_sign_patient_label_info i " +
                 "  WHERE " +
                 "   i.label_type = '7' AND " +
                 "   i.status = 1 " +
@@ -515,9 +515,9 @@ public class SpecialistService{
                 " md.name AS doctorName" +
                 " FROM " +
                 " wlyy_specialist_patient_relation r  " +
-                " JOIN wlyy.wlyy_admin_team t ON t.id = r.team_code " +
-                " JOIN wlyy.wlyy_doctor d ON t.leader_code = d.`code` " +
-                " JOIN wlyy.wlyy_doctor md ON md.code = r.doctor " +
+                " JOIN "+basedb+".wlyy_admin_team t ON t.id = r.team_code " +
+                " JOIN "+basedb+".wlyy_doctor d ON t.leader_code = d.`code` " +
+                " JOIN "+basedb+".wlyy_doctor md ON md.code = r.doctor " +
                 " WHERE " +
                 " r.patient = '"+patient+"' " +
                 " AND r.`status` >=0  " +
@@ -557,7 +557,7 @@ public class SpecialistService{
                 " d.`level` " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
-                " JOIN wlyy.wlyy_doctor d ON r.doctor = d.`code` " +
+                " JOIN "+basedb+".wlyy_doctor d ON r.doctor = d.`code` " +
                 " WHERE  " +
                 " r.patient ='"+patient+"' " +
                 " AND r.`status`>=0 " +
@@ -585,7 +585,7 @@ public class SpecialistService{
                 " d.`level` " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
-                " JOIN wlyy.wlyy_doctor d ON r.doctor = d.`code` " +
+                " JOIN "+basedb+".wlyy_doctor d ON r.doctor = d.`code` " +
                 " WHERE  " +
                 " r.patient ='"+patient+"' " +
                 " AND r.doctor ='"+doctor+"' " +

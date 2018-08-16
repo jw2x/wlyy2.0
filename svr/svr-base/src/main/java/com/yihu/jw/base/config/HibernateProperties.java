@@ -28,8 +28,8 @@
 //    private String physical_naming_strategy;
 //    @Value("${hibernate.implicit_naming_strategy}")
 //    private String implicit_naming_strategy;
-//    @Autowired
-//    private List<Interceptor> interceptors;
+////    @Autowired
+////    private List<Interceptor> interceptors;
 //
 //    public Properties hibProperties() {
 //        Properties properties = new Properties();
@@ -37,7 +37,7 @@
 //        properties.put("hibernate.show_sql", show_sql);
 //        properties.put("hibernate.physical_naming_strategy", physical_naming_strategy);
 //        properties.put("hibernate.implicit_naming_strategy", implicit_naming_strategy);
-//        properties.put("hibernate.ejb.interceptor", interceptors.get(0));
+//        //properties.put("hibernate.ejb.interceptor", interceptors.get(0));
 //        return properties;
 //    }
 //}
