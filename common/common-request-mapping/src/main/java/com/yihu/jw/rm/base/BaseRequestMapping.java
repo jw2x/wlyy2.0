@@ -36,6 +36,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 功能
+     */
+    public static class Function extends Basic {
+        public static final String PREFIX  = "/function";
+    }
+
+    /**
      * 主题
      */
     public static class Theme extends Basic {
@@ -50,29 +57,11 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/system_dict";
     }
 
-
-    //功能模块常量
-    public static class Function{
-        public static final String message_success_create="function create success";
-        public static final String message_success_update="function update success";
-        public static final String message_success_find="function find success";
-        public static final String message_success_find_functions="functions find success";
-        public static final String message_success_delete="function delete success";
-        public static final String message_success_assign_function=" assign function create success";
-        public static final String message_success_find_functions_module="moduleFunctions find success";
-        public static final String message_fail_name_exist="function name exist";
-        public static final String message_fail_name_is_null="function is null";
-        public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_id_no_exist=" no exist";
-        public static final String api_create="/function";
-        public static final String api_update="/function";
-        public static final String api_delete="/function/{ids}";
-        public static final String api_getById="/function/{id}";
-        public static final String api_getListNoPage="/function/listNoPage";
-        public static final String api_getList="/function/list";
-        public static final String api_assignFunction="/assignFunction";
-        public static final String api_getModuleFunctions="/api_getModuleFunctions";
-        public static final String api_getChildren="/function/children/{id}";
+    /**
+     * 系统字典项
+     */
+    public static class SystemDictEntry extends Basic {
+        public static final String PREFIX  = "/system_dict_entry";
     }
 
     public static class ModuleFun{
@@ -82,57 +71,4 @@ public class BaseRequestMapping {
         public static final String funIds_is_null="funIds is null";
     }
 
-    //SystemDictList常量
-    public static class SystemDictList{
-        public static final String message_success_create="SystemDictList create success";
-        public static final String message_success_update="SystemDictList update success";
-        public static final String message_success_find="SystemDictList find success";
-        public static final String message_success_find_saass="SystemDictList find success";
-        public static final String message_success_delete="SystemDictList delete success";
-
-
-        public static final String message_fail_name_exist="SystemDictList name exist";
-        public static final String message_fail_name_is_null="name is null";
-        public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_id_no_exist="id no exist";
-
-
-        public static final String api_create="/systemDictList";
-        public static final String api_update="/systemDictList";
-        public static final String api_delete="/systemDictList";
-        public static final String api_getById="/systemDictList/getById";
-        public static final String api_getList="/systemDictList/list";
-        public static final String api_getListNoPage="/systemDictList/listNoPage";
-        public static final String api_getChildren="/systemDictList/children/{id}";
-
-    }
-
-
-
-
-/*
-    //d行政人员模块
-    public static class Employee{
-        public static final String message_success_create="employee create success";
-        public static final String message_success_update="employee update success";
-        public static final String message_success_find="employee find success";
-        public static final String message_success_find_saass="employee find success";
-        public static final String message_success_delete="employee delete success";
-
-
-        public static final String message_fail_name_exist="employee name exist";
-        public static final String message_fail_name_is_null="name is null";
-        public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_id_no_exist="id no exist";
-
-
-        public static final String api_create="/employee";
-        public static final String api_update="/employee";
-        public static final String api_delete="/employee";
-        public static final String api_getById="/getById";
-        public static final String api_getEmployee="/getEmployee";
-        public static final String api_getEmployeeByAccount="/getEmployeeByAccount";
-        public static final String api_getEmployeeNoPage="/getEmployeeNoPage";
-
-    }*/
 }

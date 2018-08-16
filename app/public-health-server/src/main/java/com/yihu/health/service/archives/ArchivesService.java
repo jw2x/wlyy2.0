@@ -6,7 +6,7 @@ import com.yihu.health.util.http.HttpHelper;
 import com.yihu.health.util.http.HttpResponse;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -27,7 +27,7 @@ public class ArchivesService extends BaseService {
      * @return
      * @throws ParseException
      */
-    public Envelop<PatientArchivesVO> queryPatientArchivesPage(Integer page, Integer size, String status, String cancelReseanType , String name) throws Exception {
+    public MixEnvelop<PatientArchivesVO, PatientArchivesVO> queryPatientArchivesPage(Integer page, Integer size, String status, String cancelReseanType , String name) throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("page", page);
         params.put("size", size);
@@ -35,7 +35,7 @@ public class ArchivesService extends BaseService {
         params.put("cancelReseanType", cancelReseanType);
         params.put("name", name);
         HttpResponse response = HttpHelper.get(archivesInnerUrl + ServiceApi.Archives.findPatientArchives, params);
-        Envelop<PatientArchivesVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<PatientArchivesVO, PatientArchivesVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -44,31 +44,31 @@ public class ArchivesService extends BaseService {
      * @return
      * @throws ParseException
      */
-    public Envelop<PatientArchivesInfoVO> queryPatientArchivesInfoPage(String code) throws Exception {
+    public MixEnvelop<PatientArchivesInfoVO, PatientArchivesInfoVO> queryPatientArchivesInfoPage(String code) throws Exception {
 
         Map<String, Object> params = new HashMap<>();
         params.put("page", code);
         HttpResponse response = HttpHelper.get(archivesInnerUrl + ServiceApi.Archives.findPatientArchivesInfos, params);
-        Envelop<PatientArchivesInfoVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<PatientArchivesInfoVO, PatientArchivesInfoVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
-    public Envelop<Boolean> createPatientArchives(String patientArchives,String list)throws Exception {
+    public MixEnvelop<Boolean, Boolean> createPatientArchives(String patientArchives, String list)throws Exception {
 
         Map<String, Object> params = new HashMap<>();
         params.put("patientArchives", patientArchives);
         params.put("list", list);
         HttpResponse response = HttpHelper.get(archivesInnerUrl + ServiceApi.Archives.createPatientArchives, params);
-        Envelop<Boolean> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<Boolean, Boolean> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
-    public  Envelop<Boolean> updatePatientArchives(String patientArchives,String list)throws Exception {
+    public MixEnvelop<Boolean, Boolean> updatePatientArchives(String patientArchives, String list)throws Exception {
         Map<String, Object> params = new HashMap<>();
         params.put("patientArchives", patientArchives);
         params.put("list", list);
         HttpResponse response = HttpHelper.get(archivesInnerUrl + ServiceApi.Archives.createPatientArchives, params);
-        Envelop<Boolean> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<Boolean, Boolean> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 

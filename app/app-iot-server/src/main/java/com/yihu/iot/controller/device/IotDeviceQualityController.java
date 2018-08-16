@@ -2,7 +2,7 @@ package com.yihu.iot.controller.device;
 
 import com.yihu.iot.controller.common.BaseController;
 import com.yihu.iot.service.device.IotDeviceQualityService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
@@ -23,33 +23,33 @@ public class IotDeviceQualityController extends BaseController{
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.addQualityPlan)
     @ApiOperation(value = "创建设备质检", notes = "创建设备质检")
-    public Envelop<IotDeviceQualityInspectionPlanVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                           @RequestParam String jsonData) {
         try {
             return iotDeviceQualityService.create(jsonData);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.findById)
     @ApiOperation(value = "根据code查找设备质检", notes = "根据code查找设备质检")
-    public Envelop<IotDeviceQualityInspectionPlanVO> findByCode(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> findByCode(@ApiParam(name = "id", value = "id")
                               @RequestParam(value = "id", required = true) String id
     ) {
         try {
             return iotDeviceQualityService.findByCode(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
     @ApiOperation(value = "分页获取设备质检计划", notes = "分页获取设备质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
             @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
             @RequestParam(value = "purcharseId", required = false) String purcharseId,
             @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
@@ -66,47 +66,47 @@ public class IotDeviceQualityController extends BaseController{
             return iotDeviceQualityService.queryQualityPlanPage(purcharseId, orderNo, startTime, endTime, page, size);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.delQualityPlan)
     @ApiOperation(value = "删除质检计划", notes = "删除质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> delQualityPlan(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             return iotDeviceQualityService.delQualityPlan(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.completeQualityPlan)
     @ApiOperation(value = "完成质检计划", notes = "完成质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> completeQualityPlan(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> completeQualityPlan(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
                                             @RequestParam(value = "actualTime", required = true) String actualTime,
-                                            @ApiParam(name = "id", value = "id")
+                                                                            @ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             return iotDeviceQualityService.completeQualityPlan(actualTime, id);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.completePlanByPurchaseId)
     @ApiOperation(value = "完成质检计划(按采购id)", notes = "完成质检计划(按采购id)")
-    public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
                                                                               @RequestParam(value = "actualTime", required = true) String actualTime,
-                                                                              @ApiParam(name = "purchaseId", value = "purchaseId")
+                                                                                 @ApiParam(name = "purchaseId", value = "purchaseId")
                                                                               @RequestParam(value = "purchaseId", required = true) String purchaseId) {
         try {
             return iotDeviceQualityService.completePlanByPurchaseId(actualTime, purchaseId);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 

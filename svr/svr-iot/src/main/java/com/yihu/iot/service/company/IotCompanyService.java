@@ -6,7 +6,7 @@ import com.yihu.iot.dao.company.IotCompanyTypeDao;
 import com.yihu.jw.entity.iot.company.IotCompanyCertificateChangeRecordDO;
 import com.yihu.jw.entity.iot.company.IotCompanyDO;
 import com.yihu.jw.entity.iot.company.IotCompanyTypeDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -48,7 +48,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @return
      * @throws ParseException
      */
-    public Envelop<IotCompanyVO> queryPage(Integer page,Integer size,String status,String name) throws ParseException {
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> queryPage(Integer page, Integer size, String status, String name) throws ParseException {
         String filters = "del=1;";
         String semicolon = "";
         if(StringUtils.isNotBlank(name)){
@@ -71,7 +71,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
         //DO转VO
         List<IotCompanyVO> iotCompanyVOList = convertToModelVOs(list,new ArrayList<>(list.size()));
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
     }
 
     /**
@@ -137,7 +137,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
      * @param type
      * @return
      */
-    public Envelop<IotCompanyVO> queryPage(Integer page, Integer size, String status, String name, String type){
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> queryPage(Integer page, Integer size, String status, String name, String type){
         StringBuffer sql = new StringBuffer("SELECT DISTINCT c.* from iot_company c ,iot_company_type t WHERE c.del=1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_company c ,iot_company_type t WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
@@ -169,7 +169,7 @@ public class IotCompanyService extends BaseJpaService<IotCompanyDO,IotCompanyDao
         //DO转VO
         List<IotCompanyVO> iotCompanyVOList = convertToModelVOs(list,new ArrayList<>(list.size()));
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
     }
 
     /**

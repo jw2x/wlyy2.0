@@ -9,7 +9,7 @@ import com.yihu.jw.entity.health.bank.AccountDO;
 import com.yihu.jw.entity.health.bank.TaskDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.entity.health.bank.TaskRuleDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.DateUtils;
 import com.yihu.jw.util.ISqlUtils;
@@ -49,9 +49,9 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
      * @param accountDO 银行账户对象
      * @return
      */
-    public Envelop<Boolean> insert(AccountDO accountDO){
+    public MixEnvelop<Boolean, Boolean> insert(AccountDO accountDO){
         accountDao.save(accountDO);
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         envelop.setObj(true);
         return envelop;
     }
@@ -66,7 +66,7 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
      * @return
      * @throws ParseException
      */
-    public Envelop<AccountDO> findByCondition(AccountDO accountDO, Integer page, Integer size) throws ParseException {
+    public MixEnvelop<AccountDO, AccountDO> findByCondition(AccountDO accountDO, Integer page, Integer size) throws ParseException {
         String sql = new ISqlUtils().getSql(accountDO,page,size,"*");
         List<AccountDO> accountDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(AccountDO.class));
         for (AccountDO accountDO1:accountDOS){
@@ -236,7 +236,7 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,accountDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success,accountDOS,page,size,count);
     }
 
     /**
@@ -247,7 +247,7 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
      * @param size 分页大小
      * @return
      */
-    public Envelop<AccountDO> findByCondition1(JSONArray patients, String ruleId, Integer page, Integer size){
+    public MixEnvelop<AccountDO, AccountDO> findByCondition1(JSONArray patients, String ruleId, Integer page, Integer size){
         for (int i=0;i<patients.size();i++){
             String patientId = patients.getJSONObject(i).getString("code");
             String sql = "select * from wlyy_health_bank_account where patient_id = '"+patientId+"'";
@@ -395,6 +395,6 @@ public class AccountService extends BaseJpaService<AccountDO,AccountDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, accountDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, accountDOS,page,size,count);
     }
 }

@@ -6,7 +6,7 @@ import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.manage.model.system.ManageRole;
 import com.yihu.jw.manage.service.base.SaasService;
 import com.yihu.jw.manage.service.system.RoleService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

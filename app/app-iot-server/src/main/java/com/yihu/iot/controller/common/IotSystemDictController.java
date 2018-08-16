@@ -1,7 +1,7 @@
 package com.yihu.iot.controller.common;
 
 import com.yihu.iot.service.common.SystemDictService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.dict.IotSystemDictVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
@@ -26,7 +26,7 @@ public class IotSystemDictController  extends BaseController{
 
     @GetMapping(value = IotRequestMapping.System.findDictByCode)
     @ApiOperation(value = "获取字典列表(不分页)")
-    public Envelop<IotSystemDictVO> getList(
+    public MixEnvelop<IotSystemDictVO, IotSystemDictVO> getList(
             @ApiParam(name = "dictName", value = "字典名称", defaultValue = "COMPANY_TYPE")
             @RequestParam(value = "dictName", required = true) String dictName) throws Exception {
         return systemDictService.getList(dictName);

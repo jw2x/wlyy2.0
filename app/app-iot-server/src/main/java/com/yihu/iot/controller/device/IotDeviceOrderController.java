@@ -2,7 +2,7 @@ package com.yihu.iot.controller.device;
 
 import com.yihu.iot.controller.common.BaseController;
 import com.yihu.iot.service.device.DeviceOrderService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderVO;
@@ -25,31 +25,31 @@ public class IotDeviceOrderController extends BaseController {
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder)
     @ApiOperation(value = "创建设备订单", notes = "创建设备订单")
-    public Envelop<IotOrderVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+    public MixEnvelop<IotOrderVO, IotOrderVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                           @RequestParam String jsonData) {
         try {
             return deviceOrderService.create(jsonData);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findById)
     @ApiOperation(value = "根据id查找设备订单", notes = "根据id查找设备订单")
-    public Envelop<IotDeviceOrderVO> findByCode(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> findByCode(@ApiParam(name = "id", value = "id")
                               @RequestParam(value = "id", required = true) String id) {
         try {
             return deviceOrderService.findByCode(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPage)
     @ApiOperation(value = "分页查找设备订单", notes = "分页查找设备订单")
-    public Envelop<IotDeviceOrderVO> findPage(@ApiParam(name = "name", value = "供应商名称或负责人姓名", defaultValue = "")
+    public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> findPage(@ApiParam(name = "name", value = "供应商名称或负责人姓名", defaultValue = "")
                                                  @RequestParam(value = "name", required = false) String name,
                                                  @ApiParam(name = "type", value = "企业类型", defaultValue = "")
                                                  @RequestParam(value = "type", required = false) String type,
@@ -67,53 +67,53 @@ public class IotDeviceOrderController extends BaseController {
             return deviceOrderService.findPage(name,type,page,size);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.delOrder)
     @ApiOperation(value = "删除订单", notes = "删除订单")
-    public Envelop<IotDeviceOrderVO> delOrder(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> delOrder(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             return deviceOrderService.delOrder(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.delPurchase)
     @ApiOperation(value = "删除采购订单", notes = "删除采购订单")
-    public Envelop<IotOrderPurchaseVO> delPurchase(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> delPurchase(@ApiParam(name = "id", value = "id")
                                                    @RequestParam(value = "id", required = true) String id) {
         try {
             return deviceOrderService.delPurchase(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.updOrder)
     @ApiOperation(value = "修改订单", notes = "修改订单")
-    public Envelop<IotOrderVO> updOrder(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
+    public MixEnvelop<IotOrderVO, IotOrderVO> updOrder(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = false)String jsonData) {
         try {
             return deviceOrderService.updOrder(jsonData);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharsePage)
     @ApiOperation(value = "分页查找采购清单", notes = "分页查找采购清单")
-    public Envelop<IotOrderPurchaseVO> findPurcharsePage(@ApiParam(name = "orderId", value = "订单id", defaultValue = "")
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findPurcharsePage(@ApiParam(name = "orderId", value = "订单id", defaultValue = "")
                                                      @RequestParam(value = "orderId", required = true) String orderId,
-                                                         @ApiParam(name = "page", value = "第几页", defaultValue = "")
+                                                            @ApiParam(name = "page", value = "第几页", defaultValue = "")
                                                      @RequestParam(value = "page", required = false) Integer page,
-                                                         @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+                                                            @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
                                                      @RequestParam(value = "size", required = false) Integer size){
         try {
             if(page == null|| page < 0){
@@ -125,26 +125,26 @@ public class IotDeviceOrderController extends BaseController {
             return deviceOrderService.findPurcharsePage(orderId,page,size);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharseById)
     @ApiOperation(value = "根据id查找采购订单", notes = "根据id查找采购订单")
-    public Envelop<IotOrderPurchaseVO>  findPurcharseById(
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findPurcharseById(
             @ApiParam(name = "id", value = "id")
             @RequestParam(value = "id", required = true) String id) {
         try {
             return deviceOrderService.findPurcharseById(id);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findQualityPage)
     @ApiOperation(value = "质检管理", notes = "质检管理")
-    public Envelop<IotOrderPurchaseVO> findQualityPage(
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findQualityPage(
             @ApiParam(name = "qualityStatus", value = "质检状态", defaultValue = "")
             @RequestParam(value = "qualityStatus", required = false) String qualityStatus,
             @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
@@ -167,7 +167,7 @@ public class IotDeviceOrderController extends BaseController {
             return deviceOrderService.findQualityPage(qualityStatus, orderNo, startTime, endTime, page, size);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: svr-wlyy-health-bank-sxy
+    name: svr-wlyy-health-bank
   cloud:
     config:
       failFast: true

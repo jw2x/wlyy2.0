@@ -1,7 +1,7 @@
 package com.yihu.rehabilitation.service;
 
 import com.yihu.jw.entity.rehabilitation.RehabilitationTreatmentProgramDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationTreatmentProgramVO;
 import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
@@ -33,7 +33,7 @@ public class RehabilitationTreatmentProgramService extends BaseJpaService<Rehabi
      * @return
      * @throws ParseException
      */
-    public Envelop<RehabilitationTreatmentProgramVO> queryTreatmentPage(Integer page, Integer size, String name) throws ParseException {
+    public MixEnvelop<RehabilitationTreatmentProgramVO, RehabilitationTreatmentProgramVO> queryTreatmentPage(Integer page, Integer size, String name) throws ParseException {
         String filters = "";
         String semicolon = "";
         if(StringUtils.isNotBlank(name)){
@@ -48,7 +48,7 @@ public class RehabilitationTreatmentProgramService extends BaseJpaService<Rehabi
         //DO转VO
         List<RehabilitationTreatmentProgramVO> treatmentProgramVOs = convertToModels(list,new ArrayList<>(list.size()), RehabilitationTreatmentProgramVO.class);
 
-        return Envelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,treatmentProgramVOs, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,treatmentProgramVOs, page, size,count);
     }
 
     public RehabilitationTreatmentProgramDO create(RehabilitationTreatmentProgramDO treatmentProgramDO) {

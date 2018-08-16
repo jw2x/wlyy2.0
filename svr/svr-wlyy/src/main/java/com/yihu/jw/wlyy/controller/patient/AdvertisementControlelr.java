@@ -1,8 +1,8 @@
 package com.yihu.jw.wlyy.controller.patient;
 
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.EnvelopRestController;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import com.yihu.jw.wlyy.patient.WlyyAdvertisementDO;
 import com.yihu.jw.wlyy.service.patient.AdvertisementService;

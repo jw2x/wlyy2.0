@@ -7,7 +7,7 @@ import com.yihu.jw.dao.ExchangeGoodsDao;
 import com.yihu.jw.dao.GoodsDao;
 import com.yihu.jw.entity.health.bank.ExchangeGoodsDO;
 import com.yihu.jw.entity.health.bank.GoodsDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
 import com.yihu.mysql.query.BaseJpaService;
@@ -79,7 +79,7 @@ public class ExchangeGoodsService extends BaseJpaService<ExchangeGoodsDO,Exchang
      * @return
      * @throws ParseException
      */
-    public Envelop<ExchangeGoodsDO> findByCondition(ExchangeGoodsDO exchangeGoodsDO, Integer page, Integer size) throws ParseException {
+    public MixEnvelop<ExchangeGoodsDO, ExchangeGoodsDO> findByCondition(ExchangeGoodsDO exchangeGoodsDO, Integer page, Integer size) throws ParseException {
         String sql = new ISqlUtils().getSql(exchangeGoodsDO,page,size,"*");
         List<ExchangeGoodsDO> exchangeGoodsDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(ExchangeGoodsDO.class));
         List<ExchangeGoodsDO> exchangeGoodsDOList = new ArrayList<>();
@@ -94,6 +94,6 @@ public class ExchangeGoodsService extends BaseJpaService<ExchangeGoodsDO,Exchang
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,exchangeGoodsDOList,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success,exchangeGoodsDOList,page,size,count);
     }
 }

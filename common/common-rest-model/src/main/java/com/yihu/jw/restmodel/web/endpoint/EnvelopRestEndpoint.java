@@ -1,18 +1,34 @@
-package com.yihu.jw.web.endpoint;
+package com.yihu.jw.restmodel.web.endpoint;
+
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.web.model.*;
+
+import com.yihu.jw.restmodel.web.ListEnvelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.ObjEnvelop;
+import com.yihu.jw.restmodel.web.PageEnvelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * Created by progr1mmer on 2018/8/15.
+ * REST风格控控制器基类。此控制器用于对API进行校验，并处理平台根层级的业务，如API参数校验，错误及返回码设定等。
+ * <p>
+ * 根层级的校验，如果是正确的，直接返回HTTP代码200，若出错，则会将HTTP返回代码设置为1X或2X，并在HTTP响应体中包含响应的信息。
+ * HTTP响应体格式为JSON。
+ * + 成功：会根据各业务逻辑自行决定要返回的数据，各业务模块的返回结构不同。
+ * + 失败：{"code":"错误代码", "message":"错误原因"}
+ *
+ * @author zhiyong
+ * @author Sand
  */
 public abstract class EnvelopRestEndpoint {
 
@@ -25,8 +41,8 @@ public abstract class EnvelopRestEndpoint {
 
     protected Envelop success(String desc, int code) {
         Envelop envelop = new Envelop();
-        envelop.setDesc(desc);
-        envelop.setCode(code);
+        envelop.setMessage(desc);
+        envelop.setStatus(code);
         return envelop;
     }
 
@@ -39,11 +55,11 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <J> ObjEnvelop<J> success(J data, String desc, int code){
-        ObjEnvelop<J> objEnvelop = new ObjEnvelop<>();
-        objEnvelop.setDesc(desc);
-        objEnvelop.setCode(code);
-        objEnvelop.setData(data);
-        return objEnvelop;
+        ObjEnvelop<J> envelop = new ObjEnvelop<>();
+        envelop.setMessage(desc);
+        envelop.setStatus(code);
+        envelop.setObj(data);
+        return envelop;
     }
 
     protected <T> ListEnvelop<T> success(List<T> contents){
@@ -55,11 +71,11 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <T> ListEnvelop<T> success(List<T> contents, String desc, int code){
-        ListEnvelop<T> listEnvelop = new ListEnvelop<>();
-        listEnvelop.setDesc(desc);
-        listEnvelop.setCode(code);
-        listEnvelop.setContents(contents);
-        return listEnvelop;
+        ListEnvelop<T> envelop = new ListEnvelop<>();
+        envelop.setMessage(desc);
+        envelop.setStatus(code);
+        envelop.setDetailModelList(contents);
+        return envelop;
     }
 
     protected <T> PageEnvelop success(List<T> contents, int totalCount, int currPage, int pageSize) {
@@ -71,14 +87,14 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <T> PageEnvelop success(List<T> contents, String desc, int code, int totalCount, int currPage, int pageSize) {
-        PageEnvelop<T> pageEnvelop = new PageEnvelop();
-        pageEnvelop.setDesc(desc);
-        pageEnvelop.setCode(code);
-        pageEnvelop.setCurrPage(currPage);
-        pageEnvelop.setPageSize(pageSize);
-        pageEnvelop.setTotalCount(totalCount);
-        pageEnvelop.setContents(contents);
-        return pageEnvelop;
+        PageEnvelop<T> envelop = new PageEnvelop();
+        envelop.setMessage(desc);
+        envelop.setStatus(code);
+        envelop.setCurrPage(currPage);
+        envelop.setPageSize(pageSize);
+        envelop.setTotalCount(totalCount);
+        envelop.setDetailModelList(contents);
+        return envelop;
     }
 
     protected <T, J> MixEnvelop success(List<T> contents, J obj) {
@@ -94,15 +110,15 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <T, J> MixEnvelop success(List<T> contents, J data, String desc, int code, int totalCount, int currPage, int pageSize) {
-        MixEnvelop<T, J> mixEnvelop = new MixEnvelop();
-        mixEnvelop.setDesc(desc);
-        mixEnvelop.setCode(code);
-        mixEnvelop.setCurrPage(currPage);
-        mixEnvelop.setPageSize(pageSize);
-        mixEnvelop.setTotalCount(totalCount);
-        mixEnvelop.setContents(contents);
-        mixEnvelop.setData(data);
-        return mixEnvelop;
+        MixEnvelop<T, J> envelop = new MixEnvelop();
+        envelop.setMessage(desc);
+        envelop.setStatus(code);
+        envelop.setCurrPage(currPage);
+        envelop.setPageSize(pageSize);
+        envelop.setTotalCount(totalCount);
+        envelop.setDetailModelList(contents);
+        envelop.setObj(data);
+        return envelop;
     }
 
     protected Envelop failed(String desc) {
@@ -111,8 +127,8 @@ public abstract class EnvelopRestEndpoint {
 
     protected Envelop failed(String desc, int code) {
         Envelop envelop = new Envelop();
-        envelop.setDesc(desc);
-        envelop.setCode(code);
+        envelop.setMessage(desc);
+        envelop.setStatus(code);
         return envelop;
     }
 
@@ -181,4 +197,51 @@ public abstract class EnvelopRestEndpoint {
         return buffer.toString();
     }
 
+    /**
+     * 客户端调用REST接口时，若返回的是分页结果，则需要在响应头中添加资源的总数量及其他资源的分页导航。
+     * EHR平台使用响应头中的 X-Total-Count 字段记录资源的总数量，link header作为其他资源的分页导航。
+     *
+     * @return
+     */
+    @Deprecated
+    public void pagedResponse(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            Long resourceCount, Integer currentPage, Integer pageSize) {
+        if (request == null || response == null) return;
+
+        response.setHeader("X-Total-Count", Long.toString(resourceCount));
+        if (resourceCount == 0) return;
+
+        if (currentPage == null) currentPage = new Integer(1);
+        if (pageSize == null) pageSize = new Integer(15);
+
+
+        String baseUri = "<" + request.getRequestURL().append("?").toString() + request.getQueryString() + ">";
+        long firstPage = currentPage == 1 ? -1 : 1;
+        long prevPage = currentPage == 1 ? -1 : currentPage - 1;
+
+        long lastPage = resourceCount % pageSize == 0 ? resourceCount / pageSize : resourceCount / pageSize + 1;
+        long nextPage = currentPage == lastPage ? -1 : currentPage + 1;
+
+        lastPage = currentPage == lastPage ? -1 : lastPage;
+
+        Map<String, String> map = new HashMap<>();
+        if (firstPage != -1)
+            map.put("rel='first',", baseUri.replaceAll("page=\\d+", "page=" + Long.toString(firstPage)));
+        if (prevPage != -1) map.put("rel='prev',", baseUri.replaceAll("page=\\d+", "page=" + Long.toString(prevPage)));
+        if (nextPage != -1) map.put("rel='next',", baseUri.replaceAll("page=\\d+", "page=" + Long.toString(nextPage)));
+        if (lastPage != -1) map.put("rel='last',", baseUri.replaceAll("page=\\d+", "page=" + Long.toString(lastPage)));
+
+        response.setHeader("Link", linkMap(map));
+    }
+
+    private String linkMap(Map<String, String> map) {
+        StringBuffer links = new StringBuffer("");
+        for (String key : map.keySet()) {
+            links.append(map.get(key)).append("; ").append(key);
+        }
+
+        return links.toString();
+    }
 }

@@ -4,7 +4,7 @@ import com.yihu.iot.constant.ServiceApi;
 import com.yihu.iot.service.common.BaseService;
 import com.yihu.iot.util.http.HttpHelper;
 import com.yihu.iot.util.http.HttpResponse;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderVO;
@@ -26,11 +26,11 @@ public class DeviceOrderService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotOrderVO> create(String jsonData) throws IOException {
+    public MixEnvelop<IotOrderVO, IotOrderVO> create(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.DeviceOrder.CreateOrder, params);
-        Envelop<IotOrderVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotOrderVO, IotOrderVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -40,11 +40,11 @@ public class DeviceOrderService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceOrderVO>  findByCode(String id) throws IOException {
+    public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> findByCode(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindById, params);
-        Envelop<IotDeviceOrderVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -57,14 +57,14 @@ public class DeviceOrderService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceOrderVO> findPage(String name,String type,Integer page,Integer size) throws IOException{
+    public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> findPage(String name, String type, Integer page, Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         params.put("type", type);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindPage, params);
-        Envelop<IotDeviceOrderVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -74,11 +74,11 @@ public class DeviceOrderService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceOrderVO> delOrder(String id) throws IOException {
+    public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> delOrder(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.DeviceOrder.DelOrder, params);
-        Envelop<IotDeviceOrderVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -88,11 +88,11 @@ public class DeviceOrderService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotOrderPurchaseVO> delPurchase(String id) throws IOException {
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> delPurchase(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.DeviceOrder.DelPurchase, params);
-        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -102,11 +102,11 @@ public class DeviceOrderService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotOrderVO> updOrder(String jsonData) throws IOException {
+    public MixEnvelop<IotOrderVO, IotOrderVO> updOrder(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.DeviceOrder.UpdOrder, params);
-        Envelop<IotOrderVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotOrderVO, IotOrderVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -118,13 +118,13 @@ public class DeviceOrderService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotOrderPurchaseVO> findPurcharsePage(String orderId,Integer page,Integer size) throws IOException{
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findPurcharsePage(String orderId, Integer page, Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("orderId", orderId);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindPurcharsePage, params);
-        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -133,11 +133,11 @@ public class DeviceOrderService extends BaseService {
      * @param id
      * @return
      */
-    public Envelop<IotOrderPurchaseVO> findPurcharseById(String id) throws IOException {
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findPurcharseById(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindPurcharseById, params);
-        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -151,8 +151,8 @@ public class DeviceOrderService extends BaseService {
      * @param size
      * @return
      */
-    public Envelop<IotOrderPurchaseVO> findQualityPage(String qualityStatus,
-            String orderNo,String startTime,String endTime,Integer page,Integer size) throws IOException {
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findQualityPage(String qualityStatus,
+                                                          String orderNo, String startTime, String endTime, Integer page, Integer size) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("qualityStatus", qualityStatus);
         params.put("orderNo", orderNo);
@@ -161,7 +161,7 @@ public class DeviceOrderService extends BaseService {
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.DeviceOrder.FindQualityPage, params);
-        Envelop<IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(), Envelop.class);
+        MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> envelop = objectMapper.readValue(response.getBody(), MixEnvelop.class);
         return envelop;
     }
 

@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.wlyy.agreement;
 
 import com.yihu.jw.fegin.fallbackfactory.wlyy.agreement.WlyyAgreementKpiFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.*;
 public interface WlyyAgreementKpiFeign {
 
     @PostMapping(value = WlyyRequestMapping.AgreementKpi.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop create(@RequestBody String jsonData);
+    MixEnvelop create(@RequestBody String jsonData);
 
     @PutMapping(value = WlyyRequestMapping.AgreementKpi.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop update(@RequestBody String jsonData);
+    MixEnvelop update(@RequestBody String jsonData);
 
     @DeleteMapping(value = WlyyRequestMapping.AgreementKpi.api_delete)
-    Envelop delete(@RequestParam(value = "id" ) String id);
+    MixEnvelop delete(@RequestParam(value = "id" ) String id);
 
     @GetMapping(value = WlyyRequestMapping.AgreementKpi.api_getById)
-    Envelop findByCode(@RequestParam(value = "id" ) String id);
+    MixEnvelop findByCode(@RequestParam(value = "id" ) String id);
 
     @RequestMapping(value = WlyyRequestMapping.AgreementKpi.api_queryPage, method = RequestMethod.GET)
-    Envelop queryPage(
+    MixEnvelop queryPage(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts,
@@ -37,7 +37,7 @@ public interface WlyyAgreementKpiFeign {
             @RequestParam(value = "page", required = false) int page);
 
     @GetMapping(value = WlyyRequestMapping.AgreementKpi.api_getList)
-    Envelop getList(
+    MixEnvelop getList(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts);

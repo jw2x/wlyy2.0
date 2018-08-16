@@ -2,12 +2,12 @@ package com.yihu.jw.base.endpoint;
 
 import com.yihu.jw.base.service.ModuleService;
 import com.yihu.jw.entity.base.module.ModuleDO;
+import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.ListEnvelop;
+import com.yihu.jw.restmodel.web.ObjEnvelop;
+import com.yihu.jw.restmodel.web.PageEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
-import com.yihu.jw.web.endpoint.EnvelopRestEndpoint;
-import com.yihu.jw.web.model.Envelop;
-import com.yihu.jw.web.model.ListEnvelop;
-import com.yihu.jw.web.model.ObjEnvelop;
-import com.yihu.jw.web.model.PageEnvelop;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

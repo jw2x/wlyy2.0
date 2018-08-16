@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.iot.common;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.common.IotSystemDictFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.dict.IotSystemDictVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -22,6 +22,6 @@ public interface IotSystemDictFeign {
 
 
     @GetMapping(value = IotRequestMapping.System.findDictByCode)
-    public Envelop<IotSystemDictVO> getList(@RequestParam(value = "dictName", required = true) String dictName) throws Exception ;
+    public MixEnvelop<IotSystemDictVO> getList(@RequestParam(value = "dictName", required = true) String dictName) throws Exception ;
 
 }

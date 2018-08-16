@@ -8,7 +8,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 
 @SpringBootApplication
-@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
+@EnableAspectJAutoProxy
 public class SvrWlyyHealthBankApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

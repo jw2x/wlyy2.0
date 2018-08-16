@@ -1,7 +1,7 @@
 package com.yihu.rehabilitation.service;
 
 import com.yihu.jw.entity.rehabilitation.RehabilitationPerformanceDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationPerformanceVO;
 import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
@@ -32,7 +32,7 @@ public class RehabilitationPerformanceService extends BaseJpaService<Rehabilitat
      * @return
      * @throws ParseException
      */
-    public Envelop<RehabilitationPerformanceVO> queryPerformancePage(Integer page, Integer size, String patientId) throws ParseException {
+    public MixEnvelop<RehabilitationPerformanceVO, RehabilitationPerformanceVO> queryPerformancePage(Integer page, Integer size, String patientId) throws ParseException {
         String filters = "";
         String semicolon = "";
         if(StringUtils.isNotBlank(patientId)){
@@ -47,7 +47,7 @@ public class RehabilitationPerformanceService extends BaseJpaService<Rehabilitat
         //DO转VO
         List<RehabilitationPerformanceVO> PerformanceVOs = convertToModels(list,new ArrayList<>(list.size()), RehabilitationPerformanceVO.class);
 
-        return Envelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,PerformanceVOs, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,PerformanceVOs, page, size,count);
     }
 
     public RehabilitationPerformanceDO create(RehabilitationPerformanceDO performanceDO) {

@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.iot.device;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.device.IotDeviceOrderFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderVO;
@@ -24,38 +24,38 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IotDeviceOrderFeign {
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.createOrder)
-    Envelop<IotOrderVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
+    MixEnvelop<IotOrderVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findById)
-    Envelop<IotDeviceOrderVO> findByCode(@RequestParam(value = "id", required = true) String id);
+    MixEnvelop<IotDeviceOrderVO> findByCode(@RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPage)
-    Envelop<IotDeviceOrderVO> findPage(
+    MixEnvelop<IotDeviceOrderVO> findPage(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "type", required = false) String type,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.delOrder)
-    Envelop<IotDeviceOrderVO> delOrder(@RequestParam(value = "id", required = true) String id);
+    MixEnvelop<IotDeviceOrderVO> delOrder(@RequestParam(value = "id", required = true) String id);
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.delPurchase)
-    Envelop<IotOrderPurchaseVO> delPurchase(@RequestParam(value = "id", required = true) String id);
+    MixEnvelop<IotOrderPurchaseVO> delPurchase(@RequestParam(value = "id", required = true) String id);
 
     @PostMapping(value = IotRequestMapping.DeviceOrder.updOrder)
-    Envelop<IotOrderVO> updOrder(@RequestParam(value = "jsonData", required = false)String jsonData);
+    MixEnvelop<IotOrderVO> updOrder(@RequestParam(value = "jsonData", required = false)String jsonData);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharsePage)
-    Envelop<IotOrderPurchaseVO> findPurcharsePage(
+    MixEnvelop<IotOrderPurchaseVO> findPurcharsePage(
             @RequestParam(value = "orderId", required = true) String orderId,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findPurcharseById)
-    Envelop<IotOrderPurchaseVO>  findPurcharseById(@RequestParam(value = "id", required = true) String id);
+    MixEnvelop<IotOrderPurchaseVO> findPurcharseById(@RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.DeviceOrder.findQualityPage)
-    Envelop<IotOrderPurchaseVO> findQualityPage(
+    MixEnvelop<IotOrderPurchaseVO> findQualityPage(
             @RequestParam(value = "qualityStatus", required = false) String qualityStatus,
             @RequestParam(value = "orderNo", required = false) String orderNo,
             @RequestParam(value = "startTime", required = false) String startTime,

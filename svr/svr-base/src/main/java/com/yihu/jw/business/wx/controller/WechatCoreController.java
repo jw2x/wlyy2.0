@@ -2,7 +2,7 @@ package com.yihu.jw.business.wx.controller;
 
 import com.yihu.jw.business.wx.service.WechatCoreService;
 import com.yihu.jw.entity.base.wx.WxWechatDO;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping(WechatRequestMapping.api_common)
 @Api(value = "微信回调及事件处理", description = "微信回调及事件处理")
-public class WechatCoreController extends EnvelopRestController {
+public class WechatCoreController extends EnvelopRestEndpoint {
 
     private Logger logger = LoggerFactory.getLogger(WechatCoreController.class);
 

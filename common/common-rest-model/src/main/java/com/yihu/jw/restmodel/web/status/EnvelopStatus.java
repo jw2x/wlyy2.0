@@ -1,11 +1,12 @@
-package com.yihu.jw.restmodel.common.base;
+package com.yihu.jw.restmodel.web.status;
 
 /**
  * Created by chenweida on 2018/5/8 0008.
  */
-public enum BaseEnvelopStatus {
+public enum EnvelopStatus {
+
     success("请求成功", 200),
-    system_error("系统错误",-10000),
+    system_error("系统错误", -10000),
     //------------------登陆 权限相关 start ------------------
     status_10100("账号不存在", 10100),
     status_10101("密码错误", 10101),
@@ -16,27 +17,12 @@ public enum BaseEnvelopStatus {
     status_10106("账号已存在", 10106),;
     //------------------登陆 权限相关 end ------------------
 
-    BaseEnvelopStatus(String name, Integer code) {
+    public String name;
+    public Integer value;
+
+    EnvelopStatus(String name, Integer value) {
         this.name = name;
-        this.code = code;
+        this.value = value;
     }
 
-    private String name;
-    private Integer code;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getCode() {
-        return code;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
 }

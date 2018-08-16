@@ -3,7 +3,7 @@ package com.yihu.iot.controller.common;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.iot.service.common.FileUploadService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
@@ -41,24 +41,24 @@ public class FileUploadController extends BaseController {
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream_img)
     @ApiOperation(value = "文件流上传图片", notes = "文件流上传图片")
-    public Envelop<UploadVO> uploadImg(@ApiParam(value = "文件", required = true)
+    public MixEnvelop<UploadVO, UploadVO> uploadImg(@ApiParam(value = "文件", required = true)
                                        @RequestParam(value = "file", required = true) MultipartFile file){
         try {
             // 得到文件的完整名称  xxx.txt
             String fullName = file.getOriginalFilename();
             if(StringUtils.isBlank(fullName)){
-                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
+                return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
             }
             //得到文件类型
             String fileType = fullName.substring(fullName.lastIndexOf(".") + 1).toLowerCase();
             if(StringUtils.isBlank(fileType)||!"jpg,jpeg,png".contains(fileType)){
-                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
+                return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
             }
 
             long size = file.getSize();
             long max = 5*1024*1024;
             if(size>max){
-                return Envelop.getError("文件大小不超过5M",IotRequestMapping.api_iot_fail);
+                return MixEnvelop.getError("文件大小不超过5M",IotRequestMapping.api_iot_fail);
             }
 
             String fileName = fullName.substring(0, fullName.lastIndexOf("."));
@@ -76,37 +76,37 @@ public class FileUploadController extends BaseController {
             }else {
                 uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
                 if(uploadVO==null){
-                    return Envelop.getError("文件上传失败",IotRequestMapping.api_iot_fail);
+                    return MixEnvelop.getError("文件上传失败",IotRequestMapping.api_iot_fail);
                 }
             }
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
         }catch (Exception e){
             e.printStackTrace();
-            return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
+            return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
         }
     }
 
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream_attachment)
     @ApiOperation(value = "文件流上传附件", notes = "文件流上传附件")
-    public Envelop<UploadVO> uploadAttachment(@ApiParam(value = "文件", required = true)
+    public MixEnvelop<UploadVO, UploadVO> uploadAttachment(@ApiParam(value = "文件", required = true)
                                               @RequestParam(value = "file", required = true) MultipartFile file){
         try {
             // 得到文件的完整名称  xxx.txt
             String fullName = file.getOriginalFilename();
             if(StringUtils.isBlank(fullName)){
-                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
+                return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
             }
             //得到文件类型
             String fileType = fullName.substring(fullName.lastIndexOf(".") + 1).toLowerCase();
             if(StringUtils.isBlank(fileType)||!"doc、docx、pdf、xls、xlsx、jpg、jpeg、png".contains(fileType)){
-                return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
+                return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload_format,IotRequestMapping.api_iot_fail);
             }
 
             long size = file.getSize();
             long max = 5*1024*1024;
             if(size>max){
-                return Envelop.getError("文件大小不超过5M",IotRequestMapping.api_iot_fail);
+                return MixEnvelop.getError("文件大小不超过5M",IotRequestMapping.api_iot_fail);
             }
 
             String fileName = fullName.substring(0, fullName.lastIndexOf("."));
@@ -124,20 +124,20 @@ public class FileUploadController extends BaseController {
             }else {
                 uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
                 if(uploadVO==null){
-                    return Envelop.getError("文件上传失败",IotRequestMapping.api_iot_fail);
+                    return MixEnvelop.getError("文件上传失败",IotRequestMapping.api_iot_fail);
                 }
             }
 
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
         }catch (Exception e){
             e.printStackTrace();
-            return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
+            return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
         }
     }
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream)
     @ApiOperation(value = "文件流上传文件", notes = "文件流上传文件")
-    public Envelop<UploadVO> uploadStream(@ApiParam(value = "文件", required = true) @RequestParam(value = "file", required = true) MultipartFile file) {
+    public MixEnvelop<UploadVO, UploadVO> uploadStream(@ApiParam(value = "文件", required = true) @RequestParam(value = "file", required = true) MultipartFile file) {
         try {
             // 得到文件的完整名称  xxx.txt
             String fullName = file.getOriginalFilename();
@@ -158,20 +158,20 @@ public class FileUploadController extends BaseController {
             }else {
                 uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
                 if(uploadVO==null){
-                    return Envelop.getError("文件上传失败",IotRequestMapping.api_iot_fail);
+                    return MixEnvelop.getError("文件上传失败",IotRequestMapping.api_iot_fail);
                 }
             }
 
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_create, uploadVO);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
+            return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
         }
     }
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_string)
     @ApiOperation(value = "base64上传图片",notes = "base64上传图片")
-    public Envelop<UploadVO> uploadImages(@ApiParam(name = "jsonData", value = "头像转化后的输入流") @RequestBody String jsonData) throws Exception {
+    public MixEnvelop<UploadVO, UploadVO> uploadImages(@ApiParam(name = "jsonData", value = "头像转化后的输入流") @RequestBody String jsonData) throws Exception {
         try {
 
             String date = URLDecoder.decode(jsonData,"UTF-8");
@@ -197,22 +197,22 @@ public class FileUploadController extends BaseController {
             }else {
                 uploadVO = fileUploadService.request(request,inputStream,"");
                 if(uploadVO ==null){
-                    return Envelop.getError("文件上传失败",IotRequestMapping.api_iot_fail);
+                    return MixEnvelop.getError("文件上传失败",IotRequestMapping.api_iot_fail);
                 }
             }
 
             //返回文件路径
-            return Envelop.getSuccess(IotRequestMapping.FileUpload.message_success_upload, uploadVO);
+            return MixEnvelop.getSuccess(IotRequestMapping.FileUpload.message_success_upload, uploadVO);
         }catch (Exception e){
             e.printStackTrace();
-            return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
+            return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
         }
     }
 
     @RequestMapping(value = "commonUpload", method = RequestMethod.POST)
     @ResponseBody
     @ApiOperation("公共的文件上传")
-    public Envelop<UploadVO> commonUpload(HttpServletRequest request) {
+    public MixEnvelop<UploadVO, UploadVO> commonUpload(HttpServletRequest request) {
         InputStream in = null;
         try {
             String paths = request.getParameter("filePaths");
@@ -247,10 +247,10 @@ public class FileUploadController extends BaseController {
             UploadVO uploadVO = new UploadVO();
             uploadVO.setFullUri(result.get("fileId").toString().replaceAll("\"", ""));
             uploadVO.setFullUrl(fastdfs_file_url + result.get("fileId").toString().replaceAll("\"", ""));
-            return Envelop.getSuccess(IotRequestMapping.FileUpload.message_success_upload, result);
+            return MixEnvelop.getSuccess(IotRequestMapping.FileUpload.message_success_upload, result);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
+            return MixEnvelop.getError(IotRequestMapping.FileUpload.message_fail_upload, IotRequestMapping.api_iot_fail);
         }finally {
             if(in!=null){
                 try {

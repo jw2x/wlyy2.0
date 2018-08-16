@@ -3,8 +3,8 @@ package com.yihu.jw.business.wx.controller;
 import com.yihu.jw.business.wx.service.WechatService;
 import com.yihu.jw.business.wx.service.WxMenuService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(WechatRequestMapping.api_common)
 @Api(value = "微信菜单相关操作", description = "微信菜单相关操作")
-public class WxMenuController extends EnvelopRestController {
+public class WxMenuController extends EnvelopRestEndpoint {
 
     @Autowired
     private WxMenuService wxMenuService;
@@ -32,12 +32,12 @@ public class WxMenuController extends EnvelopRestController {
 
     @PostMapping(value = WechatRequestMapping.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
-    public Envelop createWxMenu(@ApiParam(name = "wxId", value = "微信id")
+    public MixEnvelop createWxMenu(@ApiParam(name = "wxId", value = "微信id")
                                     @RequestParam(value = "wxId", required = false)String wxId) {
         try {
             return wxMenuService.createWxMenu(wxId);
         } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+            return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 

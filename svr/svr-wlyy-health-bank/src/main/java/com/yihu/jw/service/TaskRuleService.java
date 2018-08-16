@@ -8,7 +8,7 @@ import com.yihu.jw.dao.TaskRuleDao;
 import com.yihu.jw.entity.health.bank.TaskDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.entity.health.bank.TaskRuleDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
 import com.yihu.mysql.query.BaseJpaService;
@@ -47,7 +47,7 @@ public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao> {
      * @param size 分页大小
      * @return
      */
-    public Envelop<TaskRuleDO> selectByCondition(TaskRuleDO taskRuleDO, Integer page, Integer size){
+    public MixEnvelop<TaskRuleDO, TaskRuleDO> selectByCondition(TaskRuleDO taskRuleDO, Integer page, Integer size){
         String sql = new ISqlUtils().getSql(taskRuleDO,page,size,"*");
         List<TaskRuleDO> taskRuleDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskRuleDO.class));
         String sqlcount = new ISqlUtils().getSql(taskRuleDO,0,0,"count");
@@ -56,7 +56,7 @@ public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskRuleDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskRuleDOS, page,size,count);
     }
 
     /**
@@ -64,8 +64,8 @@ public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao> {
      * @param taskRuleDO 任务规则对象
      * @return
      */
-    public Envelop<Boolean> insert(TaskRuleDO taskRuleDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> insert(TaskRuleDO taskRuleDO){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         taskRuleDO.setCreateTime(new Date());
         taskRuleDO.setUpdateTime(new Date());
         taskRuleDao.save(taskRuleDO);
@@ -80,8 +80,8 @@ public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao> {
      * @param taskRuleDO 规则对象
      * @return
      */
-    public Envelop<Boolean> update(TaskRuleDO taskRuleDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> update(TaskRuleDO taskRuleDO){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         String sql =  ISqlUtils.getUpdateSql(taskRuleDO);
         jdbcTemplate.update(sql);
         envelop.setObj(true);
@@ -95,8 +95,8 @@ public class TaskRuleService extends BaseJpaService<TaskRuleDO,TaskRuleDao> {
      * @param ids []
      * @return
      */
-    public Envelop<Boolean> batchDelete(List<String> ids){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> batchDelete(List<String> ids){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         for (int i =0;i<ids.size();i++){
             TaskDO taskDO = taskDao.selectByTaskRuleId(ids.get(i));
             taskDO.setStatus(0);

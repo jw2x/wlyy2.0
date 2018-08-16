@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.fallbackfactory.iot.device;
 
 import com.yihu.jw.fegin.iot.device.IotDeviceQualityFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,14 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
         return new IotDeviceQualityFeign() {
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
+            public MixEnvelop<IotDeviceQualityInspectionPlanVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建质检计划失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> findByCode(@RequestParam(value = "id", required = true) String id
+            public MixEnvelop<IotDeviceQualityInspectionPlanVO> findByCode(@RequestParam(value = "id", required = true) String id
             ) {
                 tracer.getCurrentSpan().logEvent("查找质检计划失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
@@ -37,7 +37,7 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
             }
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
+            public MixEnvelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
                     @RequestParam(value = "purcharseId", required = false) String purcharseId,
                     @RequestParam(value = "orderNo", required = false) String orderNo,
                     @RequestParam(value = "startTime", required = false) String startTime,
@@ -55,7 +55,7 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
             }
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(
+            public MixEnvelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(
                     @RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("删除质检计划失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
@@ -63,7 +63,7 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
             }
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> completeQualityPlan(
+            public MixEnvelop<IotDeviceQualityInspectionPlanVO> completeQualityPlan(
                         @RequestParam(value = "actualTime", required = true) String actualTime,
                         @RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("完成质检计划失败:原因:" + e.getMessage());
@@ -73,7 +73,7 @@ public class IotDeviceQualityFallbackFactory implements FallbackFactory<IotDevic
             }
 
             @Override
-            public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(
+            public MixEnvelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(
                     @RequestParam(value = "actualTime", required = true) String actualTime,
                     @RequestParam(value = "purchaseId", required = true) String purchaseId) {
                 tracer.getCurrentSpan().logEvent("完成质检计划(按采购id)失败:原因:" + e.getMessage());

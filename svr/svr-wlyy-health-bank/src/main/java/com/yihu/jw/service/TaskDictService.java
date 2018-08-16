@@ -4,7 +4,7 @@ package com.yihu.jw.service;/**
 
 import com.yihu.jw.dao.TaskDictDao;
 import com.yihu.jw.entity.health.bank.TaskDictDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
 import com.yihu.mysql.query.BaseJpaService;
@@ -41,7 +41,7 @@ public class TaskDictService extends BaseJpaService<TaskDictDO,TaskDictDao> {
      * @param size 分页大小
      * @return
      */
-    public Envelop<TaskDictDO> selectByCondition(TaskDictDO taskDictDO, Integer page, Integer size){
+    public MixEnvelop<TaskDictDO, TaskDictDO> selectByCondition(TaskDictDO taskDictDO, Integer page, Integer size){
         String sql = new ISqlUtils().getSql(taskDictDO,page,size,"*");
         List<TaskDictDO> taskDictDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDictDO.class));
         String sqlcount = new ISqlUtils().getSql(taskDictDO,0,0,"count");
@@ -50,7 +50,7 @@ public class TaskDictService extends BaseJpaService<TaskDictDO,TaskDictDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDictDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDictDOS,page,size,count);
     }
 
     /**
@@ -60,10 +60,10 @@ public class TaskDictService extends BaseJpaService<TaskDictDO,TaskDictDao> {
      * @param taskDictDO 任务字典对象
      * @return
      */
-    public Envelop<Boolean> insert(TaskDictDO taskDictDO){
+    public MixEnvelop<Boolean, Boolean> insert(TaskDictDO taskDictDO){
         taskDictDO.setCreateTime(new Date());
         taskDictDO.setUpdateTime(new Date());
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         taskDictDao.save(taskDictDO);
         envelop.setObj(true);
         return envelop;
@@ -76,8 +76,8 @@ public class TaskDictService extends BaseJpaService<TaskDictDO,TaskDictDao> {
      * @param taskDictDO 任务字典对象
      * @return
      */
-    public Envelop<Boolean> update(TaskDictDO taskDictDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> update(TaskDictDO taskDictDO){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         String sql =  ISqlUtils.getUpdateSql(taskDictDO);
         jdbcTemplate.update(sql);
         envelop.setObj(true);

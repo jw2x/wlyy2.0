@@ -2,8 +2,8 @@ package com.yihu.iot.controller.device;
 
 import com.yihu.iot.service.device.IotDeviceQualityInspectionPlanService;
 import com.yihu.jw.entity.iot.device.IotDeviceQualityInspectionPlanDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import com.yihu.jw.util.date.DateUtil;
@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(IotRequestMapping.Common.quality)
 @Api(tags = "设备质检管理相关操作", description = "设备质检管理相关操作")
-public class IotDeviceQualityController extends EnvelopRestController{
+public class IotDeviceQualityController extends EnvelopRestEndpoint {
     @Autowired
     private IotDeviceQualityInspectionPlanService iotDeviceQualityInspectionPlanService;
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.addQualityPlan)
     @ApiOperation(value = "创建设备质检", notes = "创建设备质检")
-    public Envelop<IotDeviceQualityInspectionPlanVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                           @RequestParam String jsonData) {
         try {
             IotDeviceQualityInspectionPlanVO planVO = toEntity(jsonData, IotDeviceQualityInspectionPlanVO.class);
@@ -37,32 +37,32 @@ public class IotDeviceQualityController extends EnvelopRestController{
             if(StringUtils.isNotBlank(planVO.getActualTime())){
                 planDO.setActualTime(DateUtil.strToDate(planVO.getActualTime()));
             }
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create, iotDeviceQualityInspectionPlanService.create(planDO));
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_create, iotDeviceQualityInspectionPlanService.create(planDO));
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.findById)
     @ApiOperation(value = "根据code查找设备质检", notes = "根据code查找设备质检")
-    public Envelop<IotDeviceQualityInspectionPlanVO> findByCode(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> findByCode(@ApiParam(name = "id", value = "id")
                               @RequestParam(value = "id", required = true) String id
     ) {
         try {
             IotDeviceQualityInspectionPlanDO planDO = iotDeviceQualityInspectionPlanService.findById(id);
             IotDeviceQualityInspectionPlanVO planVO = iotDeviceQualityInspectionPlanService.transforOne(planDO);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, planVO);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_find, planVO);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
     @ApiOperation(value = "分页获取设备质检计划", notes = "分页获取设备质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> findProductPageByCompanyId(
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> findProductPageByCompanyId(
             @ApiParam(name = "purcharseId", value = "采购id", defaultValue = "")
             @RequestParam(value = "purcharseId", required = false) String purcharseId,
             @ApiParam(name = "orderNo", value = "订单编号", defaultValue = "")
@@ -117,50 +117,50 @@ public class IotDeviceQualityController extends EnvelopRestController{
             return iotDeviceQualityInspectionPlanService.queryPage(purcharseId, orderNo, startTime, endTime, page, size);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.delQualityPlan)
     @ApiOperation(value = "删除质检计划", notes = "删除质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> delCompany(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> delCompany(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             iotDeviceQualityInspectionPlanService.delPlan(id);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_find);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.completeQualityPlan)
     @ApiOperation(value = "完成质检计划", notes = "完成质检计划")
-    public Envelop<IotDeviceQualityInspectionPlanVO> updCompany(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> updCompany(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
                                             @RequestParam(value = "actualTime", required = true) String actualTime,
-                                            @ApiParam(name = "id", value = "id")
+                                                                   @ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             iotDeviceQualityInspectionPlanService.completePlan(id,actualTime);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_find);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.completePlanByPurchaseId)
     @ApiOperation(value = "完成质检计划(按采购id)", notes = "完成质检计划(按采购id)")
-    public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(@ApiParam(name = "actualTime", value = "完成时间", defaultValue = "")
                                                                 @RequestParam(value = "actualTime", required = true) String actualTime,
-                                                                @ApiParam(name = "purchaseId", value = "purchaseId")
+                                                                                 @ApiParam(name = "purchaseId", value = "purchaseId")
                                                                 @RequestParam(value = "purchaseId", required = true) String purchaseId) {
         try {
             iotDeviceQualityInspectionPlanService.completePlanByPurchaseId(purchaseId,actualTime);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_find);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 

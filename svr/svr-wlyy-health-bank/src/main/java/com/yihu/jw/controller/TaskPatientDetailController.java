@@ -3,8 +3,8 @@ package com.yihu.jw.controller;/**
  */
 
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.service.TaskPatientDtailService;
 import io.swagger.annotations.Api;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(HealthBankMapping.api_health_bank_common)
 @Api(tags = "健康任务参与详情",description = "健康任务参与详情")
-public class TaskPatientDetailController extends EnvelopRestController {
+public class TaskPatientDetailController extends EnvelopRestEndpoint {
     @Autowired
     private TaskPatientDtailService service;
     @Autowired
@@ -40,7 +40,7 @@ public class TaskPatientDetailController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.attendTask)
     @ApiOperation(value = "参与活动")
-    public Envelop<Boolean> insert(@ApiParam(name = "taskPatientDetail",value = "参与活动JSON")
+    public MixEnvelop<Boolean, Boolean> insert(@ApiParam(name = "taskPatientDetail",value = "参与活动JSON")
                                    @RequestParam(value = "taskPatientDetail",required = true)String taskPatientDetail){
         try {
             TaskPatientDetailDO taskPatientDetailDO = toEntity(taskPatientDetail, TaskPatientDetailDO.class);
@@ -48,7 +48,7 @@ public class TaskPatientDetailController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 

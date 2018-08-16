@@ -8,7 +8,7 @@ import com.yihu.jw.entity.archives.PatientArchivesDO;
 import com.yihu.jw.entity.archives.PatientArchivesInfoDO;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;

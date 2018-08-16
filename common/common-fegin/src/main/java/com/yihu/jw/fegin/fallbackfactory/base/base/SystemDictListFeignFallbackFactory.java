@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.fallbackfactory.base.base;
 
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.base.SystemDictListFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
@@ -21,35 +21,35 @@ public class SystemDictListFeignFallbackFactory implements FallbackFactory<Syste
     public SystemDictListFeign create(Throwable e) {
         return new SystemDictListFeign() {
             @Override
-            public Envelop create(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop create(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("创建系統字典集合失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop update(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop update(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("更新系統字典集合失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop delete(@PathVariable String codes, @RequestParam String userCode, @RequestParam String userName) throws JiWeiException {
+            public MixEnvelop delete(@PathVariable String codes, @RequestParam String userCode, @RequestParam String userName) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("删除系統字典集合失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("codes:"+codes);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop findById(String code) throws JiWeiException {
+            public MixEnvelop findById(String code) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找系統字典集合失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("code:"+code);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop getList(String fields, String filterStr, String sorts, int size, int page) throws JiWeiException {
+            public MixEnvelop getList(String fields, String filterStr, String sorts, int size, int page) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("分页查找系統字典集合失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filterStr);
@@ -60,7 +60,7 @@ public class SystemDictListFeignFallbackFactory implements FallbackFactory<Syste
             }
 
             @Override
-            public Envelop getListNoPage(String fields, String filters, String sorts) throws JiWeiException {
+            public MixEnvelop getListNoPage(String fields, String filters, String sorts) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找系統字典集合列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filters);
@@ -69,7 +69,7 @@ public class SystemDictListFeignFallbackFactory implements FallbackFactory<Syste
             }
 
             @Override
-            public Envelop getChildren(String code) throws JiWeiException {
+            public MixEnvelop getChildren(String code) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找系統字典子项失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("code:" + code);
                 throw new JiWeiException(e);

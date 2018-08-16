@@ -9,16 +9,12 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "base_module_function")
-public class ModuleFunctionDO extends UuidIdentityEntity implements java.io.Serializable {
+public class ModuleFunctionDO extends UuidIdentityEntity {
 
-	private String functionId;//关联 base_function    code
-	private String moduleId;//关联 base_module  code
-
-	// Constructors
-
-	/** default constructor */
-	public ModuleFunctionDO() {
-	}
+	//关联 base_function   ic
+	private String functionId;
+	//关联 base_module   id
+	private String moduleId;
 
 	@Column(name = "function_id", length = 100)
 	public String getFunctionId() {

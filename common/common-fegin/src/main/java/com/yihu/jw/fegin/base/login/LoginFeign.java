@@ -2,8 +2,8 @@ package com.yihu.jw.fegin.base.login;
 
 import com.yihu.jw.fegin.fallbackfactory.base.base.LoginFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.base.BaseEnvelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseLoginRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface LoginFeign {
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_checkoutInfo, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    BaseEnvelop checkoutInfo(@RequestParam(value = "ssc", required = true) String ssc,@RequestParam(value = "idcard", required = true) String idcard);
+    Envelop checkoutInfo(@RequestParam(value = "ssc", required = true) String ssc, @RequestParam(value = "idcard", required = true) String idcard);
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_accountSub, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop register(
+    MixEnvelop register(
             @RequestParam(value = "mobilePhone", required = true) String mobilePhone,
             @RequestParam(value = "saasId", required = true) String saasId,
             @RequestParam(value = "type", required = true) int type,
@@ -37,8 +37,8 @@ public interface LoginFeign {
 
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_login, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop login(@RequestParam(value = "mobilePhone", required = false) String mobilePhone,
-                           @RequestParam(value = "password", required = false) String password,
-                           @RequestParam(value = "saasId", required = true) String saasId,
-                           @RequestParam(value = "captcha", required = false) String captcha);
+    MixEnvelop login(@RequestParam(value = "mobilePhone", required = false) String mobilePhone,
+                     @RequestParam(value = "password", required = false) String password,
+                     @RequestParam(value = "saasId", required = true) String saasId,
+                     @RequestParam(value = "captcha", required = false) String captcha);
 }

@@ -10,7 +10,7 @@ import com.yihu.jw.entity.iot.company.IotCompanyTypeDO;
 import com.yihu.jw.entity.iot.device.IotDeviceDO;
 import com.yihu.jw.entity.iot.device.IotDeviceOrderDO;
 import com.yihu.jw.entity.iot.device.IotOrderPurchaseDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyTypeVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;
@@ -223,7 +223,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
      * @return
      * @throws ParseException
      */
-    public Envelop<IotDeviceOrderVO> queryPage(Integer page, Integer size, String name) throws ParseException {
+    public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> queryPage(Integer page, Integer size, String name) throws ParseException {
         String filters = "";
         String semicolon = "";
         if(StringUtils.isNotBlank(name)){
@@ -247,7 +247,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
             findType(one);
         });
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotDeviceOrderVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotDeviceOrderVOList, page, size,count);
     }
 
     /**
@@ -277,7 +277,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
      * @param type
      * @return
      */
-    public Envelop<IotDeviceOrderVO> queryPage(Integer page, Integer size, String name, String type){
+    public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> queryPage(Integer page, Integer size, String name, String type){
         StringBuffer sql = new StringBuffer("SELECT DISTINCT c.* from iot_device_order c ,iot_company_type t WHERE c.del=1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_device_order c ,iot_company_type t WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
@@ -303,7 +303,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
             findType(one);
         });
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotDeviceOrderVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotDeviceOrderVOList, page, size,count);
     }
 
     /**
@@ -314,7 +314,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
      * @param type (1返回已关联数量，2不返回已关联数量)
      * @return
      */
-    public Envelop<IotOrderPurchaseVO> queryPurcharsePage(Integer page, Integer size, String orderId, String type){
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> queryPurcharsePage(Integer page, Integer size, String orderId, String type){
         StringBuffer sql = new StringBuffer("SELECT c.* from iot_order_purchase c  WHERE c.del=1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(c.id) count from iot_order_purchase c WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
@@ -343,7 +343,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         });
         translateForList(iotOrderPurchaseVOList);
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotOrderPurchaseVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotOrderPurchaseVOList, page, size,count);
     }
 
     /**
@@ -390,8 +390,8 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
      * @param size
      * @return
      */
-    public Envelop<IotOrderPurchaseVO> queryPurcharsePage(Integer page, Integer size,
-              String qualityStatus,String orderNo,String startTime,String endTime){
+    public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> queryPurcharsePage(Integer page, Integer size,
+                                                             String qualityStatus, String orderNo, String startTime, String endTime){
         StringBuffer sql = new StringBuffer("SELECT c.* from iot_order_purchase c  WHERE c.del=1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(c.id) count from iot_order_purchase c WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
@@ -424,7 +424,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
         //DO转VO
         List<IotOrderPurchaseVO> iotOrderPurchaseVOList = transForList(list);
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotOrderPurchaseVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotOrderPurchaseVOList, page, size,count);
     }
 
 }

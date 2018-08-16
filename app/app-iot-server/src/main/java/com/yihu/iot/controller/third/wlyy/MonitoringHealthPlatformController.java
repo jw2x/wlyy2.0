@@ -2,7 +2,7 @@ package com.yihu.iot.controller.third.wlyy;
 
 import com.yihu.iot.controller.common.BaseController;
 import com.yihu.iot.service.third.wlyy.MonitoringHealthService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,7 @@ public class MonitoringHealthPlatformController extends BaseController{
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
     @ApiOperation(value = "根据idCard查询设备地址", notes = "根据idCard查询设备地址")
-    public Envelop<LocationDataVO> findDeviceLocationsByIdCard(
+    public MixEnvelop<LocationDataVO, LocationDataVO> findDeviceLocationsByIdCard(
             @ApiParam(name = "diseaseCondition", value = "病情：0绿标，1黄标，2红标,-1没有标注的居民", defaultValue = "")
             @RequestParam(value = "diseaseCondition",required = false) Integer diseaseCondition,
             @ApiParam(name = "type", value = "1高血压 2糖尿病", defaultValue = "")
@@ -55,7 +55,7 @@ public class MonitoringHealthPlatformController extends BaseController{
             return monitoringHealthService.findDeviceLocations(diseaseCondition,page,pageSize,type);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
