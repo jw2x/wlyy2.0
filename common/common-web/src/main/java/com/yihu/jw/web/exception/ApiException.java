@@ -1,6 +1,8 @@
 package com.yihu.jw.web.exception;
 
 
+import org.springframework.util.Assert;
+
 public class ApiException extends RuntimeException {
 
     private String errorDesc; //错误消息
@@ -12,6 +14,7 @@ public class ApiException extends RuntimeException {
 
     public ApiException(String errorDesc, int errorCode) {
         super(errorDesc);
+        Assert.state(errorCode != 200, "The error code cannot be equal to 200");
         this.errorDesc = errorDesc;
         this.errorCode = errorCode;
     }
@@ -20,15 +23,8 @@ public class ApiException extends RuntimeException {
         return errorDesc;
     }
 
-    public void setErrorDesc(String errorDesc) {
-        this.errorDesc = errorDesc;
-    }
-
     public int getErrorCode() {
         return errorCode;
     }
 
-    public void setErrorCode(int errorCode) {
-        this.errorCode = errorCode;
-    }
 }
