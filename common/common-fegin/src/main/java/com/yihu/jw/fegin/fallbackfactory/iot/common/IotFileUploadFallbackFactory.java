@@ -24,25 +24,25 @@ public class IotFileUploadFallbackFactory implements FallbackFactory<IotFileUplo
     public IotFileUploadFeign create(Throwable e) {
         return new IotFileUploadFeign() {
             @Override
-            public MixEnvelop<UploadVO> uploadImg(@RequestParam(value = "file", required = true) MultipartFile file) {
+            public MixEnvelop<UploadVO, UploadVO> uploadImg(@RequestParam(value = "file", required = true) MultipartFile file) {
                 tracer.getCurrentSpan().logEvent("文件流上传图片失败:原因:" + e.getMessage());
                 return null;
             }
 
             @Override
-            public MixEnvelop<UploadVO> uploadAttachment(@RequestParam(value = "file", required = true) MultipartFile file) {
+            public MixEnvelop<UploadVO, UploadVO> uploadAttachment(@RequestParam(value = "file", required = true) MultipartFile file) {
                 tracer.getCurrentSpan().logEvent("文件流上传附件失败:原因:" + e.getMessage());
                 return null;
             }
 
             @Override
-            public MixEnvelop<UploadVO> uploadStream(@RequestParam(value = "file", required = true) MultipartFile file) {
+            public MixEnvelop<UploadVO, UploadVO> uploadStream(@RequestParam(value = "file", required = true) MultipartFile file) {
                 tracer.getCurrentSpan().logEvent("文件流上传文件失败:原因:" + e.getMessage());
                 return null;
             }
 
             @Override
-            public MixEnvelop<UploadVO> uploadImages(@RequestBody String jsonData) {
+            public MixEnvelop<UploadVO, UploadVO> uploadImages(@RequestBody String jsonData) {
                 tracer.getCurrentSpan().logEvent("base64上传图片失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;

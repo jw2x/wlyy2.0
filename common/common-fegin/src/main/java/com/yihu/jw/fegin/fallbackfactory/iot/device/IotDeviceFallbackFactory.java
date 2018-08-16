@@ -28,14 +28,14 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
         return new IotDeviceFeign() {
 
             @Override
-            public MixEnvelop<IotDeviceVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
+            public MixEnvelop<IotDeviceVO, IotDeviceVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建设备失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 
             @Override
-            public MixEnvelop<IotDeviceVO> findByCode(@RequestParam(value = "id", required = true) String id
+            public MixEnvelop<IotDeviceVO, IotDeviceVO> findByCode(@RequestParam(value = "id", required = true) String id
             ) {
                 tracer.getCurrentSpan().logEvent("根据id查找设备失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
@@ -43,7 +43,7 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             }
 
             @Override
-            public MixEnvelop<IotDeviceVO> delDevice(@RequestParam(value = "id", required = true) String id
+            public MixEnvelop<IotDeviceVO, IotDeviceVO> delDevice(@RequestParam(value = "id", required = true) String id
             ) {
                 tracer.getCurrentSpan().logEvent("删除设备失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
@@ -58,7 +58,7 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             }
 
             @Override
-            public MixEnvelop<ExistVO> isSnExist(@RequestParam(value = "sn", required = true) String sn
+            public MixEnvelop<ExistVO, ExistVO> isSnExist(@RequestParam(value = "sn", required = true) String sn
             ) {
                 tracer.getCurrentSpan().logEvent("sn码是否存在失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("sn:" + sn);
@@ -66,7 +66,7 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             }
 
             @Override
-            public MixEnvelop<ExistVO> isSimExist(@RequestParam(value = "sim", required = true) String sim
+            public MixEnvelop<ExistVO, ExistVO> isSimExist(@RequestParam(value = "sim", required = true) String sim
             ) {
                 tracer.getCurrentSpan().logEvent("sim卡号是否存在失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("sim:" + sim);
@@ -83,7 +83,7 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             }
 
             @Override
-            public MixEnvelop<IotDeviceVO> findProductPageByCompanyId(@RequestParam(value = "sn", required = false) String sn,
+            public MixEnvelop<IotDeviceVO, IotDeviceVO> findProductPageByCompanyId(@RequestParam(value = "sn", required = false) String sn,
                                                                       @RequestParam(value = "hospital", required = false) String hospital,
                                                                       @RequestParam(value = "orderId", required = false) String orderId,
                                                                       @RequestParam(value = "purcharseId", required = false) String purcharseId,
@@ -102,7 +102,7 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             }
 
             @Override
-            public MixEnvelop<ExistVO> isImportDevice(@ApiParam(name = "purcharseId", value = "purcharseId")
+            public MixEnvelop<ExistVO, ExistVO> isImportDevice(@ApiParam(name = "purcharseId", value = "purcharseId")
                                                    @RequestParam(value = "purcharseId", required = true) String purcharseId) {
                 tracer.getCurrentSpan().logEvent("是否正在导入设备数据失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("purcharseId:" + purcharseId);
@@ -110,14 +110,14 @@ public class IotDeviceFallbackFactory implements FallbackFactory<IotDeviceFeign>
             }
 
             @Override
-            public MixEnvelop<IotDeviceImportRecordVO> uploadStream(@RequestBody String jsonData) {
+            public MixEnvelop<IotDeviceImportRecordVO, IotDeviceImportRecordVO> uploadStream(@RequestBody String jsonData) {
                 tracer.getCurrentSpan().logEvent("设备导入失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 
             @Override
-            public MixEnvelop<IotDeviceImportRecordVO> queryImportRecordPage(@RequestParam(value = "purcharseId", required = true) String purcharseId,
+            public MixEnvelop<IotDeviceImportRecordVO, IotDeviceImportRecordVO> queryImportRecordPage(@RequestParam(value = "purcharseId", required = true) String purcharseId,
                                                                              @RequestParam(value = "page", required = false) Integer page,
                                                                              @RequestParam(value = "size", required = false) Integer size){
                 tracer.getCurrentSpan().logEvent("分页查找导入记录失败:原因:" + e.getMessage());

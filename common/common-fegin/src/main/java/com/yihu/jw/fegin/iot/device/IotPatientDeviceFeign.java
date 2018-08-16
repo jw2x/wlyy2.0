@@ -24,41 +24,41 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IotPatientDeviceFeign{
 
     @PostMapping(value = IotRequestMapping.PatientDevice.addPatientDevice)
-    MixEnvelop<IotPatientDeviceVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
+    MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByDeviceSnAndUserType)
-    MixEnvelop<IotPatientDeviceVO> findByDeviceSnAndUserType(
+    MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndUserType(
             @RequestParam(value = "deviceSn",required = true) String deviceSn,
             @RequestParam(value = "userType",required = true) String userType);
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByPatient)
-    MixEnvelop<IotPatientDeviceVO> findByPatient(
+    MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByPatient(
             @RequestParam(value = "patient",required = true) String patient);
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByPatientAndDeviceSn)
-    MixEnvelop<IotPatientDeviceVO> findByPatientAndDeviceSn(
+    MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByPatientAndDeviceSn(
             @RequestParam(value = "patient",required = true) String patient,
             @RequestParam(value = "deviceSn",required = true) String deviceSn);
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findListByPatient)
-    MixEnvelop<IotDeviceVO> findListByPatient(
+    MixEnvelop<IotDeviceVO, IotDeviceVO> findListByPatient(
             @RequestParam(value = "patient", required = true) String patient,
             @RequestParam(value = "page", required = true) Integer page,
             @RequestParam(value = "pagesize", required = true) Integer pagesize);
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByDeviceSnAndCategoryCode)
-    MixEnvelop<IotPatientDeviceVO> findByDeviceSnAndCategoryCode(
+    MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndCategoryCode(
             @RequestParam(value = "categoryCode",required = true) String categoryCode,
             @RequestParam(value = "deviceSn",required = true) String deviceSn);
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByDeviceSnAndCategoryCodeAndUserType)
-    MixEnvelop<IotPatientDeviceVO> findByDeviceSnAndCategoryCodeAndUserType(
+    MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndCategoryCodeAndUserType(
             @RequestParam(value = "deviceSn",required = true) String deviceSn,
             @RequestParam(value = "categoryCode",required = true) String categoryCode,
            @RequestParam(value = "userType",required = true) String userType);
 
     @PostMapping(value = IotRequestMapping.PatientDevice.updatePatientDevice)
-    MixEnvelop<IotPatientDeviceVO> updatePatientDevice(
+    MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> updatePatientDevice(
             @RequestParam(value = "patient",required = true) String patient,
             @RequestParam(value = "deviceSN",required = true) String deviceSN,
             @RequestParam(value = "newDeviceSN",required = true) String newDeviceSN,
@@ -66,5 +66,5 @@ public interface IotPatientDeviceFeign{
             @RequestParam(value = "sim",required = true) String sim);
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
-    public MixEnvelop<LocationDataVO> findDeviceLocationsByIdCard(@RequestParam(value = "jsonData",required = true) String jsonData);
+    public MixEnvelop<LocationDataVO, LocationDataVO> findDeviceLocationsByIdCard(@RequestParam(value = "jsonData",required = true) String jsonData);
 }

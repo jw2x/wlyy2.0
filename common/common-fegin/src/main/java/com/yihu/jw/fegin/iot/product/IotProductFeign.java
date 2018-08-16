@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IotProductFeign{
 
     @GetMapping(value = IotRequestMapping.Product.findProductPage)
-    public MixEnvelop<IotProductBaseInfoVO> findCompanyPage(
+    public MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> findCompanyPage(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "classify", required = false) String classify,
             @RequestParam(value = "companyId", required = false) String companyId,
@@ -32,26 +32,26 @@ public interface IotProductFeign{
             @RequestParam(value = "size", required = false) Integer size);
 
     @GetMapping(value = IotRequestMapping.Product.findProductPageByCompanyId)
-    public MixEnvelop<IotProductBaseInfoVO> findProductPageByCompanyId(
+    public MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> findProductPageByCompanyId(
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "companyId", required = true) String companyId,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "size", required = false) Integer size);
 
     @PostMapping(value = IotRequestMapping.Product.addProduct)
-    public MixEnvelop<IotProductVO> addProduct(@RequestParam(value = "jsonData", required = false)String jsonData);
+    public MixEnvelop<IotProductVO, IotProductVO> addProduct(@RequestParam(value = "jsonData", required = false)String jsonData);
 
 
     @GetMapping(value = IotRequestMapping.Product.findProductById)
-    public MixEnvelop<IotProductVO> findByCode(@RequestParam(value = "id", required = true) String id);
+    public MixEnvelop<IotProductVO, IotProductVO> findByCode(@RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.Product.maintenanceUnitById)
-    public MixEnvelop<IotMaintenanceUnitVO> getList(@RequestParam(value = "productId", required = true) String productId);
+    public MixEnvelop<IotMaintenanceUnitVO, IotMaintenanceUnitVO> getList(@RequestParam(value = "productId", required = true) String productId);
 
     @PostMapping(value = IotRequestMapping.Product.delProduct)
-    public MixEnvelop<IotProductVO> delCompany(@RequestParam(value = "id", required = true) String id);
+    public MixEnvelop<IotProductVO, IotProductVO> delCompany(@RequestParam(value = "id", required = true) String id);
 
     @PostMapping(value = IotRequestMapping.Product.updProduct)
-    public MixEnvelop<IotProductVO> updCompany(@RequestParam(value = "jsonData", required = false)String jsonData);
+    public MixEnvelop<IotProductVO, IotProductVO> updCompany(@RequestParam(value = "jsonData", required = false)String jsonData);
 
 }

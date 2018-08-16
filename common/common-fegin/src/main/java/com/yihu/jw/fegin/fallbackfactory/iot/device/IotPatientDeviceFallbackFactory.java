@@ -25,7 +25,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
         return new IotPatientDeviceFeign() {
 
             @Override
-            public MixEnvelop<IotPatientDeviceVO> create(
+            public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> create(
                     @RequestParam String jsonData) {
                 tracer.getCurrentSpan().logEvent("设备绑定失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
@@ -33,7 +33,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public MixEnvelop<IotPatientDeviceVO> findByDeviceSnAndUserType(
+            public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndUserType(
                     @RequestParam(value = "deviceSn",required = true) String deviceSn,
                     @RequestParam(value = "userType",required = true) String userType) {
                 tracer.getCurrentSpan().logEvent("按sn码和按键号查找失败:原因:" + e.getMessage());
@@ -43,7 +43,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public MixEnvelop<IotPatientDeviceVO> findByPatient(
+            public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByPatient(
                     @RequestParam(value = "patient",required = true) String patient) {
                 tracer.getCurrentSpan().logEvent("按居民code查找失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("patient:" + patient);
@@ -51,7 +51,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public MixEnvelop<IotPatientDeviceVO> findByPatientAndDeviceSn(
+            public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByPatientAndDeviceSn(
                     @RequestParam(value = "patient",required = true) String patient,
                     @RequestParam(value = "deviceSn",required = true) String deviceSn) {
                 tracer.getCurrentSpan().logEvent("按居民和sn码查找失败:原因:" + e.getMessage());
@@ -61,7 +61,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public MixEnvelop<IotDeviceVO> findListByPatient(
+            public MixEnvelop<IotDeviceVO, IotDeviceVO> findListByPatient(
                     @RequestParam(value = "patient", required = true) String patient,
                     @RequestParam(value = "page", required = true) Integer page,
                     @RequestParam(value = "pagesize", required = true) Integer pagesize){
@@ -73,7 +73,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public MixEnvelop<IotPatientDeviceVO> findByDeviceSnAndCategoryCode(
+            public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndCategoryCode(
                     @RequestParam(value = "categoryCode",required = true) String categoryCode,
                     @RequestParam(value = "deviceSn",required = true) String deviceSn) {
                 tracer.getCurrentSpan().logEvent("按sn码和设备类型查找失败:原因:" + e.getMessage());
@@ -83,7 +83,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public MixEnvelop<IotPatientDeviceVO> findByDeviceSnAndCategoryCodeAndUserType(
+            public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndCategoryCodeAndUserType(
                     @RequestParam(value = "deviceSn",required = true) String deviceSn,
                     @RequestParam(value = "categoryCode",required = true) String categoryCode,
                     @RequestParam(value = "userType",required = true) String userType) {
@@ -95,7 +95,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public MixEnvelop<IotPatientDeviceVO> updatePatientDevice(
+            public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> updatePatientDevice(
                     @RequestParam(value = "patient",required = true) String patient,
                     @RequestParam(value = "deviceSN",required = true) String deviceSN,
                     @RequestParam(value = "newDeviceSN",required = true) String newDeviceSN,
@@ -111,7 +111,7 @@ public class IotPatientDeviceFallbackFactory implements FallbackFactory<IotPatie
             }
 
             @Override
-            public MixEnvelop<LocationDataVO> findDeviceLocationsByIdCard(
+            public MixEnvelop<LocationDataVO, LocationDataVO> findDeviceLocationsByIdCard(
                     @RequestParam(value = "jsonData",required = true) String jsonData) {
                 tracer.getCurrentSpan().logEvent("查询设备地址失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);

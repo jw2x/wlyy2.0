@@ -23,16 +23,16 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IotFileUploadFeign {
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream_img)
-    public MixEnvelop<UploadVO> uploadImg(@RequestParam(value = "file", required = true) MultipartFile file);
+    public MixEnvelop<UploadVO, UploadVO> uploadImg(@RequestParam(value = "file", required = true) MultipartFile file);
 
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream_attachment)
-    public MixEnvelop<UploadVO> uploadAttachment(@RequestParam(value = "file", required = true) MultipartFile file);
+    public MixEnvelop<UploadVO, UploadVO> uploadAttachment(@RequestParam(value = "file", required = true) MultipartFile file);
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_stream)
-    public MixEnvelop<UploadVO> uploadStream(@RequestParam(value = "file", required = true) MultipartFile file);
+    public MixEnvelop<UploadVO, UploadVO> uploadStream(@RequestParam(value = "file", required = true) MultipartFile file);
 
     @PostMapping(value = IotRequestMapping.FileUpload.api_upload_string)
-    public MixEnvelop<UploadVO> uploadImages(@RequestBody String jsonData) throws Exception;
+    public MixEnvelop<UploadVO, UploadVO> uploadImages(@RequestBody String jsonData) throws Exception;
 
 }

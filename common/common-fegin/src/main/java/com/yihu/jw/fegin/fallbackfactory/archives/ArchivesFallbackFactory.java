@@ -22,7 +22,7 @@ public class ArchivesFallbackFactory implements FallbackFactory<ArchivesFeign> {
     public ArchivesFeign create(Throwable e){
         return new ArchivesFeign() {
             @Override
-            public MixEnvelop<PatientArchivesVO> findPatientArchives(@RequestParam(value = "name", required = false)String name,
+            public MixEnvelop<PatientArchivesVO, PatientArchivesVO> findPatientArchives(@RequestParam(value = "name", required = false)String name,
                                                                      @RequestParam(value = "status", required = false)String status,
                                                                      @RequestParam(value = "cancelReseanType", required = false)String cancelReseanType,
                                                                      @RequestParam(value = "page", required = false)Integer page,
@@ -36,14 +36,14 @@ public class ArchivesFallbackFactory implements FallbackFactory<ArchivesFeign> {
                 return null;
             }
             @Override
-            public MixEnvelop<PatientArchivesInfoVO> queryPatientArchivesInfoPage(@RequestParam(value = "code", required = false)String code){
+            public MixEnvelop<PatientArchivesInfoVO, PatientArchivesInfoVO> queryPatientArchivesInfoPage(@RequestParam(value = "code", required = false)String code){
                 tracer.getCurrentSpan().logEvent("查找档案详情接口失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("code:" + code);
                 return null;
             }
 
             @Override
-            public MixEnvelop<Boolean> createPatientArchives(@RequestParam(value = "patientArchives", required = true)String patientArchives,
+            public MixEnvelop<Boolean, Boolean> createPatientArchives(@RequestParam(value = "patientArchives", required = true)String patientArchives,
                                                              @RequestParam(value = "list", required = true)String list){
                 tracer.getCurrentSpan().logEvent("创建失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("patientArchives:" + patientArchives);
@@ -52,7 +52,7 @@ public class ArchivesFallbackFactory implements FallbackFactory<ArchivesFeign> {
             }
 
             @Override
-            public MixEnvelop<Boolean> updatePatientArchives(@RequestParam(value = "patientArchives", required = true)String patientArchives,
+            public MixEnvelop<Boolean, Boolean> updatePatientArchives(@RequestParam(value = "patientArchives", required = true)String patientArchives,
                                                              @RequestParam(value = "list", required = true)String list){
                 tracer.getCurrentSpan().logEvent("更新档案失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("patientArchives:" + patientArchives);

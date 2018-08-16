@@ -25,7 +25,7 @@ public class IotProductFallbackFactory implements FallbackFactory<IotProductFeig
         return new IotProductFeign() {
 
             @Override
-            public MixEnvelop<IotProductBaseInfoVO> findCompanyPage(
+            public MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> findCompanyPage(
                     @RequestParam(value = "name", required = false) String name,
                     @RequestParam(value = "classify", required = false) String classify,
                     @RequestParam(value = "companyId", required = false) String companyId,
@@ -41,7 +41,7 @@ public class IotProductFallbackFactory implements FallbackFactory<IotProductFeig
             }
 
             @Override
-            public MixEnvelop<IotProductBaseInfoVO> findProductPageByCompanyId(
+            public MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> findProductPageByCompanyId(
                     @RequestParam(value = "name", required = false) String name,
                     @RequestParam(value = "companyId", required = true) String companyId,
                     @RequestParam(value = "page", required = false) Integer page,
@@ -55,7 +55,7 @@ public class IotProductFallbackFactory implements FallbackFactory<IotProductFeig
             }
 
             @Override
-            public MixEnvelop<IotProductVO> addProduct(@RequestParam(value = "jsonData", required = false)String jsonData) {
+            public MixEnvelop<IotProductVO, IotProductVO> addProduct(@RequestParam(value = "jsonData", required = false)String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建产品失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
@@ -63,28 +63,28 @@ public class IotProductFallbackFactory implements FallbackFactory<IotProductFeig
 
 
             @Override
-            public MixEnvelop<IotProductVO> findByCode(@RequestParam(value = "id", required = true) String id) {
+            public MixEnvelop<IotProductVO, IotProductVO> findByCode(@RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("根据id查找产品失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
 
             @Override
-            public MixEnvelop<IotMaintenanceUnitVO> getList(@RequestParam(value = "productId", required = true) String productId){
+            public MixEnvelop<IotMaintenanceUnitVO, IotMaintenanceUnitVO> getList(@RequestParam(value = "productId", required = true) String productId){
                 tracer.getCurrentSpan().logEvent("获取维护单位失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("productId:" + productId);
                 return null;
             }
 
             @Override
-            public MixEnvelop<IotProductVO> delCompany(@RequestParam(value = "id", required = true) String id) {
+            public MixEnvelop<IotProductVO, IotProductVO> delCompany(@RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("删除产品失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
 
             @Override
-            public MixEnvelop<IotProductVO> updCompany(@RequestParam(value = "jsonData", required = false)String jsonData) {
+            public MixEnvelop<IotProductVO, IotProductVO> updCompany(@RequestParam(value = "jsonData", required = false)String jsonData) {
                 tracer.getCurrentSpan().logEvent("修改产品信息失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;

@@ -22,6 +22,6 @@ public interface IotSystemDictFeign {
 
 
     @GetMapping(value = IotRequestMapping.System.findDictByCode)
-    public MixEnvelop<IotSystemDictVO> getList(@RequestParam(value = "dictName", required = true) String dictName) throws Exception ;
+    public MixEnvelop<IotSystemDictVO, IotSystemDictVO> getList(@RequestParam(value = "dictName", required = true) String dictName) throws Exception ;
 
 }

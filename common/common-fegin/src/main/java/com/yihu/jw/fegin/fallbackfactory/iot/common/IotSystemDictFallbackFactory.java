@@ -22,7 +22,7 @@ public class IotSystemDictFallbackFactory implements FallbackFactory<IotSystemDi
     public IotSystemDictFeign create(Throwable e) {
         return new IotSystemDictFeign() {
             @Override
-            public MixEnvelop<IotSystemDictVO> getList(@RequestParam(value = "dictName", required = true) String dictName) throws Exception {
+            public MixEnvelop<IotSystemDictVO, IotSystemDictVO> getList(@RequestParam(value = "dictName", required = true) String dictName) throws Exception {
                 tracer.getCurrentSpan().logEvent("获取字典失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("dictName:" + dictName);
                 return null;
