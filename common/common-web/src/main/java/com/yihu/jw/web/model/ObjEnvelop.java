@@ -7,7 +7,7 @@ import java.util.HashMap;
  */
 public class ObjEnvelop<J> extends Envelop {
 
-    private J data = (J) new HashMap<String, Object>(0);
+    private J data = (J) new HashMap<>(0);
 
     public J getData() {
         return data;

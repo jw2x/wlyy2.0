@@ -43,7 +43,7 @@ public class MixEnvelop<T, J> extends Envelop {
     private List<T> contents = new ArrayList<>(0);
 
     @ApiModelProperty("内容")
-    private J data = (J) new HashMap<String, Object>(0);
+    private J data = (J) new HashMap<>(0);
 
 
     public int getCurrPage() {
