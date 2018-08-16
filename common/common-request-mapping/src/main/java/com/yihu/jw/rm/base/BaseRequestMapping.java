@@ -6,7 +6,50 @@ package com.yihu.jw.rm.base;
  */
 public class BaseRequestMapping {
 
+    @Deprecated
     public static final String api_base_common = "/svr-bases";
+
+    /**
+     * 基础请求地址
+     */
+    private abstract static class Basic {
+        public static final String CREATE =  "/create";
+        public static final String DELETE = "/delete";
+        public static final String UPDATE = "/update";
+        public static final String PAGE = "/page";
+        public static final String LIST = "/list";
+    }
+
+    /**
+     * SAAS
+     */
+    public static class Saas extends Basic {
+        public static final String PREFIX  = "/saas";
+        public static final String AUDIT  = "/audit";
+    }
+
+    /**
+     * 模块
+     */
+    public static class Module extends Basic {
+        public static final String PREFIX  = "/module";
+    }
+
+    /**
+     * 主题
+     */
+    public static class Theme extends Basic {
+        public static final String PREFIX  = "/theme";
+        public static final String CHECK_STYLE = "/check_style";
+    }
+
+    /**
+     * 系统字典
+     */
+    public static class SystemDict extends Basic {
+        public static final String PREFIX  = "/system_dict";
+    }
+
 
     //功能模块常量
     public static class Function{
@@ -17,14 +60,10 @@ public class BaseRequestMapping {
         public static final String message_success_delete="function delete success";
         public static final String message_success_assign_function=" assign function create success";
         public static final String message_success_find_functions_module="moduleFunctions find success";
-
-
         public static final String message_fail_name_exist="function name exist";
         public static final String message_fail_name_is_null="function is null";
         public static final String message_fail_id_is_null="id is null";
         public static final String message_fail_id_no_exist=" no exist";
-
-
         public static final String api_create="/function";
         public static final String api_update="/function";
         public static final String api_delete="/function/{ids}";
@@ -36,89 +75,11 @@ public class BaseRequestMapping {
         public static final String api_getChildren="/function/children/{id}";
     }
 
-    //模块常量
-    public static class Module{
-        public static final String message_success_create="Module create success";
-        public static final String message_success_update="Module update success";
-        public static final String message_success_find="Module find success";
-        public static final String message_success_find_Modules="Module find success";
-        public static final String message_success_delete="Module delete success";
-        public static final String message_success_assign_module=" assign Module create success";
-
-
-        public static final String message_fail_name_exist=" name exist";
-        public static final String message_fail_name_is_null="name is null";
-        public static final String message_fail_saasid_is_null="saasid is null";
-        public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_id_no_exist="id no exist";
-
-
-        public static final String api_create="/module";
-        public static final String api_update="/module";
-        public static final String api_delete="/module/{ids}";
-        public static final String api_getById="/module/{id}";
-        public static final String api_getListNoPage="/module/listNoPage";
-        public static final String api_getList="/module/list";
-        public static final String api_getChildren="/module/children/{id}";
-
-    }
-
     public static class ModuleFun{
         public static final String api_getExistFun = "/moduleFun/existFunc/{id}";
         public static final String api_changeFun="/moduleFun/changeFun";
-
-
         public static final String moduleId_is_null="moduleId is null";
         public static final String funIds_is_null="funIds is null";
-    }
-
-    //saas常量
-    public static class Saas{
-        public static final String message_success_create="saas create success";
-        public static final String message_success_update="saas update success";
-        public static final String message_success_find="saas find success";
-        public static final String message_success_find_saass="saas find success";
-        public static final String message_success_delete="saas delete success";
-
-
-        public static final String message_fail_name_exist="saas name exist";
-        public static final String message_fail_name_is_null="name is null";
-        public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_id_no_exist="id no exist";
-
-
-        public static final String api_create="/saas";
-        public static final String api_update="/saas";
-        public static final String api_delete="/saas";
-        public static final String api_getById="/getById";
-        public static final String api_getSaass="/getSaass";
-        public static final String api_getSaassNoPage="/getSaassNoPage";
-
-    }
-
-    //SystemDict常量
-    public static class SystemDict{
-        public static final String message_success_create="SystemDict create success";
-        public static final String message_success_update="SystemDict update success";
-        public static final String message_success_find="SystemDict find success";
-        public static final String message_success_find_saass="SystemDict find success";
-        public static final String message_success_delete="SystemDict delete success";
-
-
-        public static final String message_fail_name_exist="SystemDict name exist";
-        public static final String message_fail_name_is_null="name is null";
-        public static final String message_fail_id_is_null="id is null";
-        public static final String message_fail_id_no_exist="id no exist";
-
-
-        public static final String api_create="/systemDict";
-        public static final String api_update="/systemDict";
-        public static final String api_delete="/systemDict";
-        public static final String api_getById="/getById";
-        public static final String api_getList="/systemDict/list";
-        public static final String api_getListNoPage="/systemDict/listNoPage";
-
-
     }
 
     //SystemDictList常量
@@ -144,8 +105,11 @@ public class BaseRequestMapping {
         public static final String api_getListNoPage="/systemDictList/listNoPage";
         public static final String api_getChildren="/systemDictList/children/{id}";
 
-
     }
+
+
+
+
 /*
     //d行政人员模块
     public static class Employee{

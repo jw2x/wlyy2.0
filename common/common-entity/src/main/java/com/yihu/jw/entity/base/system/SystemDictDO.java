@@ -1,7 +1,8 @@
 package com.yihu.jw.entity.base.system;// default package
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "system_dict")
-public class SystemDictDO extends UuidIdentityEntity implements java.io.Serializable {
+public class SystemDictDO extends IntegerIdentityEntity {
 
 	public enum Type {
 		//基础字典
@@ -31,7 +32,7 @@ public class SystemDictDO extends UuidIdentityEntity implements java.io.Serializ
 	//类型
 	private Type type;
 
-
+	@Column(name = "saas_id")
 	public String getSaasId() {
 		return saasId;
 	}
@@ -40,6 +41,7 @@ public class SystemDictDO extends UuidIdentityEntity implements java.io.Serializ
 		this.saasId = saasId;
 	}
 
+	@Column(name = "code", nullable = false, length = 50)
 	public String getCode() {
 		return code;
 	}
@@ -48,6 +50,7 @@ public class SystemDictDO extends UuidIdentityEntity implements java.io.Serializ
 		this.code = code;
 	}
 
+	@Column(name = "py_code", nullable = false, length = 50)
 	public String getPyCode() {
 		return pyCode;
 	}
@@ -56,6 +59,7 @@ public class SystemDictDO extends UuidIdentityEntity implements java.io.Serializ
 		this.pyCode = pyCode;
 	}
 
+	@Column(name = "name", nullable =  false, length = 50)
 	public String getName() {
 		return name;
 	}
@@ -64,6 +68,7 @@ public class SystemDictDO extends UuidIdentityEntity implements java.io.Serializ
 		this.name = name;
 	}
 
+	@Column(name = "type", nullable = false)
 	public Type getType() {
 		return type;
 	}

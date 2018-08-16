@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * Integer类型的主键基类
  * Created by progr1mmer on 2018/8/13.
  */
 @MappedSuperclass
@@ -16,8 +17,8 @@ public abstract class IntegerIdentityEntity implements Serializable {
     protected Integer id;
 
     @Id
-    @GeneratedValue(generator = "Generator")
-    @GenericGenerator(name = "Generator", strategy = "identity")
+    @GeneratedValue(generator = "generator")
+    @GenericGenerator(name = "generator", strategy = "identity")
     @Column(name = "id", unique = true, nullable = false)
     public Integer getId() {
         return id;

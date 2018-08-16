@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
  * localhost:10020/refresh  刷新当个微服务的配置 可以在需要刷新的bean上面@RefreshScope
  */
 @SpringBootApplication
-//@EnableJpaAuditing
+@EnableJpaAuditing
 public class SvrBaseApplication  extends SpringBootServletInitializer  {
 
     public static void main(String[] args)  {

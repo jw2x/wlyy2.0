@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +23,8 @@ import java.util.List;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "MixEnvelop", description = "通用的实体")
-public class MixEnvelop<T, J> extends Envelop {
+@ApiModel(value = "PageEnvelop", description = "通用的实体")
+public class PageEnvelop<T> extends Envelop {
 
     @ApiModelProperty("当前页")
     private int currPage = 1;
@@ -41,10 +40,6 @@ public class MixEnvelop<T, J> extends Envelop {
 
     @ApiModelProperty("列表内容")
     private List<T> contents = new ArrayList<>(0);
-
-    @ApiModelProperty("内容")
-    private J data = (J) new HashMap<>(0);
-
 
     public int getCurrPage() {
         return currPage;
@@ -91,11 +86,4 @@ public class MixEnvelop<T, J> extends Envelop {
         this.contents = contents;
     }
 
-    public J getData() {
-        return data;
-    }
-
-    public void setData(J data) {
-        this.data = data;
-    }
 }

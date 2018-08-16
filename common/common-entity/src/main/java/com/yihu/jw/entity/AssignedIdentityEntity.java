@@ -16,8 +16,8 @@ public abstract class AssignedIdentityEntity implements Serializable {
     protected String id;
 
     @Id
-    @GeneratedValue(generator = "Generator")
-    @GenericGenerator(name = "Generator", strategy = "assigned")
+    @GeneratedValue(generator = "generator")
+    @GenericGenerator(name = "generator", strategy = "assigned")
     @Column(name = "id", unique = true, nullable = false)
     public String getId() {
         return id;

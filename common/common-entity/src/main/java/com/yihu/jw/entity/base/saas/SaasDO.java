@@ -16,10 +16,10 @@ import javax.persistence.Table;
 public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public enum Status {
-        delete,
         auditWait,
         auditPassed,
-        auditNotPassed
+        auditNotPassed,
+		delete
     }
 
 	public enum Type {

@@ -1,10 +1,7 @@
 package com.yihu.jw.web.endpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.web.model.Envelop;
-import com.yihu.jw.web.model.ListEnvelop;
-import com.yihu.jw.web.model.MixEnvelop;
-import com.yihu.jw.web.model.ObjEnvelop;
+import com.yihu.jw.web.model.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -65,16 +62,23 @@ public abstract class EnvelopRestEndpoint {
         return listEnvelop;
     }
 
-    protected <T> MixEnvelop success(List<T> contents, int totalCount, int currPage, int pageSize) {
+    protected <T> PageEnvelop success(List<T> contents, int totalCount, int currPage, int pageSize) {
         return success(contents, "success", totalCount, currPage, pageSize);
     }
 
-    protected <T> MixEnvelop success(List<T> contents, String desc, int totalCount, int currPage, int pageSize) {
+    protected <T> PageEnvelop success(List<T> contents, String desc, int totalCount, int currPage, int pageSize) {
         return success(contents, desc, 200, totalCount, currPage, pageSize);
     }
 
-    protected <T> MixEnvelop success(List<T> contents, String desc, int code, int totalCount, int currPage, int pageSize) {
-        return success(contents, null, desc, code, totalCount, currPage, pageSize);
+    protected <T> PageEnvelop success(List<T> contents, String desc, int code, int totalCount, int currPage, int pageSize) {
+        PageEnvelop<T> pageEnvelop = new PageEnvelop();
+        pageEnvelop.setDesc(desc);
+        pageEnvelop.setCode(code);
+        pageEnvelop.setCurrPage(currPage);
+        pageEnvelop.setPageSize(pageSize);
+        pageEnvelop.setTotalCount(totalCount);
+        pageEnvelop.setContents(contents);
+        return pageEnvelop;
     }
 
     protected <T, J> MixEnvelop success(List<T> contents, J obj) {

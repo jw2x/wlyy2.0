@@ -1,7 +1,8 @@
 package com.yihu.jw.entity.base.theme;
 
-import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,42 +11,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_theme")
-public class ThemeDO extends UuidIdentityEntityWithOperator {
+public class ThemeDO extends IntegerIdentityEntity {
 
-    private String backgroundColor; //主体背景颜色
-    private String fontColor; //主体字体颜色
-    private String fontFamily; //主体字体系列
-    private Integer fontSize; //主体字体大小
+    //主题风格
+    private String style;
 
-    public String getBackgroundColor() {
-        return backgroundColor;
+    @Column(name = "style", nullable = false)
+    public String getStyle() {
+        return style;
     }
 
-    public void setBackgroundColor(String backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public String getFontColor() {
-        return fontColor;
-    }
-
-    public void setFontColor(String fontColor) {
-        this.fontColor = fontColor;
-    }
-
-    public String getFontFamily() {
-        return fontFamily;
-    }
-
-    public void setFontFamily(String fontFamily) {
-        this.fontFamily = fontFamily;
-    }
-
-    public Integer getFontSize() {
-        return fontSize;
-    }
-
-    public void setFontSize(Integer fontSize) {
-        this.fontSize = fontSize;
+    public void setStyle(String style) {
+        this.style = style;
     }
 }

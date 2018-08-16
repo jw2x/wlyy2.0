@@ -31,11 +31,13 @@ public abstract class UuidIdentityEntityWithOperator extends UuidIdentityEntity 
 	protected Date createTime;
 	//创建者
 	protected String createUser;
+	//创建者
 	protected String createUserName;
 	//更新时间
 	protected Date updateTime;
 	//更新者
 	protected String updateUser;
+	//更新者
 	protected String updateUserName;
 
 	@CreatedDate

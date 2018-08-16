@@ -17,33 +17,24 @@ import java.util.List;
 public class ModuleDO extends UuidIdentityEntityWithOperator {
 
     public enum Status {
-        delete,
-        disable,
-        available;
+		disable,
+		available,
+		delete
     }
 
-	private String saasId; //关联 Saas id
-	private String name; //模块名称
-	private String parentId; //父id
-	private Status status; //0删除 1禁用 2可用
-	private String remark; //备注
-	private String state ;  //closed:表示有子节点   open:表示没有子节点
+	//模块名称
+	private String name;
+	//父id
+	private String parentId;
+	//0-禁用，1-可用，2-不可用
+	private Status status;
+	//备注
+	private String remark;
+	//closed-表示有子节点，open-表示没有子节点
+	private String state ;
 	private List<ModuleDO> children = new ArrayList<>();
 
 	// Constructors
-
-	/** default constructor */
-	public ModuleDO() {
-	}
-
-    @Column(name = "saas_id", length = 100)
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
-    }
 
     @Column(name = "name", length = 200)
     public String getName() {
@@ -54,7 +45,7 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
         this.name = name;
     }
 
-    @Column(name = "parent_id", length = 100)
+    @Column(name = "parent_id", length = 50)
 	public String getParentId() {
 		return parentId;
 	}

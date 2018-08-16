@@ -27,6 +27,7 @@ public abstract class UuidIdentityEntity implements Serializable {
 	@Id
 	@GeneratedValue(generator = "uuid")
 	@GenericGenerator(name = "uuid", strategy = "uuid")
+	@Column(name = "id", unique = true, nullable = false)
 	public String getId() {
 		return id;
 	}

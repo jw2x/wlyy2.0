@@ -1,7 +1,8 @@
 package com.yihu.jw.entity.base.system;// default package
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "system_dict_entry")
-public class SystemDictEntryDO extends UuidIdentityEntity implements java.io.Serializable {
+public class SystemDictEntryDO extends IntegerIdentityEntity {
 
 	//所属字典编码
 	private String dictCode;
@@ -25,6 +26,7 @@ public class SystemDictEntryDO extends UuidIdentityEntity implements java.io.Ser
 	//备注
 	private String remark;
 
+	@Column(name = "dict_code", nullable = false, length = 50)
 	public String getDictCode() {
 		return dictCode;
 	}
@@ -33,6 +35,7 @@ public class SystemDictEntryDO extends UuidIdentityEntity implements java.io.Ser
 		this.dictCode = dictCode;
 	}
 
+	@Column(name = "code", nullable = false, length = 50)
 	public String getCode() {
 		return code;
 	}
@@ -41,6 +44,7 @@ public class SystemDictEntryDO extends UuidIdentityEntity implements java.io.Ser
 		this.code = code;
 	}
 
+	@Column(name = "py_code", nullable = false, length = 50)
 	public String getPyCode() {
 		return pyCode;
 	}
@@ -49,6 +53,7 @@ public class SystemDictEntryDO extends UuidIdentityEntity implements java.io.Ser
 		this.pyCode = pyCode;
 	}
 
+	@Column(name = "value", nullable = false)
 	public String getValue() {
 		return value;
 	}
@@ -57,6 +62,7 @@ public class SystemDictEntryDO extends UuidIdentityEntity implements java.io.Ser
 		this.value = value;
 	}
 
+	@Column(name = "sort")
 	public Integer getSort() {
 		return sort;
 	}
@@ -65,6 +71,7 @@ public class SystemDictEntryDO extends UuidIdentityEntity implements java.io.Ser
 		this.sort = sort;
 	}
 
+	@Column(name = "remark")
 	public String getRemark() {
 		return remark;
 	}

@@ -10,9 +10,8 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_organization")
-public class OrganizationDO extends UuidIdentityEntity {
+public class Organization extends UuidIdentityEntity {
 
-    private String saasId; //SAAS ID
     private String name; //名称
     private String code; //编码
     private String logo; //图片URL
@@ -27,14 +26,6 @@ public class OrganizationDO extends UuidIdentityEntity {
     private String districtName; //区县名称
     private Integer community; //社区
     private String communityName; //社区名称
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
-    }
 
     public String getName() {
         return name;
