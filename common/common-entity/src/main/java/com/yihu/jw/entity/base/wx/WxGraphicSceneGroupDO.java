@@ -1,6 +1,6 @@
-package com.yihu.jw.base.wx;
+package com.yihu.jw.entity.base.wx;
 
-import com.yihu.jw.IdEntity;
+import com.yihu.jw.entity.UuidIdentityEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "wx_graphic_scene_group")
-public class WxGraphicSceneGroupDO extends IdEntity implements java.io.Serializable{
+public class WxGraphicSceneGroupDO extends UuidIdentityEntity implements java.io.Serializable{
 
     private String wechatId;//微信Id
     private String scene;//场景值(根据场景值组装图文消息)

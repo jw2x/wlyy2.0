@@ -1,13 +1,12 @@
 package com.yihu.jw.business.wx.service;
 
-import com.yihu.jw.base.wx.WxReplySceneDO;
-import com.yihu.jw.base.wx.WxWechatDO;
-import com.yihu.jw.business.wx.controller.WechatCoreController;
+import com.yihu.jw.entity.base.wx.WxReplySceneDO;
 import com.yihu.jw.business.wx.dao.WechatDao;
 import com.yihu.jw.business.wx.dao.WxReplySceneDao;
+import com.yihu.jw.entity.base.wx.WxWechatDO;
 import com.yihu.jw.util.wechat.WeiXinMessageReplyUtils;
 import com.yihu.jw.util.wechat.WeiXinMessageUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;

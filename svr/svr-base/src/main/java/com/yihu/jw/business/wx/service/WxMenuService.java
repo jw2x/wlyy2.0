@@ -1,14 +1,14 @@
 package com.yihu.jw.business.wx.service;
 
-import com.yihu.jw.base.wx.WxMenuDO;
-import com.yihu.jw.base.wx.WxMenuJsonDO;
-import com.yihu.jw.base.wx.WxWechatDO;
+import com.yihu.jw.base.util.HttpUtil;
+import com.yihu.jw.entity.base.wx.WxMenuDO;
+import com.yihu.jw.entity.base.wx.WxMenuJsonDO;
 import com.yihu.jw.business.wx.dao.WechatDao;
 import com.yihu.jw.business.wx.dao.WxMenuDao;
 import com.yihu.jw.business.wx.dao.WxMenuJsonDao;
+import com.yihu.jw.entity.base.wx.WxWechatDO;
 import com.yihu.jw.restmodel.common.Envelop;
 import com.yihu.jw.rm.base.WechatRequestMapping;
-import com.yihu.jw.util.HttpUtil;
 import com.yihu.mysql.query.BaseJpaService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

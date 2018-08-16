@@ -1,6 +1,6 @@
 package com.yihu.jw.business.wx.dao;
 
-import com.yihu.jw.base.wx.WxGraphicSceneGroupDO;
+import com.yihu.jw.entity.base.wx.WxGraphicSceneGroupDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

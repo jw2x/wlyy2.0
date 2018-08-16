@@ -1,11 +1,11 @@
 package com.yihu.jw.business.wx.controller;
 
-import com.yihu.jw.base.wx.WxWechatDO;
 import com.yihu.jw.business.wx.service.WechatCoreService;
+import com.yihu.jw.entity.base.wx.WxWechatDO;
 import com.yihu.jw.restmodel.common.EnvelopRestController;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

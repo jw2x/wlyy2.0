@@ -1,6 +1,7 @@
 package com.yihu.jw.entity.specialist.rehabilitation;
 
-import com.yihu.jw.IdEntityWithOperation;
+
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_rehabilitation_detail")
-public class RehabilitationDetailDO extends IdEntityWithOperation implements Serializable {
+public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId;

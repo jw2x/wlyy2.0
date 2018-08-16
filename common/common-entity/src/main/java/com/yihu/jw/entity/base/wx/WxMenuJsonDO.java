@@ -1,6 +1,7 @@
-package com.yihu.jw.base.wx;
+package com.yihu.jw.entity.base.wx;
 
-import com.yihu.jw.IdEntityWithOperation;
+
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "wx_menu_json")
-public class WxMenuJsonDO extends IdEntityWithOperation implements java.io.Serializable{
+public class WxMenuJsonDO extends UuidIdentityEntityWithOperator implements java.io.Serializable{
 
     private String wechatId;//微信Id
     private String content;//'微信模板内容',

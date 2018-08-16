@@ -1,14 +1,14 @@
 package com.yihu.jw.business.wx.service;
 
-import com.yihu.jw.base.wx.WxAccessTokenDO;
-import com.yihu.jw.base.wx.WxWechatDO;
 import com.yihu.jw.business.wx.dao.WechatDao;
 import com.yihu.jw.business.wx.dao.WxAccessTokenDao;
+import com.yihu.jw.entity.base.wx.WxAccessTokenDO;
+import com.yihu.jw.entity.base.wx.WxWechatDO;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.exception.code.ExceptionCode;
 import com.yihu.jw.rm.base.WechatRequestMapping;
-import com.yihu.jw.util.HttpUtil;
 import com.yihu.mysql.query.BaseJpaService;
+import com.yihu.utils.network.HttpUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,9 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by Administrator on 2017/5/18 0018.
@@ -69,8 +67,13 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAcce
             if (StringUtils.isEmpty(appSecret)){
                 throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appSecret_is_null, ExceptionCode.common_error_params_code);
             }
-            String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
-            String result = HttpUtil.sendGet(token_url, params);
+            /*String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
+            String result = HttpUtil.sendGet(token_url, params);*/
+            Map<String, Object> params = new HashMap<>();
+            params.put("grant_type", "client_credential");
+            params.put("appid", appId);
+            params.put("secret", appSecret);
+            String result = HttpUtils.doGet(token_url, params).getContent();
             logger.info("--------------微信返回结果:"+result+"---------------");
             JSONObject json = new JSONObject(result);
                 if (json.has("access_token")) {
@@ -124,8 +127,11 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAcce
             if (StringUtils.isEmpty(appSecret)){
                 throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appSecret_is_null, ExceptionCode.common_error_params_code);
             }
-            String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
-            String result = HttpUtil.sendGet(token_url, params);
+            Map<String, Object> params = new HashMap<>();
+            params.put("grant_type", "client_credential");
+            params.put("appid", appId);
+            params.put("secret", appSecret);
+            String result = HttpUtils.doGet(token_url, params).getContent();
             logger.info("--------------微信返回结果:"+result+"---------------");
             JSONObject json = new JSONObject(result);
             if (json.has("access_token")) {
