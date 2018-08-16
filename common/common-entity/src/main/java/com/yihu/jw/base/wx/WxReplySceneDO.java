@@ -19,7 +19,7 @@ public class WxReplySceneDO extends IdEntityWithOperation implements java.io.Ser
     private String event;//微信事件类型：SCAN，LOCATION，CLICK，subscribe，unsubscribe
     private String scene;//图文消息/自定义消息，分组场景
     private String content;//居民回复内容，消息字段
-    private String status;//状态(-1删除 0 冻结 1可用
+    private Integer status;//状态(-1删除 0 冻结 1可用
 
     @Column(name = "wechat_id")
     public String getWechatId() {
@@ -76,11 +76,11 @@ public class WxReplySceneDO extends IdEntityWithOperation implements java.io.Ser
     }
 
     @Column(name = "status")
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

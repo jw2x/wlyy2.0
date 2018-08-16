@@ -36,10 +36,65 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAcce
     private WechatDao wechatDao;
 
     /**
-     * 根据wechatCode查找最新一条
-     * @param wechatId
+     * 根据原始id查找
+     * @param appOriginId
      * @return
      */
+    public WxAccessTokenDO getWxAccessTokenByOriginId(String appOriginId) {
+        try {
+            //根据wechatCode查找出appid和appSecret
+            WxWechatDO wxWechat = wechatDao.findByAppOriginId(appOriginId);
+            if(wxWechat==null){
+                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
+            }
+            List<WxAccessTokenDO> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenById(wxWechat.getId());
+            if(wxAccessTokens!=null&&wxAccessTokens.size()>0){
+                for (WxAccessTokenDO accessToken : wxAccessTokens) {
+                    if ((System.currentTimeMillis() - accessToken.getAddTimestamp()) < (accessToken.getExpiresIn() * 500)) {
+                        return accessToken;
+                    } else {
+                        wxAccessTokenDao.delete(accessToken);
+                        break;
+                    }
+                }
+            }
+            String token_url = "https://api.weixin.qq.com/cgi-bin/token";
+            String appId="";
+            String appSecret="";
+            appId = wxWechat.getAppId();
+            appSecret = wxWechat.getAppSecret();
+            if (StringUtils.isEmpty(appId)){
+                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appId_is_null, ExceptionCode.common_error_params_code);
+            }
+            if (StringUtils.isEmpty(appSecret)){
+                throw new ApiException(WechatRequestMapping.WxConfig.message_fail_appSecret_is_null, ExceptionCode.common_error_params_code);
+            }
+            String params = "grant_type=client_credential&appid=" + appId + "&secret=" + appSecret;
+            String result = HttpUtil.sendGet(token_url, params);
+            logger.info("--------------微信返回结果:"+result+"---------------");
+            JSONObject json = new JSONObject(result);
+                if (json.has("access_token")) {
+                String token = json.get("access_token").toString();
+                String expires_in = json.get("expires_in").toString();
+                WxAccessTokenDO newaccessToken = new WxAccessTokenDO();
+                newaccessToken.setAccessToken(token);
+                newaccessToken.setExpiresIn(Long.parseLong(expires_in));
+                newaccessToken.setAddTimestamp(System.currentTimeMillis());
+                newaccessToken.setCzrq(new Date());
+                newaccessToken.setCode(UUID.randomUUID().toString().replace("-",""));
+                newaccessToken.setWechatId(wxWechat.getId());
+                wxAccessTokenDao.save(newaccessToken);
+                return newaccessToken;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     public WxAccessTokenDO getWxAccessTokenById(String wechatId) {
         try {
             //根据wechatCode查找出appid和appSecret
@@ -73,7 +128,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAcce
             String result = HttpUtil.sendGet(token_url, params);
             logger.info("--------------微信返回结果:"+result+"---------------");
             JSONObject json = new JSONObject(result);
-                if (json.has("access_token")) {
+            if (json.has("access_token")) {
                 String token = json.get("access_token").toString();
                 String expires_in = json.get("expires_in").toString();
                 WxAccessTokenDO newaccessToken = new WxAccessTokenDO();
