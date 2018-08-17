@@ -188,13 +188,13 @@ public abstract class EnvelopRestEndpoint {
 
     protected String randomString(int length) {
         String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < length; i++) {
             int pos = random.nextInt(str.length());
-            buffer.append(str.charAt(pos));
+            builder.append(str.charAt(pos));
         }
-        return buffer.toString();
+        return builder.toString();
     }
 
     /**
