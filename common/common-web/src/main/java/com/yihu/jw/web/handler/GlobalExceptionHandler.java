@@ -1,7 +1,7 @@
 package com.yihu.jw.web.handler;
 
+import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.web.Envelop;
-import com.yihu.jw.web.exception.ApiException;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
             envelop.setStatus(HttpStatus.BAD_GATEWAY.value());
         } else if (e instanceof ApiException) { //业务逻辑异常
             ApiException apiException = (ApiException) e;
-            envelop.setMessage(apiException.getErrorDesc());
+            envelop.setMessage(apiException.getMessage());
             envelop.setStatus(apiException.getErrorCode());
             return envelop; //此异常不进行日志记录
         } else {
