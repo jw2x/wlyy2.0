@@ -30,7 +30,7 @@ public class LoginFeignFallbackFactory implements FallbackFactory<LoginFeign> {
             @Override
             public Envelop checkoutInfo(String ssc, String idcard) {
                 tracer.getCurrentSpan().logEvent("校验医保卡、身份证、手机号接口错误:原因:"+e.getMessage());
-                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.value);
+                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.code);
             }
 
             /**
@@ -48,7 +48,7 @@ public class LoginFeignFallbackFactory implements FallbackFactory<LoginFeign> {
             @Override
             public MixEnvelop register(String mobilePhone, String saasId, int type, String captcha, String name, String password, String idcard, String ssc) {
                 tracer.getCurrentSpan().logEvent("注册账号接口错误:原因:"+e.getMessage());
-                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.value);
+                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.code);
             }
 
             /**
@@ -62,7 +62,7 @@ public class LoginFeignFallbackFactory implements FallbackFactory<LoginFeign> {
             @Override
             public MixEnvelop login(String mobilePhone, String password, String saasId, String captcha) {
                 tracer.getCurrentSpan().logEvent("登录账号接口错误:原因:"+e.getMessage());
-                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.value);
+                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.code);
             }
         };
     }

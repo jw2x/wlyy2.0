@@ -18,11 +18,11 @@ public enum EnvelopStatus {
     //------------------登陆 权限相关 end ------------------
 
     public String name;
-    public Integer value;
+    public Integer code;
 
     EnvelopStatus(String name, Integer value) {
         this.name = name;
-        this.value = value;
+        this.code = value;
     }
 
 }

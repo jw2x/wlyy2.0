@@ -21,7 +21,7 @@ import java.util.List;
  * 快速集成 {@link com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint}
  * @author llh
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(value = "ListResult", description = "获取实体列表返回定义")
 public class ListEnvelop<T> extends Envelop {
 

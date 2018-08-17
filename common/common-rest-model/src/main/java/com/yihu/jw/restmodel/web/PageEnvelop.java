@@ -22,7 +22,7 @@ import java.util.List;
  * 快速集成 {@link com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint}
  * @author llh
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(value = "EnvelopPage<T>", description = "分页查询返回")
 public class PageEnvelop<T> extends Envelop implements Serializable {
 

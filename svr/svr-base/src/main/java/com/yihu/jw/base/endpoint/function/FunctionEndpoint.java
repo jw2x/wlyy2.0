@@ -1,7 +1,7 @@
-package com.yihu.jw.base.endpoint;
+package com.yihu.jw.base.endpoint.function;
 
-import com.yihu.jw.base.service.SystemDictEntryService;
-import com.yihu.jw.entity.base.system.SystemDictEntryDO;
+import com.yihu.jw.base.service.FunctionService;
+import com.yihu.jw.entity.base.function.FunctionDO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -21,48 +21,48 @@ import java.util.List;
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
-@RequestMapping(value = BaseRequestMapping.SystemDictEntry.PREFIX)
-@Api(value = "系统字典项", description = "系统字典项服务接口", tags = {"wlyy基础服务 - 系统字典项服务接口"})
-public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
-    
-    @Autowired
-    private SystemDictEntryService systemDictEntryService;
+@RequestMapping(value = BaseRequestMapping.Function.PREFIX)
+@Api(value = "功能管理", description = "功能管理服务接口", tags = {"wlyy基础服务 - 功能管理服务接口"})
+public class FunctionEndpoint extends EnvelopRestEndpoint {
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Autowired
+    private FunctionService functionService;
+
+    @PostMapping(value = BaseRequestMapping.Function.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SystemDictEntryDO> create (
-            @ApiParam(name = "json", value = "Json数据", required = true)
+    public ObjEnvelop<FunctionDO> create (
+            @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SystemDictEntryDO systemDictEntryDO = toEntity(jsonData, SystemDictEntryDO.class);
-        systemDictEntryDO = systemDictEntryService.save(systemDictEntryDO);
-        return success(systemDictEntryDO);
+        FunctionDO functionDO = toEntity(jsonData, FunctionDO.class);
+        functionDO = functionService.save(functionDO);
+        return success(functionDO);
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
+    @PostMapping(value = BaseRequestMapping.Function.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        systemDictEntryService.delete(ids);
+        functionService.delete(ids);
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Function.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public Envelop update (
-            @ApiParam(name = "json", value = "Json数据", required = true)
+            @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SystemDictEntryDO systemDictEntryDO = toEntity(jsonData, SystemDictEntryDO.class);
-        if (null == systemDictEntryDO.getId()) {
+        FunctionDO functionDO = toEntity(jsonData, FunctionDO.class);
+        if (null == functionDO.getId()) {
             return failed("ID不能为空");
         }
-        systemDictEntryDO = systemDictEntryService.save(systemDictEntryDO);
-        return success(systemDictEntryDO);
+        functionDO = functionService.save(functionDO);
+        return success(functionDO);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.PAGE)
+    @GetMapping(value = BaseRequestMapping.Function.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SystemDictEntryDO> page (
+    public PageEnvelop<FunctionDO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -73,21 +73,22 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<SystemDictEntryDO> systemDictEntryDOS = systemDictEntryService.search(fields, filters, sorts, page, size);
-        int count = (int)systemDictEntryService.getCount(filters);
-        return success(systemDictEntryDOS, count, page, size);
+        List<FunctionDO> functionDOS = functionService.search(fields, filters, sorts, page, size);
+        int count = (int)functionService.getCount(filters);
+        return success(functionDOS, count, page, size);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.LIST)
+    @GetMapping(value = BaseRequestMapping.Function.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SystemDictEntryDO> list (
+    public ListEnvelop<FunctionDO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<SystemDictEntryDO> systemDictEntryDOS = systemDictEntryService.search(fields, filters, sorts);
-        return success(systemDictEntryDOS);
+        List<FunctionDO> functionDOS = functionService.search(fields, filters, sorts);
+        return success(functionDOS);
     }
+
 }

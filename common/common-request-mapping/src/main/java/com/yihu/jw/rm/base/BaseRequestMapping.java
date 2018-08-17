@@ -43,6 +43,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 模块功能
+     */
+    public static class ModuleFunction extends Basic {
+        public static final String PREFIX  = "/module_function";
+    }
+
+    /**
      * 主题
      */
     public static class Theme extends Basic {

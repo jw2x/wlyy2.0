@@ -20,7 +20,7 @@ import java.util.HashMap;
  * 快速集成 {@link com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint}
  * @author llh
  */
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
+@JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(description = "获取单个实体信息返回")
 public class ObjEnvelop<J> extends Envelop {
 

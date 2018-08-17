@@ -55,11 +55,11 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <J> ObjEnvelop<J> success(J data, String desc, int code){
-        ObjEnvelop<J> envelop = new ObjEnvelop<>();
-        envelop.setMessage(desc);
-        envelop.setStatus(code);
-        envelop.setObj(data);
-        return envelop;
+        ObjEnvelop<J> objEnvelop = new ObjEnvelop<>();
+        objEnvelop.setMessage(desc);
+        objEnvelop.setStatus(code);
+        objEnvelop.setObj(data);
+        return objEnvelop;
     }
 
     protected <T> ListEnvelop<T> success(List<T> contents){
@@ -71,54 +71,54 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <T> ListEnvelop<T> success(List<T> contents, String desc, int code){
-        ListEnvelop<T> envelop = new ListEnvelop<>();
-        envelop.setMessage(desc);
-        envelop.setStatus(code);
-        envelop.setDetailModelList(contents);
-        return envelop;
+        ListEnvelop<T> listEnvelop = new ListEnvelop<>();
+        listEnvelop.setMessage(desc);
+        listEnvelop.setStatus(code);
+        listEnvelop.setDetailModelList(contents);
+        return listEnvelop;
     }
 
-    protected <T> PageEnvelop success(List<T> contents, int totalCount, int currPage, int pageSize) {
+    protected <T> PageEnvelop<T> success(List<T> contents, int totalCount, int currPage, int pageSize) {
         return success(contents, "success", totalCount, currPage, pageSize);
     }
 
-    protected <T> PageEnvelop success(List<T> contents, String desc, int totalCount, int currPage, int pageSize) {
+    protected <T> PageEnvelop<T> success(List<T> contents, String desc, int totalCount, int currPage, int pageSize) {
         return success(contents, desc, 200, totalCount, currPage, pageSize);
     }
 
-    protected <T> PageEnvelop success(List<T> contents, String desc, int code, int totalCount, int currPage, int pageSize) {
-        PageEnvelop<T> envelop = new PageEnvelop();
-        envelop.setMessage(desc);
-        envelop.setStatus(code);
-        envelop.setCurrPage(currPage);
-        envelop.setPageSize(pageSize);
-        envelop.setTotalCount(totalCount);
-        envelop.setDetailModelList(contents);
-        return envelop;
+    protected <T> PageEnvelop<T> success(List<T> contents, String desc, int code, int totalCount, int currPage, int pageSize) {
+        PageEnvelop<T> pageEnvelop = new PageEnvelop();
+        pageEnvelop.setMessage(desc);
+        pageEnvelop.setStatus(code);
+        pageEnvelop.setCurrPage(currPage);
+        pageEnvelop.setPageSize(pageSize);
+        pageEnvelop.setTotalCount(totalCount);
+        pageEnvelop.setDetailModelList(contents);
+        return pageEnvelop;
     }
 
-    protected <T, J> MixEnvelop success(List<T> contents, J obj) {
+    protected <T, J> MixEnvelop<T, J> success(List<T> contents, J obj) {
         return success(contents, obj, "success");
     }
 
-    protected <T, J> MixEnvelop success(List<T> contents, J obj, String desc) {
+    protected <T, J> MixEnvelop<T, J> success(List<T> contents, J obj, String desc) {
         return success(contents, obj, desc, 200);
     }
 
-    protected <T, J> MixEnvelop success(List<T> contents, J data, String desc, int code) {
+    protected <T, J> MixEnvelop<T, J> success(List<T> contents, J data, String desc, int code) {
         return success(contents, data, desc, code, contents.size(), 1, contents.size());
     }
 
-    protected <T, J> MixEnvelop success(List<T> contents, J data, String desc, int code, int totalCount, int currPage, int pageSize) {
-        MixEnvelop<T, J> envelop = new MixEnvelop();
-        envelop.setMessage(desc);
-        envelop.setStatus(code);
-        envelop.setCurrPage(currPage);
-        envelop.setPageSize(pageSize);
-        envelop.setTotalCount(totalCount);
-        envelop.setDetailModelList(contents);
-        envelop.setObj(data);
-        return envelop;
+    protected <T, J> MixEnvelop<T, J> success(List<T> contents, J data, String desc, int code, int totalCount, int currPage, int pageSize) {
+        MixEnvelop<T, J> mixEnvelop = new MixEnvelop();
+        mixEnvelop.setMessage(desc);
+        mixEnvelop.setStatus(code);
+        mixEnvelop.setCurrPage(currPage);
+        mixEnvelop.setPageSize(pageSize);
+        mixEnvelop.setTotalCount(totalCount);
+        mixEnvelop.setDetailModelList(contents);
+        mixEnvelop.setObj(data);
+        return mixEnvelop;
     }
 
     protected Envelop failed(String desc) {

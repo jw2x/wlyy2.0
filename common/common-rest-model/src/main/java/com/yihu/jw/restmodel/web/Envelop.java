@@ -18,7 +18,7 @@ public class Envelop implements Serializable {
     @ApiModelProperty("信息")
     protected String message;
     @ApiModelProperty("状态（200成功，-1是失败）")
-    protected Integer status = EnvelopStatus.success.value;
+    protected Integer status = EnvelopStatus.success.code;
 
     public Integer getStatus() {
         return status;
