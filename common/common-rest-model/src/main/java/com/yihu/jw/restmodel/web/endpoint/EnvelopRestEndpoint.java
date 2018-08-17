@@ -20,15 +20,13 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * REST风格控控制器基类。此控制器用于对API进行校验，并处理平台根层级的业务，如API参数校验，错误及返回码设定等。
- * <p>
- * 根层级的校验，如果是正确的，直接返回HTTP代码200，若出错，则会将HTTP返回代码设置为1X或2X，并在HTTP响应体中包含响应的信息。
+ * REST风格控控制器基类。
+ * 基于Envelop的返回结果封装
  * HTTP响应体格式为JSON。
- * + 成功：会根据各业务逻辑自行决定要返回的数据，各业务模块的返回结构不同。
- * + 失败：{"code":"错误代码", "message":"错误原因"}
+ * + 成功：根据各业务逻辑自行决定要返回的数据，各业务模块的返回结构不尽相同。
+ * + 失败：{"status":错误码, "message":"错误原因"}
  *
- * @author zhiyong
- * @author Sand
+ * @author Progr1mmer
  */
 public abstract class EnvelopRestEndpoint {
 
