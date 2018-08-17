@@ -33,12 +33,8 @@ public class WxMenuController extends EnvelopRestEndpoint {
     @PostMapping(value = WechatRequestMapping.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
     public MixEnvelop createWxMenu(@ApiParam(name = "wxId", value = "微信id")
-                                    @RequestParam(value = "wxId", required = false)String wxId) {
-        try {
-            return wxMenuService.createWxMenu(wxId);
-        } catch (ApiException e) {
-            return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
-        }
+                                    @RequestParam(value = "wxId", required = false)String wxId) throws Exception{
+        return wxMenuService.createWxMenu(wxId);
     }
 
 //    @PutMapping(value = WechatRequestMapping.WxMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
