@@ -6,7 +6,7 @@ import com.yihu.jw.business.wx.dao.WxReplySceneDao;
 import com.yihu.jw.entity.base.wx.WxWechatDO;
 import com.yihu.jw.util.wechat.WeiXinMessageReplyUtils;
 import com.yihu.jw.util.wechat.WeiXinMessageUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
