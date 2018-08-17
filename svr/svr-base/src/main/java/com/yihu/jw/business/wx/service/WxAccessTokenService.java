@@ -76,7 +76,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAcce
             String result = HttpUtils.doGet(token_url, params).getContent();
             logger.info("--------------微信返回结果:"+result+"---------------");
             JSONObject json = new JSONObject(result);
-                if (json.has("access_token")) {
+            if (json.has("access_token")) {
                 String token = json.get("access_token").toString();
                 String expires_in = json.get("expires_in").toString();
                 WxAccessTokenDO newaccessToken = new WxAccessTokenDO();

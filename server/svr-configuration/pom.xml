@@ -80,9 +80,6 @@
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <mainClass>com.yihu.jw.SvrConfiguration</mainClass>
-                </configuration>
             </plugin>
         </plugins>
     </build>
