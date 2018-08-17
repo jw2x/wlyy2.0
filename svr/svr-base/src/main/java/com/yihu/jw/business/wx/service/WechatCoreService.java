@@ -97,10 +97,12 @@ public class WechatCoreService {
 
         switch (msgType) {
             case WeiXinMessageUtils.REQ_MESSAGE_TYPE_EVENT:  // 事件消息
+                logger.info("MsgType:event");
                 result = eventProcess(message);
                 break;
             case WeiXinMessageUtils.RESP_MESSAGE_TYPE_TEXT:  // 回复文本消息
                 //回复文本消息 处理
+                logger.info("MsgType:text");
                 result = textProcess(message);
                 break;
             default:
