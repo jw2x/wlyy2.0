@@ -84,6 +84,22 @@ public class WechatCoreService {
         }
     }
 
+    public String  testProcess() throws Exception{
+        String returnStr = "";
+
+        Map<String, String> message = new HashMap();
+        message.put("Content","1");
+        message.put("CreateTime","1534486843");
+        message.put("ToUserName","gh_73959f6e996b");
+        message.put("FromUserName","oVH-2uJdhNrcAMt0Jhp3PMarDdaM");
+        message.put("MsgType","text");
+        message.put("MsgId","6590570807493983575");
+
+        returnStr = messageProcess(message);
+
+        return returnStr;
+    }
+
 
     /**
      * 对接收到的消息进行处理
@@ -229,12 +245,19 @@ public class WechatCoreService {
                 String description = (String)graphic.get("description");
                 String picUrl = (String)graphic.get("picUrl");
 
-                url = url.replace("{server}",baseUrl).replace("{appId}",appId);
+                if(url.indexOf("{server}")!=-1){
+                    url = url.replace("{server}",baseUrl);
+                }
+                if(url.indexOf("{appId}")!=-1){
+                    url = url.replace("{appId}",appId);
+                }
 
                 article.put("Url", url);
                 article.put("Title", title);
                 article.put("Description", description);
                 article.put("PicUrl", picUrl);
+
+                articles.add(article);
             }
             result = WeiXinMessageReplyUtils.replyNewsMessage(message.get("FromUserName"), message.get("ToUserName"), articles);
         }
@@ -264,7 +287,7 @@ public class WechatCoreService {
                 " AND g.wechat_id = '"+wxId+"' " +
                 " AND g.scene = '"+secene+"' " +
                 " AND m.`status` = 1 " +
-                " ORDER BY m.sort ASC";
+                " ORDER BY g.sort ASC";
         List<Map<String,Object>> group = jdbcTemplate.queryForList(sql);
         return group;
     }
