@@ -5,26 +5,16 @@ import org.springframework.util.Assert;
 
 public class ApiException extends RuntimeException {
 
-    private String errorDesc; //错误消息
-    private int errorCode; //错误码
+    private int errorCode = -10000; //错误码
 
-    public ApiException(String errorDesc) {
-        this(errorDesc, 500);
+    public ApiException(String message) {
+        this(message, 500);
     }
 
-    public ApiException(String errorDesc, int errorCode) {
-        super(errorDesc);
-        Assert.state(errorCode != 200, "The error code cannot be equal to 200");
-        this.errorDesc = errorDesc;
+    public ApiException(String message, int errorCode) {
+        super(message);
         this.errorCode = errorCode;
-    }
-
-    public String getErrorDesc() {
-        return errorDesc;
-    }
-
-    public int getErrorCode() {
-        return errorCode;
+        Assert.state(errorCode != 200, "The error code cannot be equal to 200");
     }
 
 }
