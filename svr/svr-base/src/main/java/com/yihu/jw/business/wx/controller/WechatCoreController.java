@@ -3,6 +3,7 @@ package com.yihu.jw.business.wx.controller;
 import com.yihu.jw.business.wx.service.WechatCoreService;
 import com.yihu.jw.entity.base.wx.WxWechatDO;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang.StringUtils;
@@ -26,7 +27,7 @@ import java.util.List;
  * Created by Trick on 2018/8/16.
  */
 @RestController
-@RequestMapping(WechatRequestMapping.api_common)
+@RequestMapping(BaseRequestMapping.WeChat.PREFIX)
 @Api(value = "微信回调及事件处理", description = "微信回调及事件处理")
 public class WechatCoreController extends EnvelopRestEndpoint {
 
@@ -43,24 +44,20 @@ public class WechatCoreController extends EnvelopRestEndpoint {
      */
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public void checkSignature(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            String signature = request.getParameter("signature").toString();
-            String timestamp = request.getParameter("timestamp").toString();
-            String nonce = request.getParameter("nonce").toString();
-            String echostr = request.getParameter("echostr").toString();
+    public void checkSignature(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String signature = request.getParameter("signature").toString();
+        String timestamp = request.getParameter("timestamp").toString();
+        String nonce = request.getParameter("nonce").toString();
+        String echostr = request.getParameter("echostr").toString();
 
-            if (validate(signature, timestamp, nonce)) {
-                // 验证成功，返回验证码
-                response.getWriter().print(echostr);
-            } else {
-                // 验证失败
-                response.setStatus(401);
-            }
-        } catch (Exception e) {
-            // 服务器错误
-            response.setStatus(500);
+        if (validate(signature, timestamp, nonce)) {
+            // 验证成功，返回验证码
+            response.getWriter().print(echostr);
+        } else {
+            // 验证失败
+            response.setStatus(401);
         }
+
     }
 
     /**

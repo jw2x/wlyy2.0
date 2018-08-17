@@ -29,6 +29,14 @@ public class BaseRequestMapping {
     }
 
     /**
+     * SAAS
+     */
+    public static class SaasModule extends Basic {
+        public static final String PREFIX  = "/saas_module";
+    }
+
+
+    /**
      * 模块
      */
     public static class Module extends Basic {
@@ -71,11 +79,24 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/system_dict_entry";
     }
 
-    public static class ModuleFun{
-        public static final String api_getExistFun = "/moduleFun/existFunc/{id}";
-        public static final String api_changeFun="/moduleFun/changeFun";
-        public static final String moduleId_is_null="moduleId is null";
-        public static final String funIds_is_null="funIds is null";
+    /**
+     * 角色
+     */
+    public static class Role extends Basic {
+        public static final String PREFIX  = "/role";
     }
 
+    /**
+     * 角色模块功能
+     */
+    public static class RoleModuleFunction extends Basic {
+        public static final String PREFIX  = "/role_module_function";
+    }
+
+    /**
+     * 微信
+     */
+    public static class WeChat extends Basic {
+        public static final String PREFIX  = "/wechat";
+    }
 }

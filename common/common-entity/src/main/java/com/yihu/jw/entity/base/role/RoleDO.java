@@ -1,11 +1,11 @@
-package com.yihu.jw.entity.base.user;
+package com.yihu.jw.entity.base.role;
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
-import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.sql.Timestamp;
 
 /**
  * BaseRole entity. @author MyEclipse Persistence Tools
@@ -55,15 +55,6 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 		this.name = name;
 	}
 
-	@Column(name = "remark", length = 1000)
-	public String getRemark() {
-		return this.remark;
-	}
-
-	public void setRemark(String remark) {
-		this.remark = remark;
-	}
-
 	@Column(name = "code", length = 50)
 	public String getCode() {
 		return code;
@@ -72,4 +63,14 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+	@Column(name = "remark")
+	public String getRemark() {
+		return this.remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
 }

@@ -1,7 +1,8 @@
-package com.yihu.jw.entity.base.user;
+package com.yihu.jw.entity.base.role;
 
 import com.yihu.jw.entity.UuidIdentityEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -15,9 +16,8 @@ public class RoleModuleFunctionDO extends UuidIdentityEntity {
     private String roleId; //角色ID
     private String moduleId; //模块ID
     private String functionId; //功能ID
-    private String access; //访问权限
 
-
+    @Column(name = "role_id", length = 50)
     public String getRoleId() {
         return roleId;
     }
@@ -26,11 +26,21 @@ public class RoleModuleFunctionDO extends UuidIdentityEntity {
         this.roleId = roleId;
     }
 
+    @Column(name = "module_id", length = 50)
     public String getModuleId() {
         return moduleId;
     }
 
     public void setModuleId(String moduleId) {
         this.moduleId = moduleId;
+    }
+
+    @Column(name = "function_id", length = 50)
+    public String getFunctionId() {
+        return functionId;
+    }
+
+    public void setFunctionId(String functionId) {
+        this.functionId = functionId;
     }
 }

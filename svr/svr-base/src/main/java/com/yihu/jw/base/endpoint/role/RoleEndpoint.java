@@ -1,7 +1,7 @@
-package com.yihu.jw.base.endpoint.system;
+package com.yihu.jw.base.endpoint.role;
 
-import com.yihu.jw.base.service.SystemDictService;
-import com.yihu.jw.entity.base.system.SystemDictDO;
+import com.yihu.jw.base.service.RoleService;
+import com.yihu.jw.entity.base.role.RoleDO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -21,48 +21,48 @@ import java.util.List;
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
-@RequestMapping(value = BaseRequestMapping.SystemDict.PREFIX)
-@Api(value = "系统字典", description = "系统字典服务接口", tags = {"wlyy基础服务 - 系统字典服务接口"})
-public class SystemDictEndpoint extends EnvelopRestEndpoint {
-    
-    @Autowired
-    private SystemDictService systemDictService;
+@RequestMapping(value = BaseRequestMapping.Role.PREFIX)
+@Api(value = "角色管理", description = "角色管理服务接口", tags = {"wlyy基础服务 - 角色管理服务接口"})
+public class RoleEndpoint extends EnvelopRestEndpoint {
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Autowired
+    private RoleService roleService;
+
+    @PostMapping(value = BaseRequestMapping.Module.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SystemDictDO> create (
-            @ApiParam(name = "json", value = "Json数据", required = true)
+    public ObjEnvelop<RoleDO> create (
+            @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
-        systemDictDO = systemDictService.save(systemDictDO);
-        return success(systemDictDO);
+        RoleDO roleDO = toEntity(jsonData, RoleDO.class);
+        roleDO = roleService.save(roleDO);
+        return success(roleDO);
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
+    @PostMapping(value = BaseRequestMapping.Module.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        systemDictService.delete(ids);
+        roleService.delete(ids);
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Module.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public Envelop update (
-            @ApiParam(name = "json", value = "Json数据", required = true)
+            @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
-        if (null == systemDictDO.getId()) {
+        RoleDO roleDO = toEntity(jsonData, RoleDO.class);
+        if (null == roleDO.getId()) {
             return failed("ID不能为空");
         }
-        systemDictDO = systemDictService.save(systemDictDO);
-        return success(systemDictDO);
+        roleDO = roleService.save(roleDO);
+        return success(roleDO);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.PAGE)
+    @GetMapping(value = BaseRequestMapping.Module.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SystemDictDO> page (
+    public PageEnvelop<RoleDO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -73,21 +73,22 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<SystemDictDO> systemDictDOS = systemDictService.search(fields, filters, sorts, page, size);
-        int count = (int)systemDictService.getCount(filters);
-        return success(systemDictDOS, count, page, size);
+        List<RoleDO> roleDOS = roleService.search(fields, filters, sorts, page, size);
+        int count = (int)roleService.getCount(filters);
+        return success(roleDOS, count, page, size);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.LIST)
+    @GetMapping(value = BaseRequestMapping.Module.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SystemDictDO> list (
+    public ListEnvelop<RoleDO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<SystemDictDO> systemDictDOS = systemDictService.search(fields, filters, sorts);
-        return success(systemDictDOS);
+        List<RoleDO> roleDOS = roleService.search(fields, filters, sorts);
+        return success(roleDOS);
     }
+
 }

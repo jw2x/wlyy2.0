@@ -10,14 +10,14 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "base_saas_module")
-public class SaasModuleDO extends UuidIdentityEntity implements java.io.Serializable {
+public class SaasModuleDO extends UuidIdentityEntity {
 
 	private String saasId; //关联WlyySaas code
 	private String moduleId; //关联 WlyyModule code
 
 	// Constructors
 
-	@Column(name = "saas_id", length = 100)
+	@Column(name = "saas_id", length = 50)
 	public String getSaasId() {
 		return saasId;
 	}
@@ -26,7 +26,7 @@ public class SaasModuleDO extends UuidIdentityEntity implements java.io.Serializ
 		this.saasId = saasId;
 	}
 
-	@Column(name = "module_id", length = 100)
+	@Column(name = "module_id", length = 50)
 	public String getModuleId() {
 		return this.moduleId;
 	}

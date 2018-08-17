@@ -33,9 +33,9 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     public ObjEnvelop<SaasDO> create (
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SaasDO saas = toEntity(jsonData, SaasDO.class);
-        saas = saasService.save(saas);
-        return success(saas);
+        SaasDO saasDO = toEntity(jsonData, SaasDO.class);
+        saasDO = saasService.save(saasDO);
+        return success(saasDO);
     }
 
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
@@ -52,12 +52,12 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     public Envelop update (
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SaasDO saas = toEntity(jsonData, SaasDO.class);
-        if (null == saas.getId()) {
+        SaasDO saasDO = toEntity(jsonData, SaasDO.class);
+        if (null == saasDO.getId()) {
             return failed("ID不能为空");
         }
-        saas = saasService.save(saas);
-        return success(saas);
+        saasDO = saasService.save(saasDO);
+        return success(saasDO);
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.PAGE)
@@ -73,9 +73,9 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<SaasDO> saas = saasService.search(fields, filters, sorts, page, size);
+        List<SaasDO> saasDOS = saasService.search(fields, filters, sorts, page, size);
         int count = (int)saasService.getCount(filters);
-        return success(saas, count, page, size);
+        return success(saasDOS, count, page, size);
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.LIST)
@@ -87,8 +87,8 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<SaasDO> themes = saasService.search(fields, filters, sorts);
-        return success(themes);
+        List<SaasDO> saasDOS = saasService.search(fields, filters, sorts);
+        return success(saasDOS);
     }
 
     @PostMapping(value = BaseRequestMapping.Saas.AUDIT)
@@ -98,12 +98,12 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "id") String id,
             @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(value = "status") SaasDO.Status status) throws Exception {
-        SaasDO saas = saasService.retrieve(id);
-        if (null == saas) {
+        SaasDO saasDO = saasService.retrieve(id);
+        if (null == saasDO) {
             return failed("无相关SAAS配置");
         }
-        saas.setStatus(status);
-        saasService.save(saas);
+        saasDO.setStatus(status);
+        saasService.save(saasDO);
         return success("操作成功");
     }
 

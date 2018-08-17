@@ -1,7 +1,7 @@
-package com.yihu.jw.base.endpoint.system;
+package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.SystemDictService;
-import com.yihu.jw.entity.base.system.SystemDictDO;
+import com.yihu.jw.base.service.SaasModuleService;
+import com.yihu.jw.entity.base.saas.SaasModuleDO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -21,48 +21,48 @@ import java.util.List;
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
-@RequestMapping(value = BaseRequestMapping.SystemDict.PREFIX)
-@Api(value = "系统字典", description = "系统字典服务接口", tags = {"wlyy基础服务 - 系统字典服务接口"})
-public class SystemDictEndpoint extends EnvelopRestEndpoint {
-    
-    @Autowired
-    private SystemDictService systemDictService;
+@RequestMapping(value = BaseRequestMapping.SaasModule.PREFIX)
+@Api(value = "Saas模块管理", description = "Saas模块管理服务接口", tags = {"wlyy基础服务 - Saas模块管理服务接口"})
+public class SaasModuleEndpoint extends EnvelopRestEndpoint {
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @Autowired
+    private SaasModuleService saasModuleService;
+
+    @PostMapping(value = BaseRequestMapping.SaasModule.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SystemDictDO> create (
+    public ObjEnvelop<SaasModuleDO> create (
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
-        systemDictDO = systemDictService.save(systemDictDO);
-        return success(systemDictDO);
+        SaasModuleDO saasModuleDO = toEntity(jsonData, SaasModuleDO.class);
+        saasModuleDO = saasModuleService.save(saasModuleDO);
+        return success(saasModuleDO);
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
+    @PostMapping(value = BaseRequestMapping.SaasModule.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        systemDictService.delete(ids);
+        saasModuleService.delete(ids);
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasModule.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public Envelop update (
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
-        if (null == systemDictDO.getId()) {
+        SaasModuleDO saasModuleDO = toEntity(jsonData, SaasModuleDO.class);
+        if (null == saasModuleDO.getId()) {
             return failed("ID不能为空");
         }
-        systemDictDO = systemDictService.save(systemDictDO);
-        return success(systemDictDO);
+        saasModuleDO = saasModuleService.save(saasModuleDO);
+        return success(saasModuleDO);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.PAGE)
+    @GetMapping(value = BaseRequestMapping.SaasModule.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SystemDictDO> page (
+    public PageEnvelop<SaasModuleDO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -73,21 +73,22 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<SystemDictDO> systemDictDOS = systemDictService.search(fields, filters, sorts, page, size);
-        int count = (int)systemDictService.getCount(filters);
-        return success(systemDictDOS, count, page, size);
+        List<SaasModuleDO> saasModuleDOS = saasModuleService.search(fields, filters, sorts, page, size);
+        int count = (int)saasModuleService.getCount(filters);
+        return success(saasModuleDOS, count, page, size);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.LIST)
+    @GetMapping(value = BaseRequestMapping.SaasModule.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SystemDictDO> list (
+    public ListEnvelop<SaasModuleDO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<SystemDictDO> systemDictDOS = systemDictService.search(fields, filters, sorts);
-        return success(systemDictDOS);
+        List<SaasModuleDO> saasModuleDOS = saasModuleService.search(fields, filters, sorts);
+        return success(saasModuleDOS);
     }
+
 }
