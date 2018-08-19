@@ -1,4 +1,4 @@
-package com.yihu.gateway.config;
+package com.yihu.jw.gateway.config;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;

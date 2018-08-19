@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>basic-gateway</artifactId>
+    <artifactId>ag-basic</artifactId>
     <version>${parent.version}</version>
     <packaging>war</packaging>
 
@@ -52,7 +52,6 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
-            <scope>${dependency.scope}</scope>
         </dependency>
 
         <!-- 安全认证中心-->
@@ -70,17 +69,21 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <scope>${dependency.scope}</scope>
         </dependency>
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
         </dependency>
         <!-- Redis  -->
+
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-web</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
-        <finalName>basic-gateway</finalName>
+        <finalName>ag-basic</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

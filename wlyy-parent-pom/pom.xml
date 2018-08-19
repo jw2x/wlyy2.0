@@ -60,7 +60,7 @@
         <!-- 暂时保留 -->
 
         <!-- 网关服务 -->
-        <module>../gateway/basic-gateway</module> <!-- web网关 -->
+        <module>../gateway/ag-basic</module> <!-- web网关 -->
 
         <!--业务微服务-->
         <module>../svr/svr-base</module><!-- 基础微服务 -->

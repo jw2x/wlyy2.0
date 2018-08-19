@@ -13,15 +13,15 @@ import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 @EnableEurekaClient
 @EnableZuulProxy
 @SpringBootApplication
-public class BasicGateway extends SpringBootServletInitializer {
+public class AgBasicServer extends SpringBootServletInitializer {
 
     public static void main(String [] args) {
-        SpringApplication.run(BasicGateway.class, args);
+        SpringApplication.run(AgBasicServer.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(BasicGateway.class);
+        return application.sources(AgBasicServer.class);
     }
 
 }

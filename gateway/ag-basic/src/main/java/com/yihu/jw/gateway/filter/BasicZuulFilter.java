@@ -1,9 +1,9 @@
-//package com.yihu.gateway.filter;
+//package com.yihu.jw.gateway.filter;
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.netflix.zuul.ZuulFilter;
 //import com.netflix.zuul.context.RequestContext;
-//import com.yihu.ehr.util.rest.Envelop;
+//import com.yihu.jw.restmodel.web.Envelop;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -114,10 +114,10 @@
 //    private Object forbidden(RequestContext requestContext, int status, String errorMsg) {
 //        requestContext.setSendZuulResponse(false);
 //        Envelop envelop = new Envelop();
-//        envelop.setErrorCode(status);
-//        envelop.setErrorMsg(errorMsg);
+//        envelop.setMessage(errorMsg);
+//        envelop.setStatus(status);
 //        try {
-//            requestContext.setResponseStatusCode(status);
+//            //requestContext.setResponseStatusCode(status);
 //            requestContext.getResponse().getWriter().write(objectMapper.writeValueAsString(envelop));
 //        } catch (IOException e) {
 //            requestContext.setResponseStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
