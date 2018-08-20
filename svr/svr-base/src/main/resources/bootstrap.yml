@@ -1,6 +1,6 @@
 spring:
   application:
-    name: svr-base
+    name: svr-base-lyx
   cloud:
     config:
       failFast: true
