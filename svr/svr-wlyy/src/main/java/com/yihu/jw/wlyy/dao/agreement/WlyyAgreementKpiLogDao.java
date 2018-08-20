@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.dao.agreement;
 
-import com.yihu.jw.wlyy.agreement.WlyyAgreementKpiLogDO;
+import com.yihu.jw.entity.wlyy.agreement.WlyyAgreementKpiLogDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

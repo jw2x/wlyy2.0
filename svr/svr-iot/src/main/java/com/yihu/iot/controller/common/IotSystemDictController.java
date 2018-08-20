@@ -2,9 +2,9 @@ package com.yihu.iot.controller.common;
 
 import com.yihu.iot.dao.dict.IotSystemDictDao;
 import com.yihu.iot.service.dict.IotSystemDictService;
-import com.yihu.jw.iot.dict.IotSystemDictDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.entity.iot.dict.IotSystemDictDO;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.restmodel.iot.dict.IotSystemDictVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping(IotRequestMapping.Common.system_dict)
 @Api(tags = "系统字典相关操作", description = "系统字典相关操作")
-public class IotSystemDictController extends EnvelopRestController {
+public class IotSystemDictController extends EnvelopRestEndpoint {
 
     @Autowired
     private IotSystemDictService iotSystemDictService;
@@ -34,16 +34,16 @@ public class IotSystemDictController extends EnvelopRestController {
 
     @GetMapping(value = IotRequestMapping.System.findDictByCode)
     @ApiOperation(value = "获取字典列表(不分页)")
-    public Envelop<IotSystemDictVO> getList(
+    public MixEnvelop<IotSystemDictVO, IotSystemDictVO> getList(
             @ApiParam(name = "dictName", value = "字典名称", defaultValue = "COMPANY_TYPE")
             @RequestParam(value = "dictName", required = true) String dictName) throws Exception {
         try {
             List<IotSystemDictDO> doList = iotSystemDictDao.findByDictName(dictName);
             List<IotSystemDictVO> voList = convertToModels(doList,new ArrayList<IotSystemDictVO>(doList.size()),IotSystemDictVO.class);
-            return Envelop.getSuccessList(IotRequestMapping.Company.message_success_find_functions,voList);
+            return MixEnvelop.getSuccessList(IotRequestMapping.Company.message_success_find_functions,voList);
         }catch (Exception e){
             e.printStackTrace();
-            return Envelop.getError("查询失败");
+            return MixEnvelop.getError("查询失败");
         }
     }
 

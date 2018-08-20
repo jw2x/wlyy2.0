@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.archives;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "wlyy_patient_archives_info")
-public class PatientArchivesInfoDO extends IdEntityWithOperation implements Serializable {
+public class PatientArchivesInfoDO extends UuidIdentityEntityWithOperator implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId; //saasid

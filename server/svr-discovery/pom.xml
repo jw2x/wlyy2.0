@@ -5,38 +5,52 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.yihu.jw</groupId>
-        <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.0</version>
-        <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
+        <artifactId>wlyy-parent-pom</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../../wlyy-parent-pom/pom.xml</relativePath>
     </parent>
 
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-discovery</artifactId>
-    <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <version>${parent.version}</version>
+    <packaging>war</packaging>
 
     <dependencies>
+        <!-- 支持Tomcat启动 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+        <!-- 支持Tomcat启动 -->
+
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <!--<artifactId>spring-cloud-starter-eureka-server</artifactId>-->
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-logging</artifactId>
-        </dependency>
-        <!--给 eurika界面添加账号密码验证-->
+        <!--给 eureka界面添加账号密码验证-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
         </dependency>
         <dependency>
             <groupId>net.sf.json-lib</groupId>
@@ -48,24 +62,14 @@
         <finalName>svr-discovery</finalName>
         <plugins>
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                     <filteringDeploymentDescriptors>true</filteringDeploymentDescriptors>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <mainClass>com.yihu.jw.SvrDiscovery</mainClass>
                 </configuration>
             </plugin>
         </plugins>

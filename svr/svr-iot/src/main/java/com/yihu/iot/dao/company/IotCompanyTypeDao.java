@@ -1,6 +1,6 @@
 package com.yihu.iot.dao.company;
 
-import com.yihu.jw.iot.company.IotCompanyTypeDO;
+import com.yihu.jw.entity.iot.company.IotCompanyTypeDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

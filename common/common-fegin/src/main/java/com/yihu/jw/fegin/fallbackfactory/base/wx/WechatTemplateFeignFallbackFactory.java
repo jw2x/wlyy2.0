@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.fallbackfactory.base.wx;
 
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.wx.WechatTemplateFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
@@ -21,40 +21,40 @@ public class WechatTemplateFeignFallbackFactory implements FallbackFactory<Wecha
     public WechatTemplateFeign create(Throwable e) {
         return new WechatTemplateFeign() {
             @Override
-            public Envelop createWxTemplate(String jsonData) throws JiWeiException {
+            public MixEnvelop createWxTemplate(String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("创建微信模板消息失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop updateWxTemplate(String jsonData) throws JiWeiException {
+            public MixEnvelop updateWxTemplate(String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("更新微信模板消息失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop deleteWxTemplate(String codes,String userCode,String userName) throws JiWeiException {
+            public MixEnvelop deleteWxTemplate(String codes, String userCode, String userName) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("删除微信模板消息失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("codes:"+codes);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop findById(String id) throws JiWeiException {
+            public MixEnvelop findById(String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("根据code查找微信模板消息失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop sendTemplateMessage(String openid, String templateCode, String url, String appid, String pagepath, String data) {
+            public MixEnvelop sendTemplateMessage(String openid, String templateCode, String url, String appid, String pagepath, String data) {
                 return null;
             }
 
             @Override
-            public Envelop getWechatNoPage(String fields, String filters, String sorts) throws JiWeiException {
+            public MixEnvelop getWechatNoPage(String fields, String filters, String sorts) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找微信模板消息列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filters);
@@ -63,7 +63,7 @@ public class WechatTemplateFeignFallbackFactory implements FallbackFactory<Wecha
             }
 
             @Override
-            public Envelop getWechats(String fields, String filters, String sorts, int size, int page) throws JiWeiException {
+            public MixEnvelop getWechats(String fields, String filters, String sorts, int size, int page) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("分页查找微信模板消息失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filters);

@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.iot.data_input;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.data_input.DataInputFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.iot.DataRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface DataInputFeign {
 
     @PostMapping(value = DataRequestMapping.DataInput.api_user_bind, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop bindUser(@RequestBody String jsonData);
+    MixEnvelop bindUser(@RequestBody String jsonData);
 
     @PostMapping(value = DataRequestMapping.DataInput.api_data_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop uploadData(@RequestBody String jsonData);
+    MixEnvelop uploadData(@RequestBody String jsonData);
 
     @PostMapping(value = DataRequestMapping.DataInput.api_weRunData_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop uploadWeRunData(@RequestBody String jsonData);
+    MixEnvelop uploadWeRunData(@RequestBody String jsonData);
 
 }

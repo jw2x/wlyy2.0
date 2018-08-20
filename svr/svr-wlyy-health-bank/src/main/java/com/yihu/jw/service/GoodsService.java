@@ -2,12 +2,12 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/4/27.
  */
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.GoodsDao;
 import com.yihu.jw.entity.health.bank.GoodsDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,9 +36,9 @@ public class GoodsService extends BaseJpaService<GoodsDO,GoodsDao> {
      * @param goodsDO
      * @return
      */
-    public Envelop<Boolean> insert(GoodsDO goodsDO){
+    public MixEnvelop<Boolean, Boolean> insert(GoodsDO goodsDO){
         goodsDao.save(goodsDO);
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         envelop.setObj(true);
         return envelop;
     }
@@ -51,7 +51,7 @@ public class GoodsService extends BaseJpaService<GoodsDO,GoodsDao> {
      * @return
      * @throws ParseException
      */
-    public Envelop<GoodsDO> findByCondition(GoodsDO goodsDO, Integer page, Integer size) throws ParseException {
+    public MixEnvelop<GoodsDO, GoodsDO> findByCondition(GoodsDO goodsDO, Integer page, Integer size) throws ParseException {
         String sql = new ISqlUtils().getSql(goodsDO,page,size,"*");
         List<GoodsDO> goodsDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(GoodsDO.class));
 
@@ -61,7 +61,7 @@ public class GoodsService extends BaseJpaService<GoodsDO,GoodsDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,goodsDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success,goodsDOS,page,size,count);
     }
     /**
      * update goods
@@ -69,9 +69,9 @@ public class GoodsService extends BaseJpaService<GoodsDO,GoodsDao> {
      * @param goodsDO
      * @return
      */
-    public Envelop<Boolean> update(GoodsDO goodsDO){
+    public MixEnvelop<Boolean, Boolean> update(GoodsDO goodsDO){
         goodsDao.save(goodsDO);
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         envelop.setObj(true);
         return envelop;
     }

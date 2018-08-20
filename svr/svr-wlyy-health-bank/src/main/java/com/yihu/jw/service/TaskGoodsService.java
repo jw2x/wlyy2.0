@@ -2,12 +2,12 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/6/8.
  */
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.TaskGoodsDao;
 import com.yihu.jw.entity.health.bank.TaskGoodsDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -40,7 +40,7 @@ public class TaskGoodsService extends BaseJpaService<TaskGoodsDO,TaskGoodsDao> {
      * @param size 分页大小
      * @return
      */
-    public Envelop<TaskGoodsDO> selectByCondition(TaskGoodsDO taskGoodsDO, Integer page, Integer size){
+    public MixEnvelop<TaskGoodsDO, TaskGoodsDO> selectByCondition(TaskGoodsDO taskGoodsDO, Integer page, Integer size){
         String sql = new ISqlUtils().getSql(taskGoodsDO,page,size,"*");
         List<TaskGoodsDO> taskGoodsDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskGoodsDO.class));
         String sqlcount = new ISqlUtils().getSql(taskGoodsDO,0,0,"count");
@@ -49,7 +49,7 @@ public class TaskGoodsService extends BaseJpaService<TaskGoodsDO,TaskGoodsDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskGoodsDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskGoodsDOS,page,size,count);
     }
 
 
@@ -59,10 +59,10 @@ public class TaskGoodsService extends BaseJpaService<TaskGoodsDO,TaskGoodsDao> {
      * @param taskGoodsDO 活动商品对象
      * @return
      */
-    public Envelop<Boolean> insert(TaskGoodsDO taskGoodsDO){
+    public MixEnvelop<Boolean, Boolean> insert(TaskGoodsDO taskGoodsDO){
         taskGoodsDO.setCreateTime(new Date());
         taskGoodsDO.setUpdateTime(new Date());
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         taskGoodsDao.save(taskGoodsDO);
         envelop.setObj(true);
         return envelop;
@@ -75,8 +75,8 @@ public class TaskGoodsService extends BaseJpaService<TaskGoodsDO,TaskGoodsDao> {
      * @param taskGoodsDO
      * @return
      */
-    public Envelop<Boolean> update(TaskGoodsDO taskGoodsDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> update(TaskGoodsDO taskGoodsDO){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         String sql =  ISqlUtils.getUpdateSql(taskGoodsDO);
         jdbcTemplate.update(sql);
         envelop.setObj(true);

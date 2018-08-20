@@ -46,4 +46,8 @@ public class SpecialistMapping {
         public static final String getScreenCount = "/getScreenCount";
         public static final String getScreenResultDetail = "/getScreenResultDetail";
     }
+
+    public static class rehabilitation{
+        public static final String findRehabilitationPlan = "/findRehabilitationPlan";
+    }
 }

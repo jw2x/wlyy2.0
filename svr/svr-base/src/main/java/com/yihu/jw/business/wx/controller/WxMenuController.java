@@ -1,58 +1,42 @@
-//package com.yihu.jw.business.wx.controller;
-//
-//import com.yihu.jw.base.wx.WxMenuDO;
-//import com.yihu.jw.base.wx.WxWechatDO;
-//import com.yihu.jw.business.wx.WechatResponse;
-//import com.yihu.jw.business.wx.service.WechatService;
-//import com.yihu.jw.business.wx.service.WxMenuService;
-//import com.yihu.jw.exception.ApiException;
-//import com.yihu.jw.restmodel.common.Envelop;
-//import com.yihu.jw.restmodel.common.EnvelopRestController;
-//import com.yihu.jw.restmodel.base.wx.WxMenuVO;
-//import com.yihu.jw.restmodel.base.wx.WxWechatVO;
-//import com.yihu.jw.rm.base.WechatRequestMapping;
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
-//import io.swagger.annotations.ApiParam;
-//import org.apache.commons.lang.StringUtils;
-//import org.json.JSONObject;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.MediaType;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Map;
-//
-///**
-// * Created by Administrator on 2017/5/19 0019.
-// */
-//@RestController
-//@RequestMapping(WechatRequestMapping.api_common)
-//@Api(value = "微信菜单相关操作", description = "微信菜单相关操作")
-//public class WxMenuController extends EnvelopRestController {
-//
-//    @Autowired
-//    private WxMenuService wxMenuService;
-//
-//    @Autowired
-//    private WechatService wechatService;
-//
-//    @PostMapping(value = WechatRequestMapping.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
-//    public Envelop createWxMenu(
-//            @ApiParam(name = "json_data", value = "", defaultValue = "")
-//            @RequestBody String jsonData) {
-//        try {
-//            WxMenuDO wxMenu = toEntity(jsonData, WxMenuDO.class);
-//            return Envelop.getSuccess(WechatRequestMapping.WxMenu.message_success_create, wxMenuService.createWxMenu(wxMenu));
-//        } catch (ApiException e) {
-//            return Envelop.getError(e.getMessage(), e.getErrorCode());
-//        }
-//    }
-//
+package com.yihu.jw.business.wx.controller;
+
+import com.yihu.jw.business.wx.service.WechatService;
+import com.yihu.jw.business.wx.service.WxMenuService;
+import com.yihu.jw.exception.ApiException;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import com.yihu.jw.rm.base.WechatRequestMapping;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * Created by Administrator on 2017/5/19 0019.
+ */
+@RestController
+@RequestMapping(WechatRequestMapping.api_common)
+@Api(value = "微信菜单相关操作", description = "微信菜单相关操作")
+public class WxMenuController extends EnvelopRestEndpoint {
+
+    @Autowired
+    private WxMenuService wxMenuService;
+
+    @Autowired
+    private WechatService wechatService;
+
+    @PostMapping(value = WechatRequestMapping.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "添加微信菜单", notes = "添加微信菜单")
+    public MixEnvelop createWxMenu(@ApiParam(name = "wxId", value = "微信id")
+                                    @RequestParam(value = "wxId", required = false)String wxId) throws Exception{
+        return wxMenuService.createWxMenu(wxId);
+    }
+
 //    @PutMapping(value = WechatRequestMapping.WxMenu.api_update, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "修改微信菜单", notes = "修改微信菜单")
 //    public Envelop updateWxMenu(
@@ -65,8 +49,8 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
-//
+
+
 //    @DeleteMapping(value = WechatRequestMapping.WxMenu.api_delete)
 //    @ApiOperation(value = "删除微信菜单", notes = "删除微信菜单")
 //    public Envelop deleteWxMenu(
@@ -232,5 +216,5 @@
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
 //    }
-//
-//}
+
+}

@@ -7,7 +7,6 @@ import com.yihu.iot.datainput.enums.DataTypeEnum;
 import com.yihu.iot.datainput.service.DataStandardConvertService;
 import com.yihu.jw.datainput.Data;
 import com.yihu.jw.datainput.StepInfoDO;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 //import org.apache.hadoop.hbase.util.CollectionUtils;
 import org.elasticsearch.index.query.*;
@@ -16,6 +15,8 @@ import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
 import javax.annotation.PostConstruct;
 import java.beans.PropertyDescriptor;
 import java.util.*;

@@ -4,8 +4,8 @@ package com.yihu.jw.controller;/**
 
 import com.alibaba.fastjson.JSONArray;
 import com.yihu.jw.entity.health.bank.ActivityDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.service.ActivityService;
 import io.swagger.annotations.Api;
@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping(HealthBankMapping.api_health_bank_common)
 @Api(tags = "健康活动相关操作",description = "健康活动相关操作")
-public class ActivityController extends EnvelopRestController{
+public class ActivityController extends EnvelopRestEndpoint {
 
     @Autowired
     private ActivityService service;
@@ -45,7 +45,7 @@ public class ActivityController extends EnvelopRestController{
      */
     @PostMapping(value = HealthBankMapping.healthBank.createActivity)
     @ApiOperation(value = "发布活动")
-    public Envelop<Boolean> publishActivity(@ApiParam(name = "activity",value = "健康活动JSON")
+    public MixEnvelop<Boolean, Boolean> publishActivity(@ApiParam(name = "activity",value = "健康活动JSON")
                                           @RequestParam(value = "activity",required = true)String activity){
         try {
             ActivityDO activityDO = toEntity(activity,ActivityDO.class);
@@ -53,7 +53,7 @@ public class ActivityController extends EnvelopRestController{
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -67,11 +67,11 @@ public class ActivityController extends EnvelopRestController{
      */
     @PostMapping(value = HealthBankMapping.healthBank.findActivity)
     @ApiOperation(value = "查看健康活动")
-    public Envelop<ActivityDO> getActivity(@ApiParam(name = "activity",value = "健康活动JSON")
+    public MixEnvelop<ActivityDO, ActivityDO> getActivity(@ApiParam(name = "activity",value = "健康活动JSON")
                                                     @RequestParam(value = "activity",required = false)String activity,
-                                                @ApiParam(name = "page", value = "第几页，从1开始")
+                                              @ApiParam(name = "page", value = "第几页，从1开始")
                                                 @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
-                                                @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                              @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                                 @RequestParam(value = "size", required = false)Integer size){
         try{
             ActivityDO activityDO = toEntity(activity,ActivityDO.class);
@@ -79,7 +79,7 @@ public class ActivityController extends EnvelopRestController{
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -92,7 +92,7 @@ public class ActivityController extends EnvelopRestController{
      */
     @PostMapping(value = HealthBankMapping.healthBank.updateActivity)
     @ApiOperation(value = "下架活动")
-    public Envelop<Boolean> outActivity(@ApiParam(name = "activity",value = "健康活动JSON")
+    public MixEnvelop<Boolean, Boolean> outActivity(@ApiParam(name = "activity",value = "健康活动JSON")
                                             @RequestParam(value = "activity",required = true)String activity){
         try {
             ActivityDO activityDO = toEntity(activity,ActivityDO.class);
@@ -100,7 +100,7 @@ public class ActivityController extends EnvelopRestController{
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -115,11 +115,11 @@ public class ActivityController extends EnvelopRestController{
      */
     @PostMapping(value = HealthBankMapping.healthBank.selectByPatient)
     @ApiOperation(value = "参与的活动")
-    public Envelop<ActivityDO> selectByPatient(@ApiParam(name = "activity",value = "健康活动JSON")
+    public MixEnvelop<ActivityDO, ActivityDO> selectByPatient(@ApiParam(name = "activity",value = "健康活动JSON")
                                            @RequestParam(value = "activity",required = false)String activity,
-                                           @ApiParam(name = "page", value = "第几页，从1开始")
+                                                  @ApiParam(name = "page", value = "第几页，从1开始")
                                            @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
-                                           @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                                  @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                            @RequestParam(value = "size", required = false)Integer size){
         try{
             ActivityDO activityDO = toEntity(activity,ActivityDO.class);
@@ -127,7 +127,7 @@ public class ActivityController extends EnvelopRestController{
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -139,10 +139,10 @@ public class ActivityController extends EnvelopRestController{
      */
     @PostMapping(value = HealthBankMapping.healthBank.batchActivity)
     @ApiOperation(value = "批量删除活动")
-    public Envelop<Boolean> batchDelete(@ApiParam(name="ids",value = "id集合")
+    public MixEnvelop<Boolean, Boolean> batchDelete(@ApiParam(name="ids",value = "id集合")
                                         @RequestParam(value = "ids",required = false)String ids){
         try{
-            Envelop<Boolean> envelop = new Envelop<>();
+            MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
             JSONArray array = JSONArray.parseArray(ids);
             List<String> activityIds = new ArrayList<>();
             for (int i = 0;i<array.size();i++){
@@ -154,7 +154,7 @@ public class ActivityController extends EnvelopRestController{
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 

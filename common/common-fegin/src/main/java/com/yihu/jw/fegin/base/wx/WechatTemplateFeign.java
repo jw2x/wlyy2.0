@@ -3,7 +3,7 @@ package com.yihu.jw.fegin.base.wx;
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.fallbackfactory.base.wx.WechatTemplateFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -20,25 +20,25 @@ import org.springframework.web.bind.annotation.*;
 public interface WechatTemplateFeign {
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_create ,method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop createWxTemplate(@RequestBody String jsonData) throws JiWeiException;
+    MixEnvelop createWxTemplate(@RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_update ,method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop updateWxTemplate(@RequestBody String jsonData) throws JiWeiException;
+    MixEnvelop updateWxTemplate(@RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_delete ,method = RequestMethod.DELETE)
-    Envelop deleteWxTemplate( @RequestParam(value = "ids", required = true) String ids,@RequestParam(value = "userId") String userId,@RequestParam(value = "userName") String userName) throws JiWeiException;
+    MixEnvelop deleteWxTemplate(@RequestParam(value = "ids", required = true) String ids, @RequestParam(value = "userId") String userId, @RequestParam(value = "userName") String userName) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_getById ,method = RequestMethod.GET)
-    Envelop findById( @RequestParam(value = "id", required = true) String id) throws JiWeiException;
+    MixEnvelop findById(@RequestParam(value = "id", required = true) String id) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_getWxTemplatesNoPage ,method = RequestMethod.GET)
-    Envelop getWechatNoPage(
+    MixEnvelop getWechatNoPage(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_getWxTemplates, method = RequestMethod.GET)
-    Envelop getWechats(
+    MixEnvelop getWechats(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts,
@@ -47,7 +47,7 @@ public interface WechatTemplateFeign {
 
     @RequestMapping(value = WechatRequestMapping.WxTemplate.api_sendTemplateMessage ,method = RequestMethod.GET)
     @ResponseBody
-    Envelop sendTemplateMessage(
+    MixEnvelop sendTemplateMessage(
             @RequestParam(value="openid") String openid,
             @RequestParam(value="templateId") String templateId,
             @RequestParam(value="url",required = false) String url,

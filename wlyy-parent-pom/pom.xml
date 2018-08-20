@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.5.9.RELEASE</version>
+    </parent>
+
+    <groupId>com.yihu.jw</groupId>
+    <artifactId>wlyy-parent-pom</artifactId>
+    <version>2.0.0</version>
+    <packaging>pom</packaging>
+
+    <developers>
+        <developer>
+            <id>cwd</id>
+            <name>陈伟达</name>
+            <email>494679975@qq.com</email>
+            <organizationUrl>localhost</organizationUrl>
+            <roles>
+                <role>Project programmer</role>
+            </roles>
+        </developer>
+    </developers>
+
+    <!--deploy 的时候发布到这个服务器-->
+    <distributionManagement>
+        <repository>
+            <id>jkzlRepositories</id>
+            <name>jkzlRepositories</name>
+            <url>http://172.19.103.43:8081/nexus/content/repositories/jkzlRepositories/</url>
+        </repository>
+    </distributionManagement>
+
+    <!-- 私有仓库 -->
+    <repositories>
+        <repository>
+            <id>public</id>
+            <name>public</name>
+            <url>http://172.19.103.43:8081/nexus/content/groups/public/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <modules>
+        <!-- 基础组件服务 -->
+        <module>../server/svr-configuration</module> <!--配置服务-->
+        <module>../server/svr-discovery</module><!--发现服务-->
+        <!-- 暂时保留 -->
+        <!--<module>../server/svr-dashboard</module>--><!--监控服务-->
+        <!--<module>../server/svr-log-server</module>--><!--分布式追踪服务-->
+        <!-- 暂时保留 -->
+
+        <!-- 网关服务 -->
+        <module>../gateway/ag-basic</module> <!-- web网关 -->
+
+        <!--业务微服务-->
+        <module>../svr/svr-base</module><!-- 基础微服务 -->
+        <module>../svr/svr-iot</module><!--物联网平台-->
+        <!--<module>../svr/svr-wlyy</module>-->  <!-- i健康微服务 -->
+        <module>../svr/svr-wlyy-health-bank</module> <!-- 健康银行 -->
+        <module>../svr/svr-wlyy-specialist</module> <!-- 啥玩意？ -->
+        <!--<module>../svr/svr-manage</module>--> <!-- 后台管理系统 -->
+        <module>../svr/svr-rehabilitation</module> <!--专科医生康复计划-->
+
+        <!-- 应用 -->
+        <module>../app/app-iot-server</module>
+        <module>../app/public-health-server</module>
+    </modules>
+
+    <properties>
+        <!-- Version start -->
+        <version.wlyy-common>2.0.0</version.wlyy-common>
+        <version.jackson>2.8.1</version.jackson>
+        <verion.fastjson>1.2.17</verion.fastjson>
+        <version.json>20160212</version.json>
+        <version.net-json>2.4</version.net-json>
+        <version.logback>1.2.3</version.logback>
+        <version.quartz>2.3.0</version.quartz>
+        <version.swagger>2.7.0</version.swagger>
+        <version.swagger-ui>2.7.0</version.swagger-ui>
+        <version.swagger-annotations>1.5.20</version.swagger-annotations>
+        <version.springside>4.2.3-GA</version.springside>
+        <version.zipkin>1.24.0</version.zipkin>
+        <version.joda-time>2.8.2</version.joda-time>
+        <version.yihu.admin>1.2.0</version.yihu.admin>
+        <version.spring-boot-admin>1.5.7</version.spring-boot-admin>
+        <!-- Version end -->
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <asciidoctor.maven.plugin.version>1.5.5</asciidoctor.maven.plugin.version>
+        <asciidoctorj.version>1.5.5</asciidoctorj.version>
+        <maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
+    </properties>
+
+    <!-- 子配置不写版本默认继承父配置 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Spring Cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>Edgware.SR2</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- wlyy common -->
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-fegin</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-entity</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-entity-es</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-request-mapping</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-exception</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-rest-model</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-rest-model-es</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>svr-base</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-util</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-web</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
+
+            <!-- Jkzl Starter -->
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>swagger-starter</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>mysql-starter</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>fastdfs-starter</artifactId>
+                <version>2.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>utils</artifactId> <!-- 此依赖包含大部分常用工具类 -->
+                <version>2.0.0</version>
+            </dependency>
+
+            <!-- Alibaba -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${verion.fastjson}</version>
+            </dependency>
+
+            <!-- Json library -->
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>${version.json}</version>
+            </dependency>
+
+            <!-- Net json library -->
+            <dependency>
+                <groupId>net.sf.json-lib</groupId>
+                <artifactId>json-lib</artifactId>
+                <version>${version.net-json}</version>
+            </dependency>
+
+            <!-- Log start -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-access</artifactId>
+                <version>${version.logback}</version>
+            </dependency>
+
+            <!-- Quartz start -->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>${version.quartz}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz-jobs</artifactId>
+                <version>${version.quartz}</version>
+            </dependency>
+
+            <!-- Swagger ui -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${version.swagger}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${version.swagger-ui}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${version.swagger-annotations}</version>
+            </dependency>
+
+            <!-- Springside -->
+            <dependency>
+                <groupId>org.springside</groupId>
+                <artifactId>springside-core</artifactId>
+                <version>${version.springside}</version>
+                <classifier>GA</classifier>
+            </dependency>
+
+            <!-- Zipkin 日志追踪 -->
+            <!--<dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-server</artifactId>
+                <version>${version.zipkin}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-autoconfigure-ui</artifactId>
+                <version>${version.zipkin}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.zipkin.java</groupId>
+                <artifactId>zipkin-autoconfigure-storage-elasticsearch-http</artifactId>
+                <version>${version.zipkin}</version>
+            </dependency>-->
+
+            <!-- Scala -->
+            <!--<dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-library</artifactId>
+                <version>${version.scala}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.scala-lang</groupId>
+                <artifactId>scala-compiler</artifactId>
+                <version>${version.scala}</version>
+            </dependency>-->
+
+            <!-- Joda -->
+            <!--<dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${version.joda-time}</version>
+            </dependency>-->
+
+            <!--服务器监监听-->
+            <!--<dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-client-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-server-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.yihu</groupId>
+                <artifactId>admin-server-ui-starter</artifactId>
+                <version>${version.yihu.admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server</artifactId>
+                <version>${version.spring-boot-admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server-ui</artifactId>
+                <version>${version.spring-boot-admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server-ui-hystrix</artifactId>
+                <version>${version.spring-boot-admin}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server-ui-turbine</artifactId>
+                <version>${version.spring-boot-admin}</version>
+            </dependency>-->
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <!--编译插件 start-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+                <version>3.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--编译插件 end-->
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>${asciidoctor.maven.plugin.version}</version>
+                <configuration>
+                    <sourceDirectory>build</sourceDirectory>
+                    <outputDirectory>build/asciidoc/${project.version}</outputDirectory>
+                    <headerFooter>true</headerFooter>
+                    <doctype>book</doctype>
+                    <sourceHighlighter>coderay</sourceHighlighter>
+                    <attributes>
+                        <toc>left</toc>
+                        <toclevels>3</toclevels>
+                        <sectnums>true</sectnums>
+                        <revnumber>${project.version}</revnumber>
+                        <revdate>${maven.build.timestamp}</revdate>
+                        <organization>厦门健康之路</organization>
+                        <sourcedir>${project.build.sourceDirectory}</sourcedir>
+                    </attributes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>output-html</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html5</backend>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>output-docbook</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>docbook</backend>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <pluginManagement>
+            <plugins>
+                <!--打成war包插件 还需要
+                1.配置类继承SpringBootServletInitializer
+                2.把所有tomcat相关的包的生命周期改成provide
+                 start-->
+                <plugin>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <configuration>
+                        <failOnMissingWebXml>false</failOnMissingWebXml>
+                    </configuration>
+                </plugin>
+                <!--打成war包插件 end-->
+                <!--springboot插件 start-->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <!--springboot插件 en-->
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>

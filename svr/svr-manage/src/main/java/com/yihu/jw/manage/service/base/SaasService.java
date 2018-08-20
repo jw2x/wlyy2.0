@@ -1,6 +1,6 @@
 package com.yihu.jw.manage.service.base;
 
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

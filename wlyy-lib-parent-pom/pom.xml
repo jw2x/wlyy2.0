@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.yihu.jw</groupId>
+        <artifactId>wlyy-parent-pom</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../wlyy-parent-pom/pom.xml</relativePath>
+    </parent>
+
+    <groupId>com.yihu.jw</groupId>
+    <artifactId>wlyy-lib-parent-pom</artifactId>
+    <version>2.0.0</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>../common/common-entity</module>
+        <module>../common/common-entity-es</module>
+        <module>../common/common-rest-model</module>
+        <module>../common/common-rest-model-es</module>
+        <module>../common/common-exception</module>
+        <module>../common/common-request-mapping</module>
+        <module>../common/common-util</module>
+        <module>../common/common-fegin</module>
+        <module>../common/common-web</module>
+    </modules>
+
+</project>

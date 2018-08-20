@@ -1,15 +1,14 @@
 package com.yihu.iot.service.device;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.yihu.base.fastdfs.FastDFSHelper;
-import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.iot.dao.device.IotDeviceDao;
 import com.yihu.iot.dao.device.IotDeviceImportRecordDao;
-import com.yihu.jw.iot.device.IotDeviceDO;
-import com.yihu.jw.iot.device.IotDeviceImportRecordDO;
-import com.yihu.jw.iot.device.IotOrderPurchaseDO;
+import com.yihu.jw.entity.iot.device.IotDeviceDO;
+import com.yihu.jw.entity.iot.device.IotDeviceImportRecordDO;
+import com.yihu.jw.entity.iot.device.IotOrderPurchaseDO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
-import org.apache.commons.collections.map.HashedMap;
+import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +37,7 @@ public class IotDeviceImportRecordService extends BaseJpaService<IotDeviceImport
     @Autowired
     private IotDeviceDao iotDeviceDao;
     @Autowired
-    private FastDFSHelper fastDFSHelper;
+    private FastDFSUtil fastDFSHelper;
 
     /**
      * 创建 HSSFWorkbook
@@ -93,7 +93,7 @@ public class IotDeviceImportRecordService extends BaseJpaService<IotDeviceImport
         Long unAssociatedNum = purchaseDO.getPurchaseNum()-associatedNum;//未关联数量
         Integer count = 0;
         Integer rowNum = 0;
-        Map<String,String> snMap = new HashedMap(importVOList.size());
+        Map<String,String> snMap = new HashMap<>(importVOList.size());
         for(IotDeviceImportVO iotDeviceImportVO:importVOList){
             rowNum++;
 
@@ -173,9 +173,9 @@ public class IotDeviceImportRecordService extends BaseJpaService<IotDeviceImport
             //结果上传到fastDFS
             os = new ByteArrayOutputStream();
             wb.write(os);
-            ObjectNode node = fastDFSHelper.uploadByByte(os.toByteArray(),"xls","");
+            ObjectNode node = fastDFSHelper.upload(os.toByteArray(), "xls", "");
 
-            recordDO.setResultUrl(node.get("fid").toString().replaceAll("\"", ""));
+            recordDO.setResultUrl(node.get("fileId").toString().replaceAll("\"", ""));
         }catch (Exception e){
             e.printStackTrace();
         }finally {

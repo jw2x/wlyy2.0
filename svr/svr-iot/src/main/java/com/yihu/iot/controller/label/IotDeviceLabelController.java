@@ -1,10 +1,9 @@
 package com.yihu.iot.controller.label;
 
 import com.yihu.iot.service.label.IotDeviceLabelService;
-import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.iot.label.IotDeviceLabelDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.entity.iot.label.IotDeviceLabelDO;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,39 +23,39 @@ import java.util.List;
 @RestController
 @RequestMapping(IotRequestMapping.api_iot_common)
 @Api(tags = "设备标签相关操作", description = "设备标签相关操作")
-public class IotDeviceLabelController extends EnvelopRestController {
+public class IotDeviceLabelController extends EnvelopRestEndpoint {
 
     @Autowired
     private IotDeviceLabelService iotDeviceLabelService;
 
     @PostMapping(value = IotRequestMapping.DeviceLabel.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建设备标签", notes = "创建设备标签")
-    public Envelop create(@ApiParam(name = "json_data", value = "", defaultValue = "")
+    public MixEnvelop create(@ApiParam(name = "json_data", value = "", defaultValue = "")
                           @RequestBody String jsonData) {
         try {
             IotDeviceLabelDO iotDevice = toEntity(jsonData, IotDeviceLabelDO.class);
-            return Envelop.getSuccess(IotRequestMapping.DeviceLabel.message_success_create, iotDeviceLabelService.create(iotDevice));
+            return MixEnvelop.getSuccess(IotRequestMapping.DeviceLabel.message_success_create, iotDeviceLabelService.create(iotDevice));
         } catch (Exception e) {
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
 
     @GetMapping(value = IotRequestMapping.DeviceLabel.api_getById)
     @ApiOperation(value = "根据code查找设备标签", notes = "根据code查找设备标签")
-    public Envelop findByCode(@ApiParam(name = "id", value = "id")
+    public MixEnvelop findByCode(@ApiParam(name = "id", value = "id")
                               @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(IotRequestMapping.DeviceLabel.message_success_find, iotDeviceLabelService.findById(id));
+            return MixEnvelop.getSuccess(IotRequestMapping.DeviceLabel.message_success_find, iotDeviceLabelService.findById(id));
         } catch (Exception e) {
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @RequestMapping(value = IotRequestMapping.DeviceLabel.api_queryPage, method = RequestMethod.GET)
     @ApiOperation(value = "分页获取设备标签")
-    public Envelop queryPage(
+    public MixEnvelop queryPage(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段(id)", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件(supplierName?中 g1;contactsName?中 g1)")
@@ -78,13 +77,13 @@ public class IotDeviceLabelController extends EnvelopRestController {
         //封装返回格式
         List<IotDeviceLabelDO> iotDevices = convertToModels(list, new ArrayList<>(list.size()), IotDeviceLabelDO.class, fields);
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.DeviceLabel.message_success_find_functions,iotDevices, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.DeviceLabel.message_success_find_functions,iotDevices, page, size,count);
     }
 
 
     @GetMapping(value = IotRequestMapping.DeviceLabel.api_getList)
     @ApiOperation(value = "获取设备标签列表(不分页)")
-    public Envelop getList(
+    public MixEnvelop getList(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段(id)", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -95,6 +94,6 @@ public class IotDeviceLabelController extends EnvelopRestController {
         List<IotDeviceLabelDO> list = iotDeviceLabelService.search(fields,filters,sorts);
         //封装返回格式
         List<IotDeviceLabelDO> iotDevices = convertToModels(list, new ArrayList<>(list.size()), IotDeviceLabelDO.class, fields);
-        return Envelop.getSuccessList(IotRequestMapping.DeviceLabel.message_success_find_functions,iotDevices);
+        return MixEnvelop.getSuccessList(IotRequestMapping.DeviceLabel.message_success_find_functions,iotDevices);
     }
 }

@@ -1,9 +1,9 @@
 package com.yihu.jw.fegin.fallbackfactory.base.base;
 
 import com.yihu.jw.fegin.base.login.LoginFeign;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.base.BaseEnvelop;
-import com.yihu.jw.restmodel.common.base.BaseEnvelopStatus;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.status.EnvelopStatus;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
@@ -28,9 +28,9 @@ public class LoginFeignFallbackFactory implements FallbackFactory<LoginFeign> {
              * @return
              */
             @Override
-            public BaseEnvelop checkoutInfo(String ssc,String idcard) {
+            public Envelop checkoutInfo(String ssc, String idcard) {
                 tracer.getCurrentSpan().logEvent("校验医保卡、身份证、手机号接口错误:原因:"+e.getMessage());
-                return Envelop.getError(e.getMessage(), BaseEnvelopStatus.system_error.getCode());
+                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.code);
             }
 
             /**
@@ -46,9 +46,9 @@ public class LoginFeignFallbackFactory implements FallbackFactory<LoginFeign> {
              * @return
              */
             @Override
-            public Envelop register(String mobilePhone, String saasId, int type, String captcha, String name, String password, String idcard, String ssc) {
+            public MixEnvelop register(String mobilePhone, String saasId, int type, String captcha, String name, String password, String idcard, String ssc) {
                 tracer.getCurrentSpan().logEvent("注册账号接口错误:原因:"+e.getMessage());
-                return Envelop.getError(e.getMessage(),BaseEnvelopStatus.system_error.getCode());
+                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.code);
             }
 
             /**
@@ -60,9 +60,9 @@ public class LoginFeignFallbackFactory implements FallbackFactory<LoginFeign> {
              * @return
              */
             @Override
-            public Envelop login(String mobilePhone, String password, String saasId, String captcha) {
+            public MixEnvelop login(String mobilePhone, String password, String saasId, String captcha) {
                 tracer.getCurrentSpan().logEvent("登录账号接口错误:原因:"+e.getMessage());
-                return Envelop.getError(e.getMessage(),BaseEnvelopStatus.system_error.getCode());
+                return MixEnvelop.getError(e.getMessage(), EnvelopStatus.system_error.code);
             }
         };
     }

@@ -78,13 +78,14 @@ ehr:
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
-logging:
-  path: /data/logger
-  file: app-iot-server
+#logging:
+#  path: /data/logger
+#  file: app-iot-server
 ##如果是外网项目就是flase 内网是true
 neiwang:
   enable: true
   wlyy: http://localhost:9099/iot/
+
 ---
 spring:
   profiles: jwtest
@@ -116,9 +117,9 @@ ehr:
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
-logging:
-  path: /data/logger
-  file: app-iot-server
+#logging:
+#  path: /data/logger
+#  file: app-iot-server
 ##如果是外网项目就是flase,false会调用内网http接口项目提交  内网是true直接上传fastDfs
 neiwang:
   enable: true
@@ -153,9 +154,9 @@ ehr:
 fast-dfs:
   tracker-server: 11.1.2.9:22122
   accessUrl: http://11.1.2.9
-logging:
-  path: /data/logger
-  file: app-iot-server
+#logging:
+#  path: /data/logger
+#  file: app-iot-server
 ##如果是外网项目就是flase 内网是true
 neiwang:
   enable: false

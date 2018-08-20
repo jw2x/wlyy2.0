@@ -2,7 +2,7 @@ package com.yihu.iot.datainput.controller;
 
 import com.yihu.iot.datainput.service.DataInputService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.iot.DataRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,42 +25,42 @@ public class DataInputController {
 
     @PostMapping(value = DataRequestMapping.DataInput.api_user_bind, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "设备注册绑定", notes = "设备注册并绑定用户")
-    public Envelop bindUser(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+    public MixEnvelop bindUser(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataInput.message_success,dataInputService.bindUser(jsonData));
+            return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_success,dataInputService.bindUser(jsonData));
         } catch (ApiException e){
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+            return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 
     @PostMapping(value = DataRequestMapping.DataInput.api_data_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "体征数据上传", notes = "数据上传入库")
-    public Envelop uploadData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
+    public MixEnvelop uploadData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
         String str = "";
         try {
             str = dataInputService.inputBodySignsData(jsonData);
             if (!str.equals("success")) {
-                return Envelop.getSuccess(DataRequestMapping.DataInput.message_fail, str);
+                return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_fail, str);
             }
         } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+            return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
         }
-        return Envelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
+        return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
     }
 
     @PostMapping(value = DataRequestMapping.DataInput.api_weRunData_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "微信运动数据上传", notes = "微信运动数据上传入库")
-    public Envelop uploadWeRunData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
+    public MixEnvelop uploadWeRunData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
         String str = "";
         try {
             str = dataInputService.inputWeRunData(jsonData);
             if (!StringUtils.endsWithIgnoreCase("success",str)) {
-                return Envelop.getError(DataRequestMapping.DataInput.message_fail, 0);
+                return MixEnvelop.getError(DataRequestMapping.DataInput.message_fail, 0);
             }
         } catch (ApiException e) {
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+            return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
         }
-        return Envelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
+        return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
     }
 
 }
