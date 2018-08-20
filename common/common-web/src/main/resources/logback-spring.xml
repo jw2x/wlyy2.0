@@ -6,7 +6,7 @@
     <springProperty scope="context" name="appName" source="spring.application.name" />
 
 	<property name="log_home" value="/wlyy-logs/${appName}" />
-
+    <property name="max_history" value="30"/>
 
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
@@ -29,6 +29,7 @@
     <appender name="ApiInfoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_home}/api/info/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${max_history}</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -44,6 +45,7 @@
     <appender name="ApiWarnFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_home}/api/warn/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${max_history}</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -59,6 +61,7 @@
     <appender name="ApiErrorFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_home}/api/error/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${max_history}</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -70,21 +73,13 @@
             <onMismatch>DENY</onMismatch>
         </filter>
     </appender>
-
-    <logger name="com.yihu.jw.web.handler.GlobalExceptionHandler" level="WARN" additivity="false">
-        <appender-ref ref="console" />
-        <appender-ref ref="ApiInfoFile" />
-        <appender-ref ref="ApiWarnFile" />
-        <appender-ref ref="ApiErrorFile" />
-    </logger>
     <!-- Api Log End -->
-
-    <!-- 如果微服务纳入全局异常处理，请勿修改以上代码，有新的日志处理请在以下追加！！！ -->
 
     <!-- Business Log Start -->
     <appender name="BusinessInfoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_home}/business/info/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${max_history}</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -100,6 +95,7 @@
     <appender name="BusinessWarnFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_home}/business/warn/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${max_history}</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -115,6 +111,7 @@
     <appender name="BusinessErrorFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${log_home}/business/error/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>${max_history}</maxHistory>
         </rollingPolicy>
         <encoder>
             <pattern>${FILE_LOG_PATTERN}</pattern>
@@ -128,11 +125,28 @@
     </appender>
     <!-- Business Log End -->
 
-	<root level="INFO">
+    <!-- 如果微服务纳入全局异常处理，请勿修改以上代码，有新的日志处理请在以下追加！！！ -->
+    <!-- Other Log Start -->
+    <!-- Other Log End -->
+
+    <!-- 针对接口调用出错日志（单独记录） -->
+    <logger name="com.yihu.jw.web.handler.GlobalExceptionHandler" level="WARN" additivity="false">
         <appender-ref ref="console" />
+        <appender-ref ref="ApiInfoFile" />
+        <appender-ref ref="ApiWarnFile" />
+        <appender-ref ref="ApiErrorFile" />
+    </logger>
+
+    <!-- 业务日志 -->
+    <logger name="com.yihu.jw">
         <appender-ref ref="BusinessInfoFile" />
         <appender-ref ref="BusinessWarnFile" />
         <appender-ref ref="BusinessErrorFile" />
+    </logger>
+
+    <!-- 基础日志 -->
+	<root level="INFO">
+        <appender-ref ref="console" />
 	</root>
 
 </configuration>

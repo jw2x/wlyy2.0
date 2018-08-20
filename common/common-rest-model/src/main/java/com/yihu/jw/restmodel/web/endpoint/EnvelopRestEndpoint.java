@@ -1,8 +1,8 @@
 package com.yihu.jw.restmodel.web.endpoint;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -20,76 +20,74 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /**
- * REST风格控控制器基类。此控制器用于对API进行校验，并处理平台根层级的业务，如API参数校验，错误及返回码设定等。
- * <p>
- * 根层级的校验，如果是正确的，直接返回HTTP代码200，若出错，则会将HTTP返回代码设置为1X或2X，并在HTTP响应体中包含响应的信息。
+ * REST风格控控制器基类。
+ * 基于Envelop的返回结果封装
  * HTTP响应体格式为JSON。
- * + 成功：会根据各业务逻辑自行决定要返回的数据，各业务模块的返回结构不同。
- * + 失败：{"code":"错误代码", "message":"错误原因"}
+ * + 成功：根据各业务逻辑自行决定要返回的数据，各业务模块的返回结构不尽相同。
+ * + 失败：{"status":错误码, "message":"错误原因"}
  *
- * @author zhiyong
- * @author Sand
+ * @author Progr1mmer
  */
 public abstract class EnvelopRestEndpoint {
 
     @Autowired
     protected ObjectMapper objectMapper;
 
-    protected Envelop success(String desc) {
-        return success(desc, 200);
+    protected Envelop success(String message) {
+        return success(message, 200);
     }
 
-    protected Envelop success(String desc, int code) {
+    protected Envelop success(String message, int status) {
         Envelop envelop = new Envelop();
-        envelop.setMessage(desc);
-        envelop.setStatus(code);
+        envelop.setMessage(message);
+        envelop.setStatus(status);
         return envelop;
     }
 
-    protected <J> ObjEnvelop<J> success(J data){
-        return success(data, "success");
+    protected <J> ObjEnvelop<J> success(J obj){
+        return success("success", obj);
     }
 
-    protected <J> ObjEnvelop<J> success(J data, String desc){
-        return success(data, desc, 200);
+    protected <J> ObjEnvelop<J> success(String message, J obj){
+        return success(message, 200, obj);
     }
 
-    protected <J> ObjEnvelop<J> success(J data, String desc, int code){
+    protected <J> ObjEnvelop<J> success(String message, int status, J obj){
         ObjEnvelop<J> objEnvelop = new ObjEnvelop<>();
-        objEnvelop.setMessage(desc);
-        objEnvelop.setStatus(code);
-        objEnvelop.setObj(data);
+        objEnvelop.setMessage(message);
+        objEnvelop.setStatus(status);
+        objEnvelop.setObj(obj);
         return objEnvelop;
     }
 
     protected <T> ListEnvelop<T> success(List<T> contents){
-        return success(contents, "success");
+        return success("success", contents);
     }
 
-    protected <T> ListEnvelop<T> success(List<T> contents, String desc){
-        return success(contents, desc, 200);
+    protected <T> ListEnvelop<T> success(String message, List<T> contents){
+        return success(message, 200, contents);
     }
 
-    protected <T> ListEnvelop<T> success(List<T> contents, String desc, int code){
+    protected <T> ListEnvelop<T> success(String message, int status, List<T> contents){
         ListEnvelop<T> listEnvelop = new ListEnvelop<>();
-        listEnvelop.setMessage(desc);
-        listEnvelop.setStatus(code);
+        listEnvelop.setMessage(message);
+        listEnvelop.setStatus(status);
         listEnvelop.setDetailModelList(contents);
         return listEnvelop;
     }
 
     protected <T> PageEnvelop<T> success(List<T> contents, int totalCount, int currPage, int pageSize) {
-        return success(contents, "success", totalCount, currPage, pageSize);
+        return success("success", contents, totalCount, currPage, pageSize);
     }
 
-    protected <T> PageEnvelop<T> success(List<T> contents, String desc, int totalCount, int currPage, int pageSize) {
-        return success(contents, desc, 200, totalCount, currPage, pageSize);
+    protected <T> PageEnvelop<T> success(String message, List<T> contents, int totalCount, int currPage, int pageSize) {
+        return success(message, 200, contents, totalCount, currPage, pageSize);
     }
 
-    protected <T> PageEnvelop<T> success(List<T> contents, String desc, int code, int totalCount, int currPage, int pageSize) {
+    protected <T> PageEnvelop<T> success(String message, int status,  List<T> contents, int totalCount, int currPage, int pageSize) {
         PageEnvelop<T> pageEnvelop = new PageEnvelop();
-        pageEnvelop.setMessage(desc);
-        pageEnvelop.setStatus(code);
+        pageEnvelop.setMessage(message);
+        pageEnvelop.setStatus(status);
         pageEnvelop.setCurrPage(currPage);
         pageEnvelop.setPageSize(pageSize);
         pageEnvelop.setTotalCount(totalCount);
@@ -98,38 +96,35 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <T, J> MixEnvelop<T, J> success(List<T> contents, J obj) {
-        return success(contents, obj, "success");
+        return success("success", contents, obj);
     }
 
-    protected <T, J> MixEnvelop<T, J> success(List<T> contents, J obj, String desc) {
-        return success(contents, obj, desc, 200);
+    protected <T, J> MixEnvelop<T, J> success(String message, List<T> contents, J obj) {
+        return success(message, 200, contents, obj);
     }
 
-    protected <T, J> MixEnvelop<T, J> success(List<T> contents, J data, String desc, int code) {
-        return success(contents, data, desc, code, contents.size(), 1, contents.size());
+    protected <T, J> MixEnvelop<T, J> success(String message, int status, List<T> contents, J obj) {
+        return success(message, status, contents, obj, contents.size(), 1, contents.size());
     }
 
-    protected <T, J> MixEnvelop<T, J> success(List<T> contents, J data, String desc, int code, int totalCount, int currPage, int pageSize) {
+    protected <T, J> MixEnvelop<T, J> success(String message, int status, List<T> contents, J obj, int totalCount, int currPage, int pageSize) {
         MixEnvelop<T, J> mixEnvelop = new MixEnvelop();
-        mixEnvelop.setMessage(desc);
-        mixEnvelop.setStatus(code);
+        mixEnvelop.setMessage(message);
+        mixEnvelop.setStatus(status);
         mixEnvelop.setCurrPage(currPage);
         mixEnvelop.setPageSize(pageSize);
         mixEnvelop.setTotalCount(totalCount);
         mixEnvelop.setDetailModelList(contents);
-        mixEnvelop.setObj(data);
+        mixEnvelop.setObj(obj);
         return mixEnvelop;
     }
 
-    protected Envelop failed(String desc) {
-        return failed(desc, 500);
+    protected Envelop failed(String message) {
+        return failed(message, -10000);
     }
 
-    protected Envelop failed(String desc, int code) {
-        Envelop envelop = new Envelop();
-        envelop.setMessage(desc);
-        envelop.setStatus(code);
-        return envelop;
+    protected Envelop failed(String message, int status) {
+        return success(message, status);
     }
 
     protected <T> T toEntity(String json, Class<T> target) throws IOException {
@@ -188,13 +183,13 @@ public abstract class EnvelopRestEndpoint {
 
     protected String randomString(int length) {
         String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         Random random = new Random();
         for (int i = 0; i < length; i++) {
             int pos = random.nextInt(str.length());
-            buffer.append(str.charAt(pos));
+            builder.append(str.charAt(pos));
         }
-        return buffer.toString();
+        return builder.toString();
     }
 
     /**

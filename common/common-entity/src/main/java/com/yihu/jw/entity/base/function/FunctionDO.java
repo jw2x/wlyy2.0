@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.function;
 
 
-import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import com.yihu.jw.entity.IntegerIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "base_function")
-public class FunctionDO extends UuidIdentityEntityWithOperator {
+public class FunctionDO extends IntegerIdentityEntityWithOperator {
 
     //功能名称
     private String name;

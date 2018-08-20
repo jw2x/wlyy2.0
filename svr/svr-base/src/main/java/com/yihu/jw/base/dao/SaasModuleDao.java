@@ -7,6 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by progr1mmer on 2018/8/17.
  */
-public interface SaasModuleDao extends PagingAndSortingRepository<SaasModuleDO, String>, JpaSpecificationExecutor<SaasModuleDO> {
+public interface SaasModuleDao extends PagingAndSortingRepository<SaasModuleDO, Integer>, JpaSpecificationExecutor<SaasModuleDO> {
 
 }

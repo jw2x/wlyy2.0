@@ -1,18 +1,21 @@
 package com.yihu.jw.base.endpoint.saas;
 
+import com.yihu.jw.base.service.UserService;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.base.service.SaasService;
+import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
-import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
+import com.yihu.utils.security.MD5;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,15 +30,27 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
     private SaasService saasService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SaasDO> create (
-            @ApiParam(name = "json", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
-        SaasDO saasDO = toEntity(jsonData, SaasDO.class);
-        saasDO = saasService.save(saasDO);
-        return success(saasDO);
+    public Envelop create (
+            @ApiParam(name = "saas", value = "Json数据", required = true)
+            @RequestParam(value = "saas") SaasDO saasDO,
+            @ApiParam(name = "user", value = "Json数据", required = true)
+            @RequestParam(value = "user") UserDO userDO) throws Exception {
+        if (userService.search("username=" + userDO.getUsername()).size() > 0) {
+            return failed("管理员用户名已存在");
+        }
+        userDO.setEnabled(true);
+        userDO.setLocked(false);
+        if (StringUtils.isEmpty(userDO.getPassword())) {
+            String password = MD5.md5Hex(userDO.getIdcard().substring(0, 5));
+            userDO.setPassword(password);
+        }
+        saasService.save(saasDO, userDO);
+        return success("创建成功");
     }
 
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
