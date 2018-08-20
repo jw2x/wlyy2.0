@@ -267,6 +267,19 @@ public class SpecialistController extends EnvelopRestController {
             return Envelop.getError(e.getMessage());
         }
     }
+    
+    @GetMapping(value = SpecialistMapping.specialist.findDoctorAndDoctorHealthBySpecialDoctor)
+    @ApiOperation(value = "获取当前专科医生有关联的家庭医生和健管师列表")
+    public Envelop findDoctorAndDoctorHealthBySpecialDoctor(
+            @ApiParam(name = "doctor", value = "专科医生code") @RequestParam(required = true)String doctor){
+        try {
+            return specialistService.findDoctorAndDoctorHealthBySpecialDoctor(doctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 
 
 
