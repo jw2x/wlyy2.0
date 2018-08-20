@@ -7,6 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 /**
  * Created by chenweida on 2017/5/19.
  */
-public interface FunctionDao extends PagingAndSortingRepository<FunctionDO, String>, JpaSpecificationExecutor<FunctionDO> {
+public interface FunctionDao extends PagingAndSortingRepository<FunctionDO, Integer>, JpaSpecificationExecutor<FunctionDO> {
 
 }

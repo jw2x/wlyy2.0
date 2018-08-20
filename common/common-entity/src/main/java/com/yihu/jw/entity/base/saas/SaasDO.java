@@ -16,9 +16,13 @@ import javax.persistence.Table;
 public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public enum Status {
+    	//待审核
         auditWait,
+		//审核通过
         auditPassed,
+		//审核不通过
         auditNotPassed,
+		//已删除
 		delete
     }
 
@@ -33,11 +37,14 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     private String orgCode; //机构编码
 	private String name; //系统名称
-	private Status status; //状态 0 已删除 1待审核 2审核通过 3审核不通过
+	private Status status; //状态  0待审核 1审核通过 2审核不通过 3已删除
 	private String remark; //备注
 	private String logo; //远程fastDFS文件地址
     private Integer theme; //主题ID
     private Type type; //类型
+	private String manager; //管理员 - 关联user表id字段
+	private String email; //管理员邮箱
+	private String phone; //管理员手机号码
 
 	@Column(name = "org_code", nullable = false)
 	public String getOrgCode() {
@@ -66,7 +73,7 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
         this.status = status;
     }
 
-    @Column(name = "remark", length = 1000)
+    @Column(name = "remark")
 	public String getRemark() {
 		return this.remark;
 	}
@@ -101,4 +108,32 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	public void setType(Type type) {
 		this.type = type;
 	}
+
+	@Column(name = "manager", length = 50)
+	public String getManager() {
+		return manager;
+	}
+
+	public void setManager(String manager) {
+		this.manager = manager;
+	}
+
+	@Column(name = "email")
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	@Column(name = "phone")
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 }

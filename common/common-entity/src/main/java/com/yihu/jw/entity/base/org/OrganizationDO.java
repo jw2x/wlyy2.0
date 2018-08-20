@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_organization")
-public class Organization extends UuidIdentityEntity {
+public class OrganizationDO extends UuidIdentityEntity {
 
     private String name; //名称
     private String code; //编码

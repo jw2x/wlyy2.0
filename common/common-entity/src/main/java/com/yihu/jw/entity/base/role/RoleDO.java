@@ -1,18 +1,29 @@
 package com.yihu.jw.entity.base.role;
 
-import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import com.yihu.jw.entity.IntegerIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.sql.Timestamp;
 
 /**
  * BaseRole entity. @author MyEclipse Persistence Tools
  */
 @Entity
 @Table(name = "base_role")
-public class RoleDO extends UuidIdentityEntityWithOperator {
+public class RoleDO extends IntegerIdentityEntityWithOperator {
+
+	/**
+	 * 角色类型
+	 */
+	public enum Type {
+		//系统 - user对应的角色类型
+		system,
+		//医生
+		doctor,
+		//患者
+		patient
+	}
 
 	//saas id
 	private String saasId;
@@ -22,20 +33,8 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 	private String code;
 	//备注
 	private String remark;
-
-	// Constructors
-	/** default constructor */
-	public RoleDO() {
-	}
-
-	/** minimal constructor */
-	public RoleDO(String id, Timestamp createTime, Timestamp updateTime) {
-		this.id = id;
-		this.createTime = createTime;
-		this.updateTime = updateTime;
-	}
-
-	// Property accessors
+	//角色类型
+	private Type type;
 
 	@Column(name = "saas_id", length = 50)
 	public String getSaasId() {
@@ -73,4 +72,12 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 		this.remark = remark;
 	}
 
+	@Column(name = "type")
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
 }

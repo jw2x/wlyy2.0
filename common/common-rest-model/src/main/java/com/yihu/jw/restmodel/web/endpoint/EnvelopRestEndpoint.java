@@ -1,8 +1,8 @@
 package com.yihu.jw.restmodel.web.endpoint;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -44,19 +44,19 @@ public abstract class EnvelopRestEndpoint {
         return envelop;
     }
 
-    protected <J> ObjEnvelop<J> success(J data){
-        return success("success", data);
+    protected <J> ObjEnvelop<J> success(J obj){
+        return success("success", obj);
     }
 
-    protected <J> ObjEnvelop<J> success(String message, J data){
-        return success(message, 200, data);
+    protected <J> ObjEnvelop<J> success(String message, J obj){
+        return success(message, 200, obj);
     }
 
-    protected <J> ObjEnvelop<J> success(String message, int status, J data){
+    protected <J> ObjEnvelop<J> success(String message, int status, J obj){
         ObjEnvelop<J> objEnvelop = new ObjEnvelop<>();
         objEnvelop.setMessage(message);
         objEnvelop.setStatus(status);
-        objEnvelop.setObj(data);
+        objEnvelop.setObj(obj);
         return objEnvelop;
     }
 
@@ -103,11 +103,11 @@ public abstract class EnvelopRestEndpoint {
         return success(message, 200, contents, obj);
     }
 
-    protected <T, J> MixEnvelop<T, J> success(String message, int status, List<T> contents, J data) {
-        return success(message, status, contents, data, contents.size(), 1, contents.size());
+    protected <T, J> MixEnvelop<T, J> success(String message, int status, List<T> contents, J obj) {
+        return success(message, status, contents, obj, contents.size(), 1, contents.size());
     }
 
-    protected <T, J> MixEnvelop<T, J> success(String message, int status, List<T> contents, J data, int totalCount, int currPage, int pageSize) {
+    protected <T, J> MixEnvelop<T, J> success(String message, int status, List<T> contents, J obj, int totalCount, int currPage, int pageSize) {
         MixEnvelop<T, J> mixEnvelop = new MixEnvelop();
         mixEnvelop.setMessage(message);
         mixEnvelop.setStatus(status);
@@ -115,19 +115,16 @@ public abstract class EnvelopRestEndpoint {
         mixEnvelop.setPageSize(pageSize);
         mixEnvelop.setTotalCount(totalCount);
         mixEnvelop.setDetailModelList(contents);
-        mixEnvelop.setObj(data);
+        mixEnvelop.setObj(obj);
         return mixEnvelop;
     }
 
     protected Envelop failed(String message) {
-        return failed(message, 500);
+        return failed(message, -10000);
     }
 
     protected Envelop failed(String message, int status) {
-        Envelop envelop = new Envelop();
-        envelop.setMessage(message);
-        envelop.setStatus(status);
-        return envelop;
+        return success(message, status);
     }
 
     protected <T> T toEntity(String json, Class<T> target) throws IOException {

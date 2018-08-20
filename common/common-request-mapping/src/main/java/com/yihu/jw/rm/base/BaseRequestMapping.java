@@ -29,7 +29,7 @@ public class BaseRequestMapping {
     }
 
     /**
-     * SAAS
+     * SAAS模块
      */
     public static class SaasModule extends Basic {
         public static final String PREFIX  = "/saas_module";
@@ -77,6 +77,21 @@ public class BaseRequestMapping {
      */
     public static class SystemDictEntry extends Basic {
         public static final String PREFIX  = "/system_dict_entry";
+    }
+
+    /**
+     * 用户
+     */
+    public static class User extends Basic {
+        public static final String PREFIX  = "/user";
+        public static final String CHECK_USERNAME = "/check_username";
+    }
+
+    /**
+     * 用户
+     */
+    public static class UserRole extends Basic {
+        public static final String PREFIX  = "/user_role";
     }
 
     /**

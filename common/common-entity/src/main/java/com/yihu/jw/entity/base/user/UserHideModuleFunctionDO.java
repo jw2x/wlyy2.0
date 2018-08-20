@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.user;
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,13 +10,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_employ_hide_module_function")
-public class EmployHideModuleFunctionDO extends UuidIdentityEntity {
+public class UserHideModuleFunctionDO extends IntegerIdentityEntity {
 
     //用户ID
     private String employId;
     //模块ID
-    private String moduleId;
+    private Integer moduleId;
     //功能ID（该字段为空则直接隐藏上级模块）
-    private String functionId;
+    private Integer functionId;
 
 }
