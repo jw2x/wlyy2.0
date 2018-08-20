@@ -1,4 +1,4 @@
-package com.yihu.jw.wlyy.patient;
+package com.yihu.jw.entity.wlyy.patient;
 
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;

@@ -1,4 +1,4 @@
-package com.yihu.jw.wlyy.patient;// default package
+package com.yihu.jw.entity.wlyy.patient;// default package
 
 import com.yihu.jw.entity.UuidIdentityEntity;
 

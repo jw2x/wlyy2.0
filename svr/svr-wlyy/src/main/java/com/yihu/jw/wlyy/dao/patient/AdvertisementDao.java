@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.dao.patient;
 
-import com.yihu.jw.wlyy.patient.WlyyAdvertisementDO;
+import com.yihu.jw.entity.wlyy.patient.WlyyAdvertisementDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

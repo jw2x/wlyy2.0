@@ -1,4 +1,4 @@
-package com.yihu.jw.wlyy.agreement;
+package com.yihu.jw.entity.wlyy.agreement;
 
 
 import com.yihu.jw.entity.UuidIdentityEntity;

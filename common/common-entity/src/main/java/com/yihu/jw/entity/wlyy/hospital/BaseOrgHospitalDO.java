@@ -1,4 +1,4 @@
-package com.yihu.jw.wlyy.hospital;
+package com.yihu.jw.entity.wlyy.hospital;
 
 
 
