@@ -1,3 +1,4 @@
+/*
 package com.yihu.jw.config.jpa;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -6,9 +7,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
+*/
 /**
  * Created by chenweida on 2017/4/6.
- */
+ *//*
+
 @Component
 @RefreshScope
 public class HibernateProperties {
@@ -27,3 +30,4 @@ public class HibernateProperties {
         return properties;
     }
 }
+*/
