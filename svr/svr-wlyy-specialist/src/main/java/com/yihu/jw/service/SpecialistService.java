@@ -5,6 +5,7 @@ import com.yihu.jw.entity.specialist.*;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -493,6 +494,7 @@ public class SpecialistService{
                 " r.create_time AS createTime," +
                 " r.status," +
                 " r.sign_status AS signStatus  " +
+                " r.team_code AS teamCode  " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
                 " JOIN "+basedb+".wlyy_doctor d ON r.doctor = d.code " +
@@ -594,7 +596,77 @@ public class SpecialistService{
         List<PatientSignInfoVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientSignInfoVO.class));
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs.get(0));
     }
-
+    
+    public MixEnvelop findDoctorAndDoctorHealthBySpecialDoctor(String doctor) {
+        String sql = "SELECT " +
+                "doctor.CODE AS CODE," +
+                "doctor.NAME AS NAME," +
+                "doctor.sex AS sex," +
+                "doctor.birthday AS birthday," +
+                "doctor.photo AS photo," +
+                "doctor.mobile AS mobile," +
+                "doctor.hospital AS hospital," +
+                "doctor.hospital_name AS hospitalName," +
+                "doctor.dept AS dept," +
+                "doctor.dept_name AS deptName," +
+                "doctor.job AS job," +
+                "doctor.job_name AS jobName," +
+                "doctor.LEVEL AS LEVEL," +
+                "doctor.qrcode AS qrcode," +
+                "doctor.czrq AS czrq," +
+                "doctor.del AS del," +
+                "doctor.idcard AS idcard " +
+                "FROM wlyy.wlyy_doctor doctor RIGHT JOIN ( " +
+                "SELECT a.doctor AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
+                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 " +
+                "UNION  " +
+                "SELECT a.doctor_health AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
+                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1) " +
+                "t ON doctor.CODE=t.doctorcode";
+        List<SignFamilyDoctorVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SignFamilyDoctorVO.class));
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs);
+    }
+    
+    public MixEnvelop<Long,Long> findSpecialistSignFamilyPatientCout(String specialdoctor, String familydoctor) {
+    
+        String sql = "SELECT count(1) AS total " +
+                "FROM wlyy.wlyy_sign_family a WHERE a.`status`=1 AND a.expenses_status=1 " +
+                "AND patient IN (" +
+                "SELECT patient FROM wlyy_specialist.wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 " +
+                "AND doctor='"+specialdoctor+"') " +
+                "AND (a.doctor='"+familydoctor+"' OR a.doctor_health='"+familydoctor+"') ";
+    
+        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
+        Long count = 0L;
+        if(rstotal!=null&&rstotal.size()>0){
+            count = (Long) rstotal.get(0).get("total");
+        }
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,count);
+    }
+    
+    public MixEnvelop<PatientRelationVO,PatientRelationVO> getSpecialistSignFamilyPatientByName(String specialdoctor, String familydoctor, String nameKey, Integer page, Integer size) {
+        String sql ="SELECT " +
+                "p.CODE AS patient," +
+                "p.`name` AS patientName," +
+                "p.photo," +
+                "IFNULL(YEAR (from_days(datediff(now(),p.birthday))),'未知') age," +
+                "p.sex " +
+                "FROM wlyy.wlyy_patient p " +
+                "JOIN ( " +
+                " SELECT a.patient FROM wlyy.wlyy_sign_family a WHERE patient IN (" +
+                "  SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 " +
+                "  AND doctor='"+specialdoctor+"') " +
+                "  AND (a.doctor='"+familydoctor+"' OR a.doctor_health='"+familydoctor+"') ";
+        if(StringUtils.isNotBlank(nameKey)){
+            sql= sql + "  AND a.NAME LIKE '%"+nameKey+"%' ";
+        }
+        sql= sql +" AND a.`status`=1 AND a.expenses_status=1) s ON p.CODE=s.patient" +
+                " LIMIT "+(page-1)*size+","+size;
+    
+        List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
+    
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+    }
 
 
 //    public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){

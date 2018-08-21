@@ -119,12 +119,19 @@ public abstract class EnvelopRestEndpoint {
         return mixEnvelop;
     }
 
-    protected Envelop failed(String message) {
-        return failed(message, -10000);
+    protected <E extends Envelop> E failed(String message, Class<E> clazz) {
+        return failed(message, -10000, clazz);
     }
 
-    protected Envelop failed(String message, int status) {
-        return success(message, status);
+    protected <E extends Envelop> E failed(String message, int status, Class<E> clazz) {
+        try {
+            E envelop = clazz.newInstance();
+            envelop.setMessage(message);
+            envelop.setStatus(status);
+            return envelop;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     protected <T> T toEntity(String json, Class<T> target) throws IOException {

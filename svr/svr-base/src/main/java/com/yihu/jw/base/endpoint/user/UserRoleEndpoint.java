@@ -54,7 +54,7 @@ public class UserRoleEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         UserRoleDO userRoleDO = toEntity(jsonData, UserRoleDO.class);
         if (null == userRoleDO.getId()) {
-            return failed("ID不能为空");
+            return failed("ID不能为空", Envelop.class);
         }
         userRoleDO = userRoleService.save(userRoleDO);
         return success(userRoleDO);
