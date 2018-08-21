@@ -49,4 +49,11 @@ public class SpecialistMapping {
     public static class rehabilitation{
         public static final String findRehabilitationPlan = "/findRehabilitationPlan";
     }
+
+    public static class serviceItem{
+        public static final String createServiceItem = "/createServiceItem";
+        public static final String getServiceItem = "/getServiceItem";
+        public static final String batchDelete = "/batchDelete";
+        public static final String updateServiceItem = "/updateServiceItem";
+    }
 }

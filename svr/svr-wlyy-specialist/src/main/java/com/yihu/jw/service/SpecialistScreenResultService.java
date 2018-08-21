@@ -1,10 +1,11 @@
 package com.yihu.jw.service;
 
 import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.specialist.*;
+import com.yihu.jw.restmodel.specialist.SurveyScreenResultVo;
+import com.yihu.jw.restmodel.specialist.SurveyTemplateQuestionsVo;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.util.common.IdCardUtil;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -13,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhangdan on 2018/7/6.
