@@ -43,7 +43,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        moduleService.delete(ids);
+        moduleService.delete(ids.split(","));
         return success("删除成功");
     }
 
@@ -54,7 +54,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         ModuleDO module = toEntity(jsonData, ModuleDO.class);
         if (null == module.getId()) {
-            return failed("ID不能为空");
+            return failed("ID不能为空", Envelop.class);
         }
         module = moduleService.save(module);
         return success(module);

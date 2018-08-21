@@ -22,3 +22,19 @@ spring:
     config:
       uri: ${wlyy.spring.config.uri:http://172.17.110.212:1221}
       label: ${wlyy.spring.config.label:jwdev}
+
+---
+spring:
+  profiles: jwdevtest
+  cloud:
+    config:
+      uri: ${wlyy.spring.config.uri:http://172.17.110.212:1221}
+      label: ${wlyy.spring.config.label:jwdev}
+
+---
+spring:
+  profiles: prod
+  cloud:
+    config:
+      uri: ${wlyy.spring.config.uri:http://172.17.110.212:1221}
+      label: ${wlyy.spring.config.label:jwdev}
