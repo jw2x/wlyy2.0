@@ -54,7 +54,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         FunctionDO functionDO = toEntity(jsonData, FunctionDO.class);
         if (null == functionDO.getId()) {
-            return failed("ID不能为空");
+            return failed("ID不能为空", Envelop.class);
         }
         functionDO = functionService.save(functionDO);
         return success(functionDO);

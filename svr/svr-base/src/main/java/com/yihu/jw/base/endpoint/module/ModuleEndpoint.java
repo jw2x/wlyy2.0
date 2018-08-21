@@ -54,7 +54,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         ModuleDO module = toEntity(jsonData, ModuleDO.class);
         if (null == module.getId()) {
-            return failed("ID不能为空");
+            return failed("ID不能为空", Envelop.class);
         }
         module = moduleService.save(module);
         return success(module);

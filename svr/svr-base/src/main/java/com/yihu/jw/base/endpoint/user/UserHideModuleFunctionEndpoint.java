@@ -54,7 +54,7 @@ public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         UserHideModuleFunctionDO userHideModuleFunctionDO = toEntity(jsonData, UserHideModuleFunctionDO.class);
         if (null == userHideModuleFunctionDO.getId()) {
-            return failed("ID不能为空");
+            return failed("ID不能为空", Envelop.class);
         }
         userHideModuleFunctionDO = userHideModuleFunctionService.save(userHideModuleFunctionDO);
         return success(userHideModuleFunctionDO);

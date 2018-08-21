@@ -54,7 +54,7 @@ public class RoleModuleFunctionEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         RoleModuleFunctionDO roleModuleFunctionDO = toEntity(jsonData, RoleModuleFunctionDO.class);
         if (null == roleModuleFunctionDO.getId()) {
-            return failed("ID不能为空");
+            return failed("ID不能为空", Envelop.class);
         }
         roleModuleFunctionDO = roleModuleFunctionService.save(roleModuleFunctionDO);
         return success(roleModuleFunctionDO);
