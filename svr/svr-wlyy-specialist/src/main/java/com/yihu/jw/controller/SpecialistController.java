@@ -263,6 +263,51 @@ public class SpecialistController extends EnvelopRestEndpoint {
             return MixEnvelop.getError(e.getMessage());
         }
     }
+    
+    @GetMapping(value = SpecialistMapping.specialist.findDoctorAndDoctorHealthBySpecialDoctor)
+    @ApiOperation(value = "获取当前专科医生有关联的家庭医生和健管师列表")
+    public MixEnvelop findDoctorAndDoctorHealthBySpecialDoctor(
+            @ApiParam(name = "doctor", value = "专科医生code") @RequestParam(required = true)String doctor){
+        try {
+            return specialistService.findDoctorAndDoctorHealthBySpecialDoctor(doctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+    
+    @GetMapping(value = SpecialistMapping.specialist.findSpecialistSignFamilyPatientCout)
+    @ApiOperation(value = "获取专科医生家庭医生共管居民数目")
+    public MixEnvelop<Long, Long> findSpecialistSignFamilyPatientCout(
+            @ApiParam(name = "specialdoctor", value = "专科医生") @RequestParam(required = true)String specialdoctor,
+            @ApiParam(name = "familydoctor", value = "家庭医生") @RequestParam(required = true)String familydoctor
+    ){
+        try {
+            return specialistService.findSpecialistSignFamilyPatientCout(specialdoctor,familydoctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+    
+    @GetMapping(value = SpecialistMapping.specialist.getSpecialistSignFamilyPatientByName)
+    @ApiOperation(value = "搜索专科医生家庭医生共管居民")
+    public MixEnvelop<PatientRelationVO, PatientRelationVO> getSpecialistSignFamilyPatientByName(
+            @ApiParam(name = "specialdoctor", value = "专科医生") @RequestParam(required = true)String specialdoctor,
+            @ApiParam(name = "familydoctor", value = "家庭医生") @RequestParam(required = true)String familydoctor,
+            @ApiParam(name = "nameKey", value = "居民姓名模糊") @RequestParam(required = false)String nameKey,
+            @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
+            @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size) {
+        try {
+            return specialistService.getSpecialistSignFamilyPatientByName(specialdoctor,familydoctor,nameKey,page,size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
 
 
 
