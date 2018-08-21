@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.function;
 
 import com.yihu.jw.base.service.FunctionService;
 import com.yihu.jw.entity.base.function.FunctionDO;
+import com.yihu.jw.restmodel.base.base.FunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,12 +32,12 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Function.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<FunctionDO> create (
+    public ObjEnvelop<FunctionVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         FunctionDO functionDO = toEntity(jsonData, FunctionDO.class);
         functionDO = functionService.save(functionDO);
-        return success(functionDO);
+        return success(convertToModel(functionDO, FunctionVO.class));
     }
 
     @PostMapping(value = BaseRequestMapping.Function.DELETE)
@@ -49,20 +51,20 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Function.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public Envelop update (
+    public ObjEnvelop<FunctionVO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         FunctionDO functionDO = toEntity(jsonData, FunctionDO.class);
         if (null == functionDO.getId()) {
-            return failed("ID不能为空", Envelop.class);
+            return failed("ID不能为空", ObjEnvelop.class);
         }
         functionDO = functionService.save(functionDO);
-        return success(functionDO);
+        return success(convertToModel(functionDO, FunctionVO.class));
     }
 
     @GetMapping(value = BaseRequestMapping.Function.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<FunctionDO> page (
+    public PageEnvelop<FunctionVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -73,14 +75,14 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<FunctionDO> functionDOS = functionService.search(fields, filters, sorts, page, size);
+        List<FunctionVO> functionDOS = functionService.search(fields, filters, sorts, page, size);
         int count = (int)functionService.getCount(filters);
-        return success(functionDOS, count, page, size);
+        return success(convertToModels(functionDOS, new ArrayList<>(), FunctionVO.class), count, page, size);
     }
 
     @GetMapping(value = BaseRequestMapping.Function.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<FunctionDO> list (
+    public ListEnvelop<FunctionVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -88,7 +90,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<FunctionDO> functionDOS = functionService.search(fields, filters, sorts);
-        return success(functionDOS);
+        return success(convertToModels(functionDOS, new ArrayList<>(), FunctionVO.class));
     }
 
 }

@@ -1,65 +1,60 @@
 package com.yihu.jw.restmodel.base.base;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by chenweida on 2017/5/19.
  */
-public class FunctionVO {
-    private String id;
-    private String name; //功能名称
-    private String saasId; // saasid
-    private String parentCode; //父功能code
-    private Integer status; //状态 -1 删除 0 禁用 可用
-    private String url;
-    private String createUser;
-    private String createUserName;
-    private Date createTime;
-    private String updateUser;
-    private String updateUserName;
-    private Date updateTime;
-    private String remark; //备注
-    private List<FunctionVO> children = new ArrayList<>();
-    private String text;
+@ApiModel(value = "FunctionVO", description = "功能")
+public class FunctionVO implements Serializable {
 
-    public String getId() {
+    @ApiModelProperty(value = "id", example = "1" )
+    protected Integer id;
+    @ApiModelProperty(value = "创建日期", example = "2018-03-14 11:35:34" )
+    protected Date createTime;
+    @ApiModelProperty(value = "创建者", example = "0dae0003590016e5b3865e377b2f8615" )
+    protected String createUser;
+    @ApiModelProperty(value = "创建者用户名", example = "Progr1mmer" )
+    protected String createUserName;
+    @ApiModelProperty(value = "修改日期", example = "2018-03-14 11:35:34" )
+    protected Date updateTime;
+    @ApiModelProperty(value = "修改者", example = "0dae0003590016e5b3865e377b2f8615" )
+    protected String updateUser;
+    @ApiModelProperty(value = "修改者用户名", example = "Progr1mmer" )
+    protected String updateUserName;
+    //功能名称
+    @ApiModelProperty(value = "名称", example = "功能1" )
+    private String name;
+    //网关url前缀
+    @ApiModelProperty(value = "网关url前缀", example = "/base" )
+    private String prefix;
+    //功能对应的后台url路径
+    @ApiModelProperty(value = "功能对应的后台url路径", example = "/function/list" )
+    private String url;
+    //备注
+    @ApiModelProperty(value = "备注", example = "我是备注" )
+    private String remark;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
-    }
-
-    public String getParentCode() {
-        return parentCode;
-    }
-
-    public void setParentCode(String parentCode) {
-        this.parentCode = parentCode;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getCreateUser() {
@@ -78,12 +73,13 @@ public class FunctionVO {
         this.createUserName = createUserName;
     }
 
-    public Date getCreateTime() {
-        return createTime;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public String getUpdateUser() {
@@ -102,36 +98,20 @@ public class FunctionVO {
         this.updateUserName = updateUserName;
     }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public List<FunctionVO> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<FunctionVO> children) {
-        this.children = children;
-    }
-
-    public String getText() {
+    public String getName() {
         return name;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
     }
 
     public String getUrl() {
@@ -140,5 +120,13 @@ public class FunctionVO {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

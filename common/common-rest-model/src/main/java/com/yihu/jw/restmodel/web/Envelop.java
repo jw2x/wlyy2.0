@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 快速集成 {@link com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint}
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(description = "基础实体")
+@ApiModel(value = "Envelop", description = "基础实体")
 public class Envelop implements Serializable {
 
     @ApiModelProperty("信息")
