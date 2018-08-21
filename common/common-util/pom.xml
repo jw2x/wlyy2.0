@@ -29,5 +29,22 @@
             <artifactId>json</artifactId>
             <version>${version.json}</version>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.apache.activemq</groupId>-->
+            <!--<artifactId>activemq-all</artifactId>-->
+            <!--<version>5.14.2</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu.jw</groupId>
+            <artifactId>common-entity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.yihu</groupId>
+            <artifactId>utils</artifactId> <!-- 此依赖包含大部分常用工具类 -->
+        </dependency>
     </dependencies>
 </project>

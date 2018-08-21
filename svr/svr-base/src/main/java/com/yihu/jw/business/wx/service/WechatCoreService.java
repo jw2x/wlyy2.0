@@ -88,12 +88,11 @@ public class WechatCoreService {
         String returnStr = "";
 
         Map<String, String> message = new HashMap();
-        message.put("Content","1");
-        message.put("CreateTime","1534486843");
+        message.put("Event","subscribe");
+        message.put("CreateTime","1534495338");
         message.put("ToUserName","gh_73959f6e996b");
         message.put("FromUserName","oVH-2uJdhNrcAMt0Jhp3PMarDdaM");
-        message.put("MsgType","text");
-        message.put("MsgId","6590570807493983575");
+        message.put("MsgType","event");
 
         returnStr = messageProcess(message);
 
@@ -165,7 +164,30 @@ public class WechatCoreService {
         return result;
     }
 
-    public String scanEventProcess(Map<String, String> message){
+    /**
+     * 扫描二维码事件
+     * 1. 用户未关注时，进行关注后的事件推送
+     * <xml><ToUserName>< ![CDATA[toUser] ]></ToUserName><FromUserName>< ![CDATA[FromUser] ]></FromUserName><CreateTime>123456789</CreateTime><MsgType>< ![CDATA[event] ]></MsgType><Event>< ![CDATA[subscribe] ]></Event><EventKey>< ![CDATA[qrscene_123123] ]></EventKey><Ticket>< ![CDATA[TICKET] ]></Ticket></xml>
+     * 2. 用户已关注时的事件推送
+     * <xml> <ToUserName>< ![CDATA[toUser] ]></ToUserName> <FromUserName>< ![CDATA[FromUser] ]></FromUserName> <CreateTime>123456789</CreateTime> <MsgType>< ![CDATA[event] ]></MsgType> <Event>< ![CDATA[SCAN] ]></Event> <EventKey>< ![CDATA[SCENE_VALUE] ]></EventKey> <Ticket>< ![CDATA[TICKET] ]></Ticket> </xml>
+     * @param message
+     * @return
+     */
+    public String scanEventProcess(Map<String, String> message) throws Exception{
+        //获取原始id
+        String toUserName = message.get("ToUserName");
+        //如果为已经关注，EventKey值为带参二维码值，如果是未关注 qrscene_为前缀，后面为二维码的参数值
+        String eventKey = message.get("EventKey");
+        //查询需要对应匹配的带参二维码事件值
+        List<WxReplySceneDO> scenes = wxReplySceneDao.findByAppOriginIdAndMsgTypeAndEventAndStatus(toUserName,WeiXinMessageUtils.REQ_MESSAGE_TYPE_EVENT,WeiXinMessageUtils.EVENT_TYPE_SCAN,1);
+        if(scenes!=null&&scenes.size()>0){
+            for(WxReplySceneDO scene:scenes){
+                //判断带参二维码中前缀是否包该场景值
+                if(StringUtils.isNotBlank(scene.getScene())&&eventKey.indexOf(scene.getScene())!=-1){
+                    return getGraphicXMl(scene.getScene(),scene.getWechatId(),message);
+                }
+            }
+        }
 
         return "";
     }
@@ -176,8 +198,9 @@ public class WechatCoreService {
      * @return
      */
     public String subscribeEventProcess(Map<String, String> message) throws Exception{
+        //获取原始id
         String toUserName = message.get("ToUserName");
-        List<WxReplySceneDO> scenes = wxReplySceneDao.findByAppOriginIdAndMsgTypeAndEventAndStatus(toUserName,WeiXinMessageUtils.RESP_MESSAGE_TYPE_TEXT,WeiXinMessageUtils.EVENT_TYPE_SUBSCRIBE,1);
+        List<WxReplySceneDO> scenes = wxReplySceneDao.findByAppOriginIdAndMsgTypeAndEventAndStatus(toUserName,WeiXinMessageUtils.REQ_MESSAGE_TYPE_EVENT,WeiXinMessageUtils.EVENT_TYPE_SUBSCRIBE,1);
         if(scenes!=null&&scenes.size()>0){
             WxReplySceneDO scene = scenes.get(0);
             if(StringUtils.isNotBlank(scene.getScene())){
@@ -187,10 +210,20 @@ public class WechatCoreService {
         return "";
     }
 
+    /**
+     * 取消关注事件，根据需求开发
+     * @param message
+     * @return
+     */
     public String unsubscribeEventProcess(Map<String, String> message){
         return "";
     }
 
+    /**
+     * 点击事件，根据需求开发
+     * @param message
+     * @return
+     */
     public String clickProcess(Map<String, String> message){
         return "";
     }
@@ -232,6 +265,7 @@ public class WechatCoreService {
     public String getGraphicXMl(String secene,String wxId,Map<String, String> message)throws Exception{
         List<Map<String,Object>> group = getGraphicGroupByScene(secene,wxId);
         String result = "";
+        String eventKey = message.get("EventKey");
         if(group!=null&&group.size()>0){
             List<Map<String, String>> articles = new ArrayList<>();
 
@@ -250,6 +284,13 @@ public class WechatCoreService {
                 }
                 if(url.indexOf("{appId}")!=-1){
                     url = url.replace("{appId}",appId);
+                }
+                //传递带参二维码给前端页面
+                if(url.indexOf("{EventKey}")!=-1){
+                    if(eventKey.indexOf("qrscene_")!=-1){
+                        eventKey = eventKey.replace("qrscene_","");
+                    }
+                    url = url.replace("{EventKey}",eventKey);
                 }
 
                 article.put("Url", url);
