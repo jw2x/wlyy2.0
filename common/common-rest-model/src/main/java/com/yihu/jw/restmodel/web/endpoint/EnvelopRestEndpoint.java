@@ -119,11 +119,11 @@ public abstract class EnvelopRestEndpoint {
         return mixEnvelop;
     }
 
-    protected <E extends Envelop> Envelop failed(String message, Class<E> clazz) {
+    protected <E extends Envelop> E failed(String message, Class<E> clazz) {
         return failed(message, -10000, clazz);
     }
 
-    protected <E extends Envelop> Envelop failed(String message, int status, Class<E> clazz) {
+    protected <E extends Envelop> E failed(String message, int status, Class<E> clazz) {
         try {
             E envelop = clazz.newInstance();
             envelop.setMessage(message);
