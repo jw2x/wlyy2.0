@@ -54,7 +54,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
         if (null == systemDictDO.getId()) {
-            return failed("ID不能为空");
+            return failed("ID不能为空", Envelop.class);
         }
         systemDictDO = systemDictService.save(systemDictDO);
         return success(systemDictDO);

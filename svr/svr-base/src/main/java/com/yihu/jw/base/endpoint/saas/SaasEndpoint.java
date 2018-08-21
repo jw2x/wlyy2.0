@@ -41,7 +41,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "user", value = "Json数据", required = true)
             @RequestParam(value = "user") UserDO userDO) throws Exception {
         if (userService.search("username=" + userDO.getUsername()).size() > 0) {
-            return failed("管理员用户名已存在");
+            return failed("管理员用户名已存在", Envelop.class);
         }
         userDO.setEnabled(true);
         userDO.setLocked(false);
@@ -69,7 +69,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         SaasDO saasDO = toEntity(jsonData, SaasDO.class);
         if (null == saasDO.getId()) {
-            return failed("ID不能为空");
+            return failed("ID不能为空", Envelop.class);
         }
         saasDO = saasService.save(saasDO);
         return success(saasDO);
@@ -115,7 +115,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "status") SaasDO.Status status) throws Exception {
         SaasDO saasDO = saasService.retrieve(id);
         if (null == saasDO) {
-            return failed("无相关SAAS配置");
+            return failed("无相关SAAS配置", Envelop.class);
         }
         saasDO.setStatus(status);
         saasService.save(saasDO);

@@ -35,6 +35,12 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/saas_module";
     }
 
+    /**
+     * SAAS默认模块
+     */
+    public static class SaasDefaultModule extends Basic {
+        public static final String PREFIX  = "/saas_default_module";
+    }
 
     /**
      * 模块
@@ -88,10 +94,17 @@ public class BaseRequestMapping {
     }
 
     /**
-     * 用户
+     * 用户角色
      */
     public static class UserRole extends Basic {
         public static final String PREFIX  = "/user_role";
+    }
+
+    /**
+     * 用户取消的模块或者功能
+     */
+    public static class UserHideModuleFunction extends Basic {
+        public static final String PREFIX  = "/user_hide_module_function";
     }
 
     /**

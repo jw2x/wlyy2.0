@@ -36,7 +36,7 @@ public class RoleDO extends IntegerIdentityEntityWithOperator {
 	//角色类型
 	private Type type;
 
-	@Column(name = "saas_id", length = 50)
+	@Column(name = "saas_id", nullable = false, length = 50)
 	public String getSaasId() {
 		return this.saasId;
 	}
