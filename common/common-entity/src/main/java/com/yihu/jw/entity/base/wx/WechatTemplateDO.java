@@ -17,7 +17,7 @@ public class WechatTemplateDO implements Serializable {
 
     private String url;//URL置空，则在发送后，点击模板消息会进入一个空白页面（ios），或无法点击（android）
 
-    private Miniprogram miniprogram;
+    private Miniprogram miniprogram; //小程序跳转
 
     private Map<String,WechatTemplateDataDO> data;//详细内容
 

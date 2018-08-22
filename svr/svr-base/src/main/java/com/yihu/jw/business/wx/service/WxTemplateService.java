@@ -1,40 +1,39 @@
-//package com.yihu.jw.business.wx.service;
-//
-//import com.fasterxml.jackson.core.type.TypeReference;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.yihu.jw.base.wx.*;
-//import com.yihu.jw.business.wx.dao.WxTemplateDao;
-//import com.yihu.jw.exception.ApiException;
-//import com.yihu.jw.exception.code.ExceptionCode;
-//import com.yihu.base.mysql.query.BaseJpaService;
-//import com.yihu.jw.rm.base.WechatRequestMapping;
-//import com.yihu.jw.util.HttpUtil;
-//import org.json.JSONObject;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//import org.springframework.util.StringUtils;
-//
-//import java.util.*;
-//
-///**
-// * Created by Administrator on 2017/5/19 0019.
-// */
-//@Service
-//public class WxTemplateService extends BaseJpaService<WxTemplateDO, WxTemplateDao> {
-//
-//    private Logger logger= LoggerFactory.getLogger(WxTemplateService.class);
-//
-//    @Autowired
-//    private WxTemplateDao wxTemplateDao;
-//
-//    @Autowired
-//    private WxAccessTokenService wxAccessTokenService;
-//
-//    @Autowired
-//    private WechatService wechatService;
-//
+package com.yihu.jw.business.wx.service;
+
+import com.yihu.jw.business.wx.dao.WxTemplateConfigDao;
+import com.yihu.jw.entity.base.wx.WxTemplateConfigDO;
+import com.yihu.jw.util.wechat.WeixinMessagePushUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+/**
+ * Created by Administrator on 2017/5/19 0019.
+ */
+@Service
+public class WxTemplateService {
+
+    private Logger logger= LoggerFactory.getLogger(WxTemplateService.class);
+
+    @Autowired
+    private WxTemplateConfigDao wxTemplateConfigDao;
+
+    @Autowired
+    private WxAccessTokenService wxAccessTokenService;
+
+    @Autowired
+    private WeixinMessagePushUtils weixinMessagePushUtils;
+
+    public String sendWeTempMesTest(String wechatId,String openid)throws Exception{
+        WxTemplateConfigDO config = wxTemplateConfigDao.findByWechatIdAndTemplateNameAndScene(wechatId,"template_survey","test");
+        config.setFirst(config.getFirst().replace("key1","小明"));
+        config.setKeyword2("2018-08-21");
+        weixinMessagePushUtils.putWxMsg(wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken(),openid,config);
+        return "success";
+    }
+
+
 //    public WxTemplateDO createWxTemplate(WxTemplateDO wxTemplate) {
 //        if (StringUtils.isEmpty(wxTemplate.getTemplateId())) {
 //            throw new ApiException(WechatRequestMapping.WxTemplate.message_fail_templateid_is_null, ExceptionCode.common_error_params_code);
@@ -154,4 +153,4 @@
 //    public List<WxTemplateDO> findByWxId(String code) {
 //        return wxTemplateDao.findByWxId(code);
 //    }
-//}
+}

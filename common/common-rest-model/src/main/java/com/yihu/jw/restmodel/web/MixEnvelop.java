@@ -23,7 +23,7 @@ import java.util.List;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "ListResult", description = "通用的实体")
+@ApiModel(value = "MixEnvelop<T, J>", description = "通用的实体")
 public class MixEnvelop<T, J> extends Envelop {
 
     private static final long serialVersionUID = 2076324875575488461L;
@@ -43,7 +43,7 @@ public class MixEnvelop<T, J> extends Envelop {
     @ApiModelProperty("列表内容")
     private List<T> detailModelList = new ArrayList<>(0);
 
-    @ApiModelProperty("内容")
+    @ApiModelProperty("实体内容")
     private J obj = (J)new HashMap<>(0);
 
     public int getCurrPage() {
