@@ -485,7 +485,7 @@ public class SpecialistService{
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,relationDO.getId());
     }
 
-    public MixEnvelop<Boolean, Boolean> agreeSpecialistTeam(String state, String relationCode, String remark){
+    public MixEnvelop<Boolean, Boolean> agreeSpecialistTeam(String state, String relationCode, String remark,String health_assistant,String health_assistant_name){
 
         SpecialistPatientRelationDO relation = specialistPatientRelationDao.findOne(relationCode);
 
@@ -496,6 +496,8 @@ public class SpecialistService{
             specialistPatientRelationDao.save(relation);
         }else{
             relation.setSignStatus("1");
+            relation.setHealthAssistant(health_assistant);
+            relation.setHealthAssistant(health_assistant_name);
             specialistPatientRelationDao.save(relation);
         }
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,relation);
