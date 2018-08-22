@@ -58,8 +58,6 @@ public class RehabilitationPlanService {
     private FileUploadService fileUploadService;
     @Autowired
     protected HttpServletRequest request;
-    @Autowired
-    private PatientRehabilitationPlanDao patientRehabilitationPlanDao;
 
     public MixEnvelop<String, String> createRehabilitationTemplate(RehabilitationPlanTemplateDO templateDO) {
         templateDO.setCreateTime(new Date());
@@ -163,5 +161,20 @@ public class RehabilitationPlanService {
             }
         }
         return MixEnvelop.getSuccess("获取二维码成功！",fileUrl);
+    }
+
+    public Integer checkAfterQrCode(String planId,String patietCode){
+        int result = 0;
+        PatientRehabilitationPlanDO patientRehabilitationPlanDO =  patientRehabilitationPlanDao.findById(planId);
+        if (patientRehabilitationPlanDO!=null){
+            if (StringUtils.pathEquals(patientRehabilitationPlanDO.getPatient(),patietCode)){
+                result =200;
+            }else {
+                result = -1;
+            }
+        }else {
+            result = -10000;
+        }
+        return result;
     }
 }

@@ -62,6 +62,7 @@ public class SpecialistMapping {
         public static final String updateRehabilitationTemplateDetail = "/updateRehabilitationTemplateDetail";
         public static final String createPatientRehabilitationPlan = "/createPatientRehabilitationPlan";
         public static final String createServiceQrCode ="/createServiceQrCode";
+        public static final String checkAfterQrCode = "checkAfterQrCode";
 
     }
 }
