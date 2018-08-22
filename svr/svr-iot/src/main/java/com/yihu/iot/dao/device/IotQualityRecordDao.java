@@ -1,6 +1,6 @@
 package com.yihu.iot.dao.device;
 
-import com.yihu.jw.iot.device.IotQualityRecordDO;
+import com.yihu.jw.entity.iot.device.IotQualityRecordDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 

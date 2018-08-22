@@ -1,8 +1,7 @@
 package com.yihu.jw.entity.health.bank;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yihu.jw.IdEntity;
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntity;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -19,7 +18,7 @@ import java.util.Date;
 @Entity
 @Table(name = "wlyy_health_bank_active_record")
 @EntityListeners(AuditingEntityListener.class)
-public class ActiveRecordDO extends IdEntity implements Serializable {
+public class ActiveRecordDO extends UuidIdentityEntity implements Serializable {
     private String saasId; //saasId
     private String taskId;  //wlyy_health_bank_task任务表的id
     private String taskTitle;//任务标题

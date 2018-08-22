@@ -1,44 +1,34 @@
-//package com.yihu.jw.business.wx.controller;
-//
-//import com.yihu.jw.business.wx.WechatResponse;
-//import com.yihu.jw.base.wx.Miniprogram;
-//import com.yihu.jw.base.wx.WxTemplateDO;
-//import com.yihu.jw.base.wx.WxWechatDO;
-//import com.yihu.jw.business.wx.service.WechatService;
-//import com.yihu.jw.business.wx.service.WxTemplateService;
-//import com.yihu.jw.exception.ApiException;
-//import com.yihu.jw.restmodel.common.Envelop;
-//import com.yihu.jw.restmodel.common.EnvelopRestController;
-//import com.yihu.jw.restmodel.base.wx.WxTemplateVO;
-//import com.yihu.jw.restmodel.base.wx.WxWechatVO;
-//import com.yihu.jw.rm.base.WechatRequestMapping;
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
-//import io.swagger.annotations.ApiParam;
-//import org.apache.commons.lang.StringUtils;
-//import org.json.JSONObject;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.MediaType;
-//import org.springframework.web.bind.annotation.*;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-///**
-// * Created by Administrator on 2017/5/19 0019.
-// */
-//@RestController
-//@RequestMapping(WechatRequestMapping.api_common)
-//@Api(value = "微信模版相关操作", description = "微信模版相关操作")
-//public class WxTemplateController extends EnvelopRestController {
-//    @Autowired
-//    private WxTemplateService wxTemplateService;
-//
-//    @Autowired
-//    private WechatService wechatService;
-//
+package com.yihu.jw.business.wx.controller;
+
+import com.yihu.jw.business.wx.service.WxTemplateService;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import com.yihu.jw.rm.base.WechatRequestMapping;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * Created by Administrator on 2017/5/19 0019.
+ */
+@RestController
+@RequestMapping(WechatRequestMapping.api_common)
+@Api(value = "微信模版相关操作", description = "微信模版相关操作")
+public class WxTemplateController extends EnvelopRestEndpoint {
+
+    @Autowired
+    private WxTemplateService wxTemplateService;
+
+    @PostMapping(value = WechatRequestMapping.WxTemplate.api_test_template, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "测试发送微信模板", notes = "测试发送微信模板")
+    public String sendWeTempMesTest(String wechatId,String openid)throws Exception{
+        return wxTemplateService.sendWeTempMesTest(wechatId,openid);
+    }
+
+
 //    @PostMapping(value = WechatRequestMapping.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "创建微信模版", notes = "创建微信模版")
 //    public Envelop createWxTemplate(
@@ -185,4 +175,4 @@
 //            return Envelop.getSuccess("error", exception);
 //        }
 //    }
-//}
+}

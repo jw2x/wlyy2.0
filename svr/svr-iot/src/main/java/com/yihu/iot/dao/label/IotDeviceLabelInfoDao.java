@@ -1,6 +1,6 @@
 package com.yihu.iot.dao.label;
 
-import com.yihu.jw.iot.label.IotDeviceLabelInfoDO;
+import com.yihu.jw.entity.iot.label.IotDeviceLabelInfoDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

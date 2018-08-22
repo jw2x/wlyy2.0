@@ -2,25 +2,23 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/4/27.
  */
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.ActivityDao;
 import com.yihu.jw.dao.TaskDao;
 import com.yihu.jw.dao.TaskPatientDetailDao;
 import com.yihu.jw.entity.health.bank.ActivityDO;
 import com.yihu.jw.entity.health.bank.TaskDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,11 +48,11 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
      * @param activityDO 活动参数对象
      * @return
      */
-    public Envelop<Boolean> insert(ActivityDO activityDO){
+    public MixEnvelop<Boolean, Boolean> insert(ActivityDO activityDO){
         activityDO.setCreateTime(new Date());
         activityDO.setUpdateTime(new Date());
         activityDao.save(activityDO);
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         envelop.setObj(true);
         return envelop;
     }
@@ -69,7 +67,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
      * @return
      * @throws ParseException
      */
-    public Envelop<ActivityDO> findByCondition(ActivityDO activityDO,Integer page, Integer size) throws ParseException {
+    public MixEnvelop<ActivityDO, ActivityDO> findByCondition(ActivityDO activityDO, Integer page, Integer size) throws ParseException {
         String sql = new ISqlUtils().getSql(activityDO,page,size,"*");
         List<ActivityDO> activityDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(ActivityDO.class));
         for (ActivityDO activityDO1:activityDOS){
@@ -104,7 +102,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,activityDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success,activityDOS,page,size,count);
     }
 
     /**
@@ -113,9 +111,9 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
      * @param activityDO 活动参数对象
      * @return
      */
-    public Envelop<Boolean> update(ActivityDO activityDO){
+    public MixEnvelop<Boolean, Boolean> update(ActivityDO activityDO){
         activityDao.save(activityDO);
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         envelop.setObj(true);
         return envelop;
     }
@@ -128,7 +126,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
      * @param size 分页大小
      * @return
      */
-    public Envelop<ActivityDO> selectByPatient(ActivityDO activityDO,Integer page,Integer size){
+    public MixEnvelop<ActivityDO, ActivityDO> selectByPatient(ActivityDO activityDO, Integer page, Integer size){
         String sql ="SELECT * " +
                 " FROM wlyy_health_bank_activity " +
                 "WHERE " +
@@ -215,7 +213,7 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,activityDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success,activityDOS,page,size,count);
     }
 
     /**
@@ -224,8 +222,8 @@ public class ActivityService extends BaseJpaService<ActivityDO,ActivityDao> {
      * @param ids 活动id集合
      * @return
      */
-    public Envelop<Boolean> batchDelete(List<String> ids){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> batchDelete(List<String> ids){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         for (int i =0;i<ids.size();i++){
             List<TaskDO> taskDOList = taskDao.selectByActivityId(ids.get(i));
             for (TaskDO taskDO:taskDOList){

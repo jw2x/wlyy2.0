@@ -1,8 +1,8 @@
 package com.yihu.iot.service.device;
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.device.IotOrderPurchaseDao;
-import com.yihu.jw.iot.device.IotOrderPurchaseDO;
+import com.yihu.jw.entity.iot.device.IotOrderPurchaseDO;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

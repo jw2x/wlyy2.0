@@ -3,8 +3,6 @@ server:
   port: 10050
 
 spring:
-  application:
-    name:  svr-iot  #注册到发现服务的id 如果id一样 eurika会自动做负载
   jmx:
     default-domain: svr-iot
 

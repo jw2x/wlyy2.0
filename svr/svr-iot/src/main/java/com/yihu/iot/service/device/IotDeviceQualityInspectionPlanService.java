@@ -1,17 +1,17 @@
 package com.yihu.iot.service.device;
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.device.IotDeviceDao;
 import com.yihu.iot.dao.device.IotDeviceOrderDao;
 import com.yihu.iot.dao.device.IotDeviceQualityInspectionPlanDao;
 import com.yihu.iot.dao.device.IotOrderPurchaseDao;
 import com.yihu.iot.service.dict.IotSystemDictService;
-import com.yihu.jw.iot.device.IotDeviceQualityInspectionPlanDO;
-import com.yihu.jw.iot.device.IotOrderPurchaseDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.entity.iot.device.IotDeviceQualityInspectionPlanDO;
+import com.yihu.jw.entity.iot.device.IotOrderPurchaseDO;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import com.yihu.jw.util.date.DateUtil;
+import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -220,7 +220,7 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
      * @param purcharseId
      * @return
      */
-    public Envelop<IotDeviceQualityInspectionPlanVO> queryPage(String purcharseId,String orderNo,String startTime,String endTime,Integer page,Integer size){
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> queryPage(String purcharseId, String orderNo, String startTime, String endTime, Integer page, Integer size){
         StringBuffer sql = new StringBuffer("SELECT c.* from iot_device_quality_inspection_plan c  WHERE c.del=1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(c.id) count from iot_device_quality_inspection_plan c WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
@@ -254,6 +254,6 @@ public class IotDeviceQualityInspectionPlanService extends BaseJpaService<IotDev
         //DO转VO
         List<IotDeviceQualityInspectionPlanVO> qualityInspectionPlanVOList = transforList(list);
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,qualityInspectionPlanVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,qualityInspectionPlanVOList, page, size,count);
     }
 }

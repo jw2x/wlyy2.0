@@ -6,7 +6,7 @@
 //import com.yihu.jw.exception.code.ExceptionCode;
 //import com.yihu.base.mysql.query.BaseJpaService;
 //import com.yihu.jw.rm.base.WechatRequestMapping;
-//import com.yihu.jw.util.MessageUtil;
+//import com.yihu.jw.base.util.MessageUtil;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.stereotype.Service;
 //import org.springframework.util.StringUtils;

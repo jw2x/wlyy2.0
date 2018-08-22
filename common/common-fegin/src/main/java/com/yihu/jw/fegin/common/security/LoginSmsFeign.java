@@ -1,13 +1,11 @@
 package com.yihu.jw.fegin.common.security;
 
-import com.yihu.jw.fegin.fallbackfactory.base.base.SaasFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
 import com.yihu.jw.rm.base.BaseLoginRequestMapping;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

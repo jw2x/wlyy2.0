@@ -3,7 +3,7 @@ package com.yihu.jw.fegin.base.wx;
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.fallbackfactory.base.wx.GraphicMessageFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;;
+import com.yihu.jw.restmodel.web.MixEnvelop;;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
@@ -23,19 +23,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface GraphicMessageFeign {
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_create, method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop createWxGraphicMessage( @RequestBody String jsonData) throws JiWeiException;
+    MixEnvelop createWxGraphicMessage(@RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_update,method = RequestMethod.PUT,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop updateWxGraphicMessage( @RequestBody String jsonData) throws JiWeiException;
+    MixEnvelop updateWxGraphicMessage(@RequestBody String jsonData) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_delete,method = RequestMethod.DELETE)
-    Envelop deleteWxGraphicMessage(@RequestParam(value = "ids") String ids,@RequestParam(value = "userId") String userId,@RequestParam(value = "userName") String userName) throws JiWeiException;
+    MixEnvelop deleteWxGraphicMessage(@RequestParam(value = "ids") String ids, @RequestParam(value = "userId") String userId, @RequestParam(value = "userName") String userName) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_getById,method = RequestMethod.GET)
-    Envelop findById(@RequestParam(value = "id") String id) throws JiWeiException;
+    MixEnvelop findById(@RequestParam(value = "id") String id) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_getWxGraphicMessages,method = RequestMethod.GET)
-    Envelop getWxGraphicMessages(
+    MixEnvelop getWxGraphicMessages(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts,
@@ -43,7 +43,7 @@ public interface GraphicMessageFeign {
             @RequestParam(value = "page", required = false) int page) throws JiWeiException;
 
     @RequestMapping(value = WechatRequestMapping.WxGraphicMessage.api_getWxGraphicMessageNoPage,method = RequestMethod.GET)
-    Envelop getWxGraphicMessageNoPage(
+    MixEnvelop getWxGraphicMessageNoPage(
             @RequestParam(value = "fields", required = false) String fields,
             @RequestParam(value = "filters", required = false) String filters,
             @RequestParam(value = "sorts", required = false) String sorts) throws JiWeiException;

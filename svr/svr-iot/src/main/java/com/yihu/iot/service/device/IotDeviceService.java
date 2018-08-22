@@ -1,20 +1,20 @@
 package com.yihu.iot.service.device;
 
-import com.yihu.base.fastdfs.FastDFSHelper;
-import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.iot.dao.device.*;
 import com.yihu.iot.dao.product.IotProductDataTransmissionDao;
 import com.yihu.iot.service.dict.IotSystemDictService;
-import com.yihu.jw.iot.device.*;
-import com.yihu.jw.iot.product.IotProductDataTransmissionDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.base.BaseEnvelop;
+import com.yihu.jw.entity.iot.device.*;
+import com.yihu.jw.entity.iot.product.IotProductDataTransmissionDO;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
 import com.yihu.jw.restmodel.iot.product.IotProductDataTransmissionVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
+import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
     @Autowired
     private IotDeviceDao iotDeviceDao;
     @Autowired
-    private FastDFSHelper fastDFSHelper;
+    private FastDFSUtil fastDFSHelper;
     @Value("${fastDFS.fastdfs_file_url}")
     private String fastdfs_file_url;
     @Autowired
@@ -134,14 +134,14 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * @param deviceVO
      * @return
      */
-    public BaseEnvelop updDevice(IotDeviceVO deviceVO){
+    public Envelop updDevice(IotDeviceVO deviceVO){
         IotDeviceDO deviceDO = iotDeviceDao.findById(deviceVO.getId());
         deviceDO.setSimNo(deviceVO.getSimNo());
         deviceDO.setDeviceSn(deviceVO.getDeviceSn());
         deviceDO.setHospitalName(deviceVO.getHospitalName());
         deviceDO.setHospital(deviceVO.getHospital());
         iotDeviceDao.save(deviceDO);
-        return BaseEnvelop.getSuccess("修改成功");
+        return Envelop.getSuccess("修改成功");
     }
 
     /**
@@ -158,15 +158,15 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * @param sim
      * @param id
      */
-    public BaseEnvelop updSim(String sim, String id){
+    public Envelop updSim(String sim, String id){
         if(findBySimNo(sim)!=null){
-            return BaseEnvelop.getError("sim卡号已存在");
+            return Envelop.getError("sim卡号已存在");
         }
 
         IotDeviceDO deviceDO = findById(id);
         deviceDO.setSimNo(sim);
         iotDeviceDao.save(deviceDO);
-        return BaseEnvelop.getSuccess("修改成功");
+        return Envelop.getSuccess("修改成功");
     }
 
     /**
@@ -188,7 +188,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * @param size
      * @return
      */
-    public Envelop<IotDeviceVO> queryPage(String sn,String hospital,String orderId,String purcharseId,Integer page,Integer size) throws Exception{
+    public MixEnvelop<IotDeviceVO, IotDeviceVO> queryPage(String sn, String hospital, String orderId, String purcharseId, Integer page, Integer size) throws Exception{
         String filters = "del=1;";
         String semicolon = "";
         if(StringUtils.isNotBlank(orderId)){
@@ -226,7 +226,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
         });
         translateDictForList(iotDeviceVOList);
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotDeviceVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotDeviceVOList, page, size,count);
     }
 
     /**
@@ -240,7 +240,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * @param size
      * @return
      */
-    public Envelop<IotDeviceVO> queryPage(String sn,String hospital,String orderId,String purcharseId,Integer isBinding,Integer page,Integer size){
+    public MixEnvelop<IotDeviceVO, IotDeviceVO> queryPage(String sn, String hospital, String orderId, String purcharseId, Integer isBinding, Integer page, Integer size){
         StringBuffer sql = new StringBuffer("SELECT DISTINCT c.* from iot_device c left join iot_patient_device t on t.del = 1 AND c.device_sn = t.device_sn  WHERE c.del=1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT c.id) count from iot_device c left join iot_patient_device t on t.del = 1 AND c.device_sn = t.device_sn  WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
@@ -288,7 +288,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
         });
         translateDictForList(iotDeviceVOList);
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotDeviceVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotDeviceVOList, page, size,count);
     }
 
     /**
@@ -339,7 +339,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
      * @param purcharseId
      * @return
      */
-    public Envelop<IotDeviceImportRecordVO> queryImportRecordPage(Integer page, Integer size, String purcharseId){
+    public MixEnvelop<IotDeviceImportRecordVO, IotDeviceImportRecordVO> queryImportRecordPage(Integer page, Integer size, String purcharseId){
         StringBuffer sql = new StringBuffer("SELECT c.* from iot_device_import_record c  WHERE c.del=1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(c.id) count from iot_device_import_record c WHERE c.del=1 ");
         List<Object> args = new ArrayList<>();
@@ -358,7 +358,7 @@ public class IotDeviceService extends BaseJpaService<IotDeviceDO,IotDeviceDao> {
         //DO转VO
         List<IotDeviceImportRecordVO> importRecordVOList = convertToModels(list,new ArrayList<>(list.size()),IotDeviceImportRecordVO.class);
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,importRecordVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,importRecordVOList, page, size,count);
     }
 
     /**

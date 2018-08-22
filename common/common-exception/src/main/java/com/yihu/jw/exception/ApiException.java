@@ -22,19 +22,8 @@ package com.yihu.jw.exception;
  * @created 2015.12.20 16:05
  */
 public class ApiException extends RuntimeException {
+
     private Integer errorCode = -10000;
-
-    public Integer getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(Integer errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public ApiException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 
     public ApiException() {
     }
@@ -54,5 +43,17 @@ public class ApiException extends RuntimeException {
 
     public ApiException(Throwable cause) {
         super(cause);
+    }
+
+    public ApiException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
+    }
+
+    public Integer getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(Integer errorCode) {
+        this.errorCode = errorCode;
     }
 }

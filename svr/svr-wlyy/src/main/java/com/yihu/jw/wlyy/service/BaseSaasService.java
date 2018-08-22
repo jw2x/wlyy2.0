@@ -1,8 +1,8 @@
 package com.yihu.jw.wlyy.service;
 
-import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.base.base.SaasDO;
+import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.wlyy.dao.BaseSaasDao;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

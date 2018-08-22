@@ -1,10 +1,10 @@
 package com.yihu.iot.service.dict;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.dict.IotSystemDictDao;
 import com.yihu.iot.service.common.MyJdbcTemplate;
-import com.yihu.jw.iot.dict.IotSystemDictDO;
+import com.yihu.jw.entity.iot.dict.IotSystemDictDO;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
