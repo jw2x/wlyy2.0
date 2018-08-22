@@ -33,9 +33,9 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
     @Column(name = "doctor_name")
     private String doctorName;//计划完成者标识
     @Column(name = "execute_time")
-    private String executeTime;//服务项目执行时间
+    private Date executeTime;//服务项目执行时间
     @Column(name = "status")
-    private Integer status;//状态（0未开始，1进行中，2已完成）
+    private Integer status;//状态（0已中止，1进行中，2已完成）
 
     public String getSaasId() {
         return saasId;
@@ -69,11 +69,11 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.hospital = hospital;
     }
 
-    public String getExecuteTime() {
+    public Date getExecuteTime() {
         return executeTime;
     }
 
-    public void setExecuteTime(String executeTime) {
+    public void setExecuteTime(Date executeTime) {
         this.executeTime = executeTime;
     }
 
