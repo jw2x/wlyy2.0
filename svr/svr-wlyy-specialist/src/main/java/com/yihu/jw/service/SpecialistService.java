@@ -243,7 +243,7 @@ public class SpecialistService{
                     "a.health_assistant AS healthAssistant," +
                     "a.health_assistant_name AS healthAssistantName " +
                     "FROM wlyy_specialist.wlyy_specialist_patient_relation a " +
-                    "JOIN "+basedb+".wlyy_patient_disease_server b ON a.patient=b.patient AND b.disease=4 " +
+                    "JOIN "+basedb+".wlyy_patient_disease_server b ON a.patient=b.patient AND b.disease=" +labelCode+" "+
                     "JOIN "+basedb+".wlyy_patient c ON a.patient=c.CODE " +
                     "LEFT JOIN "+basedb+".wlyy_sign_patient_label_info d ON a.patient=d.patient AND d.label_type=8 AND d.`status`=1" +
                     " WHERE a.sign_status> 0 AND a.`status`>=0 AND a.doctor='"+doctor+"'"+
