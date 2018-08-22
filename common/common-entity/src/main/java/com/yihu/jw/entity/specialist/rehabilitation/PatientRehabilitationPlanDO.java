@@ -32,6 +32,8 @@ public class PatientRehabilitationPlanDO extends UuidIdentityEntityWithOperator 
     private String servicePackageId;//服务包id
     @Column(name = "status")
     private Integer status;//状态（0已中止，1进行中，2已完成）
+    @Column(name = "service_qr_code")
+    private String serviceQrCode;//服务码
 
     public String getSaasId() {
         return saasId;
@@ -103,5 +105,13 @@ public class PatientRehabilitationPlanDO extends UuidIdentityEntityWithOperator 
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getServiceQrCode() {
+        return serviceQrCode;
+    }
+
+    public void setServiceQrCode(String serviceQrCode) {
+        this.serviceQrCode = serviceQrCode;
     }
 }

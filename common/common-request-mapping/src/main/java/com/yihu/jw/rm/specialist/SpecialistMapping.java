@@ -43,6 +43,10 @@ public class SpecialistMapping {
 
     }
 
+    public static  class common{
+        public static final String file_upload =  "/fileUpload";
+    }
+
     public static class screen{
         public static final String getScreenResult ="/getScreenResult";
         public static final String getScreenCount = "/getScreenCount";
@@ -57,6 +61,8 @@ public class SpecialistMapping {
         public static final String findTemplateDetailByTemplateId = "/findTemplateDetailByTemplateId";
         public static final String updateRehabilitationTemplateDetail = "/updateRehabilitationTemplateDetail";
         public static final String createPatientRehabilitationPlan = "/createPatientRehabilitationPlan";
+        public static final String createServiceQrCode ="/createServiceQrCode";
+        public static final String checkAfterQrCode = "checkAfterQrCode";
 
     }
 }
