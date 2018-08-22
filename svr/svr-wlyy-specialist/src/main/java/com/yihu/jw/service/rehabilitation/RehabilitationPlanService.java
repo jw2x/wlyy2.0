@@ -1,7 +1,11 @@
 package com.yihu.jw.service.rehabilitation;
 
+import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
+import com.yihu.jw.dao.rehabilitation.RehabilitationDetailDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationPlanTemplateDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationTemplateDetailDao;
+import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
+import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
@@ -11,7 +15,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -27,6 +30,10 @@ public class RehabilitationPlanService {
     private RehabilitationPlanTemplateDao templateDao;
     @Autowired
     private RehabilitationTemplateDetailDao templateDetailDao;
+    @Autowired
+    private PatientRehabilitationPlanDao patientRehabilitationPlanDao;
+    @Autowired
+    private RehabilitationDetailDao rehabilitationDetailDao;
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -75,4 +82,17 @@ public class RehabilitationPlanService {
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,list, list.size());
     }
 
+    public PatientRehabilitationPlanDO createPatientRehabilitationPlan(PatientRehabilitationPlanDO planDO) {
+        planDO.setCreateTime(new Date());
+        planDO.setStatus(1);
+        return patientRehabilitationPlanDao.save(planDO);
+    }
+
+    public List<RehabilitationDetailDO> createRehabilitationDetail(List<RehabilitationDetailDO> details, String planId) {
+        for(RehabilitationDetailDO detail : details) {
+            detail.setPlanId(planId);
+            detail.setStatus(1);
+        }
+        return (List<RehabilitationDetailDO>)rehabilitationDetailDao.save(details);
+    }
 }
