@@ -18,8 +18,8 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
 
     @Column(name = "saas_id")
     private String saasId;
-    @Column(name = "program_id")
-    private String programId;//居民康复套餐code
+    @Column(name = "plan_id")
+    private String planId;//居民康复套餐code
     @Column(name = "service_item_id")
     private String serviceItemId;//服务项目id
     @Column(name = "hospital")
@@ -45,12 +45,12 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.saasId = saasId;
     }
 
-    public String getProgramId() {
-        return programId;
+    public String getPlanId() {
+        return planId;
     }
 
-    public void setProgramId(String programId) {
-        this.programId = programId;
+    public void setPlanId(String planId) {
+        this.planId = planId;
     }
 
     public String getServiceItemId() {
