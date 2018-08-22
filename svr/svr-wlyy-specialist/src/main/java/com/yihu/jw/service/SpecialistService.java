@@ -493,7 +493,7 @@ public class SpecialistService{
                 " t.id As teamCode, " +
                 " r.create_time AS createTime," +
                 " r.status," +
-                " r.sign_status AS signStatus  " +
+                " r.sign_status AS signStatus,  " +
                 " r.team_code AS teamCode  " +
                 " FROM " +
                 " wlyy_specialist_patient_relation r " +
