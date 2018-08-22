@@ -8,7 +8,7 @@ import com.yihu.iot.model.user.UserModel;
 import com.yihu.iot.service.common.BaseService;
 import com.yihu.iot.util.http.HttpHelper;
 import com.yihu.iot.util.http.HttpResponse;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,7 +38,7 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyVO> findCompanyPage(String name,String status,String type,Integer page,Integer size) throws IOException{
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> findCompanyPage(String name, String status, String type, Integer page, Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         params.put("status", status);
@@ -46,7 +46,7 @@ public class CompanyService extends BaseService {
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Company.FindCompanyPage, params);
-        Envelop<IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyVO, IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
 
         return envelop;
     }
@@ -57,8 +57,8 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyVO> addCompany(String jsonData) throws IOException {
-        Envelop<IotCompanyVO> envelop = new Envelop<IotCompanyVO>();
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> addCompany(String jsonData) throws IOException {
+        MixEnvelop<IotCompanyVO, IotCompanyVO> envelop = new MixEnvelop<>();
         //新增ehr用户
         IotCompanyVO iotCompany = toModel(jsonData, IotCompanyVO.class);
 
@@ -94,7 +94,7 @@ public class CompanyService extends BaseService {
             envelop.setMessage("该手机号码已存在");
             return envelop;
         }
-        Envelop<UserModel> userModelEnvelop = updateUser(iotCompany);
+        MixEnvelop<UserModel, UserModel> userModelEnvelop = updateUser(iotCompany);
         if(userModelEnvelop.getStatus()!=200){
             envelop.setStatus(-1);
             envelop.setMessage(userModelEnvelop.getMessage());
@@ -104,7 +104,7 @@ public class CompanyService extends BaseService {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", toJson(iotCompany));
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Company.AddCompany, params);
-        envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -114,7 +114,7 @@ public class CompanyService extends BaseService {
      * @param envelop
      * @return
      */
-    private Envelop<IotCompanyVO> userVerification(IotCompanyVO iotCompany,Envelop<IotCompanyVO> envelop){
+    private MixEnvelop<IotCompanyVO, IotCompanyVO> userVerification(IotCompanyVO iotCompany, MixEnvelop<IotCompanyVO, IotCompanyVO> envelop){
         if(StringUtils.isEmpty(iotCompany.getAccount())){
             envelop.setStatus(-1);
             envelop.setMessage("账号不能为空");
@@ -168,7 +168,7 @@ public class CompanyService extends BaseService {
      * @param iotCompany
      * @return
      */
-    private Envelop<UserModel> updateUser(IotCompanyVO iotCompany){
+    private MixEnvelop<UserModel, UserModel> updateUser(IotCompanyVO iotCompany){
         String url = "/user/";
         UserModel userModel = new UserModel();
         userModel.setEmail(iotCompany.getContactsEmail());
@@ -177,7 +177,7 @@ public class CompanyService extends BaseService {
         userModel.setTelephone(iotCompany.getContactsMobile());
         userModel.setRealName(iotCompany.getContactsName());
         userModel.setRole(roleId);
-        Envelop envelop  = new Envelop();
+        MixEnvelop envelop  = new MixEnvelop();
         Map<String, Object> params = new HashMap<>();
         params.put("user_json_data",toJson(userModel));
         try {
@@ -208,8 +208,8 @@ public class CompanyService extends BaseService {
      * @param passWord
      * @return
      */
-    public Envelop changePassWord(String userId,String passWord){
-        Envelop envelop = new Envelop();
+    public MixEnvelop changePassWord(String userId, String passWord){
+        MixEnvelop envelop = new MixEnvelop();
         String url = "/users/changePassWord";
         Map<String, Object> params = new HashMap<>();
         params.put("user_id",userId);
@@ -240,11 +240,11 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyVO> findByCode(String id) throws IOException {
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> findByCode(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Company.FindCompanyById, params);
-        Envelop<IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyVO, IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -253,11 +253,11 @@ public class CompanyService extends BaseService {
      * @param id
      * @return
      */
-    public Envelop<IotCompanyCertificateVO> delCompanyCert(String id) throws IOException {
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> delCompanyCert(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Company.DelCompanyCert, params);
-        Envelop<IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -267,11 +267,11 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyVO> findByBusinessLicense(String businessLicense) throws IOException {
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> findByBusinessLicense(String businessLicense) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("businessLicense", businessLicense);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Company.FindByBusinessLicense, params);
-        Envelop<IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyVO, IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -281,11 +281,11 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyVO> delCompany(String id) throws IOException {
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> delCompany(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Company.DelCompany, params);
-        Envelop<IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyVO, IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -295,11 +295,11 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyVO> updCompany(String jsonData) throws IOException {
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> updCompany(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Company.UpdCompany, params);
-        Envelop<IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyVO, IotCompanyVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -312,14 +312,14 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyCertificateVO> findCompanyCertPage(String name,Integer page,Integer size,String companyId) throws IOException{
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> findCompanyCertPage(String name, Integer page, Integer size, String companyId) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         params.put("companyId", companyId);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Company.FindCompanyCertPage, params);
-        Envelop<IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -329,11 +329,11 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyCertificateVO> findCompanyCertById(String id) throws IOException {
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> findCompanyCertById(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Company.FindCompanyCertById, params);
-        Envelop<IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -343,11 +343,11 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyCertificateVO> findCompanyCertByCompanyId(String companyId) throws IOException {
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> findCompanyCertByCompanyId(String companyId) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("companyId", companyId);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Company.FindCompanyCertByCompanyId, params);
-        Envelop<IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -357,11 +357,11 @@ public class CompanyService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotCompanyCertificateVO> addCompanyCert(String jsonData) throws IOException {
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> addCompanyCert(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Company.AddCompanyCert, params);
-        Envelop<IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 }

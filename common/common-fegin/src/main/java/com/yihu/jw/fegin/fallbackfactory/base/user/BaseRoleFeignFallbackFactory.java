@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.fallbackfactory.base.user;
 
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.user.BaseRoleFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
@@ -23,35 +23,35 @@ public class BaseRoleFeignFallbackFactory implements FallbackFactory<BaseRoleFei
     public BaseRoleFeign create(Throwable e) {
         return new BaseRoleFeign() {
             @Override
-            public Envelop create(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop create(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("创建角色失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop update(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop update(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("更新角色失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop delete(@PathVariable String id) throws JiWeiException {
+            public MixEnvelop delete(@PathVariable String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("删除角色失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop findById(String id) throws JiWeiException {
+            public MixEnvelop findById(String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找单个角色失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop getList(String fields, String filterStr, String sorts, int size, int page) throws JiWeiException {
+            public MixEnvelop getList(String fields, String filterStr, String sorts, int size, int page) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("分页查找角色列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filterStr);
@@ -62,7 +62,7 @@ public class BaseRoleFeignFallbackFactory implements FallbackFactory<BaseRoleFei
             }
 
             @Override
-            public Envelop getListNoPage(String fields, String filters, String sorts) throws JiWeiException {
+            public MixEnvelop getListNoPage(String fields, String filters, String sorts) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("不分页查找角色列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filters);
@@ -71,35 +71,35 @@ public class BaseRoleFeignFallbackFactory implements FallbackFactory<BaseRoleFei
             }
 
             @Override
-            public Envelop createRoleMenus(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop createRoleMenus(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("创建角色菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop updateRoleMenus(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop updateRoleMenus(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("修改角色菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop deleteRoleMenus(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop deleteRoleMenus(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("删除角色菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop getMenuList(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop getMenuList(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("获取角色菜单列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop getPhoneAndSaasId(String phone, String saasId) {
+            public MixEnvelop getPhoneAndSaasId(String phone, String saasId) {
                 return null;
             }
 

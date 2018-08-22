@@ -4,7 +4,7 @@ import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
 import com.yihu.jw.restmodel.base.base.FunctionVO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;

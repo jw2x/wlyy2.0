@@ -8,7 +8,7 @@ import com.yihu.iot.constant.ServiceApi;
 import com.yihu.iot.service.common.BaseService;
 import com.yihu.iot.util.http.HttpHelper;
 import com.yihu.iot.util.http.HttpResponse;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import io.swagger.annotations.ApiOperation;
 import iot.device.LocationDataVO;
 import org.apache.commons.lang.StringUtils;
@@ -44,9 +44,9 @@ public class MonitoringHealthService extends BaseService {
      * @param diseaseCondition
      * @return
      */
-    public Envelop<LocationDataVO> findDeviceLocations(Integer diseaseCondition, Integer page, Integer size, String type) throws IOException {
-        Envelop<LocationDataVO> envelop = new Envelop<>();
-        Envelop<LocationDataVO> envelopTmp = null;
+    public MixEnvelop<LocationDataVO, LocationDataVO> findDeviceLocations(Integer diseaseCondition, Integer page, Integer size, String type) throws IOException {
+        MixEnvelop<LocationDataVO, LocationDataVO> envelop = new MixEnvelop<>();
+        MixEnvelop<LocationDataVO, LocationDataVO> envelopTmp = null;
         JSONArray jsonArray = new JSONArray();
         Integer total = 0;
         if(StringUtils.isNotBlank(type)){
@@ -71,7 +71,7 @@ public class MonitoringHealthService extends BaseService {
                     Map<String, Object> params = new HashMap<>();
                     params.put("jsonData", jsonObject.toString());
                     HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.PatientDevice.findLocationByIdCard, params);
-                    envelopTmp = objectMapper.readValue(response.getBody(),Envelop.class);
+                    envelopTmp = objectMapper.readValue(response.getBody(),MixEnvelop.class);
                     envelop.getDetailModelList().addAll(envelopTmp.getDetailModelList());
                 }
             }
@@ -94,7 +94,7 @@ public class MonitoringHealthService extends BaseService {
             Map<String, Object> params = new HashMap<>();
             params.put("jsonData", jsonObject.toString());
             HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.PatientDevice.findLocationByIdCard, params);
-            envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+            envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
             return envelop;
         }
     }

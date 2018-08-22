@@ -103,7 +103,7 @@
             <artifactId>mysql-starter</artifactId>
         </dependency>
         <!--<dependency>-->
-            <!--<groupId>com.yihu.ehr.ehr</groupId>-->
+            <!--<groupId>com.yihu.ehr</groupId>-->
             <!--<artifactId>commons-util</artifactId>-->
             <!--<version>1.1.0</version>-->
         <!--</dependency>-->
@@ -116,7 +116,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.yihu.t.SvrWlyySpecialistApplication</mainClass>
+                    <mainClass>com.yihu.SvrWlyySpecialistApplication</mainClass>
                 </configuration>
             </plugin>
             <plugin>

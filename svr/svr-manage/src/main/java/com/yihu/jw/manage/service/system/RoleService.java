@@ -5,7 +5,7 @@ import com.yihu.jw.manage.dao.system.RoleDao;
 import com.yihu.jw.manage.dao.system.RoleMenuDao;
 import com.yihu.jw.manage.model.system.ManageRole;
 import com.yihu.jw.manage.model.system.ManageUser;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.wlyy.WlyyContant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

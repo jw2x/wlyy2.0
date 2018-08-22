@@ -7,7 +7,7 @@ import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.MenuRoleService;
 import com.yihu.jw.manage.service.system.UserRoleService;
 import com.yihu.jw.manage.service.system.UserService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;

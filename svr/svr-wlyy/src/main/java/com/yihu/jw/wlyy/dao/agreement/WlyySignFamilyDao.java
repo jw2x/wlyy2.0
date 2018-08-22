@@ -1,6 +1,6 @@
 package com.yihu.jw.wlyy.dao.agreement;
 
-import com.yihu.jw.wlyy.agreement.WlyySignFamilyDO;
+import com.yihu.jw.entity.wlyy.agreement.WlyySignFamilyDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

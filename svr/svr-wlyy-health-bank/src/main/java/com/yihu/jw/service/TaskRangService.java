@@ -4,7 +4,7 @@ package com.yihu.jw.service;/**
 
 import com.yihu.jw.dao.TaskRangDao;
 import com.yihu.jw.entity.health.bank.TaskRangDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
 import com.yihu.mysql.query.BaseJpaService;
@@ -40,7 +40,7 @@ public class TaskRangService extends BaseJpaService<TaskRangDO,TaskRangDao> {
      * @param size 分页大小
      * @return
      */
-    public Envelop<TaskRangDO> selectByCondition(TaskRangDO taskRangDO, Integer page, Integer size){
+    public MixEnvelop<TaskRangDO, TaskRangDO> selectByCondition(TaskRangDO taskRangDO, Integer page, Integer size){
         String sql = new ISqlUtils().getSql(taskRangDO,page,size,"*");
         List<TaskRangDO> taskRangDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskRangDO.class));
         String sqlcount = new ISqlUtils().getSql(taskRangDO,0,0,"count");
@@ -49,7 +49,7 @@ public class TaskRangService extends BaseJpaService<TaskRangDO,TaskRangDao> {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskRangDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskRangDOS,page,size,count);
     }
 
     /**
@@ -58,8 +58,8 @@ public class TaskRangService extends BaseJpaService<TaskRangDO,TaskRangDao> {
      * @param taskRangDO 任务范围对象
      * @return
      */
-    public Envelop<Boolean> insert(TaskRangDO taskRangDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> insert(TaskRangDO taskRangDO){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         taskRangDO.setCreateTime(new Date());
         taskRangDO.setUpdateTime(new Date());
         taskRangDao.save(taskRangDO);
@@ -74,8 +74,8 @@ public class TaskRangService extends BaseJpaService<TaskRangDO,TaskRangDao> {
      * @param taskRangDO 任务范围对象
      * @return
      */
-    public Envelop<Boolean> update(TaskRangDO taskRangDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> update(TaskRangDO taskRangDO){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         String sql =  ISqlUtils.getUpdateSql(taskRangDO);
         jdbcTemplate.update(sql);
         envelop.setObj(true);

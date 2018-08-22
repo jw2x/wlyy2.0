@@ -1,7 +1,8 @@
 package com.yihu.jw.entity.base.saas;
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -10,11 +11,12 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_saas_default_module")
-public class SaasDefaultModuleDO extends UuidIdentityEntity {
+public class SaasDefaultModuleDO extends IntegerIdentityEntity {
 
     private SaasDO.Type type;
     private Integer moduleId;
 
+    @Column(name = "type", nullable = false)
     public SaasDO.Type getType() {
         return type;
     }
@@ -23,6 +25,7 @@ public class SaasDefaultModuleDO extends UuidIdentityEntity {
         this.type = type;
     }
 
+    @Column(name = "module_id", nullable = false)
     public Integer getModuleId() {
         return moduleId;
     }

@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.iot.company;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.company.IotCompanyFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -24,7 +24,7 @@ public interface IotCompanyFeign {
 
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyPage)
-    public Envelop<IotCompanyVO> findCompanyPage(
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> findCompanyPage(
                                        @RequestParam(value = "name", required = false) String name,
                                        @RequestParam(value = "status", required = false) String status,
                                        @RequestParam(value = "type", required = false) String type,
@@ -32,36 +32,36 @@ public interface IotCompanyFeign {
                                        @RequestParam(value = "size", required = false) Integer size);
 
     @PostMapping(value = IotRequestMapping.Company.addCompany)
-    public Envelop<IotCompanyVO> addCompany(@RequestParam(value = "jsonData", required = true)String jsonData);
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> addCompany(@RequestParam(value = "jsonData", required = true)String jsonData);
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyById)
-    public Envelop<IotCompanyVO> findByCode(@RequestParam(value = "id", required = true) String id);
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> findByCode(@RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.Company.findByBusinessLicense)
-    public Envelop<IotCompanyVO> findByBusinessLicense(@RequestParam(value = "businessLicense", required = true) String businessLicense);
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> findByBusinessLicense(@RequestParam(value = "businessLicense", required = true) String businessLicense);
 
     @PostMapping(value = IotRequestMapping.Company.delCompany)
-    public Envelop<IotCompanyVO> delCompany(@RequestParam(value = "id", required = true) String id);
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> delCompany(@RequestParam(value = "id", required = true) String id);
 
     @PostMapping(value = IotRequestMapping.Company.updCompany)
-    public Envelop<IotCompanyVO> updCompany(@RequestParam(value = "jsonData", required = true)String jsonData);
+    public MixEnvelop<IotCompanyVO, IotCompanyVO> updCompany(@RequestParam(value = "jsonData", required = true)String jsonData);
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyCertPage)
-    public Envelop<IotCompanyCertificateVO> findCompanyCertPage
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> findCompanyCertPage
             (@RequestParam(value = "name", required = false) String name,
              @RequestParam(value = "companyId", required = false) String companyId,
              @RequestParam(value = "page", required = false) Integer page,
              @RequestParam(value = "size", required = false) Integer size);
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyCertById)
-    public Envelop<IotCompanyCertificateVO> findCompanyCertById(@RequestParam(value = "id", required = true) String id);
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> findCompanyCertById(@RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.Company.findCompanyCertByCompanyId)
-    public Envelop<IotCompanyCertificateVO> findCompanyCertByCompanyId(@RequestParam(value = "companyId", required = true) String companyId);
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> findCompanyCertByCompanyId(@RequestParam(value = "companyId", required = true) String companyId);
 
     @PostMapping(value = IotRequestMapping.Company.addCompanyCert)
-    public Envelop<IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = true)String jsonData);
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> addCompanyCert(@RequestParam(value = "jsonData", required = true)String jsonData);
 
     @PostMapping(value = IotRequestMapping.Company.delCompanyCert)
-    public Envelop<IotCompanyCertificateVO> delCompanyCert(@RequestParam(value = "id", required = true)String id);
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> delCompanyCert(@RequestParam(value = "id", required = true)String id);
 }

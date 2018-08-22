@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.base.wx;
 
 import com.yihu.jw.fegin.fallbackfactory.base.wx.AccessTokenFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface AccessTokenFeign {
 
     @RequestMapping(value = WechatRequestMapping.WxAccessToken.api_get, method = RequestMethod.GET)
-    Envelop getWxAccessToken(@RequestParam(value = "wechatId") String wechatId) ;
+    MixEnvelop getWxAccessToken(@RequestParam(value = "wechatId") String wechatId) ;
 
 }

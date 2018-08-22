@@ -11,8 +11,8 @@ import com.yihu.iot.util.excel.AExcelReader;
 import com.yihu.iot.util.excel.reader.IotDeviceImportVOReader;
 import com.yihu.iot.util.http.HttpHelper;
 import com.yihu.iot.util.http.HttpResponse;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.base.BaseEnvelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.iot.common.ExistVO;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.restmodel.iot.device.IotDeviceImportRecordVO;
@@ -48,11 +48,11 @@ public class DeviceService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceVO> create(String jsonData) throws IOException {
+    public MixEnvelop<IotDeviceVO, IotDeviceVO> create(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.CreateDevice, params);
-        Envelop<IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceVO, IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -62,11 +62,11 @@ public class DeviceService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceVO> findByCode(String id)throws IOException{
+    public MixEnvelop<IotDeviceVO, IotDeviceVO> findByCode(String id)throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.GetDeviceById, params);
-        Envelop<IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceVO, IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -76,11 +76,11 @@ public class DeviceService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<ExistVO> isSnExist(String sn) throws IOException {
+    public MixEnvelop<ExistVO, ExistVO> isSnExist(String sn) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("sn", sn);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.IsSnExist, params);
-        Envelop<ExistVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<ExistVO, ExistVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -90,11 +90,11 @@ public class DeviceService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<ExistVO> isSimExist(String sim) throws IOException {
+    public MixEnvelop<ExistVO, ExistVO> isSimExist(String sim) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("sim", sim);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.IsSimExist, params);
-        Envelop<ExistVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<ExistVO, ExistVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -104,12 +104,12 @@ public class DeviceService extends BaseService {
      * @param id
      * @return
      */
-    public BaseEnvelop updSim(String sim,String id) throws IOException{
+    public Envelop updSim(String sim, String id) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("sim", sim);
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.UpdSim, params);
-        BaseEnvelop envelop = objectMapper.readValue(response.getBody(),BaseEnvelop.class);
+        Envelop envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }
 
@@ -118,11 +118,11 @@ public class DeviceService extends BaseService {
      * @param id
      * @return
      */
-    public Envelop<IotDeviceVO> delDevice(String id) throws IOException{
+    public MixEnvelop<IotDeviceVO, IotDeviceVO> delDevice(String id) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.DelDevice, params);
-        Envelop<IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceVO, IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -131,11 +131,11 @@ public class DeviceService extends BaseService {
      * @param jsonData
      * @return
      */
-    public BaseEnvelop updDevice(String jsonData) throws IOException{
+    public Envelop updDevice(String jsonData) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Device.UpdDevice, params);
-        BaseEnvelop envelop = objectMapper.readValue(response.getBody(),BaseEnvelop.class);
+        Envelop envelop = objectMapper.readValue(response.getBody(),Envelop.class);
         return envelop;
     }
 
@@ -150,8 +150,8 @@ public class DeviceService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceVO> findProductPageByCompanyId(String sn,String hospital,String orderId,
-                String purcharseId,Integer isBinding,Integer page,Integer size) throws IOException{
+    public MixEnvelop<IotDeviceVO, IotDeviceVO> findProductPageByCompanyId(String sn, String hospital, String orderId,
+                                                              String purcharseId, Integer isBinding, Integer page, Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("sn", sn);
         params.put("hospital", hospital);
@@ -161,7 +161,7 @@ public class DeviceService extends BaseService {
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.QueryDevicePage, params);
-        Envelop<IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceVO, IotDeviceVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -170,8 +170,8 @@ public class DeviceService extends BaseService {
      * @param purcharseId
      * @return
      */
-    public Envelop<ExistVO> isImportDevice(String purcharseId) throws IOException {
-        Envelop<ExistVO> envelop = objectMapper.readValue(isImporting(purcharseId),Envelop.class);
+    public MixEnvelop<ExistVO, ExistVO> isImportDevice(String purcharseId) throws IOException {
+        MixEnvelop<ExistVO, ExistVO> envelop = objectMapper.readValue(isImporting(purcharseId),MixEnvelop.class);
         return envelop;
     }
 
@@ -194,15 +194,15 @@ public class DeviceService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceImportRecordVO> uploadStream(MultipartFile file,String purcharseId,HttpServletRequest request) throws Exception {
+    public MixEnvelop<IotDeviceImportRecordVO, IotDeviceImportRecordVO> uploadStream(MultipartFile file, String purcharseId, HttpServletRequest request) throws Exception {
         String res = isImporting(purcharseId);
         JSONObject json = JSON.parseObject(res);
         if(json.getInteger("status")==200){
             if(json.getJSONObject("obj").getInteger("isExist")==1){
-                return Envelop.getError("已存在导入中的数据，请等待上次数据处理完后在导入");
+                return MixEnvelop.getError("已存在导入中的数据，请等待上次数据处理完后在导入");
             }
         }else {
-            return Envelop.getError("查询是否在导入中失败");
+            return MixEnvelop.getError("查询是否在导入中失败");
         }
 
         //文件上传
@@ -211,7 +211,7 @@ public class DeviceService extends BaseService {
         //得到文件类型
         String fileType = fullName.substring(fullName.lastIndexOf(".") + 1).toLowerCase();
         if(!"xls".equals(fileType)){
-            return Envelop.getError("文件格式不正确");
+            return MixEnvelop.getError("文件格式不正确");
         }
         String fileName = fullName.substring(0, fullName.lastIndexOf("."));
 
@@ -226,7 +226,7 @@ public class DeviceService extends BaseService {
         }else {
             UploadVO uploadVO = fileUploadService.request(request,file.getInputStream(),fullName);
             if(uploadVO==null){
-                return Envelop.getError("文件上传失败");
+                return MixEnvelop.getError("文件上传失败");
             }
             params.put("url", uploadVO.getFullUri());
         }
@@ -240,7 +240,7 @@ public class DeviceService extends BaseService {
         params.put("fileName", fileName);
 
         String ret = HttpHelper.postBody(iotUrl + ServiceApi.Device.ImportDevice,JSONObject.toJSONString(params));
-        Envelop<IotDeviceImportRecordVO> envelop = objectMapper.readValue(ret,Envelop.class);
+        MixEnvelop<IotDeviceImportRecordVO, IotDeviceImportRecordVO> envelop = objectMapper.readValue(ret,MixEnvelop.class);
         return envelop;
     }
 
@@ -252,13 +252,13 @@ public class DeviceService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceImportRecordVO> queryImportRecordPage(String purcharseId,Integer page,Integer size) throws IOException{
+    public MixEnvelop<IotDeviceImportRecordVO, IotDeviceImportRecordVO> queryImportRecordPage(String purcharseId, Integer page, Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("purcharseId", purcharseId);
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Device.QueryImportRecordPage, params);
-        Envelop<IotDeviceImportRecordVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceImportRecordVO, IotDeviceImportRecordVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 

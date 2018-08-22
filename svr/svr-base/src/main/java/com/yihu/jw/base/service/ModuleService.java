@@ -6,7 +6,6 @@ import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 /**
  * Created by chenweida on 2017/5/19.
  */
@@ -15,6 +14,5 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
 
     @Autowired
     private ModuleDao moduleDao;
-
 
 }

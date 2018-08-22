@@ -2,7 +2,7 @@ package com.yihu.jw.service;
 
 import com.yihu.jw.dao.*;
 import com.yihu.jw.entity.specialist.*;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.specialist.*;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +39,12 @@ public class SpecialistService{
     @Value("${basedb.name}")
     private String basedb;
 
-    public Envelop<Boolean> createSpecialistsPatientRelation(SpecialistPatientRelationDO specialistPatientRelationDO){
+    public MixEnvelop<Boolean, Boolean> createSpecialistsPatientRelation(SpecialistPatientRelationDO specialistPatientRelationDO){
         specialistPatientRelationDao.save(specialistPatientRelationDO);
-        return Envelop.getSuccess(SpecialistMapping.api_success,true);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,true);
     }
 
-    public Envelop<SpecialistPatientRelationVO> findSpecialistPatientRelation(String doctor,Integer page,Integer size)throws ParseException {
+    public MixEnvelop<SpecialistPatientRelationVO, SpecialistPatientRelationVO> findSpecialistPatientRelation(String doctor, Integer page, Integer size)throws ParseException {
         String sql = "SELECT " +
                 " r.id, " +
                 " r.doctor, " +
@@ -76,10 +76,10 @@ public class SpecialistService{
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(SpecialistMapping.api_success,specialistPatientRelationVOs,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(SpecialistMapping.api_success,specialistPatientRelationVOs,page,size,count);
     }
 
-    public Envelop<Long> findSpecialistPatientRelationCout(String doctor){
+    public MixEnvelop<Long, Long> findSpecialistPatientRelationCout(String doctor){
         String sql = "SELECT " +
                 " count(1) AS total " +
                 " FROM " +
@@ -103,10 +103,10 @@ public class SpecialistService{
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccess(SpecialistMapping.api_success,count);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,count);
     }
 
-    public Envelop<PatientRelationVO> findNoLabelPatientRelation(String doctor){
+    public MixEnvelop<PatientRelationVO, PatientRelationVO> findNoLabelPatientRelation(String doctor){
         String sql ="SELECT " +
                 " r.patient, " +
                 " r.patient_name AS patientName, " +
@@ -131,10 +131,10 @@ public class SpecialistService{
                 " )";
         List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
 
-        return Envelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
     }
 
-    public Envelop<Boolean> saveHealthAssistant(List<SpecialistPatientRelationDO> specialistPatientRelationDOs){
+    public MixEnvelop<Boolean, Boolean> saveHealthAssistant(List<SpecialistPatientRelationDO> specialistPatientRelationDOs){
         for(SpecialistPatientRelationDO r : specialistPatientRelationDOs){
             SpecialistPatientRelationDO relationDO = specialistPatientRelationDao.findByDoctorAndPatient(r.getDoctor(),r.getPatient());
             if(relationDO!=null){
@@ -143,10 +143,10 @@ public class SpecialistService{
                 specialistPatientRelationDao.save(relationDO);
             }
         }
-        return Envelop.getSuccess(SpecialistMapping.api_success,true);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,true);
     }
 
-    public Envelop<PatientRelationVO> findPatientRelatioByAssistant(String doctor ,String assistant,Integer page,Integer size){
+    public MixEnvelop<PatientRelationVO, PatientRelationVO> findPatientRelatioByAssistant(String doctor , String assistant, Integer page, Integer size){
         String sql ="SELECT " +
                 " r.patient, " +
                 " r.patient_name AS patientName, " +
@@ -174,11 +174,11 @@ public class SpecialistService{
 
         List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
 
-        return Envelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
     }
 
 
-    public Envelop<PatientLabelVO>  getPatientByLabel(String doctor,String labelType, String labelCode, Integer page, Integer size){
+    public MixEnvelop<PatientLabelVO, PatientLabelVO> getPatientByLabel(String doctor, String labelType, String labelCode, Integer page, Integer size){
         String sql="SELECT " +
                 " p. NAME, " +
                 " p. CODE, " +
@@ -229,10 +229,10 @@ public class SpecialistService{
 
         List<PatientLabelVO> PatientLabelVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientLabelVO.class));
 
-        return Envelop.getSuccess(SpecialistMapping.api_success,PatientLabelVOs);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,PatientLabelVOs);
     }
 
-    public Envelop<Long> getLabelpatientCount(String doctor,String label,String labelType){
+    public MixEnvelop<Long, Long> getLabelpatientCount(String doctor, String label, String labelType){
         String sql = "SELECT " +
                 " COUNT(1) as total " +
                 " FROM " +
@@ -257,10 +257,10 @@ public class SpecialistService{
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccess(SpecialistMapping.api_success,count);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,count);
     }
 
-    public Envelop<Long> getAssistantPatientCount(String doctor,String assistant){
+    public MixEnvelop<Long, Long> getAssistantPatientCount(String doctor, String assistant){
 
         String sql = "SELECT COUNT(1) AS total FROM wlyy_specialist_patient_relation r WHERE r.doctor ='"+doctor+"'  AND r.health_assistant = '"+assistant+"' AND r.status >=0  AND r.sign_status >0";
 
@@ -269,10 +269,10 @@ public class SpecialistService{
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccess(SpecialistMapping.api_success,count);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,count);
     }
 
-    public Envelop<PatientRelationVO> getDoctorPatientByName(String doctor,String nameKey,Integer page,Integer size){
+    public MixEnvelop<PatientRelationVO, PatientRelationVO> getDoctorPatientByName(String doctor, String nameKey, Integer page, Integer size){
         String sql ="SELECT " +
                 " p.code AS patient, " +
                 " p.`name` AS patientName, " +
@@ -303,10 +303,10 @@ public class SpecialistService{
 
         List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
 
-        return Envelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
     }
 
-    public Envelop<PatientRelationVO> findPatientNoAssistant(String doctor, Integer page,Integer size){
+    public MixEnvelop<PatientRelationVO, PatientRelationVO> findPatientNoAssistant(String doctor, Integer page, Integer size){
 
         String sqlTotal ="SELECT " +
                 " COUNT(1) AS total" +
@@ -363,11 +363,11 @@ public class SpecialistService{
                 " LIMIT "+(page-1)*size+","+size;
         List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
 
-        return Envelop.getSuccessList(SpecialistMapping.api_success,patientRelationVOs,total.intValue());
+        return MixEnvelop.getSuccessList(SpecialistMapping.api_success,patientRelationVOs,total.intValue());
 
     }
 
-    public Envelop<SpecialistTeamVO> signSpecialistTeam(String patient,String patientName,String doctor,String doctorName,Long teamCode){
+    public MixEnvelop<SpecialistTeamVO, SpecialistTeamVO> signSpecialistTeam(String patient, String patientName, String doctor, String doctorName, Long teamCode){
 
         //1.查询该居民是否已经与该专科医生签约
         String checkDoctorSql = "SELECT " +
@@ -406,7 +406,7 @@ public class SpecialistService{
                 List<AdminTeamMemberVO> adminTeamMemberVOs = jdbcTemplate.query(menberSql,new BeanPropertyRowMapper(AdminTeamMemberVO.class));
                 specialistTeamVO.setMembers(adminTeamMemberVOs);
             }
-            return Envelop.getSuccess(SpecialistMapping.doctor_exist,specialistTeamVOs.get(0));
+            return MixEnvelop.getSuccess(SpecialistMapping.doctor_exist,specialistTeamVOs.get(0));
         }
 
         //验证团队是否已经签约
@@ -443,7 +443,7 @@ public class SpecialistService{
                 List<AdminTeamMemberVO> adminTeamMemberVOs = jdbcTemplate.query(menberSql,new BeanPropertyRowMapper(AdminTeamMemberVO.class));
                 specialistTeamVO.setMembers(adminTeamMemberVOs);
             }
-            return Envelop.getSuccess(SpecialistMapping.team_exist,teamVOs.get(0));
+            return MixEnvelop.getSuccess(SpecialistMapping.team_exist,teamVOs.get(0));
         }
 
         //存储签约关系
@@ -458,10 +458,10 @@ public class SpecialistService{
         relation.setCreateTime(new Date());
         SpecialistPatientRelationDO relationDO = specialistPatientRelationDao.save(relation);
 
-        return Envelop.getSuccess(SpecialistMapping.api_success,relationDO.getId());
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,relationDO.getId());
     }
 
-    public Envelop<Boolean> agreeSpecialistTeam(String state,String relationCode,String remark){
+    public MixEnvelop<Boolean, Boolean> agreeSpecialistTeam(String state, String relationCode, String remark){
 
         SpecialistPatientRelationDO relation = specialistPatientRelationDao.findOne(relationCode);
 
@@ -474,10 +474,10 @@ public class SpecialistService{
             relation.setSignStatus("1");
             specialistPatientRelationDao.save(relation);
         }
-        return Envelop.getSuccess(SpecialistMapping.api_success,relation);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,relation);
     }
 
-    public Envelop<PatientSignInfoVO> findPatientSigninfo(String code){
+    public MixEnvelop<PatientSignInfoVO, PatientSignInfoVO> findPatientSigninfo(String code){
         String sql = "SELECT " +
                 " r.patient, " +
                 " r.patient_name AS patientName, " +
@@ -500,10 +500,10 @@ public class SpecialistService{
                 " WHERE " +
                 " r.id = '"+code+"'";
         List<PatientSignInfoVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientSignInfoVO.class));
-        return Envelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs.get(0));
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs.get(0));
     }
 
-    public Envelop<SpecialistTeamVO> findPatientTeamList(String patient){
+    public MixEnvelop<SpecialistTeamVO, SpecialistTeamVO> findPatientTeamList(String patient){
         String sql = "SELECT " +
                 " r.id AS relationCode, " +
                 " r.patient, " +
@@ -539,10 +539,10 @@ public class SpecialistService{
                 specialistTeamVO.setMembers(adminTeamMemberVOs);
             }
         }
-        return Envelop.getSuccess(SpecialistMapping.api_success,specialistTeamVOs);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,specialistTeamVOs);
     }
 
-    public Envelop findPatientSignSpecialist(String patient){
+    public MixEnvelop findPatientSignSpecialist(String patient){
         String sql = "SELECT " +
                 " r.patient, " +
                 " r.team_code AS teamCode," +
@@ -563,10 +563,10 @@ public class SpecialistService{
                 " AND r.`status`>=0 " +
                 " AND r.sign_status >0";
         List<PatientSignInfoVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientSignInfoVO.class));
-        return Envelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs);
     }
 
-    public Envelop findPatientSignSpecialistInfo(String patient,String doctor){
+    public MixEnvelop findPatientSignSpecialistInfo(String patient, String doctor){
         String sql = "SELECT " +
                 " r.id AS relationCode," +
                 " r.patient, " +
@@ -592,7 +592,7 @@ public class SpecialistService{
                 " AND r.`status`>=0 " +
                 " AND r.sign_status >0";
         List<PatientSignInfoVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientSignInfoVO.class));
-        return Envelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs.get(0));
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs.get(0));
     }
 
 

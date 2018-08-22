@@ -5,7 +5,7 @@ import com.yihu.iot.constant.ServiceApi;
 import com.yihu.iot.model.ObjectResult;
 import com.yihu.iot.util.http.HttpHelper;
 import com.yihu.iot.util.http.HttpResponse;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.dict.IotSystemDictVO;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +25,14 @@ public class SystemDictService extends BaseService{
      * @return
      * @throws Exception
      */
-    public Envelop<IotSystemDictVO> getList(String dictName) throws Exception {
+    public MixEnvelop<IotSystemDictVO, IotSystemDictVO> getList(String dictName) throws Exception {
         if("HOSPITAL".equals(dictName)){
             return organizations();
         }
         Map<String, Object> params = new HashMap<>();
         params.put("dictName", dictName);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.System.FindDictByCode, params);
-        Envelop<IotSystemDictVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotSystemDictVO, IotSystemDictVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -40,9 +40,9 @@ public class SystemDictService extends BaseService{
      * 获取组织机构信息
      * @return
      */
-    private Envelop<IotSystemDictVO> organizations(){
+    private MixEnvelop<IotSystemDictVO, IotSystemDictVO> organizations(){
         String url = "/organizations";
-        Envelop<IotSystemDictVO> envelop = new Envelop<IotSystemDictVO>();
+        MixEnvelop<IotSystemDictVO, IotSystemDictVO> envelop = new MixEnvelop<>();
         Map<String, Object> params = new HashMap<>();
         params.put("fields","");
         params.put("sorts","");
@@ -53,7 +53,7 @@ public class SystemDictService extends BaseService{
             HttpResponse response = HttpHelper.get(profileInnerUrl + url, params);
             ObjectResult result =  objectMapper.readValue(response.getBody(),ObjectResult.class);
             if(result.isSuccessFlg()){
-                envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+                envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
                 envelop.setStatus(200);
             }else {
                 envelop.setStatus(-1);

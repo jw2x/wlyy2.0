@@ -1,6 +1,6 @@
 package com.yihu.jw.controller.rehabilitation;
 
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.rehabilitation.RehabilitationManageService;
 import io.swagger.annotations.Api;
@@ -28,16 +28,16 @@ public class RehabilitationManageController {
 
     @GetMapping(value = SpecialistMapping.rehabilitation.findRehabilitationPlan)
     @ApiOperation(value = "康复管理列表")
-    public Envelop findRehabilitationPlan(@ApiParam(name = "page", value = "第几页，从1开始")
+    public MixEnvelop findRehabilitationPlan(@ApiParam(name = "page", value = "第几页，从1开始")
                                              @RequestParam(value = "page", required = false)Integer page,
-                                          @ApiParam(name = "size", value = "，每页分页大小")
+                                             @ApiParam(name = "size", value = "，每页分页大小")
                                              @RequestParam(value = "size", required = false)Integer size){
         try {
             return null;
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 }

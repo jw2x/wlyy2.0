@@ -4,8 +4,8 @@ package com.yihu.jw.controller;/**
 
 import com.alibaba.fastjson.JSONArray;
 import com.yihu.jw.entity.health.bank.TaskRuleDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.service.TaskRuleService;
 import io.swagger.annotations.Api;
@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping(HealthBankMapping.api_health_bank_common)
 @Api(tags = "健康任务规则相关操作",description = "健康任务规则相关操作")
-public class TaskRuleController extends EnvelopRestController {
+public class TaskRuleController extends EnvelopRestEndpoint {
 
     @Autowired
     private TaskRuleService service;
@@ -45,7 +45,7 @@ public class TaskRuleController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.createTaskRule)
     @ApiOperation(value = "添加任务规则")
-    public Envelop<Boolean> insert(@ApiParam(name = "taskRule",value = "健康任务规则JSON")
+    public MixEnvelop<Boolean, Boolean> insert(@ApiParam(name = "taskRule",value = "健康任务规则JSON")
                                           @RequestParam(value = "taskRule",required = true)String taskRule){
         try {
             TaskRuleDO taskRuleDO = toEntity(taskRule,TaskRuleDO.class);
@@ -53,7 +53,7 @@ public class TaskRuleController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -65,7 +65,7 @@ public class TaskRuleController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.updateTaskRule)
     @ApiOperation(value = "更新任务规则")
-    public Envelop<Boolean> update(@ApiParam(name = "taskRule",value = "健康任务规则JSON")
+    public MixEnvelop<Boolean, Boolean> update(@ApiParam(name = "taskRule",value = "健康任务规则JSON")
                                           @RequestParam(value = "taskRule",required = true)String taskRule){
         try {
             TaskRuleDO taskRuleDO = toEntity(taskRule,TaskRuleDO.class);
@@ -73,7 +73,7 @@ public class TaskRuleController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class TaskRuleController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.findTaskRule)
     @ApiOperation(value = "查询任务规则")
-    public Envelop<TaskRuleDO> select(@ApiParam(name = "taskRule",value = "健康任务规则JSON")
+    public MixEnvelop<TaskRuleDO, TaskRuleDO> select(@ApiParam(name = "taskRule",value = "健康任务规则JSON")
                                          @RequestParam(value = "taskRule",required = true)String taskRule,
                                          @ApiParam(name = "page", value = "第几页，从1开始")
                                          @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
@@ -100,7 +100,7 @@ public class TaskRuleController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -113,10 +113,10 @@ public class TaskRuleController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.batchTaskRule)
     @ApiOperation(value = "批量删除任务规则")
-    public Envelop<Boolean> batchDelete(@ApiParam(name="ids",value = "id集合[]")
+    public MixEnvelop<Boolean, Boolean> batchDelete(@ApiParam(name="ids",value = "id集合[]")
                                         @RequestParam(value = "ids",required = false)String ids){
         try{
-            Envelop<Boolean> envelop = new Envelop<>();
+            MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
             JSONArray array = JSONArray.parseArray(ids);
             List<String> taskRuleIds = new ArrayList<>();
             for (int i = 0;i<array.size();i++){
@@ -128,7 +128,7 @@ public class TaskRuleController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 

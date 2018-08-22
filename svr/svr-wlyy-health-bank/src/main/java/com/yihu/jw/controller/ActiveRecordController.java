@@ -3,8 +3,8 @@ package com.yihu.jw.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.entity.health.bank.ActiveRecordDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.service.ActiveRecordService;
 import com.yihu.jw.service.TaskPatientDtailService;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(HealthBankMapping.api_health_bank_common)
 @Api(tags = "健康银行活动活跃记录",description = "健康银行活动活跃记录")
-public class ActiveRecordController extends EnvelopRestController {
+public class ActiveRecordController extends EnvelopRestEndpoint {
     @Autowired
     private ActiveRecordService activeRecordService;
     @Autowired
@@ -33,7 +33,7 @@ public class ActiveRecordController extends EnvelopRestController {
 
     @PostMapping(value = HealthBankMapping.healthBank.createActiveRecord)
     @ApiOperation(value = "添加健康银行活动活跃记录")
-    public Envelop<ActiveRecordDO> addActiveRecord(@RequestBody JSONObject object){
+    public MixEnvelop<ActiveRecordDO, ActiveRecordDO> addActiveRecord(@RequestBody JSONObject object){
         try{
             String openId = object.getString("patientOpenid");
             String idCard = object.getString("patientIdcard");
@@ -44,19 +44,19 @@ public class ActiveRecordController extends EnvelopRestController {
             String patientId = object.getString("patientId");
             TaskPatientDetailDO taskPatientDetailDO = taskPatientDtailService.selectByPatientId(openId,idCard,unionId,taskCode);
             if (taskPatientDetailDO == null){
-                return Envelop.getError("尚未报名！");
+                return MixEnvelop.getError("尚未报名！");
             }else {
                 ActiveRecordDO activeRecordDO = activeRecordService.insert(taskPatientDetailDO.getSaasId(),taskPatientDetailDO.getTaskId(),taskPatientDetailDO.getActivityId(),originalStatus,currentStatus,patientId);
                 if(activeRecordDO!=null){
-                    return Envelop.getSuccess("添加成功",activeRecordDO);
+                    return MixEnvelop.getSuccess("添加成功",activeRecordDO);
                 }else{
-                    return Envelop.getError("添加失败");
+                    return MixEnvelop.getError("添加失败");
                 }
             }
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError("添加失败");
+            return MixEnvelop.getError("添加失败");
         }
     }
 }

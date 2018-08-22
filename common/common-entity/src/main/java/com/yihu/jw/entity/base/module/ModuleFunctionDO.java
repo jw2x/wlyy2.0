@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.module;// default package
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
 import javax.persistence.*;
 
@@ -9,32 +9,29 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "base_module_function")
-public class ModuleFunctionDO extends UuidIdentityEntity implements java.io.Serializable {
+public class ModuleFunctionDO extends IntegerIdentityEntity {
 
-	private String functionId;//关联 base_function    code
-	private String moduleId;//关联 base_module  code
+	//关联 base_module   id
+	private Integer moduleId;
+	//关联 base_function   ic
+	private Integer functionId;
 
-	// Constructors
-
-	/** default constructor */
-	public ModuleFunctionDO() {
-	}
-
-	@Column(name = "function_id", length = 100)
-	public String getFunctionId() {
-		return this.functionId;
-	}
-
-	public void setFunctionId(String functionId) {
-		this.functionId = functionId;
-	}
-
-	@Column(name = "module_id", length = 100)
-	public String getModuleId() {
+	@Column(name = "module_id")
+	public Integer getModuleId() {
 		return this.moduleId;
 	}
 
-	public void setModuleId(String moduleId) {
+	public void setModuleId(Integer moduleId) {
 		this.moduleId = moduleId;
 	}
+
+	@Column(name = "function_id")
+	public Integer getFunctionId() {
+		return this.functionId;
+	}
+
+	public void setFunctionId(Integer functionId) {
+		this.functionId = functionId;
+	}
+
 }

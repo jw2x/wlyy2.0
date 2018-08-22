@@ -9,7 +9,7 @@ import com.yihu.jw.dao.TaskDao;
 import com.yihu.jw.dao.TaskPatientDetailDao;
 import com.yihu.jw.dao.TaskRuleDao;
 import com.yihu.jw.entity.health.bank.*;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.DateUtils;
 import com.yihu.jw.util.ISqlUtils;
@@ -52,11 +52,11 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao> {
      * @param taskDO 任务对象
      * @return
      */
-    public Envelop<Boolean> insert(TaskDO taskDO){
+    public MixEnvelop<Boolean, Boolean> insert(TaskDO taskDO){
         taskDO.setCreateTime(new Date());
         taskDO.setUpdateTime(new Date());
         taskDao.save(taskDO);
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         envelop.setObj(true);
         return envelop;
     }
@@ -67,10 +67,10 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao> {
      * @param taskDO
      * @return
      */
-    public Envelop<Boolean> update(TaskDO taskDO){
+    public MixEnvelop<Boolean, Boolean> update(TaskDO taskDO){
         String sql = ISqlUtils.getUpdateSql(taskDO);
         jdbcTemplate.update(sql);
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         envelop.setObj(true);
         return envelop;
     }
@@ -96,7 +96,7 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao> {
      * @param size 分页大小
      * @return
      */
-   public Envelop<TaskDO> selectByCondition(TaskDO taskDO,Integer page,Integer size){
+   public MixEnvelop<TaskDO, TaskDO> selectByCondition(TaskDO taskDO, Integer page, Integer size){
        TaskDO taskDO2 = new TaskDO();
        String sql = new ISqlUtils().getSql(taskDO,page,size,"*");
        List<TaskDO> taskDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskDO.class));
@@ -129,7 +129,7 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao> {
        if(rstotal!=null&&rstotal.size()>0){
            count = (Long) rstotal.get(0).get("total");
        }
-       return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDOS,page,size,count);
+       return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDOS,page,size,count);
    }
 
     /**
@@ -140,7 +140,7 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao> {
      * @param size 分页大小
      * @return
      */
-   public Envelop<TaskDO> selectByTask(JSONArray array,String patientId,Integer page,Integer size){
+   public MixEnvelop<TaskDO, TaskDO> selectByTask(JSONArray array, String patientId, Integer page, Integer size){
        StringBuffer buffer = new StringBuffer();
        List<String> taskCodes = new ArrayList<>();
        for (int i=0;i<array.size();i++){
@@ -182,7 +182,7 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao> {
        if(rstotal!=null&&rstotal.size()>0){
            count = (Long) rstotal.get(0).get("total");
        }
-       return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDOList,page,size,count);
+       return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskDOList,page,size,count);
    }
    /* public List<TaskDO> getTasks(String patientId){
        List<TaskDO> taskDOList = new ArrayList<>();
@@ -217,8 +217,8 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao> {
      * @param ids taskId集合[]
      * @return
      */
-    public Envelop<Boolean> batchDelete(List<String> ids){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> batchDelete(List<String> ids){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         for (int i =0;i<ids.size();i++){
             List<TaskPatientDetailDO> taskPatientDetailDOS = taskPatientDetailDao.selectByTaskId(ids.get(i));
             for(TaskPatientDetailDO taskPatientDetailDO:taskPatientDetailDOS){
@@ -243,8 +243,8 @@ public class TaskService extends BaseJpaService<TaskDO,TaskDao> {
      * @param object{"taskCode":,"startTime":,"endTime":,"patientId":""}
      * @return
      */
-    public Envelop<TaskDO> selectByDate(JSONObject object){
-        Envelop<TaskDO> envelop = new Envelop<>();
+    public MixEnvelop<TaskDO, TaskDO> selectByDate(JSONObject object){
+        MixEnvelop<TaskDO, TaskDO> envelop = new MixEnvelop<>();
         String taskSql = "select * from wlyy_health_bank_task where task_code = '"+object.getString("taskCode")+ "'";
         List<TaskDO> taskDOList = jdbcTemplate.query(taskSql,new BeanPropertyRowMapper(TaskDO.class));
         List<TaskDO> taskDOS = new ArrayList<>();

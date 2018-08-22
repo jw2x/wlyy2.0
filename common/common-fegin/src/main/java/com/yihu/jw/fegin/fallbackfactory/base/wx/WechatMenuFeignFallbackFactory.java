@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.fallbackfactory.base.wx;
 
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.wx.WechatMenuFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
@@ -22,21 +22,21 @@ public class WechatMenuFeignFallbackFactory implements FallbackFactory<WechatMen
     public WechatMenuFeign create(Throwable e) {
         return new WechatMenuFeign() {
             @Override
-            public Envelop createWxMenu(String jsonData) throws JiWeiException {
+            public MixEnvelop createWxMenu(String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("创建微信菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop updateWxMenu(String jsonData) throws JiWeiException {
+            public MixEnvelop updateWxMenu(String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("更新微信菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop deleteWxMenu(String codes,String userCode,String userName) throws JiWeiException {
+            public MixEnvelop deleteWxMenu(String codes, String userCode, String userName) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("删除微信菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("codes:"+codes);
                 tracer.getCurrentSpan().logEvent("操作人userCode:"+userCode);
@@ -45,14 +45,14 @@ public class WechatMenuFeignFallbackFactory implements FallbackFactory<WechatMen
 
 
             @Override
-            public Envelop findById(String id) throws JiWeiException {
+            public MixEnvelop findById(String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找微信菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop getWxMenuNoPage(String fields, String filters, String sorts) throws JiWeiException {
+            public MixEnvelop getWxMenuNoPage(String fields, String filters, String sorts) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找微信菜单列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filters);
@@ -62,26 +62,26 @@ public class WechatMenuFeignFallbackFactory implements FallbackFactory<WechatMen
 
 
             @Override
-            public Envelop createWechatMenu(String wechatCode) {
+            public MixEnvelop createWechatMenu(String wechatCode) {
                 return null;
             }
 
             @Override
-            public Envelop getParentMenu(@PathVariable String wechatCode) throws JiWeiException {
+            public MixEnvelop getParentMenu(@PathVariable String wechatCode) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("根据微信code查找父菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("wechatCode:"+wechatCode);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop getChildMenus(@PathVariable(value = "parentCode", required = true) String parentCode) throws JiWeiException {
+            public MixEnvelop getChildMenus(@PathVariable(value = "parentCode", required = true) String parentCode) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("根据父级菜单code查找子菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("parentCode:"+parentCode);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop getWxMenus(String fields, String filters, String sorts, int size, int page) throws JiWeiException {
+            public MixEnvelop getWxMenus(String fields, String filters, String sorts, int size, int page) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("分页查找微信菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filters);

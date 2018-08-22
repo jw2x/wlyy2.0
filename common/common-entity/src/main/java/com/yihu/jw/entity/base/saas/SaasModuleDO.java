@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.saas;// default package
 
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
 import javax.persistence.*;
 
@@ -10,14 +10,14 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "base_saas_module")
-public class SaasModuleDO extends UuidIdentityEntity implements java.io.Serializable {
+public class SaasModuleDO extends IntegerIdentityEntity {
 
 	private String saasId; //关联WlyySaas code
-	private String moduleId; //关联 WlyyModule code
+	private Integer moduleId; //关联 WlyyModule code
 
 	// Constructors
 
-	@Column(name = "saas_id", length = 100)
+	@Column(name = "saas_id", length = 50)
 	public String getSaasId() {
 		return saasId;
 	}
@@ -26,12 +26,12 @@ public class SaasModuleDO extends UuidIdentityEntity implements java.io.Serializ
 		this.saasId = saasId;
 	}
 
-	@Column(name = "module_id", length = 100)
-	public String getModuleId() {
+	@Column(name = "module_id", nullable = false)
+	public Integer getModuleId() {
 		return this.moduleId;
 	}
 
-	public void setModuleId(String moduleId) {
+	public void setModuleId(Integer moduleId) {
 		this.moduleId = moduleId;
 	}
 }

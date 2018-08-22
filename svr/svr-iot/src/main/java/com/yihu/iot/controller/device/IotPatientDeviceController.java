@@ -3,8 +3,8 @@ package com.yihu.iot.controller.device;
 import com.yihu.iot.service.device.IotPatientDeviceService;
 import com.yihu.iot.service.label.FigureLabelSerachService;
 import com.yihu.jw.entity.iot.device.IotPatientDeviceDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.restmodel.iot.device.IotDeviceVO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping(IotRequestMapping.Common.patientDevice)
 @Api(tags = "居民设备管理相关操作", description = "居民设备管理相关操作")
-public class IotPatientDeviceController extends EnvelopRestController{
+public class IotPatientDeviceController extends EnvelopRestEndpoint {
 
     @Autowired
     private IotPatientDeviceService iotPatientDeviceService;
@@ -35,7 +35,7 @@ public class IotPatientDeviceController extends EnvelopRestController{
 
     @PostMapping(value = IotRequestMapping.PatientDevice.addPatientDevice)
     @ApiOperation(value = "设备绑定", notes = "设备绑定")
-    public Envelop<IotPatientDeviceVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
+    public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> create(@ApiParam(name = "jsonData", value = "", defaultValue = "")
                                        @RequestParam String jsonData) {
         try {
             //设备绑定
@@ -44,16 +44,16 @@ public class IotPatientDeviceController extends EnvelopRestController{
             iotPatientDeviceService.create(patientDevice);
             //地址信息存入es
             iotPatientDeviceService.deviceData2Es(deviceVO);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create);
+            return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByDeviceSnAndUserType)
     @ApiOperation(value = "按sn码和按键号查找", notes = "按sn码和按键号查找")
-    public Envelop<IotPatientDeviceVO> findByDeviceSnAndUserType(
+    public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndUserType(
             @ApiParam(name = "deviceSn", value = "sn码", defaultValue = "")
             @RequestParam(value = "deviceSn",required = true) String deviceSn,
             @ApiParam(name = "userType", value = "按键号", defaultValue = "")
@@ -61,32 +61,32 @@ public class IotPatientDeviceController extends EnvelopRestController{
         try {
             IotPatientDeviceDO patientDevice = iotPatientDeviceService.findByDeviceSnAndUserType(deviceSn, userType);
             IotPatientDeviceVO patientDeviceVO = convertToModel(patientDevice,IotPatientDeviceVO.class);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,patientDeviceVO);
+            return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create,patientDeviceVO);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByPatient)
     @ApiOperation(value = "按居民code查找", notes = "按居民code查找")
-    public Envelop<IotPatientDeviceVO> findByPatient(
+    public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByPatient(
             @ApiParam(name = "patient", value = "居民code", defaultValue = "")
             @RequestParam(value = "patient",required = true) String patient) {
         try {
             List<IotPatientDeviceDO> list = iotPatientDeviceService.findByPatient(patient);
             //DO转VO
             List<IotPatientDeviceVO> iotPatientDeviceVOList = convertToModels(list,new ArrayList<>(list.size()),IotPatientDeviceVO.class);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,iotPatientDeviceVOList);
+            return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create,iotPatientDeviceVOList);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByPatientAndDeviceSn)
     @ApiOperation(value = "按居民和sn码查找", notes = "按居民和sn码查找")
-    public Envelop<IotPatientDeviceVO> findByPatientAndDeviceSn(
+    public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByPatientAndDeviceSn(
             @ApiParam(name = "patient", value = "居民code", defaultValue = "")
             @RequestParam(value = "patient",required = true) String patient,
             @ApiParam(name = "deviceSn", value = "sn码", defaultValue = "")
@@ -95,17 +95,17 @@ public class IotPatientDeviceController extends EnvelopRestController{
             List<IotPatientDeviceDO> list = iotPatientDeviceService.findByPatientAndDeviceSn(patient,deviceSn);
             //DO转VO
             List<IotPatientDeviceVO> iotPatientDeviceVOList = convertToModels(list,new ArrayList<>(list.size()),IotPatientDeviceVO.class);
-            return Envelop.getSuccessList(IotRequestMapping.Device.message_success_create,iotPatientDeviceVOList);
+            return MixEnvelop.getSuccessList(IotRequestMapping.Device.message_success_create,iotPatientDeviceVOList);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findListByPatient)
     @ApiOperation(value = "按居民分页查找", notes = "按居民分页查找")
-    public Envelop<IotDeviceVO> findListByPatient(
+    public MixEnvelop<IotDeviceVO, IotDeviceVO> findListByPatient(
             @ApiParam(name = "patient", value = "居民code", defaultValue = "")
             @RequestParam(value = "patient", required = true) String patient,
             @ApiParam(name = "page", value = "第几页", defaultValue = "")
@@ -117,16 +117,16 @@ public class IotPatientDeviceController extends EnvelopRestController{
             List<IotPatientDeviceDO> list = iotPatientDeviceService.findByPatient(patient,pageRequest);
             //DO转VO
             List<IotPatientDeviceVO> iotPatientDeviceVOList = convertToModels(list,new ArrayList<>(list.size()),IotPatientDeviceVO.class);
-            return Envelop.getSuccess(IotRequestMapping.Company.message_success_find_functions,iotPatientDeviceVOList);
+            return MixEnvelop.getSuccess(IotRequestMapping.Company.message_success_find_functions,iotPatientDeviceVOList);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByDeviceSnAndCategoryCode)
     @ApiOperation(value = "按sn码和设备类型查找", notes = "按sn码和设备类型查找")
-    public Envelop<IotPatientDeviceVO> findByDeviceSnAndCategoryCode(
+    public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndCategoryCode(
             @ApiParam(name = "categoryCode", value = "设备类型", defaultValue = "")
             @RequestParam(value = "categoryCode",required = true) String categoryCode,
             @ApiParam(name = "deviceSn", value = "sn码", defaultValue = "")
@@ -135,16 +135,16 @@ public class IotPatientDeviceController extends EnvelopRestController{
             List<IotPatientDeviceDO> list = iotPatientDeviceService.findByDeviceSnAndCategoryCode(deviceSn,categoryCode);
             //DO转VO
             List<IotPatientDeviceVO> iotPatientDeviceVOList = convertToModels(list,new ArrayList<>(list.size()),IotPatientDeviceVO.class);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,iotPatientDeviceVOList);
+            return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create,iotPatientDeviceVOList);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findByDeviceSnAndCategoryCodeAndUserType)
     @ApiOperation(value = "按sn码，设备类型及按键号查找", notes = "按sn码，设备类型及按键号查找")
-    public Envelop<IotPatientDeviceVO> findByDeviceSnAndCategoryCodeAndUserType(
+    public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> findByDeviceSnAndCategoryCodeAndUserType(
             @ApiParam(name = "deviceSn", value = "sn码", defaultValue = "")
             @RequestParam(value = "deviceSn",required = true) String deviceSn,
             @ApiParam(name = "categoryCode", value = "设备类型", defaultValue = "")
@@ -155,17 +155,17 @@ public class IotPatientDeviceController extends EnvelopRestController{
         try {
             IotPatientDeviceDO patientDevice = iotPatientDeviceService.findByDeviceSnAndCategoryCodeAndUserType(deviceSn,categoryCode, userType);
             IotPatientDeviceVO patientDeviceVO = convertToModel(patientDevice,IotPatientDeviceVO.class);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,patientDeviceVO);
+            return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create,patientDeviceVO);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
 
     @PostMapping(value = IotRequestMapping.PatientDevice.updatePatientDevice)
     @ApiOperation(value = "更换患者绑定的血糖仪", notes = "更换患者绑定的血糖仪")
-    public Envelop<IotPatientDeviceVO> updatePatientDevice(
+    public MixEnvelop<IotPatientDeviceVO, IotPatientDeviceVO> updatePatientDevice(
             @ApiParam(name = "patient", value = "sn码", defaultValue = "")
             @RequestParam(value = "patient",required = true) String patient,
             @ApiParam(name = "deviceSN", value = "旧sn码", defaultValue = "")
@@ -178,29 +178,29 @@ public class IotPatientDeviceController extends EnvelopRestController{
             @RequestParam(value = "sim",required = true) String sim) {
         try {
             iotPatientDeviceService.updatePatientDevice(patient, deviceSN, newDeviceSN, userType, sim);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create);
+            return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findAllLocations)
     @ApiOperation(value = "查询所有设备地址", notes = "查询所有设备地址")
-    public Envelop<List<LocationDataVO>> findAllDeviceLocations() {
+    public MixEnvelop<List<LocationDataVO>, List<LocationDataVO>> findAllDeviceLocations() {
         try {
             List<LocationDataVO> list = iotPatientDeviceService.findAllDeviceLocations();
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,list);
+            return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create,list);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findLocationByIdCard)
     @ApiOperation(value = "根据idCard查询设备地址", notes = "根据idCard查询设备地址")
-    public Envelop<List<LocationDataVO>> findDeviceLocationsByIdCard(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
+    public MixEnvelop<List<LocationDataVO>, List<LocationDataVO>> findDeviceLocationsByIdCard(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             List<LocationDataVO> list = iotPatientDeviceService.findDeviceLocationsByIdCard(jsonData);
@@ -235,58 +235,58 @@ public class IotPatientDeviceController extends EnvelopRestController{
 //                }
 //
 //            });
-            return Envelop.getSuccessList(IotRequestMapping.Device.message_success_create,list,iotPatientDeviceService.getESCount(jsonData));
+            return MixEnvelop.getSuccessList(IotRequestMapping.Device.message_success_create,list,iotPatientDeviceService.getESCount(jsonData));
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
 
     @GetMapping(value = IotRequestMapping.PatientDevice.findLocationBySn)
     @ApiOperation(value = "根据sn码查询设备地址", notes = "根据sn码查询设备地址")
-    public Envelop<List<LocationDataVO>> findDeviceLocationsBySn(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
+    public MixEnvelop<List<LocationDataVO>, List<LocationDataVO>> findDeviceLocationsBySn(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                      @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             List<LocationDataVO> list = iotPatientDeviceService.findDeviceLocationsBySn(jsonData);
-            return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,list);
+            return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create, list);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.PatientDevice.deleteLocation)
     @ApiOperation(value = "解绑设备删除地址", notes = "解绑设备删除地址")
-    public Envelop deleteLocations(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
+    public MixEnvelop deleteLocations(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                                                  @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             boolean bool = iotPatientDeviceService.deleteLocationsByIdcardOrSn(jsonData);
             if(bool){
-                return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,"device delete success");
+                return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create,"device delete success");
             }
-            return Envelop.getError("delete fail,not exist");
+            return MixEnvelop.getError("delete fail,not exist");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.PatientDevice.updateLocation)
     @ApiOperation(value = "设备地址修改", notes = "设备地址修改")
-    public Envelop updateLocations(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
+    public MixEnvelop updateLocations(@ApiParam(name = "jsonData", value = "jsonData", defaultValue = "")
                                    @RequestParam(value = "jsonData",required = true) String jsonData) {
         try {
             boolean bool = iotPatientDeviceService.updateLocationsByIdcardOrSn(jsonData);
             if(bool){
-                return Envelop.getSuccess(IotRequestMapping.Device.message_success_create,"device update success");
+                return MixEnvelop.getSuccess(IotRequestMapping.Device.message_success_create,"device update success");
             }
-            return Envelop.getError("delete fail,not exist");
+            return MixEnvelop.getError("delete fail,not exist");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 }

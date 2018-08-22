@@ -2,8 +2,8 @@ package com.yihu.iot.controller.dict;
 
 import com.yihu.iot.service.dict.IotDeviceDictService;
 import com.yihu.jw.entity.iot.dict.IotDeviceDictDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,14 +23,14 @@ import java.util.List;
 @RestController
 @RequestMapping(IotRequestMapping.api_iot_common)
 @Api(tags = "设备字典管理相关操作", description = "设备字典管理相关操作")
-public class IotDeviceDictController extends EnvelopRestController{
+public class IotDeviceDictController extends EnvelopRestEndpoint {
 
     @Autowired
     private IotDeviceDictService iotDeviceDictService;
 
     @GetMapping(value = IotRequestMapping.DeviceDict.api_getList)
     @ApiOperation(value = "获取设备字典列表(不分页)")
-    public Envelop getList(
+    public MixEnvelop getList(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "id,deviceType,name,dataType,dataTypeName")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件",defaultValue = "del=1;deviceType=1")
@@ -41,6 +41,6 @@ public class IotDeviceDictController extends EnvelopRestController{
         List<IotDeviceDictDO> list = iotDeviceDictService.search(fields,filters,sorts);
         //封装返回格式
         List<IotDeviceDictDO> iotDeviceDicts = convertToModels(list, new ArrayList<>(list.size()), IotDeviceDictDO.class, fields);
-        return Envelop.getSuccessList(IotRequestMapping.DeviceDict.message_success_find_functions,iotDeviceDicts);
+        return MixEnvelop.getSuccessList(IotRequestMapping.DeviceDict.message_success_find_functions,iotDeviceDicts);
     }
 }

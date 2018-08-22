@@ -3,7 +3,7 @@ package com.yihu.jw.manage.controller.version;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.model.version.WlyyVersion;
 import com.yihu.jw.manage.service.version.WlyyVersionService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseVersionRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

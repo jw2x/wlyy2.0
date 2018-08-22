@@ -7,7 +7,7 @@ import com.yihu.jw.business.wx.dao.WechatDao;
 import com.yihu.jw.business.wx.dao.WxMenuDao;
 import com.yihu.jw.business.wx.dao.WxMenuJsonDao;
 import com.yihu.jw.entity.base.wx.WxWechatDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
 import org.json.JSONObject;
@@ -27,7 +27,7 @@ public class WxMenuService extends BaseJpaService<WxMenuDO, WxMenuDao>{
     @Autowired
     private WechatDao wechatDao;
 
-    public Envelop createWxMenu(String wxId){
+    public MixEnvelop createWxMenu(String wxId){
 
 //        String url = "https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token=" ;
         String url ="https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+ wxAccessTokenService.getWxAccessTokenById(wxId).getAccessToken();
@@ -41,9 +41,9 @@ public class WxMenuService extends BaseJpaService<WxMenuDO, WxMenuDao>{
         String jsonStr = HttpUtil.sendPost(url, params);
         JSONObject result = new JSONObject(jsonStr);
         if (result != null && result.get("errcode").toString().equals("0") && result.getString("errmsg").equals("ok")) {
-            Envelop.getSuccess(WechatRequestMapping.WxMenu.message_success_update);
+            MixEnvelop.getSuccess(WechatRequestMapping.WxMenu.message_success_update);
         }
-        return Envelop.getError(result.toString());
+        return MixEnvelop.getError(result.toString());
 
     }
 

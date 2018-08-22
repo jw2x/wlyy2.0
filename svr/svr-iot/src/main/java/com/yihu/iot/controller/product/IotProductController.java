@@ -3,8 +3,8 @@ package com.yihu.iot.controller.product;
 import com.yihu.iot.service.dict.IotSystemDictService;
 import com.yihu.iot.service.product.IotProductBaseInfoService;
 import com.yihu.jw.entity.iot.product.IotProductBaseInfoDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
 import com.yihu.jw.restmodel.iot.product.IotProductBaseInfoVO;
 import com.yihu.jw.restmodel.iot.product.IotProductVO;
@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping(IotRequestMapping.Common.product)
 @Api(tags = "产品管理相关操作", description = "产品管理相关操作")
-public class IotProductController extends EnvelopRestController {
+public class IotProductController extends EnvelopRestEndpoint {
 
     @Autowired
     private IotProductBaseInfoService iotProductBaseInfoService;
@@ -38,7 +38,7 @@ public class IotProductController extends EnvelopRestController {
 
     @GetMapping(value = IotRequestMapping.Product.findProductPage)
     @ApiOperation(value = "分页查找产品", notes = "分页查找产品")
-    public Envelop<IotProductBaseInfoVO> findCompanyPage(
+    public MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> findCompanyPage(
             @ApiParam(name = "name", value = "注册证号或产品名称", defaultValue = "")
             @RequestParam(value = "name", required = false) String name,
             @ApiParam(name = "classify", value = "产品分类", defaultValue = "")
@@ -80,22 +80,22 @@ public class IotProductController extends EnvelopRestController {
             List<IotProductBaseInfoVO> iotCompanyVOList = convertToModels(list,new ArrayList<>(list.size()),IotProductBaseInfoVO.class);
             iotProductBaseInfoService.translateDictForList(iotCompanyVOList);
 
-            return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
+            return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.Product.findProductPageByCompanyId)
     @ApiOperation(value = "分页查找产品(按企业id)", notes = "分页查找产品")
-    public Envelop<IotProductBaseInfoVO> findProductPageByCompanyId(@ApiParam(name = "name", value = "产品名称", defaultValue = "")
+    public MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> findProductPageByCompanyId(@ApiParam(name = "name", value = "产品名称", defaultValue = "")
                                                          @RequestParam(value = "name", required = false) String name,
-                                                         @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
+                                                                       @ApiParam(name = "companyId", value = "企业id", defaultValue = "")
                                                          @RequestParam(value = "companyId", required = true) String companyId,
-                                                         @ApiParam(name = "page", value = "第几页", defaultValue = "")
+                                                                       @ApiParam(name = "page", value = "第几页", defaultValue = "")
                                                          @RequestParam(value = "page", required = false) Integer page,
-                                                         @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
+                                                                       @ApiParam(name = "size", value = "每页记录数", defaultValue = "")
                                                          @RequestParam(value = "size", required = false) Integer size){
         try {
             if(page == null|| page < 0){
@@ -121,83 +121,83 @@ public class IotProductController extends EnvelopRestController {
             List<IotProductBaseInfoVO> iotCompanyVOList = convertToModels(list,new ArrayList<>(list.size()),IotProductBaseInfoVO.class);
             iotProductBaseInfoService.translateDictForList(iotCompanyVOList);
 
-            return Envelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
+            return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Company.message_success_find_functions,iotCompanyVOList, page, size,count);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.Product.addProduct)
     @ApiOperation(value = "创建产品", notes = "创建产品")
-    public Envelop<IotProductVO> addProduct(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
+    public MixEnvelop<IotProductVO, IotProductVO> addProduct(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = false)String jsonData) {
         try {
             IotProductVO iotProductVO = toEntity(jsonData, IotProductVO.class);
             iotProductBaseInfoService.addProduct(iotProductVO);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_create);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_create);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
 
     @GetMapping(value = IotRequestMapping.Product.findProductById)
     @ApiOperation(value = "根据id查找产品", notes = "根据id查找产品")
-    public Envelop<IotProductVO> findByCode(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotProductVO, IotProductVO> findByCode(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             IotProductVO vo = iotProductBaseInfoService.findProductById(id);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_find, vo);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_find, vo);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @GetMapping(value = IotRequestMapping.Product.maintenanceUnitById)
     @ApiOperation(value = "获取维护单位")
-    public Envelop<IotMaintenanceUnitVO> getList(
+    public MixEnvelop<IotMaintenanceUnitVO, IotMaintenanceUnitVO> getList(
             @ApiParam(name = "productId", value = "产品", defaultValue = "1")
             @RequestParam(value = "productId", required = true) String productId) throws Exception {
         try {
             List<IotMaintenanceUnitVO> voList = iotProductBaseInfoService.maintenanceUnitById(productId);
-            return Envelop.getSuccessList(IotRequestMapping.Company.message_success_find_functions,voList);
+            return MixEnvelop.getSuccessList(IotRequestMapping.Company.message_success_find_functions,voList);
         }catch (Exception e){
             e.printStackTrace();
-            return Envelop.getError("查询失败");
+            return MixEnvelop.getError("查询失败");
         }
     }
 
     @PostMapping(value = IotRequestMapping.Product.delProduct)
     @ApiOperation(value = "删除产品", notes = "删除产品")
-    public Envelop<IotProductVO> delCompany(@ApiParam(name = "id", value = "id")
+    public MixEnvelop<IotProductVO, IotProductVO> delCompany(@ApiParam(name = "id", value = "id")
                                             @RequestParam(value = "id", required = true) String id) {
         try {
             Integer re = iotProductBaseInfoService.delProduct(id);
             if(re==-1){
-                return Envelop.getError("该产品已有关联订单，不允许删除",-1);
+                return MixEnvelop.getError("该产品已有关联订单，不允许删除",-1);
             }else {
-                return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
+                return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_find);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = IotRequestMapping.Product.updProduct)
     @ApiOperation(value = "修改产品信息", notes = "修改产品信息")
-    public Envelop<IotProductVO> updCompany(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
+    public MixEnvelop<IotProductVO, IotProductVO> updCompany(@ApiParam(name = "jsonData", value = "json", defaultValue = "")
                                             @RequestParam(value = "jsonData", required = false)String jsonData) {
         try {
             IotProductVO iotProductVO = toEntity(jsonData, IotProductVO.class);
             iotProductBaseInfoService.updProduct(iotProductVO);
-            return Envelop.getSuccess(IotRequestMapping.Common.message_success_find);
+            return MixEnvelop.getSuccess(IotRequestMapping.Common.message_success_find);
         } catch (Exception e) {
             e.printStackTrace();
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 

@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.fallbackfactory.iot.data_input;
 
 import com.yihu.jw.fegin.iot.data_input.DataInputFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
@@ -18,21 +18,21 @@ public class DataInputFeignFallbackFactory implements FallbackFactory<DataInputF
     public DataInputFeign create(Throwable e) {
         return new DataInputFeign() {
             @Override
-            public Envelop bindUser(@RequestBody String jsonData) {
+            public MixEnvelop bindUser(@RequestBody String jsonData) {
                 tracer.getCurrentSpan().logEvent("设备注册绑定失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 
             @Override
-            public Envelop uploadData(@RequestBody String jsonData) {
+            public MixEnvelop uploadData(@RequestBody String jsonData) {
                 tracer.getCurrentSpan().logEvent("体征数据上传失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 
             @Override
-            public Envelop uploadWeRunData(String jsonData) {
+            public MixEnvelop uploadWeRunData(String jsonData) {
                 tracer.getCurrentSpan().logEvent("微信运动数据上传失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;

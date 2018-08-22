@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.module;// default package
 
-import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import com.yihu.jw.entity.IntegerIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "base_module")
-public class ModuleDO extends UuidIdentityEntityWithOperator {
+public class ModuleDO extends IntegerIdentityEntityWithOperator {
 
     public enum Status {
 		disable,

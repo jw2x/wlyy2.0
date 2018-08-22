@@ -4,7 +4,7 @@ import com.yihu.iot.constant.ServiceApi;
 import com.yihu.iot.service.common.BaseService;
 import com.yihu.iot.util.http.HttpHelper;
 import com.yihu.iot.util.http.HttpResponse;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
 import org.springframework.stereotype.Service;
 
@@ -23,11 +23,11 @@ public class IotDeviceQualityService extends BaseService {
      * @param jsonData
      * @return
      */
-    public Envelop<IotDeviceQualityInspectionPlanVO> create(String jsonData) throws IOException {
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> create(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Quality.AddQualityPlan, params);
-        Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -36,11 +36,11 @@ public class IotDeviceQualityService extends BaseService {
      * @param id
      * @return
      */
-    public Envelop<IotDeviceQualityInspectionPlanVO> findByCode(String id) throws IOException {
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> findByCode(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Quality.FindById, params);
-        Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -52,8 +52,8 @@ public class IotDeviceQualityService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(String purcharseId,String orderNo,
-            String startTime,String endTime,Integer page,Integer size) throws IOException{
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(String purcharseId, String orderNo,
+                                                                             String startTime, String endTime, Integer page, Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("purcharseId", purcharseId);
         params.put("orderNo", orderNo);
@@ -62,7 +62,7 @@ public class IotDeviceQualityService extends BaseService {
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Quality.QueryQualityPlanPage, params);
-        Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -72,11 +72,11 @@ public class IotDeviceQualityService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(String id) throws IOException {
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> delQualityPlan(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Quality.DelQualityPlan, params);
-        Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -87,12 +87,12 @@ public class IotDeviceQualityService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceQualityInspectionPlanVO> completeQualityPlan(String actualTime,String id) throws IOException {
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> completeQualityPlan(String actualTime, String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("actualTime", actualTime);
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Quality.CompleteQualityPlan, params);
-        Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -103,12 +103,12 @@ public class IotDeviceQualityService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(String actualTime,String purchaseId) throws IOException {
+    public MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(String actualTime, String purchaseId) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("actualTime", actualTime);
         params.put("purchaseId", purchaseId);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Quality.CompletePlanByPurchaseId, params);
-        Envelop<IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 

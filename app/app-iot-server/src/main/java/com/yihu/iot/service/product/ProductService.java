@@ -7,7 +7,7 @@ import com.yihu.iot.model.ehr.MStdDataSet;
 import com.yihu.iot.service.common.BaseService;
 import com.yihu.iot.util.http.HttpHelper;
 import com.yihu.iot.util.http.HttpResponse;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.product.IotMaintenanceUnitVO;
 import com.yihu.jw.restmodel.iot.product.IotProductBaseInfoVO;
 import com.yihu.jw.restmodel.iot.product.IotProductVO;
@@ -37,9 +37,9 @@ public class ProductService extends BaseService {
      * 测量数据（ehr标准规范管理-平台标准-标准数据集）
      * @return
      */
-    public Envelop<MStdDataSet> data_sets(Integer page, Integer size, String name){
+    public MixEnvelop<MStdDataSet, MStdDataSet> data_sets(Integer page, Integer size, String name){
         String url = "/std/data_sets";
-        Envelop<MStdDataSet> envelop = new Envelop<MStdDataSet>();
+        MixEnvelop<MStdDataSet, MStdDataSet> envelop = new MixEnvelop<>();
         Map<String, Object> params = new HashMap<>();
         String filters = "reference="+reference+";";
         if(StringUtils.isNotBlank(name)){
@@ -53,7 +53,7 @@ public class ProductService extends BaseService {
             HttpResponse response = HttpHelper.get(profileInnerUrl + url, params);
             ObjectResult result =  objectMapper.readValue(response.getBody(),ObjectResult.class);
             if(result.isSuccessFlg()){
-                envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+                envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
                 envelop.setStatus(200);
             }else {
                 envelop.setStatus(-1);
@@ -77,7 +77,7 @@ public class ProductService extends BaseService {
      * @param size
      * @return
      */
-    public Envelop<IotProductBaseInfoVO> findCompanyPage(String name,String classify,String companyId,Integer page,Integer size) throws IOException{
+    public MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> findCompanyPage(String name, String classify, String companyId, Integer page, Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         params.put("classify", classify);
@@ -85,7 +85,7 @@ public class ProductService extends BaseService {
         params.put("page", page);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductPage, params);
-        Envelop<IotProductBaseInfoVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -98,14 +98,14 @@ public class ProductService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotProductBaseInfoVO> findProductPageByCompanyId(String name,String companyId,Integer page, Integer size) throws IOException{
+    public MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> findProductPageByCompanyId(String name, String companyId, Integer page, Integer size) throws IOException{
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
         params.put("page", page);
         params.put("companyId", companyId);
         params.put("size", size);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductPageByCompanyId, params);
-        Envelop<IotProductBaseInfoVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotProductBaseInfoVO, IotProductBaseInfoVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -115,11 +115,11 @@ public class ProductService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotProductVO> addProduct(String jsonData) throws IOException {
+    public MixEnvelop<IotProductVO, IotProductVO> addProduct(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Product.AddProduct, params);
-        Envelop<IotProductVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotProductVO, IotProductVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -129,11 +129,11 @@ public class ProductService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotProductVO> findByCode(String id) throws IOException {
+    public MixEnvelop<IotProductVO, IotProductVO> findByCode(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.FindProductById, params);
-        Envelop<IotProductVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotProductVO, IotProductVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -143,11 +143,11 @@ public class ProductService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotMaintenanceUnitVO> maintenanceUnitById(String productId) throws IOException {
+    public MixEnvelop<IotMaintenanceUnitVO, IotMaintenanceUnitVO> maintenanceUnitById(String productId) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("productId", productId);
         HttpResponse response = HttpHelper.get(iotUrl + ServiceApi.Product.MaintenanceUnitById, params);
-        Envelop<IotMaintenanceUnitVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotMaintenanceUnitVO, IotMaintenanceUnitVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -159,11 +159,11 @@ public class ProductService extends BaseService {
      */
     @PostMapping(value = IotRequestMapping.Product.delProduct)
     @ApiOperation(value = "删除产品", notes = "删除产品")
-    public Envelop<IotProductVO> delCompany(String id) throws IOException {
+    public MixEnvelop<IotProductVO, IotProductVO> delCompany(String id) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Product.DelProduct, params);
-        Envelop<IotProductVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotProductVO, IotProductVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 
@@ -173,11 +173,11 @@ public class ProductService extends BaseService {
      * @return
      * @throws IOException
      */
-    public Envelop<IotProductVO> updCompany(String jsonData) throws IOException {
+    public MixEnvelop<IotProductVO, IotProductVO> updCompany(String jsonData) throws IOException {
         Map<String, Object> params = new HashMap<>();
         params.put("jsonData", jsonData);
         HttpResponse response = HttpHelper.post(iotUrl + ServiceApi.Product.UpdProduct, params);
-        Envelop<IotProductVO> envelop = objectMapper.readValue(response.getBody(),Envelop.class);
+        MixEnvelop<IotProductVO, IotProductVO> envelop = objectMapper.readValue(response.getBody(),MixEnvelop.class);
         return envelop;
     }
 

@@ -5,7 +5,7 @@ package com.yihu.jw.service;/**
 import com.yihu.jw.dao.CredittsLogDetailDao;
 import com.yihu.jw.dao.TaskPatientDetailDao;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,9 +36,9 @@ public class TaskDetailService extends BaseJpaService<TaskPatientDetailDO,TaskPa
      * @param taskPatientDetailDO
      * @return
      */
-    public Envelop<Boolean> insert(TaskPatientDetailDO taskPatientDetailDO){
+    public MixEnvelop<Boolean, Boolean> insert(TaskPatientDetailDO taskPatientDetailDO){
         taskPatientDetailDao.save(taskPatientDetailDO);
-        Envelop<Boolean> envelop = new Envelop<>();
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         envelop.setObj(true);
         return envelop;
     }
