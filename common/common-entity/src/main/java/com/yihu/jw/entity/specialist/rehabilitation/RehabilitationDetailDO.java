@@ -13,7 +13,7 @@ import java.util.Date;
  * Created by humingfen on 2018/8/15.
  */
 @Entity
-@Table(name = "wlyy_rehabilitation_detail")
+@Table(name = "wlyy_rehabilitation_plan_detail")
 public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator implements Serializable {
 
     @Column(name = "saas_id")
