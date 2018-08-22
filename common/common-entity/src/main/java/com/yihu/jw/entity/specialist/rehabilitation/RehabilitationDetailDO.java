@@ -35,7 +35,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
     @Column(name = "execute_time")
     private Date executeTime;//服务项目执行时间
     @Column(name = "status")
-    private Integer status;//状态（0未开始，1进行中，2已完成）
+    private Integer status;//状态（0已中止，1进行中，2已完成）
 
     public String getSaasId() {
         return saasId;
