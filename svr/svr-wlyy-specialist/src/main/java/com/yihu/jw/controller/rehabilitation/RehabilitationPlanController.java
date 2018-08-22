@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
@@ -96,6 +97,19 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
         try {
             List<RehabilitationTemplateDetailDO> details = new ObjectMapper().readValue(rehabilitationTemplateDetail, new TypeReference<List<RehabilitationTemplateDetailDO>>(){});
             return rehabilitationPlanService.updateRehabilitationTemplateDetail(details);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.createServiceQrCode)
+    @ApiOperation(value = "根据康复计划id和居民code生成服务码")
+    public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planId", value = "计划居民关系唯一标识")@RequestParam(value = "planId", required = true)String planId,
+                                                         @ApiParam(name = "patientCode", value = "居民code")@RequestParam(value = "patientCode", required = true)String patientCode){
+        try {
+            return rehabilitationPlanService.createServiceQrCode(planId,patientCode);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
