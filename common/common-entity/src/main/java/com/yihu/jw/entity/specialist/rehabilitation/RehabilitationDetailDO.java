@@ -13,13 +13,13 @@ import java.util.Date;
  * Created by humingfen on 2018/8/15.
  */
 @Entity
-@Table(name = "wlyy_rehabilitation_detail")
+@Table(name = "wlyy_rehabilitation_plan_detail")
 public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId;
-    @Column(name = "program_id")
-    private String programId;//居民康复套餐code
+    @Column(name = "plan_id")
+    private String planId;//居民康复套餐code
     @Column(name = "service_item_id")
     private String serviceItemId;//服务项目id
     @Column(name = "hospital")
@@ -33,9 +33,9 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
     @Column(name = "doctor_name")
     private String doctorName;//计划完成者标识
     @Column(name = "execute_time")
-    private String executeTime;//服务项目执行时间
+    private Date executeTime;//服务项目执行时间
     @Column(name = "status")
-    private Integer status;//状态（0未开始，1进行中，2已完成）
+    private Integer status;//状态（0已中止，1进行中，2已完成）
 
     public String getSaasId() {
         return saasId;
@@ -45,12 +45,12 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.saasId = saasId;
     }
 
-    public String getProgramId() {
-        return programId;
+    public String getPlanId() {
+        return planId;
     }
 
-    public void setProgramId(String programId) {
-        this.programId = programId;
+    public void setPlanId(String planId) {
+        this.planId = planId;
     }
 
     public String getServiceItemId() {
@@ -69,11 +69,11 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.hospital = hospital;
     }
 
-    public String getExecuteTime() {
+    public Date getExecuteTime() {
         return executeTime;
     }
 
-    public void setExecuteTime(String executeTime) {
+    public void setExecuteTime(Date executeTime) {
         this.executeTime = executeTime;
     }
 

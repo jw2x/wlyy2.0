@@ -174,9 +174,9 @@ public class WechatCoreController extends EnvelopRestEndpoint {
         return strDigest;
     }
 
-//    @RequestMapping(value ="test", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String  testProcess() throws Exception{
-//        return wechatCoreService.testProcess();
-//    }
+    @RequestMapping(value ="test", method = RequestMethod.POST)
+    @ResponseBody
+    public String  testProcess() throws Exception{
+        return wechatCoreService.testProcess();
+    }
 }
