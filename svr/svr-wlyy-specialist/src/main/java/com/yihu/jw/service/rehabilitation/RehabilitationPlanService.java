@@ -39,6 +39,7 @@ public class RehabilitationPlanService {
 
     public MixEnvelop<String, String> createRehabilitationTemplate(RehabilitationPlanTemplateDO templateDO) {
         templateDO.setCreateTime(new Date());
+        templateDO.setDel(1);
         templateDO = templateDao.save(templateDO);
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,templateDO.getId());
     }
@@ -73,13 +74,13 @@ public class RehabilitationPlanService {
             return MixEnvelop.getSuccessListWithPage(SpecialistMapping.api_success,list,page,size,count);
         }else {
             List<RehabilitationPlanTemplateDO> list = templateDao.findByAdminTeamCode(adminTeamCode);
-            return MixEnvelop.getSuccess(SpecialistMapping.api_success,list, list.size());
+            return MixEnvelop.getSuccessList(SpecialistMapping.api_success,list, list.size());
         }
     }
 
     public MixEnvelop<RehabilitationTemplateDetailDO, RehabilitationTemplateDetailDO> findTemplateDetailByTemplateId(String templateId) {
         List<RehabilitationTemplateDetailDO> list = templateDetailDao.findTemplateDetailByTemplateId(templateId);
-        return MixEnvelop.getSuccess(SpecialistMapping.api_success,list, list.size());
+        return MixEnvelop.getSuccessList(SpecialistMapping.api_success,list, list.size());
     }
 
     public PatientRehabilitationPlanDO createPatientRehabilitationPlan(PatientRehabilitationPlanDO planDO) {
@@ -91,7 +92,7 @@ public class RehabilitationPlanService {
     public List<RehabilitationDetailDO> createRehabilitationDetail(List<RehabilitationDetailDO> details, String planId) {
         for(RehabilitationDetailDO detail : details) {
             detail.setPlanId(planId);
-            detail.setStatus(1);
+            detail.setStatus(0);
         }
         return (List<RehabilitationDetailDO>)rehabilitationDetailDao.save(details);
     }
