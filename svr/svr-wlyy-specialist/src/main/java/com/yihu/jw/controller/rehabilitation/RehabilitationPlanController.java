@@ -6,6 +6,7 @@ import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
@@ -36,8 +37,6 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
     private RehabilitationPlanService rehabilitationPlanService;
     @Autowired
     private Tracer tracer;
-
-    /******************************** 康复服务套餐模板 ****************************************/
 
     @PostMapping(value = SpecialistMapping.rehabilitation.createRehabilitationPlanTemplate)
     @ApiOperation(value = "康复服务套餐模板创建")
@@ -155,5 +154,43 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
         }
     }
 
+    @PostMapping(value = SpecialistMapping.rehabilitation.createServiceQrCode)
+    @ApiOperation(value = "根据康复计划id和居民code生成服务码")
+    public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planId", value = "计划居民关系唯一标识")@RequestParam(value = "planId", required = true)String planId,
+                                                         @ApiParam(name = "patientCode", value = "居民code")@RequestParam(value = "patientCode", required = true)String patientCode){
+        try {
+            return rehabilitationPlanService.createServiceQrCode(planId,patientCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.checkAfterQrCode)
+    @ApiOperation(value = "居民扫码后验证是否是关联的居民扫码")
+    public MixEnvelop<Boolean,Boolean> checkAfterQrCode(@ApiParam(name = "planId", value = "计划居民关系唯一标识")@RequestParam(value = "planId", required = true)String planId,
+                                                         @ApiParam(name = "patientCode", value = "居民端登录的居民code")@RequestParam(value = "patientCode", required = true)String patientCode){
+        try {
+            String message="";
+            Boolean flag = true;
+            if (rehabilitationPlanService.checkAfterQrCode(planId,patientCode)==1){
+                message = "验证成功！";
+            }
+            if (rehabilitationPlanService.checkAfterQrCode(planId,patientCode)==-1){
+                message = "请相关居民扫描二维码";
+                flag=false;
+            }
+            if (rehabilitationPlanService.checkAfterQrCode(planId,patientCode)==-10000){
+                message = "相关康复管理数据错误,请联系工作人员！";
+                flag=false;
+            }
+            return MixEnvelop.getSuccess(message,flag);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
 
 }

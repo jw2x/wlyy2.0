@@ -243,7 +243,7 @@ public class SpecialistService{
                     "a.health_assistant AS healthAssistant," +
                     "a.health_assistant_name AS healthAssistantName " +
                     "FROM wlyy_specialist.wlyy_specialist_patient_relation a " +
-                    "JOIN "+basedb+".wlyy_patient_disease_server b ON a.patient=b.patient AND b.disease=4 " +
+                    "JOIN "+basedb+".wlyy_patient_disease_server b ON a.patient=b.patient AND b.disease=" +labelCode+" and b.del=1 "+
                     "JOIN "+basedb+".wlyy_patient c ON a.patient=c.CODE " +
                     "LEFT JOIN "+basedb+".wlyy_sign_patient_label_info d ON a.patient=d.patient AND d.label_type=8 AND d.`status`=1" +
                     " WHERE a.sign_status> 0 AND a.`status`>=0 AND a.doctor='"+doctor+"'"+
@@ -498,6 +498,7 @@ public class SpecialistService{
             relation.setSignStatus("1");
             relation.setHealthAssistant(health_assistant);
             relation.setHealthAssistant(health_assistant_name);
+            relation.setSignDate(new Date());
             specialistPatientRelationDao.save(relation);
         }
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,relation);
@@ -643,10 +644,11 @@ public class SpecialistService{
                 "doctor.idcard AS idcard " +
                 "FROM wlyy.wlyy_doctor doctor RIGHT JOIN ( " +
                 "SELECT a.doctor AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
-                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 " +
+                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
                 "UNION  " +
                 "SELECT a.doctor_health AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
-                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1) " +
+                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
+                ") " +
                 "t ON doctor.CODE=t.doctorcode";
         List<SignFamilyDoctorVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SignFamilyDoctorVO.class));
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs);
