@@ -22,6 +22,10 @@ public class PatientRehabilitationPlanDO extends UuidIdentityEntityWithOperator 
     private String name;//患者姓名
     @Column(name = "title")
     private String title;//康复服务套餐名称
+    @Column(name = "disease")
+    private String disease;//疾病
+    @Column(name = "disease_name")
+    private String diseaseName;//疾病名称
     @Column(name = "payment")
     private Integer payment;//支付方式（1立即支付，2按服务支付）
     @Column(name = "total_expense")
@@ -30,10 +34,10 @@ public class PatientRehabilitationPlanDO extends UuidIdentityEntityWithOperator 
     private Integer planType;//安排类型（1康复计划，2转社区医院，3转家庭病床）
     @Column(name = "service_package_id")
     private String servicePackageId;//服务包id
-    @Column(name = "status")
-    private Integer status;//状态（0已中止，1进行中，2已完成）
     @Column(name = "service_qr_code")
     private String serviceQrCode;//服务码
+    @Column(name = "status")
+    private Integer status;//状态（0已中止，1进行中，2已完成）
 
     public String getSaasId() {
         return saasId;
@@ -105,6 +109,22 @@ public class PatientRehabilitationPlanDO extends UuidIdentityEntityWithOperator 
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getDisease() {
+        return disease;
+    }
+
+    public void setDisease(String disease) {
+        this.disease = disease;
+    }
+
+    public String getDiseaseName() {
+        return diseaseName;
+    }
+
+    public void setDiseaseName(String diseaseName) {
+        this.diseaseName = diseaseName;
     }
 
     public String getServiceQrCode() {

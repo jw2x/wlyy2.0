@@ -24,6 +24,8 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
     private String hospitalName;//医院名称
     @Column(name = "admin_team_code")
     private Integer adminTeamCode;//行政团队id
+    @Column(name = "del")
+    private Integer del;//是否删除（0是，1否）
 
     public String getSaasId() {
         return saasId;
@@ -63,5 +65,13 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
 
     public void setAdminTeamCode(Integer adminTeamCode) {
         this.adminTeamCode = adminTeamCode;
+    }
+
+    public Integer getDel() {
+        return del;
+    }
+
+    public void setDel(Integer del) {
+        this.del = del;
     }
 }
