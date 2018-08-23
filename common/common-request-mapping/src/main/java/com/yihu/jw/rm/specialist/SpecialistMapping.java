@@ -65,4 +65,11 @@ public class SpecialistMapping {
         public static final String checkAfterQrCode = "checkAfterQrCode";
 
     }
+
+    public static class serviceItem{
+        public static final String createServiceItem = "/createServiceItem";
+        public static final String getServiceItem = "/getServiceItem";
+        public static final String batchDelete = "/batchDelete";
+        public static final String updateServiceItem = "/updateServiceItem";
+    }
 }
