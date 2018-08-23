@@ -120,7 +120,7 @@ fast-dfs:
 
 neiwang:
   enable: true
-  #wlyy: http://172.19.103.88:10051/svr-slyy-specialist/
+  wlyy: http://172.19.103.88:10051/svr-slyy-specialist/
 ---
 spring:
   profiles: prod
