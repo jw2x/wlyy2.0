@@ -15,7 +15,7 @@ eureka:
     healthcheck:
       enabled: false #启动监控检查
     serviceUrl:
-      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
   instance:
     #eurika使用IP不使用host
     prefer-ip-address: true

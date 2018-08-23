@@ -29,13 +29,13 @@ spring:
 
 ---
 spring:
-  profiles: jwprod
+  profiles: prod
 ##git配置
   cloud:
     config:
       failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
-          uri: ${wlyy.spring.config.git.uri:http://192.168.1.220:10080/jiwei/wlyy2.0.config.git}
+          uri: ${wlyy.spring.config.git.uri:http://192.168.120.153:3000/jiwei/wlyy2.0.config.git}
           basedir: /usr/local/wlyy2.0-config
-        default-label: ${wlyy.spring.config.git.label:jwprod}
+        default-label: ${wlyy.spring.config.git.label:prod}
