@@ -647,7 +647,7 @@ public class SpecialistService{
                 "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
                 "UNION  " +
                 "SELECT a.doctor_health AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
-                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
+                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND health_doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
                 ") " +
                 "t ON doctor.CODE=t.doctorcode";
         List<SignFamilyDoctorVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SignFamilyDoctorVO.class));
