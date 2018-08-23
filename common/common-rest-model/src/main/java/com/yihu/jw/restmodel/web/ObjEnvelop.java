@@ -21,7 +21,7 @@ import java.util.HashMap;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(description = "获取单个实体信息返回")
+@ApiModel(value = "ObjEnvelop<J>", description = "获取单个实体信息返回")
 public class ObjEnvelop<J> extends Envelop {
 
     @ApiModelProperty("内容")

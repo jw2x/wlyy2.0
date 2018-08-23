@@ -1,7 +1,9 @@
 package com.yihu.jw.dao.rehabilitation;
 
+import com.yihu.jw.entity.specialist.PatientHospitalRecordDO;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
@@ -9,5 +11,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository<PatientRehabilitationPlanDO, Long>,JpaSpecificationExecutor<PatientRehabilitationPlanDO> {
 
-
+    PatientRehabilitationPlanDO findById(String id);
 }

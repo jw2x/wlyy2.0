@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
+ * 功能 - Entity
  * WlyyFunction entity. @author MyEclipse Persistence Tools
  */
 @Entity

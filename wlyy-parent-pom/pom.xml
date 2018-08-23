@@ -56,7 +56,7 @@
         <module>../server/svr-discovery</module><!--发现服务-->
         <!-- 暂时保留 -->
         <!--<module>../server/svr-dashboard</module>--><!--监控服务-->
-        <!--<module>../server/svr-log-server</module>--><!--分布式追踪服务-->
+        <module>../server/svr-zipkin</module> <!--分布式追踪服务-->
         <!-- 暂时保留 -->
 
         <!-- 网关服务 -->
@@ -93,6 +93,8 @@
         <version.joda-time>2.8.2</version.joda-time>
         <version.yihu.admin>1.2.0</version.yihu.admin>
         <version.spring-boot-admin>1.5.7</version.spring-boot-admin>
+        <version.zxing>3.2.0</version.zxing>
+        <version.fastdfs>1.25</version.fastdfs>
         <!-- Version end -->
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -371,7 +373,7 @@
                 <version>${asciidoctor.maven.plugin.version}</version>
                 <configuration>
                     <sourceDirectory>build</sourceDirectory>
-                    <outputDirectory>build/asciidoc/${project.version}</outputDirectory>
+                    <outputDirectory>docs/${project.version}</outputDirectory>
                     <headerFooter>true</headerFooter>
                     <doctype>book</doctype>
                     <sourceHighlighter>coderay</sourceHighlighter>

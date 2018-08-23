@@ -1,12 +1,11 @@
-spring:
-  application:
-    name: svr-logServer
+server:
+  port: 9411
 
 
 ---
 spring:
   profiles: jwdev
-##分布式日志存在es里面
+#分布式日志存在es里面
 zipkin:
   storage:
     type: elasticsearch

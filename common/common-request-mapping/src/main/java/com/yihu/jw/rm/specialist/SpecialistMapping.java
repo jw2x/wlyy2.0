@@ -33,11 +33,18 @@ public class SpecialistMapping {
         public static final String findPatientTeamList ="/findPatientTeamList";
         public static final String findPatientSignSpecialist ="/findPatientSignSpecialist";
         public static final String findPatientSignSpecialistInfo ="/findPatientSignSpecialistInfo";
+        public static final String findDoctorAndDoctorHealthBySpecialDoctor ="/findDoctorAndDoctorHealthBySpecialDoctor";
+        public static final String findSpecialistSignFamilyPatientCout ="/findSpecialistSignFamilyPatientCout";
+        public static final String getSpecialistSignFamilyPatientByName ="/getSpecialistSignFamilyPatientByName";
 
 
 
 
 
+    }
+
+    public static  class common{
+        public static final String file_upload =  "/fileUpload";
     }
 
     public static class screen{
@@ -48,6 +55,15 @@ public class SpecialistMapping {
 
     public static class rehabilitation{
         public static final String findRehabilitationPlan = "/findRehabilitationPlan";
+        public static final String createRehabilitationPlanTemplate = "/createRehabilitationPlanTemplate";
+        public static final String createRehabilitationTemplateDetail = "/createRehabilitationTemplateDetail";
+        public static final String findRehabilitationPlanTemplate = "/findRehabilitationPlanTemplate";
+        public static final String findTemplateDetailByTemplateId = "/findTemplateDetailByTemplateId";
+        public static final String updateRehabilitationTemplateDetail = "/updateRehabilitationTemplateDetail";
+        public static final String createPatientRehabilitationPlan = "/createPatientRehabilitationPlan";
+        public static final String createServiceQrCode ="/createServiceQrCode";
+        public static final String checkAfterQrCode = "checkAfterQrCode";
+
     }
 
     public static class serviceItem{

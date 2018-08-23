@@ -23,7 +23,7 @@ import java.util.List;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "EnvelopPage<T>", description = "分页查询返回")
+@ApiModel(value = "PageEnvelop<T>", description = "分页查询返回")
 public class PageEnvelop<T> extends Envelop implements Serializable {
 
     private static final long serialVersionUID = 2076324875575488461L;

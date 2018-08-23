@@ -74,7 +74,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAcce
             params.put("appid", appId);
             params.put("secret", appSecret);
             String result = HttpUtils.doGet(token_url, params).getContent();
-            logger.info("--------------微信返回结果:"+result+"---------------");
+            logger.info("--------------wechat token return :"+result+"---------------");
             JSONObject json = new JSONObject(result);
             if (json.has("access_token")) {
                 String token = json.get("access_token").toString();
@@ -132,7 +132,7 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAcce
             params.put("appid", appId);
             params.put("secret", appSecret);
             String result = HttpUtils.doGet(token_url, params).getContent();
-            logger.info("--------------微信返回结果:"+result+"---------------");
+            logger.info("--------------wechat token return:"+result+"---------------");
             JSONObject json = new JSONObject(result);
             if (json.has("access_token")) {
                 String token = json.get("access_token").toString();

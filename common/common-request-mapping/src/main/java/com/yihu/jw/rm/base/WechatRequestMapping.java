@@ -66,6 +66,7 @@ public class WechatRequestMapping {
         public static final String api_getWxTemplates="/template/list";
         public static final String api_getById="/template/{id}";
         public static final String api_sendTemplateMessage="/sendTemplateMessage";
+        public static final String api_test_template="/test_template";
 
         public static final String message_success_create="wxTemplate create success";
         public static final String message_success_update="wxTemplate update success";
