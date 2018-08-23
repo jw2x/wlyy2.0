@@ -14,7 +14,7 @@ import java.util.*;
 public class FunctionVO implements Serializable {
 
     @ApiModelProperty(value = "id", example = "1" )
-    protected Integer id;
+    protected String id;
     @ApiModelProperty(value = "创建日期", example = "2018-03-14 11:35:34" )
     protected Date createTime;
     @ApiModelProperty(value = "创建者", example = "0dae0003590016e5b3865e377b2f8615" )
@@ -40,11 +40,11 @@ public class FunctionVO implements Serializable {
     @ApiModelProperty(value = "备注", example = "我是备注" )
     private String remark;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 

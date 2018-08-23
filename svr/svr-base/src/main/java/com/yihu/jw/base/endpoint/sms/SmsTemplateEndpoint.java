@@ -1,8 +1,7 @@
-package com.yihu.jw.base.endpoint.function;
+package com.yihu.jw.base.endpoint.sms;
 
-import com.yihu.jw.base.service.FunctionService;
-import com.yihu.jw.entity.base.function.FunctionDO;
-import com.yihu.jw.restmodel.base.base.FunctionVO;
+import com.yihu.jw.base.service.SmsTemplateService;
+import com.yihu.jw.entity.base.sms.SmsTemplateDO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -16,55 +15,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Endpoint - 功能
- * Created by progr1mmer on 2018/8/16.
+ * Endpoint - 短信模板
+ * Created by progr1mmer on 2018/8/23.
  */
 @RestController
-@RequestMapping(value = BaseRequestMapping.Function.PREFIX)
-@Api(value = "功能管理", description = "功能管理服务接口", tags = {"wlyy基础服务 - 功能管理服务接口"})
-public class FunctionEndpoint extends EnvelopRestEndpoint {
+@RequestMapping(value = BaseRequestMapping.SmsTemplate.PREFIX)
+@Api(value = "短信模板管理", description = "短信模板管理服务接口", tags = {"wlyy基础服务 - 短信模板管理服务接口"})
+public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
-    private FunctionService functionService;
+    private SmsTemplateService smsTemplateService;
 
-    @PostMapping(value = BaseRequestMapping.Function.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SmsTemplate.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<FunctionVO> create (
+    public ObjEnvelop<SmsTemplateDO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        FunctionDO functionDO = toEntity(jsonData, FunctionDO.class);
-        functionDO = functionService.save(functionDO);
-        return success(functionDO, FunctionVO.class);
+        SmsTemplateDO smsTemplateDO = toEntity(jsonData, SmsTemplateDO.class);
+        smsTemplateDO = smsTemplateService.save(smsTemplateDO);
+        return success(convertToModel(smsTemplateDO, SmsTemplateDO.class));
     }
 
-    @PostMapping(value = BaseRequestMapping.Function.DELETE)
+    @PostMapping(value = BaseRequestMapping.SmsTemplate.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        functionService.delete(ids);
+        smsTemplateService.delete(ids);
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.Function.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SmsTemplate.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public ObjEnvelop<FunctionVO> update (
+    public ObjEnvelop<SmsTemplateDO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        FunctionDO functionDO = toEntity(jsonData, FunctionDO.class);
-        if (null == functionDO.getId()) {
+        SmsTemplateDO smsTemplateDO = toEntity(jsonData, SmsTemplateDO.class);
+        if (null == smsTemplateDO.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);
         }
-        functionDO = functionService.save(functionDO);
-        return success(functionDO, FunctionVO.class);
+        smsTemplateDO = smsTemplateService.save(smsTemplateDO);
+        return success(convertToModel(smsTemplateDO, SmsTemplateDO.class));
     }
 
-    @GetMapping(value = BaseRequestMapping.Function.PAGE)
+    @GetMapping(value = BaseRequestMapping.SmsTemplate.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<FunctionVO> page (
+    public PageEnvelop<SmsTemplateDO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -75,22 +75,22 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<FunctionDO> functionDOS = functionService.search(fields, filters, sorts, page, size);
-        int count = (int)functionService.getCount(filters);
-        return success(functionDOS, count, page, size, FunctionVO.class);
+        List<SmsTemplateDO> smsTemplateDOS = smsTemplateService.search(fields, filters, sorts, page, size);
+        int count = (int)smsTemplateService.getCount(filters);
+        return success(convertToModels(smsTemplateDOS, new ArrayList<>(), SmsTemplateDO.class), count, page, size);
     }
 
-    @GetMapping(value = BaseRequestMapping.Function.LIST)
+    @GetMapping(value = BaseRequestMapping.SmsTemplate.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<FunctionVO> list (
+    public ListEnvelop<SmsTemplateDO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<FunctionDO> functionDOS = functionService.search(fields, filters, sorts);
-        return success(functionDOS, FunctionVO.class);
+        List<SmsTemplateDO> smsTemplateDOS = smsTemplateService.search(fields, filters, sorts);
+        return success(convertToModels(smsTemplateDOS, new ArrayList<>(), SmsTemplateDO.class));
     }
 
 }

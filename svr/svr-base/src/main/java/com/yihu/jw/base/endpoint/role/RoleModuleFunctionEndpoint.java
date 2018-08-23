@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * Endpoint - 角色模块功能
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController

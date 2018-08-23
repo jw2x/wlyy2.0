@@ -8,6 +8,7 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
+ * Entity - 用户
  * Created by progr1mmer on 2018/8/20.
  */
 @Entity

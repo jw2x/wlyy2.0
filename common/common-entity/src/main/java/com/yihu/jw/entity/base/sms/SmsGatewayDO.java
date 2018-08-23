@@ -1,4 +1,4 @@
-package com.yihu.jw.entity.base.sms;// default package
+package com.yihu.jw.entity.base.sms;
 
 
 import com.yihu.jw.entity.UuidIdentityEntity;
@@ -8,84 +8,50 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * BaseSmsGateway entity. @author MyEclipse Persistence Tools
+ * Entity - 短信网关
+ * Created by progr1mmer on 2018/8/14.
  */
 @Entity
 @Table(name = "base_sms_gateway")
-public class SmsGatewayDO extends UuidIdentityEntity implements java.io.Serializable {
+public class SmsGatewayDO extends UuidIdentityEntity {
 
-	// Fields
-	//private String saasId;  //关联 base_saas code
-	private String name;  //名称
-    private String officialWebsite; //官网地址
-	private String username;  //短信接口的账号
-    private String password;  //短信接口的密码
-    private String certificate; //调用凭证（json串）
-    private String ip;  //短信接口的ip地址
-    private String url;	 //短信接口的url
-	private Integer status;  // -1 删除 0 禁用 可用
-
-
-	/** default constructor */
-	public SmsGatewayDO() {
+	/**
+	 * 0-禁用，1-可用，2-不可用
+	 */
+	public enum Status {
+		disable,
+		available,
+		delete
 	}
 
-	/** full constructor */
-	public SmsGatewayDO(Long id, String code, String saasId,
-                        String orgCode, String ip, String username, String password,
-                        String url) {
-		//this.saasId = saasId;
-		this.ip = ip;
-		this.username = username;
-		this.password = password;
-		this.url = url;
-	}
+	//关联 base_saas id
+	private String saasId;
+	//名称
+	private String name;
+	//短信接口的账号
+	private String username;
+	//短信接口的密码
+	private String password;
+	//官网地址
+	private String website;
+	//短信接口调用的地址
+	private String url;
+	//调用凭证（json串）
+	private String certificate;
+	//状态
+	private Status status;
 
-	/*@Column(name = "saas_id", length = 64)
+
+	@Column(name = "saas_id", nullable = false)
 	public String getSaasId() {
-		return this.saasId;
+		return saasId;
 	}
 
 	public void setSaasId(String saasId) {
 		this.saasId = saasId;
-	}*/
-
-	@Column(name = "ip", length = 20)
-	public String getIp() {
-		return this.ip;
 	}
 
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	@Column(name = "username", length = 20)
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	@Column(name = "password", length = 50)
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Column(name = "url", length = 200)
-	public String getUrl() {
-		return this.url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
+	@Column(name = "name")
 	public String getName() {
 		return name;
 	}
@@ -94,11 +60,57 @@ public class SmsGatewayDO extends UuidIdentityEntity implements java.io.Serializ
 		this.name = name;
 	}
 
-	public Integer getStatus() {
+	@Column(name = "username")
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	@Column(name = "password")
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	@Column(name = "website")
+	public String getWebsite() {
+		return website;
+	}
+
+	public void setWebsite(String website) {
+		this.website = website;
+	}
+
+	@Column(name = "url")
+	public String getUrl() {
+		return this.url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	@Column(name = "certificate", nullable = false)
+	public String getCertificate() {
+		return certificate;
+	}
+
+	public void setCertificate(String certificate) {
+		this.certificate = certificate;
+	}
+
+	@Column(name = "status", nullable = false)
+	public Status getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(Status status) {
 		this.status = status;
 	}
 }

@@ -29,17 +29,10 @@ public class BaseRequestMapping {
     }
 
     /**
-     * SAAS模块
-     */
-    public static class SaasModule extends Basic {
-        public static final String PREFIX  = "/saas_module";
-    }
-
-    /**
      * SAAS默认模块
      */
-    public static class SaasDefaultModule extends Basic {
-        public static final String PREFIX  = "/saas_default_module";
+    public static class SaasDefaultModuleFunction extends Basic {
+        public static final String PREFIX  = "/saas_default_module_function";
     }
 
     /**
@@ -127,4 +120,20 @@ public class BaseRequestMapping {
     public static class WeChat extends Basic {
         public static final String PREFIX  = "/wechat";
     }
+
+    /**
+     * 短信网关
+     */
+    public static class SmsGateway extends Basic {
+        public static final String PREFIX  = "/sms_gateway";
+        public static final String SEND  = "/send";
+    }
+
+    /**
+     * 短信模板
+     */
+    public static class SmsTemplate extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
 }

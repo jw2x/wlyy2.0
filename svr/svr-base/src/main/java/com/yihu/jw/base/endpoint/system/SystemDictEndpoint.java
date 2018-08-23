@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * Endpoint - 系统字典
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController

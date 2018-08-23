@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * WlyySaas entity. @author MyEclipse Persistence Tools
- *
+ * Entity - SAAS
+ * Created by progr1mmer on 2018/8/14.
  */
 @Entity
 @Table(name = "base_saas")

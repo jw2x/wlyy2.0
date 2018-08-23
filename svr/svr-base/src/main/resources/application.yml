@@ -35,6 +35,10 @@ eureka:
     serviceUrl:
       defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka/
 
+wlyy:
+  base:
+    client-id: EwC0iRSrcS
+
 ---
 spring:
   profiles: jwdev

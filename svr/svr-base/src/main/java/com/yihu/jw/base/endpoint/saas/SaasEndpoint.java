@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Created by chenweida on 2017/5/19.
+ * Endpoint - SAAS
+ * Created by progr1mmer on 2018/8/14.
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Saas.PREFIX)
@@ -42,12 +43,6 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "user") UserDO userDO) throws Exception {
         if (userService.search("username=" + userDO.getUsername()).size() > 0) {
             return failed("管理员用户名已存在", Envelop.class);
-        }
-        userDO.setEnabled(true);
-        userDO.setLocked(false);
-        if (StringUtils.isEmpty(userDO.getPassword())) {
-            String password = MD5.md5Hex(userDO.getIdcard().substring(0, 5));
-            userDO.setPassword(password);
         }
         saasService.save(saasDO, userDO);
         return success("创建成功");

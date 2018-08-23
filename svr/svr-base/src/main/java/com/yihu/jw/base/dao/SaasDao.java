@@ -4,7 +4,8 @@ import com.yihu.jw.entity.base.saas.SaasDO;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 /**
- * Created by chenweida on 2017/5/19.
+ * Dao - SAAS
+ * Created by progr1mmer on 2018/8/14.
  */
 public interface SaasDao extends PagingAndSortingRepository<SaasDO, String> {
 

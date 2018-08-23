@@ -15,7 +15,7 @@ public class UserRoleDO extends IntegerIdentityEntity {
 
 	// Fields
 	private String userId;
-	private Integer roleId;
+	private String roleCode;
 
 	@Column(name = "user_id", length = 50)
 	public String getUserId() {
@@ -26,14 +26,12 @@ public class UserRoleDO extends IntegerIdentityEntity {
 		this.userId = userId;
 	}
 
-	@Column(name = "role_id")
-	public Integer getRoleId() {
-		return this.roleId;
+	@Column(name = "role_code", length = 16)
+	public String getRoleCode() {
+		return roleCode;
 	}
 
-	public void setRoleId(Integer roleId) {
-		this.roleId = roleId;
+	public void setRoleCode(String roleCode) {
+		this.roleCode = roleCode;
 	}
-
-
 }

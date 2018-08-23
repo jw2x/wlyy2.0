@@ -39,10 +39,6 @@
         </dependency>
         <dependency>
             <groupId>com.yihu.jw</groupId>
-            <artifactId>common-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.jw</groupId>
             <artifactId>common-entity</artifactId>
         </dependency>
         <dependency>
