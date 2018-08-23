@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
+ * 微信粉丝管理
  * Created by Trick on 2018/8/22.
  */
 @Service
