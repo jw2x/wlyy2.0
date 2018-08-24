@@ -8,8 +8,8 @@
 *.pyc
 *.pyo
 .idea/
+data/*
 .idea_modules/
-build/*.jar
 .settings
 .cache
 .generated-mima*
@@ -78,3 +78,5 @@ sql/hive-thriftserver/test_warehouses
 # For R session data
 .RHistory
 .RData
+build/
+docs/

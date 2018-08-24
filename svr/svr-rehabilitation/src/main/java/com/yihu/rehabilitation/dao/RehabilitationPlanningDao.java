@@ -1,6 +1,6 @@
 package com.yihu.rehabilitation.dao;
 
-import com.yihu.jw.rehabilitation.RehabilitationPlanningDO;
+import com.yihu.jw.entity.rehabilitation.RehabilitationPlanningDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;

@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.fallbackfactory.base.user;
 
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.base.user.BaseMenuFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
@@ -23,35 +23,35 @@ public class BaseMenuFeignFallbackFactory implements FallbackFactory<BaseMenuFei
     public BaseMenuFeign create(Throwable e) {
         return new BaseMenuFeign() {
             @Override
-            public Envelop create(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop create(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("创建菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop update(@RequestBody String jsonData) throws JiWeiException {
+            public MixEnvelop update(@RequestBody String jsonData) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("更新菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:"+jsonData);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop delete(@PathVariable String id) throws JiWeiException {
+            public MixEnvelop delete(@PathVariable String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("删除菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop findById(String id) throws JiWeiException {
+            public MixEnvelop findById(String id) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找单个菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:"+id);
                 throw new JiWeiException(e);
             }
 
             @Override
-            public Envelop getList(String fields, String filterStr, String sorts, int size, int page) throws JiWeiException {
+            public MixEnvelop getList(String fields, String filterStr, String sorts, int size, int page) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("分页查找菜单失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filterStr);
@@ -62,7 +62,7 @@ public class BaseMenuFeignFallbackFactory implements FallbackFactory<BaseMenuFei
             }
 
             @Override
-            public Envelop getListNoPage(String fields, String filters, String sorts) throws JiWeiException {
+            public MixEnvelop getListNoPage(String fields, String filters, String sorts) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找菜单列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("fields:" + fields);
                 tracer.getCurrentSpan().logEvent("filters:" + filters);
@@ -71,7 +71,7 @@ public class BaseMenuFeignFallbackFactory implements FallbackFactory<BaseMenuFei
             }
 
             @Override
-            public Envelop getChildren(String saasId, String parentId) throws JiWeiException {
+            public MixEnvelop getChildren(String saasId, String parentId) throws JiWeiException {
                 tracer.getCurrentSpan().logEvent("查找子菜单列表失败:原因:"+e.getMessage());
                 tracer.getCurrentSpan().logEvent("filters:" + saasId);
                 tracer.getCurrentSpan().logEvent("sorts:" + parentId);

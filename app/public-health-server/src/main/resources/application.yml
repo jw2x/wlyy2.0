@@ -70,9 +70,9 @@ service-gateway:
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
-logging:
-  path: /data/logger
-  file: app-health-server
+#logging:
+#  path: /data/logger
+#  file: app-health-server
 
 ---
 spring:
@@ -94,9 +94,9 @@ service-gateway:
 fast-dfs:
   tracker-server: 172.19.103.54:22122
   public-server: http://172.19.103.54:80/
-logging:
-  path: /data/logger
-  file: app-health-server
+#logging:
+#  path: /data/logger
+#  file: app-health-server
 
 ---
 spring:
@@ -118,9 +118,9 @@ service-gateway:
 fast-dfs:
   tracker-server: 11.1.2.9:22122
   accessUrl: http://11.1.2.9
-logging:
-  path: /data/logger
-  file: app-health-server
+#logging:
+#  path: /data/logger
+#  file: app-health-server
 
 #单点登录
 #GET http://172.19.103.73:10260/oauth/sso?response_type=token&client_id=uzs5G0HgTp&state=sxy&scope=read&redirect_uri=http://192.168.1.221:8010/ehr/browser/common/login/signin?idCardNo=362321200108017313&user=admin

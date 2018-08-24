@@ -1,16 +1,16 @@
 package com.yihu.iot.service.device;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.base.es.config.ElastricSearchHelper;
-import com.yihu.base.mysql.query.BaseJpaService;
+import com.yihu.elasticsearch.jest.ElastricSearchHelper;
 import com.yihu.iot.dao.device.IotPatientDeviceDao;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.service.common.ElasticSearchQueryGenerator;
 import com.yihu.jw.device.LocationDataDO;
-import com.yihu.jw.iot.device.IotPatientDeviceDO;
+import com.yihu.jw.entity.iot.device.IotPatientDeviceDO;
 import com.yihu.jw.restmodel.iot.device.IotPatientDeviceVO;
 import com.yihu.jw.util.common.LatitudeUtils;
 import com.yihu.jw.util.date.DateUtil;
+import com.yihu.mysql.query.BaseJpaService;
 import io.searchbox.client.JestResult;
 import iot.device.LocationDataVO;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -229,12 +229,12 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
         List<LocationDataVO> resultList = getESResultBeanList(esResult);
         for(LocationDataVO locationDataVO : resultList){
                 Map<String,Object> map = new HashMap<>();
-                map.put("id",locationDataVO.getId());
+                map.put("id", locationDataVO.getId());
                 idList.add(map);
         }
         boolean bool = true;
         try {
-            elastricSearchHelper.delete(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,idList);
+            elastricSearchHelper.delete(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType, idList);
         }catch (Exception e){
             bool = false;
         }
@@ -257,7 +257,7 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
             map.put("_id",locationDataVO.getId());
             idList.add(map);
         }
-        boolean bool = elastricSearchHelper.updateByMap(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,idList);
+        boolean bool = elastricSearchHelper.updateByMap(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType,idList);
         return bool;
     }
 

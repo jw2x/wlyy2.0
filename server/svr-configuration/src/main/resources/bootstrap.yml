@@ -1,46 +1,18 @@
 spring:
   application:
     name: svr-configurations
-  jmx:
-    default-domain: ${spring.application.name}
-
-
-
-#security:
-#  user:
-#    name: jw
-#    password:  jkzl
-
-eureka:
-  client:
-    healthcheck:
-      enabled: true #启动监控检查
-  instance:
-    #eurika使用IP不使用host
-    prefer-ip-address: true
-    #定制化在eurika中显示的名称
-    ##instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
-    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
-    appname: svr-configurations
-    health-check-url-path: /health
-
-
-
-
-
 
 ---
 spring:
   profiles: jwdev
-##git配置
   cloud:
     config:
       failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
-          uri: http://192.168.1.220:10080/jiwei/wlyy2.0.config.git
-        default-label: jwdev
-
+          uri: ${wlyy.spring.config.git.uri:http://192.168.1.220:10080/jiwei/wlyy2.0.config.git}
+          basedir: /usr/local/wlyy2.0-config
+        default-label: ${wlyy.spring.config.git.label:jwdev}
 
 ---
 spring:
@@ -51,33 +23,19 @@ spring:
       failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
         git:
-          uri: http://192.168.1.220:10080/jiwei/wlyy2.0.config.git
-        default-label: master
+          uri: ${wlyy.spring.config.git.uri:http://192.168.1.220:10080/jiwei/wlyy2.0.config.git}
+          basedir: /usr/local/wlyy2.0-config
+        default-label: ${wlyy.spring.config.git.label:jwdev}
 
 ---
 spring:
-  profiles: jwprod
-##git配置
-  cloud:
-    config:
-      server:
-        git:
-          uri: http://11.1.2.8:3000/ehr_admin/ehr.config.git
-        default-label: master
-
-
-
-
----
-##不想用远程的git 可以在环境变量配置native 开启本地配置
-spring:
-  profiles:
-    active: native
-
+  profiles: prod
 ##git配置
   cloud:
     config:
       failFast: true #启动快速失败 即链接不到配置服务就启动失败
       server:
-        native:
-          search-locations: file:D:\software\soft_dev\IdeaWorkSpace\jw2.0-dev\jw.config  #本地的got配置路径
+        git:
+          uri: ${wlyy.spring.config.git.uri:http://192.168.120.153:3000/jiwei/wlyy2.0.config.git}
+          basedir: /usr/local/wlyy2.0-config
+        default-label: ${wlyy.spring.config.git.label:prod}

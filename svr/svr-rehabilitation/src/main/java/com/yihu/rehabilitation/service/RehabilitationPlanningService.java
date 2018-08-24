@@ -1,10 +1,10 @@
 package com.yihu.rehabilitation.service;
 
-import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.rehabilitation.RehabilitationPlanningDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.entity.rehabilitation.RehabilitationPlanningDO;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationPlanningVO;
 import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
+import com.yihu.mysql.query.BaseJpaService;
 import com.yihu.rehabilitation.dao.RehabilitationPlanningDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class RehabilitationPlanningService extends BaseJpaService<Rehabilitation
      * @return
      * @throws ParseException
      */
-    public Envelop<RehabilitationPlanningVO> queryPlanningPage(Integer page, Integer size, String patientId, String programId) throws ParseException {
+    public MixEnvelop<RehabilitationPlanningVO, RehabilitationPlanningVO> queryPlanningPage(Integer page, Integer size, String patientId, String programId) throws ParseException {
         String filters = "status=0;";
         String semicolon = "";
         if(StringUtils.isNotBlank(patientId)){
@@ -49,7 +49,7 @@ public class RehabilitationPlanningService extends BaseJpaService<Rehabilitation
         //DO转VO
         List<RehabilitationPlanningVO> planningVOs = convertToModels(list,new ArrayList<>(list.size()), RehabilitationPlanningVO.class);
 
-        return Envelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,planningVOs, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,planningVOs, page, size,count);
     }
 
     public RehabilitationPlanningDO create(RehabilitationPlanningDO planningDO) {

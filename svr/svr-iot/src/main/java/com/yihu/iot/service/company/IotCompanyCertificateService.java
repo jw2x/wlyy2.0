@@ -1,12 +1,12 @@
 package com.yihu.iot.service.company;
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.iot.dao.company.IotCompanyCertificateDao;
-import com.yihu.jw.iot.company.IotCompanyCertificateDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.entity.iot.company.IotCompanyCertificateDO;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import com.yihu.jw.util.date.DateUtil;
+import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +51,7 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
      * @return
      * @throws ParseException
      */
-    public Envelop<IotCompanyCertificateVO> queryPage(Integer page, Integer size,String name,String companyId) throws ParseException {
+    public MixEnvelop<IotCompanyCertificateVO, IotCompanyCertificateVO> queryPage(Integer page, Integer size, String name, String companyId) throws ParseException {
         String filters = "del=1;";
         String semicolon = "";
         if(StringUtils.isNotBlank(companyId)){
@@ -71,7 +71,7 @@ public class IotCompanyCertificateService extends BaseJpaService<IotCompanyCerti
         //DO转VO
         List<IotCompanyCertificateVO> iotCompanyCertificateVOList = convertToModels(list,new ArrayList<>(list.size()));
 
-        return Envelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotCompanyCertificateVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(IotRequestMapping.Common.message_success_find_functions,iotCompanyCertificateVOList, page, size,count);
     }
 
     /**

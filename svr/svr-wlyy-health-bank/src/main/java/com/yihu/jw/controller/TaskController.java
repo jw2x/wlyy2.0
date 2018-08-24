@@ -5,8 +5,8 @@ package com.yihu.jw.controller;/**
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.entity.health.bank.TaskDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.service.TaskService;
 import io.swagger.annotations.Api;
@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping(HealthBankMapping.api_health_bank_common)
 @Api(tags = "健康任务相关操作",description = "健康银行相关操作")
-public class TaskController extends EnvelopRestController {
+public class TaskController extends EnvelopRestEndpoint {
 
     @Autowired
     private TaskService service;
@@ -42,7 +42,7 @@ public class TaskController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.createTask)
     @ApiOperation(value = "添加任务")
-    public Envelop<Boolean> assigningTask(@ApiParam(name = "task",value = "健康任务JSON")
+    public MixEnvelop<Boolean, Boolean> assigningTask(@ApiParam(name = "task",value = "健康任务JSON")
                                           @RequestParam(value = "task",required = true)String task){
         try {
             TaskDO taskDO = toEntity(task,TaskDO.class);
@@ -50,7 +50,7 @@ public class TaskController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -64,11 +64,11 @@ public class TaskController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.findTask)
     @ApiOperation(value = "查询任务")
-    public Envelop<TaskDO> assigningTask(@ApiParam(name = "task",value = "健康任务JSON")
+    public MixEnvelop<TaskDO, TaskDO> assigningTask(@ApiParam(name = "task",value = "健康任务JSON")
                                           @RequestParam(value = "task",required = true)String task,
-                                          @ApiParam(name = "page", value = "第几页，从1开始")
+                                            @ApiParam(name = "page", value = "第几页，从1开始")
                                           @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
-                                          @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                            @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                               @RequestParam(value = "size", required = false)Integer size){
         try {
             TaskDO taskDO = toEntity(task,TaskDO.class);
@@ -76,7 +76,7 @@ public class TaskController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -88,7 +88,7 @@ public class TaskController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.selectByCode)
     @ApiOperation(value = "根据编码查询")
-    public Envelop<TaskDO> selectByCode(@RequestBody JSONObject object){
+    public MixEnvelop<TaskDO, TaskDO> selectByCode(@RequestBody JSONObject object){
         try {
             JSONArray array = object.getJSONArray("taskCode");
             String patientId = object.getString("patientId");
@@ -98,7 +98,7 @@ public class TaskController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -110,7 +110,7 @@ public class TaskController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.updateTask)
     @ApiOperation(value = "更新任务")
-    public Envelop<Boolean> udpateTask(@ApiParam(name = "task",value = "健康任务JSON")
+    public MixEnvelop<Boolean, Boolean> udpateTask(@ApiParam(name = "task",value = "健康任务JSON")
                                           @RequestParam(value = "task",required = true)String task){
         try {
             TaskDO taskDO = toEntity(task,TaskDO.class);
@@ -118,7 +118,7 @@ public class TaskController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -131,10 +131,10 @@ public class TaskController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.batchTask)
     @ApiOperation(value = "批量删除任务")
-    public Envelop<Boolean> batchDelete(@ApiParam(name="ids",value = "id集合[]")
+    public MixEnvelop<Boolean, Boolean> batchDelete(@ApiParam(name="ids",value = "id集合[]")
                                         @RequestParam(value = "ids",required = false)String ids){
         try{
-            Envelop<Boolean> envelop = new Envelop<>();
+            MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
             JSONArray array = JSONArray.parseArray(ids);
             List<String> taskIds = new ArrayList<>();
             for (int i = 0;i<array.size();i++){
@@ -146,7 +146,7 @@ public class TaskController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -194,16 +194,16 @@ public class TaskController extends EnvelopRestController {
 
     @PostMapping(value = HealthBankMapping.healthBank.selectByDate)
     @ApiOperation(value = "某个时刻任务的积分详情")
-    public Envelop<TaskDO> selectByDate(@ApiParam(name="object",value = "id集合[]")
+    public MixEnvelop<TaskDO, TaskDO> selectByDate(@ApiParam(name="object",value = "id集合[]")
                                         @RequestParam(value = "object",required = false)String object){
         try{
-            Envelop<TaskDO> envelop = new Envelop<>();
+            MixEnvelop<TaskDO, TaskDO> envelop = new MixEnvelop<>();
             JSONObject jsonObject = JSONObject.parseObject(object);
             return service.selectByDate(jsonObject);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 }

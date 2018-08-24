@@ -2,18 +2,17 @@ package com.yihu.iot.datainput.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.base.es.config.ElastricSearchHelper;
 //import com.yihu.base.hbase.HBaseAdmin;
 //import com.yihu.base.hbase.HBaseHelper;
+import com.yihu.elasticsearch.jest.ElastricSearchHelper;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.device.IotDeviceService;
 import com.yihu.jw.datainput.DataBodySignsDO;
 import com.yihu.jw.datainput.WeRunDataDO;
-import com.yihu.jw.iot.device.IotDeviceDO;
+import com.yihu.jw.entity.iot.device.IotDeviceDO;
 import com.yihu.jw.util.date.DateUtil;
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 //import org.apache.hadoop.hbase.util.CollectionUtils;
 import org.apache.http.client.utils.DateUtils;
@@ -21,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 

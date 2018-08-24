@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.fallbackfactory.iot.device;
 
 import com.yihu.jw.fegin.iot.device.IotDeviceOrderFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderVO;
@@ -25,14 +25,14 @@ public class IotDeviceOrderFallbackFactory implements FallbackFactory<IotDeviceO
         return new IotDeviceOrderFeign() {
 
             @Override
-            public Envelop<IotOrderVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
+            public MixEnvelop<IotOrderVO, IotOrderVO> create(@RequestParam(value = "jsonData", required = true) String jsonData) {
                 tracer.getCurrentSpan().logEvent("创建设备订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 
             @Override
-            public Envelop<IotDeviceOrderVO>  findByCode(@RequestParam(value = "id", required = true) String id
+            public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> findByCode(@RequestParam(value = "id", required = true) String id
             ) {
                 tracer.getCurrentSpan().logEvent("根据id查找设备订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
@@ -40,10 +40,10 @@ public class IotDeviceOrderFallbackFactory implements FallbackFactory<IotDeviceO
             }
 
             @Override
-            public Envelop<IotDeviceOrderVO> findPage(@RequestParam(value = "name", required = false) String name,
-                                                      @RequestParam(value = "type", required = false) String type,
-                                                      @RequestParam(value = "page", required = false) Integer page,
-                                                      @RequestParam(value = "size", required = false) Integer size){
+            public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> findPage(@RequestParam(value = "name", required = false) String name,
+                                                         @RequestParam(value = "type", required = false) String type,
+                                                         @RequestParam(value = "page", required = false) Integer page,
+                                                         @RequestParam(value = "size", required = false) Integer size){
                 tracer.getCurrentSpan().logEvent("分页查找设备订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("name:" + name);
                 tracer.getCurrentSpan().logEvent("type:" + type);
@@ -53,30 +53,30 @@ public class IotDeviceOrderFallbackFactory implements FallbackFactory<IotDeviceO
             }
 
             @Override
-            public Envelop<IotDeviceOrderVO> delOrder(@RequestParam(value = "id", required = true) String id) {
+            public MixEnvelop<IotDeviceOrderVO, IotDeviceOrderVO> delOrder(@RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("删除订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
 
             @Override
-            public Envelop<IotOrderPurchaseVO> delPurchase(@RequestParam(value = "id", required = true) String id) {
+            public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> delPurchase(@RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("删除采购订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
 
             @Override
-            public Envelop<IotOrderVO> updOrder(@RequestParam(value = "jsonData", required = false)String jsonData) {
+            public MixEnvelop<IotOrderVO, IotOrderVO> updOrder(@RequestParam(value = "jsonData", required = false)String jsonData) {
                 tracer.getCurrentSpan().logEvent("修改订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("jsonData:" + jsonData);
                 return null;
             }
 
             @Override
-            public Envelop<IotOrderPurchaseVO> findPurcharsePage(@RequestParam(value = "orderId", required = true) String orderId,
-                                                                 @RequestParam(value = "page", required = false) Integer page,
-                                                                 @RequestParam(value = "size", required = false) Integer size){
+            public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findPurcharsePage(@RequestParam(value = "orderId", required = true) String orderId,
+                                                                    @RequestParam(value = "page", required = false) Integer page,
+                                                                    @RequestParam(value = "size", required = false) Integer size){
                 tracer.getCurrentSpan().logEvent("分页查找采购清单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("orderId:" + orderId);
                 tracer.getCurrentSpan().logEvent("page:" + page);
@@ -85,14 +85,14 @@ public class IotDeviceOrderFallbackFactory implements FallbackFactory<IotDeviceO
             }
 
             @Override
-            public Envelop<IotOrderPurchaseVO>  findPurcharseById(@RequestParam(value = "id", required = true) String id) {
+            public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findPurcharseById(@RequestParam(value = "id", required = true) String id) {
                 tracer.getCurrentSpan().logEvent("根据id查找采购订单失败:原因:" + e.getMessage());
                 tracer.getCurrentSpan().logEvent("id:" + id);
                 return null;
             }
 
             @Override
-            public Envelop<IotOrderPurchaseVO> findQualityPage(
+            public MixEnvelop<IotOrderPurchaseVO, IotOrderPurchaseVO> findQualityPage(
                     @RequestParam(value = "qualityStatus", required = false) String qualityStatus,
                     @RequestParam(value = "orderNo", required = false) String orderNo,
                     @RequestParam(value = "startTime", required = false) String startTime,

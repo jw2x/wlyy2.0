@@ -1,17 +1,16 @@
 package com.yihu.jw.manage.service.wechat;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.yihu.jw.base.wx.WxTemplateDO;
 import com.yihu.jw.manage.model.system.ManageUser;
 import com.yihu.jw.manage.service.system.UserService;
 import com.yihu.jw.manage.util.RestTemplateUtil;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.base.wx.WxTemplateDO;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;

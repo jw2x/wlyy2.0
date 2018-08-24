@@ -1,7 +1,7 @@
 package com.yihu.jw.manage.controller.base;
 
 import com.yihu.jw.manage.service.base.SaasService;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

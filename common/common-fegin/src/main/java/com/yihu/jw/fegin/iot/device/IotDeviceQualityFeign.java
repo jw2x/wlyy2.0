@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.iot.device;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.device.IotDeviceQualityFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceQualityInspectionPlanVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
@@ -22,13 +22,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface IotDeviceQualityFeign{
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.addQualityPlan)
-    Envelop<IotDeviceQualityInspectionPlanVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
+    MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> create(@RequestParam(value = "jsonData", required = true) String jsonData);
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.findById)
-    Envelop<IotDeviceQualityInspectionPlanVO> findByCode(@RequestParam(value = "id", required = true) String id);
+    MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> findByCode(@RequestParam(value = "id", required = true) String id);
 
     @GetMapping(value = IotRequestMapping.DeviceQuality.queryQualityPlanPage)
-    Envelop<IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
+    MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> queryQualityPlanPage(
            @RequestParam(value = "purcharseId", required = false) String purcharseId,
            @RequestParam(value = "orderNo", required = false) String orderNo,
            @RequestParam(value = "startTime", required = false) String startTime,
@@ -37,16 +37,16 @@ public interface IotDeviceQualityFeign{
            @RequestParam(value = "size", required = false) Integer size);
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.delQualityPlan)
-    Envelop<IotDeviceQualityInspectionPlanVO> delQualityPlan(@RequestParam(value = "id", required = true) String id);
+    MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> delQualityPlan(@RequestParam(value = "id", required = true) String id);
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.completeQualityPlan)
-    Envelop<IotDeviceQualityInspectionPlanVO> completeQualityPlan(
+    MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> completeQualityPlan(
         @RequestParam(value = "actualTime", required = true) String actualTime,
         @RequestParam(value = "id", required = true) String id);
 
 
     @PostMapping(value = IotRequestMapping.DeviceQuality.completePlanByPurchaseId)
-    Envelop<IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(
+    MixEnvelop<IotDeviceQualityInspectionPlanVO, IotDeviceQualityInspectionPlanVO> completePlanByPurchaseId(
             @RequestParam(value = "actualTime", required = true) String actualTime,
             @RequestParam(value = "purchaseId", required = true) String purchaseId);
 }

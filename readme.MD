@@ -1,11 +1,9 @@
 项目结构
-     common    公共的一些配置
-        common-swagger   swagger工程
-        涉及主要技术 swagger
-     svr    业务微服务  
+     common     公共依赖包
+     svr     业务微服务  
         svr-base 基础微服务
         svr-quota 统计微服务
-    server
+     server
          svr-configuration    配置服务 
             涉及主要技术 git(存储配置文件) 
          svr-discovery    发现服务 

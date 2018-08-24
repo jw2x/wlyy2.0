@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.fallbackfactory.wlyy.agreement;
 
 import com.yihu.jw.fegin.wlyy.agreement.WlyyAgreementKpiLogFeign;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import feign.hystrix.FallbackFactory;
 import org.springframework.stereotype.Component;
 
@@ -15,22 +15,22 @@ public class WlyyAgreementKpiLogFeignFallbackFactory implements FallbackFactory<
     public WlyyAgreementKpiLogFeign create(Throwable throwable) {
         return new WlyyAgreementKpiLogFeign() {
             @Override
-            public Envelop create(String jsonData) {
+            public MixEnvelop create(String jsonData) {
                 return null;
             }
 
             @Override
-            public Envelop findByCode(String code) {
+            public MixEnvelop findByCode(String code) {
                 return null;
             }
 
             @Override
-            public Envelop queryPage(String fields, String filters, String sorts, int size, int page) {
+            public MixEnvelop queryPage(String fields, String filters, String sorts, int size, int page) {
                 return null;
             }
 
             @Override
-            public Envelop getList(String fields, String filters, String sorts) {
+            public MixEnvelop getList(String fields, String filters, String sorts) {
                 return null;
             }
         };

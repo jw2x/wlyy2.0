@@ -2,7 +2,7 @@ package com.yihu.iot.datainput.controller;
 
 import com.yihu.iot.datainput.service.DataStandardConvertService;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.iot.DataRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,11 +24,11 @@ public class DataStandardConvertController {
 
     @PostMapping(value = DataRequestMapping.DataStandardConvert.api_convert, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "数据标准转换", notes = "数据标准转换")
-    public Envelop convert(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
+    public MixEnvelop convert(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
         try{
-            return Envelop.getSuccess(DataRequestMapping.DataStandardConvert.message_success_convert,dataStandardConvertService.iconvert(jsonData));
+            return MixEnvelop.getSuccess(DataRequestMapping.DataStandardConvert.message_success_convert,dataStandardConvertService.iconvert(jsonData));
         } catch (ApiException e){
-            return Envelop.getError(e.getMessage(), e.getErrorCode());
+            return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
         }
     }
 

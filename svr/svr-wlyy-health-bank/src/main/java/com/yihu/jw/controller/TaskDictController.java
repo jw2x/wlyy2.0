@@ -3,8 +3,8 @@ package com.yihu.jw.controller;/**
  */
 
 import com.yihu.jw.entity.health.bank.TaskDictDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.service.TaskDictService;
 import io.swagger.annotations.Api;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(HealthBankMapping.api_health_bank_common)
 @Api(tags = "健康任务字典相关操作",description = "健康任务字典相关操作")
-public class TaskDictController extends EnvelopRestController {
+public class TaskDictController extends EnvelopRestEndpoint {
     @Autowired
     private TaskDictService service;
     @Autowired
@@ -40,7 +40,7 @@ public class TaskDictController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.createTaskDict)
     @ApiOperation(value = "添加任务字典")
-    public Envelop<Boolean> insert(@ApiParam(name = "taskDict",value = "任务字典JSON")
+    public MixEnvelop<Boolean, Boolean> insert(@ApiParam(name = "taskDict",value = "任务字典JSON")
                                        @RequestParam(value = "taskDict",required = true)String taskDict){
         try {
             TaskDictDO taskDictDO = toEntity(taskDict,TaskDictDO.class);
@@ -48,7 +48,7 @@ public class TaskDictController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ public class TaskDictController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.updateTaskDict)
     @ApiOperation(value = "更新任务字典")
-    public Envelop<Boolean> update(@ApiParam(name = "taskDict",value = "任务字典JSON")
+    public MixEnvelop<Boolean, Boolean> update(@ApiParam(name = "taskDict",value = "任务字典JSON")
                                    @RequestParam(value = "taskDict",required = true)String taskDict){
         try {
             TaskDictDO taskDictDO = toEntity(taskDict,TaskDictDO.class);
@@ -67,7 +67,7 @@ public class TaskDictController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -82,11 +82,11 @@ public class TaskDictController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.findTaskDict)
     @ApiOperation(value = "查询任务字典")
-    public Envelop<TaskDictDO> select(@ApiParam(name = "taskDict",value = "任务字典JSON")
+    public MixEnvelop<TaskDictDO, TaskDictDO> select(@ApiParam(name = "taskDict",value = "任务字典JSON")
                                       @RequestParam(value = "taskDict",required = true)String taskDict,
-                                      @ApiParam(name = "page", value = "第几页，从1开始")
+                                         @ApiParam(name = "page", value = "第几页，从1开始")
                                       @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
-                                      @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                         @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                       @RequestParam(value = "size", required = false)Integer size){
         try {
             TaskDictDO taskDictDO = toEntity(taskDict,TaskDictDO.class);
@@ -94,7 +94,7 @@ public class TaskDictController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 }

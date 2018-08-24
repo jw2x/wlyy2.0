@@ -3,14 +3,12 @@ package com.yihu.jw.manage.controller.wechat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.base.wx.WxMenuDO;
 import com.yihu.jw.manage.service.wechat.WechatMenuService;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.base.wx.WxMenuVO;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;

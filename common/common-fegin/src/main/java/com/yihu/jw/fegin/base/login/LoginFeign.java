@@ -1,23 +1,15 @@
 package com.yihu.jw.fegin.base.login;
 
-import com.yihu.jw.fegin.fallbackfactory.base.base.FunctionFeignFallbackFactory;
 import com.yihu.jw.fegin.fallbackfactory.base.base.LoginFeignFallbackFactory;
 import com.yihu.jw.restmodel.CommonContants;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.base.BaseEnvelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseLoginRequestMapping;
-import com.yihu.jw.rm.base.BaseRequestMapping;
-import com.yihu.jw.rm.base.BaseUserRequestMapping;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by 刘文彬 on 2018/4/20.
@@ -30,10 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 public interface LoginFeign {
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_checkoutInfo, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    BaseEnvelop checkoutInfo(@RequestParam(value = "ssc", required = true) String ssc,@RequestParam(value = "idcard", required = true) String idcard);
+    Envelop checkoutInfo(@RequestParam(value = "ssc", required = true) String ssc, @RequestParam(value = "idcard", required = true) String idcard);
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_accountSub, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop register(
+    MixEnvelop register(
             @RequestParam(value = "mobilePhone", required = true) String mobilePhone,
             @RequestParam(value = "saasId", required = true) String saasId,
             @RequestParam(value = "type", required = true) int type,
@@ -45,8 +37,8 @@ public interface LoginFeign {
 
 
     @PostMapping(value = BaseLoginRequestMapping.BaseLoginAccount.api_login, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    Envelop login(@RequestParam(value = "mobilePhone", required = false) String mobilePhone,
-                           @RequestParam(value = "password", required = false) String password,
-                           @RequestParam(value = "saasId", required = true) String saasId,
-                           @RequestParam(value = "captcha", required = false) String captcha);
+    MixEnvelop login(@RequestParam(value = "mobilePhone", required = false) String mobilePhone,
+                     @RequestParam(value = "password", required = false) String password,
+                     @RequestParam(value = "saasId", required = true) String saasId,
+                     @RequestParam(value = "captcha", required = false) String captcha);
 }

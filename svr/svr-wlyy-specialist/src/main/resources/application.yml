@@ -5,8 +5,6 @@ server:
 spring:
   jmx:
     default-domain: jkzl_specialist
-  application:
-    name:  svr-wlyy-specialist-lyx  #注册到发现服务的id 如果id一样 eurika会自动做负载
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -79,6 +77,14 @@ spring:
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
+fast-dfs:
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
+
+neiwang:
+  enable: true
+  wlyy: http://localhost:10051/
+
 ---
 spring:
   profiles: jwtest
@@ -89,6 +95,14 @@ spring:
     password: ssgg
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
+
+fast-dfs:
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
+
+neiwang:
+  enable: false
+  wlyy: http://59.61.92.90:10051/
 ---
 spring:
   profiles: jwdevtest
@@ -99,6 +113,14 @@ spring:
     password: linzhou
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
+
+fast-dfs:
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
+
+neiwang:
+  enable: true
+  wlyy: http://172.19.103.88:10051/svr-slyy-specialist/
 ---
 spring:
   profiles: prod
@@ -108,3 +130,11 @@ spring:
     password: jkzlehr@123
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
+
+fast-dfs:
+  #tracker-server: 172.19.103.54:22122
+  #public-server: http://172.19.103.54:80/
+
+neiwang:
+  enable: false
+  #wlyy: http://59.61.92.90:9099/iot/

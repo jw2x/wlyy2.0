@@ -7,8 +7,8 @@ import com.yihu.jw.entity.archives.PatientArchivesInfoDO;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
 import com.yihu.jw.restmodel.archives.Test;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.EnvelopRestController;
 import com.yihu.jw.rm.archives.PatientArchivesMapping;
 import com.yihu.jw.service.PatientArchivesSevice;
 import io.swagger.annotations.Api;
@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

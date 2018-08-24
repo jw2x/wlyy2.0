@@ -7,14 +7,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.entity.health.bank.AccountDO;
 import com.yihu.jw.entity.health.bank.CreditsDetailDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.service.CreditsDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import javafx.beans.binding.BooleanExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping(HealthBankMapping.api_health_bank_common)
 @Api(tags = "健康积分相关操作",description = "健康积分相关操作")
-public class CreditsDetailController extends EnvelopRestController {
+public class CreditsDetailController extends EnvelopRestEndpoint {
 
     @Autowired
     private Tracer tracer;
@@ -47,11 +46,11 @@ public class CreditsDetailController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.findCreditsLogInfo)
     @ApiOperation(value = "查看积分记录")
-    public Envelop<CreditsDetailDO> selectCreditsLogInfo(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> selectCreditsLogInfo(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
                                                           @RequestParam(value = "creditsDetail",required = false)String creditsDetail,
-                                                         @ApiParam(name = "page", value = "第几页，从1开始")
+                                                            @ApiParam(name = "page", value = "第几页，从1开始")
                                                           @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
-                                                         @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                                            @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                                           @RequestParam(value = "size", required = false)Integer size){
         try{
             CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
@@ -59,7 +58,7 @@ public class CreditsDetailController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -73,7 +72,7 @@ public class CreditsDetailController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.createCreditsDetail)
     @ApiOperation(value = "添加积分记录")
-    public Envelop<CreditsDetailDO> insert(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> insert(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
                                    @RequestParam(value = "creditsDetail",required = true)String creditsDetail){
         try {
             CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
@@ -81,7 +80,7 @@ public class CreditsDetailController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -101,20 +100,20 @@ public class CreditsDetailController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.selectByActivity)
     @ApiOperation(value = "根据活动查找积分")
-    public Envelop<CreditsDetailDO> seletcByActivity(@ApiParam(name = "activityId",value = "活动id")
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> seletcByActivity(@ApiParam(name = "activityId",value = "活动id")
                                                          @RequestParam(value = "activityId",required = true)String activityId,
-                                                         @ApiParam(name = "patientId",value = "居民id")
+                                                        @ApiParam(name = "patientId",value = "居民id")
                                                          @RequestParam(value = "patientId",required = true) String patientId,
-                                                         @ApiParam(name = "page", value = "第几页，从1开始")
+                                                        @ApiParam(name = "page", value = "第几页，从1开始")
                                                          @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
-                                                         @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                                        @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                                          @RequestParam(value = "size", required = false)Integer size){
         try{
             return service.selectByActivity(activityId,patientId,page,size);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -126,7 +125,7 @@ public class CreditsDetailController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.selectByRanking)
     @ApiOperation(value = "查询积分排名")
-    public Envelop<AccountDO> selectByRanking(@RequestBody JSONObject object){
+    public MixEnvelop<AccountDO, AccountDO> selectByRanking(@RequestBody JSONObject object){
         try{
             JSONArray array = object.getJSONArray("filter");
             Integer page = object.getInteger("page");
@@ -139,7 +138,7 @@ public class CreditsDetailController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -150,7 +149,7 @@ public class CreditsDetailController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.selectByActivityRanking)
     @ApiOperation(value = "活动排名")
-    public Envelop<TaskPatientDetailDO> selectByActivityRanking(@RequestBody JSONObject object){
+    public MixEnvelop<TaskPatientDetailDO, TaskPatientDetailDO> selectByActivityRanking(@RequestBody JSONObject object){
         try{
             JSONArray array = object.getJSONArray("filter");
             String activityId = object.getString("activityId");
@@ -164,7 +163,7 @@ public class CreditsDetailController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -178,26 +177,26 @@ public class CreditsDetailController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.selectByActivityRanking1)
     @ApiOperation(value = "根据活动id查找全部排行")
-    public Envelop<TaskPatientDetailDO> selectByActivityRanking1(@ApiParam(name = "activityId",value = "活动id")
+    public MixEnvelop<TaskPatientDetailDO, TaskPatientDetailDO> selectByActivityRanking1(@ApiParam(name = "activityId",value = "活动id")
                                                      @RequestParam(value = "activityId",required = true)String activityId,
-                                                     @ApiParam(name = "patientId",value = "居民id")
+                                                                    @ApiParam(name = "patientId",value = "居民id")
                                                      @RequestParam(value = "patientId",required = true)String patientId,
-                                                     @ApiParam(name = "page", value = "第几页，从1开始")
+                                                                    @ApiParam(name = "page", value = "第几页，从1开始")
                                                      @RequestParam(value = "page", defaultValue = "1",required = false)Integer page,
-                                                     @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
+                                                                    @ApiParam(name = "size",defaultValue = "10",value = "，每页分页大小")
                                                      @RequestParam(value = "size", required = false)Integer size){
         try{
             return service.selectByActivityRanking1(activityId,patientId,page,size);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
     @PostMapping(value = HealthBankMapping.healthBank.doctorAddIntegrate)
     @ApiOperation(value = "添加积分记录")
-    public Envelop<Boolean> doctorAddIntegrate(@RequestBody JSONObject object){
+    public MixEnvelop<Boolean, Boolean> doctorAddIntegrate(@RequestBody JSONObject object){
         try {
             JSONArray array = object.getJSONArray("patient");
             String ruleId = object.getString("ruleId");
@@ -206,7 +205,7 @@ public class CreditsDetailController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -218,7 +217,7 @@ public class CreditsDetailController extends EnvelopRestController {
      */
     @PostMapping(value = HealthBankMapping.healthBank.addStepIntegrate)
     @ApiOperation(value = "步数获取积分")
-    public Envelop<CreditsDetailDO> addStepIntegrate(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> addStepIntegrate(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
                                                  @RequestParam(value = "creditsDetail",required = true)String creditsDetail){
         try {
             CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
@@ -226,7 +225,7 @@ public class CreditsDetailController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -234,7 +233,7 @@ public class CreditsDetailController extends EnvelopRestController {
 
     @PostMapping(value = HealthBankMapping.healthBank.weekReward)
     @ApiOperation(value = "周奖励")
-    public Envelop<CreditsDetailDO> weekReward(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> weekReward(@ApiParam(name = "creditsDetail",value = "积分记录JSON")
                                                      @RequestParam(value = "creditsDetail",required = true)String creditsDetail){
         try {
             CreditsDetailDO creditsDetailDO = toEntity(creditsDetail,CreditsDetailDO.class);
@@ -242,7 +241,7 @@ public class CreditsDetailController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 

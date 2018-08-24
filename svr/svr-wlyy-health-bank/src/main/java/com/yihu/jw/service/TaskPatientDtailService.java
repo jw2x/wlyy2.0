@@ -2,7 +2,6 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/6/8.
  */
 
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.AccountDao;
 import com.yihu.jw.dao.ActivityDao;
 import com.yihu.jw.dao.TaskDao;
@@ -11,9 +10,10 @@ import com.yihu.jw.entity.health.bank.AccountDO;
 import com.yihu.jw.entity.health.bank.TaskDO;
 import com.yihu.jw.entity.health.bank.TaskPatientDetailDO;
 import com.yihu.jw.entity.health.bank.TaskRangDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
+import com.yihu.mysql.query.BaseJpaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
      * @param size 分页大小
      * @return
      */
-    public Envelop<TaskRangDO> selectByCondition(TaskPatientDetailDO taskPatientDetailDO, Integer page, Integer size){
+    public MixEnvelop<TaskRangDO, TaskRangDO> selectByCondition(TaskPatientDetailDO taskPatientDetailDO, Integer page, Integer size){
         String sql = new ISqlUtils().getSql(taskPatientDetailDO,page,size,"*");
         List<TaskPatientDetailDO> taskPatientDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(TaskPatientDetailDO.class));
         String sqlcount = new ISqlUtils().getSql(taskPatientDetailDO,0,0,"count");
@@ -65,7 +65,7 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskPatientDetailDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskPatientDetailDOS,page,size,count);
     }
 
     /**
@@ -74,8 +74,8 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
      * @param taskPatientDetailDO 任务参与对象
      * @return
      */
-    public Envelop<Boolean> insert(TaskPatientDetailDO taskPatientDetailDO) throws Exception{
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> insert(TaskPatientDetailDO taskPatientDetailDO) throws Exception{
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         taskPatientDetailDO.setCreateTime(new Date());
         taskPatientDetailDO.setUpdateTime(new Date());
         taskPatientDetailDO.setStatus(Integer.parseInt("0"));
@@ -130,8 +130,8 @@ public class TaskPatientDtailService extends BaseJpaService<TaskPatientDetailDO,
      * @param taskPatientDetailDO 任务参与对象
      * @return
      */
-    public Envelop<Boolean> update(TaskPatientDetailDO taskPatientDetailDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> update(TaskPatientDetailDO taskPatientDetailDO){
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         String sql =  ISqlUtils.getUpdateSql(taskPatientDetailDO);
         jdbcTemplate.update(sql);
         envelop.setObj(true);

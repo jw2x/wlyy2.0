@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.yihu.jw</groupId>
-        <artifactId>svr-lib-parent-pom</artifactId>
-        <version>1.0.2</version>
-        <relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
+        <artifactId>wlyy-parent-pom</artifactId>
+        <version>2.0.0</version>
+        <relativePath>../../wlyy-parent-pom/pom.xml</relativePath>
     </parent>
 
     <artifactId>svr-manage</artifactId>
@@ -32,14 +32,6 @@
         <dependency>
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-swagger</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yihu.base</groupId>
-            <artifactId>common-data-mysql</artifactId>
         </dependency>
         <!-- 使用intellij作为集成开发环境 本地测试时打开 start -->
         <dependency>

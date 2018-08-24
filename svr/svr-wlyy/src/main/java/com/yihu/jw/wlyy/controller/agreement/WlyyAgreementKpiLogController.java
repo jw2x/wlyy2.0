@@ -1,27 +1,28 @@
 package com.yihu.jw.wlyy.controller.agreement;
 
+import com.yihu.jw.entity.wlyy.agreement.WlyyAgreementKpiLogDO;
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.PageEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.wlyy.agreement.WlyyAgreementKpiLogDO;
 import com.yihu.jw.wlyy.service.agreement.WlyyAgreementKpiLogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping(WlyyRequestMapping.api_wlyy_common)
 @Api(value = "套餐指标执行日志相关操作", description = "套餐指标执行日志相关操作")
-public class WlyyAgreementKpiLogController extends EnvelopRestController {
+public class WlyyAgreementKpiLogController extends EnvelopRestEndpoint {
 
     @Autowired
     private WlyyAgreementKpiLogService wlyyAgreementKpiLogService;
@@ -30,10 +31,10 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
     @ApiOperation(value = "创建套餐指标日志", notes = "创建套餐指标日志")
     public Envelop create(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
-            @RequestBody String jsonData) {
+            @RequestBody String jsonData) throws IOException {
         try {
             WlyyAgreementKpiLogDO wlyyAgreementKpiLog = toEntity(jsonData, WlyyAgreementKpiLogDO.class);
-            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpiLog.message_success_create, wlyyAgreementKpiLogService.create(wlyyAgreementKpiLog));
+            return success(WlyyRequestMapping.AgreementKpiLog.message_success_create, wlyyAgreementKpiLogService.create(wlyyAgreementKpiLog));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -46,7 +47,7 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
             @RequestParam(value = "id", required = true) String id
     ) {
         try {
-            return Envelop.getSuccess(WlyyRequestMapping.AgreementKpiLog.message_success_find, wlyyAgreementKpiLogService.findById(id));
+            return success(WlyyRequestMapping.AgreementKpiLog.message_success_find, wlyyAgreementKpiLogService.findById(id));
         } catch (ApiException e) {
             return Envelop.getError(e.getMessage(), e.getErrorCode());
         }
@@ -76,7 +77,7 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
         //封装返回格式
         List<WlyyAgreementKpiLogDO> wlyyAgreementKpiLog = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementKpiLogDO.class, fields);
 
-        return Envelop.getSuccessListWithPage(WlyyRequestMapping.AgreementKpiLog.message_success_find_functions,wlyyAgreementKpiLog, page, size,count);
+        return PageEnvelop.getSuccessListWithPage(WlyyRequestMapping.AgreementKpiLog.message_success_find_functions,wlyyAgreementKpiLog, page, size,count);
     }
 
 
@@ -93,7 +94,7 @@ public class WlyyAgreementKpiLogController extends EnvelopRestController {
         List<WlyyAgreementKpiLogDO> list = wlyyAgreementKpiLogService.search(fields,filters,sorts);
         //封装返回格式
         List<WlyyAgreementKpiLogDO> wlyyAgreementKpiLog = convertToModels(list, new ArrayList<>(list.size()), WlyyAgreementKpiLogDO.class, fields);
-        return Envelop.getSuccessList(WlyyRequestMapping.AgreementKpiLog.message_success_find_functions,wlyyAgreementKpiLog);
+        return success(WlyyRequestMapping.AgreementKpiLog.message_success_find_functions, wlyyAgreementKpiLog);
     }
 
 }

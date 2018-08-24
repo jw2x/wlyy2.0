@@ -1,10 +1,10 @@
 package com.yihu.rehabilitation.service;
 
-import com.yihu.base.mysql.query.BaseJpaService;
-import com.yihu.jw.rehabilitation.RehabilitationInformationDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.entity.rehabilitation.RehabilitationInformationDO;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.rehabilitation.RehabilitationInformationVO;
 import com.yihu.jw.rm.rehabilitation.RehabilitationRequestMapping;
+import com.yihu.mysql.query.BaseJpaService;
 import com.yihu.rehabilitation.dao.RehabilitationInformationDao;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class RehabilitationInformationService extends BaseJpaService<Rehabilitat
      * @param hospital
      * @return
      */
-    public Envelop<RehabilitationInformationVO> queryPage(Integer page, Integer size, String patientId, String hospital){
+    public MixEnvelop<RehabilitationInformationVO, RehabilitationInformationVO> queryPage(Integer page, Integer size, String patientId, String hospital){
         StringBuffer sql = new StringBuffer("SELECT DISTINCT w.* from rehabilitation_information w where 1 = 1 ");
         StringBuffer sqlCount = new StringBuffer("SELECT COUNT(DISTINCT w.id) count from rehabilitation_information w where 1 = 1 ");
         List<Object> args = new ArrayList<>();
@@ -60,7 +60,7 @@ public class RehabilitationInformationService extends BaseJpaService<Rehabilitat
         //DO转VO
         List<RehabilitationInformationVO> informationVOList = convertToModels(list,new ArrayList<>(list.size()), RehabilitationInformationVO.class);
 
-        return Envelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,informationVOList, page, size,count);
+        return MixEnvelop.getSuccessListWithPage(RehabilitationRequestMapping.Common.message_success_find_functions,informationVOList, page, size,count);
     }
 
     /**

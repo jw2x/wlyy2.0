@@ -1,80 +1,24 @@
+spring:
+  jmx:
+    enabled: false
+
 server:
   port: 1221
 
 security:
   user:
     name: jw
-    password:  jkzl
-
+    password: jkzl
 
 eureka:
   client:
     healthcheck:
-      enabled: true #启动监控检查
+      enabled: false #启动监控检查
+    serviceUrl:
+      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
   instance:
     #eurika使用IP不使用host
     prefer-ip-address: true
-    #定制化在eurika中显示的名称
-    ##instance-id: ${spring.application.name}:${spring.application.instance_id:${server.port}}
     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
-
-management:
-  security:
-    enabled: false
-
-logging:
-  file: ${logging.path}svr-configuration.log
-  path: G:\idea_workspace\jkzl_git\jkzl-start\logs\
-  level:
-    root: INFO
-
----
-spring:
-  profiles: jwdev
-#
-#  cloud:
-#    stream:
-#      kafka:
-#        binder:
-#          brokers: 172.17.110.201
-#          defaultBrokerPort: 9092
-#          zkNodes: 172.17.110.201
-#          defaultZkPort: 2181
-#          replicationFactor: 1
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
-
-
----
-spring:
-  profiles: jwtest
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka
-
----
-spring:
-  profiles: jwprod
-
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
-
----
-spring:
-  profiles: native
-
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://jw:jkzl@127.0.0.1:8761/eureka
 
 

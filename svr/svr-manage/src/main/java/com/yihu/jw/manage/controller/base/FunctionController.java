@@ -3,13 +3,12 @@ package com.yihu.jw.manage.controller.base;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.manage.service.base.FunctionService;
 import com.yihu.jw.restmodel.base.base.FunctionVO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;

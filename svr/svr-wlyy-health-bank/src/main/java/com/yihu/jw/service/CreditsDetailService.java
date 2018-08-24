@@ -4,14 +4,13 @@ package com.yihu.jw.service;/**
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.base.mysql.query.BaseJpaService;
 import com.yihu.jw.dao.*;
 import com.yihu.jw.entity.health.bank.*;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.DateUtils;
 import com.yihu.jw.util.ISqlUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.yihu.mysql.query.BaseJpaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +18,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.text.ParseException;
@@ -62,7 +62,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @return
      * @throws ParseException
      */
-   public Envelop<CreditsDetailDO> findByCondition(CreditsDetailDO creditsDetailDO, Integer page, Integer size) throws ParseException {
+   public MixEnvelop<CreditsDetailDO, CreditsDetailDO> findByCondition(CreditsDetailDO creditsDetailDO, Integer page, Integer size) throws ParseException {
         String sql = new ISqlUtils().getSql(creditsDetailDO,page,size,"*");
         List<CreditsDetailDO> creditsDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(CreditsDetailDO.class));
         for (CreditsDetailDO creditsDetailDO1 : creditsDetailDOS){
@@ -77,7 +77,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, creditsDetailDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, creditsDetailDOS,page,size,count);
     }
 
 
@@ -87,7 +87,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param creditsDetailDO
      * @return
      */
-    public Envelop<AccountDO> findByTradeDirection(CreditsDetailDO creditsDetailDO){
+    public MixEnvelop<AccountDO, AccountDO> findByTradeDirection(CreditsDetailDO creditsDetailDO){
         AccountDO accountDO1 = new AccountDO();
         accountDO1.setPatientId(creditsDetailDO.getPatientId());
         String sql1  = ISqlUtils.getAllSql(accountDO1);
@@ -120,7 +120,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 accountDO.setUsedTotal(Integer.parseInt(rstotal.get(0).get("total").toString()));
             }
         }
-        return Envelop.getSuccess(HealthBankMapping.api_success,accountDO);
+        return MixEnvelop.getSuccess(HealthBankMapping.api_success,accountDO);
     }
 
 
@@ -137,7 +137,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
 
 
 */
-    public Envelop<AccountDO> selectByRanking(List<String> patientIds, Integer page, Integer size){
+    public MixEnvelop<AccountDO, AccountDO> selectByRanking(List<String> patientIds, Integer page, Integer size){
         StringBuffer buffer = new StringBuffer();
         buffer.append(" ba.patient_id in(");
         if (patientIds == null || patientIds.size() == 0){
@@ -206,7 +206,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, accountDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, accountDOS,page,size,count);
     }
 
     /**
@@ -216,7 +216,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @return
      */
 
-    public Envelop<CreditsDetailDO> insert(CreditsDetailDO creditsDetailDO){
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> insert(CreditsDetailDO creditsDetailDO){
         try {
             synchronized (creditsDetailDO.getPatientId()){
                 String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '"+creditsDetailDO.getPatientId() +"'";
@@ -320,13 +320,13 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                     creditsDetailDO2.setTotal(accountDO1.getTotal());
                     creditsDetailDOS.add(creditsDetailDO2);
                 }
-                Envelop<CreditsDetailDO> envelop = new Envelop<>();
+                MixEnvelop<CreditsDetailDO, CreditsDetailDO> envelop = new MixEnvelop<>();
                 envelop.setDetailModelList(creditsDetailDOS);
                 return envelop;
             }
         }catch (Exception e){
             e.printStackTrace();
-            Envelop<CreditsDetailDO> envelop = new Envelop<>();
+            MixEnvelop<CreditsDetailDO, CreditsDetailDO> envelop = new MixEnvelop<>();
             return envelop;
         }
     }
@@ -342,7 +342,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param size 分页大小
      * @return
      */
-    public Envelop<TaskPatientDetailDO> selectByActivityRanking(String activityId,List<String> ids,Integer page,Integer size){
+    public MixEnvelop<TaskPatientDetailDO, TaskPatientDetailDO> selectByActivityRanking(String activityId, List<String> ids, Integer page, Integer size){
         StringBuffer buffer = new StringBuffer();
         buffer.append("(");
         if (ids == null || ids.size() == 0){
@@ -407,7 +407,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskPatientDetailDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskPatientDetailDOS,page,size,count);
 
     }
 
@@ -425,7 +425,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param size 分页大小
      * @return
      */
-    public Envelop<CreditsDetailDO> selectByActivity(String activityId,String patientId,Integer page,Integer size){
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> selectByActivity(String activityId, String patientId, Integer page, Integer size){
         String sql="SELECT * " +
                 "FROM " +
                 " wlyy_health_bank_credits_detail " +
@@ -464,7 +464,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,creditsDetailDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success,creditsDetailDOS,page,size,count);
     }
 
 
@@ -476,7 +476,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param size 分页大小
      * @return
      */
-    public Envelop<TaskPatientDetailDO> selectByActivityRanking1(String activityId,String patientId,Integer page,Integer size){
+    public MixEnvelop<TaskPatientDetailDO, TaskPatientDetailDO> selectByActivityRanking1(String activityId, String patientId, Integer page, Integer size){
         String sql = "SELECT " +
                 " * " +
                 "FROM " +
@@ -554,7 +554,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success, taskPatientDetailDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success, taskPatientDetailDOS,page,size,count);
 
     }
 
@@ -567,8 +567,8 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
      * @param ruleId 规则id
      * @return
      */
-    public Envelop<Boolean> doctorAddIntegrate(JSONArray array, String ruleId, String description) throws Exception {
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean, Boolean> doctorAddIntegrate(JSONArray array, String ruleId, String description) throws Exception {
+        MixEnvelop<Boolean, Boolean> envelop = new MixEnvelop<>();
         for (int i=0;i<array.size();i++){
             TaskRuleDO taskRuleDO = taskRuleDao.findOne(ruleId);
             JSONObject object = array.getJSONObject(i);
@@ -743,7 +743,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
     }
 */
 
-    public Envelop<CreditsDetailDO> stepAddIntegrate(CreditsDetailDO creditsDetailDO){
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> stepAddIntegrate(CreditsDetailDO creditsDetailDO){
         try {
             synchronized (creditsDetailDO.getPatientId()){
                 String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '"+creditsDetailDO.getPatientId() +"'";
@@ -879,13 +879,13 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                 }catch (Exception e){
                     logger.error("插入活跃出错:"+e.getMessage());
                 }
-                Envelop<CreditsDetailDO> envelop = new Envelop<>();
+                MixEnvelop<CreditsDetailDO, CreditsDetailDO> envelop = new MixEnvelop<>();
                 envelop.setDetailModelList(creditsDetailDOS);
                 return envelop;
             }
         }catch (Exception e){
             e.printStackTrace();
-            Envelop<CreditsDetailDO> envelop = new Envelop<>();
+            MixEnvelop<CreditsDetailDO, CreditsDetailDO> envelop = new MixEnvelop<>();
             return envelop;
         }
     }
@@ -908,7 +908,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
         }
     }*/
 
-    public Envelop<CreditsDetailDO> weekReward(CreditsDetailDO creditsDetailDO) {
+    public MixEnvelop<CreditsDetailDO, CreditsDetailDO> weekReward(CreditsDetailDO creditsDetailDO) {
         try {
             synchronized (creditsDetailDO.getPatientId()) {
                 String sqlAccount = "select * from wlyy_health_bank_account ba where ba.patient_id = '" + creditsDetailDO.getPatientId() + "'";
@@ -920,7 +920,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         "DATE_FORMAT(create_time,'%Y-%m-%d') IN " + creditsDetailDO.getWeekTimes()+" and description = '周奖励'";
                 List<CreditsDetailDO> creditsDetailDOS1 = jdbcTemplate.query(creditsSql, new BeanPropertyRowMapper(CreditsDetailDO.class));
                 List<CreditsDetailDO> creditsDetailDOList = new ArrayList<>();
-                Envelop<CreditsDetailDO> envelop = new Envelop<>();
+                MixEnvelop<CreditsDetailDO, CreditsDetailDO> envelop = new MixEnvelop<>();
                 if (getWeekOfDate(new Date()).equalsIgnoreCase("星期五")||getWeekOfDate(new Date()).equalsIgnoreCase("星期六")||getWeekOfDate(new Date()).equalsIgnoreCase("星期日")){
                     String sql = "select sum(integrate) as total from wlyy_health_bank_credits_detail where patient_id = '" + creditsDetailDO.getPatientId() + "' and description = '周奖励'";
                     List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
@@ -989,7 +989,7 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Envelop<CreditsDetailDO> envelop = new Envelop<>();
+            MixEnvelop<CreditsDetailDO, CreditsDetailDO> envelop = new MixEnvelop<>();
             return envelop;
         }
     }

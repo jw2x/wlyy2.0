@@ -4,9 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.yihu.jw</groupId>
-		<artifactId>svr-lib-parent-pom</artifactId>
-		<version>1.0.2</version>
-		<relativePath>../../svr-lib-parent-pom/pom.xml</relativePath>
+		<artifactId>wlyy-parent-pom</artifactId>
+		<version>2.0.0</version>
+		<relativePath>../../wlyy-parent-pom/pom.xml</relativePath>
 	</parent>
 
 	<groupId>com.yihu.rehabilitation</groupId>
@@ -16,91 +16,27 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.yihu.jw</groupId>
-			<artifactId>common-entity</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.jw</groupId>
-			<artifactId>common-request-mapping</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.jw</groupId>
-			<artifactId>common-exception</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.base</groupId>
-			<artifactId>common-swagger</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.jw</groupId>
-			<artifactId>common-rest-model</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.jw</groupId>
-			<artifactId>common-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.base</groupId>
-			<artifactId>common-data-mysql</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.base</groupId>
-			<artifactId>common-log</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.base</groupId>
-			<artifactId>common-data-fastdfs</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<!--tomcat 启动时 打开注释 start-->
-			<!-- <exclusions>
+			 <exclusions>
 				 <exclusion>
 					 <groupId>org.springframework.boot</groupId>
 					 <artifactId>spring-boot-starter-tomcat</artifactId>
 				 </exclusion>
-			 </exclusions>-->
+			 </exclusions>
 		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-servlet-api</artifactId>
-			<version>8.5.28</version>
-			<scope>provided</scope>
-			<!--tomcat 启动时 打开注释 end-->
-		</dependency>
-		<!--tomcat 启动时 注释下列配置 start-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 		</dependency>
-		<!--tomcat 启动时 注释下列配置 end-->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-jdbc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-logging</artifactId>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -114,38 +50,10 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-test-autoconfigure</artifactId>
-			<scope>test</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu</groupId>
-			<artifactId>common-data-es-starter</artifactId>
-			<version>1.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>com.yihu.jw</groupId>
-			<artifactId>common-util</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -156,6 +64,43 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.15-beta1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.yihu.jw</groupId>
+			<artifactId>common-entity</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.yihu.jw</groupId>
+			<artifactId>common-request-mapping</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.yihu.jw</groupId>
+			<artifactId>common-exception</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.yihu.jw</groupId>
+			<artifactId>common-rest-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.yihu.jw</groupId>
+			<artifactId>common-util</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.yihu</groupId>
+			<artifactId>fastdfs-starter</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yihu</groupId>
+			<artifactId>swagger-starter</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.yihu</groupId>
+			<artifactId>mysql-starter</artifactId>
+			<version>2.0.0</version>
 		</dependency>
 	</dependencies>
 

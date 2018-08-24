@@ -4,7 +4,7 @@ import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.manage.dao.system.UserDao;
 import com.yihu.jw.manage.dao.system.UserRoleDao;
 import com.yihu.jw.manage.model.system.ManageUser;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.wlyy.WlyyContant;
 import com.yihu.jw.util.security.MD5;
 import org.springframework.beans.factory.annotation.Autowired;

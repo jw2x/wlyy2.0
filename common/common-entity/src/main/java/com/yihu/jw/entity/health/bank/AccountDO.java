@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.health.bank;
 
-import com.yihu.jw.IdEntityWithOperation;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "wlyy_health_bank_account")
-public class AccountDO extends IdEntityWithOperation implements Serializable {
+public class AccountDO extends UuidIdentityEntityWithOperator implements Serializable {
 
     @Column(name = "saas_id")
     private String saasId; //saasId
@@ -43,40 +43,33 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
     @Column(name = "status")
     private Integer status;//状态（1有效，-1失效）
 
-    @Transient
     private String idCard;//身份证号码
-
-    @Transient
     private Long sum;//总积分（已用积分和剩余积分）
-
-    @Transient
     private Integer usedTotal;//已用积分
-
-    @Transient
     private Long nowTotal;//今日获取积分
 
-    @Transient
+
     private Long activityTotal;//参与活动数;
 
-    @Transient
+
     private Long taskTotal;//参与任务数;
 
-    @Transient
+
     private Integer teamRanking;//团队排名
 
-    @Transient
+
     private Integer cityRanking;//全市排名
 
-    @Transient
+
     private List<String> patientIds;//团队居民id
 
-    @Transient
+
     private String taskId;//任务id
 
-    @Transient
+
     private Long activityRanking;//活动排名
 
-    @Transient
+
     private Long activityIntegrate;//活动积分
 
     public String getSaasId() {
@@ -119,6 +112,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.hospital = hospital;
     }
 
+    @Transient
     public Integer getUsedTotal() {
         return usedTotal;
     }
@@ -151,6 +145,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.hospitalName = hospitalName;
     }
 
+    @Transient
     public Long getSum() {
         return sum;
     }
@@ -159,6 +154,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.sum = sum;
     }
 
+    @Transient
     public Long getNowTotal() {
         return nowTotal;
     }
@@ -167,6 +163,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.nowTotal = nowTotal;
     }
 
+    @Transient
     public Long getActivityTotal() {
         return activityTotal;
     }
@@ -175,6 +172,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.activityTotal = activityTotal;
     }
 
+    @Transient
     public Long getTaskTotal() {
         return taskTotal;
     }
@@ -183,6 +181,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.taskTotal = taskTotal;
     }
 
+    @Transient
     public Integer getTeamRanking() {
         return teamRanking;
     }
@@ -191,6 +190,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.teamRanking = teamRanking;
     }
 
+    @Transient
     public Integer getCityRanking() {
         return cityRanking;
     }
@@ -199,6 +199,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.cityRanking = cityRanking;
     }
 
+    @Transient
     public List<String> getPatientIds() {
         return patientIds;
     }
@@ -207,6 +208,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.patientIds = patientIds;
     }
 
+    @Transient
     public String getTaskId() {
         return taskId;
     }
@@ -215,6 +217,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.taskId = taskId;
     }
 
+    @Transient
     public Long getActivityRanking() {
         return activityRanking;
     }
@@ -223,6 +226,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.activityRanking = activityRanking;
     }
 
+    @Transient
     public Long getActivityIntegrate() {
         return activityIntegrate;
     }
@@ -231,6 +235,7 @@ public class AccountDO extends IdEntityWithOperation implements Serializable {
         this.activityIntegrate = activityIntegrate;
     }
 
+    @Transient
     public String getIdCard() {
         return idCard;
     }
