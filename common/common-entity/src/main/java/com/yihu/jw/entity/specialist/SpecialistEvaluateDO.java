@@ -7,6 +7,7 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -33,13 +34,16 @@ public class SpecialistEvaluateDO extends UuidIdentityEntityWithOperator impleme
     private Integer relationType;//评价类型
 
     @Column(name = "relation_code")
-    private Integer relationCode;//所属服务code
+    private String relationCode;//所属服务code
 
     @Column(name = "score")
     private Integer score;//得分
 
     @Column(name = "type")
     private Integer type;//评论方式
+
+    @Transient
+    private String content;//标签内容
 
     @Column(name = "saas_id")
     public String getSaasId() {
@@ -87,11 +91,11 @@ public class SpecialistEvaluateDO extends UuidIdentityEntityWithOperator impleme
     }
 
     @Column(name = "relation_code")
-    public Integer getRelationCode() {
+    public String getRelationCode() {
         return relationCode;
     }
 
-    public void setRelationCode(Integer relationCode) {
+    public void setRelationCode(String relationCode) {
         this.relationCode = relationCode;
     }
 
@@ -111,5 +115,13 @@ public class SpecialistEvaluateDO extends UuidIdentityEntityWithOperator impleme
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

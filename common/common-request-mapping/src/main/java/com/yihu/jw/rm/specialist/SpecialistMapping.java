@@ -7,7 +7,7 @@ public class SpecialistMapping {
 
     public static final String api_specialist_common = "svr-specialist";
     public static final Integer api_specialist_fail = -1;
-    public static final String api_success ="succes";
+    public static final String api_success ="success";
     public static final String doctor_exist ="doctor_exist";
     public static final String team_exist ="team_exist";
 

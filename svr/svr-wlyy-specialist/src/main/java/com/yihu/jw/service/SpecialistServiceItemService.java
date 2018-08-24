@@ -6,9 +6,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.dao.SpecialistServiceItemDao;
 import com.yihu.jw.dao.SpecialistServiceItemOperateLogDao;
+import com.yihu.jw.entity.specialist.SpecialistEvaluateDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemOperateLogDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
 import com.yihu.jw.util.ISqlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +49,8 @@ public class SpecialistServiceItemService {
      * @param specialistServiceItemDO
      * @return
      */
-    public Envelop<Boolean> insert(SpecialistServiceItemDO specialistServiceItemDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean,Boolean> insert(SpecialistServiceItemDO specialistServiceItemDO){
+        MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
         specialistServiceItemDao.save(specialistServiceItemDO);
         envelop.setObj(true);
         return envelop;
@@ -64,8 +65,8 @@ public class SpecialistServiceItemService {
      * @param size
      * @return
      */
-    public Envelop<SpecialistServiceItemDO> select(SpecialistServiceItemDO specialistServiceItemDO,Integer page,Integer size){
-        Envelop<SpecialistServiceItemDO> envelop = new Envelop<>();
+    public MixEnvelop<SpecialistServiceItemDO,SpecialistEvaluateDO> select(SpecialistServiceItemDO specialistServiceItemDO, Integer page, Integer size){
+        MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> envelop = new MixEnvelop<>();
         String sql = ISqlUtils.getSql(specialistServiceItemDO,page,size,"*");
         List<SpecialistServiceItemDO> specialistServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SpecialistServiceItemDO.class));
         String sqlcount = new ISqlUtils().getSql(specialistServiceItemDO,0,0,"count");
@@ -74,7 +75,7 @@ public class SpecialistServiceItemService {
         if(rstotal!=null&&rstotal.size()>0){
             count = (Long) rstotal.get(0).get("total");
         }
-        return Envelop.getSuccessListWithPage(HealthBankMapping.api_success,specialistServiceItemDOS,page,size,count);
+        return MixEnvelop.getSuccessListWithPage(HealthBankMapping.api_success,specialistServiceItemDOS,page,size,count);
     }
 
 
@@ -84,8 +85,8 @@ public class SpecialistServiceItemService {
      * @param ids
      * @return
      */
-    public Envelop<Boolean> batchDelete(List<String> ids){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean,Boolean> batchDelete(List<String> ids){
+        MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
         for (int i =0;i<ids.size();i++){
             SpecialistServiceItemDO specialistServiceItemDO = specialistServiceItemDao.findOne(ids.get(i));
             specialistServiceItemDO.setStatus(0);
@@ -104,8 +105,8 @@ public class SpecialistServiceItemService {
      * @param specialistServiceItemDO
      * @return
      */
-    public Envelop<Boolean> update(SpecialistServiceItemDO specialistServiceItemDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean,Boolean> update(SpecialistServiceItemDO specialistServiceItemDO){
+        MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
         SpecialistServiceItemDO specialistServiceItemDO1 = specialistServiceItemDao.findOne(specialistServiceItemDO.getId());
         JSONObject jsonObject = (JSONObject) JSONObject.toJSON(specialistServiceItemDO1);
         String sql = ISqlUtils.getUpdateSql(specialistServiceItemDO);
