@@ -29,7 +29,7 @@ public class PatientRehabilitationPlanDO extends UuidIdentityEntityWithOperator 
     @Column(name = "payment")
     private Integer payment;//支付方式（1立即支付，2按服务支付）
     @Column(name = "total_expense")
-    private Float totalExpense;//套餐总金额
+    private Integer totalExpense;//套餐总金额
     @Column(name = "plan_type")
     private Integer planType;//安排类型（1康复计划，2转社区医院，3转家庭病床）
     @Column(name = "service_package_id")
@@ -71,11 +71,11 @@ public class PatientRehabilitationPlanDO extends UuidIdentityEntityWithOperator 
         this.payment = payment;
     }
 
-    public Float getTotalExpense() {
+    public Integer getTotalExpense() {
         return totalExpense;
     }
 
-    public void setTotalExpense(Float totalExpense) {
+    public void setTotalExpense(Integer totalExpense) {
         this.totalExpense = totalExpense;
     }
 
