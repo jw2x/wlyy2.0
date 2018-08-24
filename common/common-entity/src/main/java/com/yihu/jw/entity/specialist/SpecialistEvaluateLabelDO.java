@@ -24,8 +24,8 @@ public class SpecialistEvaluateLabelDO extends UuidIdentityEntityWithOperator im
     @Column(name = "doctor")
     private String doctor;//被评论的医生
 
-    @Column(name = "evaluate_typr")
-    private String evaluateType;//评论种类
+    @Column(name = "evaluate_type")
+    private Integer evaluateType;//评论种类
 
     @Column(name = "relation_code")
     private String relationCode;//评论类型
@@ -56,11 +56,11 @@ public class SpecialistEvaluateLabelDO extends UuidIdentityEntityWithOperator im
     }
 
     @Column(name = "evaluate_type")
-    public String getEvaluateType() {
+    public Integer getEvaluateType() {
         return evaluateType;
     }
 
-    public void setEvaluateType(String evaluateType) {
+    public void setEvaluateType(Integer evaluateType) {
         this.evaluateType = evaluateType;
     }
 

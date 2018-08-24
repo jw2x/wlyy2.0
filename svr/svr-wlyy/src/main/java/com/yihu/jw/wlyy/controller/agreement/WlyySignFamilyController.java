@@ -1,17 +1,16 @@
 package com.yihu.jw.wlyy.controller.agreement;
 
+import com.yihu.jw.entity.wlyy.agreement.WlyySignFamilyDO;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
-import com.yihu.jw.entity.wlyy.agreement.WlyySignFamilyDO;
 import com.yihu.jw.wlyy.service.agreement.WlyySignFamilyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

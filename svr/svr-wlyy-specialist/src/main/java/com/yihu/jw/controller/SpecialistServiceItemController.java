@@ -3,9 +3,10 @@ package com.yihu.jw.controller;/**
  */
 
 import com.alibaba.fastjson.JSONArray;
+import com.yihu.jw.entity.specialist.SpecialistEvaluateDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
-import com.yihu.jw.restmodel.common.Envelop;
-import com.yihu.jw.restmodel.common.EnvelopRestController;
+import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.SpecialistServiceItemService;
 import io.swagger.annotations.Api;
@@ -26,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping(SpecialistMapping.api_specialist_common)
 @Api(tags = "服务项目相关操作", description = "服务项目相关操作")
-public class SpecialistServiceItemController extends EnvelopRestController {
+public class SpecialistServiceItemController extends EnvelopRestEndpoint {
 
     @Autowired
     private Tracer tracer;
@@ -43,11 +44,11 @@ public class SpecialistServiceItemController extends EnvelopRestController {
      */
     @GetMapping(value = SpecialistMapping.serviceItem.getServiceItem)
     @ApiOperation(value = "服务项目列表查询")
-    public Envelop<SpecialistServiceItemDO> select(@ApiParam(name = "serviceItem", value = "服务项目JSON")
+    public MixEnvelop<SpecialistServiceItemDO,SpecialistEvaluateDO> select(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                                        @RequestParam(value = "serviceItem")String serviceItem,
-                                                   @ApiParam(value = "当前页",name = "page")
+                                                                           @ApiParam(value = "当前页",name = "page")
                                                    @RequestParam(value = "page",defaultValue = "1") Integer page,
-                                                   @ApiParam(value = "显示记录数",name = "pageSize",defaultValue = "10")
+                                                                           @ApiParam(value = "显示记录数",name = "pageSize",defaultValue = "10")
                                                        @RequestParam(value = "pageSize") Integer pageSize){
         try {
             SpecialistServiceItemDO serviceItemDO = toEntity(serviceItem,SpecialistServiceItemDO.class);
@@ -55,7 +56,7 @@ public class SpecialistServiceItemController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -68,7 +69,7 @@ public class SpecialistServiceItemController extends EnvelopRestController {
      */
     @GetMapping(value = SpecialistMapping.serviceItem.createServiceItem)
     @ApiOperation(value = "服务项目添加")
-    public Envelop<Boolean> insert(@ApiParam(name = "serviceItem", value = "服务项目JSON")
+    public MixEnvelop<Boolean,Boolean> insert(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                                        @RequestParam(value = "serviceItem")String serviceItem){
         try {
             SpecialistServiceItemDO serviceItemDO = toEntity(serviceItem,SpecialistServiceItemDO.class);
@@ -76,7 +77,7 @@ public class SpecialistServiceItemController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -88,10 +89,10 @@ public class SpecialistServiceItemController extends EnvelopRestController {
      */
     @PostMapping(value = SpecialistMapping.serviceItem.batchDelete)
     @ApiOperation(value = "批量删除服务项目")
-    public Envelop<Boolean> batchDelete(@ApiParam(name="ids",value = "id集合")
+    public MixEnvelop<Boolean,Boolean> batchDelete(@ApiParam(name="ids",value = "id集合")
                                         @RequestParam(value = "ids",required = false)String ids){
         try{
-            Envelop<Boolean> envelop = new Envelop<>();
+            MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
             JSONArray array = JSONArray.parseArray(ids);
             List<String> itemIds = new ArrayList<>();
             for (int i = 0;i<array.size();i++){
@@ -103,7 +104,7 @@ public class SpecialistServiceItemController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 
@@ -116,7 +117,7 @@ public class SpecialistServiceItemController extends EnvelopRestController {
      */
     @GetMapping(value = SpecialistMapping.serviceItem.updateServiceItem)
     @ApiOperation(value = "服务项目更新")
-    public Envelop<Boolean> udpate(@ApiParam(name = "serviceItem", value = "服务项目JSON")
+    public MixEnvelop<Boolean,Boolean> udpate(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                    @RequestParam(value = "serviceItem")String serviceItem){
         try {
             SpecialistServiceItemDO serviceItemDO = toEntity(serviceItem,SpecialistServiceItemDO.class);
@@ -124,7 +125,7 @@ public class SpecialistServiceItemController extends EnvelopRestController {
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
-            return Envelop.getError(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
         }
     }
 }

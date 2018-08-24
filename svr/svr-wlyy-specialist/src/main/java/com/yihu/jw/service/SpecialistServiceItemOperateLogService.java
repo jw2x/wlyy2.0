@@ -4,7 +4,7 @@ package com.yihu.jw.service;/**
 
 import com.yihu.jw.dao.SpecialistServiceItemOperateLogDao;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemOperateLogDO;
-import com.yihu.jw.restmodel.common.Envelop;
+import com.yihu.jw.restmodel.web.MixEnvelop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +26,8 @@ public class SpecialistServiceItemOperateLogService {
      * @param specialistServiceItemOperateLogDO
      * @return
      */
-    public Envelop<Boolean> insert(SpecialistServiceItemOperateLogDO specialistServiceItemOperateLogDO){
-        Envelop<Boolean> envelop = new Envelop<>();
+    public MixEnvelop<Boolean,Boolean> insert(SpecialistServiceItemOperateLogDO specialistServiceItemOperateLogDO){
+        MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
         specialistServiceItemOperateLogDao.save(specialistServiceItemOperateLogDO);
         envelop.setObj(true);
         return envelop;

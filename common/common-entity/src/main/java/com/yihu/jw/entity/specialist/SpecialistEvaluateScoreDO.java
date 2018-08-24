@@ -25,13 +25,13 @@ public class SpecialistEvaluateScoreDO extends UuidIdentityEntityWithOperator im
     private String doctor;//医生
 
     @Column(name = "evaluate_type")
-    private String evaluateType;//评论种类
+    private Integer evaluateType;//评论种类
 
     @Column(name = "relation_code")
     private String relationCode;//关联code
 
     @Column(name = "score")
-    private String score;//评论得分
+    private Integer score;//评论得分
 
 
     @Column(name = "saas_id")
@@ -53,11 +53,11 @@ public class SpecialistEvaluateScoreDO extends UuidIdentityEntityWithOperator im
     }
 
     @Column(name = "evaluate_type")
-    public String getEvaluateType() {
+    public Integer getEvaluateType() {
         return evaluateType;
     }
 
-    public void setEvaluateType(String evaluateType) {
+    public void setEvaluateType(Integer evaluateType) {
         this.evaluateType = evaluateType;
     }
 
@@ -71,11 +71,11 @@ public class SpecialistEvaluateScoreDO extends UuidIdentityEntityWithOperator im
     }
 
     @Column(name = "score")
-    public String getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 }
