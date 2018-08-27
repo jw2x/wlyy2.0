@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.saas;
 
 import com.yihu.jw.base.service.SaasDefaultModuleFunctionService;
 import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
+import com.yihu.jw.restmodel.base.saas.SaasDefaultModuleFunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -18,11 +19,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * Endpoint - Saas默认模块功能
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.SaasDefaultModuleFunction.PREFIX)
-@Api(value = "Saas默认模块管理", description = "Saas默认模块管理服务接口", tags = {"wlyy基础服务 - Saas默认模块管理服务接口"})
+@Api(value = "Saas默认模块功能管理", description = "Saas默认模块功能管理服务接口", tags = {"wlyy基础服务 - Saas默认模块功能管理服务接口"})
 public class SaasDefaultModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
@@ -30,12 +32,12 @@ public class SaasDefaultModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.SaasDefaultModuleFunction.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SaasDefaultModuleFunctionDO> create (
+    public ObjEnvelop<SaasDefaultModuleFunctionVO> create (
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SaasDefaultModuleFunctionDO saasDefaultModuleDO = toEntity(jsonData, SaasDefaultModuleFunctionDO.class);
         saasDefaultModuleDO = saasDefaultModuleService.save(saasDefaultModuleDO);
-        return success(saasDefaultModuleDO);
+        return success(saasDefaultModuleDO, SaasDefaultModuleFunctionVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.SaasDefaultModuleFunction.DELETE)
@@ -62,7 +64,7 @@ public class SaasDefaultModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.SaasDefaultModuleFunction.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SaasDefaultModuleFunctionDO> page (
+    public PageEnvelop<SaasDefaultModuleFunctionVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -75,12 +77,12 @@ public class SaasDefaultModuleFunctionEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = saasDefaultModuleService.search(fields, filters, sorts, page, size);
         int count = (int)saasDefaultModuleService.getCount(filters);
-        return success(saasDefaultModuleDOS, count, page, size);
+        return success(saasDefaultModuleDOS, count, page, size, SaasDefaultModuleFunctionVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SaasDefaultModuleFunction.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SaasDefaultModuleFunctionDO> list (
+    public ListEnvelop<SaasDefaultModuleFunctionVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -88,7 +90,7 @@ public class SaasDefaultModuleFunctionEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = saasDefaultModuleService.search(fields, filters, sorts);
-        return success(saasDefaultModuleDOS);
+        return success(saasDefaultModuleDOS, SaasDefaultModuleFunctionVO.class);
     }
 
 }

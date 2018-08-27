@@ -2,8 +2,7 @@ package com.yihu.jw.base.endpoint.function;
 
 import com.yihu.jw.base.service.FunctionService;
 import com.yihu.jw.entity.base.function.FunctionDO;
-import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.base.base.FunctionVO;
+import com.yihu.jw.restmodel.base.function.FunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -47,7 +46,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
         functionService.delete(ids);
-        throw new ApiException("f", 200);
+        return success("success");
     }
 
     @PostMapping(value = BaseRequestMapping.Function.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

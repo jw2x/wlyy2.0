@@ -6,7 +6,7 @@ import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 
 /**
- * Service - 用户
+ * Service - 后台管理员
  * Created by progr1mmer on 2018/8/20.
  */
 @Service

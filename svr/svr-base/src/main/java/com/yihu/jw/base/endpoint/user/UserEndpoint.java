@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.user;
 
 import com.yihu.jw.base.service.UserService;
 import com.yihu.jw.entity.base.user.UserDO;
+import com.yihu.jw.restmodel.base.user.UserVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Endpoint - 用户
+ * Endpoint - 后台管理员
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
@@ -31,12 +32,12 @@ public class UserEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.User.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<UserDO> create (
+    public ObjEnvelop<UserVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         UserDO userDO = toEntity(jsonData, UserDO.class);
         userDO = userService.save(userDO);
-        return success(userDO);
+        return success(userDO, UserVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.User.DELETE)
@@ -63,7 +64,7 @@ public class UserEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.User.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<UserDO> page (
+    public PageEnvelop<UserVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -76,12 +77,12 @@ public class UserEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         List<UserDO> userDOS = userService.search(fields, filters, sorts, page, size);
         int count = (int)userService.getCount(filters);
-        return success(userDOS, count, page, size);
+        return success(userDOS, count, page, size, UserVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.User.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<UserDO> list (
+    public ListEnvelop<UserVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -89,7 +90,7 @@ public class UserEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<UserDO> userDOS = userService.search(fields, filters, sorts);
-        return success(userDOS);
+        return success(userDOS, UserVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.User.CHECK_USERNAME)

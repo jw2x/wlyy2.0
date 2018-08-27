@@ -8,9 +8,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 /**
+ * Dao - Saas默认模块功能
  * Created by progr1mmer on 2018/8/17.
  */
 public interface SaasDefaultModuleFunctionDao extends PagingAndSortingRepository<SaasDefaultModuleFunctionDO, Integer>, JpaSpecificationExecutor<SaasDefaultModuleFunctionDO> {
 
-    List<SaasDefaultModuleFunctionDO> findByType(SaasDO.Type type);
+    List<SaasDefaultModuleFunctionDO> findBySaasType(SaasDO.Type type);
 }

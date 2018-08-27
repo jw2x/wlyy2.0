@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.archives;
 
 import com.yihu.jw.fegin.fallbackfactory.archives.ArchivesFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.archives.PatientArchivesInfoVO;
 import com.yihu.jw.restmodel.archives.PatientArchivesVO;
 import com.yihu.jw.restmodel.web.MixEnvelop;

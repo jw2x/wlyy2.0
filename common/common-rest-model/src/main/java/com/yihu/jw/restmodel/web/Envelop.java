@@ -8,16 +8,17 @@ import io.swagger.annotations.ApiModelProperty;
 import java.io.Serializable;
 
 /**
- * Created by chenweida on 2018/1/16.
+ * Rest Model - 基类
+ * Created by Progr1mmer on 2018/8/24.
  * 快速集成 {@link com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint}
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @ApiModel(value = "Envelop", description = "基础实体")
 public class Envelop implements Serializable {
 
-    @ApiModelProperty("信息")
+    @ApiModelProperty(value = "信息", example = "success")
     protected String message;
-    @ApiModelProperty("状态（200成功，-1是失败）")
+    @ApiModelProperty(value = "状态（200 - 成功)", example = "200")
     protected Integer status = EnvelopStatus.success.code;
 
     public Integer getStatus() {

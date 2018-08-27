@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.iot.device;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.device.IotDeviceOrderFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.device.IotDeviceOrderVO;
 import com.yihu.jw.restmodel.iot.device.IotOrderPurchaseVO;

@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.iot.common;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.common.IotFileUploadFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.rm.iot.IotRequestMapping;

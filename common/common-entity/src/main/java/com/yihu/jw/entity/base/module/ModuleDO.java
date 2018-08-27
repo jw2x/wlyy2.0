@@ -18,7 +18,9 @@ import java.util.List;
 public class ModuleDO extends UuidIdentityEntityWithOperator {
 
 	/**
-	 * 0-禁用，1-可用，2-不可用
+	 * 0 - 禁用
+	 * 1 - 可用
+	 * 2 - 不可用
 	 */
     public enum Status {
 		disable,
@@ -59,7 +61,7 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
 		this.parentId = parentId;
 	}
 
-    @Column(name = "status", precision = 2, scale = 0)
+    @Column(name = "status")
     public Status getStatus() {
         return status;
     }

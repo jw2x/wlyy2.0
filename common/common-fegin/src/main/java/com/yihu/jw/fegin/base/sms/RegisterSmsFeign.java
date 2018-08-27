@@ -1,6 +1,6 @@
 package com.yihu.jw.fegin.base.sms;
 
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseSmsRequestMapping;
 import io.swagger.annotations.ApiParam;

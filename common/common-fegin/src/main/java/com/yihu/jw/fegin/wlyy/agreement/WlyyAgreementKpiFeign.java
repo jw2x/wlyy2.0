@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.wlyy.agreement;
 
 import com.yihu.jw.fegin.fallbackfactory.wlyy.agreement.WlyyAgreementKpiFeignFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.wlyy.WlyyRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
