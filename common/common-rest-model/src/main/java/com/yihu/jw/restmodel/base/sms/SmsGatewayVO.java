@@ -1,25 +1,33 @@
 package com.yihu.jw.restmodel.base.sms;
 
+import com.yihu.jw.entity.base.sms.SmsGatewayDO;
+import com.yihu.jw.restmodel.UuidIdentityVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
- * Created by chenweida on 2017/5/22.
+ * VO - 短信网关
+ * Created by Progr1mmer on 2018/8/27.
  */
-public class SmsGatewayVO {
-    private String id;
-    private String name;//名称
-    private String saasId; //关联 base_saas code
-    private String orgCode; //机构code
-    private String ip; // 短信接口的ip地址
-    private String username;  //短信接口的账号
-    private String password;	//短信接口的密码
-    private String url;	//短信接口的url
+@ApiModel(value = "SmsGatewayVO", description = "短信网关")
+public class SmsGatewayVO extends UuidIdentityVO {
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    @ApiModelProperty(value = "saas id", example = "402803ee656498890165649ad2da0000")
+    private String saasId;
+    @ApiModelProperty(value = "网关名称", example = "基础短信网关")
+    private String name;
+    @ApiModelProperty(value = "短信接口的账号", example = "user123")
+    private String username;
+    @ApiModelProperty(value = "短信接口的密码", example = "password123")
+    private String password;
+    @ApiModelProperty(value = "官网地址", example = "http://www.smsgateway.com")
+    private String website;
+    @ApiModelProperty(value = "短信接口调用的地址", example = "http://www.smsgateway.com/api/v1.0")
+    private String url;
+    @ApiModelProperty(value = "调用凭证（json串）", example = "{\"app_id\":\"EwC0iRSrcS\",\"signature\":\"iREOlyuyKfRBIGOHbBGJ\"}")
+    private String certificate;
+    @ApiModelProperty(value = "状态", example = "available")
+    private SmsGatewayDO.Status status;
 
     public String getSaasId() {
         return saasId;
@@ -29,20 +37,12 @@ public class SmsGatewayVO {
         this.saasId = saasId;
     }
 
-    public String getOrgCode() {
-        return orgCode;
+    public String getName() {
+        return name;
     }
 
-    public void setOrgCode(String orgCode) {
-        this.orgCode = orgCode;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -61,6 +61,14 @@ public class SmsGatewayVO {
         this.password = password;
     }
 
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
     public String getUrl() {
         return url;
     }
@@ -69,12 +77,19 @@ public class SmsGatewayVO {
         this.url = url;
     }
 
-
-    public String getName() {
-        return name;
+    public String getCertificate() {
+        return certificate;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCertificate(String certificate) {
+        this.certificate = certificate;
+    }
+
+    public SmsGatewayDO.Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(SmsGatewayDO.Status status) {
+        this.status = status;
     }
 }

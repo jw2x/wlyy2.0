@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.iot.company;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.company.IotCompanyFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.iot.company.IotCompanyCertificateVO;
 import com.yihu.jw.restmodel.iot.company.IotCompanyVO;

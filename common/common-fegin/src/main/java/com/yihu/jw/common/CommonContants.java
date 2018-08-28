@@ -1,4 +1,4 @@
-package com.yihu.jw.restmodel;
+package com.yihu.jw.common;
 
 /**
  * Created by chenweida on 2017/10/24.

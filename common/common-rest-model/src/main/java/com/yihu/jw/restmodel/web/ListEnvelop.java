@@ -22,7 +22,7 @@ import java.util.List;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "ListEnvelop<T>", description = "获取实体列表返回")
+@ApiModel(value = "ListEnvelop<T>", description = "列表实体")
 public class ListEnvelop<T> extends Envelop {
 
     @ApiModelProperty(value = "列表内容")

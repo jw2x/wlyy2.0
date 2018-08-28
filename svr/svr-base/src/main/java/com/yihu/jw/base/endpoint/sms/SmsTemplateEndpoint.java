@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.sms;
 
 import com.yihu.jw.base.service.SmsTemplateService;
 import com.yihu.jw.entity.base.sms.SmsTemplateDO;
+import com.yihu.jw.restmodel.base.sms.SmsTemplateVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,12 +32,12 @@ public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.SmsTemplate.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SmsTemplateDO> create (
+    public ObjEnvelop<SmsTemplateVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SmsTemplateDO smsTemplateDO = toEntity(jsonData, SmsTemplateDO.class);
         smsTemplateDO = smsTemplateService.save(smsTemplateDO);
-        return success(convertToModel(smsTemplateDO, SmsTemplateDO.class));
+        return success(convertToModel(smsTemplateDO, SmsTemplateVO.class));
     }
 
     @PostMapping(value = BaseRequestMapping.SmsTemplate.DELETE)
@@ -51,7 +51,7 @@ public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.SmsTemplate.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public ObjEnvelop<SmsTemplateDO> update (
+    public ObjEnvelop<SmsTemplateVO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SmsTemplateDO smsTemplateDO = toEntity(jsonData, SmsTemplateDO.class);
@@ -59,12 +59,12 @@ public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
             return failed("ID不能为空", ObjEnvelop.class);
         }
         smsTemplateDO = smsTemplateService.save(smsTemplateDO);
-        return success(convertToModel(smsTemplateDO, SmsTemplateDO.class));
+        return success(convertToModel(smsTemplateDO, SmsTemplateVO.class));
     }
 
     @GetMapping(value = BaseRequestMapping.SmsTemplate.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SmsTemplateDO> page (
+    public PageEnvelop<SmsTemplateVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -77,12 +77,12 @@ public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         List<SmsTemplateDO> smsTemplateDOS = smsTemplateService.search(fields, filters, sorts, page, size);
         int count = (int)smsTemplateService.getCount(filters);
-        return success(convertToModels(smsTemplateDOS, new ArrayList<>(), SmsTemplateDO.class), count, page, size);
+        return success(smsTemplateDOS, count, page, size, SmsTemplateVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SmsTemplate.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SmsTemplateDO> list (
+    public ListEnvelop<SmsTemplateVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -90,7 +90,7 @@ public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<SmsTemplateDO> smsTemplateDOS = smsTemplateService.search(fields, filters, sorts);
-        return success(convertToModels(smsTemplateDOS, new ArrayList<>(), SmsTemplateDO.class));
+        return success(smsTemplateDOS, SmsTemplateVO.class);
     }
 
 }

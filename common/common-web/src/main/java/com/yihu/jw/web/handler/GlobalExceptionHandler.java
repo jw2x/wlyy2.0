@@ -1,7 +1,6 @@
 package com.yihu.jw.web.handler;
 
 import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.web.Envelop;
 import feign.FeignException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,5 +52,28 @@ public class GlobalExceptionHandler {
         logger.error(e.getMessage(), e);
         return envelop;
     }
+
+    private class Envelop {
+
+        private String message;
+        private Integer status;
+
+        public String getMessage() {
+            return message;
+        }
+
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+        public Integer getStatus() {
+            return status;
+        }
+
+        public void setStatus(Integer status) {
+            this.status = status;
+        }
+    }
+
 
 }

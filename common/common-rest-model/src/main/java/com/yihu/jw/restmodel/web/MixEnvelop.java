@@ -28,22 +28,22 @@ public class MixEnvelop<T, J> extends Envelop {
 
     private static final long serialVersionUID = 2076324875575488461L;
 
-    @ApiModelProperty("当前页")
+    @ApiModelProperty(value = "当前页", example = "1")
     private int currPage = 1;
 
-    @ApiModelProperty("每页大小 默认10")
+    @ApiModelProperty(value = "每页大小 默认10", example = "15")
     private int pageSize = 10;
 
-    @ApiModelProperty("总共多少页")
+    @ApiModelProperty(value = "总共多少页", example = "2")
     private int totalPage;
 
-    @ApiModelProperty("总共多少数据")
+    @ApiModelProperty(value = "总共多少数据", example = "20")
     private int totalCount;
 
-    @ApiModelProperty("列表内容")
+    @ApiModelProperty(value = "列表内容")
     private List<T> detailModelList = new ArrayList<>(0);
 
-    @ApiModelProperty("实体内容")
+    @ApiModelProperty(value = "实体内容")
     private J obj = (J)new HashMap<>(0);
 
     public int getCurrPage() {

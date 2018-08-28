@@ -14,36 +14,12 @@ import javax.persistence.Table;
 @Table(name = "base_role")
 public class RoleDO extends UuidIdentityEntityWithOperator {
 
-	//saas id
-	private String saasId;
-	//所属应用
-	private String clientId;
 	//角色名称
 	private String name;
-	//角色编码
-	private String code;
 	//备注
 	private String remark;
 	//是否系统管理员
 	private Boolean isSystem;
-
-	@Column(name = "saas_id", nullable = false, length = 50)
-	public String getSaasId() {
-		return this.saasId;
-	}
-
-	public void setSaasId(String saasId) {
-		this.saasId = saasId;
-	}
-
-	@Column(name = "client_id", nullable = false, length = 10)
-	public String getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
 
 	@Column(name = "name", length = 50)
 	public String getName() {
@@ -52,15 +28,6 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Column(name = "code", length = 8)
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	@Column(name = "remark")

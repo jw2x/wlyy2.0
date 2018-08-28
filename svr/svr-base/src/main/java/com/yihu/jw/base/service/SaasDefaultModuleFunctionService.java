@@ -6,6 +6,7 @@ import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 
 /**
+ * Service - Saas默认模块功能
  * Created by progr1mmer on 2018/8/17.
  */
 @Service

@@ -6,10 +6,14 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 /**
  * Created by 刘文彬 on 2018/8/16.
  */
 public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository<PatientRehabilitationPlanDO, Long>,JpaSpecificationExecutor<PatientRehabilitationPlanDO> {
 
     PatientRehabilitationPlanDO findById(String id);
+
+    List<PatientRehabilitationPlanDO> findByPatientAndCreateUser(String patient, String doctor);
 }

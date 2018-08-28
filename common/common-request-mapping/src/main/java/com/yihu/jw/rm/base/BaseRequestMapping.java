@@ -40,6 +40,7 @@ public class BaseRequestMapping {
      */
     public static class Module extends Basic {
         public static final String PREFIX  = "/module";
+
     }
 
     /**
