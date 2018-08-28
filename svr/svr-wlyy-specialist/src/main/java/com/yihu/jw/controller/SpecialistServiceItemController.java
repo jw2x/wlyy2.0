@@ -42,7 +42,7 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      * @param pageSize
      * @return
      */
-    @GetMapping(value = SpecialistMapping.serviceItem.getServiceItem)
+    @PostMapping(value = SpecialistMapping.serviceItem.getServiceItem)
     @ApiOperation(value = "服务项目列表查询")
     public MixEnvelop<SpecialistServiceItemDO,SpecialistEvaluateDO> select(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                                        @RequestParam(value = "serviceItem")String serviceItem,
@@ -115,7 +115,7 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      * @param serviceItem
      * @return
      */
-    @GetMapping(value = SpecialistMapping.serviceItem.updateServiceItem)
+    @PostMapping(value = SpecialistMapping.serviceItem.updateServiceItem)
     @ApiOperation(value = "服务项目更新")
     public MixEnvelop<Boolean,Boolean> udpate(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                    @RequestParam(value = "serviceItem")String serviceItem){

@@ -71,5 +71,8 @@ public class SpecialistMapping {
         public static final String getServiceItem = "/getServiceItem";
         public static final String batchDelete = "/batchDelete";
         public static final String updateServiceItem = "/updateServiceItem";
+        public static final String createEvaluate = "/createEvaluate";
+        public static final String getEvaluate = "/getEvaluate";
+        public static final String updateEvaluate = "/updateEvaluate";
     }
 }
