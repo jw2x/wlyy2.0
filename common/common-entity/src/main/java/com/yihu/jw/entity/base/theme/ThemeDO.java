@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
+ * Entity - 主题风格
  * Created by progr1mmer on 2018/8/14.
  */
 @Entity

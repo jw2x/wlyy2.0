@@ -21,10 +21,10 @@ import java.util.HashMap;
  * @author llh
  */
 @JsonInclude(JsonInclude.Include.ALWAYS)
-@ApiModel(value = "ObjEnvelop<J>", description = "获取单个实体信息返回")
+@ApiModel(value = "ObjEnvelop<J>", description = "单个实体")
 public class ObjEnvelop<J> extends Envelop {
 
-    @ApiModelProperty("内容")
+    @ApiModelProperty(value = "内容")
     private J obj = (J)new HashMap<>(0);
 
     public J getObj() {

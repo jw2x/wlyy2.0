@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.sms;
 
 import com.yihu.jw.base.service.SmsGatewayService;
 import com.yihu.jw.entity.base.sms.SmsGatewayDO;
+import com.yihu.jw.restmodel.base.sms.SmsGatewayVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,12 +32,12 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.SmsGateway.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SmsGatewayDO> create (
+    public ObjEnvelop<SmsGatewayVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SmsGatewayDO smsGatewayDO = toEntity(jsonData, SmsGatewayDO.class);
         smsGatewayDO = smsGatewayService.save(smsGatewayDO);
-        return success(convertToModel(smsGatewayDO, SmsGatewayDO.class));
+        return success(convertToModel(smsGatewayDO, SmsGatewayVO.class));
     }
 
     @PostMapping(value = BaseRequestMapping.SmsGateway.DELETE)
@@ -51,7 +51,7 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.SmsGateway.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public ObjEnvelop<SmsGatewayDO> update (
+    public ObjEnvelop<SmsGatewayVO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SmsGatewayDO smsGatewayDO = toEntity(jsonData, SmsGatewayDO.class);
@@ -59,12 +59,12 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
             return failed("ID不能为空", ObjEnvelop.class);
         }
         smsGatewayDO = smsGatewayService.save(smsGatewayDO);
-        return success(convertToModel(smsGatewayDO, SmsGatewayDO.class));
+        return success(convertToModel(smsGatewayDO, SmsGatewayVO.class));
     }
 
     @GetMapping(value = BaseRequestMapping.SmsGateway.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SmsGatewayDO> page (
+    public PageEnvelop<SmsGatewayVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -77,12 +77,12 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         List<SmsGatewayDO> smsGatewayDOS = smsGatewayService.search(fields, filters, sorts, page, size);
         int count = (int)smsGatewayService.getCount(filters);
-        return success(convertToModels(smsGatewayDOS, new ArrayList<>(), SmsGatewayDO.class), count, page, size);
+        return success(smsGatewayDOS, count, page, size, SmsGatewayVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SmsGateway.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SmsGatewayDO> list (
+    public ListEnvelop<SmsGatewayVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -90,7 +90,7 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<SmsGatewayDO> smsGatewayDOS = smsGatewayService.search(fields, filters, sorts);
-        return success(convertToModels(smsGatewayDOS, new ArrayList<>(), SmsGatewayDO.class));
+        return success(smsGatewayDOS, SmsGatewayVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SmsGateway.SEND)
@@ -102,7 +102,6 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "type") Integer type,
             @ApiParam(name = "mobile", value = "手机号码", required = true)
             @RequestParam(value = "mobile") String mobile) {
-
         return success("");
     }
 

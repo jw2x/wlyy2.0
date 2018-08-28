@@ -1,10 +1,9 @@
 package com.yihu.jw.entity.base.system;// default package
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Entity - 系统字典
@@ -12,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_system_dict")
-public class SystemDictDO extends UuidIdentityEntity {
+public class SystemDictDO implements Serializable {
 
 	public enum Type {
 		//基础字典
@@ -21,17 +20,28 @@ public class SystemDictDO extends UuidIdentityEntity {
 		extend
 	}
 
-	// Fields
-	//saas id 用于租户的自定义字典
-	private String saasId;
 	//编码（唯一）
 	private String code;
+	//saas id 用于租户的自定义字典
+	private String saasId;
 	//拼音码
 	private String pyCode;
 	//名称
 	private String name;
 	//类型
 	private Type type;
+
+	@Id
+	@GeneratedValue(generator = "generator")
+	@GenericGenerator(name = "generator", strategy = "assigned")
+	@Column(name = "code", nullable = false, length = 50)
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	@Column(name = "saas_id")
 	public String getSaasId() {
@@ -40,15 +50,6 @@ public class SystemDictDO extends UuidIdentityEntity {
 
 	public void setSaasId(String saasId) {
 		this.saasId = saasId;
-	}
-
-	@Column(name = "code", nullable = false, length = 50)
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	@Column(name = "py_code", nullable = false, length = 50)

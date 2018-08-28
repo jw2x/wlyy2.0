@@ -1,6 +1,6 @@
 package com.yihu.jw.fegin.common.security;
 
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.rm.base.BaseLoginRequestMapping;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;

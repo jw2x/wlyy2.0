@@ -20,8 +20,8 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
     private String saasId;
     @Column(name = "plan_id")
     private String planId;//居民康复套餐code
-    @Column(name = "service_item_id")
-    private String serviceItemId;//服务项目id
+    @Column(name = "hospital_service_item_id")
+    private String hospitalServiceItemId;//机构服务项目id
     @Column(name = "hospital")
     private String hospital;//医院code
     @Column(name = "hospital_name")
@@ -36,6 +36,8 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
     private Date executeTime;//服务项目执行时间
     @Column(name = "status")
     private Integer status;//状态（0未完成，1已完成，2已预约）
+    @Column(name = "expense")
+    private Integer expense;
 
     public String getSaasId() {
         return saasId;
@@ -53,12 +55,12 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.planId = planId;
     }
 
-    public String getServiceItemId() {
-        return serviceItemId;
+    public String getHospitalServiceItemId() {
+        return hospitalServiceItemId;
     }
 
-    public void setServiceItemId(String serviceItemId) {
-        this.serviceItemId = serviceItemId;
+    public void setHospitalServiceItemId(String hospitalServiceItemId) {
+        this.hospitalServiceItemId = hospitalServiceItemId;
     }
 
     public String getHospital() {
@@ -115,5 +117,13 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
 
     public void setDoctorName(String doctorName) {
         this.doctorName = doctorName;
+    }
+
+    public Integer getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Integer expense) {
+        this.expense = expense;
     }
 }

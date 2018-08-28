@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.base.login;
 
 import com.yihu.jw.fegin.fallbackfactory.base.base.LoginFeignFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.rm.base.BaseLoginRequestMapping;

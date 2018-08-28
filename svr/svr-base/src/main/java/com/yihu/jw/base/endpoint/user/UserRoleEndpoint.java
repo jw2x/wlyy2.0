@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.user;
 
 import com.yihu.jw.base.service.UserRoleService;
 import com.yihu.jw.entity.base.user.UserRoleDO;
+import com.yihu.jw.restmodel.base.user.UserRoleVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * Endpoint - 用户角色
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
@@ -30,12 +32,12 @@ public class UserRoleEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.UserRole.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<UserRoleDO> create (
+    public ObjEnvelop<UserRoleVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         UserRoleDO userRoleDO = toEntity(jsonData, UserRoleDO.class);
         userRoleDO = userRoleService.save(userRoleDO);
-        return success(userRoleDO);
+        return success(userRoleDO, UserRoleVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.UserRole.DELETE)
@@ -62,7 +64,7 @@ public class UserRoleEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.UserRole.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<UserRoleDO> page (
+    public PageEnvelop<UserRoleVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -75,12 +77,12 @@ public class UserRoleEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         List<UserRoleDO> userRoleDOS = userRoleService.search(fields, filters, sorts, page, size);
         int count = (int)userRoleService.getCount(filters);
-        return success(userRoleDOS, count, page, size);
+        return success(userRoleDOS, count, page, size, UserRoleVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.UserRole.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<UserRoleDO> list (
+    public ListEnvelop<UserRoleVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -88,7 +90,7 @@ public class UserRoleEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<UserRoleDO> userRoleDOS = userRoleService.search(fields, filters, sorts);
-        return success(userRoleDOS);
+        return success(userRoleDOS, UserRoleVO.class);
     }
 
 }

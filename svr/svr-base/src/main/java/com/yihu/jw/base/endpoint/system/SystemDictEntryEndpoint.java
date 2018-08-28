@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.system;
 
 import com.yihu.jw.base.service.SystemDictEntryService;
 import com.yihu.jw.entity.base.system.SystemDictEntryDO;
+import com.yihu.jw.restmodel.base.system.SystemDictEntryVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -31,12 +32,12 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.SystemDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SystemDictEntryDO> create (
+    public ObjEnvelop<SystemDictEntryVO> create (
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SystemDictEntryDO systemDictEntryDO = toEntity(jsonData, SystemDictEntryDO.class);
         systemDictEntryDO = systemDictEntryService.save(systemDictEntryDO);
-        return success(systemDictEntryDO);
+        return success(systemDictEntryDO, SystemDictEntryVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
@@ -58,12 +59,12 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             return failed("ID不能为空", Envelop.class);
         }
         systemDictEntryDO = systemDictEntryService.save(systemDictEntryDO);
-        return success(systemDictEntryDO);
+        return success(systemDictEntryDO, SystemDictEntryVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SystemDict.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SystemDictEntryDO> page (
+    public PageEnvelop<SystemDictEntryVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -76,12 +77,12 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         List<SystemDictEntryDO> systemDictEntryDOS = systemDictEntryService.search(fields, filters, sorts, page, size);
         int count = (int)systemDictEntryService.getCount(filters);
-        return success(systemDictEntryDOS, count, page, size);
+        return success(systemDictEntryDOS, count, page, size, SystemDictEntryVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SystemDict.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SystemDictEntryDO> list (
+    public ListEnvelop<SystemDictEntryVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -89,6 +90,6 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<SystemDictEntryDO> systemDictEntryDOS = systemDictEntryService.search(fields, filters, sorts);
-        return success(systemDictEntryDOS);
+        return success(systemDictEntryDOS, SystemDictEntryVO.class);
     }
 }

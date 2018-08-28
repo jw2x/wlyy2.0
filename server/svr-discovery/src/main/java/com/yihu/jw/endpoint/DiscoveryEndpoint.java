@@ -29,7 +29,7 @@ public class DiscoveryEndpoint {
      * 获取发现服务的信息
      * @return
      */
-    @GetMapping("eurukaMessage")
+    @GetMapping("/eurukaMessage")
     public String eurukaMessage() {
 
         JSONObject jo = new JSONObject();
@@ -74,7 +74,7 @@ public class DiscoveryEndpoint {
      * 获取注册服务的信息
      * @return
      */
-    @GetMapping("eurukaApplicationMessage")
+    @GetMapping("/eurukaApplicationMessage")
     public String eurukaApplicationMessage() {
         PeerAwareInstanceRegistry peerAwareInstanceRegistry = eurekaServerContext.getRegistry();
         JSONObject jo = new JSONObject();
@@ -119,7 +119,7 @@ public class DiscoveryEndpoint {
      * @param asgName
      * @return
      */
-    @PostMapping("register")
+    @PostMapping("/register")
     public String register(
             @RequestParam("instanceId") String instanceId,
             @RequestParam("app") String appName,
@@ -145,8 +145,7 @@ public class DiscoveryEndpoint {
             @RequestParam("lastUpdatedTimestamp") Long lastUpdatedTimestamp,
             @RequestParam("lastDirtyTimestamp") Long lastDirtyTimestamp,
             @RequestParam("actionType") InstanceInfo.ActionType actionType,
-            @RequestParam("asgName") String asgName
-    ) {
+            @RequestParam("asgName") String asgName) {
         try {
             InstanceInfo info = new InstanceInfo(
                     instanceId, appName, appGroupName, ipAddr,
@@ -169,12 +168,11 @@ public class DiscoveryEndpoint {
      * @param isReplication
      * @return
      */
-    @PostMapping("cancel")
+    @PostMapping("/cancel")
     public String cancel(
             @RequestParam("appName") String appName,
             @RequestParam("id") String id,
-            @RequestParam("isReplication") boolean isReplication
-    ) {
+            @RequestParam("isReplication") boolean isReplication) {
         try {
             eurekaServerContext.getRegistry().cancel(appName, id, isReplication);
             return "取消成功";

@@ -2,7 +2,7 @@ package com.yihu.jw.fegin.base.wx;
 
 import com.yihu.jw.exception.business.JiWeiException;
 import com.yihu.jw.fegin.fallbackfactory.base.wx.WechatTemplateFeignFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;
