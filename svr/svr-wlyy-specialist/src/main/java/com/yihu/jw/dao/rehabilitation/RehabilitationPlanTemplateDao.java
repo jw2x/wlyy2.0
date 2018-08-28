@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface RehabilitationPlanTemplateDao extends PagingAndSortingRepository<RehabilitationPlanTemplateDO, Long>,JpaSpecificationExecutor<RehabilitationPlanTemplateDO> {
 
-    @Query("select t from RehabilitationPlanTemplateDO t where t.adminTeamCode = ?1 ORDER BY t.createTime DESC ")
+    @Query("select t from RehabilitationPlanTemplateDO t where t.adminTeamCode = ?1 and t.del = 1 ORDER BY t.createTime DESC ")
     List<RehabilitationPlanTemplateDO> findByAdminTeamCode(Integer adminTeamCode);
 }

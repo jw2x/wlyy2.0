@@ -27,6 +27,7 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
     @Column(name = "del")
     private Integer del;//是否删除（0是，1否）
 
+    @Column(name = "saas_id")
     public String getSaasId() {
         return saasId;
     }
@@ -35,6 +36,7 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
         this.saasId = saasId;
     }
 
+    @Column(name = "title")
     public String getTitle() {
         return title;
     }
@@ -43,6 +45,7 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
         this.title = title;
     }
 
+    @Column(name = "hospital")
     public String getHospital() {
         return hospital;
     }
@@ -51,6 +54,7 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
         this.hospital = hospital;
     }
 
+    @Column(name = "hospital_name")
     public String getHospitalName() {
         return hospitalName;
     }
@@ -59,6 +63,7 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
         this.hospitalName = hospitalName;
     }
 
+    @Column(name = "admin_team_code")
     public Integer getAdminTeamCode() {
         return adminTeamCode;
     }
@@ -67,6 +72,7 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
         this.adminTeamCode = adminTeamCode;
     }
 
+    @Column(name = "del")
     public Integer getDel() {
         return del;
     }
