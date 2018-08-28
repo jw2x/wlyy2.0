@@ -31,7 +31,7 @@ public class SpecialistEvaluateScoreDO extends UuidIdentityEntityWithOperator im
     private String relationCode;//关联code
 
     @Column(name = "score")
-    private Integer score;//评论得分
+    private Double score;//评论得分
 
 
     @Column(name = "saas_id")
@@ -71,11 +71,11 @@ public class SpecialistEvaluateScoreDO extends UuidIdentityEntityWithOperator im
     }
 
     @Column(name = "score")
-    public Integer getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 }
