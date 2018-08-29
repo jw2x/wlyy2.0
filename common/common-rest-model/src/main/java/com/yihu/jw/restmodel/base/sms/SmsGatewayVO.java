@@ -12,8 +12,8 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "SmsGatewayVO", description = "短信网关")
 public class SmsGatewayVO extends UuidIdentityVO {
 
-    @ApiModelProperty(value = "saas id", example = "402803ee656498890165649ad2da0000")
-    private String saasId;
+    @ApiModelProperty(value = "client id", example = "EwC0iRSrcS")
+    private String clientId;
     @ApiModelProperty(value = "网关名称", example = "基础短信网关")
     private String name;
     @ApiModelProperty(value = "短信接口的账号", example = "user123")
@@ -22,19 +22,25 @@ public class SmsGatewayVO extends UuidIdentityVO {
     private String password;
     @ApiModelProperty(value = "官网地址", example = "http://www.smsgateway.com")
     private String website;
+    @ApiModelProperty(value = "超时时间（分钟）", example = "10")
+    private Integer expireMin;
     @ApiModelProperty(value = "短信接口调用的地址", example = "http://www.smsgateway.com/api/v1.0")
-    private String url;
+    private String requestUrl;
     @ApiModelProperty(value = "调用凭证（json串）", example = "{\"app_id\":\"EwC0iRSrcS\",\"signature\":\"iREOlyuyKfRBIGOHbBGJ\"}")
-    private String certificate;
+    private String requestCertificate;
+    @ApiModelProperty(value = "短信接口调用状态标识", example = "result")
+    private String responseCode;
+    @ApiModelProperty(value = "调用成功的状态码", example = "0")
+    private String successValue;
     @ApiModelProperty(value = "状态", example = "available")
     private SmsGatewayDO.Status status;
 
-    public String getSaasId() {
-        return saasId;
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public String getName() {
@@ -69,20 +75,44 @@ public class SmsGatewayVO extends UuidIdentityVO {
         this.website = website;
     }
 
-    public String getUrl() {
-        return url;
+    public Integer getExpireMin() {
+        return expireMin;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setExpireMin(Integer expireMin) {
+        this.expireMin = expireMin;
     }
 
-    public String getCertificate() {
-        return certificate;
+    public String getRequestUrl() {
+        return requestUrl;
     }
 
-    public void setCertificate(String certificate) {
-        this.certificate = certificate;
+    public void setRequestUrl(String requestUrl) {
+        this.requestUrl = requestUrl;
+    }
+
+    public String getRequestCertificate() {
+        return requestCertificate;
+    }
+
+    public void setRequestCertificate(String requestCertificate) {
+        this.requestCertificate = requestCertificate;
+    }
+
+    public String getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(String responseCode) {
+        this.responseCode = responseCode;
+    }
+
+    public String getSuccessValue() {
+        return successValue;
+    }
+
+    public void setSuccessValue(String successValue) {
+        this.successValue = successValue;
     }
 
     public SmsGatewayDO.Status getStatus() {
