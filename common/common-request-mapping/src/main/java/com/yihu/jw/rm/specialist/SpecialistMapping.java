@@ -63,6 +63,10 @@ public class SpecialistMapping {
         public static final String createPatientRehabilitationPlan = "/createPatientRehabilitationPlan";
         public static final String createServiceQrCode ="/createServiceQrCode";
         public static final String checkAfterQrCode = "checkAfterQrCode";
+        public static final String findRehabilitationPlanList = "/findRehabilitationPlanList";
+        public static final String findRehabilitationPlanDetailList = "/findRehabilitationPlan";
+
+
 
     }
 
@@ -71,5 +75,12 @@ public class SpecialistMapping {
         public static final String getServiceItem = "/getServiceItem";
         public static final String batchDelete = "/batchDelete";
         public static final String updateServiceItem = "/updateServiceItem";
+        public static final String createEvaluate = "/createEvaluate";
+        public static final String getEvaluate = "/getEvaluate";
+        public static final String updateEvaluate = "/updateEvaluate";
+        public static final String createHospitalServiceItem = "/createHospitalServiceItem";
+        public static final String selectByHospital = "/selectByHospital";
+        public static final String selectById="/selectById";
+        public static final String selectItemByHospital= "/selectItemByHospital";
     }
 }

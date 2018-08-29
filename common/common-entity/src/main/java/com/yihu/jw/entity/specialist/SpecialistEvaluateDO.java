@@ -45,6 +45,9 @@ public class SpecialistEvaluateDO extends UuidIdentityEntityWithOperator impleme
     @Transient
     private String content;//标签内容
 
+    @Transient
+    private String labelId;//标签Id
+
     @Column(name = "saas_id")
     public String getSaasId() {
         return saasId;
@@ -117,11 +120,21 @@ public class SpecialistEvaluateDO extends UuidIdentityEntityWithOperator impleme
         this.type = type;
     }
 
+    @Transient
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Transient
+    public String getLabelId() {
+        return labelId;
+    }
+
+    public void setLabelId(String labelId) {
+        this.labelId = labelId;
     }
 }

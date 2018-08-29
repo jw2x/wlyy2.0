@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.dao.SpecialistServiceItemDao;
 import com.yihu.jw.dao.SpecialistServiceItemOperateLogDao;
+import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
 import com.yihu.jw.entity.specialist.SpecialistEvaluateDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemOperateLogDO;
@@ -153,6 +154,30 @@ public class SpecialistServiceItemService {
         specialistServiceItemOperateLogDO.setUpdateTime(new Date());
         specialistServiceItemOperateLogDao.save(specialistServiceItemOperateLogDO);
         envelop.setObj(true);
+        return envelop;
+    }
+
+
+    /**
+     * 根据医院code获取服务项目
+     *
+     * @param hospital
+     * @return
+     */
+    public MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> selectByHospital(String hospital){
+        MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> envelop = new MixEnvelop<>();
+        String sql = "select * from wlyy_service_item where status = 1";
+        List<SpecialistServiceItemDO> specialistServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SpecialistServiceItemDO.class));
+        for (SpecialistServiceItemDO specialistServiceItemDO:specialistServiceItemDOS){
+            String sql1 = "select * from wlyy_hospital_service_item where hospital = '"+hospital+"' and serviceItemId = '"+specialistServiceItemDO.getId()+"'";
+            List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
+            if (hospitalServiceItemDOS.size() == 0 || hospitalServiceItemDOS == null){
+                specialistServiceItemDO.setFlag(1);
+            }else {
+                specialistServiceItemDO.setFlag(0);
+            }
+        }
+        envelop.setDetailModelList(specialistServiceItemDOS);
         return envelop;
     }
 }
