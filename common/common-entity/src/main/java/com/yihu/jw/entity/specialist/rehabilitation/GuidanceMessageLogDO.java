@@ -13,23 +13,17 @@ import java.io.Serializable;
 @Entity
 @Table(name = "wlyy_guidance_message_log")
 public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator implements Serializable {
-    @Column(name = "saas_id")
+
     private String saasId;
-    @Column(name = "plan_detail_id")
     private String planDetailId;
-    @Column(name = "content")
     private String content;
-    @Column(name = "doctor")
     private String doctor;
-    @Column(name = "doctor_name")
     private String doctorName;
-    @Column(name = "doctor_type")
     private Integer doctorType;
-    @Column(name = "admin_team_code")
     private String adminTeamCode;
-    @Column(name = "admin_team_name")
     private String adminTeamName;
 
+    @Column(name = "doctor")
     public String getDoctor() {
         return doctor;
     }
@@ -38,6 +32,7 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
         this.doctor = doctor;
     }
 
+    @Column(name = "doctor_name")
     public String getDoctorName() {
         return doctorName;
     }
@@ -46,6 +41,7 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
         this.doctorName = doctorName;
     }
 
+    @Column(name = "doctor_type")
     public Integer getDoctorType() {
         return doctorType;
     }
@@ -54,6 +50,7 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
         this.doctorType = doctorType;
     }
 
+    @Column(name = "admin_team_code")
     public String getAdminTeamCode() {
         return adminTeamCode;
     }
@@ -66,10 +63,12 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
         return adminTeamName;
     }
 
+    @Column(name = "admin_team_name")
     public void setAdminTeamName(String adminTeamName) {
         this.adminTeamName = adminTeamName;
     }
 
+    @Column(name = "saas_id")
     public String getSaasId() {
         return saasId;
     }
@@ -78,6 +77,7 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
         this.saasId = saasId;
     }
 
+    @Column(name = "plan_detail_id")
     public String getPlanDetailId() {
         return planDetailId;
     }
@@ -86,6 +86,7 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
         this.planDetailId = planDetailId;
     }
 
+    @Column(name = "content")
     public String getContent() {
         return content;
     }
