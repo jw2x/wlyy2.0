@@ -78,5 +78,9 @@ public class SpecialistMapping {
         public static final String createEvaluate = "/createEvaluate";
         public static final String getEvaluate = "/getEvaluate";
         public static final String updateEvaluate = "/updateEvaluate";
+        public static final String createHospitalServiceItem = "/createHospitalServiceItem";
+        public static final String selectByHospital = "/selectByHospital";
+        public static final String selectById="/selectById";
+        public static final String selectItemByHospital= "/selectItemByHospital";
     }
 }

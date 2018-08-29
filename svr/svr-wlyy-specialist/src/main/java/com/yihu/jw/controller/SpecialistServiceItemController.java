@@ -118,10 +118,30 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
     @PostMapping(value = SpecialistMapping.serviceItem.updateServiceItem)
     @ApiOperation(value = "服务项目更新")
     public MixEnvelop<Boolean,Boolean> udpate(@ApiParam(name = "serviceItem", value = "服务项目JSON")
-                                   @RequestParam(value = "serviceItem")String serviceItem){
+                                              @RequestParam(value = "serviceItem")String serviceItem){
         try {
             SpecialistServiceItemDO serviceItemDO = toEntity(serviceItem,SpecialistServiceItemDO.class);
             return specialistServiceItemService.update(serviceItemDO);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 根据医院code获取服务项目
+     *
+     * @param hospital
+     * @return
+     */
+    @PostMapping(value = SpecialistMapping.serviceItem.selectItemByHospital)
+    @ApiOperation(value = "根据医院code获取服务项目")
+    public MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> selectByHospital(@ApiParam(name = "hospital", value = "医院code")
+                                              @RequestParam(value = "hospital")String hospital){
+        try {
+            return specialistServiceItemService.selectByHospital(hospital);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

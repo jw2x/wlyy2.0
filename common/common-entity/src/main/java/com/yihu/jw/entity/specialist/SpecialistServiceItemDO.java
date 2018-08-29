@@ -7,6 +7,7 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -71,6 +72,9 @@ public class SpecialistServiceItemDO extends UuidIdentityEntityWithOperator impl
 
     @Column(name = "status")
     private Integer status; //删除状态
+
+    public Integer flag;
+
 
     @Column(name = "saas_id")
     public String getSaasId() {
@@ -232,5 +236,14 @@ public class SpecialistServiceItemDO extends UuidIdentityEntityWithOperator impl
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Transient
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
     }
 }
