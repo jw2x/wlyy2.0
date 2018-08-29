@@ -205,9 +205,11 @@ public class SpecialistController extends EnvelopRestEndpoint {
     @ApiOperation(value = "专科医生审核")
     public MixEnvelop<Boolean, Boolean> agreeSpecialistTeam(@ApiParam(name = "state", value = "状态0为拒绝，1为同意") @RequestParam(required = true)String state,
                                                    @ApiParam(name = "relationCode", value = "关联code") @RequestParam(required = true)String relationCode,
-                                                   @ApiParam(name = "remark", value = "审核失败原因") @RequestParam(required = false)String remark) {
+                                                   @ApiParam(name = "remark", value = "审核失败原因") @RequestParam(required = false)String remark,
+                                                   @ApiParam(name = "health_assistant", value = "计管医生CODE") @RequestParam(required = false)String health_assistant,
+                                                   @ApiParam(name = "health_assistant_name", value = "计管医生名称") @RequestParam(required = false)String health_assistant_name) {
         try {
-            return specialistService.agreeSpecialistTeam(state,relationCode,remark);
+            return specialistService.agreeSpecialistTeam(state,relationCode,remark,health_assistant,health_assistant_name);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

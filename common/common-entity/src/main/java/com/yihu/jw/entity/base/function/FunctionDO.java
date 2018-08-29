@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.function;
 
 
-import com.yihu.jw.entity.IntegerIdentityEntityWithOperator;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,13 +9,15 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 /**
- * 功能 - Entity
- * WlyyFunction entity. @author MyEclipse Persistence Tools
+ * Entity - 功能
+ * Created by progr1mmer on 2018/8/14.
  */
 @Entity
 @Table(name = "base_function")
-public class FunctionDO extends IntegerIdentityEntityWithOperator {
+public class FunctionDO extends UuidIdentityEntityWithOperator {
 
+    //关联 base_module ID
+    private String moduleId;
     //功能名称
     private String name;
     //网关url前缀
@@ -24,9 +26,17 @@ public class FunctionDO extends IntegerIdentityEntityWithOperator {
     private String url;
     //备注
     private String remark;
-
     //用于jstree显示
     private String text;
+
+    @Column(name = "module_id", nullable = false, length = 50)
+    public String getModuleId() {
+        return this.moduleId;
+    }
+
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
+    }
 
     @Column(name = "name", length = 200)
     public String getName() {

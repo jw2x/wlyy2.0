@@ -48,8 +48,18 @@ public abstract class EnvelopRestEndpoint {
         return success("success", obj);
     }
 
+    protected <J, _J> ObjEnvelop<_J> success(J obj, Class<_J> target){
+        _J _target = convertToModel(obj, target);
+        return success(_target);
+    }
+
     protected <J> ObjEnvelop<J> success(String message, J obj){
         return success(message, 200, obj);
+    }
+
+    protected <J, _J> ObjEnvelop<_J> success(String message, J obj, Class<_J> target){
+        _J _target = convertToModel(obj, target);
+        return success(message, _target);
     }
 
     protected <J> ObjEnvelop<J> success(String message, int status, J obj){
@@ -60,12 +70,27 @@ public abstract class EnvelopRestEndpoint {
         return objEnvelop;
     }
 
+    protected <J, _J> ObjEnvelop<_J> success(String message, int status, J obj, Class<_J> target){
+        _J _target = convertToModel(obj, target);
+        return success(message, status, _target);
+    }
+
     protected <T> ListEnvelop<T> success(List<T> contents){
         return success("success", contents);
     }
 
+    protected <T, _T> ListEnvelop<_T> success(List<T> contents, Class<_T> target){
+        List<_T> _contents = convertToModels(contents, new ArrayList<>(contents.size()), target);
+        return success(_contents);
+    }
+
     protected <T> ListEnvelop<T> success(String message, List<T> contents){
         return success(message, 200, contents);
+    }
+
+    protected <T, _T> ListEnvelop<_T> success(String message, List<T> contents, Class<_T> target){
+        List<_T> _contents = convertToModels(contents, new ArrayList<>(contents.size()), target);
+        return success(message, _contents);
     }
 
     protected <T> ListEnvelop<T> success(String message, int status, List<T> contents){
@@ -76,12 +101,27 @@ public abstract class EnvelopRestEndpoint {
         return listEnvelop;
     }
 
+    protected <T, _T> ListEnvelop<_T> success(String message, int status, List<T> contents, Class<_T> target){
+        List<_T> _contents = convertToModels(contents, new ArrayList<>(contents.size()), target);
+        return success(message, status, _contents);
+    }
+
     protected <T> PageEnvelop<T> success(List<T> contents, int totalCount, int currPage, int pageSize) {
         return success("success", contents, totalCount, currPage, pageSize);
     }
 
+    protected <T, _T> PageEnvelop<_T> success(List<T> contents, int totalCount, int currPage, int pageSize, Class<_T> target){
+        List<_T> _contents = convertToModels(contents, new ArrayList<>(contents.size()), target);
+        return success(_contents, totalCount, currPage, pageSize);
+    }
+
     protected <T> PageEnvelop<T> success(String message, List<T> contents, int totalCount, int currPage, int pageSize) {
         return success(message, 200, contents, totalCount, currPage, pageSize);
+    }
+
+    protected <T, _T> PageEnvelop<_T> success(String message, List<T> contents, int totalCount, int currPage, int pageSize, Class<_T> target){
+        List<_T> _contents = convertToModels(contents, new ArrayList<>(contents.size()), target);
+        return success(message, _contents, totalCount, currPage, pageSize);
     }
 
     protected <T> PageEnvelop<T> success(String message, int status,  List<T> contents, int totalCount, int currPage, int pageSize) {
@@ -93,6 +133,11 @@ public abstract class EnvelopRestEndpoint {
         pageEnvelop.setTotalCount(totalCount);
         pageEnvelop.setDetailModelList(contents);
         return pageEnvelop;
+    }
+
+    protected <T, _T> PageEnvelop<_T> success(String message, int status, List<T> contents, int totalCount, int currPage, int pageSize, Class<_T> target){
+        List<_T> _contents = convertToModels(contents, new ArrayList<>(contents.size()), target);
+        return success(message, status, _contents, totalCount, currPage, pageSize);
     }
 
     protected <T, J> MixEnvelop<T, J> success(List<T> contents, J obj) {

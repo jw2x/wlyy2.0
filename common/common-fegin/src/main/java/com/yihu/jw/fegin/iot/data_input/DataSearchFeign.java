@@ -1,7 +1,7 @@
 package com.yihu.jw.fegin.iot.data_input;
 
 import com.yihu.jw.fegin.fallbackfactory.iot.data_input.DataSearchFeignFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.iot.DataRequestMapping;
 import org.springframework.cloud.netflix.feign.FeignClient;

@@ -30,11 +30,6 @@ hibernate:
   implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
 
 
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://jw:jkzl@172.19.103.33:8761/eureka/
-
 ---
 spring:
   profiles: jwdev
@@ -57,11 +52,9 @@ spring:
     password: 123456
   zipkin:
     base-url: http://192.168.131.173:${server.svr-logServer-port} #日志追踪的地址
-
   sleuth:
     sampler:
       percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
-
 
 ---
 spring:
@@ -72,8 +65,6 @@ spring:
     password: 123456
   zipkin:
     base-url: http://192.168.131.173:${server.svr-logServer-port} #日志追踪的地址
-
   sleuth:
     sampler:
       percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
-

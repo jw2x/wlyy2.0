@@ -2,19 +2,26 @@ package com.yihu.jw.controller.rehabilitation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
+import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.rehabilitation.RehabilitationPlanService;
+import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,4 +109,88 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             return MixEnvelop.getError(e.getMessage());
         }
     }
+
+    /******************************** 居民康复计划 ***************************************/
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.createPatientRehabilitationPlan)
+    @ApiOperation(value = "居民康复服务套餐创建")
+    public MixEnvelop<String, String> createPatientRehabilitationPlan(@ApiParam(name = "rehabilitationPlan", value = "实体JSON")
+                                                                       @RequestParam(value = "rehabilitationPlan", required = true)String rehabilitationPlan){
+        try {
+            JSONObject json = new JSONObject(rehabilitationPlan);
+            JSONArray array = new JSONArray();
+            for(Object planDetail : json.getJSONArray("detail")) {
+                JSONObject j = (JSONObject)planDetail;
+                String executeTime = j.get("executeTime").toString();
+                String[] result = null;
+                if(executeTime.contains(",")){
+                    result = executeTime.split(",");
+                }else {
+                    result = new String[1];
+                    result[0] = executeTime;
+                }
+                int len =  result.length;
+                while(len > 0){
+                    len --;
+                    JSONObject temp = new JSONObject(j.toString());
+                    temp.put("executeTime", result[len]);
+                    temp.put("createUser", json.get("createUser"));
+                    temp.put("createUserName", json.get("createUserName"));
+                    array.put(temp);
+                }
+            }
+            String planDetails = array.toString();
+            ObjectMapper object = new ObjectMapper();
+            object.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
+            List<RehabilitationDetailDO> details = object.readValue(planDetails, new TypeReference<List<RehabilitationDetailDO>>(){});
+            PatientRehabilitationPlanDO planDO = toEntity(rehabilitationPlan, PatientRehabilitationPlanDO.class);
+            planDO = rehabilitationPlanService.createPatientRehabilitationPlan(planDO);
+            details = rehabilitationPlanService.createRehabilitationDetail(details, planDO.getId());
+            return MixEnvelop.getSuccess(SpecialistMapping.api_success);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.createServiceQrCode)
+    @ApiOperation(value = "根据康复计划id和居民code生成服务码")
+    public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planId", value = "计划居民关系唯一标识")@RequestParam(value = "planId", required = true)String planId,
+                                                         @ApiParam(name = "patientCode", value = "居民code")@RequestParam(value = "patientCode", required = true)String patientCode){
+        try {
+            return rehabilitationPlanService.createServiceQrCode(planId,patientCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.checkAfterQrCode)
+    @ApiOperation(value = "居民扫码后验证是否是关联的居民扫码")
+    public MixEnvelop<Boolean,Boolean> checkAfterQrCode(@ApiParam(name = "planId", value = "计划居民关系唯一标识")@RequestParam(value = "planId", required = true)String planId,
+                                                         @ApiParam(name = "patientCode", value = "居民端登录的居民code")@RequestParam(value = "patientCode", required = true)String patientCode){
+        try {
+            String message="";
+            Boolean flag = true;
+            if (rehabilitationPlanService.checkAfterQrCode(planId,patientCode)==1){
+                message = "验证成功！";
+            }
+            if (rehabilitationPlanService.checkAfterQrCode(planId,patientCode)==-1){
+                message = "请相关居民扫描二维码";
+                flag=false;
+            }
+            if (rehabilitationPlanService.checkAfterQrCode(planId,patientCode)==-10000){
+                message = "相关康复管理数据错误,请联系工作人员！";
+                flag=false;
+            }
+            return MixEnvelop.getSuccess(message,flag);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
 }

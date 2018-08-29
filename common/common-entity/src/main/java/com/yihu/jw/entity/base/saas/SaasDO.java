@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * WlyySaas entity. @author MyEclipse Persistence Tools
- *
+ * Entity - SAAS
+ * Created by progr1mmer on 2018/8/14.
  */
 @Entity
 @Table(name = "base_saas")
@@ -40,11 +40,10 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	private Status status; //状态  0待审核 1审核通过 2审核不通过 3已删除
 	private String remark; //备注
 	private String logo; //远程fastDFS文件地址
-    private Integer theme; //主题ID
     private Type type; //类型
 	private String manager; //管理员 - 关联user表id字段
 	private String email; //管理员邮箱
-	private String phone; //管理员手机号码
+	private String mobile; //管理员手机号码
 
 	@Column(name = "org_code", nullable = false)
 	public String getOrgCode() {
@@ -91,15 +90,6 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 		this.logo = logo;
 	}
 
-	@Column(name = "theme")
-	public Integer getTheme() {
-		return theme;
-	}
-
-	public void setTheme(Integer theme) {
-		this.theme = theme;
-	}
-
 	@Column(name = "type", nullable = false)
 	public Type getType() {
 		return type;
@@ -127,13 +117,12 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 		this.email = email;
 	}
 
-	@Column(name = "phone")
-	public String getPhone() {
-		return phone;
+	@Column(name = "mobile")
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
-
 }

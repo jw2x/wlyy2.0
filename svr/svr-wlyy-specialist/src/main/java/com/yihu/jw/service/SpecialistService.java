@@ -180,6 +180,8 @@ public class SpecialistService{
 
 
     public MixEnvelop<PatientLabelVO, PatientLabelVO> getPatientByLabel(String doctor, String labelType, String labelCode, Integer page, Integer size){
+    
+    
         String sql="SELECT " +
                 " p. NAME, " +
                 " p. CODE, " +
@@ -227,6 +229,27 @@ public class SpecialistService{
                 " ) h ON h.patient = lb.patient " +
                 " WHERE s.doctor ='"+doctor+"' AND s.status >=0  AND s.sign_status >0"+
                 " LIMIT "+(page-1)*size+","+size;
+        
+        if("7".equals(labelType)){
+            sql = "SELECT " +
+                    "c.CODE," +
+                    "c.NAME," +
+                    "c.sex," +
+                    "IFNULL(YEAR (from_days(datediff(now(),c.birthday))),'未知') age," +
+                    "c.photo,b.disease AS label," +
+                    "b.disease_name AS labelName," +
+                    "d.label_name AS health," +
+                    "d.label AS healthcode," +
+                    "a.health_assistant AS healthAssistant," +
+                    "a.health_assistant_name AS healthAssistantName " +
+                    "FROM wlyy_specialist.wlyy_specialist_patient_relation a " +
+                    "JOIN "+basedb+".wlyy_patient_disease_server b ON a.patient=b.patient AND b.disease=" +labelCode+" and b.del=1 "+
+                    "JOIN "+basedb+".wlyy_patient c ON a.patient=c.CODE " +
+                    "LEFT JOIN "+basedb+".wlyy_sign_patient_label_info d ON a.patient=d.patient AND d.label_type=8 AND d.`status`=1" +
+                    " WHERE a.sign_status> 0 AND a.`status`>=0 AND a.doctor='"+doctor+"'"+
+                    " LIMIT "+(page-1)*size+","+size;
+        }
+
 
         List<PatientLabelVO> PatientLabelVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientLabelVO.class));
 
@@ -462,7 +485,7 @@ public class SpecialistService{
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,relationDO.getId());
     }
 
-    public MixEnvelop<Boolean, Boolean> agreeSpecialistTeam(String state, String relationCode, String remark){
+    public MixEnvelop<Boolean, Boolean> agreeSpecialistTeam(String state, String relationCode, String remark,String health_assistant,String health_assistant_name){
 
         SpecialistPatientRelationDO relation = specialistPatientRelationDao.findOne(relationCode);
 
@@ -473,6 +496,9 @@ public class SpecialistService{
             specialistPatientRelationDao.save(relation);
         }else{
             relation.setSignStatus("1");
+            relation.setHealthAssistant(health_assistant);
+            relation.setHealthAssistant(health_assistant_name);
+            relation.setSignDate(new Date());
             specialistPatientRelationDao.save(relation);
         }
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,relation);
@@ -616,12 +642,13 @@ public class SpecialistService{
                 "doctor.czrq AS czrq," +
                 "doctor.del AS del," +
                 "doctor.idcard AS idcard " +
-                "FROM wlyy.wlyy_doctor doctor RIGHT JOIN ( " +
+                "FROM wlyy.wlyy_doctor doctor JOIN ( " +
                 "SELECT a.doctor AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
-                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 " +
+                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
                 "UNION  " +
                 "SELECT a.doctor_health AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
-                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1) " +
+                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
+                ") " +
                 "t ON doctor.CODE=t.doctorcode";
         List<SignFamilyDoctorVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SignFamilyDoctorVO.class));
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs);

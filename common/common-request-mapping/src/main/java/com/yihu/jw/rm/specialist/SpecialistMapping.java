@@ -7,7 +7,7 @@ public class SpecialistMapping {
 
     public static final String api_specialist_common = "svr-specialist";
     public static final Integer api_specialist_fail = -1;
-    public static final String api_success ="succes";
+    public static final String api_success ="success";
     public static final String doctor_exist ="doctor_exist";
     public static final String team_exist ="team_exist";
 
@@ -43,6 +43,10 @@ public class SpecialistMapping {
 
     }
 
+    public static  class common{
+        public static final String file_upload =  "/fileUpload";
+    }
+
     public static class screen{
         public static final String getScreenResult ="/getScreenResult";
         public static final String getScreenCount = "/getScreenCount";
@@ -57,6 +61,26 @@ public class SpecialistMapping {
         public static final String findTemplateDetailByTemplateId = "/findTemplateDetailByTemplateId";
         public static final String updateRehabilitationTemplateDetail = "/updateRehabilitationTemplateDetail";
         public static final String createPatientRehabilitationPlan = "/createPatientRehabilitationPlan";
+        public static final String createServiceQrCode ="/createServiceQrCode";
+        public static final String checkAfterQrCode = "checkAfterQrCode";
+        public static final String findRehabilitationPlanList = "/findRehabilitationPlanList";
+        public static final String findRehabilitationPlanDetailList = "/findRehabilitationPlan";
 
+
+
+    }
+
+    public static class serviceItem{
+        public static final String createServiceItem = "/createServiceItem";
+        public static final String getServiceItem = "/getServiceItem";
+        public static final String batchDelete = "/batchDelete";
+        public static final String updateServiceItem = "/updateServiceItem";
+        public static final String createEvaluate = "/createEvaluate";
+        public static final String getEvaluate = "/getEvaluate";
+        public static final String updateEvaluate = "/updateEvaluate";
+        public static final String createHospitalServiceItem = "/createHospitalServiceItem";
+        public static final String selectByHospital = "/selectByHospital";
+        public static final String selectById="/selectById";
+        public static final String selectItemByHospital= "/selectItemByHospital";
     }
 }

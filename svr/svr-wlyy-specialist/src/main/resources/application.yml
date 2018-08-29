@@ -49,7 +49,8 @@ hibernate:
   show_sql: true
   ejb:
     naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
-
+  physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+  implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 fast-dfs:
   tracker-server: 172.19.103.54:22122 #服务器地址
   connect-timeout: 2 #链接超时时间
@@ -77,6 +78,14 @@ spring:
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
+fast-dfs:
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
+
+neiwang:
+  enable: true
+  wlyy: http://localhost:10051/
+
 ---
 spring:
   profiles: jwtest
@@ -87,6 +96,14 @@ spring:
     password: ssgg
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
+
+fast-dfs:
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
+
+neiwang:
+  enable: false
+  wlyy: http://59.61.92.90:10051/
 ---
 spring:
   profiles: jwdevtest
@@ -97,6 +114,14 @@ spring:
     password: linzhou
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
+
+fast-dfs:
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
+
+neiwang:
+  enable: true
+  wlyy: http://172.19.103.88:10051/svr-slyy-specialist/
 ---
 spring:
   profiles: prod
@@ -106,3 +131,11 @@ spring:
     password: jkzlehr@123
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
+
+fast-dfs:
+  #tracker-server: 172.19.103.54:22122
+  #public-server: http://172.19.103.54:80/
+
+neiwang:
+  enable: false
+  #wlyy: http://59.61.92.90:9099/iot/

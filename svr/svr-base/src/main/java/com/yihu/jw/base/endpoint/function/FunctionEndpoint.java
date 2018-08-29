@@ -2,7 +2,7 @@ package com.yihu.jw.base.endpoint.function;
 
 import com.yihu.jw.base.service.FunctionService;
 import com.yihu.jw.entity.base.function.FunctionDO;
-import com.yihu.jw.restmodel.base.base.FunctionVO;
+import com.yihu.jw.restmodel.base.function.FunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -16,10 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Endpoint - 功能
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
@@ -37,7 +37,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         FunctionDO functionDO = toEntity(jsonData, FunctionDO.class);
         functionDO = functionService.save(functionDO);
-        return success(convertToModel(functionDO, FunctionVO.class));
+        return success(functionDO, FunctionVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.Function.DELETE)
@@ -46,7 +46,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
         functionService.delete(ids);
-        return success("删除成功");
+        return success("success");
     }
 
     @PostMapping(value = BaseRequestMapping.Function.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -59,7 +59,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             return failed("ID不能为空", ObjEnvelop.class);
         }
         functionDO = functionService.save(functionDO);
-        return success(convertToModel(functionDO, FunctionVO.class));
+        return success(functionDO, FunctionVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Function.PAGE)
@@ -75,9 +75,9 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<FunctionVO> functionDOS = functionService.search(fields, filters, sorts, page, size);
+        List<FunctionDO> functionDOS = functionService.search(fields, filters, sorts, page, size);
         int count = (int)functionService.getCount(filters);
-        return success(convertToModels(functionDOS, new ArrayList<>(), FunctionVO.class), count, page, size);
+        return success(functionDOS, count, page, size, FunctionVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Function.LIST)
@@ -90,7 +90,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<FunctionDO> functionDOS = functionService.search(fields, filters, sorts);
-        return success(convertToModels(functionDOS, new ArrayList<>(), FunctionVO.class));
+        return success(functionDOS, FunctionVO.class);
     }
 
 }

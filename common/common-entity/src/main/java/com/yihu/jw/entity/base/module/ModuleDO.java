@@ -1,6 +1,6 @@
-package com.yihu.jw.entity.base.module;// default package
+package com.yihu.jw.entity.base.module;
 
-import com.yihu.jw.entity.IntegerIdentityEntityWithOperator;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,12 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * WlyyModule entity. @author MyEclipse Persistence Tools
+ * Entity - 模块
+ * Created by progr1mmer on 2018/8/14.
  */
 @Entity
 @Table(name = "base_module")
-public class ModuleDO extends IntegerIdentityEntityWithOperator {
+public class ModuleDO extends UuidIdentityEntityWithOperator {
 
+	/**
+	 * 0 - 禁用
+	 * 1 - 可用
+	 * 2 - 不可用
+	 */
     public enum Status {
 		disable,
 		available,
@@ -26,12 +32,13 @@ public class ModuleDO extends IntegerIdentityEntityWithOperator {
 	private String name;
 	//父id
 	private String parentId;
-	//0-禁用，1-可用，2-不可用
+	//状态
 	private Status status;
 	//备注
 	private String remark;
 	//closed-表示有子节点，open-表示没有子节点
 	private String state ;
+	//子集
 	private List<ModuleDO> children = new ArrayList<>();
 
 	// Constructors
@@ -45,7 +52,7 @@ public class ModuleDO extends IntegerIdentityEntityWithOperator {
         this.name = name;
     }
 
-    @Column(name = "parent_id", length = 50)
+	@Column(name = "parent_id", length = 50)
 	public String getParentId() {
 		return parentId;
 	}
@@ -54,7 +61,7 @@ public class ModuleDO extends IntegerIdentityEntityWithOperator {
 		this.parentId = parentId;
 	}
 
-    @Column(name = "status", precision = 2, scale = 0)
+    @Column(name = "status")
     public Status getStatus() {
         return status;
     }

@@ -7,15 +7,17 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * BaseEmployRole entity. @author MyEclipse Persistence Tools
+ * Entity - 用户角色
+ * Created by progr1mmer on 2018/8/27.
  */
 @Entity
 @Table(name = "base_user_role")
 public class UserRoleDO extends IntegerIdentityEntity {
 
-	// Fields
+	//用户ID
 	private String userId;
-	private Integer roleId;
+	//角色ID
+	private String roleId;
 
 	@Column(name = "user_id", length = 50)
 	public String getUserId() {
@@ -26,12 +28,12 @@ public class UserRoleDO extends IntegerIdentityEntity {
 		this.userId = userId;
 	}
 
-	@Column(name = "role_id")
-	public Integer getRoleId() {
-		return this.roleId;
+	@Column(name = "role_id", length = 50)
+	public String getRoleId() {
+		return roleId;
 	}
 
-	public void setRoleId(Integer roleId) {
+	public void setRoleId(String roleId) {
 		this.roleId = roleId;
 	}
 

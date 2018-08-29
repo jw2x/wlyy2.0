@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.module;
 
 import com.yihu.jw.base.service.ModuleService;
 import com.yihu.jw.entity.base.module.ModuleDO;
+import com.yihu.jw.restmodel.base.module.ModuleVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * Endpoint - 模块
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
@@ -30,12 +32,12 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Module.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<ModuleDO> create (
+    public ObjEnvelop<ModuleVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         ModuleDO module = toEntity(jsonData, ModuleDO.class);
         module = moduleService.save(module);
-        return success(module);
+        return success(module, ModuleVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.Module.DELETE)
@@ -49,20 +51,20 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Module.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public Envelop update (
+    public ObjEnvelop<ModuleVO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         ModuleDO module = toEntity(jsonData, ModuleDO.class);
         if (null == module.getId()) {
-            return failed("ID不能为空", Envelop.class);
+            return failed("ID不能为空", ObjEnvelop.class);
         }
         module = moduleService.save(module);
-        return success(module);
+        return success(module, ModuleVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Module.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<ModuleDO> page (
+    public PageEnvelop<ModuleVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -75,12 +77,12 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         List<ModuleDO> modules = moduleService.search(fields, filters, sorts, page, size);
         int count = (int)moduleService.getCount(filters);
-        return success(modules, count, page, size);
+        return success(modules, count, page, size, ModuleVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Module.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<ModuleDO> list (
+    public ListEnvelop<ModuleVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -88,7 +90,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<ModuleDO> modules = moduleService.search(fields, filters, sorts);
-        return success(modules);
+        return success(modules, ModuleVO.class);
     }
 
 }

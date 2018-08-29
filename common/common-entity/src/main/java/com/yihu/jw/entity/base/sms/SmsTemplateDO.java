@@ -2,27 +2,39 @@ package com.yihu.jw.entity.base.sms;
 
 import com.yihu.jw.entity.UuidIdentityEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
+ * Entity - 短信模板
  * Created by progr1mmer on 2018/8/14.
  */
 @Entity
 @Table(name = "base_sms_template")
 public class SmsTemplateDO extends UuidIdentityEntity {
 
-    public enum Label {
-        verificationCode, //验证码
-        notification, //服务通知
-        dailyPush //日常推送
+    /**
+     * 0 - 注册
+     * 1 - 登陆
+     * 2 - 重置密码
+     */
+    public enum Type {
+        register,
+        login,
+        resetPassword
     }
 
-    private String clientId; //应用ID
-    private String label; //标签
-    private String header; //头部
-    private String content; //内容
+    //应用ID
+    private String clientId;
+    //标签
+    private Type type;
+    //头部
+    private String header;
+    //内容
+    private String content;
 
+    @Column(name = "client_id", nullable = false)
     public String getClientId() {
         return clientId;
     }
@@ -31,14 +43,16 @@ public class SmsTemplateDO extends UuidIdentityEntity {
         this.clientId = clientId;
     }
 
-    public String getLabel() {
-        return label;
+    @Column(name = "type", nullable = false)
+    public Type getType() {
+        return type;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setType(Type type) {
+        this.type = type;
     }
 
+    @Column(name = "header", nullable = false)
     public String getHeader() {
         return header;
     }
@@ -47,6 +61,7 @@ public class SmsTemplateDO extends UuidIdentityEntity {
         this.header = header;
     }
 
+    @Column(name = "content", nullable = false)
     public String getContent() {
         return content;
     }

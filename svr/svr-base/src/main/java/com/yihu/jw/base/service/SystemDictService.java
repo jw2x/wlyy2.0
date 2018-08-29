@@ -6,6 +6,7 @@ import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 
 /**
+ * Service - 系统字典
  * Created by LiTaohong on 2017/12/01.
  */
 @Service

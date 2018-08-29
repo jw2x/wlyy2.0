@@ -17,8 +17,6 @@ public class BaseRoleMenuDO extends UuidIdentityEntity implements java.io.Serial
 	private String roleId;
 	private String menuId;
 
-	// Constructors
-
 	/** default constructor */
 	public BaseRoleMenuDO() {
 	}

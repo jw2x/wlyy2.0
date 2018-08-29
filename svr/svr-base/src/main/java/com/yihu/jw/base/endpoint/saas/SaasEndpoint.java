@@ -4,24 +4,24 @@ import com.yihu.jw.base.service.UserService;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.base.service.SaasService;
 import com.yihu.jw.entity.base.user.UserDO;
+import com.yihu.jw.restmodel.base.saas.SaasVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
-import com.yihu.utils.security.MD5;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 /**
- * Created by chenweida on 2017/5/19.
+ * Endpoint - SAAS
+ * Created by progr1mmer on 2018/8/14.
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Saas.PREFIX)
@@ -42,12 +42,6 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "user") UserDO userDO) throws Exception {
         if (userService.search("username=" + userDO.getUsername()).size() > 0) {
             return failed("管理员用户名已存在", Envelop.class);
-        }
-        userDO.setEnabled(true);
-        userDO.setLocked(false);
-        if (StringUtils.isEmpty(userDO.getPassword())) {
-            String password = MD5.md5Hex(userDO.getIdcard().substring(0, 5));
-            userDO.setPassword(password);
         }
         saasService.save(saasDO, userDO);
         return success("创建成功");
@@ -77,7 +71,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.Saas.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SaasDO> page (
+    public PageEnvelop<SaasVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -90,12 +84,12 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         List<SaasDO> saasDOS = saasService.search(fields, filters, sorts, page, size);
         int count = (int)saasService.getCount(filters);
-        return success(saasDOS, count, page, size);
+        return success(saasDOS, count, page, size, SaasVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SaasDO> list (
+    public ListEnvelop<SaasVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -103,7 +97,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<SaasDO> saasDOS = saasService.search(fields, filters, sorts);
-        return success(saasDOS);
+        return success(saasDOS, SaasVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.Saas.AUDIT)

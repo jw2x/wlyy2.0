@@ -1,49 +1,25 @@
 package com.yihu.jw.entity.base.role;
 
-import com.yihu.jw.entity.IntegerIdentityEntityWithOperator;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * BaseRole entity. @author MyEclipse Persistence Tools
+ * Entity - 角色
+ * Created by progr1mmer on 2018/8/14.
  */
 @Entity
 @Table(name = "base_role")
-public class RoleDO extends IntegerIdentityEntityWithOperator {
+public class RoleDO extends UuidIdentityEntityWithOperator {
 
-	/**
-	 * 角色类型
-	 */
-	public enum Type {
-		//系统 - user对应的角色类型
-		system,
-		//医生
-		doctor,
-		//患者
-		patient
-	}
-
-	//saas id
-	private String saasId;
 	//角色名称
 	private String name;
-	//角色编码
-	private String code;
 	//备注
 	private String remark;
-	//角色类型
-	private Type type;
-
-	@Column(name = "saas_id", nullable = false, length = 50)
-	public String getSaasId() {
-		return this.saasId;
-	}
-
-	public void setSaasId(String saasId) {
-		this.saasId = saasId;
-	}
+	//是否系统管理员
+	private Boolean isSystem;
 
 	@Column(name = "name", length = 50)
 	public String getName() {
@@ -52,15 +28,6 @@ public class RoleDO extends IntegerIdentityEntityWithOperator {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	@Column(name = "code", length = 50)
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	@Column(name = "remark")
@@ -72,12 +39,12 @@ public class RoleDO extends IntegerIdentityEntityWithOperator {
 		this.remark = remark;
 	}
 
-	@Column(name = "type")
-	public Type getType() {
-		return type;
+	@Column(name = "is_system")
+	public Boolean getSystem() {
+		return isSystem;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public void setSystem(Boolean system) {
+		isSystem = system;
 	}
 }

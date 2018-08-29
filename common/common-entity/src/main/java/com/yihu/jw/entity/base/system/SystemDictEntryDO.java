@@ -1,17 +1,18 @@
-package com.yihu.jw.entity.base.system;// default package
+package com.yihu.jw.entity.base.system;
 
-import com.yihu.jw.entity.IntegerIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * SystemDictList entity. @author MyEclipse Persistence Tools
+ * Entity - 系统字典项
+ * Created by progr1mmer on 2018/8/14.
  */
 @Entity
-@Table(name = "system_dict_entry")
-public class SystemDictEntryDO extends IntegerIdentityEntity {
+@Table(name = "base_system_dict_entry")
+public class SystemDictEntryDO extends UuidIdentityEntity {
 
 	//所属字典编码
 	private String dictCode;

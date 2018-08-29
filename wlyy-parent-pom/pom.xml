@@ -54,6 +54,7 @@
         <!-- 基础组件服务 -->
         <module>../server/svr-configuration</module> <!--配置服务-->
         <module>../server/svr-discovery</module><!--发现服务-->
+        <module>../server/svr-authentication</module> <!-- 认证服务 -->
         <!-- 暂时保留 -->
         <!--<module>../server/svr-dashboard</module>--><!--监控服务-->
         <module>../server/svr-zipkin</module> <!--分布式追踪服务-->
@@ -74,6 +75,7 @@
         <!-- 应用 -->
         <module>../app/app-iot-server</module>
         <module>../app/public-health-server</module>
+
     </modules>
 
     <properties>
@@ -93,6 +95,8 @@
         <version.joda-time>2.8.2</version.joda-time>
         <version.yihu.admin>1.2.0</version.yihu.admin>
         <version.spring-boot-admin>1.5.7</version.spring-boot-admin>
+        <version.zxing>3.2.0</version.zxing>
+        <version.fastdfs>1.25</version.fastdfs>
         <!-- Version end -->
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

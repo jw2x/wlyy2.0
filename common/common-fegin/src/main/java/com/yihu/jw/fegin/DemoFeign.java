@@ -1,8 +1,7 @@
 package com.yihu.jw.fegin;
 
-import com.yihu.jw.common.Contants;
 import com.yihu.jw.fegin.fallbackfactory.DemoFeignFallbackFactory;
-import com.yihu.jw.restmodel.CommonContants;
+import com.yihu.jw.common.CommonContants;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
