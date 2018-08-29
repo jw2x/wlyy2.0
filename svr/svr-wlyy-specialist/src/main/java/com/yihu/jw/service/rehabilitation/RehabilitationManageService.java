@@ -42,7 +42,8 @@ public class RehabilitationManageService {
     private GuidanceMessageLogDao guidanceMessageLogDao;
 
     /**
-     * 康复管理-- 计划列表
+     * 康复管理（专科）-- 计划列表
+     * @param doctorType 1.专科，2.家医
      * @param doctorCode
      * @param diseaseCode
      * @param planType
@@ -52,16 +53,19 @@ public class RehabilitationManageService {
      * @return
      * @throws Exception
      */
-    public MixEnvelop<Map<String,Object>, Map<String,Object>> findRehabilitationPlan(String doctorCode, String diseaseCode, Integer planType,Integer todaybacklog, String patientCondition,Integer page, Integer pageSize) throws Exception{
+    public MixEnvelop<Map<String,Object>, Map<String,Object>> findRehabilitationPlan(Integer doctorType,String doctorCode, String diseaseCode, Integer planType,Integer todaybacklog, String patientCondition,Integer page, Integer pageSize) throws Exception{
 
         String leftSql =" left join "+basedb+".wlyy_sign_family f on f.patient=p.patient and f.expenses_status='1' and f.status=1 ";
 //        if(StringUtils.isNotEmpty(diseaseCode)){
 //            leftSql += " left join "+basedb+".wlyy_patient_disease_server s on p.patient=s.patient and s.del=1 and s.disease ='"+diseaseCode+"'" ;
 //        }
         String sql = " select p.*,f.idcard,f.hospital_name from wlyy_specialist.wlyy_patient_rehabilitation_plan p  " +leftSql+
-                " where (p.create_user in (select r.doctor assistant from " +
-                " wlyy_specialist.wlyy_specialist_patient_relation r where r.health_assistant ='"+doctorCode+"') " +
-                " or p.create_user='"+doctorCode+"') " ;
+                " where 1=1 " ;
+        if(doctorType==1){//专科医生是根据计划的创建者字段过滤
+            sql+=" and (p.create_user in (select r.doctor assistant from " +
+                    " wlyy_specialist.wlyy_specialist_patient_relation r where r.health_assistant ='"+doctorCode+"') " +
+                    " or p.create_user='"+doctorCode+"') ";
+        }
         if(planType!=null){
             sql += " and p.plan_type="+planType;
         }
@@ -75,12 +79,21 @@ public class RehabilitationManageService {
 
         String todayStart = DateUtil.getStringDateShort()+" "+"00:00:00";
         String todayEnd = DateUtil.getStringDateShort()+" "+"23:59:59";
-        if(todaybacklog!=null&&todaybacklog==1){
-            finalSql = " select DISTINCT b.* from (select DISTINCT plan_id from wlyy_rehabilitation_plan_detail where execute_time>='"+todayStart+"' and execute_time<='"+todayEnd+"') a "+
-                    "LEFT JOIN ("+sql+") b on a.plan_id=b.id";
-        }else{
-            finalSql = " select b.* from ("+sql+") b ";
+        String condition ="";
+        if(doctorType==2){//家医是根据计划详情表的执行者字段过滤
+            condition+=" and doctor='"+doctorCode+"' ";
         }
+        if(todaybacklog!=null&&todaybacklog==1){
+            condition += " and execute_time>='"+todayStart+"' and execute_time<='"+todayEnd+"'";
+        }
+        finalSql =" select DISTINCT b.* from (select DISTINCT plan_id from wlyy_specialist.wlyy_rehabilitation_plan_detail where  1=1 "+condition+") a " +
+                " LEFT JOIN ("+sql+") b on a.plan_id=b.id ";
+//        if(todaybacklog!=null&&todaybacklog==1){
+//            finalSql = " select DISTINCT b.* from (select DISTINCT plan_id from wlyy_specialist.wlyy_rehabilitation_plan_detail where execute_time>='"+todayStart+"' and execute_time<='"+todayEnd+"') a "+
+//                    "LEFT JOIN ("+sql+") b on a.plan_id=b.id";
+//        }else{
+//            finalSql = " select b.* from ("+sql+") b ";
+//        }
         List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(finalSql);
         int count = 0;
         if(rstotal!=null&&rstotal.size()>0){
@@ -97,7 +110,7 @@ public class RehabilitationManageService {
             resultMap.put("hospitalName",one.get("hospital_name"));
             resultMap.put("sex","1".equals(sex)?"男":("2".equals(sex)?"女":"未知"));
             resultMap.put("patientName",one.get("name"));
-
+            resultMap.put("id",one.get("id"));
             //健康情况
             resultMap.put("healthyCondition","康复期");
             //安排类型
@@ -115,15 +128,15 @@ public class RehabilitationManageService {
             Integer todayBacklogCount = rehabilitationDetailDao.todayBacklogCount(1,one.get("id").toString(),beginTime,endTime);
             resultMap.put("todayBacklogCount",todayBacklogCount);//今日待办总数
             //已完成
-            Integer finishedCount = rehabilitationDetailDao.completenessCount(2,one.get("id").toString());
+            Integer finishedCount = rehabilitationDetailDao.completenessCount(1,one.get("id").toString());
             resultMap.put("finishedCount",finishedCount);//已完成
             //未完成
-            Integer notstartedCount = rehabilitationDetailDao.completenessCount(1,one.get("id").toString());//未开始
-            Integer underwayCount = rehabilitationDetailDao.completenessCount(1,one.get("id").toString());//进行中
+            Integer notstartedCount = rehabilitationDetailDao.completenessCount(0,one.get("id").toString());//未开始
+            Integer underwayCount = rehabilitationDetailDao.completenessCount(2,one.get("id").toString());//已预约
             Integer unfinishedCount = notstartedCount+underwayCount;
             resultMap.put("unfinishedCount",unfinishedCount);//未完成
             //完成度（已完成/（已完成+未完成））
-            resultMap.put("allCount",finishedCount+unfinishedCount);//未完成
+            resultMap.put("allCount",finishedCount+unfinishedCount);//全部
 
             resultList.add(resultMap);
 
@@ -224,6 +237,13 @@ public class RehabilitationManageService {
 //    }
 
 
+    /**
+     * 康复管理更多计划
+     * @param doctorCode
+     * @param patientCode
+     * @return
+     * @throws Exception
+     */
     public MixEnvelop findRehabilitationPlanDetailList(String doctorCode,String patientCode) throws Exception{
         Map<String,Object> resultMap = new HashMap<>();
         //专科医生
@@ -232,20 +252,27 @@ public class RehabilitationManageService {
         Map<String,Object> specialistMap = specialistRelationList.get(0);
         resultMap.put("specialistAdminTeamName",specialistMap.get("teamName"));
         String specialistFinishItemSql = "";
+//        Integer familyUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode,1);
+//        Integer familyFinishCount = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode);
+//        Integer familyServiceCount = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode,1);
+
         resultMap.put("specialistFinishItemCount",specialistMap.get("teamName"));//完成项目
         resultMap.put("specialistServiceRecordCount",specialistMap.get("teamName"));//服务记录
 
-        //家庭医生
-        String signFamilySql = "SELECT f.*,t.name as teamName FROM wlyy.wlyy_sign_family f LEFT JOIN wlyy.wlyy_admin_team t on f.admin_team_code=t.id where f.status =1 and f.expenses_status=1 and f.patient='"+patientCode+"'";
+        //家庭医生（包括全科医生、健管师）
+        String signFamilySql = "SELECT f.*,t.name as teamName FROM wlyy.wlyy_sign_family f LEFT JOIN wlyy.wlyy_admin_team t on f.admin_team_code=t.id where f.status =1 and f.expenses_status='1' and f.patient='"+patientCode+"'";
         List<Map<String,Object>> signFamilyList = jdbcTemplate.queryForList(signFamilySql);
         Map<String,Object> signFamilyMap = signFamilyList.get(0);
         resultMap.put("signFamilyAdminTeamName",signFamilyMap.get("teamName"));
-        resultMap.put("signFamilyFinishItemCount",specialistMap.get("teamName"));//完成项目
-        resultMap.put("signFamilyServiceRecordCount",specialistMap.get("teamName"));//服务记录
+        Integer familyUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode,1);
+        Integer familyFinishCount = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode);
+        Integer familyServiceCount = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode,1);
+        resultMap.put("signFamilyFinishItemCount",familyFinishCount-familyUnfinishCount);//完成项目
+        resultMap.put("signFamilyServiceRecordCount",familyServiceCount);//服务次数
 
         //基础信息
         resultMap.put("hospitalName",signFamilyMap.get("hospital_name"));
-        Integer age = IdCardUtil.getAgeForIdcard(specialistMap.get("idcard")+"");
+        Integer age = IdCardUtil.getAgeForIdcard(signFamilyMap.get("idcard")+"");
         String sex = IdCardUtil.getSexForIdcard_new(signFamilyMap.get("idcard")+"");
         resultMap.put("age",age);
         resultMap.put("sex","1".equals(sex)?"男":("2".equals(sex)?"女":"未知"));

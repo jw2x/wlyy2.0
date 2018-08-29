@@ -28,7 +28,9 @@ public class RehabilitationManageController {
 
     @GetMapping(value = SpecialistMapping.rehabilitation.findRehabilitationPlanList)
     @ApiOperation(value = "康复管理-康复计划列表")
-    public MixEnvelop findRehabilitationPlan(@ApiParam(name = "doctorCode", value = "医生code")
+    public MixEnvelop findRehabilitationPlan(@ApiParam(name = "doctorType", value = "医生类型（1、专科医生，2、家庭医生）")
+                                             @RequestParam(value = "doctorType", required = true)Integer doctorType,
+                                             @ApiParam(name = "doctorCode", value = "医生code")
                                              @RequestParam(value = "doctorCode", required = true)String doctorCode,
                                              @ApiParam(name = "patientCondition", value = "居民条件，可以按身份证或者居民名称模糊匹配")
                                              @RequestParam(value = "patientCondition", required = false)String patientCondition,
@@ -43,7 +45,7 @@ public class RehabilitationManageController {
                                              @ApiParam(name = "pageSize", value = "，每页分页大小")
                                              @RequestParam(value = "pageSize", required = false,defaultValue = "10")Integer pageSize){
         try {
-            return rehabilitationManageService.findRehabilitationPlan(doctorCode,diseaseCode,planType,todaybacklog,patientCondition,page,pageSize);
+            return rehabilitationManageService.findRehabilitationPlan(doctorType,doctorCode,diseaseCode,planType,todaybacklog,patientCondition,page,pageSize);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
