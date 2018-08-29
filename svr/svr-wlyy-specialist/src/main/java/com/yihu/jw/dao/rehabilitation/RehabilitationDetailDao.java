@@ -13,11 +13,17 @@ import java.util.List;
  */
 public interface RehabilitationDetailDao extends PagingAndSortingRepository<RehabilitationDetailDO, Long>,JpaSpecificationExecutor<RehabilitationDetailDO> {
 
-    @Query("select count(1) from RehabilitationDetailDO where status !=?1 and planId=?2 and executeTime>=?3 and executeTime<=?4 ")
-    Integer todayBacklogCount(Integer status,String programId,Date executeStartTime,Date executeEndTime);
+    @Query("select count(1) from RehabilitationDetailDO where status=?1 and planId=?2 ")
+    Integer findByStatusAndPlanId(Integer status,String planId);
 
-    @Query("select count(1) from RehabilitationDetailDO where status =?1 and planId=?2 ")
-    Integer completenessCount(Integer status,String programId);
+    @Query("select count(1) from RehabilitationDetailDO where planId=?1 ")
+    Integer findAllByPlanId(String planId);
+
+    @Query("select count(1) from RehabilitationDetailDO where planId=?1 and executeTime>=?2 and executeTime<=?3 ")
+    Integer todayBacklogCount(String programId,Date executeStartTime,Date executeEndTime);
+
+    @Query("select count(1) from RehabilitationDetailDO where status =?1 and planId=?2 and executeTime>=?3 and executeTime<=?4 ")
+    Integer completenessCount(Integer status,String planId,Date executeStartTime,Date executeEndTime);
 
     @Query("select d from RehabilitationDetailDO d where d.planId=?1 order by d.executeTime desc")
     List<RehabilitationDetailDO> getAllRehabilitationDetail(String programId);

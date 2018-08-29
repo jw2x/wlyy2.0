@@ -65,8 +65,14 @@ public class SpecialistMapping {
         public static final String checkAfterQrCode = "checkAfterQrCode";
         public static final String findRehabilitationPlanList = "/findRehabilitationPlanList";
         public static final String findRehabilitationPlanDetailList = "/findRehabilitationPlan";
-
-
+        public static final String calendarPlanDetail = "/calendarPlanDetail";
+        public static final String calendarPlanDetailList = "/calendarPlanDetailList";
+        public static final String saveGuidanceMessage = "/saveGuidanceMessage";
+        public static final String serviceItemList = "/serviceItemList";
+        public static final String serviceItem = "/serviceItem";
+        public static final String updateStatusRehabilitationOperate = "/updateStatusRehabilitationOperate";
+        public static final String patientRehabilitationDetail = "/patientRehabilitationDetail";
+        public static final String recentPlanDetailRecord = "/recentPlanDetailRecord";
 
     }
 
