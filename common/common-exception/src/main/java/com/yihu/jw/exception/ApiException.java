@@ -26,6 +26,7 @@ public class ApiException extends RuntimeException {
     private Integer errorCode = -10000;
 
     public ApiException() {
+        super();
     }
 
     public ApiException(String message) {
@@ -37,16 +38,9 @@ public class ApiException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
-    public ApiException(String message, Throwable cause) {
+    public ApiException(String message, Integer errorCode, Throwable cause) {
         super(message, cause);
-    }
-
-    public ApiException(Throwable cause) {
-        super(cause);
-    }
-
-    public ApiException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
+        this.errorCode = errorCode;
     }
 
     public Integer getErrorCode() {

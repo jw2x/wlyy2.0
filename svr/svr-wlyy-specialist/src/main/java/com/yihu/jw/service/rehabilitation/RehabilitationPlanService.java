@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationPlanTemplateDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationTemplateDetailDao;
+import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
@@ -89,9 +90,9 @@ public class RehabilitationPlanService {
     public MixEnvelop<RehabilitationPlanTemplateDO, RehabilitationPlanTemplateDO> findRehabilitationPlanTemplate(Integer adminTeamCode, Integer page, Integer size) {
 
         if(page != null && size != null){
-            String sql = "select * from wlyy_rehabilitation_plan_template t where t.admin_team_code = '" + adminTeamCode + "' ORDER BY t.create_time DESC LIMIT "+(page-1)*size+","+size;
+            String sql = "select * from wlyy_rehabilitation_plan_template t where t.admin_team_code = '" + adminTeamCode + "' and t.del = 1 ORDER BY t.create_time DESC LIMIT "+(page-1)*size+","+size;
             List<RehabilitationPlanTemplateDO> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper(RehabilitationPlanTemplateDO.class));
-            String countSql = "select count(1) from wlyy_rehabilitation_plan_template t where t.admin_team_code = '" + adminTeamCode + "'";
+            String countSql = "select count(1) from wlyy_rehabilitation_plan_template t where t.admin_team_code = '" + adminTeamCode + "' and t.del = 1";
             Long count = jdbcTemplate.queryForObject(countSql, Long.class);
             return MixEnvelop.getSuccessListWithPage(SpecialistMapping.api_success,list,page,size,count);
         }else {
@@ -100,9 +101,14 @@ public class RehabilitationPlanService {
         }
     }
 
+    /**
+     * 根据模板id获取机构服务项目id，然后找出具体服务项目内容
+     * @param templateId
+     * @return
+     */
     public MixEnvelop<RehabilitationTemplateDetailDO, RehabilitationTemplateDetailDO> findTemplateDetailByTemplateId(String templateId) {
-        List<RehabilitationTemplateDetailDO> list = templateDetailDao.findTemplateDetailByTemplateId(templateId);
-        return MixEnvelop.getSuccessList(SpecialistMapping.api_success,list, list.size());
+        List<String> hospitalServiceItemIds = templateDetailDao.findHospitalServiceItemIdByTemplateId(templateId);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success);
     }
 
     public PatientRehabilitationPlanDO createPatientRehabilitationPlan(PatientRehabilitationPlanDO planDO) {
@@ -113,7 +119,9 @@ public class RehabilitationPlanService {
 
     public List<RehabilitationDetailDO> createRehabilitationDetail(List<RehabilitationDetailDO> details, String planId) {
         for(RehabilitationDetailDO detail : details) {
+//            HospitalServiceItemDO hospitalServiceItemDO = hospitalServiceItemService.findById(detail.getHospitalServiceItemId());
             detail.setPlanId(planId);
+            detail.setCreateTime(new Date());
             detail.setStatus(0);
         }
         return (List<RehabilitationDetailDO>)rehabilitationDetailDao.save(details);

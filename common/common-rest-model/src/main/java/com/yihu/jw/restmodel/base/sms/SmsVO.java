@@ -1,68 +1,73 @@
 package com.yihu.jw.restmodel.base.sms;
 
+import com.yihu.jw.entity.base.sms.SmsTemplateDO;
+import com.yihu.jw.restmodel.UuidIdentityVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
+
 /**
- * Created by chenweida on 2017/5/22.
+ * VO - 短信记录
+ * Created by progr1mmer on 2018/8/28.
  */
-public class SmsVO {
-    private String id;
-    private String saasId;	//saasid 关联base_saas code
-    private String mobile;	//电话号码
-    private String ip;	//发送短信的ip地址
-    private Integer type;	//发送短信的类别
-    private String captcha;	//验证码 1微信端注册，2微信端找回密码，3医生端找回密码，4患者登录，5医生登录
-    private String content;	// 短信内容
-    private Date deadline;	//过期时间
-    private Integer status;	//短信状态 状态，0未发送，1已发送
-    private Date czrq; //操作时间
+@ApiModel(value = "SmsVO", description = "短信记录")
+public class SmsVO extends UuidIdentityVO {
 
-    public String getId() {
-        return id;
+    //应用ID
+    @ApiModelProperty(value = "应用ID", example = "EwC0iRSrcS")
+    private String clientId;
+    //使用的网关
+    @ApiModelProperty(value = "使用的网关", example = "402803f9657fa37b01657fb58b9b0000")
+    private String smsGatewayId;
+    //请求的ip地址
+    @ApiModelProperty(value = "请求的ip地址", example = "192.168.0.121")
+    private String requestIp;
+    //短信接收号码
+    @ApiModelProperty(value = "短信接收号码", example = "18888888888")
+    private String to;
+    //短信内容
+    @ApiModelProperty(value = "短信内容", example = "【i健康综合管理平台】您使用的是i健康综合管理平台短信模板，您的验证码是826612，请于10分钟内正确输入！")
+    private String content;
+    //过期时间
+    @ApiModelProperty(value = "应用ID", example = "EwC0iRSrcS")
+    private Date deadline;
+    //验证码
+    private String captcha;
+    @ApiModelProperty(value = "标签", example = "login")
+    private SmsTemplateDO.Type type;
+
+    public String getClientId() {
+        return clientId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
-    public String getSaasId() {
-        return saasId;
+    public String getSmsGatewayId() {
+        return smsGatewayId;
     }
 
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
+    public void setSmsGatewayId(String smsGatewayId) {
+        this.smsGatewayId = smsGatewayId;
     }
 
-    public String getMobile() {
-        return mobile;
+    public String getRequestIp() {
+        return requestIp;
     }
 
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
+    public void setRequestIp(String requestIp) {
+        this.requestIp = requestIp;
     }
 
-    public String getIp() {
-        return ip;
+    public String getTo() {
+        return to;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public String getCaptcha() {
-        return captcha;
-    }
-
-    public void setCaptcha(String captcha) {
-        this.captcha = captcha;
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public String getContent() {
@@ -81,19 +86,19 @@ public class SmsVO {
         this.deadline = deadline;
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getCaptcha() {
+        return captcha;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
     }
 
-    public Date getCzrq() {
-        return czrq;
+    public SmsTemplateDO.Type getType() {
+        return type;
     }
 
-    public void setCzrq(Date czrq) {
-        this.czrq = czrq;
+    public void setType(SmsTemplateDO.Type type) {
+        this.type = type;
     }
 }

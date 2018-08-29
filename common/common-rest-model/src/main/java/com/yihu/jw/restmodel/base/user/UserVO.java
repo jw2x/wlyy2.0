@@ -34,7 +34,7 @@ public class UserVO extends UuidIdentityVOWithOperator {
     private String idcard;
     //手机号码
     @ApiModelProperty(value = "手机号码", example = "18888888888")
-    private String phone;
+    private String mobile;
     //邮箱
     @ApiModelProperty(value = "邮箱", example = "wxm@jkzl.com")
     private String email;
@@ -102,12 +102,12 @@ public class UserVO extends UuidIdentityVOWithOperator {
         this.idcard = idcard;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getEmail() {
