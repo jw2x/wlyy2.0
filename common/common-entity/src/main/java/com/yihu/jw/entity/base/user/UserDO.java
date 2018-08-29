@@ -38,7 +38,7 @@ public class UserDO extends UuidIdentityEntityWithOperator {
     //身份证号码
     private String idcard;
     //手机号码
-    private String phone;
+    private String mobile;
     //邮箱
     private String email;
     //是否可用
@@ -106,13 +106,13 @@ public class UserDO extends UuidIdentityEntityWithOperator {
         this.idcard = idcard;
     }
 
-    @Column(name = "phone", length = 200)
-    public String getPhone() {
-        return phone;
+    @Column(name = "mobile", length = 200)
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     @Column(name = "email", length = 200)

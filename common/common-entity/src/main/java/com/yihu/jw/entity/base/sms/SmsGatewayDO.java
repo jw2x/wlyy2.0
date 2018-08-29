@@ -24,8 +24,8 @@ public class SmsGatewayDO extends UuidIdentityEntity {
 		delete
 	}
 
-	//关联 base_saas id
-	private String saasId;
+	//关联 client id
+	private String clientId;
 	//名称
 	private String name;
 	//短信接口的账号
@@ -34,21 +34,26 @@ public class SmsGatewayDO extends UuidIdentityEntity {
 	private String password;
 	//官网地址
 	private String website;
+	//超时时间（分钟）
+	private Integer expireMin;
 	//短信接口调用的地址
-	private String url;
+	private String requestUrl;
 	//调用凭证（json串）
-	private String certificate;
+	private String requestCertificate;
+	//短信接口调用状态标识
+	private String responseCode;
+	//调用成功的状态码
+	private String successValue;
 	//状态
 	private Status status;
 
-
-	@Column(name = "saas_id", nullable = false)
-	public String getSaasId() {
-		return saasId;
+	@Column(name = "client_id", nullable = false)
+	public String getClientId() {
+		return clientId;
 	}
 
-	public void setSaasId(String saasId) {
-		this.saasId = saasId;
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	@Column(name = "name")
@@ -87,22 +92,49 @@ public class SmsGatewayDO extends UuidIdentityEntity {
 		this.website = website;
 	}
 
-	@Column(name = "url")
-	public String getUrl() {
-		return this.url;
+	@Column(name = "expire_min")
+	public Integer getExpireMin() {
+		return expireMin;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
+	public void setExpireMin(Integer expireMin) {
+		this.expireMin = expireMin;
 	}
 
-	@Column(name = "certificate", nullable = false)
-	public String getCertificate() {
-		return certificate;
+	@Column(name = "request_url", nullable = false)
+	public String getRequestUrl() {
+		return requestUrl;
 	}
 
-	public void setCertificate(String certificate) {
-		this.certificate = certificate;
+	public void setRequestUrl(String requestUrl) {
+		this.requestUrl = requestUrl;
+	}
+
+	@Column(name = "request_certificate", nullable = false)
+	public String getRequestCertificate() {
+		return requestCertificate;
+	}
+
+	public void setRequestCertificate(String requestCertificate) {
+		this.requestCertificate = requestCertificate;
+	}
+
+	@Column(name = "response_code", nullable = false)
+	public String getResponseCode() {
+		return responseCode;
+	}
+
+	public void setResponseCode(String responseCode) {
+		this.responseCode = responseCode;
+	}
+
+	@Column(name = "success_value", nullable = false)
+	public String getSuccessValue() {
+		return successValue;
+	}
+
+	public void setSuccessValue(String successValue) {
+		this.successValue = successValue;
 	}
 
 	@Column(name = "status", nullable = false)
@@ -113,4 +145,6 @@ public class SmsGatewayDO extends UuidIdentityEntity {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
+
+
 }
