@@ -1,59 +1,118 @@
-package com.yihu.jw.restmodel.base.user;
+package com.yihu.jw.security.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.yihu.jw.entity.base.user.UserDO;
-import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-
+import java.io.Serializable;
 import java.util.Date;
 
 /**
- * VO - 后台管理员
- * Created by progr1mmer on 2018/8/20.
+ * Model - 认证用户详细信息
+ * Created by progr1mmer on 2018/8/29.
  */
-@ApiModel(value = "UserVO", description = "角色")
-public class UserVO extends UuidIdentityVOWithOperator {
+public class WlyyUserDetails implements Serializable {
 
+    /**
+     * 性别
+     */
+    public enum Gender {
+        //男
+        male,
+        //女
+        female
+    }
+    private String id;
+    //创建时间
+    private Date createTime;
+    //创建者
+    private String createUser;
+    //创建者
+    private String createUserName;
+    //更新时间
+    private Date updateTime;
+    //更新者
+    private String updateUser;
+    //更新者
+    private String updateUserName;
     //用户名
-    @ApiModelProperty(value = "用户名", example = "wangxiaoming")
     private String username;
     //密码
-    @ApiModelProperty(value = "密码", example = "25f9e794323b453885f5181f1b624d0b")
     private String password;
     //密码散列值
-    @ApiModelProperty(value = "密码散列值", example = "Wsd2")
     private String salt;
     //姓名
-    @ApiModelProperty(value = "姓名", example = "王小明")
     private String name;
     //性别
-    @ApiModelProperty(value = "性别", example = "male")
-    private UserDO.Gender gender;
+    private Gender gender;
     //身份证号码
-    @ApiModelProperty(value = "身份证号码", example = "42210119750809601X")
     private String idcard;
     //手机号码
-    @ApiModelProperty(value = "手机号码", example = "18888888888")
     private String mobile;
     //邮箱
-    @ApiModelProperty(value = "邮箱", example = "wxm@jkzl.com")
     private String email;
     //是否可用
-    @ApiModelProperty(value = "是否可用", example = "1")
     private Boolean enabled;
     //是否锁定
-    @ApiModelProperty(value = "是否锁定", example = "1")
     private Boolean locked;
     //锁定时间
-    @ApiModelProperty(value = "锁定时间", example = "2018-08-27 13:23:32")
     private Date lockedDate;
     //最后登陆时间
-    @ApiModelProperty(value = "最后登陆时间", example = "2018-08-26 12:33:22")
     private Date loginDate;
     //登陆失败次数
-    @ApiModelProperty(value = "登陆失败次数", example = "0")
     private Integer loginFailureCount;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getUpdateUser() {
+        return updateUser;
+    }
+
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser;
+    }
+
+    public String getUpdateUserName() {
+        return updateUserName;
+    }
+
+    public void setUpdateUserName(String updateUserName) {
+        this.updateUserName = updateUserName;
+    }
 
     public String getUsername() {
         return username;
@@ -87,11 +146,11 @@ public class UserVO extends UuidIdentityVOWithOperator {
         this.name = name;
     }
 
-    public UserDO.Gender getGender() {
+    public Gender getGender() {
         return gender;
     }
 
-    public void setGender(UserDO.Gender gender) {
+    public void setGender(Gender gender) {
         this.gender = gender;
     }
 
@@ -119,7 +178,7 @@ public class UserVO extends UuidIdentityVOWithOperator {
         this.email = email;
     }
 
-    public Boolean getEnabled() {
+    public Boolean isEnabled() {
         return enabled;
     }
 
@@ -127,7 +186,7 @@ public class UserVO extends UuidIdentityVOWithOperator {
         this.enabled = enabled;
     }
 
-    public Boolean getLocked() {
+    public Boolean isLocked() {
         return locked;
     }
 
@@ -135,7 +194,6 @@ public class UserVO extends UuidIdentityVOWithOperator {
         this.locked = locked;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     public Date getLockedDate() {
         return lockedDate;
     }
@@ -144,7 +202,6 @@ public class UserVO extends UuidIdentityVOWithOperator {
         this.lockedDate = lockedDate;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     public Date getLoginDate() {
         return loginDate;
     }

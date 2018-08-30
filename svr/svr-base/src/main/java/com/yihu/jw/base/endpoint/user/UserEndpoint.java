@@ -36,7 +36,7 @@ public class UserEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         UserDO userDO = toEntity(jsonData, UserDO.class);
-        userDO = userService.save(userDO);
+        userDO = userService.register(userDO);
         return success(userDO, UserVO.class);
     }
 
