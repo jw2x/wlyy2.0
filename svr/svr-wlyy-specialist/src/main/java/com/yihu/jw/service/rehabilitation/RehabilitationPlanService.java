@@ -31,6 +31,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by humingfen on 2018/8/17.
@@ -126,14 +127,16 @@ public class RehabilitationPlanService {
         }
         return (List<RehabilitationDetailDO>)rehabilitationDetailDao.save(details);
     }
-    public MixEnvelop<String,String> createServiceQrCode(String planId,String patientCode){
-        PatientRehabilitationPlanDO patientRehabilitationPlanDO = patientRehabilitationPlanDao.findById(planId);
+
+    public MixEnvelop<String,String> createServiceQrCode(String planDetailId){
+        RehabilitationDetailDO rehabilitationDetailDO = rehabilitationDetailDao.findById(planDetailId);
         String fileUrl = "";
-        if (patientRehabilitationPlanDO!=null) {
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(patientRehabilitationPlanDO.getServiceQrCode())) {
-                fileUrl = patientRehabilitationPlanDO.getServiceQrCode();
+        if (rehabilitationDetailDO!=null) {
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(rehabilitationDetailDO.getServiceQrCode())) {
+                fileUrl = rehabilitationDetailDO.getServiceQrCode();
             } else {
-                InputStream ipt = QrcodeUtil.createQrcode(planId+"|"+patientCode, 300, "png");
+                String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\"}";
+                InputStream ipt = QrcodeUtil.createQrcode(contentJsonStr, 300, "png");
                 isneiwang = false;
                 if (isneiwang) {
                     // 圖片列表
@@ -165,18 +168,19 @@ public class RehabilitationPlanService {
                     }
                 }
                 //更新到康复计划居民关系表中
-                String sql = "update wlyy_patient_rehabilitation_plan set service_qr_code='" + fileUrl + "' where id='" + planId + "'";
+                String sql = "update wlyy_rehabilitation_plan_detail set service_qr_code='" + fileUrl + "' where id='" + planDetailId + "'";
                 jdbcTemplate.update(sql);
             }
         }
         return MixEnvelop.getSuccess("获取二维码成功！",fileUrl);
     }
 
-    public Integer checkAfterQrCode(String planId,String patietCode){
+    public Integer checkAfterQrCode(String planDetailId,String patietCode){
         int result = 0;
-        PatientRehabilitationPlanDO patientRehabilitationPlanDO =  patientRehabilitationPlanDao.findById(planId);
-        if (patientRehabilitationPlanDO!=null){
-            if (StringUtils.pathEquals(patientRehabilitationPlanDO.getPatient(),patietCode)){
+        String sql ="SELECT rp.patient FROM `wlyy_rehabilitation_plan_detail` pd LEFT JOIN wlyy_patient_rehabilitation_plan rp ON pd.plan_id = rp.id WHERE pd.id='"+planDetailId+"'";
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        if (list!=null && list.size()>0){
+            if (String.valueOf(list.get(0).get("patient")).equals(patietCode)){
                 result =200;
             }else {
                 result = -1;
