@@ -48,6 +48,9 @@ public class SpecialistEvaluateDO extends UuidIdentityEntityWithOperator impleme
     @Transient
     private String labelId;//标签Id
 
+    @Transient
+    private Integer flag;//标识标签
+
     @Column(name = "saas_id")
     public String getSaasId() {
         return saasId;
@@ -136,5 +139,14 @@ public class SpecialistEvaluateDO extends UuidIdentityEntityWithOperator impleme
 
     public void setLabelId(String labelId) {
         this.labelId = labelId;
+    }
+
+    @Transient
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
     }
 }
