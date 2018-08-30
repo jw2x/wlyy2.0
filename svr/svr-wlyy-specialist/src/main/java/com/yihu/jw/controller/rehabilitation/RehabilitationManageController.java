@@ -36,7 +36,7 @@ public class RehabilitationManageController {
                                              @RequestParam(value = "doctorCode", required = true)String doctorCode,
                                              @ApiParam(name = "patientCondition", value = "居民条件，可以按身份证或者居民名称模糊匹配", required = false)
                                              @RequestParam(value = "patientCondition", required = false)String patientCondition,
-                                             @ApiParam(name = "diseaseCode", value = "疾病类型", required = false)
+                                             @ApiParam(name = "diseaseCode", value = "疾病类型code", required = false)
                                              @RequestParam(value = "diseaseCode", required = false)String diseaseCode,
                                              @ApiParam(name = "planType", value = "安排类型（1康复计划，2转社区医院，3转家庭病床）", required = false)
                                              @RequestParam(value = "planType", required = false)Integer planType,
@@ -44,7 +44,7 @@ public class RehabilitationManageController {
                                              @RequestParam(value = "todaybacklog", required = false,defaultValue = "1")Integer todaybacklog,
                                              @ApiParam(name = "page", value = "第几页，从1开始", required = false)
                                              @RequestParam(value = "page", required = false,defaultValue = "1")Integer page,
-                                             @ApiParam(name = "pageSize", value = "，每页分页大小", required = false)
+                                             @ApiParam(name = "pageSize", value = "每页分页大小", required = false)
                                              @RequestParam(value = "pageSize", required = false,defaultValue = "10")Integer pageSize){
         try {
             return rehabilitationManageService.findRehabilitationPlan(doctorType,doctorCode,diseaseCode,planType,todaybacklog,patientCondition,page,pageSize);
@@ -205,7 +205,7 @@ public class RehabilitationManageController {
         }
     }
 
-    @GetMapping(value = SpecialistMapping.rehabilitation.patientRehabilitationDetail)
+    @GetMapping(value = SpecialistMapping.rehabilitation.recentPlanDetailRecord)
     @ApiOperation(value = "居民康复计划详情页-近期康复相关记录")
     public Envelop recentPlanDetailRecord(
             @ApiParam(name = "patientCode", value = "居民code", required = true)

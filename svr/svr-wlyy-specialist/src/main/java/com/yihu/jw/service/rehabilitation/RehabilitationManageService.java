@@ -391,7 +391,7 @@ public class RehabilitationManageService {
                     }
                     family.put("all",family.get("all")+1);
                     m.put("family",family);
-                }else if((Integer)one.get("type")==2){
+                }else if((Integer)one.get("type")==2){//专科医生
 
                     if(m.containsKey("specialist")){
 
@@ -402,9 +402,9 @@ public class RehabilitationManageService {
                         specialist.put("finish",0);
                     }
                     if((Integer)one.get("status")!=1){
-                        specialist.put("finish",((Integer)family.get("finish"))+1);
+                        specialist.put("finish",(specialist.get("finish"))+1);
                     }
-                    specialist.put("all",((Integer)family.get("all"))+1);
+                    specialist.put("all",(specialist.get("all"))+1);
                     m.put("specialist",specialist);
                 }
             }else{
@@ -430,6 +430,7 @@ public class RehabilitationManageService {
                     m.put("specialist",specialist);
                 }
             }
+            //myTaskFlag,1：有自己任务，0：没有自己任务
             if(m.containsKey("myTaskFlag")){
                 if((Integer)m.get("myTaskFlag")==0){
                     if(doctorCode.equals(one.get("doctor").toString())){
@@ -460,7 +461,7 @@ public class RehabilitationManageService {
      */
     public ObjEnvelop calendarPlanDetailList(String planId,Integer searchTask,Integer status,String doctorCode,String executeStartTime,String executeEndTime){
 
-        String sql = " select d.* from wlyy_specialist.wlyy_rehabilitation_plan_detail d " +
+        String sql = " select d.*,i.content,i.title from wlyy_specialist.wlyy_rehabilitation_plan_detail d " +
                 " LEFT JOIN wlyy_specialist.wlyy_hospital_service_item h on d.hospital_service_item_id = h.id "+
                 " LEFT JOIN wlyy_service_item i on i.id = h.service_item_id " +
                 " where d.execute_time>='"+executeStartTime+"' and d.execute_time<='"+executeEndTime+"' and d.plan_id='"+planId+"' " ;
