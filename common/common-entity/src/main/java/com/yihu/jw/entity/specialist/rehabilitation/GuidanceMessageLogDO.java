@@ -15,12 +15,13 @@ import java.io.Serializable;
 public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator implements Serializable {
 
     private String saasId;
+    private String messageId;
     private String planDetailId;
     private String content;
     private String doctor;
     private String doctorName;
     private Integer doctorType;
-    private String adminTeamCode;
+    private Integer adminTeamCode;
     private String adminTeamName;
 
     @Column(name = "doctor")
@@ -51,11 +52,11 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
     }
 
     @Column(name = "admin_team_code")
-    public String getAdminTeamCode() {
+    public Integer getAdminTeamCode() {
         return adminTeamCode;
     }
 
-    public void setAdminTeamCode(String adminTeamCode) {
+    public void setAdminTeamCode(Integer adminTeamCode) {
         this.adminTeamCode = adminTeamCode;
     }
 
@@ -93,5 +94,14 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Column(name = "message_id")
+    public String getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(String messageId) {
+        this.messageId = messageId;
     }
 }

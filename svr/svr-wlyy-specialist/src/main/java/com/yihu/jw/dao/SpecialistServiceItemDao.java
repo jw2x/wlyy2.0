@@ -4,7 +4,10 @@ package com.yihu.jw.dao;/**
 
 import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.List;
 
 /**
  * @author wangzhinan
@@ -13,4 +16,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  **/
 public interface SpecialistServiceItemDao extends PagingAndSortingRepository<SpecialistServiceItemDO, String>,
         JpaSpecificationExecutor<SpecialistServiceItemDO> {
+
+    @Query("select p from SpecialistServiceItemDO p where p.title =?1")
+    public List<SpecialistServiceItemDO> findByTitle(String title);
 }

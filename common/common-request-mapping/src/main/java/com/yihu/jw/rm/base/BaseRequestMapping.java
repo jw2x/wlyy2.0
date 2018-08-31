@@ -137,6 +137,49 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/sms_template";
     }
 
+    /**
+     * 服务包
+     */
+    public static class ServicePackage extends Basic{
+        public static final String PREFIX  = "/service_package";
+    }
+
+    /**
+     * 康复计划
+     */
+    public static class BaseRehabilitation extends Basic{
+        public static final String PREFIX  = "/base_rehabilitation";
+        public static final String CREATELOG  = "/createlog";
+        public static final String FINDBYID  = "/findFinishById";
+    }
+
+    /**
+     * 统计指标
+     */
+    public static class Quota extends Basic{
+        public static final String PREFIX  = "/quota";
+    }
+
+    /**
+     * 统计维度
+     */
+    public static class Dimension extends Basic{
+        public static final String PREFIX  = "/dimension";
+    }
+
+    /**
+     * job
+     */
+    public static class JobConfig extends Basic{
+        public static final String PREFIX  = "/job_config";
+    }
+
+    /**
+     * im
+     */
+    public static class ImGetuiConfig extends Basic{
+        public static final String PREFIX  = "/im_getui";
+    }
 
     /**
      * 城市字典

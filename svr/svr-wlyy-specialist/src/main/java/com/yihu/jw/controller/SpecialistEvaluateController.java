@@ -49,13 +49,8 @@ public class SpecialistEvaluateController extends EnvelopRestEndpoint {
     public MixEnvelop<SpecialistEvaluateDO,SpecialistEvaluateDO> create(@ApiParam(name = "evaluate", value = "评价")
                                                                            @RequestParam(value = "evaluate")String evaluate){
         try {
-            JSONArray array = JSONArray.parseArray(evaluate);
-            List<SpecialistEvaluateDO> specialistEvaluateDOS = new ArrayList<>();
-            for (int i = 0;i<array.size();i++){
-                SpecialistEvaluateDO specialistEvaluateDO = toEntity(array.getString(i),SpecialistEvaluateDO.class);
-                specialistEvaluateDOS.add(specialistEvaluateDO);
-            }
-            return specialistEvaluateService.createEvaluate(specialistEvaluateDOS);
+            JSONObject object = JSONObject.parseObject(evaluate);
+            return specialistEvaluateService.createEvaluate(object);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
