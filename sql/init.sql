@@ -30,21 +30,17 @@ CREATE TABLE `base_org` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
   KEY `idx_id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构信息（医院）';
 
 -- 医生信息表
 drop table IF EXISTS `base_doctor`;
 CREATE TABLE `base_doctor` (
   `id` varchar(50) NOT NULL COMMENT 'uuid,uuid唯一标识',
-  `saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id',
-  `doctor_role_code` varchar(50) NOT NULL COMMENT '医生角色标识',
+  `org_id` varchar(100) DEFAULT NULL COMMENT '机构id',
   `password` varchar(50) NOT NULL COMMENT '密码',
   `salt` varchar(50) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL COMMENT '姓名',
   `sex` char(2) DEFAULT NULL COMMENT '性别（1男，2女） 用国家标准字典',
-  `hospital_code` varchar(50) DEFAULT NULL COMMENT '医院标识',
-  `dept_code` varchar(50) DEFAULT NULL COMMENT '科室标识',
-  `job_title_code` varchar(50) DEFAULT NULL COMMENT '职称',
   `expertise` varchar(300) DEFAULT NULL COMMENT '医生专长',
   `introduce` varchar(1500) DEFAULT NULL COMMENT '医生介绍',
   `idcard` varchar(20) DEFAULT NULL COMMENT ' 身份证',
@@ -52,12 +48,16 @@ CREATE TABLE `base_doctor` (
   `photo` varchar(100) DEFAULT NULL COMMENT '头像http地址',
   `mobile` varchar(20) NOT NULL COMMENT '手机号',
   `qrcode` varchar(30) DEFAULT NULL COMMENT '医生二维码',
-  `province_code` varchar(50) DEFAULT NULL COMMENT '省编码',
-  `city_code` varchar(50) DEFAULT NULL COMMENT '市编码',
-  `town_code` varchar(50) DEFAULT NULL COMMENT '区县编码',
+  `province_code` varchar(50) DEFAULT NULL COMMENT '省代码',
+  `province_name` varchar(50) DEFAULT NULL COMMENT '省名称',
+  `city_code` varchar(50) DEFAULT NULL COMMENT '市代码',
+  `city_name` varchar(50) DEFAULT NULL COMMENT '市名称',
+  `town_code` varchar(50) DEFAULT NULL COMMENT '区县代码',
+  `town_name` varchar(50) DEFAULT NULL COMMENT '区县名称',
+  `street_code` varchar(50) DEFAULT NULL COMMENT '街道代码',
+  `street_name` varchar(50) DEFAULT NULL COMMENT '街道名称',
   `iscertified` varchar(1) NOT NULL DEFAULT '0' COMMENT '资格是否认证通过，1是，0否',
   `is_famous` varchar(1) NOT NULL DEFAULT '0' COMMENT '是否是名医，1是，0否',
-  `identity_type` char(1) DEFAULT NULL COMMENT '类型：1专科医生，2全科医生，3健康管理师',
   `is_password_prompt` char(1) DEFAULT NULL COMMENT '是否提示设置密码  1 提示过 0未提示',
   `spell` varchar(10) DEFAULT NULL COMMENT '名称拼音首字母',
   `certified_overtime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'CA证书过期时间',
@@ -72,31 +72,50 @@ CREATE TABLE `base_doctor` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生基本信息';
 
 -- 医生角色字典表
-drop table IF EXISTS `base_doctor_role`;
-CREATE TABLE `base_doctor_role` (
+drop table IF EXISTS `base_doctor_role_dict`;
+CREATE TABLE `base_doctor_role_dict` (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
   `code` varchar(50) NOT NULL COMMENT '角色code',
-  `name` varchar(50) NOT NULL COMMENT '角色名称',
+  `name` varchar(50) NOT NULL COMMENT '角色名称：全科医生、专科医生、健康管理师、管理员等',
   `del` varchar(1) DEFAULT '1' COMMENT '作废标识，1正常，0作废',
-  `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `create_user` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '创建人',
+  `create_user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '创建人名',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_user` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '修改人',
+  `update_user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '修改人名',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_doctor_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生角色表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生角色字典';
 
 -- 医生角色关联表
 drop table IF EXISTS `base_doctor_role`;
-CREATE TABLE `base_doctor_role` (
+/*CREATE TABLE `base_doctor_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，关联表',
   `role_code` varchar(50) NOT NULL COMMENT '医生角色id',
   `doctor_id` varchar(50) NOT NULL COMMENT '医生code',
   `del` varchar(1) DEFAULT '1' COMMENT '作废标识，1正常，0作废',
   `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生角色表';
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生角色关联信息';
+*/
+-- 医生执业表（一个医生可在多个医院供职，角色等）
+drop table IF EXISTS `base_doctor_hospital`;
+CREATE TABLE `base_doctor_hospital` (
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
+  `hosp_code` varchar(50) NOT NULL COMMENT '医院标识',
+  `hosp_name` varchar(50) NOT NULL COMMENT '医院名称',
+  `role_code` varchar(50) NOT NULL COMMENT '医生角色标识',
+  `role_name` varchar(50) NOT NULL COMMENT '医院角色名称',
+  `job_title_code` varchar(50) NOT NULL COMMENT '职称代码',
+  `job_title_name` varchar(50) NOT NULL COMMENT '职称名称',
+  `del` varchar(1) DEFAULT '1' COMMENT '作废标识，1正常，0作废',
+  `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生执业信息';
 
 -- 居民信息表
 drop table IF EXISTS `base_patient`;
@@ -150,13 +169,13 @@ CREATE TABLE `base_patient` (
   KEY `idx_name` (`name`),
   KEY `idx_principal_code` (`principal_code`) USING BTREE,
   KEY `idx_unionid` (`unionid`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='居民信息表（居民就是患者）';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='居民信息（居民就是患者）';
 
 -- 团队信息
 drop table IF EXISTS `base_team`;
 CREATE TABLE `base_team` (
   `id` varchar(50) NOT NULL   COMMENT '主键，团队uuid标识',
-  `saasid` varchar(50) DEFAULT NULL COMMENT 'saas化',
+  `org_id` varchar(50) DEFAULT NULL COMMENT '机构id',
   `name` varchar(50) DEFAULT NULL COMMENT '团队名称',
   `leader_id` varchar(50) NOT NULL COMMENT '领导医生标识',
   `team_num` varchar(50) NOT NULL COMMENT '团队人数',
@@ -169,7 +188,7 @@ CREATE TABLE `base_team` (
   `update_user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '修改人名',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='团队信息';
 
 drop table IF EXISTS `base_team_member`;
 CREATE TABLE `base_team_member` (
@@ -207,8 +226,9 @@ CREATE TABLE `base_people_num` (
   `tnb_task_num` int(10) DEFAULT  '0' COMMENT '糖尿病任务数',
   `six_five_task_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口任务数',
   `task_num` int(10) DEFAULT  '0' COMMENT '户籍人口任务数',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='基础人口基数信息';
 
 -- 行政区划数据  4个表 ---start----
 -- 省
@@ -217,8 +237,9 @@ CREATE TABLE `base_province` (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
   `code` varchar(50) NOT NULL COMMENT '省份编码',
   `name` varchar(50) NOT NULL COMMENT '省份名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='省份表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='省份字典';
 
 -- 城市
 drop table IF EXISTS `base_city`;
@@ -227,9 +248,10 @@ CREATE TABLE `base_city` (
   `province` varchar(10) DEFAULT NULL COMMENT '省编码',
   `code` varchar(50) DEFAULT NULL COMMENT '城市编码',
   `name` varchar(50) DEFAULT NULL COMMENT '城市名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_dm_city_province` (`province`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='城市字典表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='城市字典';
 
 -- 城镇区县
 drop table IF EXISTS `base_town`;
@@ -239,10 +261,10 @@ CREATE TABLE `base_town` (
   `city` varchar(50) DEFAULT NULL COMMENT '城市编码',
   `code` varchar(50) DEFAULT NULL COMMENT '区县编码',
   `name` varchar(50) DEFAULT NULL COMMENT '区县名称',
-  `photo` varchar(200) DEFAULT NULL,
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_dm_town` (`city`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='区县字典表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='区县字典';
 
 -- 街道
 drop table IF EXISTS `base_street`;
@@ -253,9 +275,10 @@ CREATE TABLE `base_street` (
   `town` varchar(50) DEFAULT NULL COMMENT '区县标识',
   `code` varchar(50) DEFAULT NULL COMMENT '街道标识',
   `name` varchar(100) DEFAULT NULL COMMENT '街道名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `idx_dm_street` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='街道代码表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='街道字典';
 
 -- 行政区划数据  4个表 ---end----
 
@@ -267,10 +290,11 @@ create table `dict_job_title`(
 `saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id，null标识公共字典',
 `code` varchar(50) default NULL COMMENT '职称标识',
 `name` varchar(20) default NULL COMMENT '职称名',
+`create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
  KEY `idx_job_title_code` (`code`),
 primary key (id)
 )
-ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='职称字典';
 
 -- 药品
 drop table IF EXISTS `dict_medicine`;
@@ -280,6 +304,7 @@ create table `dict_medicine`(
 `code` varchar(100) not null COMMENT '药品编码',
 `name` varchar(50) not null COMMENT '药品名称',
 `type` char(1) default NULL COMMENT '药品类型：1健康记录',
+`create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
 primary key (id),
 key `idx_medicine_code` (`code`)
 )
@@ -296,9 +321,10 @@ CREATE TABLE `dict_icd10` (
   `chronic_flag` varchar(1) CHARACTER SET utf8 DEFAULT NULL COMMENT '是否慢病',
   `infectious_flag` varchar(1) CHARACTER SET utf8 DEFAULT NULL COMMENT '是否传染病',
   `description` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '描述',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   key `idx_icd10_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4  COMMENT='ICD10字典';
 
 
 -- 健康问题表
@@ -310,8 +336,9 @@ CREATE TABLE `dict_health_problem` (
   `name` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '字典名称',
   `description` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '描述',
   key `idx_hea_problem_code` (`code`),
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康问题字典';
 
 
 -- 标准科室
@@ -322,7 +349,8 @@ create table `dict_hospital_dept`
   `saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id，null标识公共字典',
   `code` varchar(50) not null COMMENT '科室标识',
   `name` varchar(50) not null COMMENT '科室名称',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   key `idx_hos_dept_code` (`code`),
   primary key (id)
 )
-  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医院科室字典表';
+  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医院科室字典';

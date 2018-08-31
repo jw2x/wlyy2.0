@@ -137,4 +137,131 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/sms_template";
     }
 
+
+    /**
+     * 城市字典
+     */
+    public static class BaseCity extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 医生基础信息
+     */
+    public static class BaseDoctor extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 医生职业信息
+     */
+    public static class BaseDoctorHospital extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 医生角色字典
+     */
+    public static class BaseDoctorRoleDict extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 居民信息
+     */
+    public static class BaseOrg extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 省字典
+     */
+    public static class BasePatient extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 街道字典
+     */
+    public static class BaseProvince extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+    /**
+     * 团队信息
+     */
+    public static class BaseTeam extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 街道字典
+     */
+    public static class BaseStreet extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 团队成员
+     */
+    public static class BaseTeamMember extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 区县字典
+     */
+    public static class BaseTown extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 健康问题字典
+     */
+    public static class DictHealthProblem extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 医院科室字典
+     */
+    public static class DictHospitalDept extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * ICD10字典
+     */
+    public static class DictIcd10 extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 职称字典
+     */
+    public static class DictJobTitle extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
+
+    /**
+     * 药品字典
+     */
+    public static class DictMedicine extends Basic {
+        public static final String PREFIX  = "/sms_template";
+    }
+
 }
