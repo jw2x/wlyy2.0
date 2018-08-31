@@ -44,6 +44,14 @@ public abstract class EnvelopRestEndpoint {
         return envelop;
     }
 
+    protected Envelop error(String message,String errorCode){
+        Envelop envelop = new Envelop();
+        envelop.setMessage(message);
+        envelop.setErrorCode(errorCode);
+        envelop.setStatus(-1);
+        return envelop;
+    }
+
     protected <J> ObjEnvelop<J> success(J obj){
         return success("success", obj);
     }

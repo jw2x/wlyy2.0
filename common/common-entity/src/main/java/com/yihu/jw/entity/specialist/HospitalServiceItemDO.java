@@ -7,6 +7,7 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -33,6 +34,12 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
 
     @Column(name = "status")
     private Integer status;//状态
+
+    @Column(name = "expense")
+    private Integer expense;//价格
+
+    @Transient
+    private SpecialistServiceItemDO specialistServiceItemDO;
 
     @Column(name = "saas_id")
     public String getSaasId() {
@@ -77,5 +84,23 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Transient
+    public SpecialistServiceItemDO getSpecialistServiceItemDO() {
+        return specialistServiceItemDO;
+    }
+
+    public void setSpecialistServiceItemDO(SpecialistServiceItemDO specialistServiceItemDO) {
+        this.specialistServiceItemDO = specialistServiceItemDO;
+    }
+
+    @Column(name = "expense")
+    public Integer getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Integer expense) {
+        this.expense = expense;
     }
 }

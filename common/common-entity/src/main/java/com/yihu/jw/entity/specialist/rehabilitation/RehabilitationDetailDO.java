@@ -38,7 +38,10 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
     private Integer status;//状态（0未完成，1已完成，2已预约）
     @Column(name = "expense")
     private Integer expense;
+    @Column(name = "service_qr_code")
+    private String serviceQrCode;//服务码
 
+    @Column(name = "saas_id")
     public String getSaasId() {
         return saasId;
     }
@@ -47,6 +50,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.saasId = saasId;
     }
 
+    @Column(name = "plan_id")
     public String getPlanId() {
         return planId;
     }
@@ -55,6 +59,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.planId = planId;
     }
 
+    @Column(name = "hospital_service_item_id")
     public String getHospitalServiceItemId() {
         return hospitalServiceItemId;
     }
@@ -63,6 +68,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.hospitalServiceItemId = hospitalServiceItemId;
     }
 
+    @Column(name = "hospital")
     public String getHospital() {
         return hospital;
     }
@@ -71,6 +77,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.hospital = hospital;
     }
 
+    @Column(name = "execute_time")
     public Date getExecuteTime() {
         return executeTime;
     }
@@ -79,6 +86,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.executeTime = executeTime;
     }
 
+    @Column(name = "status")
     public Integer getStatus() {
         return status;
     }
@@ -87,6 +95,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.status = status;
     }
 
+    @Column(name = "hospital_name")
     public String getHospitalName() {
         return hospitalName;
     }
@@ -95,6 +104,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.hospitalName = hospitalName;
     }
 
+    @Column(name = "type")
     public Integer getType() {
         return type;
     }
@@ -103,6 +113,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.type = type;
     }
 
+    @Column(name = "doctor")
     public String getDoctor() {
         return doctor;
     }
@@ -111,6 +122,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.doctor = doctor;
     }
 
+    @Column(name = "doctor_name")
     public String getDoctorName() {
         return doctorName;
     }
@@ -119,11 +131,21 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
         this.doctorName = doctorName;
     }
 
+    @Column(name = "expense")
     public Integer getExpense() {
         return expense;
     }
 
     public void setExpense(Integer expense) {
         this.expense = expense;
+    }
+
+    @Column(name = "service_qr_code")
+    public String getServiceQrCode() {
+        return serviceQrCode;
+    }
+
+    public void setServiceQrCode(String serviceQrCode) {
+        this.serviceQrCode = serviceQrCode;
     }
 }

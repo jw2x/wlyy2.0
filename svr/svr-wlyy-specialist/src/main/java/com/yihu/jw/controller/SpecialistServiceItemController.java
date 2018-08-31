@@ -12,6 +12,7 @@ import com.yihu.jw.service.SpecialistServiceItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import jxl.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      * @param pageSize
      * @return
      */
-    @GetMapping(value = SpecialistMapping.serviceItem.getServiceItem)
+    @PostMapping(value = SpecialistMapping.serviceItem.getServiceItem)
     @ApiOperation(value = "服务项目列表查询")
     public MixEnvelop<SpecialistServiceItemDO,SpecialistEvaluateDO> select(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                                        @RequestParam(value = "serviceItem")String serviceItem,
@@ -115,14 +116,52 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      * @param serviceItem
      * @return
      */
-    @GetMapping(value = SpecialistMapping.serviceItem.updateServiceItem)
+    @PostMapping(value = SpecialistMapping.serviceItem.updateServiceItem)
     @ApiOperation(value = "服务项目更新")
     public MixEnvelop<Boolean,Boolean> udpate(@ApiParam(name = "serviceItem", value = "服务项目JSON")
-                                   @RequestParam(value = "serviceItem")String serviceItem){
+                                              @RequestParam(value = "serviceItem")String serviceItem){
         try {
             SpecialistServiceItemDO serviceItemDO = toEntity(serviceItem,SpecialistServiceItemDO.class);
             return specialistServiceItemService.update(serviceItemDO);
         }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 根据医院code获取服务项目
+     *
+     * @param hospital
+     * @return
+     */
+    @PostMapping(value = SpecialistMapping.serviceItem.selectItemByHospital)
+    @ApiOperation(value = "根据医院code获取服务项目")
+    public MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> selectByHospital(@ApiParam(name = "hospital", value = "医院code")
+                                              @RequestParam(value = "hospital")String hospital){
+        try {
+            return specialistServiceItemService.selectByHospital(hospital);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 导数据
+     *
+     * @return
+     */
+    @RequestMapping(value = "importData")
+    @ResponseBody
+    public MixEnvelop<Boolean,Boolean> importData(@RequestBody Workbook workbook) {
+        try {
+            return specialistServiceItemService.importData(workbook);
+        } catch (Exception e) {
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return MixEnvelop.getError(e.getMessage());

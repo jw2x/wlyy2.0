@@ -13,15 +13,6 @@ import java.util.Date;
 @Table(name = "base_sms")
 public class SmsDO extends UuidIdentityEntity {
 
-	/**
-	 * 0 - 未发送
-	 * 1 - 已发送
-	 */
-	public enum Status {
-		unsent,
-		sent
-	}
-
 	//应用ID
 	private String clientId;
 	//使用的网关
@@ -29,17 +20,15 @@ public class SmsDO extends UuidIdentityEntity {
 	//请求的ip地址
 	private String requestIp;
 	//短信接收号码
-	private String mobile;
+	private String to;
 	//短信内容
 	private String content;
 	//过期时间
 	private Date deadline;
 	//验证码
 	private String captcha;
-	//短信类别
+	//短信标签
 	private SmsTemplateDO.Type type;
-	//状态
-	private Status status;
 
 	@Column(name = "client_id", nullable = false)
 	public String getClientId() {
@@ -68,13 +57,13 @@ public class SmsDO extends UuidIdentityEntity {
 		this.requestIp = requestIp;
 	}
 
-	@Column(name = "mobile", nullable = false)
-	public String getMobile() {
-		return mobile;
+	@Column(name = "to", nullable = false)
+	public String getTo() {
+		return to;
 	}
 
-	public void setMobile(String mobile) {
-		this.mobile = mobile;
+	public void setTo(String to) {
+		this.to = to;
 	}
 
 	@Column(name = "content", nullable = false)
@@ -113,12 +102,4 @@ public class SmsDO extends UuidIdentityEntity {
 		this.captcha = captcha;
 	}
 
-	@Column(name = "status", nullable = false)
-	public Status getStatus() {
-		return status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
-	}
 }

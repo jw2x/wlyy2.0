@@ -1,35 +1,40 @@
 package com.yihu.jw.service.rehabilitation;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationDetailDao;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationPlanTemplateDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationTemplateDetailDao;
+import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
-import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
+import com.yihu.jw.restmodel.specialist.PatientSignInfoVO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.FileUploadService;
+import com.yihu.jw.service.SpecialistHospitalServiceItemService;
+import com.yihu.jw.service.SpecialistService;
 import com.yihu.jw.util.common.QrcodeUtil;
 import com.yihu.fastdfs.FastDFSUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.*;
 
 /**
  * Created by humingfen on 2018/8/17.
@@ -58,6 +63,10 @@ public class RehabilitationPlanService {
     private FileUploadService fileUploadService;
     @Autowired
     protected HttpServletRequest request;
+    @Autowired
+    private SpecialistHospitalServiceItemService hospitalServiceItemService;
+    @Autowired
+    private SpecialistService specialistService;
 
     public MixEnvelop<String, String> createRehabilitationTemplate(RehabilitationPlanTemplateDO templateDO) {
         templateDO.setCreateTime(new Date());
@@ -86,23 +95,34 @@ public class RehabilitationPlanService {
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,true);
     }
 
-    public MixEnvelop<RehabilitationPlanTemplateDO, RehabilitationPlanTemplateDO> findRehabilitationPlanTemplate(Integer adminTeamCode, Integer page, Integer size) {
+    public MixEnvelop<RehabilitationPlanTemplateDO, RehabilitationPlanTemplateDO> findRehabilitationPlanTemplate(Long adminTeamCode, String doctor, String patient) {
 
-        if(page != null && size != null){
-            String sql = "select * from wlyy_rehabilitation_plan_template t where t.admin_team_code = '" + adminTeamCode + "' ORDER BY t.create_time DESC LIMIT "+(page-1)*size+","+size;
-            List<RehabilitationPlanTemplateDO> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper(RehabilitationPlanTemplateDO.class));
-            String countSql = "select count(1) from wlyy_rehabilitation_plan_template t where t.admin_team_code = '" + adminTeamCode + "'";
-            Long count = jdbcTemplate.queryForObject(countSql, Long.class);
-            return MixEnvelop.getSuccessListWithPage(SpecialistMapping.api_success,list,page,size,count);
-        }else {
-            List<RehabilitationPlanTemplateDO> list = templateDao.findByAdminTeamCode(adminTeamCode);
-            return MixEnvelop.getSuccessList(SpecialistMapping.api_success,list, list.size());
+        if(adminTeamCode == null && StringUtils.isNotBlank(doctor) && StringUtils.isNotBlank(patient)){
+            PatientSignInfoVO patientSignSpecialistInfo = (PatientSignInfoVO) specialistService.findPatientSignSpecialistInfo(patient,doctor).getObj();
+            adminTeamCode = patientSignSpecialistInfo.getTeamCode();
         }
+        List<RehabilitationPlanTemplateDO> list = templateDao.findByAdminTeamCode(adminTeamCode);
+        return MixEnvelop.getSuccessList(SpecialistMapping.api_success,list, list.size());
     }
 
-    public MixEnvelop<RehabilitationTemplateDetailDO, RehabilitationTemplateDetailDO> findTemplateDetailByTemplateId(String templateId) {
-        List<RehabilitationTemplateDetailDO> list = templateDetailDao.findTemplateDetailByTemplateId(templateId);
-        return MixEnvelop.getSuccessList(SpecialistMapping.api_success,list, list.size());
+    /**
+     * 根据模板id修改康复模板删除状态
+     * @param id
+     * @return
+     */
+    public MixEnvelop<Boolean,Boolean> deleteRehabilitationPlanTemplate(String id) {
+        templateDao.updateDelById(id);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,true);
+    }
+
+    /**
+     * 根据模板id获取机构服务项目id，然后找出具体服务项目内容
+     * @param templateId
+     * @return
+     */
+    public MixEnvelop<HospitalServiceItemDO, HospitalServiceItemDO> findTemplateDetailByTemplateId(String templateId) {
+        List<String> hospitalServiceItemIds = templateDetailDao.findHospitalServiceItemIdByTemplateId(templateId);
+        return hospitalServiceItemService.selectById(hospitalServiceItemIds);
     }
 
     public PatientRehabilitationPlanDO createPatientRehabilitationPlan(PatientRehabilitationPlanDO planDO) {
@@ -113,19 +133,84 @@ public class RehabilitationPlanService {
 
     public List<RehabilitationDetailDO> createRehabilitationDetail(List<RehabilitationDetailDO> details, String planId) {
         for(RehabilitationDetailDO detail : details) {
+            List<String> list = new ArrayList<>();
+            list.add(detail.getHospitalServiceItemId());
+            HospitalServiceItemDO hospitalServiceItemDO = hospitalServiceItemService.selectById(list).getDetailModelList().get(0);
+            detail.setHospital(hospitalServiceItemDO.getHospital());
+            detail.setHospitalName(hospitalServiceItemDO.getHospitalName());
+            detail.setExpense(hospitalServiceItemDO.getExpense());
             detail.setPlanId(planId);
+            detail.setCreateTime(new Date());
             detail.setStatus(0);
         }
         return (List<RehabilitationDetailDO>)rehabilitationDetailDao.save(details);
     }
-    public MixEnvelop<String,String> createServiceQrCode(String planId,String patientCode){
-        PatientRehabilitationPlanDO patientRehabilitationPlanDO = patientRehabilitationPlanDao.findById(planId);
+
+    public MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> findServiceItemsByHospital(String doctorHospital, String signHospital) {
+        JSONArray jsonArray = new JSONArray();
+        List<String> list = new ArrayList<>();
+        list.add(doctorHospital);
+        List<HospitalServiceItemDO> docHospitalServiceItemDO = hospitalServiceItemService.selectByHospital(list).getDetailModelList();
+        if(StringUtils.isNotBlank(signHospital)){
+            if(signHospital.equals(doctorHospital)) {
+                for (Object object : docHospitalServiceItemDO) {
+                    JSONObject json = (JSONObject) JSONObject.toJSON(object);
+                    json.put("type", "社区");
+                    jsonArray.add(json);
+                }
+            }else if(!signHospital.equals(doctorHospital)){
+                JSONArray array = new JSONArray();
+                List<String> itemIds = new ArrayList<>();
+                list.remove(0);
+                list.add(signHospital);
+                List<HospitalServiceItemDO> signHospitalServiceItemDO = hospitalServiceItemService.selectByHospital(list).getDetailModelList();
+                HashSet signSet = new HashSet();
+                for(HospitalServiceItemDO h : signHospitalServiceItemDO){
+                    signSet.add(h.getServiceItemId());
+                }
+                //将服务项目重复的都放入itemIds集合里,并在列表中删除该条数据
+                List<HospitalServiceItemDO> temp = new ArrayList<>();
+                temp.addAll(docHospitalServiceItemDO);
+                for(HospitalServiceItemDO h : docHospitalServiceItemDO){
+                    int size = signSet.size();
+                    String itemId = h.getServiceItemId();
+                    signSet.add(itemId);
+                    if(signSet.size() == size){
+                        itemIds.add(itemId);
+                        temp.remove(h);
+                    }
+                }
+                array.addAll(signHospitalServiceItemDO);
+                array.addAll(temp);
+                for(Object obj : array){
+                    //往实体类插入数据
+                    JSONObject json = (JSONObject) JSONObject.toJSON(obj);
+                    if(json.get("hospital").equals(signHospital)){
+                        json.put("type", "社区");
+                    }else if(json.get("hospital").equals(doctorHospital)){
+                        json.put("type", "医院");
+                    }
+                    if(itemIds.contains(json.get("serviceItemId"))){
+                        json.put("type", "社区，医院");
+                    }
+                    jsonArray.add(json);
+                }
+            }
+        }else {
+            jsonArray.addAll(docHospitalServiceItemDO);
+        }
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success, jsonArray);
+    }
+
+    public MixEnvelop<String,String> createServiceQrCode(String planDetailId){
+        RehabilitationDetailDO rehabilitationDetailDO = rehabilitationDetailDao.findById(planDetailId);
         String fileUrl = "";
-        if (patientRehabilitationPlanDO!=null) {
-            if (org.apache.commons.lang3.StringUtils.isNotBlank(patientRehabilitationPlanDO.getServiceQrCode())) {
-                fileUrl = patientRehabilitationPlanDO.getServiceQrCode();
+        if (rehabilitationDetailDO!=null) {
+            if (org.apache.commons.lang3.StringUtils.isNotBlank(rehabilitationDetailDO.getServiceQrCode())) {
+                fileUrl = rehabilitationDetailDO.getServiceQrCode();
             } else {
-                InputStream ipt = QrcodeUtil.createQrcode(planId+"|"+patientCode, 300, "png");
+                String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\"}";
+                InputStream ipt = QrcodeUtil.createQrcode(contentJsonStr, 300, "png");
                 isneiwang = false;
                 if (isneiwang) {
                     // 圖片列表
@@ -157,18 +242,19 @@ public class RehabilitationPlanService {
                     }
                 }
                 //更新到康复计划居民关系表中
-                String sql = "update wlyy_patient_rehabilitation_plan set service_qr_code='" + fileUrl + "' where id='" + planId + "'";
+                String sql = "update wlyy_rehabilitation_plan_detail set service_qr_code='" + fileUrl + "' where id='" + planDetailId + "'";
                 jdbcTemplate.update(sql);
             }
         }
         return MixEnvelop.getSuccess("获取二维码成功！",fileUrl);
     }
 
-    public Integer checkAfterQrCode(String planId,String patietCode){
+    public Integer checkAfterQrCode(String planDetailId,String patietCode){
         int result = 0;
-        PatientRehabilitationPlanDO patientRehabilitationPlanDO =  patientRehabilitationPlanDao.findById(planId);
-        if (patientRehabilitationPlanDO!=null){
-            if (StringUtils.pathEquals(patientRehabilitationPlanDO.getPatient(),patietCode)){
+        String sql ="SELECT rp.patient FROM `wlyy_rehabilitation_plan_detail` pd LEFT JOIN wlyy_patient_rehabilitation_plan rp ON pd.plan_id = rp.id WHERE pd.id='"+planDetailId+"'";
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        if (list!=null && list.size()>0){
+            if (String.valueOf(list.get(0).get("patient")).equals(patietCode)){
                 result =200;
             }else {
                 result = -1;

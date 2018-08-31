@@ -1,8 +1,11 @@
 package com.yihu.jw.base.endpoint.sms;
 
 import com.yihu.jw.base.service.SmsGatewayService;
+import com.yihu.jw.entity.base.sms.SmsDO;
 import com.yihu.jw.entity.base.sms.SmsGatewayDO;
+import com.yihu.jw.entity.base.sms.SmsTemplateDO;
 import com.yihu.jw.restmodel.base.sms.SmsGatewayVO;
+import com.yihu.jw.restmodel.base.sms.SmsVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -93,16 +96,16 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
         return success(smsGatewayDOS, SmsGatewayVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.SmsGateway.SEND)
+    @PostMapping(value = BaseRequestMapping.SmsGateway.SEND)
     @ApiOperation(value = "发送短信")
-    public Envelop send (
+    public ObjEnvelop<SmsVO> send (
             @ApiParam(name = "clientId", value = "应用ID", required = true)
             @RequestParam(value = "clientId") String clientId,
             @ApiParam(name = "type", value = "短信标签类型", required = true)
-            @RequestParam(value = "type") Integer type,
-            @ApiParam(name = "mobile", value = "手机号码", required = true)
-            @RequestParam(value = "mobile") String mobile) {
-        return success("");
+            @RequestParam(value = "type") SmsTemplateDO.Type type,
+            @ApiParam(name = "to", value = "手机号码", required = true)
+            @RequestParam(value = "to") String to) throws Exception {
+        SmsDO smsDO = smsGatewayService.send(clientId, type, to);
+        return success(smsDO, SmsVO.class);
     }
-
 }

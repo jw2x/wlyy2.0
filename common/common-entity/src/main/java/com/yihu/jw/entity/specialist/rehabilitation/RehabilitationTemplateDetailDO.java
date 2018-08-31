@@ -21,6 +21,7 @@ public class RehabilitationTemplateDetailDO extends UuidIdentityEntityWithOperat
     @Column(name = "hospital_service_item_id")
     private String hospitalServiceItemId;//机构服务项目id
 
+    @Column(name = "saas_id")
     public String getSaasId() {
         return saasId;
     }
@@ -29,6 +30,7 @@ public class RehabilitationTemplateDetailDO extends UuidIdentityEntityWithOperat
         this.saasId = saasId;
     }
 
+    @Column(name = "template_id")
     public String getTemplateId() {
         return templateId;
     }
@@ -37,6 +39,7 @@ public class RehabilitationTemplateDetailDO extends UuidIdentityEntityWithOperat
         this.templateId = templateId;
     }
 
+    @Column(name = "hospital_service_item_id")
     public String getHospitalServiceItemId() {
         return hospitalServiceItemId;
     }

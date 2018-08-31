@@ -9,9 +9,9 @@ import zipkin.server.EnableZipkinServer;
  */
 @SpringBootApplication
 @EnableZipkinServer
-public class SvrZipkin {
+public class ZipkinTrackServer {
 
     public static void main(String[] args) {
-        SpringApplication.run(SvrZipkin.class, args);
+        SpringApplication.run(ZipkinTrackServer.class, args);
     }
 }
