@@ -695,7 +695,7 @@ public class SpecialistService{
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
     }
 
-    public MixEnvelop<PatientDisseaseInfoVO, PatientDisseaseInfoVO> getPatientAndDiseaseByDoctor(String doctor) {
+    public MixEnvelop<PatientDisseaseInfoVO, PatientDisseaseInfoVO> getPatientAndDiseaseByDoctor(String doctor, String patientInfo) {
         String sql = "SELECT s.*, " +
                 "p.idcard, " +
                 "case p.sex WHEN 1 then '男' ELSE '女' END as sex, " +
@@ -703,8 +703,11 @@ public class SpecialistService{
                 "p.birthday " +
                 "FROM (SELECT s.disease,s.disease_name,s.patient,s.patient_name from " +
                 "(SELECT id FROM wlyy_specialist_patient_relation WHERE doctor='" + doctor + "' and sign_status > 0 and `status` >= 0) r " +
-                "JOIN "+basedb+".wlyy_patient_disease_server s on r.id = s.specialist_relation_code) s " +
-                "JOIN "+basedb+".wlyy_patient p on s.patient = p.`code`";
+                "JOIN "+basedb+".wlyy_patient_disease_server s on r.id = s.specialist_relation_code WHERE s.del = 1) s " +
+                "JOIN "+basedb+".wlyy_patient p on s.patient = p.`code` where p.`status` >0 ";
+        if(StringUtils.isNotBlank(patientInfo)){
+            sql += " and p.idcard like '%"+ patientInfo +"%' or patient_name like '%" + patientInfo + "%'";
+        }
         List<PatientDisseaseInfoVO> PatientDisseaseInfoVO = jdbcTemplate.query(sql, new BeanPropertyRowMapper(PatientDisseaseInfoVO.class));
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,PatientDisseaseInfoVO);
     }

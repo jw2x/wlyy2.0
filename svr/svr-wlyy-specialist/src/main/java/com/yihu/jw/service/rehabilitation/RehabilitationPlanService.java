@@ -134,7 +134,7 @@ public class RehabilitationPlanService {
             HospitalServiceItemDO hospitalServiceItemDO = hospitalServiceItemService.selectById(list).getDetailModelList().get(0);
             detail.setHospital(hospitalServiceItemDO.getHospital());
             detail.setHospitalName(hospitalServiceItemDO.getHospitalName());
-//            detail.setExpense(hospitalServiceItemDO.get);
+            detail.setExpense(hospitalServiceItemDO.getExpense());
             detail.setPlanId(planId);
             detail.setCreateTime(new Date());
             detail.setStatus(0);

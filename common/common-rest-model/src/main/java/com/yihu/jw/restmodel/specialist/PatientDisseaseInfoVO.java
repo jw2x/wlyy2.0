@@ -28,7 +28,7 @@ public class PatientDisseaseInfoVO {
     @ApiModelProperty("身份证")
     private String idcard;
     @ApiModelProperty("生日")
-    private Date birthday;
+    private String  birthday;
 
     public String getDisease() {
         return disease;
@@ -86,11 +86,11 @@ public class PatientDisseaseInfoVO {
         this.idcard = idcard;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 }
