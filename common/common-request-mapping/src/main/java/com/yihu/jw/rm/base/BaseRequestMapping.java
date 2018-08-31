@@ -185,7 +185,7 @@ public class BaseRequestMapping {
      * 城市字典
      */
     public static class BaseCity extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseCity";
     }
 
 
@@ -193,7 +193,7 @@ public class BaseRequestMapping {
      * 医生基础信息
      */
     public static class BaseDoctor extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseDoctor";
     }
 
 
@@ -201,7 +201,7 @@ public class BaseRequestMapping {
      * 医生职业信息
      */
     public static class BaseDoctorHospital extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseDoctorHospital";
     }
 
 
@@ -209,7 +209,7 @@ public class BaseRequestMapping {
      * 医生角色字典
      */
     public static class BaseDoctorRoleDict extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseDoctorRoleDict";
     }
 
 
@@ -217,7 +217,7 @@ public class BaseRequestMapping {
      * 居民信息
      */
     public static class BaseOrg extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseOrg";
     }
 
 
@@ -225,7 +225,7 @@ public class BaseRequestMapping {
      * 省字典
      */
     public static class BasePatient extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/basePatient";
     }
 
 
@@ -233,14 +233,14 @@ public class BaseRequestMapping {
      * 街道字典
      */
     public static class BaseProvince extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseProvince";
     }
 
     /**
      * 团队信息
      */
     public static class BaseTeam extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseTeam";
     }
 
 
@@ -248,7 +248,7 @@ public class BaseRequestMapping {
      * 街道字典
      */
     public static class BaseStreet extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseStreet";
     }
 
 
@@ -256,7 +256,7 @@ public class BaseRequestMapping {
      * 团队成员
      */
     public static class BaseTeamMember extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseTeamMember";
     }
 
 
@@ -264,7 +264,7 @@ public class BaseRequestMapping {
      * 区县字典
      */
     public static class BaseTown extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/baseTown";
     }
 
 
@@ -272,7 +272,7 @@ public class BaseRequestMapping {
      * 健康问题字典
      */
     public static class DictHealthProblem extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/dictHealthProblem";
     }
 
 
@@ -280,7 +280,7 @@ public class BaseRequestMapping {
      * 医院科室字典
      */
     public static class DictHospitalDept extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/dictHospitalDept";
     }
 
 
@@ -288,7 +288,7 @@ public class BaseRequestMapping {
      * ICD10字典
      */
     public static class DictIcd10 extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/dictIcd10";
     }
 
 
@@ -296,7 +296,7 @@ public class BaseRequestMapping {
      * 职称字典
      */
     public static class DictJobTitle extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/dictJobTitle";
     }
 
 
@@ -304,7 +304,7 @@ public class BaseRequestMapping {
      * 药品字典
      */
     public static class DictMedicine extends Basic {
-        public static final String PREFIX  = "/sms_template";
+        public static final String PREFIX  = "/dictMedicine";
     }
 
 }

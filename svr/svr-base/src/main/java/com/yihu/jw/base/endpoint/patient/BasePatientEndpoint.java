@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.patient;
 
-import com.yihu.jw.base.service.dict.BasePatientService;
+import com.yihu.jw.base.service.patient.BasePatientService;
 import com.yihu.jw.restmodel.base.dict.BasePatientVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;

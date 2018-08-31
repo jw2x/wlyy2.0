@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.team;
 
-import com.yihu.jw.base.service.dict.BaseTeamMemberService;
+import com.yihu.jw.base.service.team.BaseTeamMemberService;
 import com.yihu.jw.restmodel.base.dict.BaseTeamMemberVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;

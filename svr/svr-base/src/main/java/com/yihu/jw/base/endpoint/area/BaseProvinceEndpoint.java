@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.area;
 
-import com.yihu.jw.base.service.dict.BaseProvinceService;
+import com.yihu.jw.base.service.area.BaseProvinceService;
 import com.yihu.jw.restmodel.base.dict.BaseProvinceVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;

@@ -1,13 +1,13 @@
-package com.yihu.jw.base.service.dict;
+package com.yihu.jw.base.service.team;
 
-import com.yihu.jw.base.dao.BaseStreetDao;
+import com.yihu.jw.base.dao.BaseTeamDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
-import com.yihu.jw.entity.base.area.BaseStreetDO;
+import com.yihu.jw.entity.base.team.BaseTeamDO;
 
 /**
  * 
- * 街道字典服务service
+ * 团队信息服务service
  * 
  * @version 
  * <pre>
@@ -18,5 +18,5 @@ import com.yihu.jw.entity.base.area.BaseStreetDO;
  * @since 1.
  */
 @Service
-public class BaseStreetService extends BaseJpaService<BaseStreetDO, BaseStreetDao> {
+public class BaseTeamService extends BaseJpaService<BaseTeamDO, BaseTeamDao> {
 }

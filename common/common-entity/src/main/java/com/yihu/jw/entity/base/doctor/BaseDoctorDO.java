@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.base.doctor;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -222,6 +223,7 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
         this.idcard = idcard;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	@Column(name = "birthday")
     public Date getBirthday() {
         return birthday;
@@ -350,6 +352,7 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
         this.spell = spell;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	@Column(name = "certified_overtime")
     public Date getCertifiedOvertime() {
         return certifiedOvertime;

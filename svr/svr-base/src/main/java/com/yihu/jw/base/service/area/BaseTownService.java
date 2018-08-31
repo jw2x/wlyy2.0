@@ -1,14 +1,22 @@
 package com.yihu.jw.base.service.area;
 
-import com.yihu.jw.base.dao.area.BaseTownDao;
-import com.yihu.jw.entity.base.area.BaseTown;
+import com.yihu.jw.base.dao.BaseTownDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
+import com.yihu.jw.entity.base.area.BaseTownDO;
 
 /**
- * @author litaohong on 2018/8/29
- * @project jw2.0
+ * 
+ * 区县字典服务service
+ * 
+ * @version 
+ * <pre>
+ * Author	Version		Date		Changes
+ * litaohong    1.0  2018年08月31日 Created
+ *
+ * </pre>
+ * @since 1.
  */
 @Service
-public class BaseTownService extends BaseJpaService<BaseTown, BaseTownDao> {
+public class BaseTownService extends BaseJpaService<BaseTownDO, BaseTownDao> {
 }

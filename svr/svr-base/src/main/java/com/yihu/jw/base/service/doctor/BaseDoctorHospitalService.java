@@ -1,4 +1,4 @@
-package com.yihu.jw.base.service.dict;
+package com.yihu.jw.base.service.doctor;
 
 import com.yihu.jw.base.dao.BaseDoctorHospitalDao;
 import com.yihu.mysql.query.BaseJpaService;

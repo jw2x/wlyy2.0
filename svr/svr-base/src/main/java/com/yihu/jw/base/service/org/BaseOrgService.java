@@ -1,13 +1,13 @@
-package com.yihu.jw.base.service.dict;
+package com.yihu.jw.base.service.org;
 
-import com.yihu.jw.base.dao.BaseTownDao;
+import com.yihu.jw.base.dao.BaseOrgDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
-import com.yihu.jw.entity.base.area.BaseTownDO;
+import com.yihu.jw.entity.base.org.BaseOrgDO;
 
 /**
  * 
- * 区县字典服务service
+ * 机构信息服务service
  * 
  * @version 
  * <pre>
@@ -18,5 +18,5 @@ import com.yihu.jw.entity.base.area.BaseTownDO;
  * @since 1.
  */
 @Service
-public class BaseTownService extends BaseJpaService<BaseTownDO, BaseTownDao> {
+public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
 }
