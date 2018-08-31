@@ -137,4 +137,25 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/sms_template";
     }
 
+    /**
+     * 家庭成员管理
+     */
+    public static class PatientMember extends Basic{
+        public static final String PREFIX = "/patient_member";
+    }
+
+    /**
+     * 医生评价
+     */
+    public static class Score extends Basic{
+        public static final String PREFIX = "/score";
+    }
+
+    /**
+     * 团队
+     */
+    public static class team extends Basic{
+        public static final String PREFIX = "/team";
+    }
+
 }
