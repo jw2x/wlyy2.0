@@ -1,4 +1,4 @@
-package com.yihu.jw.base.service.dict;
+package com.yihu.jw.base.service.doctor;
 
 import com.yihu.jw.base.dao.BaseDoctorRoleDictDao;
 import com.yihu.mysql.query.BaseJpaService;

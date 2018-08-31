@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.doctor;
 
-import com.yihu.jw.base.service.dict.BaseDoctorService;
+import com.yihu.jw.base.service.doctor.BaseDoctorService;
 import com.yihu.jw.restmodel.base.dict.BaseDoctorVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;

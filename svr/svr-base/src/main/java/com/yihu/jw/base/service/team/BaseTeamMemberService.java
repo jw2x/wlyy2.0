@@ -1,4 +1,4 @@
-package com.yihu.jw.base.service.dict;
+package com.yihu.jw.base.service.team;
 
 import com.yihu.jw.base.dao.BaseTeamMemberDao;
 import com.yihu.mysql.query.BaseJpaService;

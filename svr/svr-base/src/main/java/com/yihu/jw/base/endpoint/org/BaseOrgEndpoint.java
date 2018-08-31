@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.org;
 
-import com.yihu.jw.base.service.dict.BaseOrgService;
+import com.yihu.jw.base.service.org.BaseOrgService;
 import com.yihu.jw.restmodel.base.dict.BaseOrgVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
