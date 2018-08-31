@@ -73,6 +73,7 @@ public class SpecialistServiceItemDO extends UuidIdentityEntityWithOperator impl
     @Column(name = "status")
     private Integer status; //删除状态
 
+    @Transient
     public Integer flag;
 
 
