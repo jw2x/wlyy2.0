@@ -36,8 +36,7 @@ public class SpecialistMapping {
         public static final String findDoctorAndDoctorHealthBySpecialDoctor ="/findDoctorAndDoctorHealthBySpecialDoctor";
         public static final String findSpecialistSignFamilyPatientCout ="/findSpecialistSignFamilyPatientCout";
         public static final String getSpecialistSignFamilyPatientByName ="/getSpecialistSignFamilyPatientByName";
-
-
+        public static final String getPatientAndDiseaseByDoctor ="/getPatientAndDiseaseByDoctor";
 
 
 
@@ -56,6 +55,7 @@ public class SpecialistMapping {
     public static class rehabilitation{
         public static final String findRehabilitationPlan = "/findRehabilitationPlan";
         public static final String createRehabilitationPlanTemplate = "/createRehabilitationPlanTemplate";
+        public static final String deleteRehabilitationPlanTemplate = "/deleteRehabilitationPlanTemplate";
         public static final String createRehabilitationTemplateDetail = "/createRehabilitationTemplateDetail";
         public static final String findRehabilitationPlanTemplate = "/findRehabilitationPlanTemplate";
         public static final String findTemplateDetailByTemplateId = "/findTemplateDetailByTemplateId";
@@ -73,6 +73,7 @@ public class SpecialistMapping {
         public static final String updateStatusRehabilitationOperate = "/updateStatusRehabilitationOperate";
         public static final String patientRehabilitationDetail = "/patientRehabilitationDetail";
         public static final String recentPlanDetailRecord = "/recentPlanDetailRecord";
+        public static final String findServiceItemsByHospital = "/findServiceItemsByHospital";
 
     }
 
