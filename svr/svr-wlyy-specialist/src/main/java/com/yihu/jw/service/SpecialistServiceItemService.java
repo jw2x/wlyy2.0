@@ -12,7 +12,11 @@ import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemOperateLogDO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
+import com.yihu.jw.util.ExcelData;
 import com.yihu.jw.util.ISqlUtils;
+import com.yihu.jw.util.ReadExcelUtil;
+import jxl.Sheet;
+import jxl.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,9 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangzhinan
@@ -169,7 +171,7 @@ public class SpecialistServiceItemService {
         String sql = "select * from wlyy_service_item where status = 1";
         List<SpecialistServiceItemDO> specialistServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SpecialistServiceItemDO.class));
         for (SpecialistServiceItemDO specialistServiceItemDO:specialistServiceItemDOS){
-            String sql1 = "select * from wlyy_hospital_service_item where hospital = '"+hospital+"' and serviceItemId = '"+specialistServiceItemDO.getId()+"'";
+            String sql1 = "select * from wlyy_hospital_service_item where hospital = '"+hospital+"' and service_item_id = '"+specialistServiceItemDO.getId()+"'";
             List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             if (hospitalServiceItemDOS.size() == 0 || hospitalServiceItemDOS == null){
                 specialistServiceItemDO.setFlag(1);
@@ -180,4 +182,190 @@ public class SpecialistServiceItemService {
         envelop.setDetailModelList(specialistServiceItemDOS);
         return envelop;
     }
+
+
+    /**
+     * 导数据
+     *
+     * @param workbook
+     * @return
+     */
+    public MixEnvelop<Boolean,Boolean> importData(Workbook workbook) {
+        MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
+        Sheet[] sheets = workbook.getSheets();
+        Sheet sheet = sheets[0];
+        int rows = ReadExcelUtil.getRightRows(sheet);
+        for (int row = 1; row < rows; row++) {  //索引从0开始，第一行为标题
+            SpecialistServiceItemDO itemDO = new SpecialistServiceItemDO();
+            Map<Integer, ExcelData> mapping = mapping(itemDO);
+            int finalRow = row;
+            mapping.forEach((index, excelData) -> {
+                String value = sheet.getCell(index, finalRow).getContents().trim();
+                excelData.transform(value);
+            });
+
+            //Additional Handel
+            List<SpecialistServiceItemDO> specialistServiceItemDOS = specialistServiceItemDao.findByTitle(itemDO.getTitle());
+           if (specialistServiceItemDOS == null && specialistServiceItemDOS.size() ==0){
+               continue;
+           }else {
+                itemDO.setStatus(1);
+                specialistServiceItemDao.save(itemDO);
+           }
+        }
+        envelop.setObj(true);
+        return envelop;
+    }
+
+
+    /**
+     * 表格数据转为对象
+     *
+     * @param specialistServiceItemDO
+     * @return
+     */
+    private Map<Integer, ExcelData> mapping(SpecialistServiceItemDO specialistServiceItemDO) {
+        Map<Integer, ExcelData> dataMap = new HashMap<>();
+        //项目名称
+        dataMap.put(1, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                specialistServiceItemDO.setTitle(data);
+            }
+        });
+        //项目内涵
+        dataMap.put(2, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                specialistServiceItemDO.setContent(data);
+            }
+        });
+        //除去内容
+        dataMap.put(3, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                specialistServiceItemDO.setExcludeContent(data);
+            }
+        });
+        //项目类型
+        dataMap.put(4, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                Map<String, String> centerSite = new HashMap<>();
+                centerSite.put("康复服务", "1");
+                centerSite.put("健康服务", "2");
+                specialistServiceItemDO.setItemType(Integer.parseInt(centerSite.get(data)));
+            }
+        });
+        //医院等级
+        dataMap.put(5, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                Map<String,Integer> grade = new HashMap<>();
+                grade.put("所有",0);
+                grade.put("一级及一级以下医疗机构",1);
+                grade.put("二级医院",2);
+                grade.put("三级医院",3);
+                specialistServiceItemDO.setHospitalGrade(grade.get(data));
+            }
+        });
+        //三级医院收费
+        dataMap.put(6, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                specialistServiceItemDO.setThreeHospitals(Integer.parseInt(data));
+            }
+        });
+        //二级医院收费
+        dataMap.put(7, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                specialistServiceItemDO.setTwoHospitals(Integer.parseInt(data));
+
+            }
+        });
+        //一级及下收费
+        dataMap.put(8, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                specialistServiceItemDO.setOneHospitals(Integer.parseInt(data));
+            }
+        });
+        //计价单位
+        dataMap.put(9, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                    specialistServiceItemDO.setUnit(Integer.parseInt(data));
+            }
+        });
+        //加收项目
+        dataMap.put(10, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                specialistServiceItemDO.setAddItem(data);
+            }
+        });
+
+        //病案项目
+        dataMap.put(11, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                specialistServiceItemDO.setDiseaseItem(data);
+            }
+        });
+
+
+        //是否预约
+        dataMap.put(12, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                Map<String,Integer> reserve = new HashMap<>();
+                reserve.put("是",1);
+                reserve.put("否",0);
+                specialistServiceItemDO.setReserve(reserve.get(data));
+            }
+        });
+
+        //完成方式
+        dataMap.put(13, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                Map<String,Integer> type = new HashMap<>();
+                type.put("扫码",1);
+                type.put("上传附件",0);
+                type.put("健康教育",2);
+                type.put("健康指导",3);
+                type.put("随访",4);
+                specialistServiceItemDO.setType(type.get(data));
+            }
+        });
+
+        //是否评价
+        dataMap.put(14, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                Map<String,Integer> evaluate = new HashMap<>();
+                evaluate.put("是",1);
+                evaluate.put("否",0);
+                specialistServiceItemDO.setEvaluation(evaluate.get(data));
+            }
+        });
+
+        //是否生效
+        dataMap.put(15, new ExcelData() {
+            @Override
+            public void transform(String data) {
+                Map<String,Integer> imediate = new HashMap<>();
+                imediate.put("是",1);
+                imediate.put("否",0);
+                specialistServiceItemDO.setEvaluation(imediate.get(data));
+            }
+        });
+        specialistServiceItemDO.setId(UUID.randomUUID().toString());
+        return dataMap;
+    }
+
+
+
+
 }
