@@ -34,4 +34,18 @@ public class ObjEnvelop<J> extends Envelop {
     public void setObj(J obj) {
         this.obj = obj;
     }
+
+    public static ObjEnvelop getSuccess(String message, Object obj) {
+        ObjEnvelop envelop = new ObjEnvelop();
+        envelop.setMessage(message);
+        envelop.setObj(obj);
+        envelop.setStatus(200);
+        return envelop;
+    }
+    public static ObjEnvelop getError(String message) {
+        ObjEnvelop envelop = new ObjEnvelop();
+        envelop.setMessage(message);
+        envelop.setStatus(-1);
+        return envelop;
+    }
 }

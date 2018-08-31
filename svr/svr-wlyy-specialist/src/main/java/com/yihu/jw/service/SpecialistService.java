@@ -695,6 +695,20 @@ public class SpecialistService{
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
     }
 
+    public MixEnvelop<PatientDisseaseInfoVO, PatientDisseaseInfoVO> getPatientAndDiseaseByDoctor(String doctor) {
+        String sql = "SELECT s.*, " +
+                "p.idcard, " +
+                "case p.sex WHEN 1 then '男' ELSE '女' END as sex, " +
+                "IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
+                "p.birthday " +
+                "FROM (SELECT s.disease,s.disease_name,s.patient,s.patient_name from " +
+                "(SELECT id FROM wlyy_specialist_patient_relation WHERE doctor='" + doctor + "' and sign_status > 0 and `status` >= 0) r " +
+                "JOIN "+basedb+".wlyy_patient_disease_server s on r.id = s.specialist_relation_code) s " +
+                "JOIN "+basedb+".wlyy_patient p on s.patient = p.`code`";
+        List<PatientDisseaseInfoVO> PatientDisseaseInfoVO = jdbcTemplate.query(sql, new BeanPropertyRowMapper(PatientDisseaseInfoVO.class));
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,PatientDisseaseInfoVO);
+    }
+
 
 //    public Envelop<Boolean> createSpecialists(List<SpecialistDO> info){
 //        specialistDao.save(info);
