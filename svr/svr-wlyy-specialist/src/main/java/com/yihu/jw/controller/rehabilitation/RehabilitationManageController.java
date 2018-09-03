@@ -280,13 +280,13 @@ public class RehabilitationManageController {
         }
     }
 
-    @GetMapping(value = SpecialistMapping.rehabilitation.updateNoteAndImageRehabilitationOperate)
+    @PostMapping(value = SpecialistMapping.rehabilitation.updateNoteAndImageRehabilitationOperate)
     @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口")
     public Envelop updateNoteAndImageRehabilitationOperate(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)@RequestParam(value = "planDetailId", required = true)String planDetailId,
-                                                           @ApiParam(name = "note", value = "服务完成笔记", required = true)@RequestParam(value = "note", required = true)String note,
+                                                           @ApiParam(name = "node", value = "服务完成笔记", required = true)@RequestParam(value = "node", required = true)String node,
                                                            @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = true)String image){
         try {
-            if(rehabilitationOperateRecordsDao.updateNoteAndRelationRecordImg(note,image,planDetailId)>0){
+            if(rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId)>0){
                 return Envelop.getSuccess(SpecialistMapping.api_success);
             }
             return Envelop.getError("update error!");

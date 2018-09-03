@@ -20,6 +20,6 @@ public interface RehabilitationOperateRecordsDao extends PagingAndSortingReposit
     int updateStatus(Integer status,String rehabilitationDetailId);
 
     @Modifying
-    @Query("update RehabilitationOperateRecordsDO a set a.note=?1,a.relationRecordImg=?2 where a.rehabilitationDetailId =?3 ")
-    int updateNoteAndRelationRecordImg(String note,String rehabilitationRecordImg,String rehabilitataioDetailId);
+    @Query("update RehabilitationOperateRecordsDO a set a.node=?1,a.relationRecordImg=?2 where a.rehabilitationDetailId =?3 ")
+    int updateNodeAndRelationRecordImg(String node,String rehabilitationRecordImg,String rehabilitataioDetailId);
 }

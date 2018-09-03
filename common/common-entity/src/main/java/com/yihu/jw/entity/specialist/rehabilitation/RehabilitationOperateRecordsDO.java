@@ -20,7 +20,7 @@ public class RehabilitationOperateRecordsDO extends UuidIdentityEntityWithOperat
     private String patientName;//居民名称
     private String doctorCode;//执行医生code
     private String doctorName;//执行医生名称
-    private String note;//服务完成笔记
+    private String node;//服务完成笔记
     private Integer relationRecordType;//关联记录类型（1、随访记录，2、健康指导，3、健康教育，4、服务码）
     private String relationRecordCode;//关联记录code
     private String relationRecordImg;//相关记录图片地址，json格式
@@ -82,13 +82,13 @@ public class RehabilitationOperateRecordsDO extends UuidIdentityEntityWithOperat
         this.doctorName = doctorName;
     }
 
-    @Column(name = "note")
-    public String getNote() {
-        return note;
+    @Column(name = "node")
+    public String getNode() {
+        return node;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setNode(String node) {
+        this.node = node;
     }
 
     @Column(name = "relation_record_type")
