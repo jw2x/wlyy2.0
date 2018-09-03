@@ -1,33 +1,25 @@
 package com.yihu.jw.entity.base.message;
 
-import com.yihu.jw.entity.IntegerIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
+ * Entity - 基于MQ的消息推送订阅者
  * Created by progr1mmer on 2018/8/14.
  */
 @Entity
-@Table(name = "base_message_subscriber")
-public class MessageSubscriberDO extends IntegerIdentityEntity {
+@Table(name = "base_mq_message_subscriber")
+public class MqMessageSubscriberDO extends UuidIdentityEntity {
 
-    private Integer messageId; //消息ID
     private String saasId; //saas id
+    private String topic; //主题
     private String url; //推送地址
     private String remark; //备注
 
-    @Column(name = "message_id")
-    public Integer getMessageId() {
-        return messageId;
-    }
-
-    public void setMessageId(Integer messageId) {
-        this.messageId = messageId;
-    }
-
-    @Column(name = "saas_id", length = 50)
+    @Column(name = "saas_id", nullable = false, length = 50)
     public String getSaasId() {
         return saasId;
     }
@@ -36,7 +28,16 @@ public class MessageSubscriberDO extends IntegerIdentityEntity {
         this.saasId = saasId;
     }
 
-    @Column(name = "url")
+    @Column(name = "topic", nullable = false)
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    @Column(name = "url", nullable = false)
     public String getUrl() {
         return url;
     }

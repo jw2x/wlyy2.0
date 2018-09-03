@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Saas.PREFIX)
-@Api(value = "Saas管理", description = "Saas管理服务接口", tags = {"wlyy基础服务 - Saas管理服务接口"})
+@Api(value = "Saas管理", description = "Saas管理服务接口", tags = {"SAAS - Saas管理服务接口"})
 public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
@@ -52,7 +52,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        saasService.delete(ids);
+        saasService.delete(ids.split(","));
         return success("删除成功");
     }
 

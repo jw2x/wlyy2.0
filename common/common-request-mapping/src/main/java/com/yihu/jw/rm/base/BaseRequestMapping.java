@@ -137,4 +137,18 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/sms_template";
     }
 
+    /**
+     * 基于MQ的消息推送
+     */
+    public static class MqMessage extends Basic {
+        public static final String PREFIX  = "/mq_message";
+    }
+
+    /**
+     * 基于MQ的消息推送订阅者
+     */
+    public static class MqMessageSubscriber extends Basic {
+        public static final String PREFIX  = "/mq_message_subscriber";
+    }
+
 }
