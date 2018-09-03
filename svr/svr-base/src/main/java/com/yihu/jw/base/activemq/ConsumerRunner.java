@@ -76,7 +76,7 @@ public class ConsumerRunner implements Runnable, ExceptionListener {
 
     @Override
     public void onException(JMSException e) {
-        LOGGER.error("Trying to recover from JMS Connection exception: " + e);
+        LOGGER.error("Trying to recover from JMS Connection exception", e);
         try {
             topicConnection.close();
             topicConnection.start();

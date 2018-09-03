@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.user;
 
-import com.yihu.jw.base.service.UserService;
+import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.restmodel.base.user.UserVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.User.PREFIX)
-@Api(value = "用户管理", description = "用户管理服务接口", tags = {"用户 - 用户管理服务接口"})
+@Api(value = "用户管理", description = "用户管理服务接口", tags = {"wlyy基础服务 - 用户管理服务接口"})
 public class UserEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

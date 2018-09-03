@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.SaasDefaultModuleFunctionService;
+import com.yihu.jw.base.service.saas.SaasDefaultModuleFunctionService;
 import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
 import com.yihu.jw.restmodel.base.saas.SaasDefaultModuleFunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.SaasDefaultModuleFunction.PREFIX)
-@Api(value = "Saas默认模块功能管理", description = "Saas默认模块功能管理服务接口", tags = {"SAAS - Saas默认模块功能管理服务接口"})
+@Api(value = "Saas默认模块功能管理", description = "Saas默认模块功能管理服务接口", tags = {"wlyy基础服务 - Saas默认模块功能管理服务接口"})
 public class SaasDefaultModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

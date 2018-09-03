@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.user;
 
-import com.yihu.jw.base.service.UserRoleService;
+import com.yihu.jw.base.service.user.UserRoleService;
 import com.yihu.jw.entity.base.user.UserRoleDO;
 import com.yihu.jw.restmodel.base.user.UserRoleVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.UserRole.PREFIX)
-@Api(value = "用户角色管理", description = "用户角色管理服务接口", tags = {"用户 - 用户角色管理服务接口"})
+@Api(value = "用户角色管理", description = "用户角色管理服务接口", tags = {"wlyy基础服务 - 用户角色管理服务接口"})
 public class UserRoleEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.role;
 
-import com.yihu.jw.base.service.RoleService;
+import com.yihu.jw.base.service.role.RoleService;
 import com.yihu.jw.entity.base.role.RoleDO;
 import com.yihu.jw.restmodel.base.role.RoleVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Role.PREFIX)
-@Api(value = "角色管理", description = "角色管理服务接口", tags = {"角色 - 角色管理服务接口"})
+@Api(value = "角色管理", description = "角色管理服务接口", tags = {"wlyy基础服务 - 角色管理服务接口"})
 public class RoleEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
