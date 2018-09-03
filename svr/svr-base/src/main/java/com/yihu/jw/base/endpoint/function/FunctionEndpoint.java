@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.function;
 
-import com.yihu.jw.base.service.FunctionService;
+import com.yihu.jw.base.service.function.FunctionService;
 import com.yihu.jw.entity.base.function.FunctionDO;
 import com.yihu.jw.restmodel.base.function.FunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Function.PREFIX)
-@Api(value = "功能管理", description = "功能管理服务接口", tags = {"模块和功能 - 功能管理服务接口"})
+@Api(value = "功能管理", description = "功能管理服务接口", tags = {"wlyy基础服务 - 功能管理服务接口"})
 public class FunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
@@ -45,7 +45,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        functionService.delete(ids);
+        functionService.delete(ids.split(","));
         return success("success");
     }
 

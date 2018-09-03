@@ -44,7 +44,7 @@ public class ImGetuiConfigEndpiont extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        imGetuiConfigService.delete(ids);
+        imGetuiConfigService.delete(ids.split(","));
         return success("删除成功");
     }
 

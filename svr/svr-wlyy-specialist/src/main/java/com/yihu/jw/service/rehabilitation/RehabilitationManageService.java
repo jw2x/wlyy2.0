@@ -1024,4 +1024,8 @@ public class RehabilitationManageService {
         List<Map<String,Object>> list = rehabilitationDetailDao.dailyJob(startTime,endTime);
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
     }
+
+    public int updateNodeAndRelationRecordImg(String node,String image,String planDeatilId){
+        return rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+    }
 }

@@ -26,7 +26,7 @@ import java.util.Map;
  **/
 @Service
 @Transactional
-public class ActiveRecordService extends BaseJpaService<ActiveRecordDO,ActiveRecordDO> {
+public class ActiveRecordService extends BaseJpaService<ActiveRecordDO, ActiveRecordDao> {
 
     @Autowired
     private TaskDao taskDao;

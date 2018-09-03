@@ -1,7 +1,7 @@
 package com.yihu.jw.base.activemq;
 
-import com.yihu.jw.base.service.MqMessageService;
-import com.yihu.jw.base.service.MqMessageSubscriberService;
+import com.yihu.jw.base.service.message.MqMessageService;
+import com.yihu.jw.base.service.message.MqMessageSubscriberService;
 import com.yihu.jw.entity.base.message.MqMessageDO;
 import com.yihu.jw.entity.base.message.MqMessageSubscriberDO;
 import org.slf4j.Logger;

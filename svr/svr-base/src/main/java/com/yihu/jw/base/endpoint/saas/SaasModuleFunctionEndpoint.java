@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.SaasModuleFunctionService;
+import com.yihu.jw.base.service.saas.SaasModuleFunctionService;
 import com.yihu.jw.entity.base.saas.SaasModuleFunctionDO;
 import com.yihu.jw.restmodel.base.saas.SaasModuleFunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.RoleModuleFunction.PREFIX)
-@Api(value = "Saas模块功能管理", description = "Saas模块功能管理服务接口", tags = {"SAAS - Saas模块功能管理服务接口"})
+@Api(value = "Saas模块功能管理", description = "Saas模块功能管理服务接口", tags = {"wlyy基础服务 - Saas模块功能管理服务接口"})
 public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
