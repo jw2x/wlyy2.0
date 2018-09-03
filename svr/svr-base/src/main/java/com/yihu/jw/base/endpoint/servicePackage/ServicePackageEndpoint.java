@@ -43,7 +43,7 @@ public class ServicePackageEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
-            @RequestParam(value = "ids") String ids) {
+            @RequestParam(value = "ids") String ids) throws Exception {
         servicePackageService.delete(ids);
         return success("删除成功");
     }
