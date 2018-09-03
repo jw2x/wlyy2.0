@@ -1,13 +1,19 @@
 package com.yihu.jw.service.rehabilitation;
 
+import com.yihu.jw.dao.rehabilitation.*;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationDetailDao;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
+import com.yihu.jw.entity.rehabilitation.RehabilitationPlanningDO;
 import com.yihu.jw.dao.rehabilitation.RehabilitationPlanTemplateDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationTemplateDetailDao;
 import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
+import com.yihu.jw.entity.specialist.rehabilitation.*;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
@@ -21,6 +27,8 @@ import com.yihu.jw.service.SpecialistHospitalServiceItemService;
 import com.yihu.jw.service.SpecialistService;
 import com.yihu.jw.util.common.QrcodeUtil;
 import com.yihu.fastdfs.FastDFSUtil;
+import com.yihu.mysql.query.BaseJpaService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,13 +43,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.*;
+import java.util.*;
+import java.util.*;
 
 /**
  * Created by humingfen on 2018/8/17.
  */
 @Service
 @Transactional
-public class RehabilitationPlanService {
+public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlanningDO, RehabilitationPlanningDO> {
 
     @Value("${neiwang.enable}")
     private Boolean isneiwang;  //如果不是内网项目要转到到内网wlyy在上传
@@ -63,6 +73,8 @@ public class RehabilitationPlanService {
     private FileUploadService fileUploadService;
     @Autowired
     protected HttpServletRequest request;
+    @Autowired
+    private RehabilitationOperateRecordsDao rehabilitationOperateRecordsDao;
     @Autowired
     private SpecialistHospitalServiceItemService hospitalServiceItemService;
     @Autowired
@@ -202,14 +214,14 @@ public class RehabilitationPlanService {
         return MixEnvelop.getSuccess(SpecialistMapping.api_success, jsonArray);
     }
 
-    public MixEnvelop<String,String> createServiceQrCode(String planDetailId){
+    public MixEnvelop<String,String> createServiceQrCode(String planDetailId,String sessionId){
         RehabilitationDetailDO rehabilitationDetailDO = rehabilitationDetailDao.findById(planDetailId);
         String fileUrl = "";
         if (rehabilitationDetailDO!=null) {
             if (org.apache.commons.lang3.StringUtils.isNotBlank(rehabilitationDetailDO.getServiceQrCode())) {
                 fileUrl = rehabilitationDetailDO.getServiceQrCode();
             } else {
-                String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\"}";
+                String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\",\"sessionId\":\""+sessionId+"\"}";
                 InputStream ipt = QrcodeUtil.createQrcode(contentJsonStr, 300, "png");
                 isneiwang = false;
                 if (isneiwang) {
@@ -249,7 +261,7 @@ public class RehabilitationPlanService {
         return MixEnvelop.getSuccess("获取二维码成功！",fileUrl);
     }
 
-    public Integer checkAfterQrCode(String planDetailId,String patietCode){
+    public Integer checkAfterQrCode(String planDetailId,String patietCode)throws Exception{
         int result = 0;
         String sql ="SELECT rp.patient FROM `wlyy_rehabilitation_plan_detail` pd LEFT JOIN wlyy_patient_rehabilitation_plan rp ON pd.plan_id = rp.id WHERE pd.id='"+planDetailId+"'";
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
@@ -263,5 +275,13 @@ public class RehabilitationPlanService {
             result = -10000;
         }
         return result;
+    }
+
+    public RehabilitationOperateRecordsDO saveRehabilitationRecord(RehabilitationOperateRecordsDO rehabilitationOperateRecordsDO){
+        RehabilitationDetailDO rehabilitationDetailDO = rehabilitationDetailDao.findById(rehabilitationOperateRecordsDO.getRehabilitationDetailId());
+        rehabilitationOperateRecordsDO.setId(getCode());
+        rehabilitationOperateRecordsDO.setReserveTime(rehabilitationDetailDO.getExecuteTime());
+        rehabilitationOperateRecordsDO.setCompleteTime(new Date());
+        return rehabilitationOperateRecordsDao.save(rehabilitationOperateRecordsDO);
     }
 }
