@@ -86,6 +86,9 @@ neiwang:
   enable: true
   wlyy: http://localhost:10051/
 
+base:
+  url: http://172.17.110.212:10020/
+
 ---
 spring:
   profiles: jwtest
@@ -104,6 +107,9 @@ fast-dfs:
 neiwang:
   enable: false
   wlyy: http://59.61.92.90:10051/
+
+base:
+  url: http://172.17.110.212:10020/
 ---
 spring:
   profiles: jwdevtest
@@ -122,6 +128,9 @@ fast-dfs:
 neiwang:
   enable: true
   wlyy: http://172.19.103.88:10051/svr-slyy-specialist/
+
+base:
+  url: http://172.17.110.212:10020/
 ---
 spring:
   profiles: prod
