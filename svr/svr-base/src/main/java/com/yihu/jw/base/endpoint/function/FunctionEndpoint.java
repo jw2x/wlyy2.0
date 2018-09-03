@@ -45,7 +45,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        functionService.delete(ids);
+        functionService.delete(ids.split(","));
         return success("success");
     }
 

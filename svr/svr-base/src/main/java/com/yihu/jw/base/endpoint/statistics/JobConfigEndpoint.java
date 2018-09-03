@@ -45,7 +45,7 @@ public class JobConfigEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        jobConfigService.delete(ids);
+        jobConfigService.delete(ids.split(","));
         return success("删除成功");
     }
 

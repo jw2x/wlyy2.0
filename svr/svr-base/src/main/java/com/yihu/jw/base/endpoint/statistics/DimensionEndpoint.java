@@ -45,7 +45,7 @@ public class DimensionEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        dimensionService.delete(ids);
+        dimensionService.delete(ids.split(","));
         return success("删除成功");
     }
 
