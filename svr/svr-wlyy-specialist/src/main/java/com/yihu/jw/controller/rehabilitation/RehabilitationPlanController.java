@@ -2,10 +2,7 @@ package com.yihu.jw.controller.rehabilitation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
-import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
-import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
-import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
+import com.yihu.jw.entity.specialist.rehabilitation.*;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
@@ -155,10 +152,11 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
     }
 
     @PostMapping(value = SpecialistMapping.rehabilitation.createServiceQrCode)
-    @ApiOperation(value = "根据康复计划id和居民code生成服务码")
-    public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planDetailId", value = "康复计划项目明细ID")@RequestParam(value = "planDetailId", required = true)String planDetailId){
+    @ApiOperation(value = "根据康复计划明细id和对话sessionId生成服务码")
+    public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planDetailId", value = "康复计划项目明细ID")@RequestParam(value = "planDetailId", required = true)String planDetailId,
+                                                         @ApiParam(name = "sessionId", value = "IM对话sessionId")@RequestParam(value = "sessionId", required = true)String sessionId){
         try {
-            return rehabilitationPlanService.createServiceQrCode(planDetailId);
+            return rehabilitationPlanService.createServiceQrCode(planDetailId,sessionId);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -192,4 +190,16 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
         }
     }
 
+    @PostMapping(value = SpecialistMapping.rehabilitation.saveRehabilitationOperateRecodr)
+    @ApiOperation(value = "新增operateRecodr")
+    public MixEnvelop<RehabilitationOperateRecordsDO,RehabilitationOperateRecordsDO> saveRehabilitationOperateRecodr(@ApiParam(name = "dataJson", value = "实体json",defaultValue = "{\"rehabilitationDetailId\":\"402803f6657f195301657f4fbd3c0001\",\"patientCode\":\"00\",\"patientName\":\"11\",\"doctorCode\":\"22\",\"doctorName\":\"33\",\"note\":\"jjjjjj\",\"relationRecordType\":\"4\",\"relation_record_code\":\"55\",\"relationRecordImg\":\"666666\",\"status\":\"0\"}")@RequestParam(value = "dataJson", required = true)String dataJson){
+        try {
+            RehabilitationOperateRecordsDO rehabilitationOperateRecordsDO= toEntity(dataJson, RehabilitationOperateRecordsDO.class);
+            return MixEnvelop.getSuccess(SpecialistMapping.api_success,rehabilitationPlanService.saveRehabilitationRecord(rehabilitationOperateRecordsDO));
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
 }

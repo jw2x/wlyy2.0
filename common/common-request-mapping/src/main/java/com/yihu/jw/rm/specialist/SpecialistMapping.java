@@ -73,6 +73,8 @@ public class SpecialistMapping {
         public static final String updateStatusRehabilitationOperate = "/updateStatusRehabilitationOperate";
         public static final String patientRehabilitationDetail = "/patientRehabilitationDetail";
         public static final String recentPlanDetailRecord = "/recentPlanDetailRecord";
+        public static final String saveRehabilitationOperateRecodr="/saveRehabilitationOperateRecodr";
+        public static final String updateNoteAndImageRehabilitationOperate = "/updateNoteAndImageRehabilitationOperate";
 
     }
 
