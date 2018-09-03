@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.module;
 
-import com.yihu.jw.base.service.ModuleService;
+import com.yihu.jw.base.service.module.ModuleService;
 import com.yihu.jw.entity.base.module.ModuleDO;
 import com.yihu.jw.restmodel.base.module.ModuleVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Module.PREFIX)
-@Api(value = "模块管理", description = "模块管理服务接口", tags = {"模块和功能 - 模块管理服务接口"})
+@Api(value = "模块管理", description = "模块管理服务接口", tags = {"wlyy基础服务 - 模块管理服务接口"})
 public class ModuleEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

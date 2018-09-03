@@ -1,8 +1,8 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.UserService;
+import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.entity.base.saas.SaasDO;
-import com.yihu.jw.base.service.SaasService;
+import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.restmodel.base.saas.SaasVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Saas.PREFIX)
-@Api(value = "Saas管理", description = "Saas管理服务接口", tags = {"SAAS - Saas管理服务接口"})
+@Api(value = "Saas管理", description = "Saas管理服务接口", tags = {"wlyy基础服务 - Saas管理服务接口"})
 public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

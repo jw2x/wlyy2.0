@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.user;
 
-import com.yihu.jw.base.service.UserHideModuleFunctionService;
+import com.yihu.jw.base.service.user.UserHideModuleFunctionService;
 import com.yihu.jw.entity.base.user.UserHideModuleFunctionDO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * Endpoint - 用户模块功能管理
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.UserHideModuleFunction.PREFIX)
-@Api(value = "用户模块功能管理", description = "用户模块功能管理服务接口", tags = {"用户 - 用户模块功能管理服务接口"})
+@Api(value = "用户模块功能管理", description = "用户模块功能管理服务接口", tags = {"wlyy基础服务 - 用户模块功能管理服务接口"})
 public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

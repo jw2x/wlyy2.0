@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.sms;
 
-import com.yihu.jw.base.service.SmsGatewayService;
+import com.yihu.jw.base.service.sms.SmsGatewayService;
 import com.yihu.jw.entity.base.sms.SmsDO;
 import com.yihu.jw.entity.base.sms.SmsGatewayDO;
 import com.yihu.jw.entity.base.sms.SmsTemplateDO;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.SmsGateway.PREFIX)
-@Api(value = "短信网关管理", description = "短信网关管理服务接口", tags = {"短信服务 - 短信网关管理服务接口"})
+@Api(value = "短信网关管理", description = "短信网关管理服务接口", tags = {"wlyy基础服务 - 短信网关管理服务接口"})
 public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

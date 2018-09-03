@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.message;
 
-import com.yihu.jw.base.service.MqMessageSubscriberService;
+import com.yihu.jw.base.service.message.MqMessageSubscriberService;
 import com.yihu.jw.entity.base.message.MqMessageSubscriberDO;
 import com.yihu.jw.restmodel.base.message.MqMessageSubscriberVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.MqMessageSubscriber.PREFIX)
-@Api(value = "基于MQ的消息推送订阅者", description = "基于MQ的消息推送订阅者服务接口", tags = {"消息服务 - 基于MQ的消息推送订阅者服务接口"})
+@Api(value = "基于MQ的消息推送订阅者", description = "基于MQ的消息推送订阅者服务接口", tags = {"wlyy基础服务 - 基于MQ的消息推送订阅者服务接口"})
 public class MqMessageSubscriberEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

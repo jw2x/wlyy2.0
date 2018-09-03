@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.sms;
 
-import com.yihu.jw.base.service.SmsTemplateService;
+import com.yihu.jw.base.service.sms.SmsTemplateService;
 import com.yihu.jw.entity.base.sms.SmsTemplateDO;
 import com.yihu.jw.restmodel.base.sms.SmsTemplateVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.SmsTemplate.PREFIX)
-@Api(value = "短信模板管理", description = "短信模板管理服务接口", tags = {"短信服务 - 短信模板管理服务接口"})
+@Api(value = "短信模板管理", description = "短信模板管理服务接口", tags = {"wlyy基础服务 - 短信模板管理服务接口"})
 public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

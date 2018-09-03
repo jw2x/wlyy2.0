@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.system;
 
-import com.yihu.jw.base.service.SystemDictService;
+import com.yihu.jw.base.service.system.SystemDictService;
 import com.yihu.jw.entity.base.system.SystemDictDO;
 import com.yihu.jw.restmodel.base.system.SystemDictVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.SystemDict.PREFIX)
-@Api(value = "系统字典", description = "系统字典服务接口", tags = {"系统字典 - 系统字典服务接口"})
+@Api(value = "系统字典", description = "系统字典服务接口", tags = {"wlyy基础服务 - 系统字典服务接口"})
 public class SystemDictEndpoint extends EnvelopRestEndpoint {
     
     @Autowired

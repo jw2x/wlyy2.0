@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.theme;
 
-import com.yihu.jw.base.service.ThemeService;
+import com.yihu.jw.base.service.theme.ThemeService;
 import com.yihu.jw.entity.base.theme.ThemeDO;
 import com.yihu.jw.restmodel.base.theme.ThemeVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Theme.PREFIX)
-@Api(value = "主题应用", description = "主题应用服务接口", tags = {"主题风格 - 主题应用服务接口"})
+@Api(value = "主题应用", description = "主题应用服务接口", tags = {"wlyy基础服务 - 主题应用服务接口"})
 public class ThemeEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
