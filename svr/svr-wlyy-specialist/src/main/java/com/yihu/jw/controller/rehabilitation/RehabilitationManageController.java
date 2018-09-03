@@ -281,7 +281,7 @@ public class RehabilitationManageController {
     }
 
     @PostMapping(value = SpecialistMapping.rehabilitation.updateNoteAndImageRehabilitationOperate)
-    @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口")
+    @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口.")
     public Envelop updateNoteAndImageRehabilitationOperate(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)@RequestParam(value = "planDetailId", required = true)String planDetailId,
                                                            @ApiParam(name = "node", value = "服务完成笔记", required = true)@RequestParam(value = "node", required = true)String node,
                                                            @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = true)String image){
