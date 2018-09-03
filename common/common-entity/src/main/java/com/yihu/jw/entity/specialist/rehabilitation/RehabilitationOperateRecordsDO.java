@@ -25,6 +25,8 @@ public class RehabilitationOperateRecordsDO extends UuidIdentityEntityWithOperat
     private Date reserveTime;//服务预定完成时间
     private Date completeTime;//服务完成时间
     private Integer status;//是否确认完成（0、未确认，1、已确认）
+    private String relationRecordImg;//相关记录图片地址，json格式
+    private String node;//服务完成笔记
 
     @Column(name = "saas_id")
     public String getSaasId() {
@@ -123,5 +125,23 @@ public class RehabilitationOperateRecordsDO extends UuidIdentityEntityWithOperat
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Column(name = "relation_record_img")
+    public String getRelationRecordImg() {
+        return relationRecordImg;
+    }
+
+    public void setRelationRecordImg(String relationRecordImg) {
+        this.relationRecordImg = relationRecordImg;
+    }
+
+    @Column(name = "node")
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
     }
 }
