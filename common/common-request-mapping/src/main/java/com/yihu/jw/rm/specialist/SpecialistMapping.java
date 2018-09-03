@@ -76,6 +76,7 @@ public class SpecialistMapping {
         public static final String findServiceItemsByHospital = "/findServiceItemsByHospital";
         public static final String serviceDoctorList = "/serviceDoctorList";
         public static final String dailyJob = "/dailyJob";
+        public static final String appCalendarPlanDetailList = "/appCalendarPlanDetailList";
     }
 
     public static class serviceItem{
