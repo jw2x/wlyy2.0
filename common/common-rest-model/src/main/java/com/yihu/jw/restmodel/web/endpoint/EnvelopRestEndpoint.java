@@ -44,14 +44,6 @@ public abstract class EnvelopRestEndpoint {
         return envelop;
     }
 
-    protected Envelop error(String message, String errorCode){
-        Envelop envelop = new Envelop();
-        envelop.setMessage(message);
-        envelop.setErrorCode(errorCode);
-        envelop.setStatus(-1);
-        return envelop;
-    }
-
     protected <J> ObjEnvelop<J> success(J obj){
         return success("success", obj);
     }
@@ -170,6 +162,17 @@ public abstract class EnvelopRestEndpoint {
         mixEnvelop.setDetailModelList(contents);
         mixEnvelop.setObj(obj);
         return mixEnvelop;
+    }
+
+    protected Envelop failed (String message) {
+        return failed(message, -10000);
+    }
+
+    protected Envelop failed (String message, int status) {
+        Envelop envelop = new Envelop();
+        envelop.setMessage(message);
+        envelop.setStatus(status);
+        return envelop;
     }
 
     protected <E extends Envelop> E failed(String message, Class<E> clazz) {
