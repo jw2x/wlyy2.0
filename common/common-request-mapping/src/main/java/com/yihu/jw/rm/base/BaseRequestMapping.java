@@ -214,7 +214,7 @@ public class BaseRequestMapping {
 
 
     /**
-     * 居民信息
+     * 机构信息
      */
     public static class BaseOrg extends Basic {
         public static final String PREFIX  = "/baseOrg";
@@ -222,7 +222,7 @@ public class BaseRequestMapping {
 
 
     /**
-     * 省字典
+     * 患者信息
      */
     public static class BasePatient extends Basic {
         public static final String PREFIX  = "/basePatient";
@@ -230,7 +230,7 @@ public class BaseRequestMapping {
 
 
     /**
-     * 街道字典
+     * 省份字典
      */
     public static class BaseProvince extends Basic {
         public static final String PREFIX  = "/baseProvince";
@@ -305,6 +305,20 @@ public class BaseRequestMapping {
      */
     public static class DictMedicine extends Basic {
         public static final String PREFIX  = "/dictMedicine";
+    }
+
+    /**
+     * 基于MQ的消息推送
+     */
+    public static class MqMessage extends Basic {
+        public static final String PREFIX  = "/mq_message";
+    }
+
+    /**
+     * 基于MQ的消息推送订阅者
+     */
+    public static class MqMessageSubscriber extends Basic {
+        public static final String PREFIX  = "/mq_message_subscriber";
     }
 
 }

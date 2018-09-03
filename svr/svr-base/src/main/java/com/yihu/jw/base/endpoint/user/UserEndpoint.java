@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.user;
 
-import com.yihu.jw.base.service.UserService;
+import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.restmodel.base.user.UserVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -36,7 +36,7 @@ public class UserEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         UserDO userDO = toEntity(jsonData, UserDO.class);
-        userDO = userService.save(userDO);
+        userDO = userService.register(userDO);
         return success(userDO, UserVO.class);
     }
 
@@ -45,7 +45,7 @@ public class UserEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        userService.delete(ids);
+        userService.delete(ids.split(","));
         return success("删除成功");
     }
 

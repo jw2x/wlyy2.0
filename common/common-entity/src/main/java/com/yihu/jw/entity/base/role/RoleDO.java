@@ -19,7 +19,7 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 	//备注
 	private String remark;
 	//是否系统管理员
-	private Boolean isSystem;
+	private Boolean system;
 
 	@Column(name = "name", length = 50)
 	public String getName() {
@@ -39,12 +39,12 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 		this.remark = remark;
 	}
 
-	@Column(name = "is_system")
+	@Column(name = "system")
 	public Boolean getSystem() {
-		return isSystem;
+		return system;
 	}
 
 	public void setSystem(Boolean system) {
-		isSystem = system;
+		this.system = system;
 	}
 }

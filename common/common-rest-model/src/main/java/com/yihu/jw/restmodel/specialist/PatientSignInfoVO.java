@@ -20,6 +20,10 @@ public class PatientSignInfoVO {
     private String patient;
     @ApiModelProperty("居民")
     private String patientName;
+    @ApiModelProperty("居民身份证")
+    private String idcard;
+    @ApiModelProperty("居民社保卡号")
+    private String ssc;
     @ApiModelProperty("医生code")
     private String doctor;
     @ApiModelProperty("医生")
@@ -194,5 +198,21 @@ public class PatientSignInfoVO {
 
     public void setHealthAssistantName(String healthAssistantName) {
         this.healthAssistantName = healthAssistantName;
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
+    }
+
+    public String getSsc() {
+        return ssc;
+    }
+
+    public void setSsc(String ssc) {
+        this.ssc = ssc;
     }
 }

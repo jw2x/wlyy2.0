@@ -2,6 +2,10 @@ package com.yihu.jw.controller.rehabilitation;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.jw.dao.rehabilitation.RehabilitationOperateRecordsDao;
+import com.yihu.jw.entity.specialist.rehabilitation.*;
+import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
 import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
@@ -35,6 +39,8 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
     private RehabilitationPlanService rehabilitationPlanService;
     @Autowired
     private Tracer tracer;
+    @Autowired
+    private RehabilitationOperateRecordsDao rehabilitationOperateRecordsDao;
 
     @PostMapping(value = SpecialistMapping.rehabilitation.createRehabilitationPlanTemplate)
     @ApiOperation(value = "康复服务套餐模板创建")
@@ -107,6 +113,7 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             return MixEnvelop.getError(e.getMessage());
         }
     }
+
 
     @PostMapping(value = SpecialistMapping.rehabilitation.deleteRehabilitationPlanTemplate)
     @ApiOperation(value = "删除康复模板")
@@ -181,10 +188,11 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
     }
 
     @PostMapping(value = SpecialistMapping.rehabilitation.createServiceQrCode)
-    @ApiOperation(value = "根据康复计划id和居民code生成服务码")
-    public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planDetailId", value = "康复计划项目明细ID")@RequestParam(value = "planDetailId", required = true)String planDetailId){
+    @ApiOperation(value = "根据康复计划明细id和对话sessionId生成服务码")
+    public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planDetailId", value = "康复计划项目明细ID")@RequestParam(value = "planDetailId", required = true)String planDetailId,
+                                                         @ApiParam(name = "sessionId", value = "IM对话sessionId")@RequestParam(value = "sessionId", required = true)String sessionId){
         try {
-            return rehabilitationPlanService.createServiceQrCode(planDetailId);
+            return rehabilitationPlanService.createServiceQrCode(planDetailId,sessionId);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -218,4 +226,20 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
         }
     }
 
+    @PostMapping(value = SpecialistMapping.rehabilitation.saveRehabilitationOperateRecodr)
+    @ApiOperation(value = "新增operateRecodr")
+    public MixEnvelop<RehabilitationOperateRecordsDO,RehabilitationOperateRecordsDO> saveRehabilitationOperateRecodr(@ApiParam(name = "dataJson", value = "实体json",defaultValue = "{\"rehabilitationDetailId\":\"402803f6657f195301657f4fbd3c0001\",\"patientCode\":\"00\",\"patientName\":\"11\",\"doctorCode\":\"22\",\"doctorName\":\"33\",\"node\":\"jjjjjj\",\"relationRecordType\":\"4\",\"relation_record_code\":\"55\",\"relationRecordImg\":\"666666\",\"status\":\"0\"}")@RequestParam(value = "dataJson", required = true)String dataJson){
+        try {
+            RehabilitationOperateRecordsDO rehabilitationOperateRecordsDO= toEntity(dataJson, RehabilitationOperateRecordsDO.class);
+            List<RehabilitationOperateRecordsDO> list = rehabilitationOperateRecordsDao.findByRehabilitationDetailId(rehabilitationOperateRecordsDO.getRehabilitationDetailId());
+            if (list!=null && list.size()>0){
+                return MixEnvelop.getError("改明细日志已存在！");
+            }
+            return MixEnvelop.getSuccess(SpecialistMapping.api_success,rehabilitationPlanService.saveRehabilitationRecord(rehabilitationOperateRecordsDO));
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
 }

@@ -43,22 +43,22 @@ public class ServicePackageEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
-            @RequestParam(value = "ids") String ids) {
-        servicePackageService.delete(ids);
+            @RequestParam(value = "ids") String ids) throws Exception{
+        servicePackageService.delete(ids.split(","));
         return success("删除成功");
     }
 
     @PostMapping(value = BaseRequestMapping.ServicePackage.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<ServicePackageVO> update (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         ServicePackageDO servicePackageDO = toEntity(jsonData, ServicePackageDO.class);
         if (null == servicePackageDO.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);
         }
         servicePackageDO = servicePackageService.save(servicePackageDO);
-        return success(convertToModel(servicePackageDO, ServicePackageVO.class));
+        return success(servicePackageDO, ServicePackageVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.ServicePackage.PAGE)

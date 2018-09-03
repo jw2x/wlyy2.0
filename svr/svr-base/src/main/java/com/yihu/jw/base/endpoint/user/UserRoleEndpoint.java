@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.user;
 
-import com.yihu.jw.base.service.UserRoleService;
+import com.yihu.jw.base.service.user.UserRoleService;
 import com.yihu.jw.entity.base.user.UserRoleDO;
 import com.yihu.jw.restmodel.base.user.UserRoleVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -45,7 +45,7 @@ public class UserRoleEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        userRoleService.delete(ids);
+        userRoleService.delete(ids.split(","));
         return success("删除成功");
     }
 
