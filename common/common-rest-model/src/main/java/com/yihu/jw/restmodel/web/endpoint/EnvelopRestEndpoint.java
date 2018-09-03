@@ -1,13 +1,8 @@
 package com.yihu.jw.restmodel.web.endpoint;
 
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.restmodel.web.ListEnvelop;
-import com.yihu.jw.restmodel.web.MixEnvelop;
-import com.yihu.jw.restmodel.web.ObjEnvelop;
-import com.yihu.jw.restmodel.web.PageEnvelop;
-import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -17,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.beans.PropertyDescriptor;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -188,6 +184,12 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <T> T toEntity(String json, Class<T> target) throws IOException {
+        T entity = objectMapper.readValue(json, target);
+        return entity;
+    }
+
+    protected <T> T toDateEntity(String json, Class<T> target) throws IOException {
+        objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         T entity = objectMapper.readValue(json, target);
         return entity;
     }
