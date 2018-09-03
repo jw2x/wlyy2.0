@@ -97,7 +97,6 @@ public class WlyyTokenEndpoint extends AbstractEndpoint {
         TokenRequest tokenRequest = getOAuth2RequestFactory().createTokenRequest(parameters, authenticatedClient);
 
         /*
-         * customize
          * skip this step
          */
         /*if (clientId != null && !clientId.equals("")) {
@@ -136,7 +135,7 @@ public class WlyyTokenEndpoint extends AbstractEndpoint {
         if (token == null) {
             throw new UnsupportedGrantTypeException("Unsupported grant type: " + tokenRequest.getGrantType());
         }
-        // customize ---------------------------------
+        // ----------------- Simple Result ----------------
         WlyyOAuth2AccessToken wlyyOAuth2AccessToken = new WlyyOAuth2AccessToken();
         wlyyOAuth2AccessToken.setAccessToken(token.getValue());
         wlyyOAuth2AccessToken.setTokenType(token.getTokenType());
@@ -144,7 +143,7 @@ public class WlyyTokenEndpoint extends AbstractEndpoint {
         wlyyOAuth2AccessToken.setRefreshToken(token.getRefreshToken().getValue());
         wlyyOAuth2AccessToken.setScope(org.apache.commons.lang.StringUtils.join(token.getScope(), " "));
         wlyyOAuth2AccessToken.setState(parameters.get("state"));
-        // customize ---------------------------------
+        // ----------------- Simple Result ----------------
 
         return getResponse(wlyyOAuth2AccessToken);
 
@@ -201,7 +200,6 @@ public class WlyyTokenEndpoint extends AbstractEndpoint {
     }*/
 
     /**
-     * (customize)
      * @param e
      * @return
      * @throws Exception
@@ -209,7 +207,7 @@ public class WlyyTokenEndpoint extends AbstractEndpoint {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Oauth2Envelop> handleException(Exception e) throws Exception {
         LOG.info(e.getMessage(), e);
-        return handleOAuth2Exception(new Oauth2Envelop(e.getMessage(), -1));
+        return handleOAuth2Exception(new Oauth2Envelop(e.getMessage(), -1), e);
     }
 
     private ResponseEntity<WlyyOAuth2AccessToken> getResponse(WlyyOAuth2AccessToken accessToken) {
@@ -220,17 +218,16 @@ public class WlyyTokenEndpoint extends AbstractEndpoint {
     }
 
     /**
-     * customize
      * return results directly
      * @param authenticationFailed
      * @return
      * @throws IOException
      */
-    private ResponseEntity<Oauth2Envelop> handleOAuth2Exception(Oauth2Envelop authenticationFailed) throws IOException {
+    private ResponseEntity<Oauth2Envelop> handleOAuth2Exception(Oauth2Envelop authenticationFailed, Exception e) throws IOException {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Cache-Control", "no-store");
         headers.set("Pragma", "no-cache");
-        headers.set("WWW-Authenticate", String.format("%s %s", OAuth2AccessToken.BEARER_TYPE, authenticationFailed.getMessage()));
+        headers.set("WWW-Authenticate", String.format("%s %s", OAuth2AccessToken.BEARER_TYPE, e.getMessage()));
         ResponseEntity<Oauth2Envelop> response = new ResponseEntity<>(authenticationFailed, headers, HttpStatus.OK);
         return response;
     }

@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.base.sms;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.base.sms.SmsTemplateDO;
 import com.yihu.jw.restmodel.UuidIdentityVO;
 import io.swagger.annotations.ApiModel;
@@ -31,7 +32,7 @@ public class SmsVO extends UuidIdentityVO {
     @ApiModelProperty(value = "短信内容", example = "【i健康综合管理平台】您使用的是i健康综合管理平台短信模板，您的验证码是826612，请于10分钟内正确输入！")
     private String content;
     //过期时间
-    @ApiModelProperty(value = "应用ID", example = "EwC0iRSrcS")
+    @ApiModelProperty(value = "过期时间", example = "2018-09-03 15:34:34")
     private Date deadline;
     //验证码
     private String captcha;
@@ -78,6 +79,7 @@ public class SmsVO extends UuidIdentityVO {
         this.content = content;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     public Date getDeadline() {
         return deadline;
     }

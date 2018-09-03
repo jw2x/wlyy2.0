@@ -2,13 +2,14 @@ package com.yihu.jw.security.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Model - 认证失败信息
  * Created by progr1mmer on 2018/8/29.
  */
-public class Oauth2Envelop<T> {
+public class Oauth2Envelop<T> implements Serializable {
 
     protected String message;
     protected Integer status;
