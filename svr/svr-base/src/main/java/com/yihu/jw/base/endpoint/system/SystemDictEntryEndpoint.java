@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.SystemDictEntry.PREFIX)
-@Api(value = "系统字典项", description = "系统字典项服务接口", tags = {"wlyy基础服务 - 系统字典项服务接口"})
+@Api(value = "系统字典项", description = "系统字典项服务接口", tags = {"系统字典 - 系统字典项服务接口"})
 public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
     
     @Autowired
@@ -45,7 +45,7 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        systemDictEntryService.delete(ids);
+        systemDictEntryService.delete(ids.split(","));
         return success("删除成功");
     }
 

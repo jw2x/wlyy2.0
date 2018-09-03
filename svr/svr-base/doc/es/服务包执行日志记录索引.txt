@@ -1,0 +1,71 @@
+创建索引
+POST  http://172.19.103.68:9200/base_service_package_log
+查询索引
+GET http://172.19.103.68:9200/base_service_package_log/
+给索引加mapping
+POST http://172.19.103.68:9200/base_service_package_log/base_service_package_log/_mapping
+{
+	"base_service_package_log": {
+		"properties": {
+			"createTime": {
+			    "format": "yyyy-MM-dd HH:mm:ss",
+				"type": "date"
+			},
+            "id": {
+                "type": "string",
+                "index": "not_analyzed"
+            },
+			"saasId": {
+				"type": "string",
+				"index": "not_analyzed"
+			},"sevicePackageId": {
+				"type": "string",
+				"index": "not_analyzed"
+            },"sevicePackageDetailId": {
+                "type": "string",
+                "index": "not_analyzed"
+			},"userCode": {
+                "type": "string",
+                "index": "not_analyzed"
+            },"userName": {
+                "type": "string",
+                "index": "not_analyzed"
+            },"userType": {
+                "type": "string",
+                "index": "not_analyzed"
+            },"relationType": {
+                "type": "string",
+                "index": "not_analyzed"
+            },"relationId": {
+                "type": "string",
+                "index": "not_analyzed"
+            },"message": {
+                "type": "string",
+                "index": "not_analyzed"
+            },"flag": {
+                "type": "integer"
+            },"finish": {
+				"type": "integer"
+			},"ext": {
+                 "type": "string",
+                 "index": "not_analyzed"
+            }
+		}
+	}
+}
+
+字段说明：
+"id": uuid
+"createTime": 时间
+"saasId": saasid
+"sevicePackageId": 服务包id
+"sevicePackageDetailId": 服务包明细id
+"userCode": 医生或者患者code
+"userName": 医生或者患者name
+"userType": 1 患者 2医生
+"relationType": 关联类型（1健康指导，2健康文章，3代预约）
+"relationId": 关联id
+"message": 操作说明
+"flag": 操作是否成功 1成功 0失败
+"finish": 完成项目数
+"ext": 扩展字段存json

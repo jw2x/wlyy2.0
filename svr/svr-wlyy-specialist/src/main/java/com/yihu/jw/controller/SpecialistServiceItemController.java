@@ -12,6 +12,7 @@ import com.yihu.jw.service.SpecialistServiceItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import jxl.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
@@ -143,6 +144,24 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
         try {
             return specialistServiceItemService.selectByHospital(hospital);
         }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 导数据
+     *
+     * @return
+     */
+    @RequestMapping(value = "importData")
+    @ResponseBody
+    public MixEnvelop<Boolean,Boolean> importData(@RequestBody Workbook workbook) {
+        try {
+            return specialistServiceItemService.importData(workbook);
+        } catch (Exception e) {
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return MixEnvelop.getError(e.getMessage());
