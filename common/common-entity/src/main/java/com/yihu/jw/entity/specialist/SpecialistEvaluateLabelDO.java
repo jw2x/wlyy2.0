@@ -36,6 +36,9 @@ public class SpecialistEvaluateLabelDO extends UuidIdentityEntityWithOperator im
     @Column(name = "patient")
     private String patient;//患者code
 
+    @Column(name = "flag")
+    private Integer flag;//标识标签
+
 
     @Column(name = "saas_id")
     public String getSaasId() {
@@ -89,5 +92,14 @@ public class SpecialistEvaluateLabelDO extends UuidIdentityEntityWithOperator im
 
     public void setPatient(String patient) {
         this.patient = patient;
+    }
+
+    @Column(name = "flag")
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
     }
 }

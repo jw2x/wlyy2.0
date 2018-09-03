@@ -138,6 +138,176 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 服务包
+     */
+    public static class ServicePackage extends Basic{
+        public static final String PREFIX  = "/service_package";
+    }
+
+    /**
+     * 康复计划
+     */
+    public static class BaseRehabilitation extends Basic{
+        public static final String PREFIX  = "/base_rehabilitation";
+        public static final String CREATELOG  = "/createlog";
+        public static final String FINDBYID  = "/findFinishById";
+    }
+
+    /**
+     * 统计指标
+     */
+    public static class Quota extends Basic{
+        public static final String PREFIX  = "/quota";
+    }
+
+    /**
+     * 统计维度
+     */
+    public static class Dimension extends Basic{
+        public static final String PREFIX  = "/dimension";
+    }
+
+    /**
+     * job
+     */
+    public static class JobConfig extends Basic{
+        public static final String PREFIX  = "/job_config";
+    }
+
+    /**
+     * im
+     */
+    public static class ImGetuiConfig extends Basic{
+        public static final String PREFIX  = "/im_getui";
+    }
+
+    /**
+     * 城市字典
+     */
+    public static class BaseCity extends Basic {
+        public static final String PREFIX  = "/baseCity";
+    }
+
+
+    /**
+     * 医生基础信息
+     */
+    public static class BaseDoctor extends Basic {
+        public static final String PREFIX  = "/baseDoctor";
+    }
+
+
+    /**
+     * 医生职业信息
+     */
+    public static class BaseDoctorHospital extends Basic {
+        public static final String PREFIX  = "/baseDoctorHospital";
+    }
+
+
+    /**
+     * 医生角色字典
+     */
+    public static class BaseDoctorRoleDict extends Basic {
+        public static final String PREFIX  = "/baseDoctorRoleDict";
+    }
+
+
+    /**
+     * 居民信息
+     */
+    public static class BaseOrg extends Basic {
+        public static final String PREFIX  = "/baseOrg";
+    }
+
+
+    /**
+     * 省字典
+     */
+    public static class BasePatient extends Basic {
+        public static final String PREFIX  = "/basePatient";
+    }
+
+
+    /**
+     * 街道字典
+     */
+    public static class BaseProvince extends Basic {
+        public static final String PREFIX  = "/baseProvince";
+    }
+
+    /**
+     * 团队信息
+     */
+    public static class BaseTeam extends Basic {
+        public static final String PREFIX  = "/baseTeam";
+    }
+
+
+    /**
+     * 街道字典
+     */
+    public static class BaseStreet extends Basic {
+        public static final String PREFIX  = "/baseStreet";
+    }
+
+
+    /**
+     * 团队成员
+     */
+    public static class BaseTeamMember extends Basic {
+        public static final String PREFIX  = "/baseTeamMember";
+    }
+
+
+    /**
+     * 区县字典
+     */
+    public static class BaseTown extends Basic {
+        public static final String PREFIX  = "/baseTown";
+    }
+
+
+    /**
+     * 健康问题字典
+     */
+    public static class DictHealthProblem extends Basic {
+        public static final String PREFIX  = "/dictHealthProblem";
+    }
+
+
+    /**
+     * 医院科室字典
+     */
+    public static class DictHospitalDept extends Basic {
+        public static final String PREFIX  = "/dictHospitalDept";
+    }
+
+
+    /**
+     * ICD10字典
+     */
+    public static class DictIcd10 extends Basic {
+        public static final String PREFIX  = "/dictIcd10";
+    }
+
+
+    /**
+     * 职称字典
+     */
+    public static class DictJobTitle extends Basic {
+        public static final String PREFIX  = "/dictJobTitle";
+    }
+
+
+    /**
+     * 药品字典
+     */
+    public static class DictMedicine extends Basic {
+        public static final String PREFIX  = "/dictMedicine";
+    }
+
+    /**
      * 基于MQ的消息推送
      */
     public static class MqMessage extends Basic {

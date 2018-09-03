@@ -20,6 +20,8 @@ public class Envelop implements Serializable {
     protected String message;
     @ApiModelProperty(value = "状态（200 - 成功)", example = "200")
     protected Integer status = EnvelopStatus.success.code;
+    @ApiModelProperty(value = "错误码", example = "200")
+    protected String errorCode;
 
     public Integer getStatus() {
         return status;
@@ -35,6 +37,14 @@ public class Envelop implements Serializable {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
 
     public static Envelop getSuccess(String message) {

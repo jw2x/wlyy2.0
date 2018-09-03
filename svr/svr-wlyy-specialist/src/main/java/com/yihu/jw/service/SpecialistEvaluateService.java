@@ -2,6 +2,7 @@ package com.yihu.jw.service;/**
  * Created by nature of king on 2018/8/22.
  */
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.dao.SpecialistEvaluateDao;
 import com.yihu.jw.dao.SpecialistEvaluateLabelDao;
@@ -18,6 +19,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,11 +46,23 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
     /**
      * 添加评论
      *
-     * @param specialistEvaluateDOList
+     * @param jsonObject
      * @return
      */
-    public MixEnvelop<SpecialistEvaluateDO,SpecialistEvaluateDO> createEvaluate(List<SpecialistEvaluateDO> specialistEvaluateDOList){
+    public MixEnvelop<SpecialistEvaluateDO,SpecialistEvaluateDO> createEvaluate(JSONObject jsonObject) throws IOException {
         MixEnvelop<SpecialistEvaluateDO,SpecialistEvaluateDO> envelop = new MixEnvelop<>();
+        JSONArray evaluate = jsonObject.getJSONArray("evaluate");
+        JSONArray evaluateLabel = jsonObject.getJSONArray("evaluateLabel");
+        List<SpecialistEvaluateDO> specialistEvaluateDOList = new ArrayList<>();
+        List<SpecialistEvaluateLabelDO> specialistEvaluateLabelDOS = new ArrayList<>();
+        for (int i = 0;i<evaluate.size();i++){
+            SpecialistEvaluateDO specialistEvaluateDO = toEntity(evaluate.getJSONObject(i).toJSONString(),SpecialistEvaluateDO.class);
+            specialistEvaluateDOList.add(specialistEvaluateDO);
+        }
+        for (int i =0;i<evaluateLabel.size();i++){
+            SpecialistEvaluateLabelDO specialistEvaluateLabelDO = toEntity(evaluateLabel.getJSONObject(i).toJSONString(),SpecialistEvaluateLabelDO.class);
+            specialistEvaluateLabelDOS.add(specialistEvaluateLabelDO);
+        }
         String doctor = null;
         String relationCode = null;
         String patient = null;
@@ -69,10 +83,18 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
                 specialistEvaluateLabelDO.setPatient(specialistEvaluateDO1.getPatient());
                 specialistEvaluateLabelDO.setEvaluateType(1);
                 specialistEvaluateLabelDO.setRelationCode(specialistEvaluateDO.getRelationCode());
+                specialistEvaluateLabelDO.setFlag(specialistEvaluateDO.getFlag());
                 specialistEvaluateLabelDO.setCreateTime(new Date());
                 specialistEvaluateLabelDO.setUpdateTime(new Date());
                 specialistEvaluateLabelDao.save(specialistEvaluateLabelDO);
                 total = total + specialistEvaluateDO.getScore();
+            }
+        }
+        if (specialistEvaluateLabelDOS.size()!=0&&specialistEvaluateLabelDOS != null){
+            for (SpecialistEvaluateLabelDO specialistEvaluateLabelDO:specialistEvaluateLabelDOS){
+                specialistEvaluateLabelDO.setSaasId("dev");
+                specialistEvaluateLabelDO.setEvaluateType(1);
+                specialistEvaluateLabelDao.save(specialistEvaluateLabelDO);
             }
         }
         double score = total/3;
