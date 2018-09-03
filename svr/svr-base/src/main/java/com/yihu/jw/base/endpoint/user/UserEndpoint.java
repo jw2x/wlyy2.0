@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.User.PREFIX)
-@Api(value = "用户管理", description = "用户管理服务接口", tags = {"wlyy基础服务 - 用户管理服务接口"})
+@Api(value = "用户管理", description = "用户管理服务接口", tags = {"用户 - 用户管理服务接口"})
 public class UserEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
@@ -36,7 +36,7 @@ public class UserEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         UserDO userDO = toEntity(jsonData, UserDO.class);
-        userDO = userService.save(userDO);
+        userDO = userService.register(userDO);
         return success(userDO, UserVO.class);
     }
 
@@ -45,7 +45,7 @@ public class UserEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        userService.delete(ids);
+        userService.delete(ids.split(","));
         return success("删除成功");
     }
 

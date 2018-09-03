@@ -112,15 +112,4 @@ public class SmsGatewayService extends BaseJpaService<SmsGatewayDO, SmsGatewayDa
         }
     }
 
-    private String randomInt(int length) {
-        String str = "0123456789";
-        StringBuffer buffer = new StringBuffer();
-        Random random = new Random();
-        for(int i = 0; i < length; ++i) {
-            int pos = random.nextInt(str.length());
-            buffer.append(str.charAt(pos));
-        }
-        return buffer.toString();
-    }
-
 }

@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.SmsGateway.PREFIX)
-@Api(value = "短信网关管理", description = "短信网关管理服务接口", tags = {"wlyy基础服务 - 短信网关管理服务接口"})
+@Api(value = "短信网关管理", description = "短信网关管理服务接口", tags = {"短信服务 - 短信网关管理服务接口"})
 public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
@@ -48,7 +48,7 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        smsGatewayService.delete(ids);
+        smsGatewayService.delete(ids.split(","));
         return success("删除成功");
     }
 

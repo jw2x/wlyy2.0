@@ -4,11 +4,15 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.entity.specialist.rehabilitation.*;
 import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
+import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
+import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
+import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
+import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.rehabilitation.RehabilitationPlanService;
-import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -19,7 +23,6 @@ import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,13 +69,13 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
     @GetMapping(value = SpecialistMapping.rehabilitation.findRehabilitationPlanTemplate)
     @ApiOperation(value = "获取康复服务套餐模板列表")
     public MixEnvelop<RehabilitationPlanTemplateDO, RehabilitationPlanTemplateDO> findRehabilitationPlanTemplate(@ApiParam(name = "adminTeamCode", value = "行政团队id")
-                                                                                   @RequestParam(value = "adminTeamCode", required = true)Integer adminTeamCode,
-                                                                               @ApiParam(name = "page", value = "第几页，从1开始")
-                                                                              @RequestParam(value = "page", required = false)Integer page,
-                                                                              @ApiParam(name = "size", value = "，每页分页大小")
-                                                                              @RequestParam(value = "size", required = false)Integer size){
+                                                                                   @RequestParam(value = "adminTeamCode", required = false)Long adminTeamCode,
+                                                                               @ApiParam(name = "doctor", value = "专科医生")
+                                                                              @RequestParam(value = "doctor", required = false)String doctor,
+                                                                              @ApiParam(name = "patient", value = "患者")
+                                                                              @RequestParam(value = "patient", required = false)String patient){
         try {
-            return rehabilitationPlanService.findRehabilitationPlanTemplate(adminTeamCode, page, size);
+            return rehabilitationPlanService.findRehabilitationPlanTemplate(adminTeamCode, doctor, patient);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -82,7 +85,7 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
 
     @GetMapping(value = SpecialistMapping.rehabilitation.findTemplateDetailByTemplateId)
     @ApiOperation(value = "获取康复服务套餐模板明细")
-    public MixEnvelop<RehabilitationTemplateDetailDO, RehabilitationTemplateDetailDO> findTemplateDetailByTemplateId(@ApiParam(name = "templateId", value = "模板id")
+    public MixEnvelop<HospitalServiceItemDO, HospitalServiceItemDO> findTemplateDetailByTemplateId(@ApiParam(name = "templateId", value = "模板id")
                                                                                       @RequestParam(value = "templateId", required = true)String templateId){
         try {
             return rehabilitationPlanService.findTemplateDetailByTemplateId(templateId);
@@ -100,6 +103,19 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
         try {
             List<RehabilitationTemplateDetailDO> details = new ObjectMapper().readValue(rehabilitationTemplateDetail, new TypeReference<List<RehabilitationTemplateDetailDO>>(){});
             return rehabilitationPlanService.updateRehabilitationTemplateDetail(details);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.deleteRehabilitationPlanTemplate)
+    @ApiOperation(value = "删除康复模板")
+    public MixEnvelop<Boolean, Boolean> deleteRehabilitationPlanTemplate(@ApiParam(name = "id", value = "康复模板id")
+                                                                           @RequestParam(value = "id", required = true)String id){
+        try {
+            return rehabilitationPlanService.deleteRehabilitationPlanTemplate(id);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -145,6 +161,21 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             details = rehabilitationPlanService.createRehabilitationDetail(details, planDO.getId());
             return MixEnvelop.getSuccess(SpecialistMapping.api_success);
         }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.rehabilitation.findServiceItemsByHospital)
+    @ApiOperation(value = "获取机构服务项目列表")
+    public MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> findServiceItemsByHospital(@ApiParam(name = "doctorHospital", value = "医生所在机构")
+                                             @RequestParam(required = true)String doctorHospital,
+                                             @ApiParam(name = "signHospital", value = "居民签约机构")
+                                             @RequestParam(required = false)String signHospital){
+        try {
+            return rehabilitationPlanService.findServiceItemsByHospital(doctorHospital, signHospital);
+        } catch (Exception e) {
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return MixEnvelop.getError(e.getMessage());

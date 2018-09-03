@@ -18,5 +18,5 @@ public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository
     List<PatientRehabilitationPlanDO> findByPatientAndCreateUser(String patient, String doctor);
 
     @Query(" select p from PatientRehabilitationPlanDO p where p.patient=?1 order by p.createTime desc ")
-    List<PatientRehabilitationPlanDO> findbyPatient(String patientCode);
+    List<PatientRehabilitationPlanDO> findbyPatients(String patientCode);
 }

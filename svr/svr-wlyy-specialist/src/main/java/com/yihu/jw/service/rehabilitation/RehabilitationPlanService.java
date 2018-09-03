@@ -1,29 +1,45 @@
 package com.yihu.jw.service.rehabilitation;
 
 import com.yihu.jw.dao.rehabilitation.*;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
+import com.yihu.jw.dao.rehabilitation.RehabilitationDetailDao;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
 import com.yihu.jw.entity.rehabilitation.RehabilitationPlanningDO;
+import com.yihu.jw.dao.rehabilitation.RehabilitationPlanTemplateDao;
+import com.yihu.jw.dao.rehabilitation.RehabilitationTemplateDetailDao;
 import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
 import com.yihu.jw.entity.specialist.rehabilitation.*;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
+import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
+import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO;
+import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
+import com.yihu.jw.restmodel.specialist.PatientSignInfoVO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.FileUploadService;
+import com.yihu.jw.service.SpecialistHospitalServiceItemService;
+import com.yihu.jw.service.SpecialistService;
 import com.yihu.jw.util.common.QrcodeUtil;
 import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.mysql.query.BaseJpaService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.*;
 import java.util.*;
 
 /**
@@ -55,6 +71,10 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
     protected HttpServletRequest request;
     @Autowired
     private RehabilitationOperateRecordsDao rehabilitationOperateRecordsDao;
+    @Autowired
+    private SpecialistHospitalServiceItemService hospitalServiceItemService;
+    @Autowired
+    private SpecialistService specialistService;
 
     public MixEnvelop<String, String> createRehabilitationTemplate(RehabilitationPlanTemplateDO templateDO) {
         templateDO.setCreateTime(new Date());
@@ -83,18 +103,24 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,true);
     }
 
-    public MixEnvelop<RehabilitationPlanTemplateDO, RehabilitationPlanTemplateDO> findRehabilitationPlanTemplate(Integer adminTeamCode, Integer page, Integer size) {
+    public MixEnvelop<RehabilitationPlanTemplateDO, RehabilitationPlanTemplateDO> findRehabilitationPlanTemplate(Long adminTeamCode, String doctor, String patient) {
 
-        if(page != null && size != null){
-            String sql = "select * from wlyy_rehabilitation_plan_template t where t.admin_team_code = '" + adminTeamCode + "' and t.del = 1 ORDER BY t.create_time DESC LIMIT "+(page-1)*size+","+size;
-            List<RehabilitationPlanTemplateDO> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper(RehabilitationPlanTemplateDO.class));
-            String countSql = "select count(1) from wlyy_rehabilitation_plan_template t where t.admin_team_code = '" + adminTeamCode + "' and t.del = 1";
-            Long count = jdbcTemplate.queryForObject(countSql, Long.class);
-            return MixEnvelop.getSuccessListWithPage(SpecialistMapping.api_success,list,page,size,count);
-        }else {
-            List<RehabilitationPlanTemplateDO> list = templateDao.findByAdminTeamCode(adminTeamCode);
-            return MixEnvelop.getSuccessList(SpecialistMapping.api_success,list, list.size());
+        if(adminTeamCode == null && StringUtils.isNotBlank(doctor) && StringUtils.isNotBlank(patient)){
+            PatientSignInfoVO patientSignSpecialistInfo = (PatientSignInfoVO) specialistService.findPatientSignSpecialistInfo(patient,doctor).getObj();
+            adminTeamCode = patientSignSpecialistInfo.getTeamCode();
         }
+        List<RehabilitationPlanTemplateDO> list = templateDao.findByAdminTeamCode(adminTeamCode);
+        return MixEnvelop.getSuccessList(SpecialistMapping.api_success,list, list.size());
+    }
+
+    /**
+     * 根据模板id修改康复模板删除状态
+     * @param id
+     * @return
+     */
+    public MixEnvelop<Boolean,Boolean> deleteRehabilitationPlanTemplate(String id) {
+        templateDao.updateDelById(id);
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success,true);
     }
 
     /**
@@ -102,9 +128,9 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
      * @param templateId
      * @return
      */
-    public MixEnvelop<RehabilitationTemplateDetailDO, RehabilitationTemplateDetailDO> findTemplateDetailByTemplateId(String templateId) {
+    public MixEnvelop<HospitalServiceItemDO, HospitalServiceItemDO> findTemplateDetailByTemplateId(String templateId) {
         List<String> hospitalServiceItemIds = templateDetailDao.findHospitalServiceItemIdByTemplateId(templateId);
-        return MixEnvelop.getSuccess(SpecialistMapping.api_success);
+        return hospitalServiceItemService.selectById(hospitalServiceItemIds);
     }
 
     public PatientRehabilitationPlanDO createPatientRehabilitationPlan(PatientRehabilitationPlanDO planDO) {
@@ -115,12 +141,73 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
 
     public List<RehabilitationDetailDO> createRehabilitationDetail(List<RehabilitationDetailDO> details, String planId) {
         for(RehabilitationDetailDO detail : details) {
-//            HospitalServiceItemDO hospitalServiceItemDO = hospitalServiceItemService.findById(detail.getHospitalServiceItemId());
+            List<String> list = new ArrayList<>();
+            list.add(detail.getHospitalServiceItemId());
+            HospitalServiceItemDO hospitalServiceItemDO = hospitalServiceItemService.selectById(list).getDetailModelList().get(0);
+            detail.setHospital(hospitalServiceItemDO.getHospital());
+            detail.setHospitalName(hospitalServiceItemDO.getHospitalName());
+            detail.setExpense(hospitalServiceItemDO.getExpense());
             detail.setPlanId(planId);
             detail.setCreateTime(new Date());
             detail.setStatus(0);
         }
         return (List<RehabilitationDetailDO>)rehabilitationDetailDao.save(details);
+    }
+
+    public MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> findServiceItemsByHospital(String doctorHospital, String signHospital) {
+        JSONArray jsonArray = new JSONArray();
+        List<String> list = new ArrayList<>();
+        list.add(doctorHospital);
+        List<HospitalServiceItemDO> docHospitalServiceItemDO = hospitalServiceItemService.selectByHospital(list).getDetailModelList();
+        if(StringUtils.isNotBlank(signHospital)){
+            if(signHospital.equals(doctorHospital)) {
+                for (Object object : docHospitalServiceItemDO) {
+                    JSONObject json = (JSONObject) JSONObject.toJSON(object);
+                    json.put("type", "社区");
+                    jsonArray.add(json);
+                }
+            }else if(!signHospital.equals(doctorHospital)){
+                JSONArray array = new JSONArray();
+                List<String> itemIds = new ArrayList<>();
+                list.remove(0);
+                list.add(signHospital);
+                List<HospitalServiceItemDO> signHospitalServiceItemDO = hospitalServiceItemService.selectByHospital(list).getDetailModelList();
+                HashSet signSet = new HashSet();
+                for(HospitalServiceItemDO h : signHospitalServiceItemDO){
+                    signSet.add(h.getServiceItemId());
+                }
+                //将服务项目重复的都放入itemIds集合里,并在列表中删除该条数据
+                List<HospitalServiceItemDO> temp = new ArrayList<>();
+                temp.addAll(docHospitalServiceItemDO);
+                for(HospitalServiceItemDO h : docHospitalServiceItemDO){
+                    int size = signSet.size();
+                    String itemId = h.getServiceItemId();
+                    signSet.add(itemId);
+                    if(signSet.size() == size){
+                        itemIds.add(itemId);
+                        temp.remove(h);
+                    }
+                }
+                array.addAll(signHospitalServiceItemDO);
+                array.addAll(temp);
+                for(Object obj : array){
+                    //往实体类插入数据
+                    JSONObject json = (JSONObject) JSONObject.toJSON(obj);
+                    if(json.get("hospital").equals(signHospital)){
+                        json.put("type", "社区");
+                    }else if(json.get("hospital").equals(doctorHospital)){
+                        json.put("type", "医院");
+                    }
+                    if(itemIds.contains(json.get("serviceItemId"))){
+                        json.put("type", "社区，医院");
+                    }
+                    jsonArray.add(json);
+                }
+            }
+        }else {
+            jsonArray.addAll(docHospitalServiceItemDO);
+        }
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success, jsonArray);
     }
 
     public MixEnvelop<String,String> createServiceQrCode(String planDetailId,String sessionId){

@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Role.PREFIX)
-@Api(value = "角色管理", description = "角色管理服务接口", tags = {"wlyy基础服务 - 角色管理服务接口"})
+@Api(value = "角色管理", description = "角色管理服务接口", tags = {"角色 - 角色管理服务接口"})
 public class RoleEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
@@ -45,7 +45,7 @@ public class RoleEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        roleService.delete(ids);
+        roleService.delete(ids.split(","));
         return success("删除成功");
     }
 

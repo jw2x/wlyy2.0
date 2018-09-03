@@ -42,9 +42,9 @@ public class UserDO extends UuidIdentityEntityWithOperator {
     //邮箱
     private String email;
     //是否可用
-    private Boolean isEnabled;
+    private Boolean enabled;
     //是否锁定
-    private Boolean isLocked;
+    private Boolean locked;
     //锁定时间
     private Date lockedDate;
     //最后登陆时间
@@ -124,22 +124,22 @@ public class UserDO extends UuidIdentityEntityWithOperator {
         this.email = email;
     }
 
-    @Column(name = "is_enabled", nullable = false)
+    @Column(name = "enabled", nullable = false)
     public Boolean getEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     public void setEnabled(Boolean enabled) {
-        isEnabled = enabled;
+        this.enabled = enabled;
     }
 
-    @Column(name = "is_locked", nullable = false)
+    @Column(name = "locked", nullable = false)
     public Boolean getLocked() {
-        return isLocked;
+        return locked;
     }
 
     public void setLocked(Boolean locked) {
-        isLocked = locked;
+        this.locked = locked;
     }
 
     @Column(name = "locked_date")

@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.UserHideModuleFunction.PREFIX)
-@Api(value = "用户模块功能管理", description = "用户模块功能管理服务接口", tags = {"wlyy基础服务 - 用户模块功能管理服务接口"})
+@Api(value = "用户模块功能管理", description = "用户模块功能管理服务接口", tags = {"用户 - 用户模块功能管理服务接口"})
 public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
@@ -43,7 +43,7 @@ public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        userHideModuleFunctionService.delete(ids);
+        userHideModuleFunctionService.delete(ids.split(","));
         return success("删除成功");
     }
 

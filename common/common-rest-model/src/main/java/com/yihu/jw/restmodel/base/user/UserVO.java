@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.base.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
@@ -40,10 +41,10 @@ public class UserVO extends UuidIdentityVOWithOperator {
     private String email;
     //是否可用
     @ApiModelProperty(value = "是否可用", example = "1")
-    private Boolean isEnabled;
+    private Boolean enabled;
     //是否锁定
     @ApiModelProperty(value = "是否锁定", example = "1")
-    private Boolean isLocked;
+    private Boolean locked;
     //锁定时间
     @ApiModelProperty(value = "锁定时间", example = "2018-08-27 13:23:32")
     private Date lockedDate;
@@ -119,21 +120,22 @@ public class UserVO extends UuidIdentityVOWithOperator {
     }
 
     public Boolean getEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     public void setEnabled(Boolean enabled) {
-        isEnabled = enabled;
+        this.enabled = enabled;
     }
 
     public Boolean getLocked() {
-        return isLocked;
+        return locked;
     }
 
     public void setLocked(Boolean locked) {
-        isLocked = locked;
+        this.locked = locked;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     public Date getLockedDate() {
         return lockedDate;
     }
@@ -142,6 +144,7 @@ public class UserVO extends UuidIdentityVOWithOperator {
         this.lockedDate = lockedDate;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     public Date getLoginDate() {
         return loginDate;
     }
