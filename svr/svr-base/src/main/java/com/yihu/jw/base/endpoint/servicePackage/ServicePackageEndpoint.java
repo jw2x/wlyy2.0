@@ -44,7 +44,7 @@ public class ServicePackageEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        servicePackageService.delete(ids);
+        servicePackageService.delete(ids.split(","));
         return success("删除成功");
     }
 
@@ -58,7 +58,7 @@ public class ServicePackageEndpoint extends EnvelopRestEndpoint {
             return failed("ID不能为空", ObjEnvelop.class);
         }
         servicePackageDO = servicePackageService.save(servicePackageDO);
-        return success(convertToModel(servicePackageDO, ServicePackageVO.class));
+        return success(servicePackageDO, ServicePackageVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.ServicePackage.PAGE)
