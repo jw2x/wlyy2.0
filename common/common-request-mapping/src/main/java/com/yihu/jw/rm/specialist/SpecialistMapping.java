@@ -67,13 +67,15 @@ public class SpecialistMapping {
         public static final String findRehabilitationPlanDetailList = "/findRehabilitationPlanDetailList";
         public static final String calendarPlanDetail = "/calendarPlanDetail";
         public static final String calendarPlanDetailList = "/calendarPlanDetailList";
+        public static final String appCalendarPlanDetailList = "/appCalendarPlanDetailList";
         public static final String saveGuidanceMessage = "/saveGuidanceMessage";
         public static final String serviceItemList = "/serviceItemList";
         public static final String serviceItem = "/serviceItem";
         public static final String updateStatusRehabilitationOperate = "/updateStatusRehabilitationOperate";
         public static final String patientRehabilitationDetail = "/patientRehabilitationDetail";
         public static final String recentPlanDetailRecord = "/recentPlanDetailRecord";
-
+        public static final String serviceDoctorList = "/serviceDoctorList";
+        public static final String dailyJob = "/dailyJob";
     }
 
     public static class serviceItem{
