@@ -3,6 +3,8 @@ package com.yihu.jw.service.rehabilitation;
 import com.yihu.jw.dao.rehabilitation.*;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.dao.rehabilitation.PatientRehabilitationPlanDao;
 import com.yihu.jw.dao.rehabilitation.RehabilitationDetailDao;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -27,6 +29,7 @@ import com.yihu.jw.util.common.QrcodeUtil;
 import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,6 +42,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.*;
 import java.util.*;
 import java.util.*;
 
@@ -71,6 +75,10 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
     protected HttpServletRequest request;
     @Autowired
     private RehabilitationOperateRecordsDao rehabilitationOperateRecordsDao;
+    @Autowired
+    private SpecialistHospitalServiceItemService hospitalServiceItemService;
+    @Autowired
+    private SpecialistService specialistService;
     @Autowired
     private SpecialistHospitalServiceItemService hospitalServiceItemService;
     @Autowired
