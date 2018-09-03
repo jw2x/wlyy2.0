@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.base.servicePackage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.restmodel.UuidIdentityVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,6 +25,7 @@ public class ServicePackageDetailsVO extends UuidIdentityVO {
     @ApiModelProperty(value = "创建时间")
     private Date createTime;//创建时间',
     @ApiModelProperty(value = "执行时间")
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
     private Date executionTime;//执行时间',
     @ApiModelProperty(value = "执行类型", example = "1")
     private String executionType;//执行类型（1固定时间，2固定次数（不固定时间），3长期）',

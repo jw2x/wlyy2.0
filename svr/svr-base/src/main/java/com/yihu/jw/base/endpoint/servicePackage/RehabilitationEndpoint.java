@@ -31,40 +31,25 @@ public class RehabilitationEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建")
     public Envelop create (
             @ApiParam(name = "jsonData", value = "Json数据", required = true)
-            @RequestBody String jsonData) {
-        try {
-            RehabilitationVO rehabilitationVO = toEntity(jsonData, RehabilitationVO.class);
-            ServicePackageSignRecordDO signRecordDO = convertToModel(rehabilitationVO.getSignRecordVO(), ServicePackageSignRecordDO.class);
-            ServicePackageDO servicePackageDO = servicePackageService.addRehabilitation(rehabilitationVO,signRecordDO);
-            return success(convertToModel(servicePackageDO, ServicePackageVO.class));
-        }catch (Exception e){
-            e.printStackTrace();
-            return Envelop.getError("创建失败");
-        }
+            @RequestBody String jsonData) throws Exception{
+        RehabilitationVO rehabilitationVO = toDateEntity(jsonData, RehabilitationVO.class);
+        ServicePackageSignRecordDO signRecordDO = convertToModel(rehabilitationVO.getSignRecordVO(), ServicePackageSignRecordDO.class);
+        ServicePackageDO servicePackageDO = servicePackageService.addRehabilitation(rehabilitationVO,signRecordDO);
+        return success(convertToModel(servicePackageDO, ServicePackageVO.class));
     }
 
     @PostMapping(value = BaseRequestMapping.BaseRehabilitation.CREATELOG)
     @ApiOperation(value = "新增服务包日志")
     public Envelop addRehabilitationLog(@ApiParam(name = "jsonData", value = "Json数据", required = true)
-                          @RequestBody String jsonData){
-        try{
-            ServicePackageLogVO logVO = toEntity(jsonData,ServicePackageLogVO.class);
-            return success(servicePackageService.addRehabilitationLog(logVO));
-        }catch (Exception e){
-            e.printStackTrace();
-            return Envelop.getError("新增失败");
-        }
+                          @RequestBody String jsonData) throws Exception{
+        ServicePackageLogVO logVO = toEntity(jsonData,ServicePackageLogVO.class);
+        return success(servicePackageService.addRehabilitationLog(logVO));
     }
 
     @GetMapping(value = BaseRequestMapping.BaseRehabilitation.FINDBYID)
     @ApiOperation(value = "查找完成度")
     public Envelop getFinish(@ApiParam(name = "servicePackId", value = "服务包id", required = true)
-                             @RequestParam(value = "servicePackId") String servicePackId){
-        try {
-            return success(servicePackageService.getFinish(servicePackId));
-        }catch (Exception e){
-            e.printStackTrace();
-            return Envelop.getError("获取失败");
-        }
+                             @RequestParam(value = "servicePackId") String servicePackId) throws Exception{
+        return success(servicePackageService.getFinish(servicePackId));
     }
 }
