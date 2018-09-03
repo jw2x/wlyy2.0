@@ -273,7 +273,6 @@ public class RehabilitationManageController {
                                 @RequestParam(value = "endTime", required = true)String endTime){
         try {
             return rehabilitationManageService.dailyJob(startTime,endTime);
-            return rehabilitationManageService.dailyJob(startTime,endTime);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

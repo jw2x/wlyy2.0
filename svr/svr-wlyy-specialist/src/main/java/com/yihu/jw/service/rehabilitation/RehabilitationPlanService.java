@@ -79,10 +79,6 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
     private SpecialistHospitalServiceItemService hospitalServiceItemService;
     @Autowired
     private SpecialistService specialistService;
-    @Autowired
-    private SpecialistHospitalServiceItemService hospitalServiceItemService;
-    @Autowired
-    private SpecialistService specialistService;
 
     public MixEnvelop<String, String> createRehabilitationTemplate(RehabilitationPlanTemplateDO templateDO) {
         templateDO.setCreateTime(new Date());

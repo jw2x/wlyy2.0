@@ -111,18 +111,6 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
         }
     }
 
-    @PostMapping(value = SpecialistMapping.rehabilitation.deleteRehabilitationPlanTemplate)
-    @ApiOperation(value = "删除康复模板")
-    public MixEnvelop<Boolean, Boolean> deleteRehabilitationPlanTemplate(@ApiParam(name = "id", value = "康复模板id")
-                                                                           @RequestParam(value = "id", required = true)String id){
-        try {
-            return rehabilitationPlanService.deleteRehabilitationPlanTemplate(id);
-        }catch (Exception e){
-            e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
-            return MixEnvelop.getError(e.getMessage());
-        }
-    }
 
     @PostMapping(value = SpecialistMapping.rehabilitation.deleteRehabilitationPlanTemplate)
     @ApiOperation(value = "删除康复模板")
@@ -175,21 +163,6 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             details = rehabilitationPlanService.createRehabilitationDetail(details, planDO.getId());
             return MixEnvelop.getSuccess(SpecialistMapping.api_success);
         }catch (Exception e){
-            e.printStackTrace();
-            tracer.getCurrentSpan().logEvent(e.getMessage());
-            return MixEnvelop.getError(e.getMessage());
-        }
-    }
-
-    @GetMapping(value = SpecialistMapping.rehabilitation.findServiceItemsByHospital)
-    @ApiOperation(value = "获取机构服务项目列表")
-    public MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> findServiceItemsByHospital(@ApiParam(name = "doctorHospital", value = "医生所在机构")
-                                             @RequestParam(required = true)String doctorHospital,
-                                             @ApiParam(name = "signHospital", value = "居民签约机构")
-                                             @RequestParam(required = false)String signHospital){
-        try {
-            return rehabilitationPlanService.findServiceItemsByHospital(doctorHospital, signHospital);
-        } catch (Exception e) {
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return MixEnvelop.getError(e.getMessage());
