@@ -37,7 +37,7 @@ public class QuotaEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         QuotaDO quotaDO = toEntity(jsonData, QuotaDO.class);
         quotaDO = quotaService.save(quotaDO);
-        return success(convertToModel(quotaDO, QuotaVO.class));
+        return success(quotaDO, QuotaVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.Quota.DELETE)
@@ -45,7 +45,7 @@ public class QuotaEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        quotaService.delete(ids);
+        quotaService.delete(ids.split(","));
         return success("删除成功");
     }
 
@@ -59,7 +59,7 @@ public class QuotaEndpoint extends EnvelopRestEndpoint {
             return failed("ID不能为空", ObjEnvelop.class);
         }
         quotaDO = quotaService.save(quotaDO);
-        return success(convertToModel(quotaDO, QuotaVO.class));
+        return success(quotaDO, QuotaVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Quota.PAGE)
