@@ -20,11 +20,13 @@ public class RehabilitationOperateRecordsDO extends UuidIdentityEntityWithOperat
     private String patientName;//居民名称
     private String doctorCode;//执行医生code
     private String doctorName;//执行医生名称
-    private Integer relationRecordType;//关联记录类型（1、随访记录，2、健康指导，3、健康教育）
+    private Integer relationRecordType;//关联记录类型（1、随访记录，2、健康指导，3、健康教育，4、服务码）
     private String relationRecordCode;//关联记录code
+    private String relationRecordImg;//相关记录图片地址，json格式
     private Date reserveTime;//服务预定完成时间
     private Date completeTime;//服务完成时间
     private Integer status;//是否确认完成（0、未确认，1、已确认）
+    private String node;//服务完成笔记
 
     @Column(name = "saas_id")
     public String getSaasId() {
@@ -80,6 +82,15 @@ public class RehabilitationOperateRecordsDO extends UuidIdentityEntityWithOperat
         this.doctorName = doctorName;
     }
 
+    @Column(name = "node")
+    public String getNode() {
+        return node;
+    }
+
+    public void setNode(String node) {
+        this.node = node;
+    }
+
     @Column(name = "relation_record_type")
     public Integer getRelationRecordType() {
         return relationRecordType;
@@ -96,6 +107,15 @@ public class RehabilitationOperateRecordsDO extends UuidIdentityEntityWithOperat
 
     public void setRelationRecordCode(String relationRecordCode) {
         this.relationRecordCode = relationRecordCode;
+    }
+
+    @Column(name = "relation_record_img")
+    public String getRelationRecordImg() {
+        return relationRecordImg;
+    }
+
+    public void setRelationRecordImg(String relationRecordImg) {
+        this.relationRecordImg = relationRecordImg;
     }
 
     @Column(name = "reserve_time")
@@ -124,4 +144,5 @@ public class RehabilitationOperateRecordsDO extends UuidIdentityEntityWithOperat
     public void setStatus(Integer status) {
         this.status = status;
     }
+
 }
