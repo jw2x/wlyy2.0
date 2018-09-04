@@ -1,0 +1,108 @@
+创建索引
+POST  http://172.19.103.68:9200/wlyy_quota_test
+查询索引
+GET http://172.19.103.68:9200/wlyy_quota_test/
+给索引加mapping
+POST http://172.19.103.68:9200/wlyy_quota_test/wlyy_quota_test/_mapping
+{
+    "wlyy_quota_test": {
+            "properties": {
+                "quotaCode": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "city": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "cityName": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "town": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "townName": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "hospital": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "hospitalName": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "team": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "teamName": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "slaveKey1": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "slaveKey1Name": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "slaveKey2": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "slaveKey2Name": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "slaveKey3": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "slaveKey3Name": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "slaveKey4": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "slaveKey4Name": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "areaLevel": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                }, 
+               "timeLevel": {
+                    "type": "string",
+                    "index": "not_analyzed"
+                },
+                "result1": {
+                    "type": "double"
+                },
+                "result2": {
+                    "type": "double"
+                },
+                "quotaDate": {
+                    "type": "date"
+                },
+                "createTime": {
+                    "type": "date"
+                }
+            }
+        }
+  }
+
+增加索引搜索大小
+PUT  http://172.19.103.68:9200/wlyy_quota_test/_settings
+{
+  "index": {
+    "max_result_window": 500000
+  }
+}

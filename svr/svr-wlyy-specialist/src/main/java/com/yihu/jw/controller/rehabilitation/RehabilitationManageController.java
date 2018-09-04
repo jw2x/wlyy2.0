@@ -296,4 +296,19 @@ public class RehabilitationManageController {
             return ObjEnvelop.getError(e.getMessage());
         }
     }
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.updatePlanDetailStatusById)
+    @ApiOperation(value = "康复管理-更新康复计划项目状态")
+    public Envelop updatePlanDetailStatusById(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)
+                                                     @RequestParam(value = "planDetailId", required = true)String planDetailId,
+                                                     @ApiParam(name = "status", value = "状态", required = true)
+                                                     @RequestParam(value = "status", required = true)Integer status){
+        try {
+            return rehabilitationManageService.updatePlanDetailStatusById(status,planDetailId);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 }
