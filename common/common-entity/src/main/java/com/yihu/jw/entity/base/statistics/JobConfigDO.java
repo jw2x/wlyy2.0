@@ -5,6 +5,7 @@ import com.yihu.jw.entity.UuidIdentityEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -16,6 +17,7 @@ import java.io.Serializable;
 public class JobConfigDO extends UuidIdentityEntity implements Serializable {
 
     private String saasId;
+    private String quotaId;//指标id
     private String jobName;//任务名称
     private String jobInfo;//任务描述
     private String jobType;//任务类型(0--单次执行  1--周期执行 2--监听任务)
@@ -33,6 +35,9 @@ public class JobConfigDO extends UuidIdentityEntity implements Serializable {
     private String timeLevel;//1增量 2到达量 3生成到达量也生成增量
     private Integer incrementInterval;//增量时间间隔1天,2周,3月
 
+    private String startTime;
+    private String endTime;
+
     @Column(name = "saas_id")
     public String getSaasId() {
         return saasId;
@@ -40,6 +45,15 @@ public class JobConfigDO extends UuidIdentityEntity implements Serializable {
 
     public void setSaasId(String saasId) {
         this.saasId = saasId;
+    }
+
+    @Column(name = "quota_id")
+    public String getQuotaId() {
+        return quotaId;
+    }
+
+    public void setQuotaId(String quotaId) {
+        this.quotaId = quotaId;
     }
 
     @Column(name = "job_name")
@@ -181,5 +195,23 @@ public class JobConfigDO extends UuidIdentityEntity implements Serializable {
 
     public void setIncrementInterval(Integer incrementInterval) {
         this.incrementInterval = incrementInterval;
+    }
+
+    @Transient
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    @Transient
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }
