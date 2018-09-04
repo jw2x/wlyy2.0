@@ -19,4 +19,7 @@ public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository
 
     @Query(" select p from PatientRehabilitationPlanDO p where p.patient=?1 order by p.createTime desc ")
     List<PatientRehabilitationPlanDO> findbyPatients(String patientCode);
+
+    @Query("update PatientRehabilitationPlanDO a set a.status=?1 where a.id =?2 ")
+    int updateStatusById(Integer status,String id);
 }
