@@ -68,7 +68,7 @@
         <module>../svr/svr-iot</module><!--物联网平台-->
         <!--<module>../svr/svr-wlyy</module>-->  <!-- i健康微服务 -->
         <module>../svr/svr-wlyy-health-bank</module> <!-- 健康银行 -->
-        <module>../svr/svr-wlyy-specialist</module> <!-- 啥玩意？ -->
+        <module>../svr/svr-wlyy-specialist</module> <!-- 专科医生 -->
         <!--<module>../svr/svr-manage</module>--> <!-- 后台管理系统 -->
         <module>../svr/svr-rehabilitation</module> <!--专科医生康复计划-->
 
