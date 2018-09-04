@@ -3,6 +3,7 @@ package com.yihu.jw.dao.rehabilitation;
 import com.yihu.jw.entity.specialist.PatientHospitalRecordDO;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -21,5 +22,6 @@ public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository
     List<PatientRehabilitationPlanDO> findbyPatients(String patientCode);
 
     @Query("update PatientRehabilitationPlanDO a set a.status=?1 where a.id =?2 ")
+    @Modifying
     int updateStatusById(Integer status,String id);
 }
