@@ -54,7 +54,7 @@ import java.util.*;
  */
 @Service
 @Transactional
-public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlanningDO, RehabilitationPlanningDO> {
+public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlanningDO, RehabilitationPlanTemplateDao> {
 
     @Value("${neiwang.enable}")
     private Boolean isneiwang;  //如果不是内网项目要转到到内网wlyy在上传
