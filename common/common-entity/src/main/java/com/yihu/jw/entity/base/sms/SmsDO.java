@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.base.sms;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntity;
 
 import javax.persistence.*;
@@ -85,6 +86,7 @@ public class SmsDO extends UuidIdentityEntity {
 	}
 
 	@Column(name = "deadline", nullable = false)
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	public Date getDeadline() {
 		return deadline;
 	}
