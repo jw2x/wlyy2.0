@@ -242,4 +242,19 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             return MixEnvelop.getError(e.getMessage());
         }
     }
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.updatePlanStatusById)
+    @ApiOperation(value = "康复管理-更新康复计划状态")
+    public Envelop updatePlanStatusById(@ApiParam(name = "planId", value = "康复计划id", required = true)
+                                              @RequestParam(value = "planId", required = true)String planId,
+                                              @ApiParam(name = "status", value = "状态", required = true)
+                                              @RequestParam(value = "status", required = true)Integer status){
+        try {
+            return rehabilitationPlanService.updatePlanStatusById(status,planId);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
+        }
+    }
 }
