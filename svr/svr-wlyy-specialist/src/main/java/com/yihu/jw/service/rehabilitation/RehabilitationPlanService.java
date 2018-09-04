@@ -221,7 +221,8 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
             if (org.apache.commons.lang3.StringUtils.isNotBlank(rehabilitationDetailDO.getServiceQrCode())) {
                 fileUrl = rehabilitationDetailDO.getServiceQrCode();
             } else {
-                String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\",\"sessionId\":\""+sessionId+"\"}";
+                //String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\",\"sessionId\":\""+sessionId+"\"}";
+                String contentJsonStr=""+"?paramStr="+planDetailId+","+sessionId;
                 InputStream ipt = QrcodeUtil.createQrcode(contentJsonStr, 300, "png");
                 isneiwang = false;
                 if (isneiwang) {
