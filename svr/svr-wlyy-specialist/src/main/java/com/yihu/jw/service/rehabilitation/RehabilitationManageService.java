@@ -126,6 +126,7 @@ public class RehabilitationManageService {
                 resultMap.put("patientCode",one.get("patient"));
                 resultMap.put("id",one.get("id"));
                 resultMap.put("patientCode",one.get("patient"));
+                resultMap.put("status",one.get("status"));//康复计划状态
                 //健康情况
                 resultMap.put("healthyCondition","康复期");
                 //安排类型
@@ -266,10 +267,11 @@ public class RehabilitationManageService {
         Map<String,Object> resultMap = new HashMap<>();
         resultMap.put("patientCode",patientCode);//居民code
         //专科医生
-        String specialistRelationSql = "select r.*,t.name as teamName from wlyy_specialist.wlyy_specialist_patient_relation r left join "+basedb+".wlyy_admin_team t on r.team_code=t.id where r.sign_status ='1' and r.status in('0','1') and r.patient='"+patientCode+"' and r.doctor='"+doctorCode+"'";
+        String specialistRelationSql = "select r.*,t.name as teamName,h.name as specialistHospitalName from wlyy_specialist.wlyy_specialist_patient_relation r left join "+basedb+".wlyy_admin_team t on r.team_code=t.id left join "+basedb+".dm_hospital h on t.org_code=h.code where r.sign_status ='1' and r.status in('0','1') and r.patient='"+patientCode+"' and r.doctor='"+doctorCode+"'";
         List<Map<String,Object>> specialistRelationList = jdbcTemplate.queryForList(specialistRelationSql);
         Map<String,Object> specialistMap = specialistRelationList.get(0);
         resultMap.put("specialistAdminTeamName",specialistMap.get("teamName"));
+        resultMap.put("specialistHospitalName",specialistMap.get("specialistHospitalName"));//专科医生所在医院
         String specialistFinishItemSql = "";
         Integer specialistUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(doctorCode,patientCode,1);
         Integer specialistFinishCount = rehabilitationDetailDao.findItemByDoctor(doctorCode,patientCode);
@@ -282,6 +284,7 @@ public class RehabilitationManageService {
         List<Map<String,Object>> signFamilyList = jdbcTemplate.queryForList(signFamilySql);
         Map<String,Object> signFamilyMap = signFamilyList.get(0);
         resultMap.put("signFamilyAdminTeamName",signFamilyMap.get("teamName"));
+        resultMap.put("familyHospitalName",signFamilyMap.get("hospital_name"));//家庭医生所在医院
         Integer familyUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode,1);
         Integer familyFinishCount = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode);
         Integer familyServiceCount = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor").toString(),signFamilyMap.get("doctor_health").toString(),patientCode,1);
@@ -590,6 +593,7 @@ public class RehabilitationManageService {
         }
         executeDoctorList.add(one.get("specialistDoctorName")+"");
         resultMap.put("executeDoctorList",executeDoctorList);
+        resultMap.put("specialistDoctorCode",one.get("create_user")+"");
         resultMap.put("title",one.get("title"));//项目标题
         resultMap.put("shortExecuteTime",DateUtil.dateToStr((Date) one.get("execute_time"),DateUtil.HH_MM));//项目标题
         resultMap.put("content",one.get("content"));//项目内容
@@ -604,7 +608,8 @@ public class RehabilitationManageService {
             case 1:{statusName="已完成";break;}
             case 2:{statusName="已预约";break;}
         }
-        resultMap.put("statusName",statusName);//状态
+        resultMap.put("statusName",statusName);//状态名称
+        resultMap.put("status",status);//状态
         //指导与汇报
         List<GuidanceMessageLogDO> messageList = guidanceMessageLogDao.findByPlanDetailId(one.get("id").toString());
         List<Map<String,Object>> messageMapList = new ArrayList<>();
@@ -1025,7 +1030,28 @@ public class RehabilitationManageService {
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
     }
 
+    /**
+     * 更新康复计划项目操作日志
+     * @param node
+     * @param image
+     * @param planDeatilId
+     * @return
+     */
     public int updateNodeAndRelationRecordImg(String node,String image,String planDeatilId){
         return rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+    }
+
+    /**
+     * 更新康复计划项目状态
+     * @param status
+     * @param planDetailId
+     * @return
+     */
+    public Envelop updatePlanDetailStatusById(Integer status,String planDetailId) throws Exception{
+        if(rehabilitationDetailDao.updateStatusById(status,planDetailId)>0){
+
+            return Envelop.getSuccess(SpecialistMapping.api_success);
+        }
+        return Envelop.getError("更新失败！");
     }
 }

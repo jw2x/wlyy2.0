@@ -20,6 +20,7 @@ import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationPlanTemplateDO
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationTemplateDetailDO;
 import com.yihu.jw.restmodel.iot.common.UploadVO;
 import com.yihu.jw.restmodel.specialist.PatientSignInfoVO;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.FileUploadService;
@@ -283,5 +284,19 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
         rehabilitationOperateRecordsDO.setReserveTime(rehabilitationDetailDO.getExecuteTime());
         rehabilitationOperateRecordsDO.setCompleteTime(new Date());
         return rehabilitationOperateRecordsDao.save(rehabilitationOperateRecordsDO);
+    }
+
+    /**
+     * 更新康复计划项目状态
+     * @param status
+     * @param planId
+     * @return
+     */
+    public Envelop updatePlanStatusById(Integer status, String planId) throws Exception{
+        if(patientRehabilitationPlanDao.updateStatusById(status,planId)>0){
+
+            return Envelop.getSuccess(SpecialistMapping.api_success);
+        }
+        return Envelop.getError("更新失败！");
     }
 }
