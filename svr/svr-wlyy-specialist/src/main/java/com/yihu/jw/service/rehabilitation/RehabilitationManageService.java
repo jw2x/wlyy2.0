@@ -593,6 +593,7 @@ public class RehabilitationManageService {
         }
         executeDoctorList.add(one.get("specialistDoctorName")+"");
         resultMap.put("executeDoctorList",executeDoctorList);
+        resultMap.put("specialistDoctorCode",one.get("create_user")+"");
         resultMap.put("title",one.get("title"));//项目标题
         resultMap.put("shortExecuteTime",DateUtil.dateToStr((Date) one.get("execute_time"),DateUtil.HH_MM));//项目标题
         resultMap.put("content",one.get("content"));//项目内容
@@ -607,7 +608,8 @@ public class RehabilitationManageService {
             case 1:{statusName="已完成";break;}
             case 2:{statusName="已预约";break;}
         }
-        resultMap.put("statusName",statusName);//状态
+        resultMap.put("statusName",statusName);//状态名称
+        resultMap.put("status",status);//状态
         //指导与汇报
         List<GuidanceMessageLogDO> messageList = guidanceMessageLogDao.findByPlanDetailId(one.get("id").toString());
         List<Map<String,Object>> messageMapList = new ArrayList<>();
