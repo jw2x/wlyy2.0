@@ -638,7 +638,7 @@ public class RehabilitationManageService {
             resultMap.put("completeTime",completeTimeStr);//完成时间
             resultMap.put("operatorDoctorName",temp.getDoctorName());//执行医生名称
             resultMap.put("node",temp.getNode());
-            resultMap.put("relationRecordImg",(temp.getRelationRecordImg()!=null&&StringUtils.isNotEmpty(temp.getRelationRecordImg()))?(new JSONArray(temp.getRelationRecordImg())):null);
+            resultMap.put("relationRecordImg",(temp.getRelationRecordImg()!=null&&StringUtils.isNotEmpty(temp.getRelationRecordImg()))?(new JSONArray(temp.getRelationRecordImg())):null);//json格式
             if(itemType!=1&&itemType!=0){
                 resultMap.put("relationRecordCode",temp.getRelationRecordCode());
                 resultMap.put("completeTimeShort",DateUtil.dateToStr(completeTime,"yyyy/MM/dd"));
