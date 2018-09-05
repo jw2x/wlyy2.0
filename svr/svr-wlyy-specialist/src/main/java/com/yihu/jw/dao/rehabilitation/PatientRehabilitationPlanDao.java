@@ -22,6 +22,7 @@ public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository
     List<PatientRehabilitationPlanDO> findbyPatients(String patientCode);
 
     @Query("update PatientRehabilitationPlanDO a set a.status=?1 where a.id =?2 ")
+    @Modifying
     int updateStatusById(Integer status,String id);
 
     //插入服务包id

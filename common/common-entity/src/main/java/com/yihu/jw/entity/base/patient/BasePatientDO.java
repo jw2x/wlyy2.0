@@ -33,7 +33,7 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     private String password;
 
     /**
-	* 
+	*
 	*/
     private String salt;
 
@@ -143,7 +143,7 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     private String sickVillage;
 
     /**
-	* 
+	*
 	*/
     private String sickVillageName;
 

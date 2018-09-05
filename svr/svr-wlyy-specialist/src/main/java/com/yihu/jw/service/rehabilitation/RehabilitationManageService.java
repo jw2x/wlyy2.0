@@ -593,7 +593,8 @@ public class RehabilitationManageService {
         }
         executeDoctorList.add(one.get("specialistDoctorName")+"");
         resultMap.put("executeDoctorList",executeDoctorList);
-        resultMap.put("specialistDoctorCode",one.get("create_user")+"");
+        resultMap.put("specialistDoctorCode",one.get("create_user")+"");//专科医生code
+        resultMap.put("specialistDoctorName",one.get("create_user_name")+"");//专科医生名字
         resultMap.put("title",one.get("title"));//项目标题
         resultMap.put("shortExecuteTime",DateUtil.dateToStr((Date) one.get("execute_time"),DateUtil.HH_MM));//项目标题
         resultMap.put("content",one.get("content"));//项目内容
@@ -637,7 +638,7 @@ public class RehabilitationManageService {
             resultMap.put("completeTime",completeTimeStr);//完成时间
             resultMap.put("operatorDoctorName",temp.getDoctorName());//执行医生名称
             resultMap.put("node",temp.getNode());
-            resultMap.put("relationRecordImg",temp.getRelationRecordImg()!=null?(new JSONArray(temp.getRelationRecordImg())):null);
+            resultMap.put("relationRecordImg",(temp.getRelationRecordImg()!=null&&StringUtils.isNotEmpty(temp.getRelationRecordImg()))?(new JSONArray(temp.getRelationRecordImg())):null);//json格式
             if(itemType!=1&&itemType!=0){
                 resultMap.put("relationRecordCode",temp.getRelationRecordCode());
                 resultMap.put("completeTimeShort",DateUtil.dateToStr(completeTime,"yyyy/MM/dd"));
@@ -1031,14 +1032,19 @@ public class RehabilitationManageService {
     }
 
     /**
-     * 更新康复计划项目操作日志
+     * 更新康复计划项目操作日志并且确认完成更新status
      * @param node
      * @param image
      * @param planDeatilId
      * @return
      */
     public int updateNodeAndRelationRecordImg(String node,String image,String planDeatilId){
-        return rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+        int i = 0;
+        i = rehabilitationDetailDao.updateStatusById(1,planDeatilId);
+        int j = 0;
+        j = rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+        int result = i+j;
+        return  result;
     }
 
     /**
