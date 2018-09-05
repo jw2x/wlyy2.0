@@ -1033,14 +1033,19 @@ public class RehabilitationManageService {
     }
 
     /**
-     * 更新康复计划项目操作日志
+     * 更新康复计划项目操作日志并且确认完成更新status
      * @param node
      * @param image
      * @param planDeatilId
      * @return
      */
     public int updateNodeAndRelationRecordImg(String node,String image,String planDeatilId){
-        return rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+        int i = 0;
+        i = rehabilitationDetailDao.updateStatusById(1,planDeatilId);
+        int j = 0;
+        j = rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+        int result = i+j;
+        return  result;
     }
 
     /**
