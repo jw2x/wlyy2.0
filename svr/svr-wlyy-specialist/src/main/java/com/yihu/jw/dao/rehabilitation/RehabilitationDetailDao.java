@@ -2,11 +2,13 @@ package com.yihu.jw.dao.rehabilitation;
 
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by 刘文彬 on 2018/8/20.
@@ -53,4 +55,11 @@ public interface RehabilitationDetailDao extends PagingAndSortingRepository<Reha
     Integer completeServiceByDoctor(String generalDoctor,String healthDoctor,String patient,Integer status);
 
     RehabilitationDetailDO findById(String planDetailId);
+
+    @Query(value ="select d.doctor,p.patient,count(1) as num from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.status!=1 and d.execute_time>=?1 and d.execute_time<=?2 GROUP BY d.doctor,p.patient",nativeQuery = true)
+    List<Map<String,Object>> dailyJob(String startTime,String endTime);
+
+    @Modifying
+    @Query("update RehabilitationDetailDO t set t.status = ?1 where t.id=?2 ")
+    int updateStatusById(Integer status,String id);
 }

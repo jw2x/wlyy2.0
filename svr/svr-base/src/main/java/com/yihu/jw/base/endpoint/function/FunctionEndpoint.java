@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.function;
 
-import com.yihu.jw.base.service.FunctionService;
+import com.yihu.jw.base.service.function.FunctionService;
 import com.yihu.jw.entity.base.function.FunctionDO;
 import com.yihu.jw.restmodel.base.function.FunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -45,7 +45,7 @@ public class FunctionEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        functionService.delete(ids);
+        functionService.delete(ids.split(","));
         return success("success");
     }
 

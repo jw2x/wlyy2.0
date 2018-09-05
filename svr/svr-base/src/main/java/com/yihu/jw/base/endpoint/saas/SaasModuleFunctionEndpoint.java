@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.SaasModuleFunctionService;
+import com.yihu.jw.base.service.saas.SaasModuleFunctionService;
 import com.yihu.jw.entity.base.saas.SaasModuleFunctionDO;
 import com.yihu.jw.restmodel.base.saas.SaasModuleFunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -45,7 +45,7 @@ public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        saasModuleFunctionService.delete(ids);
+        saasModuleFunctionService.delete(ids.split(","));
         return success("删除成功");
     }
 

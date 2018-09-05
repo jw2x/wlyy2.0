@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.theme;
 
-import com.yihu.jw.base.service.ThemeService;
+import com.yihu.jw.base.service.theme.ThemeService;
 import com.yihu.jw.entity.base.theme.ThemeDO;
 import com.yihu.jw.restmodel.base.theme.ThemeVO;
 import com.yihu.jw.restmodel.web.Envelop;

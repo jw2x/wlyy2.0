@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.system;
 
-import com.yihu.jw.base.service.SystemDictEntryService;
+import com.yihu.jw.base.service.system.SystemDictEntryService;
 import com.yihu.jw.entity.base.system.SystemDictEntryDO;
 import com.yihu.jw.restmodel.base.system.SystemDictEntryVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -45,7 +45,7 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        systemDictEntryService.delete(ids);
+        systemDictEntryService.delete(ids.split(","));
         return success("删除成功");
     }
 

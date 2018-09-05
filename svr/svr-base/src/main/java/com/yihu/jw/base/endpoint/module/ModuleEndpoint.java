@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.module;
 
-import com.yihu.jw.base.service.ModuleService;
+import com.yihu.jw.base.service.module.ModuleService;
 import com.yihu.jw.entity.base.module.ModuleDO;
 import com.yihu.jw.restmodel.base.module.ModuleVO;
 import com.yihu.jw.restmodel.web.Envelop;
