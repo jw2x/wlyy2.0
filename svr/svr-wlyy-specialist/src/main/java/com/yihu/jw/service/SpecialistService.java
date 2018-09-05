@@ -703,9 +703,10 @@ public class SpecialistService{
                 "p.idcard, " +
                 "case p.sex WHEN 1 then '男' ELSE '女' END as sex, " +
                 "IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
-                "p.birthday " +
-                "FROM (SELECT s.disease,s.disease_name,s.patient,s.patient_name from " +
-                "(SELECT id FROM wlyy_specialist_patient_relation WHERE doctor='" + doctor + "' and sign_status > 0 and `status` >= 0) r " +
+                "p.birthday, " +
+                "p.photo " +
+                "FROM (SELECT s.disease,s.disease_name,s.patient,s.patient_name,r.team_code from " +
+                "(SELECT id, team_code FROM wlyy_specialist_patient_relation WHERE doctor='" + doctor + "' and sign_status > 0 and `status` >= 0) r " +
                 "JOIN "+basedb+".wlyy_patient_disease_server s on r.id = s.specialist_relation_code WHERE s.del = 1) s " +
                 "JOIN "+basedb+".wlyy_patient p on s.patient = p.`code` where p.`status` >0 ";
         if(StringUtils.isNotBlank(patientInfo)){

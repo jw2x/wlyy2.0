@@ -32,11 +32,17 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
     @Column(name = "service_item_id")
     private String serviceItemId;//服务项目id
 
+    @Column(name = "service_item_name")
+    private String serviceItemName;//服务项目名称
+
     @Column(name = "status")
     private Integer status;//状态
 
     @Column(name = "expense")
     private Integer expense;//价格
+
+    @Transient
+    private Integer flag;//标识（1：社区，2、医院，3、社区、医院）
 
     @Transient
     private SpecialistServiceItemDO specialistServiceItemDO;
@@ -102,5 +108,23 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
 
     public void setExpense(Integer expense) {
         this.expense = expense;
+    }
+
+    @Column(name = "service_item_name")
+    public String getServiceItemName() {
+        return serviceItemName;
+    }
+
+    public void setServiceItemName(String serviceItemName) {
+        this.serviceItemName = serviceItemName;
+    }
+
+    @Transient
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
     }
 }

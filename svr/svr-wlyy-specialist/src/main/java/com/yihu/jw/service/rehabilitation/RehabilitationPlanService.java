@@ -142,7 +142,10 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
      */
     public MixEnvelop<HospitalServiceItemDO, HospitalServiceItemDO> findTemplateDetailByTemplateId(String templateId) {
         List<String> hospitalServiceItemIds = templateDetailDao.findHospitalServiceItemIdByTemplateId(templateId);
-        return hospitalServiceItemService.selectById(hospitalServiceItemIds);
+        if(hospitalServiceItemIds.size() > 0) {
+            return hospitalServiceItemService.selectById(hospitalServiceItemIds);
+        }
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success);
     }
 
     public PatientRehabilitationPlanDO createPatientRehabilitationPlan(PatientRehabilitationPlanDO planDO) {
@@ -294,7 +297,8 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
             if (org.apache.commons.lang3.StringUtils.isNotBlank(rehabilitationDetailDO.getServiceQrCode())) {
                 fileUrl = rehabilitationDetailDO.getServiceQrCode();
             } else {
-                String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\",\"sessionId\":\""+sessionId+"\"}";
+                //String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\",\"sessionId\":\""+sessionId+"\"}";
+                String contentJsonStr=""+"?paramStr="+planDetailId+","+sessionId;
                 InputStream ipt = QrcodeUtil.createQrcode(contentJsonStr, 300, "png");
                 isneiwang = false;
                 if (isneiwang) {

@@ -242,7 +242,7 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             RehabilitationOperateRecordsDO rehabilitationOperateRecordsDO= toEntity(dataJson, RehabilitationOperateRecordsDO.class);
             List<RehabilitationOperateRecordsDO> list = rehabilitationOperateRecordsDao.findByRehabilitationDetailId(rehabilitationOperateRecordsDO.getRehabilitationDetailId());
             if (list!=null && list.size()>0){
-                return MixEnvelop.getError("改明细日志已存在！");
+                return MixEnvelop.getError("该明细日志已存在！");
             }
             return MixEnvelop.getSuccess(SpecialistMapping.api_success,rehabilitationPlanService.saveRehabilitationRecord(rehabilitationOperateRecordsDO));
         }catch (Exception e){
