@@ -21,6 +21,8 @@ public class PatientDisseaseInfoVO {
     private String patient;
     @ApiModelProperty("居民姓名")
     private String patientName;
+    @ApiModelProperty("专科医生签约团队")
+    private String teamCode;
     @ApiModelProperty("年龄")
     private String age;
     @ApiModelProperty("性别")
@@ -28,7 +30,9 @@ public class PatientDisseaseInfoVO {
     @ApiModelProperty("身份证")
     private String idcard;
     @ApiModelProperty("生日")
-    private String  birthday;
+    private String birthday;
+    @ApiModelProperty("头像")
+    private String photo;
 
     public String getDisease() {
         return disease;
@@ -92,5 +96,21 @@ public class PatientDisseaseInfoVO {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getTeamCode() {
+        return teamCode;
+    }
+
+    public void setTeamCode(String teamCode) {
+        this.teamCode = teamCode;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 }
