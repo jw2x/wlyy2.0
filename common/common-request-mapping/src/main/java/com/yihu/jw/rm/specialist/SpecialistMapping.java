@@ -82,5 +82,9 @@ public class SpecialistMapping {
         public static final String selectByHospital = "/selectByHospital";
         public static final String selectById="/selectById";
         public static final String selectItemByHospital= "/selectItemByHospital";
+        public static final String selectByOperate = "/selectByOperate";
+        public static final String selectByCondition="/selectByCondition";
+        public static final String deleteHospitalItem = "/deleteHospitalItem";
+        public static final String selectByHospital1 = "/selectByHospital1";
     }
 }

@@ -17,6 +17,7 @@ import com.yihu.jw.util.ISqlUtils;
 import com.yihu.jw.util.ReadExcelUtil;
 import jxl.Sheet;
 import jxl.Workbook;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -170,16 +171,20 @@ public class SpecialistServiceItemService {
         MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> envelop = new MixEnvelop<>();
         String sql = "select * from wlyy_service_item where status = 1";
         List<SpecialistServiceItemDO> specialistServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SpecialistServiceItemDO.class));
-        for (SpecialistServiceItemDO specialistServiceItemDO:specialistServiceItemDOS){
-            String sql1 = "select * from wlyy_hospital_service_item where hospital = '"+hospital+"' and service_item_id = '"+specialistServiceItemDO.getId()+"'";
+        List<SpecialistServiceItemDO> specialistServiceItemDOList = new ArrayList<>();
+        for (int i =0;i<specialistServiceItemDOS.size();i++){
+            SpecialistServiceItemDO specialistServiceItemDO = specialistServiceItemDOS.get(i);
+            String sqlUtil = "";
+            if (StringUtils.isNoneBlank(hospital)) {
+                sqlUtil = " and hospital = '" + hospital + "'";
+            }
+            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND service_item_id = '"+specialistServiceItemDO.getId()+"'"+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             if (hospitalServiceItemDOS.size() == 0 || hospitalServiceItemDOS == null){
-                specialistServiceItemDO.setFlag(1);
-            }else {
-                specialistServiceItemDO.setFlag(0);
+               specialistServiceItemDOList.add(specialistServiceItemDO);
             }
         }
-        envelop.setDetailModelList(specialistServiceItemDOS);
+        envelop.setDetailModelList(specialistServiceItemDOList);
         return envelop;
     }
 
