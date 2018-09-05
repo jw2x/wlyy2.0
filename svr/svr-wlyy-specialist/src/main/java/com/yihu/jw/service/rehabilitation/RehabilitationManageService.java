@@ -578,7 +578,7 @@ public class RehabilitationManageService {
      */
     public ObjEnvelop serviceItem(String planDetailId) throws Exception{
         String sql = "select i.title,i.content,i.type as itemType,i.reserve,d.id,d.execute_time,d.hospital_name,d.status,d.type,d.expense,d.doctor as specialistDoctor, " +
-                " d.doctor_name as specialistDoctorName,p.patient ,p.create_user ,p.create_user_name " +
+                " d.doctor_name as specialistDoctorName,p.patient ,p.name as patientName,p.create_user ,p.create_user_name " +
                 " from wlyy_specialist.wlyy_rehabilitation_plan_detail d " +
                 " LEFT JOIN wlyy_specialist.wlyy_hospital_service_item h on d.hospital_service_item_id = h.id "+
                 " LEFT JOIN wlyy_specialist.wlyy_service_item i on i.id = h.service_item_id " +
@@ -625,6 +625,7 @@ public class RehabilitationManageService {
         Integer itemType = (Integer) one.get("itemType");
         resultMap.put("messageList",messageMapList);//指导与汇报记录
         resultMap.put("patient",one.get("patient"));
+        resultMap.put("patientName",one.get("patientName"));
         resultMap.put("type",itemType);//1扫码、0上传附件、2、健康教育，3、健康指导，4、随访
 
         //是否完成任务
