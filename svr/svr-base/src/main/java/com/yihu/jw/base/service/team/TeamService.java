@@ -1,8 +1,8 @@
 package com.yihu.jw.base.service.team;
 
-import com.yihu.jw.base.dao.FunctionDao;
-import com.yihu.jw.base.dao.team.BaseTeamDao;
-import com.yihu.jw.base.dao.team.BaseTeamMemberDao;
+
+import com.yihu.jw.base.dao.BaseTeamDao;
+import com.yihu.jw.base.dao.BaseTeamMemberDao;
 import com.yihu.jw.entity.base.team.BaseTeamDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 @Transactional
-public class TeamService extends BaseJpaService<BaseTeamDO, FunctionDao> {
+public class TeamService extends BaseJpaService<BaseTeamDO, BaseTeamDao> {
 
     @Autowired
     private BaseTeamDao teamDao;
