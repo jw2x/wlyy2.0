@@ -311,7 +311,22 @@ public class SpecialistController extends EnvelopRestEndpoint {
         }
     }
 
-
+    @GetMapping(value = SpecialistMapping.specialist.getPatientAndDiseaseByDoctor)
+    @ApiOperation(value = "根据医生code获取签约居民信息及签约疾病类型")
+    public MixEnvelop getPatientAndDiseaseByDoctor(
+            @ApiParam(name = "doctor", value = "医生code") @RequestParam(required = true)String doctor,
+            @ApiParam(name = "patientInfo", value = "居民信息") @RequestParam(required = false)String patientInfo,
+            @ApiParam(name = "disease", value = "疾病类型") @RequestParam(required = false)String disease,
+            @ApiParam(name = "page", value = "第几页，1开始") @RequestParam(required = true)Integer page,
+            @ApiParam(name = "size", value = "每页大小") @RequestParam(required = true)Integer size){
+        try {
+            return specialistService.getPatientAndDiseaseByDoctor(doctor, patientInfo, disease, page, size);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
 
 
 //    @PostMapping(value = SpecialistMapping.specialist.createArticle)

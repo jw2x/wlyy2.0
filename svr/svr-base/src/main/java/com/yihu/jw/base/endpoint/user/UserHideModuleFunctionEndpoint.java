@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.user;
 
-import com.yihu.jw.base.service.UserHideModuleFunctionService;
+import com.yihu.jw.base.service.user.UserHideModuleFunctionService;
 import com.yihu.jw.entity.base.user.UserHideModuleFunctionDO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
+ * Endpoint - 用户模块功能管理
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
@@ -43,7 +44,7 @@ public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        userHideModuleFunctionService.delete(ids);
+        userHideModuleFunctionService.delete(ids.split(","));
         return success("删除成功");
     }
 

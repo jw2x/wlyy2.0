@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.role;
 
-import com.yihu.jw.base.service.RoleService;
+import com.yihu.jw.base.service.role.RoleService;
 import com.yihu.jw.entity.base.role.RoleDO;
 import com.yihu.jw.restmodel.base.role.RoleVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -45,7 +45,7 @@ public class RoleEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        roleService.delete(ids);
+        roleService.delete(ids.split(","));
         return success("删除成功");
     }
 

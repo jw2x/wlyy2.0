@@ -38,7 +38,7 @@ public class IotJpa {
 
         LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
         emfb.setDataSource(dataSource);
-        emfb.setPackagesToScan("com.yihu.jw.iot");
+        emfb.setPackagesToScan("com.yihu.jw.entity.iot");
         emfb.setPersistenceUnitName("iot");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emfb.setJpaVendorAdapter(vendorAdapter);

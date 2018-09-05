@@ -595,7 +595,10 @@ public class SpecialistService{
     }
 
     public MixEnvelop findPatientSignSpecialistInfo(String patient, String doctor){
-        String sql = "SELECT " +
+        String sql = "SELECT p.idcard, " +
+                "p.ssc, " +
+                "r.*  FROM " +
+                "(SELECT " +
                 " r.id AS relationCode," +
                 " r.patient, " +
                 " r.team_code AS teamCode," +
@@ -618,7 +621,7 @@ public class SpecialistService{
                 " r.patient ='"+patient+"' " +
                 " AND r.doctor ='"+doctor+"' " +
                 " AND r.`status`>=0 " +
-                " AND r.sign_status >0";
+                " AND r.sign_status >0 ) r join "+basedb+".wlyy_patient p on r.patient = p.code order by p.czrq DESC ";
         List<PatientSignInfoVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientSignInfoVO.class));
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs.get(0));
     }
@@ -693,6 +696,27 @@ public class SpecialistService{
         List<PatientRelationVO> patientRelationVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(PatientRelationVO.class));
     
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientRelationVOs);
+    }
+
+    public MixEnvelop getPatientAndDiseaseByDoctor(String doctor, String patientInfo, String disease, Integer page, Integer size) {
+        String sql = "SELECT s.*, " +
+                "p.idcard, " +
+                "case p.sex WHEN 1 then '男' ELSE '女' END as sex, " +
+                "IFNULL(year( from_days( datediff( now(), p.birthday))),'未知') age, " +
+                "p.birthday " +
+                "FROM (SELECT s.disease,s.disease_name,s.patient,s.patient_name from " +
+                "(SELECT id FROM wlyy_specialist_patient_relation WHERE doctor='" + doctor + "' and sign_status > 0 and `status` >= 0) r " +
+                "JOIN "+basedb+".wlyy_patient_disease_server s on r.id = s.specialist_relation_code WHERE s.del = 1) s " +
+                "JOIN "+basedb+".wlyy_patient p on s.patient = p.`code` where p.`status` >0 ";
+        if(StringUtils.isNotBlank(patientInfo)){
+            sql += " and p.idcard like '%"+ patientInfo +"%' or patient_name like '%" + patientInfo + "%'";
+        }
+        if(StringUtils.isNotBlank(disease)){
+            sql = sql.replace("WHERE s.del = 1", "WHERE s.del = 1 and s.disease = '" + disease + "'");
+        }
+        sql += "ORDER BY p.czrq DESC LIMIT "+(page-1)*size+","+size;
+        List<PatientDisseaseInfoVO> patientDisseaseInfoVO = jdbcTemplate.query(sql, new BeanPropertyRowMapper(PatientDisseaseInfoVO.class));
+        return MixEnvelop.getSuccessListWithPage(SpecialistMapping.api_success, patientDisseaseInfoVO, page, size, (long) patientDisseaseInfoVO.size());
     }
 
 

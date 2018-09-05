@@ -23,7 +23,7 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
     @Column(name = "hospital_name")
     private String hospitalName;//医院名称
     @Column(name = "admin_team_code")
-    private Integer adminTeamCode;//行政团队id
+    private Long adminTeamCode;//行政团队id
     @Column(name = "del")
     private Integer del;//是否删除（0是，1否）
 
@@ -64,11 +64,11 @@ public class RehabilitationPlanTemplateDO extends UuidIdentityEntityWithOperator
     }
 
     @Column(name = "admin_team_code")
-    public Integer getAdminTeamCode() {
+    public Long getAdminTeamCode() {
         return adminTeamCode;
     }
 
-    public void setAdminTeamCode(Integer adminTeamCode) {
+    public void setAdminTeamCode(Long adminTeamCode) {
         this.adminTeamCode = adminTeamCode;
     }
 

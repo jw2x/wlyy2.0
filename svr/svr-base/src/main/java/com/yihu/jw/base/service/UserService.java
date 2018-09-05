@@ -11,4 +11,5 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserService extends BaseJpaService<UserDO, UserDao> {
+
 }

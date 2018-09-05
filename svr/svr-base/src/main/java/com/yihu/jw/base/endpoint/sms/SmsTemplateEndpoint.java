@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.sms;
 
-import com.yihu.jw.base.service.SmsTemplateService;
+import com.yihu.jw.base.service.sms.SmsTemplateService;
 import com.yihu.jw.entity.base.sms.SmsTemplateDO;
 import com.yihu.jw.restmodel.base.sms.SmsTemplateVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -45,7 +45,7 @@ public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        smsTemplateService.delete(ids);
+        smsTemplateService.delete(ids.split(","));
         return success("删除成功");
     }
 

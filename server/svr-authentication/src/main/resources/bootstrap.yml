@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: svr-authentication
+  cloud:
+    config:
+      failFast: true
+      username: jw
+      password: jkzl
+
+---
+spring:
+  profiles: jwdev
+  cloud:
+    config:
+      uri: ${wlyy.spring.config.uri:http://172.17.110.212:1221}
+      label: ${wlyy.spring.config.label:jwdev}
+
+---
+spring:
+  profiles: jwtest
+  cloud:
+    config:
+      uri: ${wlyy.pring.config.uri:http://172.17.110.212:1221}
+      label: ${wlyy.spring.config.label:jwdev}
+
+---
+spring:
+  profiles: jwprod
+  cloud:
+    config:
+      uri: ${wlyy.pring.config.uri:http://172.17.110.212:1221}
+      label: ${wlyy.spring.config.label:jwprod}

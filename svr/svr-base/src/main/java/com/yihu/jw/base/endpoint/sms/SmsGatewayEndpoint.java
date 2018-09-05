@@ -1,6 +1,6 @@
 package com.yihu.jw.base.endpoint.sms;
 
-import com.yihu.jw.base.service.SmsGatewayService;
+import com.yihu.jw.base.service.sms.SmsGatewayService;
 import com.yihu.jw.entity.base.sms.SmsDO;
 import com.yihu.jw.entity.base.sms.SmsGatewayDO;
 import com.yihu.jw.entity.base.sms.SmsTemplateDO;
@@ -48,7 +48,7 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        smsGatewayService.delete(ids);
+        smsGatewayService.delete(ids.split(","));
         return success("删除成功");
     }
 
