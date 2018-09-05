@@ -3,6 +3,7 @@ package com.yihu.jw.controller;/**
  */
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
@@ -47,8 +48,14 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
     public MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> create(@ApiParam(name = "hospitalServiceItem", value = "机构服务项目")
                                                                         @RequestParam(value = "hospitalServiceItem")String hospitalServiceItem){
         try {
-            HospitalServiceItemDO hospitalServiceItemDO = toEntity(hospitalServiceItem,HospitalServiceItemDO.class);
-            return specialistHospitalServiceItemService.insert(hospitalServiceItemDO);
+            JSONArray array = JSONArray.parseArray(hospitalServiceItem);
+            List<HospitalServiceItemDO> hospitalServiceItemDOS = new ArrayList<>();
+            for (int i =0 ; i<array.size();i++){
+                JSONObject object = array.getJSONObject(i);
+                HospitalServiceItemDO hospitalServiceItemDO = toEntity(object.toJSONString(),HospitalServiceItemDO.class);
+                hospitalServiceItemDOS.add(hospitalServiceItemDO);
+            }
+            return specialistHospitalServiceItemService.insert(hospitalServiceItemDOS);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -98,6 +105,80 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
                 idList.add(array.getString(i));
             }
             return specialistHospitalServiceItemService.selectById(idList);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     *
+     * @param serviceItemName
+     * @param hospitals
+     * @return
+     */
+    @PostMapping(value = SpecialistMapping.serviceItem.selectByCondition)
+    @ApiOperation(value = "根据条件查找机构服务项目")
+    public MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> selectByCondition(@ApiParam(name = "serviceItemName", value = "服务项目名称")
+                                                                                    @RequestParam(value = "serviceItemName")String serviceItemName,
+                                                                                     @ApiParam(name = "hospitals",value = "医院集合")
+                                                                                     @RequestParam(value = "hospitals",required = false)String hospitals){
+        try {
+            JSONArray array = JSONArray.parseArray(hospitals);
+            List<String> hospitalList = new ArrayList<>();
+            for (int i =0 ;i<array.size();i++){
+                hospitalList.add(array.getString(i));
+            }
+            return specialistHospitalServiceItemService.selectByCondition(serviceItemName,hospitalList);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     *
+     * @param hospital
+     * @param serviceItem
+     * @return
+     */
+    @PostMapping(value = SpecialistMapping.serviceItem.deleteHospitalItem)
+    @ApiOperation(value = "删除机构服务项目")
+    public MixEnvelop<Boolean,Boolean> delete(@ApiParam(name = "hospital", value = "医院code")
+                                              @RequestParam(name = "hospital")String hospital,
+                                              @ApiParam(name = "serviceItem", value = "服务项目code")
+                                              @RequestParam(name = "serviceItem")String serviceItem){
+        try {
+            return specialistHospitalServiceItemService.delete(hospital,serviceItem);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     *
+     * @param hospital
+     * @param docHospital
+     * @param serviceItemName
+     * @return
+     */
+    @PostMapping(value = SpecialistMapping.serviceItem.selectByHospital1)
+    @ApiOperation(value = "查询服务项目")
+    public MixEnvelop<JSONArray,JSONArray> selectByHospital1(@ApiParam(name = "hospital", value ="社区code")
+                                              @RequestParam(name = "hospital")String hospital,
+                                              @ApiParam(name = "docHospital", value = "医院code")
+                                              @RequestParam(name = "docHospital")String docHospital,
+                                              @ApiParam(name = "serviceItemName", value = "服务项目名称")
+                                              @RequestParam(name = "serviceItemName",required = false)String serviceItemName){
+        try {
+            return specialistHospitalServiceItemService.selectByHospital1(hospital,docHospital,serviceItemName);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

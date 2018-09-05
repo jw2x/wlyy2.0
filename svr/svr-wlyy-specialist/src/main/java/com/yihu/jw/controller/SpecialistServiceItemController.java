@@ -68,7 +68,7 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      * @param serviceItem
      * @return
      */
-    @GetMapping(value = SpecialistMapping.serviceItem.createServiceItem)
+    @PostMapping(value = SpecialistMapping.serviceItem.createServiceItem)
     @ApiOperation(value = "服务项目添加")
     public MixEnvelop<Boolean,Boolean> insert(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                                        @RequestParam(value = "serviceItem")String serviceItem){
@@ -167,4 +167,5 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
             return MixEnvelop.getError(e.getMessage());
         }
     }
+
 }
