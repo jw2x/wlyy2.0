@@ -10,7 +10,8 @@ import java.util.Date;
  * Model - 认证用户简略信息
  * Created by progr1mmer on 2018/8/29.
  */
-public class WlyyUserSimple implements Serializable {
+public class
+WlyyUserSimple implements Serializable {
 
     /**
      * 性别

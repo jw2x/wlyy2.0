@@ -50,7 +50,7 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     /**
 	* 性别，1男，2女
 	*/
-    private String sex;
+    private Integer sex;
 
     /**
 	* 手机号
@@ -242,10 +242,10 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     }
 
 	@Column(name = "sex")
-    public String getSex() {
+    public Integer getSex() {
         return sex;
     }
-    public void setSex(String sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
