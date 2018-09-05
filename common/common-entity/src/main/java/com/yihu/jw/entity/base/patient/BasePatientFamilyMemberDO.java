@@ -15,7 +15,7 @@ public class BasePatientFamilyMemberDO extends UuidIdentityEntityWithOperator {
 
     private String patient;//居民code',
     private String familyMember;//家庭成员code',
-    private String familyRelation;//家庭关系',
+    private Integer familyRelation;//家庭关系',
     private Integer isAuthorize;//是否授权0:未授权,1:已授权，默认为1',
 
     @Column(name = "patient")
@@ -37,11 +37,11 @@ public class BasePatientFamilyMemberDO extends UuidIdentityEntityWithOperator {
     }
 
     @Column(name = "family_relation")
-    public String getFamilyRelation() {
+    public Integer getFamilyRelation() {
         return familyRelation;
     }
 
-    public void setFamilyRelation(String familyRelation) {
+    public void setFamilyRelation(Integer familyRelation) {
         this.familyRelation = familyRelation;
     }
 

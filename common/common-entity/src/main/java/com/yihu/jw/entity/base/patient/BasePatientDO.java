@@ -14,6 +14,18 @@ import java.util.Date;
 @Table(name = "base_patient")
 public class BasePatientDO extends UuidIdentityEntityWithOperator {
 
+    private String saasId;//saas配置id
+    private String idcard;//身份证号
+    private String password;//登录密码
+    private String salt;//
+    private String name;//姓名
+    private String birthday;//生日
+    private Integer sex;//性别，1男，2女
+    private String mobile;//手机号
+    private String phone;//联系电话
+    private String ssc;//社保卡号
+    private String photo;//头像http地址
+    private String provinceCode;//省编码
     private String cityCode;//市编码',
     private String townCode;//区县编码',
     private String streetCode;//街道编码',
@@ -37,6 +49,114 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     private String medicareNumber;//医疗保险号',
     private String unionid;//开发平台唯一标识',
     private String del;//作废标识，1正常，0作废'
+
+    @Column(name = "saasId")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
+
+    @Column(name = "idcard")
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
+    }
+
+    @Column(name = "password")
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @Column(name = "salt")
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    @Column(name = "name")
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Column(name = "birthday")
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    @Column(name = "sex")
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    @Column(name = "mobile")
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    @Column(name = "phone")
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Column(name = "ssc")
+    public String getSsc() {
+        return ssc;
+    }
+
+    public void setSsc(String ssc) {
+        this.ssc = ssc;
+    }
+
+    @Column(name = "photo")
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    @Column(name = "province_code")
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
+    }
 
     @Column(name = "city_code")
     public String getCityCode() {

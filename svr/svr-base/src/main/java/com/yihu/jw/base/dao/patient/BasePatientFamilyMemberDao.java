@@ -8,4 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * Created by Trick on 2018/8/31.
  */
 public interface BasePatientFamilyMemberDao extends PagingAndSortingRepository<BasePatientFamilyMemberDO, String>, JpaSpecificationExecutor<BasePatientFamilyMemberDO> {
+
+    public BasePatientFamilyMemberDO findByPatientAndFamilyMember(String patient,String member);
 }

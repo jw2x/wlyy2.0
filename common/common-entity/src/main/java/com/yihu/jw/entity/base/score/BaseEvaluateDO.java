@@ -15,7 +15,7 @@ public class BaseEvaluateDO extends UuidIdentityEntityWithOperator {
 
     private String relationCode;//关联业务CODE（关联主表evlute_score）',
     private String scoreType;//评价类型：1、专业能力，2、服务态度，3、回复速度 (可拓展字段)',
-    private String score;//单项得分',
+    private Double score;//单项得分',
 
     @Column(name = "relation_code")
     public String getRelationCode() {
@@ -36,11 +36,11 @@ public class BaseEvaluateDO extends UuidIdentityEntityWithOperator {
     }
 
     @Column(name = "score")
-    public String getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 }

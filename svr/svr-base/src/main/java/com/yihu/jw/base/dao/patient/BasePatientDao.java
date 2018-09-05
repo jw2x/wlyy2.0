@@ -8,4 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * Created by Trick on 2018/8/31.
  */
 public interface BasePatientDao extends PagingAndSortingRepository<BasePatientDO, String>, JpaSpecificationExecutor<BasePatientDO> {
+
+    BasePatientDO findByIdAndDel(String id,String del);
 }
