@@ -1,6 +1,6 @@
 package com.yihu.jw.base.service.team;
 
-import com.yihu.jw.base.dao.BaseTeamDao;
+import com.yihu.jw.base.dao.team.BaseTeamDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.team.BaseTeamDO;

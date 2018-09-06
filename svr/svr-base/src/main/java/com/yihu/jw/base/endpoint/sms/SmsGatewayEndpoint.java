@@ -40,7 +40,7 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         SmsGatewayDO smsGatewayDO = toEntity(jsonData, SmsGatewayDO.class);
         smsGatewayDO = smsGatewayService.save(smsGatewayDO);
-        return success(convertToModel(smsGatewayDO, SmsGatewayVO.class));
+        return success(smsGatewayDO, SmsGatewayVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.SmsGateway.DELETE)
@@ -62,7 +62,7 @@ public class SmsGatewayEndpoint extends EnvelopRestEndpoint {
             return failed("ID不能为空", ObjEnvelop.class);
         }
         smsGatewayDO = smsGatewayService.save(smsGatewayDO);
-        return success(convertToModel(smsGatewayDO, SmsGatewayVO.class));
+        return success(smsGatewayDO, SmsGatewayVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SmsGateway.PAGE)

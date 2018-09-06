@@ -1,6 +1,6 @@
 package com.yihu.jw.base.service.dict;
 
-import com.yihu.jw.base.dao.DictHealthProblemDao;
+import com.yihu.jw.base.dao.dict.DictHealthProblemDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.dict.DictHealthProblemDO;
