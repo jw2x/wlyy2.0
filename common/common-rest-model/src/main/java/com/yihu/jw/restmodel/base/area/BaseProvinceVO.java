@@ -25,20 +25,20 @@ public class BaseProvinceVO extends IntegerIdentityVO{
     /**
 	 * 省份编码
 	 */
-	@ApiModelProperty(value = "省份编码", example = "模块1")
+	@ApiModelProperty(value = "省份编码", example = "350000")
     private String code;
 
     /**
 	 * 省份名称
 	 */
-	@ApiModelProperty(value = "省份名称", example = "模块1")
+	@ApiModelProperty(value = "省份名称", example = "福建省")
     private String name;
 
     /**
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "创建时间", example = "模块1")
+	@ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd HH:mm:ss/该字段可不填")
     private Date createTime;
 
 

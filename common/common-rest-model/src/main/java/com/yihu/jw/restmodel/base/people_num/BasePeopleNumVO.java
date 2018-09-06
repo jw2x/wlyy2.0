@@ -25,98 +25,98 @@ public class BasePeopleNumVO extends UuidIdentityVOWithOperator {
     /**
 	 * saas化的id
 	 */
-	@ApiModelProperty(value = "saas化的id", example = "模块1")
+	@ApiModelProperty(value = "saas化的id", example = "402803ee656498890165649ad2da1112")
     private String saasId;
 
     /**
 	 * 所属省代码
 	 */
-	@ApiModelProperty(value = "所属省代码", example = "模块1")
+	@ApiModelProperty(value = "所属省代码", example = "参考省代码")
     private String provinceCode;
 
     /**
 	 * 所属市代码
 	 */
-	@ApiModelProperty(value = "所属市代码", example = "模块1")
+	@ApiModelProperty(value = "所属市代码", example = "参考市代码")
     private String cityCode;
 
     /**
 	 * 所属区代码
 	 */
-	@ApiModelProperty(value = "所属区代码", example = "模块1")
+	@ApiModelProperty(value = "所属区代码", example = "参考区代码")
     private String districtCode;
 
     /**
 	 * 所属具体名称
 	 */
-	@ApiModelProperty(value = "所属具体名称", example = "模块1")
+	@ApiModelProperty(value = "所属具体名称", example = "自然数")
     private String name;
 
     /**
 	 * 人口数
 	 */
-	@ApiModelProperty(value = "人口数", example = "模块1")
+	@ApiModelProperty(value = "人口数", example = "自然数")
     private Integer num;
 
     /**
 	 * 类别 0是省，1是市，2是区，3是机构
 	 */
-	@ApiModelProperty(value = "类别 0是省，1是市，2是区，3是机构", example = "模块1")
+	@ApiModelProperty(value = "类别 0是省，1是市，2是区，3是机构", example = "0")
     private String type;
 
     /**
 	 * 每年的人口数
 	 */
-	@ApiModelProperty(value = "每年的人口数", example = "模块1")
+	@ApiModelProperty(value = "每年的人口数", example = "自然数")
     private Integer year;
 
     /**
 	 * 高血压发病数
 	 */
-	@ApiModelProperty(value = "高血压发病数", example = "模块1")
+	@ApiModelProperty(value = "高血压发病数", example = "自然数")
     private Integer gxyNum;
 
     /**
 	 * 糖尿病发病数
 	 */
-	@ApiModelProperty(value = "糖尿病发病数", example = "模块1")
+	@ApiModelProperty(value = "糖尿病发病数", example = "自然数")
     private Integer tnbNum;
 
     /**
 	 * 65岁以上老年人口数
 	 */
-	@ApiModelProperty(value = "65岁以上老年人口数", example = "模块1")
+	@ApiModelProperty(value = "65岁以上老年人口数", example = "自然数")
     private Integer sixFiveNum;
 
     /**
 	 * 高血压任务数
 	 */
-	@ApiModelProperty(value = "高血压任务数", example = "模块1")
+	@ApiModelProperty(value = "高血压任务数", example = "自然数")
     private Integer gxyTaskNum;
 
     /**
 	 * 糖尿病任务数
 	 */
-	@ApiModelProperty(value = "糖尿病任务数", example = "模块1")
+	@ApiModelProperty(value = "糖尿病任务数", example = "自然数")
     private Integer tnbTaskNum;
 
     /**
 	 * 65岁以上老年人口任务数
 	 */
-	@ApiModelProperty(value = "65岁以上老年人口任务数", example = "模块1")
+	@ApiModelProperty(value = "65岁以上老年人口任务数", example = "自然数")
     private Integer sixFiveTaskNum;
 
     /**
 	 * 户籍人口任务数
 	 */
-	@ApiModelProperty(value = "户籍人口任务数", example = "模块1")
+	@ApiModelProperty(value = "户籍人口任务数", example = "自然数")
     private Integer taskNum;
 
     /**
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "创建时间", example = "模块1")
+	@ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
 

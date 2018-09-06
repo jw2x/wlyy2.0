@@ -34,21 +34,6 @@ public class DictIcd10DO extends IntegerIdentityEntity {
 	private String name;
 
     /**
-	 * 字典名称拼音首字母
-	 */
-	private String phoneticCode;
-
-    /**
-	 * 是否慢病
-	 */
-	private String chronicFlag;
-
-    /**
-	 * 是否传染病
-	 */
-	private String infectiousFlag;
-
-    /**
 	 * 描述
 	 */
 	private String description;
@@ -82,30 +67,6 @@ public class DictIcd10DO extends IntegerIdentityEntity {
     }
     public void setName(String name) {
         this.name = name;
-    }
-
-	@Column(name = "phonetic_code")
-    public String getPhoneticCode() {
-        return phoneticCode;
-    }
-    public void setPhoneticCode(String phoneticCode) {
-        this.phoneticCode = phoneticCode;
-    }
-
-	@Column(name = "chronic_flag")
-    public String getChronicFlag() {
-        return chronicFlag;
-    }
-    public void setChronicFlag(String chronicFlag) {
-        this.chronicFlag = chronicFlag;
-    }
-
-	@Column(name = "infectious_flag")
-    public String getInfectiousFlag() {
-        return infectiousFlag;
-    }
-    public void setInfectiousFlag(String infectiousFlag) {
-        this.infectiousFlag = infectiousFlag;
     }
 
 	@Column(name = "description")

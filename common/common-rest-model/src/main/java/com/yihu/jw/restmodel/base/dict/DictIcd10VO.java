@@ -25,50 +25,32 @@ public class DictIcd10VO extends IntegerIdentityVO{
     /**
 	 * saas配置id，null标识公共字典
 	 */
-	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "模块1")
+	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "402803ee656498890165649ad2da1112")
     private String saasId;
 
     /**
 	 * icd10字典编码
 	 */
-	@ApiModelProperty(value = "icd10字典编码", example = "模块1")
+	@ApiModelProperty(value = "icd10字典编码", example = "A00.000")
     private String code;
 
     /**
 	 * icd10字典名称
 	 */
-	@ApiModelProperty(value = "icd10字典名称", example = "模块1")
+	@ApiModelProperty(value = "icd10字典名称", example = "古典生物型霍乱")
     private String name;
-
-    /**
-	 * 字典名称拼音首字母
-	 */
-	@ApiModelProperty(value = "字典名称拼音首字母", example = "模块1")
-    private String phoneticCode;
-
-    /**
-	 * 是否慢病
-	 */
-	@ApiModelProperty(value = "是否慢病", example = "模块1")
-    private String chronicFlag;
-
-    /**
-	 * 是否传染病
-	 */
-	@ApiModelProperty(value = "是否传染病", example = "模块1")
-    private String infectiousFlag;
 
     /**
 	 * 描述
 	 */
-	@ApiModelProperty(value = "描述", example = "模块1")
+	@ApiModelProperty(value = "描述", example = "")
     private String description;
 
     /**
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "创建时间", example = "模块1")
+	@ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd HH:mm:ss/该字段可不填")
     private Date createTime;
 
 
@@ -91,27 +73,6 @@ public class DictIcd10VO extends IntegerIdentityVO{
     }
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPhoneticCode() {
-        return phoneticCode;
-    }
-    public void setPhoneticCode(String phoneticCode) {
-        this.phoneticCode = phoneticCode;
-    }
-
-    public String getChronicFlag() {
-        return chronicFlag;
-    }
-    public void setChronicFlag(String chronicFlag) {
-        this.chronicFlag = chronicFlag;
-    }
-
-    public String getInfectiousFlag() {
-        return infectiousFlag;
-    }
-    public void setInfectiousFlag(String infectiousFlag) {
-        this.infectiousFlag = infectiousFlag;
     }
 
     public String getDescription() {

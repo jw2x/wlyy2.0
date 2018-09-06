@@ -75,29 +75,44 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
 	private String photo;
 
     /**
-	 * 省编码
-	 */
-	private String provinceCode;
+     * 省代码
+     */
+    private String provinceCode;
 
     /**
-	 * 市编码
-	 */
-	private String cityCode;
+     * 省名称
+     */
+    private String provinceName;
 
     /**
-	 * 区县编码
-	 */
-	private String townCode;
+     * 市代码
+     */
+    private String cityCode;
 
     /**
-	 * 街道编码
-	 */
-	private String streetCode;
+     * 市名称
+     */
+    private String cityName;
 
     /**
-	 * 具体详细地址
-	 */
-	private String address;
+     * 区县代码
+     */
+    private String townCode;
+
+    /**
+     * 区县名称
+     */
+    private String townName;
+
+    /**
+     * 街道代码
+     */
+    private String streetCode;
+
+    /**
+     * 街道名称
+     */
+    private String streetName;
 
     /**
 	 * 疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病
@@ -285,7 +300,7 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
         this.photo = photo;
     }
 
-	@Column(name = "province_code")
+    @Column(name = "province_code")
     public String getProvinceCode() {
         return provinceCode;
     }
@@ -293,7 +308,15 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
         this.provinceCode = provinceCode;
     }
 
-	@Column(name = "city_code")
+    @Column(name = "province_name")
+    public String getProvinceName() {
+        return provinceName;
+    }
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    @Column(name = "city_code")
     public String getCityCode() {
         return cityCode;
     }
@@ -301,7 +324,15 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
         this.cityCode = cityCode;
     }
 
-	@Column(name = "town_code")
+    @Column(name = "city_name")
+    public String getCityName() {
+        return cityName;
+    }
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    @Column(name = "town_code")
     public String getTownCode() {
         return townCode;
     }
@@ -309,7 +340,15 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
         this.townCode = townCode;
     }
 
-	@Column(name = "street_code")
+    @Column(name = "town_name")
+    public String getTownName() {
+        return townName;
+    }
+    public void setTownName(String townName) {
+        this.townName = townName;
+    }
+
+    @Column(name = "street_code")
     public String getStreetCode() {
         return streetCode;
     }
@@ -317,12 +356,12 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
         this.streetCode = streetCode;
     }
 
-	@Column(name = "address")
-    public String getAddress() {
-        return address;
+    @Column(name = "street_name")
+    public String getStreetName() {
+        return streetName;
     }
-    public void setAddress(String address) {
-        this.address = address;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
 	@Column(name = "disease")

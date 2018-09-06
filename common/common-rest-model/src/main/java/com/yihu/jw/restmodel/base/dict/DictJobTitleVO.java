@@ -25,26 +25,26 @@ public class DictJobTitleVO extends IntegerIdentityVO{
     /**
 	 * saas配置id，null标识公共字典
 	 */
-	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "模块1")
+	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "402803ee656498890165649ad2da1112")
     private String saasId;
 
     /**
 	 * 职称标识
 	 */
-	@ApiModelProperty(value = "职称标识", example = "模块1")
+	@ApiModelProperty(value = "职称标识", example = "String")
     private String code;
 
     /**
 	 * 职称名
 	 */
-	@ApiModelProperty(value = "职称名", example = "模块1")
+	@ApiModelProperty(value = "职称名", example = "全科医师")
     private String name;
 
     /**
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "创建时间", example = "模块1")
+	@ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd HH:mm:ss/该字段可不填")
     private Date createTime;
 
 

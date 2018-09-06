@@ -25,171 +25,171 @@ public class BaseDoctorVO extends UuidIdentityVOWithOperator {
     /**
 	 * 机构id
 	 */
-	@ApiModelProperty(value = "机构id", example = "模块1")
+	@ApiModelProperty(value = "机构id", example = "q8q39888jojuuasdnfadf8j8h736ljv")
     private String orgId;
 
     /**
 	 * 密码
 	 */
-	@ApiModelProperty(value = "密码", example = "模块1")
+	@ApiModelProperty(value = "密码", example = "s9i8ujjhy7gtgf5e455asddddda33eedbbfsq")
     private String password;
 
     /**
 	 * 
 	 */
-	@ApiModelProperty(value = "", example = "模块1")
+	@ApiModelProperty(value = "", example = "")
     private String salt;
 
     /**
 	 * 姓名
 	 */
-	@ApiModelProperty(value = "姓名", example = "模块1")
+	@ApiModelProperty(value = "姓名", example = "张三")
     private String name;
 
     /**
 	 * 性别（1男，2女） 用国家标准字典
 	 */
-	@ApiModelProperty(value = "性别（1男，2女） 用国家标准字典", example = "模块1")
+	@ApiModelProperty(value = "性别（1男，2女） 用国家标准字典", example = "1")
     private String sex;
 
     /**
 	 * 医生专长
 	 */
-	@ApiModelProperty(value = "医生专长", example = "模块1")
+	@ApiModelProperty(value = "医生专长", example = "擅长....")
     private String expertise;
 
     /**
 	 * 医生介绍
 	 */
-	@ApiModelProperty(value = "医生介绍", example = "模块1")
+	@ApiModelProperty(value = "医生介绍", example = "....")
     private String introduce;
 
     /**
 	 *  身份证
 	 */
-	@ApiModelProperty(value = " 身份证", example = "模块1")
+	@ApiModelProperty(value = " 身份证", example = "350.....")
     private String idcard;
 
     /**
 	 * 生日
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "生日", example = "模块1")
+	@ApiModelProperty(value = "生日", example = "yyyy-MM-dd HH:mm:ss")
     private Date birthday;
 
     /**
 	 * 头像http地址
 	 */
-	@ApiModelProperty(value = "头像http地址", example = "模块1")
+	@ApiModelProperty(value = "头像http地址", example = "")
     private String photo;
 
     /**
 	 * 手机号
 	 */
-	@ApiModelProperty(value = "手机号", example = "模块1")
+	@ApiModelProperty(value = "手机号", example = "")
     private String mobile;
 
     /**
 	 * 医生二维码
 	 */
-	@ApiModelProperty(value = "医生二维码", example = "模块1")
+	@ApiModelProperty(value = "医生二维码", example = "")
     private String qrcode;
 
     /**
 	 * 省代码
 	 */
-	@ApiModelProperty(value = "省代码", example = "模块1")
+	@ApiModelProperty(value = "省代码", example = "参考省代码")
     private String provinceCode;
 
     /**
 	 * 省名称
 	 */
-	@ApiModelProperty(value = "省名称", example = "模块1")
+	@ApiModelProperty(value = "省名称", example = "某某省")
     private String provinceName;
 
     /**
 	 * 市代码
 	 */
-	@ApiModelProperty(value = "市代码", example = "模块1")
+	@ApiModelProperty(value = "市代码", example = "参考市代码")
     private String cityCode;
 
     /**
 	 * 市名称
 	 */
-	@ApiModelProperty(value = "市名称", example = "模块1")
+	@ApiModelProperty(value = "市名称", example = "某某市")
     private String cityName;
 
     /**
 	 * 区县代码
 	 */
-	@ApiModelProperty(value = "区县代码", example = "模块1")
+	@ApiModelProperty(value = "区县代码", example = "参考区县代码")
     private String townCode;
 
     /**
 	 * 区县名称
 	 */
-	@ApiModelProperty(value = "区县名称", example = "模块1")
+	@ApiModelProperty(value = "区县名称", example = "某某区县")
     private String townName;
 
     /**
 	 * 街道代码
 	 */
-	@ApiModelProperty(value = "街道代码", example = "模块1")
+	@ApiModelProperty(value = "街道代码", example = "参考街道代码")
     private String streetCode;
 
     /**
 	 * 街道名称
 	 */
-	@ApiModelProperty(value = "街道名称", example = "模块1")
+	@ApiModelProperty(value = "街道名称", example = "某某街道")
     private String streetName;
 
     /**
 	 * 资格是否认证通过，1是，0否
 	 */
-	@ApiModelProperty(value = "资格是否认证通过，1是，0否", example = "模块1")
+	@ApiModelProperty(value = "资格是否认证通过，1是，0否", example = "1")
     private String iscertified;
 
     /**
 	 * 是否是名医，1是，0否
 	 */
-	@ApiModelProperty(value = "是否是名医，1是，0否", example = "模块1")
+	@ApiModelProperty(value = "是否是名医，1是，0否", example = "0")
     private String isFamous;
 
     /**
 	 * 是否提示设置密码  1 提示过 0未提示
 	 */
-	@ApiModelProperty(value = "是否提示设置密码  1 提示过 0未提示", example = "模块1")
+	@ApiModelProperty(value = "是否提示设置密码  1 提示过 0未提示", example = "0")
     private String isPasswordPrompt;
 
     /**
 	 * 名称拼音首字母
 	 */
-	@ApiModelProperty(value = "名称拼音首字母", example = "模块1")
+	@ApiModelProperty(value = "名称拼音首字母", example = "")
     private String spell;
 
     /**
 	 * CA证书过期时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "CA证书过期时间", example = "模块1")
+	@ApiModelProperty(value = "CA证书过期时间", example = "yyyy-MM-dd HH:mm:ss")
     private Date certifiedOvertime;
 
     /**
 	 * CA证书编号
 	 */
-	@ApiModelProperty(value = "CA证书编号", example = "模块1")
+	@ApiModelProperty(value = "CA证书编号", example = "实际证书编号")
     private String certificateNum;
 
     /**
 	 * 用户微信openid
 	 */
-	@ApiModelProperty(value = "用户微信openid", example = "模块1")
+	@ApiModelProperty(value = "用户微信openid", example = "填上微信那边分配给用户的")
     private String openid;
 
     /**
 	 * 作废标识，1正常，0作废
 	 */
-	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "模块1")
+	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
 
 

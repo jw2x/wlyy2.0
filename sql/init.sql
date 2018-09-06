@@ -4,9 +4,14 @@ drop table IF EXISTS `base_org`;
 CREATE TABLE `base_org` (
   `id` varchar(50) NOT NULL COMMENT 'uuid,uuid唯一标识,也是机构code',
   `saasid` varchar(50) NOT NULL COMMENT 'saas化配置',
-  `province_code` varchar(50) DEFAULT NULL COMMENT '省份标识',
-  `city_code` varchar(50) DEFAULT NULL COMMENT '城市标识',
-  `town_code` varchar(50) DEFAULT NULL COMMENT '区县标识',
+  `province_code` varchar(50) DEFAULT NULL COMMENT '省代码',
+  `province_name` varchar(50) DEFAULT NULL COMMENT '省名称',
+  `city_code` varchar(50) DEFAULT NULL COMMENT '市代码',
+  `city_name` varchar(50) DEFAULT NULL COMMENT '市名称',
+  `town_code` varchar(50) DEFAULT NULL COMMENT '区县代码',
+  `town_name` varchar(50) DEFAULT NULL COMMENT '区县名称',
+  `street_code` varchar(50) DEFAULT NULL COMMENT '街道代码',
+  `street_name` varchar(50) DEFAULT NULL COMMENT '街道名称',
   `name` varchar(100) DEFAULT NULL COMMENT '机构名称',
   `alias` varchar(10) DEFAULT NULL COMMENT '机构别名',
   `spell` varchar(20) DEFAULT NULL COMMENT '机构名称拼音首字母',
@@ -132,11 +137,14 @@ CREATE TABLE `base_patient` (
   `phone` varchar(200) DEFAULT NULL COMMENT '联系电话',
   `ssc` varchar(50) DEFAULT NULL COMMENT '社保卡号',
   `photo` varchar(100) DEFAULT NULL COMMENT '头像http地址',
-  `province_code` varchar(50) DEFAULT NULL COMMENT '省编码',
-  `city_code` varchar(50) DEFAULT NULL COMMENT '市编码',
-  `town_code` varchar(50) DEFAULT NULL COMMENT '区县编码',
-  `street_code` varchar(50) DEFAULT NULL COMMENT '街道编码',
-  `address` varchar(200) DEFAULT NULL COMMENT '具体详细地址',
+  `province_code` varchar(50) DEFAULT NULL COMMENT '省代码',
+  `province_name` varchar(50) DEFAULT NULL COMMENT '省名称',
+  `city_code` varchar(50) DEFAULT NULL COMMENT '市代码',
+  `city_name` varchar(50) DEFAULT NULL COMMENT '市名称',
+  `town_code` varchar(50) DEFAULT NULL COMMENT '区县代码',
+  `town_name` varchar(50) DEFAULT NULL COMMENT '区县名称',
+  `street_code` varchar(50) DEFAULT NULL COMMENT '街道代码',
+  `street_name` varchar(50) DEFAULT NULL COMMENT '街道名称',
   `disease` varchar(100) DEFAULT NULL COMMENT '疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病',
   `disease_condition` varchar(100) DEFAULT NULL COMMENT '病情：0绿标，1黄标，2红标，3重点关注,',
   `points` varchar(100) DEFAULT NULL COMMENT '总积分',
@@ -309,19 +317,40 @@ primary key (id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='职称字典';
 
--- 药品
+-- 机构药品分发
+CREATE TABLE `zy_iv_org_physic_allot_dict` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `org_id` varchar(50) DEFAULT NULL COMMENT '机构编码',
+  `physic_code` varchar(50) DEFAULT NULL COMMENT '药品代码',
+  `disp_quantity_untuck_flag` int(10) DEFAULT NULL,
+  `disp_pack_untuck_flag` int(10) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构药品分发字典';
+
+-- 药品字典
 drop table IF EXISTS `dict_medicine`;
 create table `dict_medicine`(
-`id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
-`saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id，null标识公共字典',
-`code` varchar(100) not null COMMENT '药品编码',
-`name` varchar(50) not null COMMENT '药品名称',
-`type` char(1) default NULL COMMENT '药品类型：1健康记录',
-`create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
-primary key (id),
-key `idx_medicine_code` (`code`)
-)
-ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='药品字典';
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `physic_code` varchar(50) DEFAULT NULL COMMENT '药品代码',
+  `physic_name` varchar(2000) DEFAULT NULL COMMENT '药品名称',
+  `physic_spec` varchar(2000) DEFAULT NULL COMMENT '药品规格',
+  `subject_class` varchar(200) DEFAULT NULL COMMENT '药品科目  科目类别字典中定义',
+  `dose_unit` varchar(50) DEFAULT NULL COMMENT '剂量单位 计量单位字典中定义',
+  `quantity_unit` varchar(50) DEFAULT NULL COMMENT '数量单位  计量单位字典中定义',
+  `pack_unit` varchar(250) DEFAULT NULL COMMENT '包装单位   计量单位字典中定义',
+  `min_dose` double(20,6) DEFAULT NULL COMMENT '最小剂量',
+  `pack_spec` double(20,6) DEFAULT NULL,
+  `retail_price` double(20,6) DEFAULT NULL COMMENT '零售价',
+  `physic_form` varchar(50) DEFAULT NULL,
+  `toxicology_type` varchar(250) DEFAULT NULL COMMENT '毒理分类  药品毒理分类字典中定义',
+  `basic_flag` varchar(50) DEFAULT NULL COMMENT '基本药物标志  0：否；1：是',
+  `valid_flag` varchar(50) DEFAULT NULL COMMENT '有效标志 0：无效；1：有效',
+  `spell_code` varchar(200) DEFAULT NULL COMMENT '拼音首码',
+  `wbzx_code` varchar(200) DEFAULT NULL COMMENT '五笔首码',
+  `sequence` int(10) DEFAULT NULL COMMENT '排序号',
+  `storage_conditions` varchar(50) DEFAULT NULL COMMENT '2表示需要冷藏，其他表示不需要冷藏',
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='药品字典';
 
 -- ICD10表
 drop table IF EXISTS `dict_icd10`;
@@ -330,9 +359,6 @@ CREATE TABLE `dict_icd10` (
   `saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id，null标识公共字典',
   `code` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT 'icd10字典编码',
   `name` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT 'icd10字典名称',
-  `phonetic_code` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '字典名称拼音首字母',
-  `chronic_flag` varchar(1) CHARACTER SET utf8 DEFAULT NULL COMMENT '是否慢病',
-  `infectious_flag` varchar(1) CHARACTER SET utf8 DEFAULT NULL COMMENT '是否传染病',
   `description` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '描述',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
@@ -347,6 +373,8 @@ CREATE TABLE `dict_health_problem` (
   `saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id，null标识公共字典',
   `code` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '字典编码',
   `name` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '字典名称',
+  `chronic_flag` varchar(1) CHARACTER SET utf8 DEFAULT NULL COMMENT '是否慢病,1-是，0-否',
+  `infectious_flag` varchar(1) CHARACTER SET utf8 DEFAULT NULL COMMENT '是否传染病,1-是，0-否',
   `description` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '描述',
   key `idx_hea_problem_code` (`code`),
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',

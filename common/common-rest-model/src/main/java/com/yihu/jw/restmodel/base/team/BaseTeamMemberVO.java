@@ -24,25 +24,25 @@ public class BaseTeamMemberVO extends UuidIdentityVOWithOperator {
     /**
 	 * 团队ID
 	 */
-	@ApiModelProperty(value = "团队ID", example = "模块1")
+	@ApiModelProperty(value = "团队ID", example = "")
     private String teamId;
 
     /**
 	 * 机构标识
 	 */
-	@ApiModelProperty(value = "机构标识", example = "模块1")
+	@ApiModelProperty(value = "机构标识", example = "")
     private String orgId;
 
     /**
 	 * 医生标识，多个医生以逗号分开
 	 */
-	@ApiModelProperty(value = "医生标识，多个医生以逗号分开", example = "模块1")
+	@ApiModelProperty(value = "医生标识，多个医生以逗号分开", example = "")
     private String doctorId;
 
     /**
 	 * 作废标识，1正常，0作废
 	 */
-	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "模块1")
+	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
 
 

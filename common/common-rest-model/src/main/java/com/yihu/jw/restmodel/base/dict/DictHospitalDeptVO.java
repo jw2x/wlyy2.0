@@ -25,26 +25,26 @@ public class DictHospitalDeptVO extends IntegerIdentityVO{
     /**
 	 * saas配置id，null标识公共字典
 	 */
-	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "模块1")
+	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "402803ee656498890165649ad2da1112")
     private String saasId;
 
     /**
 	 * 科室标识
 	 */
-	@ApiModelProperty(value = "科室标识", example = "模块1")
+	@ApiModelProperty(value = "科室标识", example = "")
     private String code;
 
     /**
 	 * 科室名称
 	 */
-	@ApiModelProperty(value = "科室名称", example = "模块1")
+	@ApiModelProperty(value = "科室名称", example = "神经内科")
     private String name;
 
     /**
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "创建时间", example = "模块1")
+	@ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd HH:mm:ss/该字段可不填")
     private Date createTime;
 
 
