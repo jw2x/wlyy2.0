@@ -11,6 +11,7 @@ import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -62,14 +63,16 @@ public class WlyyAuthorizationServerConfigurerAdapter extends AuthorizationServe
     @Primary
     WlyyTokenGranter wlyyTokenGranter (
             AuthenticationManager authenticationManager,
-            AuthorizationServerTokenServices authorizationServerTokenServices) {
+            AuthorizationServerTokenServices authorizationServerTokenServices,
+            UserDetailsService userDetailsService) {
         WlyyTokenGranter tokenGranter = new WlyyTokenGranter(
                 authenticationManager,
                 authorizationServerTokenServices,
                 authorizationCodeServices(),
                 clientDetailsService(),
                 new DefaultOAuth2RequestFactory(clientDetailsService()),
-                wlyyRedisVerifyCodeService());
+                wlyyRedisVerifyCodeService(),
+                userDetailsService);
         return tokenGranter;
     }
 

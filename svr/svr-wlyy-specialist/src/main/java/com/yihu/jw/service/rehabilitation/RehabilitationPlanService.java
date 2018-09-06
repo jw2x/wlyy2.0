@@ -142,7 +142,10 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
      */
     public MixEnvelop<HospitalServiceItemDO, HospitalServiceItemDO> findTemplateDetailByTemplateId(String templateId) {
         List<String> hospitalServiceItemIds = templateDetailDao.findHospitalServiceItemIdByTemplateId(templateId);
-        return hospitalServiceItemService.selectById(hospitalServiceItemIds);
+        if(hospitalServiceItemIds.size() > 0) {
+            return hospitalServiceItemService.selectById(hospitalServiceItemIds);
+        }
+        return MixEnvelop.getSuccess(SpecialistMapping.api_success);
     }
 
     public PatientRehabilitationPlanDO createPatientRehabilitationPlan(PatientRehabilitationPlanDO planDO) {

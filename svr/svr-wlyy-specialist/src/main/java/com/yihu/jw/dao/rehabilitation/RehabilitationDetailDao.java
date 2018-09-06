@@ -62,4 +62,7 @@ public interface RehabilitationDetailDao extends PagingAndSortingRepository<Reha
     @Modifying
     @Query("update RehabilitationDetailDO t set t.status = ?1 where t.id=?2 ")
     int updateStatusById(Integer status,String id);
+
+    @Query(value ="select p.patient from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.id=?1",nativeQuery = true)
+    List<Map<String,Object>> findPatientById(String planDetailId);
 }

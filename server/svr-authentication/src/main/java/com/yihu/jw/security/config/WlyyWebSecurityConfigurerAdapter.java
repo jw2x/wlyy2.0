@@ -31,6 +31,7 @@ public class WlyyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapt
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/oauth/**");
+        web.ignoring().antMatchers("/health");
     }
 
     @Override
@@ -63,6 +64,7 @@ public class WlyyWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapt
         reflectionSaltSource.setUserPropertyToUse("salt");
         authenticationProvider.setSaltSource(reflectionSaltSource);
         authenticationProvider.setSaltSource(reflectionSaltSource);
+        authenticationProvider.setHideUserNotFoundExceptions(false);
         return authenticationProvider;
     }
 
