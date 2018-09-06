@@ -89,6 +89,12 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
     /**
      * 登陆
      * @param parameters
+     * 不定入参：
+     * client_id 应用标识
+     * captcha 验证码
+     * password 密码
+     * username 用户名/手机/身份证号
+     * loginType 用户类型 1或默认为user，2：医生登录，3：患者登录
      * @param httpSession
      * @return
      * @throws Exception
@@ -101,10 +107,10 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         }
         if (StringUtils.isEmpty(parameters.get("captcha"))) {
             parameters.put("grant_type", "password");
-            if (parameters.get("password") != null) {
-                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
-                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
-            }
+//            if (parameters.get("password") != null) {
+//                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
+//                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
+//            }
         } else {
             parameters.put("grant_type", "captcha");
         }
