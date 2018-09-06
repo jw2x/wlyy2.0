@@ -94,7 +94,7 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
      * captcha 验证码
      * password 密码
      * username 用户名/手机/身份证号
-     * loginType 用户类型 1或默认为user，2：医生登录，3：患者登录
+     * login_type 用户类型 1或默认为user，2：医生登录，3：患者登录
      * @param httpSession
      * @return
      * @throws Exception
