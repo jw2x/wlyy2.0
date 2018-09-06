@@ -17,7 +17,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author wangzhinan
@@ -70,6 +72,8 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
             }
             buffer.deleteCharAt(buffer.length()-1);
             buffer.append(")");
+        }else{
+            buffer.append("");
         }
         String sql = "select * from wlyy_hospital_service_item where 1=1 "+buffer;
         List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
@@ -93,7 +97,7 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
         MixEnvelop<JSONArray,JSONArray> envelop = new MixEnvelop<>();
         String sqlUtil = "";
         if (StringUtils.isNoneBlank(serviceItemName)||serviceItemName != null){
-            sqlUtil="and service_item_name = '"+serviceItemName+"'";
+            sqlUtil="and service_item_name LIKE '%"+serviceItemName+"%'";
         }
         List<HospitalServiceItemDO> hospitalServiceItemDOS1 = new ArrayList<>();
         if (StringUtils.isNoneBlank(hospital)&&hospital.equals(docHospital)){
@@ -111,7 +115,7 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                 hospitalServiceItemDOS1.add(hospitalServiceItemDO);
             }
         }else{
-            String sql = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+hospital+"' "+sqlUtil;
+            String sql = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+hospital+"' ";
             List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+docHospital+"' "+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
@@ -303,7 +307,7 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
      * @param serviceItemId 服务项目id
      * @return
      */
-    public MixEnvelop<Boolean,Boolean> delete(String hospital, String serviceItemId){
+    public MixEnvelop<Boolean,Boolean> delete(String hospital, String serviceItemId,String id){
         MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
         if (StringUtils.isNoneBlank(hospital)){
             String sql = "update wlyy_hospital_service_item set status = 0 where hospital = '"+hospital+"'";
@@ -311,8 +315,10 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
         }else if (StringUtils.isNoneBlank(serviceItemId)){
             String sql = "update wlyy_hospital_service_item set status = 0 where service_item_id = '"+serviceItemId+"'";
             jdbcTemplate.update(sql);
+        }else if (StringUtils.isNoneBlank(id)){
+            String sql = "update wlyy_hospital_service_item set status = 0 where id = '"+id+"'";
+            jdbcTemplate.update(sql);
         }
-
         return envelop;
     }
 

@@ -69,12 +69,14 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
     @PostMapping(value = SpecialistMapping.serviceItem.selectByHospital)
     @ApiOperation(value = "根据医院Code查找机构服务项目")
     public MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> selectByHospital(@ApiParam(name = "hospitals", value = "医院code集合")
-                                                                          @RequestParam(value = "hospitals")String hospitals){
+                                                                          @RequestParam(value = "hospitals",required = false)String hospitals){
         try {
             JSONArray array = JSONArray.parseArray(hospitals);
             List<String> hospitalList = new ArrayList<>();
-            for (int i =0 ;i<array.size();i++){
-                hospitalList.add(array.getString(i));
+            if (array != null || array.size()!=0){
+                for (int i =0 ;i<array.size();i++){
+                    hospitalList.add(array.getString(i));
+                }
             }
             return specialistHospitalServiceItemService.selectByHospital(hospitalList);
         }catch (Exception e){
@@ -146,11 +148,13 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
     @PostMapping(value = SpecialistMapping.serviceItem.deleteHospitalItem)
     @ApiOperation(value = "删除机构服务项目")
     public MixEnvelop<Boolean,Boolean> delete(@ApiParam(name = "hospital", value = "医院code")
-                                              @RequestParam(name = "hospital")String hospital,
+                                              @RequestParam(name = "hospital",required = false)String hospital,
                                               @ApiParam(name = "serviceItem", value = "服务项目code")
-                                              @RequestParam(name = "serviceItem")String serviceItem){
+                                              @RequestParam(name = "serviceItem",required = false)String serviceItem,
+                                              @ApiParam(name = "id", value = "机构服务项目id")
+                                                  @RequestParam(name = "id",required = false)String id){
         try {
-            return specialistHospitalServiceItemService.delete(hospital,serviceItem);
+            return specialistHospitalServiceItemService.delete(hospital,serviceItem,id);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
