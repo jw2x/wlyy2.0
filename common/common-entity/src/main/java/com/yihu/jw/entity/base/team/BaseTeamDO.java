@@ -10,7 +10,7 @@ import java.util.Date;
 /**
 * 团队信息实体
 *
-* @author litaohong on  2018年08月31日
+* @author Administrator on  2018年09月05日
 *
 */
 @Entity
@@ -18,34 +18,34 @@ import java.util.Date;
 public class BaseTeamDO extends UuidIdentityEntityWithOperator {
 
     /**
-	* 机构id
-	*/
-    private String orgId;
+	 * 机构id
+	 */
+	private String orgId;
 
     /**
-	* 团队名称
-	*/
-    private String name;
+	 * 团队名称
+	 */
+	private String name;
 
     /**
-	* 领导医生标识
-	*/
-    private String leaderId;
+	 * 领导医生标识
+	 */
+	private String leaderId;
 
     /**
-	* 团队人数
-	*/
-    private String teamNum;
+	 * 团队人数
+	 */
+	private String teamNum;
 
     /**
-	* 团队二维码
-	*/
-    private String qrcode;
+	 * 团队二维码
+	 */
+	private String qrcode;
 
     /**
-	* 作废标识，1正常，0作废
-	*/
-    private String del;
+	 * 作废标识，1正常，0作废
+	 */
+	private String del;
 
 
 	@Column(name = "org_id")

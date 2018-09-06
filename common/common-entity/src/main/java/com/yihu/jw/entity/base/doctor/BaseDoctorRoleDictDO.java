@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * 医生角色字典实体
  * 
- * @author litaohong on  2018年08月31日
+ * @author Administrator on  2018年09月05日
  *
  */
 @Entity
@@ -18,19 +18,19 @@ import java.util.Date;
 public class BaseDoctorRoleDictDO extends IntegerIdentityEntity {
 
     /**
-	* 角色code
-	*/
-    private String code;
+	 * 角色code
+	 */
+	private String code;
 
     /**
-	* 角色名称：全科医生、专科医生、健康管理师、管理员等
-	*/
-    private String name;
+	 * 角色名称：全科医生、专科医生、健康管理师、管理员等
+	 */
+	private String name;
 
     /**
-	* 作废标识，1正常，0作废
-	*/
-    private String del;
+	 * 作废标识，1正常，0作废
+	 */
+	private String del;
 
 
 	@Column(name = "code")

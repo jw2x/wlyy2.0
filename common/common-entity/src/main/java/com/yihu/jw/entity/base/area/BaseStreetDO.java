@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.base.area;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.IntegerIdentityEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import java.util.Date;
 /**
  * 街道字典实体
  * 
- * @author litaohong on  2018年08月31日
+ * @author Administrator on  2018年09月05日
  *
  */
 @Entity
@@ -18,34 +19,35 @@ import java.util.Date;
 public class BaseStreetDO extends IntegerIdentityEntity {
 
     /**
-	* 省标识
-	*/
-    private String province;
+	 * 省标识
+	 */
+	private String province;
 
     /**
-	* 市标识
-	*/
-    private String city;
+	 * 市标识
+	 */
+	private String city;
 
     /**
-	* 区县标识
-	*/
-    private String town;
+	 * 区县标识
+	 */
+	private String town;
 
     /**
-	* 街道标识
-	*/
-    private String code;
+	 * 街道标识
+	 */
+	private String code;
 
     /**
-	* 街道名称
-	*/
-    private String name;
+	 * 街道名称
+	 */
+	private String name;
 
     /**
-	* 创建时间
-	*/
-    private Date createTime;
+	 * 创建时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date createTime;
 
 
 	@Column(name = "province")

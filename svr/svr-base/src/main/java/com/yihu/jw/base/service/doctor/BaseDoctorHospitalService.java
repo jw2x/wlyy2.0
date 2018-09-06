@@ -1,6 +1,6 @@
 package com.yihu.jw.base.service.doctor;
 
-import com.yihu.jw.base.dao.BaseDoctorHospitalDao;
+import com.yihu.jw.base.dao.doctor.BaseDoctorHospitalDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
