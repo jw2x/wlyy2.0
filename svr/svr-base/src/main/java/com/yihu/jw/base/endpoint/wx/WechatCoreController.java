@@ -28,7 +28,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(BaseRequestMapping.WeChat.PREFIX)
-@Api(value = "微信回调及事件处理", description = "微信回调及事件处理")
+@Api(value = "微信回调及事件处理", description = "微信回调及事件处理", tags = {"微信核心服务 - 微信服务器回调及事件处理"})
 public class WechatCoreController extends EnvelopRestEndpoint {
 
     private Logger logger = LoggerFactory.getLogger(WechatCoreController.class);

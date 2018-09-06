@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(WechatRequestMapping.api_common)
-@Api(value = "微信模版相关操作", description = "微信模版相关操作")
+@Api(value = "微信模版相关操作", description = "微信模版相关操作", tags = {"微信管理 - 微信模版相关操作"})
 public class WxTemplateController extends EnvelopRestEndpoint {
 
     @Autowired
