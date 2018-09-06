@@ -44,6 +44,9 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
     @Transient
     private Integer flag;//标识（1：社区，2、医院，3、社区、医院）
 
+    @Column(name = "imediate")
+    private Integer imediate;//(1:立即生效、0：未立即生效 )
+
     @Transient
     private SpecialistServiceItemDO specialistServiceItemDO;
 
@@ -126,5 +129,14 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
 
     public void setFlag(Integer flag) {
         this.flag = flag;
+    }
+
+    @Column(name = "imediate")
+    public Integer getImediate() {
+        return imediate;
+    }
+
+    public void setImediate(Integer imediate) {
+        this.imediate = imediate;
     }
 }

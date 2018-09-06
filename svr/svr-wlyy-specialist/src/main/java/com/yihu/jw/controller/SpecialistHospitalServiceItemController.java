@@ -14,10 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -121,8 +118,8 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
      */
     @PostMapping(value = SpecialistMapping.serviceItem.selectByCondition)
     @ApiOperation(value = "根据条件查找机构服务项目")
-    public MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> selectByCondition(@ApiParam(name = "serviceItemName", value = "服务项目名称")
-                                                                                    @RequestParam(value = "serviceItemName")String serviceItemName,
+    public MixEnvelop<JSONArray,JSONArray> selectByCondition(@ApiParam(name = "serviceItemName", value = "服务项目名称")
+                                                                                    @RequestParam(value = "serviceItemName",required = false)String serviceItemName,
                                                                                      @ApiParam(name = "hospitals",value = "医院集合")
                                                                                      @RequestParam(value = "hospitals",required = false)String hospitals){
         try {
@@ -172,7 +169,7 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
     @PostMapping(value = SpecialistMapping.serviceItem.selectByHospital1)
     @ApiOperation(value = "查询服务项目")
     public MixEnvelop<JSONArray,JSONArray> selectByHospital1(@ApiParam(name = "hospital", value ="社区code")
-                                              @RequestParam(name = "hospital")String hospital,
+                                              @RequestParam(name = "hospital",required = false)String hospital,
                                               @ApiParam(name = "docHospital", value = "医院code")
                                               @RequestParam(name = "docHospital")String docHospital,
                                               @ApiParam(name = "serviceItemName", value = "服务项目名称")
@@ -180,6 +177,31 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
         try {
             return specialistHospitalServiceItemService.selectByHospital1(hospital,docHospital,serviceItemName);
         }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
+
+    /**
+     * 机构服务项目导数据
+     *
+     * @param hospitalItems
+     * @return
+     */
+    @RequestMapping(value = SpecialistMapping.serviceItem.importData2)
+    @ResponseBody
+    public MixEnvelop<Boolean,Boolean> importData(@ApiParam(name = "hospitalItems", value = "机构服务项目集合")
+                                                  @RequestParam(value = "hospitalItems")String hospitalItems) {
+        try {
+            JSONArray array = JSONArray.parseArray(hospitalItems);
+            List<HospitalServiceItemDO> hospitalServiceItemDOList = new ArrayList<>();
+            for (int i = 0;i<array.size();i++){
+                HospitalServiceItemDO hospitalServiceItemDO = toEntity(array.getJSONObject(i).toJSONString(),HospitalServiceItemDO.class);
+                hospitalServiceItemDOList.add(hospitalServiceItemDO);
+            }
+            return specialistHospitalServiceItemService.importData(hospitalServiceItemDOList);
+        } catch (Exception e) {
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return MixEnvelop.getError(e.getMessage());

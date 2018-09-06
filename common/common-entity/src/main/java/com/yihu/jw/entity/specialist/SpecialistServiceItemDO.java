@@ -74,7 +74,7 @@ public class SpecialistServiceItemDO extends UuidIdentityEntityWithOperator impl
     private Integer status; //删除状态
 
     @Transient
-    public Integer flag;
+    public Integer flag;//标识（1：社区，2、医院，3、社区、医院）
 
 
     @Column(name = "saas_id")
