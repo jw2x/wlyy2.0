@@ -11,7 +11,7 @@ zuul:
       serviceId: svr-iot
     svr-base:
       path: /base/**
-      serviceId: svr-base-sxy
+      serviceId: svr-base
     demo:
       path: /baidu/**
       url: https://www.baidu.com

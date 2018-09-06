@@ -1,6 +1,6 @@
 package com.yihu.jw.base.service.area;
 
-import com.yihu.jw.base.dao.BaseStreetDao;
+import com.yihu.jw.base.dao.area.BaseStreetDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.area.BaseStreetDO;

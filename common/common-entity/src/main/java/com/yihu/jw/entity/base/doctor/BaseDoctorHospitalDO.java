@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.base.doctor;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.IntegerIdentityEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +9,9 @@ import java.util.Date;
 
 
 /**
- * 医生职业信息实体
+ * 医生执业信息实体
  * 
- * @author litaohong on  2018年08月31日
+ * @author Administrator on  2018年09月05日
  *
  */
 @Entity
@@ -18,44 +19,45 @@ import java.util.Date;
 public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
 
     /**
-	* 医院标识
-	*/
-    private String hospCode;
+	 * 医院标识
+	 */
+	private String hospCode;
 
     /**
-	* 医院名称
-	*/
-    private String hospName;
+	 * 医院名称
+	 */
+	private String hospName;
 
     /**
-	* 医生角色标识
-	*/
-    private String roleCode;
+	 * 医生角色标识
+	 */
+	private String roleCode;
 
     /**
-	* 医院角色名称
-	*/
-    private String roleName;
+	 * 医院角色名称
+	 */
+	private String roleName;
 
     /**
-	* 职称代码
-	*/
-    private String jobTitleCode;
+	 * 职称代码
+	 */
+	private String jobTitleCode;
 
     /**
-	* 职称名称
-	*/
-    private String jobTitleName;
+	 * 职称名称
+	 */
+	private String jobTitleName;
 
     /**
-	* 作废标识，1正常，0作废
-	*/
-    private String del;
+	 * 作废标识，1正常，0作废
+	 */
+	private String del;
 
     /**
-	* 
-	*/
-    private Date createTime;
+	 * 
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date createTime;
 
 
 	@Column(name = "hosp_code")

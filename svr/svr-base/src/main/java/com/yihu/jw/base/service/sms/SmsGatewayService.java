@@ -91,13 +91,14 @@ public class SmsGatewayService extends BaseJpaService<SmsGatewayDO, SmsGatewayDa
         HttpResponse httpResponse = HttpUtils.doPost(smsGatewayDO.getRequestUrl(), objectMapper.readValue(rawCertificate, Map.class));
         if (httpResponse.isSuccessFlg()) {
             Map<String, Object> response = objectMapper.readValue(httpResponse.getContent(), Map.class);
-            if (response.get(smsGatewayDO.getResponseCode()).equals(smsGatewayDO.getSuccessValue())) {
+            String responseCode = String.valueOf(response.get(smsGatewayDO.getResponseCode()));
+            if (responseCode.equals(smsGatewayDO.getSuccessValue())) {
                 HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
                 SmsDO smsDO = new SmsDO();
                 smsDO.setClientId(clientId);
                 smsDO.setSmsGatewayId(smsGatewayDO.getId());
                 smsDO.setRequestIp(IPInfoUtils.getIPAddress(request));
-                smsDO.setTo(to);
+                smsDO.setMobile(to);
                 smsDO.setContent(sendContent);
                 smsDO.setDeadline(DateUtils.addMinutes(new Date(), smsGatewayDO.getExpireMin()));
                 smsDO.setCaptcha(contentDatas[0]);
@@ -109,6 +110,11 @@ public class SmsGatewayService extends BaseJpaService<SmsGatewayDO, SmsGatewayDa
         } else {
             throw new ApiException(httpResponse.getContent());
         }
+    }
+
+    public static void main(String [] args) {
+        Object obj = 1;
+        System.out.println(obj.toString());
     }
 
 }

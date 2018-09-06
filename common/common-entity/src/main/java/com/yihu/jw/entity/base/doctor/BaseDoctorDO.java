@@ -9,9 +9,9 @@ import java.util.Date;
 
 
 /**
-* 医生基础信息实体
+* 医生基本信息实体
 *
-* @author litaohong on  2018年08月31日
+* @author Administrator on  2018年09月05日
 *
 */
 @Entity
@@ -19,144 +19,146 @@ import java.util.Date;
 public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
 
     /**
-	* 机构id
-	*/
-    private String orgId;
+	 * 机构id
+	 */
+	private String orgId;
 
     /**
-	* 密码
-	*/
-    private String password;
+	 * 密码
+	 */
+	private String password;
 
     /**
-	* 
-	*/
-    private String salt;
+	 * 
+	 */
+	private String salt;
 
     /**
-	* 姓名
-	*/
-    private String name;
+	 * 姓名
+	 */
+	private String name;
 
     /**
-	* 性别（1男，2女） 用国家标准字典
-	*/
-    private String sex;
+	 * 性别（1男，2女） 用国家标准字典
+	 */
+	private String sex;
 
     /**
-	* 医生专长
-	*/
-    private String expertise;
+	 * 医生专长
+	 */
+	private String expertise;
 
     /**
-	* 医生介绍
-	*/
-    private String introduce;
+	 * 医生介绍
+	 */
+	private String introduce;
 
     /**
-	*  身份证
-	*/
-    private String idcard;
+	 *  身份证
+	 */
+	private String idcard;
 
     /**
-	* 生日
-	*/
-    private Date birthday;
+	 * 生日
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date birthday;
 
     /**
-	* 头像http地址
-	*/
-    private String photo;
+	 * 头像http地址
+	 */
+	private String photo;
 
     /**
-	* 手机号
-	*/
-    private String mobile;
+	 * 手机号
+	 */
+	private String mobile;
 
     /**
-	* 医生二维码
-	*/
-    private String qrcode;
+	 * 医生二维码
+	 */
+	private String qrcode;
 
     /**
-	* 省代码
-	*/
-    private String provinceCode;
+	 * 省代码
+	 */
+	private String provinceCode;
 
     /**
-	* 省名称
-	*/
-    private String provinceName;
+	 * 省名称
+	 */
+	private String provinceName;
 
     /**
-	* 市代码
-	*/
-    private String cityCode;
+	 * 市代码
+	 */
+	private String cityCode;
 
     /**
-	* 市名称
-	*/
-    private String cityName;
+	 * 市名称
+	 */
+	private String cityName;
 
     /**
-	* 区县代码
-	*/
-    private String townCode;
+	 * 区县代码
+	 */
+	private String townCode;
 
     /**
-	* 区县名称
-	*/
-    private String townName;
+	 * 区县名称
+	 */
+	private String townName;
 
     /**
-	* 街道代码
-	*/
-    private String streetCode;
+	 * 街道代码
+	 */
+	private String streetCode;
 
     /**
-	* 街道名称
-	*/
-    private String streetName;
+	 * 街道名称
+	 */
+	private String streetName;
 
     /**
-	* 资格是否认证通过，1是，0否
-	*/
-    private String iscertified;
+	 * 资格是否认证通过，1是，0否
+	 */
+	private String iscertified;
 
     /**
-	* 是否是名医，1是，0否
-	*/
-    private String isFamous;
+	 * 是否是名医，1是，0否
+	 */
+	private String isFamous;
 
     /**
-	* 是否提示设置密码  1 提示过 0未提示
-	*/
-    private String isPasswordPrompt;
+	 * 是否提示设置密码  1 提示过 0未提示
+	 */
+	private String isPasswordPrompt;
 
     /**
-	* 名称拼音首字母
-	*/
-    private String spell;
+	 * 名称拼音首字母
+	 */
+	private String spell;
 
     /**
-	* CA证书过期时间
-	*/
-    private Date certifiedOvertime;
+	 * CA证书过期时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date certifiedOvertime;
 
     /**
-	* CA证书编号
-	*/
-    private String certificateNum;
+	 * CA证书编号
+	 */
+	private String certificateNum;
 
     /**
-	* 
-	*/
-    private String openid;
+	 * 用户微信openid
+	 */
+	private String openid;
 
     /**
-	* 作废标识，1正常，0作废
-	*/
-    private String del;
+	 * 作废标识，1正常，0作废
+	 */
+	private String del;
 
 
 	@Column(name = "org_id")
@@ -223,7 +225,6 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
         this.idcard = idcard;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	@Column(name = "birthday")
     public Date getBirthday() {
         return birthday;
@@ -352,7 +353,6 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
         this.spell = spell;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
 	@Column(name = "certified_overtime")
     public Date getCertifiedOvertime() {
         return certifiedOvertime;
