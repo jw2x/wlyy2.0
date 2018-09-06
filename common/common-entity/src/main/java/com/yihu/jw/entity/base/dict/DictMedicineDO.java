@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.base.dict;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.IntegerIdentityEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +11,7 @@ import java.util.Date;
 /**
  * 药品字典实体
  * 
- * @author litaohong on  2018年08月31日
+ * @author Administrator on  2018年09月05日
  *
  */
 @Entity
@@ -18,29 +19,30 @@ import java.util.Date;
 public class DictMedicineDO extends IntegerIdentityEntity {
 
     /**
-	* saas配置id，null标识公共字典
-	*/
-    private String saasId;
+	 * saas配置id，null标识公共字典
+	 */
+	private String saasId;
 
     /**
-	* 药品编码
-	*/
-    private String code;
+	 * 药品编码
+	 */
+	private String code;
 
     /**
-	* 药品名称
-	*/
-    private String name;
+	 * 药品名称
+	 */
+	private String name;
 
     /**
-	* 药品类型：1健康记录
-	*/
-    private String type;
+	 * 药品类型：1健康记录
+	 */
+	private String type;
 
     /**
-	* 创建时间
-	*/
-    private Date createTime;
+	 * 创建时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date createTime;
 
 
 	@Column(name = "saas_id")

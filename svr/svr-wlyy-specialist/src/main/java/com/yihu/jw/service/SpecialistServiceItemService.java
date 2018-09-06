@@ -12,11 +12,7 @@ import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemOperateLogDO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.health.bank.HealthBankMapping;
-import com.yihu.jw.util.ExcelData;
 import com.yihu.jw.util.ISqlUtils;
-import com.yihu.jw.util.ReadExcelUtil;
-import jxl.Sheet;
-import jxl.Workbook;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -192,43 +188,33 @@ public class SpecialistServiceItemService {
     /**
      * 导数据
      *
-     * @param workbook
+     * @param specialistServiceItemDOS
      * @return
      */
-    public MixEnvelop<Boolean,Boolean> importData(Workbook workbook) {
+    public MixEnvelop<Boolean,Boolean> importData(List<SpecialistServiceItemDO> specialistServiceItemDOS) {
         MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
-        Sheet[] sheets = workbook.getSheets();
-        Sheet sheet = sheets[0];
-        int rows = ReadExcelUtil.getRightRows(sheet);
-        for (int row = 1; row < rows; row++) {  //索引从0开始，第一行为标题
-            SpecialistServiceItemDO itemDO = new SpecialistServiceItemDO();
-            Map<Integer, ExcelData> mapping = mapping(itemDO);
-            int finalRow = row;
-            mapping.forEach((index, excelData) -> {
-                String value = sheet.getCell(index, finalRow).getContents().trim();
-                excelData.transform(value);
-            });
-
-            //Additional Handel
-            List<SpecialistServiceItemDO> specialistServiceItemDOS = specialistServiceItemDao.findByTitle(itemDO.getTitle());
-           if (specialistServiceItemDOS == null && specialistServiceItemDOS.size() ==0){
-               continue;
-           }else {
-                itemDO.setStatus(1);
-                specialistServiceItemDao.save(itemDO);
-           }
+        if (specialistServiceItemDOS != null && specialistServiceItemDOS.size()!=0){
+            for (SpecialistServiceItemDO specialistServiceItemDO:specialistServiceItemDOS){
+                List<SpecialistServiceItemDO> specialistServiceItemDOList = specialistServiceItemDao.findByTitle(specialistServiceItemDO.getTitle());
+                if (specialistServiceItemDOList == null && specialistServiceItemDOList.size() ==0){
+                    continue;
+                }else {
+                    specialistServiceItemDO.setStatus(1);
+                    specialistServiceItemDO.setId(UUID.randomUUID().toString());
+                    specialistServiceItemDao.save(specialistServiceItemDO);
+                }
+            }
         }
         envelop.setObj(true);
         return envelop;
     }
-
 
     /**
      * 表格数据转为对象
      *
      * @param specialistServiceItemDO
      * @return
-     */
+     *//*
     private Map<Integer, ExcelData> mapping(SpecialistServiceItemDO specialistServiceItemDO) {
         Map<Integer, ExcelData> dataMap = new HashMap<>();
         //项目名称
@@ -368,7 +354,7 @@ public class SpecialistServiceItemService {
         });
         specialistServiceItemDO.setId(UUID.randomUUID().toString());
         return dataMap;
-    }
+    }*/
 
 
 

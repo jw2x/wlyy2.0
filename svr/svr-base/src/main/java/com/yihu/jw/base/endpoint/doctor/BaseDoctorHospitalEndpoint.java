@@ -1,7 +1,7 @@
 package com.yihu.jw.base.endpoint.doctor;
 
 import com.yihu.jw.base.service.doctor.BaseDoctorHospitalService;
-import com.yihu.jw.restmodel.base.dict.BaseDoctorHospitalVO;
+import com.yihu.jw.restmodel.base.doctor.BaseDoctorHospitalVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;

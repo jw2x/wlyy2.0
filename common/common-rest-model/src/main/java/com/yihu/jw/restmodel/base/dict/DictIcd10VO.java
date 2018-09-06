@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.base.dict;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.restmodel.IntegerIdentityVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,7 +14,7 @@ import java.util.Date;
  * @version 
  * <pre>
  * Author	Version		Date		Changes
- * litaohong 	1.0  2018年08月31日 Created
+ * Administrator 	1.0  2018年09月05日 Created
  *
  * </pre>
  * @since 1.
@@ -22,31 +23,55 @@ import java.util.Date;
 public class DictIcd10VO extends IntegerIdentityVO{
 
     /**
-	saas配置id，null标识公共字典	*/
+	 * saas配置id，null标识公共字典
+	 */
+	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "模块1")
     private String saasId;
+
     /**
-	icd10字典编码	*/
+	 * icd10字典编码
+	 */
+	@ApiModelProperty(value = "icd10字典编码", example = "模块1")
     private String code;
+
     /**
-	icd10字典名称	*/
+	 * icd10字典名称
+	 */
+	@ApiModelProperty(value = "icd10字典名称", example = "模块1")
     private String name;
+
     /**
-	字典名称拼音首字母	*/
+	 * 字典名称拼音首字母
+	 */
+	@ApiModelProperty(value = "字典名称拼音首字母", example = "模块1")
     private String phoneticCode;
+
     /**
-	是否慢病	*/
+	 * 是否慢病
+	 */
+	@ApiModelProperty(value = "是否慢病", example = "模块1")
     private String chronicFlag;
+
     /**
-	是否传染病	*/
+	 * 是否传染病
+	 */
+	@ApiModelProperty(value = "是否传染病", example = "模块1")
     private String infectiousFlag;
+
     /**
-	描述	*/
+	 * 描述
+	 */
+	@ApiModelProperty(value = "描述", example = "模块1")
     private String description;
+
     /**
-	创建时间	*/
+	 * 创建时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	@ApiModelProperty(value = "创建时间", example = "模块1")
     private Date createTime;
 
-	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "模块1")
+
     public String getSaasId() {
         return saasId;
     }
@@ -54,7 +79,6 @@ public class DictIcd10VO extends IntegerIdentityVO{
         this.saasId = saasId;
     }
 
-	@ApiModelProperty(value = "icd10字典编码", example = "模块1")
     public String getCode() {
         return code;
     }
@@ -62,7 +86,6 @@ public class DictIcd10VO extends IntegerIdentityVO{
         this.code = code;
     }
 
-	@ApiModelProperty(value = "icd10字典名称", example = "模块1")
     public String getName() {
         return name;
     }
@@ -70,7 +93,6 @@ public class DictIcd10VO extends IntegerIdentityVO{
         this.name = name;
     }
 
-	@ApiModelProperty(value = "字典名称拼音首字母", example = "模块1")
     public String getPhoneticCode() {
         return phoneticCode;
     }
@@ -78,7 +100,6 @@ public class DictIcd10VO extends IntegerIdentityVO{
         this.phoneticCode = phoneticCode;
     }
 
-	@ApiModelProperty(value = "是否慢病", example = "模块1")
     public String getChronicFlag() {
         return chronicFlag;
     }
@@ -86,7 +107,6 @@ public class DictIcd10VO extends IntegerIdentityVO{
         this.chronicFlag = chronicFlag;
     }
 
-	@ApiModelProperty(value = "是否传染病", example = "模块1")
     public String getInfectiousFlag() {
         return infectiousFlag;
     }
@@ -94,7 +114,6 @@ public class DictIcd10VO extends IntegerIdentityVO{
         this.infectiousFlag = infectiousFlag;
     }
 
-	@ApiModelProperty(value = "描述", example = "模块1")
     public String getDescription() {
         return description;
     }
@@ -102,14 +121,12 @@ public class DictIcd10VO extends IntegerIdentityVO{
         this.description = description;
     }
 
-	@ApiModelProperty(value = "创建时间", example = "模块1")
     public Date getCreateTime() {
         return createTime;
     }
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
-
 
 
 }
