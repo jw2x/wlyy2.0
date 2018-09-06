@@ -162,7 +162,7 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             }
             String planDetails = array.toString();
             ObjectMapper object = new ObjectMapper();
-            object.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"));
+            object.setDateFormat(new SimpleDateFormat("yyyy-MM-dd hh:mm"));
             List<RehabilitationDetailDO> details = object.readValue(planDetails, new TypeReference<List<RehabilitationDetailDO>>(){});
             PatientRehabilitationPlanDO planDO = toEntity(rehabilitationPlan, PatientRehabilitationPlanDO.class);
             planDO = rehabilitationPlanService.createPatientRehabilitationPlan(planDO);
