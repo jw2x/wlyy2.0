@@ -1,6 +1,6 @@
 package com.yihu.jw.base.service.dict;
 
-import com.yihu.jw.base.dao.DictJobTitleDao;
+import com.yihu.jw.base.dao.dict.DictJobTitleDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.dict.DictJobTitleDO;

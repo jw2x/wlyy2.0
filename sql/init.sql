@@ -62,7 +62,7 @@ CREATE TABLE `base_doctor` (
   `spell` varchar(10) DEFAULT NULL COMMENT '名称拼音首字母',
   `certified_overtime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT 'CA证书过期时间',
   `certificate_num` varchar(100) DEFAULT NULL COMMENT 'CA证书编号',
-  `openid` varchar(50) DEFAULT NULL,
+  `openid` varchar(50) DEFAULT NULL  COMMENT '用户微信openid',
   `del` varchar(1) DEFAULT '1' COMMENT '作废标识，1正常，0作废',
   `create_user` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '创建人',
   `create_user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '创建人名',
@@ -280,7 +280,20 @@ CREATE TABLE `base_street` (
   KEY `idx_dm_street` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='街道字典';
 
--- 行政区划数据  4个表 ---end----
+-- 居委会
+drop table IF EXISTS `base_committee`;
+CREATE TABLE `base_committee` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '业务无关主键',
+  `province` varchar(50) DEFAULT NULL COMMENT '省标识',
+  `city` varchar(50) DEFAULT NULL COMMENT '市标识',
+  `town` varchar(50) DEFAULT NULL COMMENT '区县标识',
+  `street` varchar(50) DEFAULT NULL COMMENT '街道标识',
+  `code` varchar(50) DEFAULT NULL COMMENT '居委会标识',
+  `name` varchar(100) DEFAULT NULL COMMENT '居委会名称',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT '居委会';
+
+-- 行政区划数据  5个表 ---end----
 
 
 -- 职称表
@@ -340,6 +353,18 @@ CREATE TABLE `dict_health_problem` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='健康问题字典';
 
+
+-- 病种字典表
+drop table IF EXISTS `dict_disease`;
+CREATE TABLE `dict_disease` (
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
+  `saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id，null标识公共字典',
+  `code` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '疾病编码',
+  `name` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '疾病名称',
+  key `idx_hea_problem_code` (`code`),
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='病种字典';
 
 -- 标准科室
 drop table IF EXISTS `dict_hospital_dept`;
