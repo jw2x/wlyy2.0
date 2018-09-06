@@ -6,6 +6,7 @@ import org.springframework.util.StringUtils;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * Service - 验证码缓存
  * Created by progr1mmer on 2018/4/18.
  */
 public class WlyyRedisVerifyCodeService {
@@ -17,21 +18,34 @@ public class WlyyRedisVerifyCodeService {
         this.redisTemplate = redisTemplate;
     }
 
-    public void store (String client_id, String username, String code, long expire) {
+    public void store (String client_id, String username, String code, int expire) {
         String key = client_id + ":" + username + KEY_SUFFIX;
         redisTemplate.opsForValue().set(key, code);
-        redisTemplate.expire(key, expire, TimeUnit.MILLISECONDS);
+        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+        String intervalKey = key + ":" + code + "_interval";
+        redisTemplate.opsForValue().set(intervalKey, 60);
+        redisTemplate.expire(intervalKey, 60, TimeUnit.SECONDS);
     }
 
-    public Integer getExpireTime (String client_id, String username) {
-        return new Long(redisTemplate.getExpire(client_id + ":" + username + KEY_SUFFIX)).intValue();
+    public boolean isIntervalTimeout(String client_id, String username) {
+        String key = client_id + ":" + username + KEY_SUFFIX;
+        String code = (String) redisTemplate.opsForValue().get(key);
+        if (null == code) {
+            return true;
+        }
+        String intervalKey = key + ":" + code + "_interval";
+        if (redisTemplate.opsForValue().get(intervalKey) != null) {
+            return false;
+        }
+        return true;
     }
 
     public boolean verification (String client_id, String username, String code) {
         if (StringUtils.isEmpty(code)) {
             return false;
         }
-        String _code = (String) redisTemplate.opsForValue().get(client_id + ":" + username + KEY_SUFFIX);
+        String key = client_id + ":" + username + KEY_SUFFIX;
+        String _code = (String) redisTemplate.opsForValue().get(key);
         if (null == _code) {
             return false;
         }

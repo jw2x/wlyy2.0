@@ -281,12 +281,12 @@ public class RehabilitationManageController {
     }
 
     @PostMapping(value = SpecialistMapping.rehabilitation.updateNoteAndImageRehabilitationOperate)
-    @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口.")
+    @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口并且确认完成")
     public Envelop updateNoteAndImageRehabilitationOperate(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)@RequestParam(value = "planDetailId", required = true)String planDetailId,
-                                                           @ApiParam(name = "node", value = "服务完成笔记", required = true)@RequestParam(value = "node", required = true)String node,
-                                                           @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = true)String image){
+                                                           @ApiParam(name = "node", value = "服务完成笔记", required = true)@RequestParam(value = "node", required = false)String node,
+                                                           @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = false)String image){
         try {
-            if(rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId)>0){
+            if(rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId)>1){
                 return Envelop.getSuccess(SpecialistMapping.api_success);
             }
             return Envelop.getError("update error!");
@@ -294,6 +294,21 @@ public class RehabilitationManageController {
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return ObjEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @PostMapping(value = SpecialistMapping.rehabilitation.updatePlanDetailStatusById)
+    @ApiOperation(value = "康复管理-更新康复计划项目状态")
+    public Envelop updatePlanDetailStatusById(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)
+                                                     @RequestParam(value = "planDetailId", required = true)String planDetailId,
+                                                     @ApiParam(name = "status", value = "状态", required = true)
+                                                     @RequestParam(value = "status", required = true)Integer status){
+        try {
+            return rehabilitationManageService.updatePlanDetailStatusById(status,planDetailId);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return Envelop.getError(e.getMessage());
         }
     }
 }

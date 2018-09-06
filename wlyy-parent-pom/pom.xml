@@ -375,7 +375,7 @@
                 <version>${asciidoctor.maven.plugin.version}</version>
                 <configuration>
                     <sourceDirectory>build</sourceDirectory>
-                    <outputDirectory>docs/${project.version}</outputDirectory>
+                    <outputDirectory>doc/${project.version}</outputDirectory>
                     <headerFooter>true</headerFooter>
                     <doctype>book</doctype>
                     <sourceHighlighter>coderay</sourceHighlighter>

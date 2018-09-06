@@ -1,0 +1,42 @@
+spring:
+  profiles: prod
+
+  datasource:
+    primaryReadWrite:
+      url: jdbc:mysql://59.61.92.90:9069/wlyy?useUnicode=true&characterEncoding=utf-8&amp;autoReconnect=true
+      username: wlyy
+      password: jkzlehr@123
+    primaryRead:
+      url: jdbc:mysql://59.61.92.90:8079/wlyy?useUnicode=true&characterEncoding=utf-8&amp;autoReconnect=true
+      username: wlyy
+      password: jkzlehr@123
+    im: #im库:
+      url: jdbc:mysql://59.61.92.90:8079/im?useUnicode=true&characterEncoding=utf-8&autoReconnect=true
+      username: im
+      password: im!)123
+
+  redis:
+     host: 59.61.92.90 # Redis server host.
+     port: 9054  # Redis server port.
+     password: jkzlehr
+
+  followupMessage:
+    cron : 0 5 0 * * ?
+    jobId : FOLLOWUP_PLAN_JOB
+
+systemConfig:
+  msg_push_server: http://127.0.0.1:3000
+
+es:
+  index: wlyy_quota_prod
+  type: wlyy_quota_prod
+  host:  http://59.61.92.90:9065,http://59.61.92.90:9067
+  tHost: 59.61.92.90:9066,59.61.92.90:9068
+  clusterName: jkzl
+
+wlyy:
+  im:
+    databaseName: im
+
+quartz:
+  name: schedulerFactoryBean_es_prod

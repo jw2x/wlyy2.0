@@ -80,6 +80,8 @@ public class SpecialistMapping {
         public static final String serviceDoctorList = "/serviceDoctorList";
         public static final String dailyJob = "/dailyJob";
         public static final String appCalendarPlanDetailList = "/appCalendarPlanDetailList";
+        public static final String updatePlanDetailStatusById = "/updatePlanDetailStatusById";
+        public static final String updatePlanStatusById = "/updatePlanStatusById";
     }
 
     public static class serviceItem{
@@ -94,5 +96,11 @@ public class SpecialistMapping {
         public static final String selectByHospital = "/selectByHospital";
         public static final String selectById="/selectById";
         public static final String selectItemByHospital= "/selectItemByHospital";
+        public static final String selectByOperate = "/selectByOperate";
+        public static final String selectByCondition="/selectByCondition";
+        public static final String deleteHospitalItem = "/deleteHospitalItem";
+        public static final String selectByHospital1 = "/selectByHospital1";
+        public static final String importData1 = "/importData1";
+        public static final String importData2 = "/importData2";
     }
 }

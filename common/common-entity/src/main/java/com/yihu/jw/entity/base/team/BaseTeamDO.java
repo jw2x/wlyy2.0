@@ -10,7 +10,7 @@ import java.util.Date;
 /**
 * 团队信息实体
 *
-* @author Administrator on  2018年09月05日
+* @author litaohong on  2018年08月31日
 *
 */
 @Entity

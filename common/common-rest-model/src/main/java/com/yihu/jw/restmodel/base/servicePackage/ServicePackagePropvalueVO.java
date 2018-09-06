@@ -1,34 +1,41 @@
 package com.yihu.jw.restmodel.base.servicePackage;
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.restmodel.UuidIdentityVO;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 服务包属性值表
  * @author yeshijie on 2018/8/29.
  */
-@Entity
-@Table(name = "base_service_package_propvalue")
-public class ServicePackagePropvalueDO extends UuidIdentityEntity implements Serializable {
+@ApiModel(value = "ServicePackagePropvalueDO", description = "服务包属性值表")
+public class ServicePackagePropvalueVO extends UuidIdentityVO {
 
+    @ApiModelProperty(value = "saasId")
     private String saasId;
+    @ApiModelProperty(value = "类目ID")
     private Long cid;//类目ID',
+    @ApiModelProperty(value = "属性 ID")
     private Long pid;//属性 ID',
+    @ApiModelProperty(value = "属性名")
     private String propName;//属性名',
+    @ApiModelProperty(value = "属性值ID")
     private Long vid;//属性值ID',
+    @ApiModelProperty(value = "属性值")
     private String name;//属性值',
+    @ApiModelProperty(value = "属性值别名")
     private String nameAlias;//属性值别名',
+    @ApiModelProperty(value = "是否为父类目属性")
     private Integer isParent;//是否为父类目属性',
+    @ApiModelProperty(value = "排列序号")
     private Long sortOrder;//排列序号。取值范围:大于零的整数',
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
-    private Integer del;//状态。可选值:1(正常),0(删除)',
+    @ApiModelProperty(value = "状态。可选值:1(正常),0(删除)")
+    private Integer del;//',
 
-    @Column(name = "saas_id")
     public String getSaasId() {
         return saasId;
     }
@@ -53,7 +60,6 @@ public class ServicePackagePropvalueDO extends UuidIdentityEntity implements Ser
         this.pid = pid;
     }
 
-    @Column(name = "prop_name")
     public String getPropName() {
         return propName;
     }
@@ -78,7 +84,6 @@ public class ServicePackagePropvalueDO extends UuidIdentityEntity implements Ser
         this.name = name;
     }
 
-    @Column(name = "name_alias")
     public String getNameAlias() {
         return nameAlias;
     }
@@ -87,7 +92,6 @@ public class ServicePackagePropvalueDO extends UuidIdentityEntity implements Ser
         this.nameAlias = nameAlias;
     }
 
-    @Column(name = "is_parent")
     public Integer getIsParent() {
         return isParent;
     }
@@ -96,7 +100,6 @@ public class ServicePackagePropvalueDO extends UuidIdentityEntity implements Ser
         this.isParent = isParent;
     }
 
-    @Column(name = "sort_order")
     public Long getSortOrder() {
         return sortOrder;
     }
@@ -105,7 +108,6 @@ public class ServicePackagePropvalueDO extends UuidIdentityEntity implements Ser
         this.sortOrder = sortOrder;
     }
 
-    @Column(name = "create_time")
     public Date getCreateTime() {
         return createTime;
     }

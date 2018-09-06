@@ -1,11 +1,11 @@
 package com.yihu.jw.security.oauth2.provider;
 
+import com.yihu.jw.security.core.userdetails.SaltUser;
 import com.yihu.jw.security.oauth2.core.redis.WlyyRedisVerifyCodeService;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidClientException;
 import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
@@ -35,45 +35,47 @@ public class WlyyTokenGranter implements TokenGranter {
                             AuthorizationCodeServices authorizationCodeServices,
                             ClientDetailsService clientDetailsService,
                             OAuth2RequestFactory requestFactory,
-                            WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService) {
+                            WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService,
+                            UserDetailsService userDetailsService) {
 
-        tokenGranters.put(EhrAuthorizationCodeGranter.GRANT_TYPE,
-                new EhrAuthorizationCodeGranter(
+        tokenGranters.put(WlyyAuthorizationCodeGranter.GRANT_TYPE,
+                new WlyyAuthorizationCodeGranter(
                         tokenServices,
                         authorizationCodeServices,
                         clientDetailsService,
                         requestFactory
                 ));
 
-        tokenGranters.put(EhrResourceOwnerPasswordTokenGranter.GRANT_TYPE,
-                new EhrResourceOwnerPasswordTokenGranter(
+        tokenGranters.put(WlyyResourceOwnerPasswordTokenGranter.GRANT_TYPE,
+                new WlyyResourceOwnerPasswordTokenGranter(
                         authenticationManager,
                         tokenServices,
                         clientDetailsService,
                         requestFactory
                 ));
 
-        tokenGranters.put(EhrRefreshTokenGranter.GRANT_TYPE,
-                new EhrRefreshTokenGranter(
+        tokenGranters.put(WlyyRefreshTokenGranter.GRANT_TYPE,
+                new WlyyRefreshTokenGranter(
                         tokenServices,
                         clientDetailsService,
                         requestFactory
                 ));
 
-        tokenGranters.put(EhrImplicitTokenGranter.GRANT_TYPE,
-                new EhrImplicitTokenGranter(
+        tokenGranters.put(WlyyImplicitTokenGranter.GRANT_TYPE,
+                new WlyyImplicitTokenGranter(
                         tokenServices,
                         clientDetailsService,
                         requestFactory
                 ));
 
-        tokenGranters.put(EhrVerifyCodeTokenGranter.GRANT_TYPE,
-                new EhrVerifyCodeTokenGranter(
+        tokenGranters.put(WlyyCaptchaTokenGranter.GRANT_TYPE,
+                new WlyyCaptchaTokenGranter(
                         authenticationManager,
                         tokenServices,
                         clientDetailsService,
                         requestFactory,
-                        wlyyRedisVerifyCodeService
+                        wlyyRedisVerifyCodeService,
+                        userDetailsService
                 ));
     }
 
@@ -88,19 +90,19 @@ public class WlyyTokenGranter implements TokenGranter {
     /**
      * authorization_code模式Token授权器。
      */
-    public static class EhrAuthorizationCodeGranter extends AbstractTokenGranter {
+    public static class WlyyAuthorizationCodeGranter extends AbstractTokenGranter {
         public static final String GRANT_TYPE = "authorization_code";
 
         private final AuthorizationCodeServices authorizationCodeServices;
 
-        public EhrAuthorizationCodeGranter(AuthorizationServerTokenServices tokenServices,
+        public WlyyAuthorizationCodeGranter(AuthorizationServerTokenServices tokenServices,
                                            AuthorizationCodeServices authorizationCodeServices,
                                            ClientDetailsService clientDetailsService,
                                            OAuth2RequestFactory requestFactory) {
             this(tokenServices, authorizationCodeServices, clientDetailsService, requestFactory, GRANT_TYPE);
         }
 
-        protected EhrAuthorizationCodeGranter(AuthorizationServerTokenServices tokenServices,
+        protected WlyyAuthorizationCodeGranter(AuthorizationServerTokenServices tokenServices,
                                               AuthorizationCodeServices authorizationCodeServices,
                                               ClientDetailsService clientDetailsService,
                                               OAuth2RequestFactory requestFactory,
@@ -162,17 +164,6 @@ public class WlyyTokenGranter implements TokenGranter {
 
             Authentication userAuth = storedAuth.getUserAuthentication();
 
-            //再次通过pk获取当前请求的用户信息
-            /*String pk = combinedParameters.get("pk");
-            String keyId = ehrJDBCUserSecurityService.getDefaultKeyIdSelectStatement(pk);
-            String userId = ehrJDBCUserSecurityService.getDefaultUserIdByKeyIdSelectStatement(keyId);
-            String userName = ehrJDBCUserSecurityService.getDefaultUserNameByUserId(userId);
-            UserDetails userDetails = ehrUserDetailsService.loadUserByUsername(userName);
-            if (StringUtils.isEmpty(keyId) || StringUtils.isEmpty(userId) || StringUtils.isEmpty(userName)) {
-                throw new InsufficientAuthenticationException("Illegal pk");
-            }
-            UsernamePasswordAuthenticationToken userToken = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());*/
-
             return new OAuth2Authentication(finalStoredOAuth2Request, userAuth);
         }
     }
@@ -180,17 +171,17 @@ public class WlyyTokenGranter implements TokenGranter {
     /**
      * password模式Token授权器。
      */
-    public static class EhrResourceOwnerPasswordTokenGranter extends AbstractTokenGranter {
+    public static class WlyyResourceOwnerPasswordTokenGranter extends AbstractTokenGranter {
         private static final String GRANT_TYPE = "password";
 
         private final AuthenticationManager authenticationManager;
 
-        public EhrResourceOwnerPasswordTokenGranter(AuthenticationManager authenticationManager,
+        public WlyyResourceOwnerPasswordTokenGranter(AuthenticationManager authenticationManager,
                                                  AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
             this(authenticationManager, tokenServices, clientDetailsService, requestFactory, GRANT_TYPE);
         }
 
-        protected EhrResourceOwnerPasswordTokenGranter(AuthenticationManager authenticationManager, AuthorizationServerTokenServices tokenServices,
+        protected WlyyResourceOwnerPasswordTokenGranter(AuthenticationManager authenticationManager, AuthorizationServerTokenServices tokenServices,
                                                     ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory, String grantType) {
             super(tokenServices, clientDetailsService, requestFactory, grantType);
             this.authenticationManager = authenticationManager;
@@ -230,10 +221,10 @@ public class WlyyTokenGranter implements TokenGranter {
     /**
      * refresh模式Token授权器。
      */
-    public static class EhrRefreshTokenGranter extends AbstractTokenGranter {
+    public static class WlyyRefreshTokenGranter extends AbstractTokenGranter {
         static final String GRANT_TYPE = "refresh_token";
 
-        public EhrRefreshTokenGranter(AuthorizationServerTokenServices tokenServices,
+        public WlyyRefreshTokenGranter(AuthorizationServerTokenServices tokenServices,
                                       ClientDetailsService clientDetailsService,
                                       OAuth2RequestFactory requestFactory) {
             super(tokenServices, clientDetailsService, requestFactory, GRANT_TYPE);
@@ -248,16 +239,16 @@ public class WlyyTokenGranter implements TokenGranter {
     }
 
     /**
-     * Implicit模式Token授权器。
+     * implicit模式Token授权器。
      */
-    public static class EhrImplicitTokenGranter extends AbstractTokenGranter {
+    public static class WlyyImplicitTokenGranter extends AbstractTokenGranter {
         private static final String GRANT_TYPE = "implicit";
 
-        public EhrImplicitTokenGranter(AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
+        public WlyyImplicitTokenGranter(AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService, OAuth2RequestFactory requestFactory) {
             this(tokenServices, clientDetailsService, requestFactory, GRANT_TYPE);
         }
 
-        protected EhrImplicitTokenGranter(AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService,
+        protected WlyyImplicitTokenGranter(AuthorizationServerTokenServices tokenServices, ClientDetailsService clientDetailsService,
                                        OAuth2RequestFactory requestFactory, String grantType) {
             super(tokenServices, clientDetailsService, requestFactory, grantType);
         }
@@ -283,32 +274,37 @@ public class WlyyTokenGranter implements TokenGranter {
     }
 
     /**
-     * verify_code模式Token授权器。
+     * captcha模式Token授权器。
      */
-    public static class EhrVerifyCodeTokenGranter extends AbstractTokenGranter {
-        private static final String GRANT_TYPE = "verify_code";
+    public static class WlyyCaptchaTokenGranter extends AbstractTokenGranter {
+        private static final String GRANT_TYPE = "captcha";
 
         private final AuthenticationManager authenticationManager;
-        // Ehr Properties
+        // Customize Properties
         private final WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
+        private final UserDetailsService userDetailsService;
 
-        public EhrVerifyCodeTokenGranter(AuthenticationManager authenticationManager,
-                                         AuthorizationServerTokenServices tokenServices,
-                                         ClientDetailsService clientDetailsService,
-                                         OAuth2RequestFactory requestFactory,
-                                         WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService) {
-            this(authenticationManager, tokenServices, clientDetailsService, requestFactory, GRANT_TYPE, wlyyRedisVerifyCodeService);
+
+        public WlyyCaptchaTokenGranter(AuthenticationManager authenticationManager,
+                                       AuthorizationServerTokenServices tokenServices,
+                                       ClientDetailsService clientDetailsService,
+                                       OAuth2RequestFactory requestFactory,
+                                       WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService,
+                                       UserDetailsService userDetailsService) {
+            this(authenticationManager, tokenServices, clientDetailsService, requestFactory, wlyyRedisVerifyCodeService, userDetailsService, GRANT_TYPE);
         }
 
-        protected EhrVerifyCodeTokenGranter(AuthenticationManager authenticationManager,
-                                            AuthorizationServerTokenServices tokenServices,
-                                            ClientDetailsService clientDetailsService,
-                                            OAuth2RequestFactory requestFactory,
-                                            String grantType,
-                                            WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService) {
+        protected WlyyCaptchaTokenGranter(AuthenticationManager authenticationManager,
+                                          AuthorizationServerTokenServices tokenServices,
+                                          ClientDetailsService clientDetailsService,
+                                          OAuth2RequestFactory requestFactory,
+                                          WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService,
+                                          UserDetailsService userDetailsService,
+                                          String grantType) {
             super(tokenServices, clientDetailsService, requestFactory, grantType);
             this.authenticationManager = authenticationManager;
             this.wlyyRedisVerifyCodeService = wlyyRedisVerifyCodeService;
+            this.userDetailsService = userDetailsService;
         }
 
         @Override
@@ -317,22 +313,25 @@ public class WlyyTokenGranter implements TokenGranter {
             Map<String, String> parameters = new LinkedHashMap<String, String>(tokenRequest.getRequestParameters());
             String client_id = parameters.get("client_id");
             String username = parameters.get("username");
-            String verify_code = parameters.get("verify_code");
+            String captcha = parameters.get("captcha");
 
-            if (!wlyyRedisVerifyCodeService.verification(client_id, username, verify_code)){
-                throw new InvalidGrantException("Invalid verify_code");
+            if (!wlyyRedisVerifyCodeService.verification(client_id, username, captcha)){
+                throw new InvalidGrantException("Invalid captcha");
             }
-            Authentication userAuth = new UsernamePasswordAuthenticationToken(username, verify_code, getGrantedAuthorities(username));
+
+            SaltUser userDetails = (SaltUser)userDetailsService.loadUserByUsername(username);
+            if (!userDetails.isEnabled()) {
+                throw new InvalidGrantException("User is disabled");
+            }
+            if (!userDetails.isAccountNonLocked()) {
+                throw new InvalidGrantException("User account is locked");
+            }
+            Authentication userAuth = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), captcha, userDetails.getAuthorities());
             ((AbstractAuthenticationToken) userAuth).setDetails(parameters);
             OAuth2Request storedOAuth2Request = getRequestFactory().createOAuth2Request(client, tokenRequest);
             return new OAuth2Authentication(storedOAuth2Request, userAuth);
         }
 
-        private Collection<? extends GrantedAuthority> getGrantedAuthorities(String username) {
-            Collection<GrantedAuthority> authorities = new ArrayList<>(1);
-            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-            return authorities;
-        }
     }
 }
 
