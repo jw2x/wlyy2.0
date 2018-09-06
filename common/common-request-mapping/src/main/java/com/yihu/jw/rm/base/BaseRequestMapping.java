@@ -138,6 +138,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 短信模板
+     */
+    public static class Sms extends Basic {
+        public static final String PREFIX  = "/sms";
+    }
+
+    /**
      * 服务包
      */
     public static class ServicePackage extends Basic{
