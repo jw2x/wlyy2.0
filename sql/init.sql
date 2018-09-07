@@ -318,12 +318,13 @@ primary key (id)
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='职称字典';
 
 -- 机构药品分发
-CREATE TABLE `zy_iv_org_physic_allot_dict` (
+drop table IF EXISTS `dict_medicine_distribute_org`;
+CREATE TABLE `dict_medicine_distribute_org` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `org_id` varchar(50) DEFAULT NULL COMMENT '机构编码',
-  `physic_code` varchar(50) DEFAULT NULL COMMENT '药品代码',
-  `disp_quantity_untuck_flag` int(10) DEFAULT NULL,
-  `disp_pack_untuck_flag` int(10) DEFAULT NULL,
+  `medicine_code` varchar(50) DEFAULT NULL COMMENT '药品代码',
+#   `disp_quantity_untuck_flag` int(10) DEFAULT NULL,
+#   `disp_pack_untuck_flag` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构药品分发字典';
 
@@ -331,8 +332,8 @@ CREATE TABLE `zy_iv_org_physic_allot_dict` (
 drop table IF EXISTS `dict_medicine`;
 create table `dict_medicine`(
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `physic_code` varchar(50) DEFAULT NULL COMMENT '药品代码',
-  `physic_name` varchar(2000) DEFAULT NULL COMMENT '药品名称',
+  `code` varchar(50) DEFAULT NULL COMMENT '药品代码',
+  `name` varchar(2000) DEFAULT NULL COMMENT '药品名称',
   `physic_spec` varchar(2000) DEFAULT NULL COMMENT '药品规格',
   `subject_class` varchar(200) DEFAULT NULL COMMENT '药品科目  科目类别字典中定义',
   `dose_unit` varchar(50) DEFAULT NULL COMMENT '剂量单位 计量单位字典中定义',
