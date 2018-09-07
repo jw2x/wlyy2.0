@@ -279,7 +279,7 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
             buffer.deleteCharAt(buffer.length()-1);
             buffer.append(")");
         }
-        String sql = "select * from wlyy_hospital_service_item where 1=1 AND status=1"+buffer;
+        String sql = "select * from wlyy_hospital_service_item where 1=1 AND status = 1"+buffer;
         List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
         for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOS){
             SpecialistServiceItemDO specialistServiceItemDO = specialistServiceItemDao.findOne(hospitalServiceItemDO.getServiceItemId());
