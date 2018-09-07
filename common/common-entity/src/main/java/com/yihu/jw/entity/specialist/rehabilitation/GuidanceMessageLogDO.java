@@ -23,6 +23,7 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
     private Integer doctorType;
     private Integer adminTeamCode;
     private String adminTeamName;
+    private Integer contentType;
 
     @Column(name = "doctor")
     public String getDoctor() {
@@ -103,5 +104,14 @@ public class GuidanceMessageLogDO extends UuidIdentityEntityWithOperator impleme
 
     public void setMessageId(String messageId) {
         this.messageId = messageId;
+    }
+
+    @Column(name = "content_type")
+    public Integer getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(Integer contentType) {
+        this.contentType = contentType;
     }
 }

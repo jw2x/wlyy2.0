@@ -17,6 +17,6 @@ public interface SpecialistPatientRelationDao extends PagingAndSortingRepository
     @Query("select p from SpecialistPatientRelationDO p where p.doctor=?1 and p.patient =?2 and p.status>=0")
     public SpecialistPatientRelationDO findByDoctorAndPatient(String doctor,String patient);
 
-    @Query("select p from SpecialistPatientRelationDO p where p.doctor=?1 and p.patient=?2 and p.signStatus='1' and p.status=1 ")
+    @Query("select p from SpecialistPatientRelationDO p where p.doctor=?1 and p.patient=?2 and p.signStatus='1' and p.status>=0 ")
     SpecialistPatientRelationDO findByPatientAndDoctor(String doctor,String patient);
 }
