@@ -313,4 +313,17 @@ public class RehabilitationManageController {
             return Envelop.getError(e.getMessage());
         }
     }
+
+    @GetMapping(value = SpecialistMapping.rehabilitation.planSchedule)
+    @ApiOperation(value = "康复管理-计划总进度")
+    public ObjEnvelop planSchedule(@ApiParam(name = "planId", value = "计划id", required = true)
+                                                       @RequestParam(value = "planId", required = true)String planId){
+        try {
+            return rehabilitationManageService.planSchedule(planId);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
+        }
+    }
 }

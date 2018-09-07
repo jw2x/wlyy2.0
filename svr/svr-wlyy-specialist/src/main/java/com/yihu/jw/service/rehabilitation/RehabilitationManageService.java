@@ -1084,4 +1084,19 @@ public class RehabilitationManageService {
         }
         return Envelop.getError("更新失败！");
     }
+
+    /**
+     * 计划总进度
+     * @param planId
+     * @return
+     */
+    public ObjEnvelop planSchedule(String planId){
+        Map<String,Object> resultMap = new HashMap<>();
+        Integer allCount = rehabilitationDetailDao.findAllByPlanId(planId);//计划总服务项目数
+        Integer finishedCount = rehabilitationDetailDao.findByStatusAndPlanId(1,planId);
+        resultMap.put("allCount",allCount);
+        resultMap.put("finishedCount",finishedCount);
+        resultMap.put("healthyCondition","康复期");
+        return ObjEnvelop.getSuccess(SpecialistMapping.api_success,resultMap);
+    }
 }
