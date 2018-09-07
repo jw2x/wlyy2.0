@@ -17,6 +17,7 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.util.common.IdCardUtil;
 import com.yihu.jw.util.date.DateUtil;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -1049,13 +1050,31 @@ public class RehabilitationManageService {
      * @param planDeatilId
      * @return
      */
-    public int updateNodeAndRelationRecordImg(String node,String image,String planDeatilId){
-        int i = 0;
-        i = rehabilitationDetailDao.updateStatusById(1,planDeatilId);
-        int j = 0;
-        j = rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
-        int result = i+j;
-        return  result;
+    public Map<String,Object> updateNodeAndRelationRecordImg(String node,String image,String planDeatilId)throws Exception{
+        Map<String,Object> resultMap = new HashedMap();
+        int i = rehabilitationDetailDao.updateStatusById(1,planDeatilId);
+        int j = rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+        String sql ="SELECT" +
+                " i.service_item_id," +
+                " r.doctor_code," +
+                " r.patient_code" +
+                " FROM" +
+                " wlyy_rehabilitation_plan_detail pd" +
+                " LEFT JOIN wlyy_hospital_service_item i ON pd.hospital_service_item_id = i.id" +
+                " LEFT JOIN wlyy_rehabilitation_operate_records r ON pd.id = r.rehabilitation_detail_id" +
+                " WHERE" +
+                " pd.id = '"+planDeatilId+"'";
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        if (list!=null && list.size()>0){
+            resultMap = list.get(0);
+        }
+        String itemSql ="SELECT evaluation FROM `wlyy_service_item` WHERE id='"+String.valueOf(resultMap.get("service_item_id"))+"'";
+        List<Map<String,Object>> itemList = jdbcTemplate.queryForList(itemSql);
+        if (itemList!=null && itemList.size()>0){
+            resultMap.put("evaluation",itemList.get(0).get("evaluation"));
+        }
+        resultMap.put("count",i+j);
+        return resultMap;
     }
 
     /**
