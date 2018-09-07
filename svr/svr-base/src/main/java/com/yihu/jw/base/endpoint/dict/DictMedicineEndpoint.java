@@ -1,6 +1,8 @@
 package com.yihu.jw.base.endpoint.dict;
 
+import com.yihu.jw.base.service.dict.DictMedicineDistributeOrgService;
 import com.yihu.jw.base.service.dict.DictMedicineService;
+import com.yihu.jw.entity.base.dict.DictMedicineDO;
 import com.yihu.jw.restmodel.base.dict.DictMedicineVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -17,14 +19,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import com.yihu.jw.entity.base.dict.DictMedicineDO;
-
 /**
  * 药品字典控制器
  *
  * @version <pre>
  * Author	Version		Date		Changes
- * litaohong 	1.0  		2018年08月31日 	Created
+ * Administrator 	1.0  		2018年09月07日 	Created
  *
  * </pre>
  * @since 1.
@@ -36,6 +36,8 @@ public class DictMedicineEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
     private DictMedicineService dictMedicineService;
+    @Autowired
+    private DictMedicineDistributeOrgService dictMedicineDistributeOrgService;
 
     @PostMapping(value = BaseRequestMapping.DictMedicine.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
