@@ -358,6 +358,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * app版本升级
+     */
+    public static class AppVersion extends Basic {
+        public static final String PREFIX  = "/appVersion";
+    }
+
+    /**
      * 基于MQ的消息推送
      */
     public static class MqMessage extends Basic {
