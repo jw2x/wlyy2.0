@@ -172,7 +172,7 @@ public class WlyyUserDetailsService extends JdbcDaoSupport implements UserDetail
     }
 
     /**
-     * 更新失败次数
+     * 更新登录失败次数
      * @param username
      * @param loginFailureCount
      */
