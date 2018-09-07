@@ -73,7 +73,7 @@ public class SpecialistMapping {
         public static final String updateStatusRehabilitationOperate = "/updateStatusRehabilitationOperate";
         public static final String patientRehabilitationDetail = "/patientRehabilitationDetail";
         public static final String recentPlanDetailRecord = "/recentPlanDetailRecord";
-        public static final String saveRehabilitationOperateRecodr="/saveRehabilitationOperateRecodr";
+        public static final String saveRehabilitationOperateRecord="/saveRehabilitationOperateRecord";
         public static final String updateNoteAndImageRehabilitationOperate = "/updateNoteAndImageRehabilitationOperate";
 
         public static final String findServiceItemsByHospital = "/findServiceItemsByHospital";
@@ -96,5 +96,11 @@ public class SpecialistMapping {
         public static final String selectByHospital = "/selectByHospital";
         public static final String selectById="/selectById";
         public static final String selectItemByHospital= "/selectItemByHospital";
+        public static final String selectByOperate = "/selectByOperate";
+        public static final String selectByCondition="/selectByCondition";
+        public static final String deleteHospitalItem = "/deleteHospitalItem";
+        public static final String selectByHospital1 = "/selectByHospital1";
+        public static final String importData1 = "/importData1";
+        public static final String importData2 = "/importData2";
     }
 }

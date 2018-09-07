@@ -55,10 +55,8 @@
         <module>../server/svr-configuration</module> <!--配置服务-->
         <module>../server/svr-discovery</module><!--发现服务-->
         <module>../server/svr-authentication</module> <!-- 认证服务 -->
-        <!-- 暂时保留 -->
         <!--<module>../server/svr-dashboard</module>--><!--监控服务-->
         <module>../server/svr-zipkin</module> <!--分布式追踪服务-->
-        <!-- 暂时保留 -->
 
         <!-- 网关服务 -->
         <module>../gateway/ag-basic</module> <!-- web网关 -->
@@ -112,7 +110,7 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
-                <version>Edgware.SR2</version>
+                <version>Edgware.SR4</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -151,11 +149,6 @@
             <dependency>
                 <groupId>com.yihu.jw</groupId>
                 <artifactId>common-rest-model-es</artifactId>
-                <version>${version.wlyy-common}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.yihu.jw</groupId>
-                <artifactId>svr-base</artifactId>
                 <version>${version.wlyy-common}</version>
             </dependency>
             <dependency>
@@ -375,7 +368,7 @@
                 <version>${asciidoctor.maven.plugin.version}</version>
                 <configuration>
                     <sourceDirectory>build</sourceDirectory>
-                    <outputDirectory>docs/${project.version}</outputDirectory>
+                    <outputDirectory>doc/${project.version}</outputDirectory>
                     <headerFooter>true</headerFooter>
                     <doctype>book</doctype>
                     <sourceHighlighter>coderay</sourceHighlighter>

@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.base.patient;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,9 +9,9 @@ import java.util.Date;
 
 
 /**
-* 居民信息实体
+* 居民信息（居民就是患者）实体
 *
-* @author litaohong on  2018年08月31日
+* @author Administrator on  2018年09月05日
 *
 */
 @Entity
@@ -18,179 +19,182 @@ import java.util.Date;
 public class BasePatientDO extends UuidIdentityEntityWithOperator {
 
     /**
-	* saas配置id
-	*/
-    private String saasId;
+	 * saas配置id
+	 */
+	private String saasId;
 
     /**
-	* 身份证号
-	*/
-    private String idcard;
+	 * 身份证号
+	 */
+	private String idcard;
 
     /**
-	* 登录密码
-	*/
-    private String password;
+	 * 登录密码
+	 */
+	private String password;
 
     /**
-	* 
-	*/
-    private String salt;
+	 *
+	 */
+	private String salt;
 
     /**
-	* 姓名
-	*/
-    private String name;
+	 * 姓名
+	 */
+	private String name;
 
     /**
-	* 生日
-	*/
-    private Date birthday;
+	 * 生日
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date birthday;
 
     /**
-	* 性别，1男，2女
-	*/
-    private String sex;
+	 * 性别，1男，2女
+	 */
+	private Integer sex;
 
     /**
-	* 手机号
-	*/
-    private String mobile;
+	 * 手机号
+	 */
+	private String mobile;
 
     /**
-	* 联系电话
-	*/
-    private String phone;
+	 * 联系电话
+	 */
+	private String phone;
 
     /**
-	* 社保卡号
-	*/
-    private String ssc;
+	 * 社保卡号
+	 */
+	private String ssc;
 
     /**
-	* 头像http地址
-	*/
-    private String photo;
+	 * 头像http地址
+	 */
+	private String photo;
 
     /**
-	* 省编码
-	*/
-    private String provinceCode;
+	 * 省编码
+	 */
+	private String provinceCode;
 
     /**
-	* 市编码
-	*/
-    private String cityCode;
+	 * 市编码
+	 */
+	private String cityCode;
 
     /**
-	* 区县编码
-	*/
-    private String townCode;
+	 * 区县编码
+	 */
+	private String townCode;
 
     /**
-	* 街道编码
-	*/
-    private String streetCode;
+	 * 街道编码
+	 */
+	private String streetCode;
 
     /**
-	* 具体详细地址
-	*/
-    private String address;
+	 * 具体详细地址
+	 */
+	private String address;
 
     /**
-	* 疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病
-	*/
-    private String disease;
+	 * 疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病
+	 */
+	private String disease;
 
     /**
-	* 病情：0绿标，1黄标，2红标，3重点关注,
-	*/
-    private String diseaseCondition;
+	 * 病情：0绿标，1黄标，2红标，3重点关注,
+	 */
+	private String diseaseCondition;
 
     /**
-	* 总积分
-	*/
-    private String points;
+	 * 总积分
+	 */
+	private String points;
 
     /**
-	* 病历总数
-	*/
-    private String recordAmount;
+	 * 病历总数
+	 */
+	private String recordAmount;
 
     /**
-	* 微信编号
-	*/
-    private String openid;
+	 * 微信编号
+	 */
+	private String openid;
 
     /**
-	* 用户状态：1正常，0禁用，-1恶意注册，2审核中
-	*/
-    private String patientStatus;
+	 * 用户状态：1正常，0禁用，-1恶意注册，2审核中
+	 */
+	private String patientStatus;
 
     /**
-	* 联系方式备注【基卫】
-	*/
-    private String mobileRemarks;
+	 * 联系方式备注【基卫】
+	 */
+	private String mobileRemarks;
 
     /**
-	* 第一次添加open的时间
-	*/
-    private Date openidTime;
+	 * 第一次添加open的时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date openidTime;
 
     /**
-	* 居委会代码
-	*/
-    private String sickVillage;
+	 * 居委会代码
+	 */
+	private String sickVillage;
 
     /**
-	* 
-	*/
-    private String sickVillageName;
+	 *
+	 */
+	private String sickVillageName;
 
     /**
-	* 绑定电子社保卡主体（共济为操作人code）
-	*/
-    private String principalCode;
+	 * 绑定电子社保卡主体（共济为操作人code）
+	 */
+	private String principalCode;
 
     /**
-	* 是否绑定电子社保卡 （0否 1是）
-	*/
-    private String sicardStatus;
+	 * 是否绑定电子社保卡 （0否 1是）
+	 */
+	private String sicardStatus;
 
     /**
-	* 电子社保卡绑定时间
-	*/
-    private Date sicardTime;
+	 * 电子社保卡绑定时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date sicardTime;
 
     /**
-	* 是否分配过微信标签
-	*/
-    private Integer isWxtag;
+	 * 是否分配过微信标签
+	 */
+	private Integer isWxtag;
 
     /**
-	* 微信tagId
-	*/
-    private String wxtagid;
+	 * 微信tagId
+	 */
+	private String wxtagid;
 
     /**
-	* 居民预警状态：0为标准，1为预警状态
-	*/
-    private Integer standardStatus;
+	 * 居民预警状态：0为标准，1为预警状态
+	 */
+	private Integer standardStatus;
 
     /**
-	* 医疗保险号
-	*/
-    private String medicareNumber;
+	 * 医疗保险号
+	 */
+	private String medicareNumber;
 
     /**
-	* unionId 开发平台唯一标识
-	*/
-    private String unionid;
+	 * unionId 开发平台唯一标识
+	 */
+	private String unionid;
 
     /**
-	* 作废标识，1正常，0作废
-	*/
-    private String del;
+	 * 作废标识，1正常，0作废
+	 */
+	private String del;
 
 
 	@Column(name = "saas_id")
@@ -242,10 +246,10 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     }
 
 	@Column(name = "sex")
-    public String getSex() {
+    public Integer getSex() {
         return sex;
     }
-    public void setSex(String sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 

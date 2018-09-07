@@ -31,6 +31,10 @@ public class SaltUser implements UserDetails, CredentialsContainer {
         this(username, password, salt, true, true, true, true, authorities);
     }
 
+    public SaltUser(String username, String password, String salt, boolean enabled, boolean locked, Collection<? extends GrantedAuthority> authorities) {
+        this(username, password, salt, enabled, true, true, !locked, authorities);
+    }
+
     public SaltUser(String username, String password, String salt, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
         if(username != null && !"".equals(username) && password != null) {
             this.username = username;

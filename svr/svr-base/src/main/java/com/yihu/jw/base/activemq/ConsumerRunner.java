@@ -1,6 +1,6 @@
 package com.yihu.jw.base.activemq;
 
-import com.yihu.utils.context.SpringContext;
+import com.yihu.utils.context.SpringContextUtils;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +36,7 @@ public class ConsumerRunner implements Runnable, ExceptionListener {
 
     private void init() {
         try {
-            ActiveMQConnectionFactory connectionFactory = SpringContext.getService(ActiveMQConnectionFactory.class);
+            ActiveMQConnectionFactory connectionFactory = SpringContextUtils.getService(ActiveMQConnectionFactory.class);
             // Create a Connection
             connection = connectionFactory.createQueueConnection();
             connection.start();
@@ -54,7 +54,7 @@ public class ConsumerRunner implements Runnable, ExceptionListener {
     }
 
     private void recover() throws JMSException {
-        ActiveMQConnectionFactory connectionFactory = SpringContext.getService(ActiveMQConnectionFactory.class);
+        ActiveMQConnectionFactory connectionFactory = SpringContextUtils.getService(ActiveMQConnectionFactory.class);
         // Create a Connection
         connection = connectionFactory.createQueueConnection();
         connection.start();

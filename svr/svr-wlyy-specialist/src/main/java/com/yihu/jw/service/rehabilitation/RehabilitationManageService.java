@@ -299,7 +299,7 @@ public class RehabilitationManageService {
         resultMap.put("sex","1".equals(sex)?"男":("2".equals(sex)?"女":"未知"));
         resultMap.put("patientName",signFamilyMap.get("name"));
         //疾病类型
-        String diseaseSql = " select s.* from "+basedb+".wlyy_patient_disease_server s where s.del=1 and s.patient='"+patientCode+"' ";
+        String diseaseSql = " select s.* from "+basedb+".wlyy_patient_disease_server s where s.del=1 and s.patient='"+patientCode+"' and s.specialist_relation_code='"+specialistMap.get("id")+"' ";
         List<Map<String,Object>> diseaseList = jdbcTemplate.queryForList(diseaseSql);
         List<String> disease = new ArrayList<>();
         for(Map<String,Object> one2:diseaseList){
@@ -441,19 +441,22 @@ public class RehabilitationManageService {
                 }
             }
             //myTaskFlag,1：有自己任务，0：没有自己任务
-            if(m.containsKey("myTaskFlag")){
-                if((Integer)m.get("myTaskFlag")==0){
+            if(StringUtils.isNotEmpty(doctorCode)){
+
+                if(m.containsKey("myTaskFlag")){
+                    if((Integer)m.get("myTaskFlag")==0){
+                        if(doctorCode.equals(one.get("doctor").toString())){
+                            m.put("myTaskFlag",1);
+                        }else{
+                            m.put("myTaskFlag",0);
+                        }
+                    }
+                }else{
                     if(doctorCode.equals(one.get("doctor").toString())){
                         m.put("myTaskFlag",1);
                     }else{
                         m.put("myTaskFlag",0);
                     }
-                }
-            }else{
-                if(doctorCode.equals(one.get("doctor").toString())){
-                    m.put("myTaskFlag",1);
-                }else{
-                    m.put("myTaskFlag",0);
                 }
             }
             if(m.containsKey("planDetailIds")){
@@ -506,7 +509,7 @@ public class RehabilitationManageService {
             planDetailList +=",'"+one+"'";
         }
         String planDetailResult = StringUtils.isNotEmpty(planDetailList)?planDetailList.substring(1):"";
-        String sql = "select i.title,i.content,i.type,i.reserve,d.id,d.execute_time,d.hospital_name,d.status,d.type,d.expense,d.doctor as specialistDoctor," +
+        String sql = "select i.title,i.content,i.type as itemType,i.reserve,d.id,d.execute_time,d.hospital_name,d.status,d.type as detailType,d.expense,d.doctor as specialistDoctor," +
                 " d.doctor_name as specialistDoctorName,p.patient ,p.create_user ,p.create_user_name " +
                 " from wlyy_specialist.wlyy_rehabilitation_plan_detail d " +
                 " LEFT JOIN wlyy_specialist.wlyy_hospital_service_item h on d.hospital_service_item_id = h.id "+
@@ -524,6 +527,8 @@ public class RehabilitationManageService {
                 executeDoctorList.add(one.get("create_user_name")+"");
             }
             executeDoctorList.add(one.get("specialistDoctorName")+"");
+            resultMap.put("specialistDoctorCode",one.get("create_user")+"");//专科医生code
+            resultMap.put("specialistDoctorName",one.get("create_user_name")+"");//专科医生名字
             resultMap.put("executeDoctorList",executeDoctorList);
             resultMap.put("title",one.get("title"));//项目标题
             resultMap.put("planDetaiId",one.get("id"));//计划服务项目id
@@ -554,7 +559,8 @@ public class RehabilitationManageService {
             }
             resultMap.put("messageList",messageMapList);//指导与汇报记录
             resultMap.put("patient",one.get("patient"));
-            resultMap.put("type",one.get("type"));
+            resultMap.put("itemType",one.get("itemType"));
+            resultMap.put("detaiType",one.get("detaiType"));
             resultMap.put("status",status);//状态
             //是否完成任务
             List<RehabilitationOperateRecordsDO> operateList = rehabilitationOperateRecordsDao.findByRehabilitationDetailId(one.get("id").toString());
@@ -575,10 +581,11 @@ public class RehabilitationManageService {
      * @param planDetailId
      * @return
      * @throws Exception
+     *
      */
     public ObjEnvelop serviceItem(String planDetailId) throws Exception{
         String sql = "select i.title,i.content,i.type as itemType,i.reserve,d.id,d.execute_time,d.hospital_name,d.status,d.type,d.expense,d.doctor as specialistDoctor, " +
-                " d.doctor_name as specialistDoctorName,p.patient ,p.create_user ,p.create_user_name " +
+                " d.doctor_name as specialistDoctorName,p.patient ,p.name as patientName,p.create_user ,p.create_user_name " +
                 " from wlyy_specialist.wlyy_rehabilitation_plan_detail d " +
                 " LEFT JOIN wlyy_specialist.wlyy_hospital_service_item h on d.hospital_service_item_id = h.id "+
                 " LEFT JOIN wlyy_specialist.wlyy_service_item i on i.id = h.service_item_id " +
@@ -593,7 +600,8 @@ public class RehabilitationManageService {
         }
         executeDoctorList.add(one.get("specialistDoctorName")+"");
         resultMap.put("executeDoctorList",executeDoctorList);
-        resultMap.put("specialistDoctorCode",one.get("create_user")+"");
+        resultMap.put("specialistDoctorCode",one.get("create_user")+"");//专科医生code
+        resultMap.put("specialistDoctorName",one.get("create_user_name")+"");//专科医生名字
         resultMap.put("title",one.get("title"));//项目标题
         resultMap.put("shortExecuteTime",DateUtil.dateToStr((Date) one.get("execute_time"),DateUtil.HH_MM));//项目标题
         resultMap.put("content",one.get("content"));//项目内容
@@ -624,6 +632,7 @@ public class RehabilitationManageService {
         Integer itemType = (Integer) one.get("itemType");
         resultMap.put("messageList",messageMapList);//指导与汇报记录
         resultMap.put("patient",one.get("patient"));
+        resultMap.put("patientName",one.get("patientName"));
         resultMap.put("type",itemType);//1扫码、0上传附件、2、健康教育，3、健康指导，4、随访
 
         //是否完成任务
@@ -637,7 +646,7 @@ public class RehabilitationManageService {
             resultMap.put("completeTime",completeTimeStr);//完成时间
             resultMap.put("operatorDoctorName",temp.getDoctorName());//执行医生名称
             resultMap.put("node",temp.getNode());
-            resultMap.put("relationRecordImg",temp.getRelationRecordImg()!=null?(new JSONArray(temp.getRelationRecordImg())):null);
+            resultMap.put("relationRecordImg",(temp.getRelationRecordImg()!=null&&StringUtils.isNotEmpty(temp.getRelationRecordImg()))?(new JSONArray(temp.getRelationRecordImg())):null);//json格式
             if(itemType!=1&&itemType!=0){
                 resultMap.put("relationRecordCode",temp.getRelationRecordCode());
                 resultMap.put("completeTimeShort",DateUtil.dateToStr(completeTime,"yyyy/MM/dd"));
@@ -735,6 +744,7 @@ public class RehabilitationManageService {
                 case 2:planTypeName="（转）社区医院" ;break;
                 case 3:planTypeName="（转）转家庭病床" ;break;
             }
+            map.put("planId",one.getId());
             map.put("planTypeName",planTypeName);
             String statusName = "";
             Integer status = one.getStatus();
@@ -891,12 +901,14 @@ public class RehabilitationManageService {
     /**
      * 保存康复管理指导留言信息
      * @param messageId
-     * @param patient
      * @param doctor
      * @param doctorType 1、专科医生，2、家庭医生
      */
     @Transactional
-    public Envelop saveGuidanceMessage(String messageId,String patient,String doctor,Integer doctorType,String content,String planDetailId) throws Exception{
+    public Envelop saveGuidanceMessage(String messageId,String doctor,Integer doctorType,String content,String planDetailId) throws Exception{
+
+        List<Map<String,Object>> patientList = rehabilitationDetailDao.findPatientById(planDetailId);
+        String patient = patientList.size()>0?patientList.get(0).get("patient")+"":"";
         GuidanceMessageLogDO guidanceMessageLogDO = new GuidanceMessageLogDO();
         guidanceMessageLogDO.setMessageId(messageId);
         guidanceMessageLogDO.setPlanDetailId(planDetailId);
@@ -1031,14 +1043,19 @@ public class RehabilitationManageService {
     }
 
     /**
-     * 更新康复计划项目操作日志
+     * 更新康复计划项目操作日志并且确认完成更新status
      * @param node
      * @param image
      * @param planDeatilId
      * @return
      */
     public int updateNodeAndRelationRecordImg(String node,String image,String planDeatilId){
-        return rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+        int i = 0;
+        i = rehabilitationDetailDao.updateStatusById(1,planDeatilId);
+        int j = 0;
+        j = rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+        int result = i+j;
+        return  result;
     }
 
     /**

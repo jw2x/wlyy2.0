@@ -138,6 +138,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 短信模板
+     */
+    public static class Sms extends Basic {
+        public static final String PREFIX  = "/sms";
+    }
+
+    /**
      * 服务包
      */
     public static class ServicePackage extends Basic{
@@ -180,6 +187,27 @@ public class BaseRequestMapping {
     public static class ImGetuiConfig extends Basic{
         public static final String PREFIX  = "/im_getui";
     }
+    /**
+     * 家庭成员管理
+     */
+    public static class PatientMember extends Basic{
+        public static final String PREFIX = "/patient_member";
+    }
+
+    /**
+     * 医生评价
+     */
+    public static class Score extends Basic{
+        public static final String PREFIX = "/score";
+    }
+
+    /**
+     * 团队
+     */
+    public static class team extends Basic{
+        public static final String PREFIX = "/team";
+    }
+
 
     /**
      * 城市字典
@@ -228,6 +256,13 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/basePatient";
     }
 
+    /**
+     * 基础人口基数
+     */
+    public static class BasePeopleNum extends Basic {
+        public static final String PREFIX  = "/basePeopleNum";
+    }
+
 
     /**
      * 省份字典
@@ -273,6 +308,13 @@ public class BaseRequestMapping {
      */
     public static class DictHealthProblem extends Basic {
         public static final String PREFIX  = "/dictHealthProblem";
+    }
+
+    /**
+     * 健康问题字典
+     */
+    public static class DictDisease extends Basic {
+        public static final String PREFIX  = "/dictDisease";
     }
 
 

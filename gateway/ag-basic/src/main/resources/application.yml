@@ -1,20 +1,5 @@
 server:
-  port: 10001
-
-zuul:
-  config-priority: false
-  ignored-services: '*'
-  sensitive-headers:
-  routes:
-    svr-iot:
-      path: /iot/**
-      serviceId: svr-iot
-    svr-base:
-      path: /base/**
-      serviceId: svr-base-sxy
-    demo:
-      path: /baidu/**
-      url: https://www.baidu.com
+  port: ${server.ag-basic-port}
 
 spring:
   datasource:
@@ -34,7 +19,24 @@ spring:
     test-while-idle: true #指明连接是否被空闲连接回收器(如果有)进行检验，如果检测失败，则连接将被从池中去除
     min-evictable-idle-time-millis: 3600000 #连接池中连接，在时间段内一直空闲，被逐出连接池的时间(1000*60*60)，以毫秒为单位
     time-between-eviction-runs-millis: 300000 #在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位，一般比minEvictableIdleTimeMillis小
+#  sleuth:
+#    sampler:
+#      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
 
+zuul:
+  config-priority: false
+  ignored-services: '*'
+  sensitive-headers:
+  routes:
+    svr-iot:
+      path: /iot/**
+      serviceId: svr-iot
+    svr-base:
+      path: /base/**
+      serviceId: svr-base
+    demo:
+      path: /baidu/**
+      url: https://www.baidu.com
 
 ---
 spring:
@@ -45,10 +47,6 @@ spring:
     password: 123456
 #  zipkin:
 #    base-url: http://localhost:9411 #日志追踪的地址
-#  sleuth:
-#    sampler:
-#      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
-
 
 ---
 spring:
@@ -59,6 +57,13 @@ spring:
     password: 123456
 #  zipkin:
 #    base-url: http://localhost:9411 #日志追踪的地址
-#  sleuth:
-#    sampler:
-#      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
+
+---
+spring:
+  profiles: jwprod
+  datasource:
+    url: jdbc:mysql://172.19.103.77/base?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
+    username: root
+    password: 123456
+#  zipkin:
+#    base-url: http://localhost:9411 #日志追踪的地址

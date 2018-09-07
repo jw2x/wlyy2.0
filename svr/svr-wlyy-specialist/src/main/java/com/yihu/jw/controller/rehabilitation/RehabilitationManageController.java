@@ -106,7 +106,7 @@ public class RehabilitationManageController {
                                          @ApiParam(name = "status", value = "任务状态（0未完成，1已完成，2已预约）", required = false)
                                          @RequestParam(value = "status", required = false)Integer status,
                                          @ApiParam(name = "doctorCode", value = "医生code（专科医生、家庭医生）", required = false)
-                                         @RequestParam(value = "doctorCode", required = true)String doctorCode){
+                                         @RequestParam(value = "doctorCode", required = false)String doctorCode){
         try {
             return rehabilitationManageService.calendarPlanDetailList(planId,searchTask,status,doctorCode,executeStartTime,executeEndTime);
         }catch (Exception e){
@@ -146,8 +146,8 @@ public class RehabilitationManageController {
     @ApiOperation(value = "康复管理-保存指导留言")
     public Envelop saveGuidanceMessage(@ApiParam(name = "messageId", value = "消息id", required = true)
                                        @RequestParam(value = "messageId", required = true)String messageId,
-                                       @ApiParam(name = "patientCode", value = "居民code", required = true)
-                                       @RequestParam(value = "patientCode", required = true)String patientCode,
+//                                       @ApiParam(name = "patientCode", value = "居民code", required = true)
+//                                       @RequestParam(value = "patientCode", required = true)String patientCode,
                                        @ApiParam(name = "doctorCode", value = "医生code", required = true)
                                        @RequestParam(value = "doctorCode", required = true)String doctorCode,
                                        @ApiParam(name = "doctorType", value = "医生类型（1、专科医生，2、家庭医生）", required = true)
@@ -157,7 +157,7 @@ public class RehabilitationManageController {
                                        @ApiParam(name = "planDetailId", value = "服务项目id", required = true)
                                        @RequestParam(value = "planDetailId", required = true)String planDetailId){
         try {
-            return rehabilitationManageService.saveGuidanceMessage(messageId,patientCode,doctorCode,doctorType,content,planDetailId);
+            return rehabilitationManageService.saveGuidanceMessage(messageId,doctorCode,doctorType,content,planDetailId);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -281,12 +281,12 @@ public class RehabilitationManageController {
     }
 
     @PostMapping(value = SpecialistMapping.rehabilitation.updateNoteAndImageRehabilitationOperate)
-    @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口.")
+    @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口并且确认完成")
     public Envelop updateNoteAndImageRehabilitationOperate(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)@RequestParam(value = "planDetailId", required = true)String planDetailId,
-                                                           @ApiParam(name = "node", value = "服务完成笔记", required = true)@RequestParam(value = "node", required = true)String node,
-                                                           @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = true)String image){
+                                                           @ApiParam(name = "node", value = "服务完成笔记", required = true)@RequestParam(value = "node", required = false)String node,
+                                                           @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = false)String image){
         try {
-            if(rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId)>0){
+            if(rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId)>1){
                 return Envelop.getSuccess(SpecialistMapping.api_success);
             }
             return Envelop.getError("update error!");

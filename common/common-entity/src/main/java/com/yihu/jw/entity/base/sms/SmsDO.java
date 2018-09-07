@@ -21,7 +21,7 @@ public class SmsDO extends UuidIdentityEntity {
 	//请求的ip地址
 	private String requestIp;
 	//短信接收号码
-	private String to;
+	private String mobile;
 	//短信内容
 	private String content;
 	//过期时间
@@ -58,13 +58,13 @@ public class SmsDO extends UuidIdentityEntity {
 		this.requestIp = requestIp;
 	}
 
-	@Column(name = "to", nullable = false)
-	public String getTo() {
-		return to;
+	@Column(name = "mobile", nullable = false)
+	public String getMobile() {
+		return mobile;
 	}
 
-	public void setTo(String to) {
-		this.to = to;
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
 	}
 
 	@Column(name = "content", nullable = false)

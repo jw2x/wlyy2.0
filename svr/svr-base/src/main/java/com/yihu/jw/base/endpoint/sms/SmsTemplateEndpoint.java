@@ -37,7 +37,7 @@ public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         SmsTemplateDO smsTemplateDO = toEntity(jsonData, SmsTemplateDO.class);
         smsTemplateDO = smsTemplateService.save(smsTemplateDO);
-        return success(convertToModel(smsTemplateDO, SmsTemplateVO.class));
+        return success(smsTemplateDO, SmsTemplateVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.SmsTemplate.DELETE)
@@ -59,7 +59,7 @@ public class SmsTemplateEndpoint extends EnvelopRestEndpoint {
             return failed("ID不能为空", ObjEnvelop.class);
         }
         smsTemplateDO = smsTemplateService.save(smsTemplateDO);
-        return success(convertToModel(smsTemplateDO, SmsTemplateVO.class));
+        return success(smsTemplateDO, SmsTemplateVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SmsTemplate.PAGE)

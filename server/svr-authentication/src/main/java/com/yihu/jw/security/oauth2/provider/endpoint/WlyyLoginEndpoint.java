@@ -89,22 +89,32 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
     /**
      * 登陆
      * @param parameters
+     * 不定入参：
+     * client_id 应用标识
+     * captcha 验证码
+     * password 密码
+     * username 用户名/手机/身份证号
+     * login_type 用户类型 1或默认为user，2：医生登录，3：患者登录
      * @param httpSession
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "/oauth/login", method = RequestMethod.POST)
     public ResponseEntity<Oauth2Envelop<WlyyUserSimple>> login(@RequestParam Map<String, String> parameters, HttpSession httpSession) throws Exception {
+        String username = parameters.get("username");
+        if (StringUtils.isEmpty(username)) {
+            throw new InvalidRequestException("username");
+        }
         String client_id = parameters.get("client_id");
         if (StringUtils.isEmpty(client_id)) {
             throw new InvalidRequestException("client_id");
         }
         if (StringUtils.isEmpty(parameters.get("captcha"))) {
             parameters.put("grant_type", "password");
-            if (parameters.get("password") != null) {
-                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
-                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
-            }
+//            if (parameters.get("password") != null) {
+//                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
+//                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
+//            }
         } else {
             parameters.put("grant_type", "captcha");
         }
@@ -353,16 +363,13 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
 
    @ExceptionHandler(Exception.class)
     public ResponseEntity<Oauth2Envelop> handleException(Exception e) throws Exception {
-        LOG.info(e.getMessage(), e);
+        LOG.debug(e.getMessage(), e);
         if (e instanceof UsernameNotFoundException) {
-            return handleOAuth2Exception(new Oauth2Envelop("用户未注册!", HttpStatus.UNAUTHORIZED.value()), e);
+            return handleOAuth2Exception(new Oauth2Envelop("用户不存在!", HttpStatus.UNAUTHORIZED.value()), e);
         } else if (e instanceof NoSuchClientException) {
             return handleOAuth2Exception(new Oauth2Envelop("应用未注册!", HttpStatus.UNAUTHORIZED.value()), e);
         } else if (e instanceof InvalidGrantException) {
-            if (e.getMessage().contains("captcha")) {
-                return handleOAuth2Exception(new Oauth2Envelop("验证码有误!", HttpStatus.UNAUTHORIZED.value()), e);
-            }
-            return handleOAuth2Exception(new Oauth2Envelop("密码有误!", HttpStatus.UNAUTHORIZED.value()), e);
+            return handleOAuth2Exception(new Oauth2Envelop(invalidGrantMessage((InvalidGrantException)e), HttpStatus.UNAUTHORIZED.value()), e);
         } else if (e instanceof InvalidTokenException) {
             return handleOAuth2Exception(new Oauth2Envelop("Token有误!", HttpStatus.UNAUTHORIZED.value()), e);
         } else if (e instanceof InvalidRequestException) {
@@ -373,6 +380,19 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
             return handleOAuth2Exception(new Oauth2Envelop("短信网关请求失败!", -1), e);
         }
         return handleOAuth2Exception(new Oauth2Envelop(e.getMessage(), -1), e);
+    }
+
+    private String invalidGrantMessage(InvalidGrantException e) {
+        if (e.getMessage().equals("User is disabled")) {
+            return "账号不可用!";
+        } else if (e.getMessage().equals("User account is locked")) {
+            return "账号已被锁定,请稍后重试!";
+        } else if (e.getMessage().equals("Bad credentials")) {
+            return userDetailsService.authFailure();
+        } else if (e.getMessage().equals("Invalid captcha")) {
+            return "验证码错误!";
+        }
+        return e.getMessage();
     }
 
     private ResponseEntity<Oauth2Envelop> handleOAuth2Exception(Oauth2Envelop authenticationFailed, Exception e) throws IOException {

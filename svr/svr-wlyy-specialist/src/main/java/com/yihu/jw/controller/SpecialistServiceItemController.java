@@ -12,7 +12,6 @@ import com.yihu.jw.service.SpecialistServiceItemService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import jxl.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
@@ -68,7 +67,7 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      * @param serviceItem
      * @return
      */
-    @GetMapping(value = SpecialistMapping.serviceItem.createServiceItem)
+    @PostMapping(value = SpecialistMapping.serviceItem.createServiceItem)
     @ApiOperation(value = "服务项目添加")
     public MixEnvelop<Boolean,Boolean> insert(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                                        @RequestParam(value = "serviceItem")String serviceItem){
@@ -158,13 +157,21 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      */
     @RequestMapping(value = "importData")
     @ResponseBody
-    public MixEnvelop<Boolean,Boolean> importData(@RequestBody Workbook workbook) {
+    public MixEnvelop<Boolean,Boolean> importData(@ApiParam(name = "serviceItems", value = "服务项目集合")
+                                                      @RequestParam(value = "serviceItems")String serviceItems) {
         try {
-            return specialistServiceItemService.importData(workbook);
+            JSONArray array = JSONArray.parseArray(serviceItems);
+            List<SpecialistServiceItemDO> specialistServiceItemDOS = new ArrayList<>();
+            for (int i = 0;i<array.size();i++){
+                SpecialistServiceItemDO specialistServiceItemDO = toEntity(array.getJSONObject(i).toJSONString(),SpecialistServiceItemDO.class);
+                specialistServiceItemDOS.add(specialistServiceItemDO);
+            }
+            return specialistServiceItemService.importData(specialistServiceItemDOS);
         } catch (Exception e) {
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return MixEnvelop.getError(e.getMessage());
         }
     }
+
 }
