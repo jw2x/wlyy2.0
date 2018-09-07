@@ -32,6 +32,7 @@ import com.yihu.jw.util.common.QrcodeUtil;
 import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.jw.util.date.DateUtil;
 import com.yihu.mysql.query.BaseJpaService;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,8 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
     private String fastdfs_file_url;
     @Value("${base.url}")
     private String baseUrl;
+    @Value("${basedb.name}")
+    private String basedb;
 
     @Autowired
     private RehabilitationPlanTemplateDao templateDao;
@@ -290,7 +293,7 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
         patientRehabilitationPlanDao.updateServicePackageId(planId, servicePackageId);
     }
 
-    public MixEnvelop<String,String> createServiceQrCode(String planDetailId,String sessionId){
+    public MixEnvelop<String,String> createServiceQrCode(String planDetailId,String doctorCode){
         RehabilitationDetailDO rehabilitationDetailDO = rehabilitationDetailDao.findById(planDetailId);
         String fileUrl = "";
         if (rehabilitationDetailDO!=null) {
@@ -298,7 +301,7 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
                 fileUrl = rehabilitationDetailDO.getServiceQrCode();
             } else {
                 //String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\",\"sessionId\":\""+sessionId+"\"}";
-                String contentJsonStr=""+"?paramStr="+planDetailId+","+sessionId;
+                String contentJsonStr="html/kfgl/html/confirm-service.html"+"?paramStr="+planDetailId+","+doctorCode;
                 InputStream ipt = QrcodeUtil.createQrcode(contentJsonStr, 300, "png");
                 isneiwang = false;
                 if (isneiwang) {
@@ -338,20 +341,27 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
         return MixEnvelop.getSuccess("获取二维码成功！",fileUrl);
     }
 
-    public Integer checkAfterQrCode(String planDetailId,String patietCode)throws Exception{
+    public Map<String,Object> checkAfterQrCode(String planDetailId,String patietCode)throws Exception{
+        Map<String,Object> map = new HashedMap();
         int result = 0;
-        String sql ="SELECT rp.patient FROM `wlyy_rehabilitation_plan_detail` pd LEFT JOIN wlyy_patient_rehabilitation_plan rp ON pd.plan_id = rp.id WHERE pd.id='"+planDetailId+"'";
+        String name= "";
+        String sql ="SELECT rp.patient,rp.name FROM `wlyy_rehabilitation_plan_detail` pd LEFT JOIN wlyy_patient_rehabilitation_plan rp ON pd.plan_id = rp.id WHERE pd.id='"+planDetailId+"'";
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
         if (list!=null && list.size()>0){
             if (String.valueOf(list.get(0).get("patient")).equals(patietCode)){
                 result =200;
             }else {
                 result = -1;
+                name=String.valueOf(list.get(0).get("name"));
             }
         }else {
             result = -10000;
         }
-        return result;
+        map.put("code",result);
+        if (StringUtils.isNotBlank(name)){
+            map.put("name",name);
+        }
+        return map;
     }
 
     public RehabilitationOperateRecordsDO saveRehabilitationRecord(RehabilitationOperateRecordsDO rehabilitationOperateRecordsDO){
@@ -359,6 +369,13 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
         rehabilitationOperateRecordsDO.setId(getCode());
         rehabilitationOperateRecordsDO.setReserveTime(rehabilitationDetailDO.getExecuteTime());
         rehabilitationOperateRecordsDO.setCompleteTime(new Date());
+        if (StringUtils.isEmpty(rehabilitationOperateRecordsDO.getPatientName())){
+            String sql ="select name from "+basedb+".wlyy_patient where code='"+rehabilitationOperateRecordsDO.getPatientCode()+"'";
+            List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+            if (list!=null && list.size()>0){
+                rehabilitationOperateRecordsDO.setPatientName(String.valueOf(list.get(0).get("name")));
+            }
+        }
         return rehabilitationOperateRecordsDao.save(rehabilitationOperateRecordsDO);
     }
 

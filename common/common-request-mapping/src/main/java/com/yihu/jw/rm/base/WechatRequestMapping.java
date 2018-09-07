@@ -19,7 +19,7 @@ public class WechatRequestMapping {
     }
 
     public static  class  WxQrcode{
-        public static final String api_get="/getQrcode";
+        public static final String api_getQrcode="/getQrcode";
     }
 
     //微信按钮模块常量

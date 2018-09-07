@@ -1,6 +1,6 @@
+#通用的配置不用区分环境变量
 server:
-  #port: ${server.svr-base-port}
-  port: 10020
+  port: ${server.svr-base-port}
 
 spring:
   datasource:
@@ -20,28 +20,15 @@ spring:
     test-while-idle: true #指明连接是否被空闲连接回收器(如果有)进行检验，如果检测失败，则连接将被从池中去除
     min-evictable-idle-time-millis: 3600000 #连接池中连接，在时间段内一直空闲，被逐出连接池的时间(1000*60*60)，以毫秒为单位
     time-between-eviction-runs-millis: 300000 #在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位，一般比minEvictableIdleTimeMillis小
+  sleuth:
+    sampler:
+      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
 
-  elasticsearch: #ElasticsearchProperties
-    cluster-name: jkzl #默认即为elasticsearch  集群名
-    cluster-nodes: 172.19.103.45:9300,172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
-    cluster-nodes-jest: http://172.19.103.45:9200,http://172.19.103.68:9200  #多个逗号分割
-    local: false #是否本地连接
-    properties: # Additional properties used to configure the client.
-      enable: true
-  # JEST (Elasticsearch HTTP client) (JestProperties)
-    jest:
-      uris: http://172.19.103.45:9200,http://172.19.103.68:9200
-#      uris: http://172.19.103.68:9200
-      connection-timeout: 60000 # Connection timeout in milliseconds.
-      multi-threaded: true # Enable connection requests from multiple execution threads.
-hibernate:
-  dialect: org.hibernate.dialect.MySQL5Dialect
-  show_sql: true
-#    naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy #springJPA使用驼峰式(hibernate4以下使用)
-  physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy #springJPA使用驼峰式(hibernate5以上使用)
-  implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyHbmImpl
-
-
+es:
+  index:
+    servicePackLog: base_service_package_log
+  type:
+    servicePackLog: base_service_package_log
 
 ---
 spring:
@@ -50,60 +37,61 @@ spring:
     url: jdbc:mysql://172.19.103.77/base?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
     username: root
     password: 123456
-  zipkin:
-    base-url: http://localhost:9411 #日志追踪的地址
-  sleuth:
-    sampler:
-      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
+  elasticsearch:
+    cluster-name: jkzl #集群名 默认elasticsearch
+    cluster-nodes: 172.19.103.45:9300,172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+    client-transport-sniff: false
+    jest:
+      uris: http://172.19.103.45:9200,http://172.19.103.68:9200
+      connection-timeout: 60000 # Connection timeout in milliseconds.
+      multi-threaded: true # Enable connection requests from multiple execution threads.
   activemq:
     broker-url: tcp://172.19.103.87:61616
     user: admin
     password: admin
-
-es:
-  index:
-    servicePackLog: base_service_package_log
-  type:
-    servicePackLog: base_service_package_log
-fastDFS:
-  fastdfs_file_url: http://172.19.103.54:80/
+  zipkin:
+    base-url: http://localhost:9411 #日志追踪的地址
 
 ---
 spring:
   profiles: jwtest
   datasource:
-    url: jdbc:mysql://172.19.103.77/jw2?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
+    url: jdbc:mysql://172.19.103.77/base?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
     username: root
     password: 123456
+  elasticsearch:
+    cluster-name: jkzl #集群名 默认elasticsearch
+    cluster-nodes: 172.19.103.45:9300,172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+    client-transport-sniff: false
+    jest:
+      uris: http://172.19.103.45:9200,http://172.19.103.68:9200
+      connection-timeout: 60000 # Connection timeout in milliseconds.
+      multi-threaded: true # Enable connection requests from multiple execution threads.
+  activemq:
+    broker-url: tcp://172.19.103.87:61616
+    user: admin
+    password: admin
   zipkin:
-    base-url: http://192.168.131.173:${server.svr-logServer-port} #日志追踪的地址
-  sleuth:
-    sampler:
-      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
+    base-url: http://localhost:9411 #日志追踪的地址
 
-es:
-  index:
-    servicePackLog: base_service_package_log
-  type:
-    servicePackLog: base_service_package_log
-fastDFS:
-  fastdfs_file_url: http://172.19.103.54:80/
 ---
 spring:
   profiles: jwprod
   datasource:
-    url: jdbc:mysql://172.19.103.77/jw2?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
+    url: jdbc:mysql://172.19.103.77/base?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
     username: root
     password: 123456
+  elasticsearch:
+    cluster-name: jkzl #集群名 默认elasticsearch
+    cluster-nodes: 172.19.103.45:9300,172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+    client-transport-sniff: false
+    jest:
+      uris: http://172.19.103.45:9200,http://172.19.103.68:9200
+      connection-timeout: 60000 # Connection timeout in milliseconds.
+      multi-threaded: true # Enable connection requests from multiple execution threads.
+  activemq:
+    broker-url: tcp://172.19.103.87:61616
+    user: admin
+    password: admin
   zipkin:
-    base-url: http://192.168.131.173:${server.svr-logServer-port} #日志追踪的地址
-  sleuth:
-    sampler:
-      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
-es:
-  index:
-    servicePackLog: base_service_package_log
-  type:
-    servicePackLog: base_service_package_log
-fastDFS:
-  fastdfs_file_url: http://172.19.103.54:80/
+    base-url: http://localhost:9411 #日志追踪的地址

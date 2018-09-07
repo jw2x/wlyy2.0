@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
  */
 @SpringBootApplication
 @EnableJpaAuditing
-public class SvrBaseApplication  extends SpringBootServletInitializer  {
+public class SvrBaseApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args)  {
         SpringApplication.run(SvrBaseApplication.class, args);
