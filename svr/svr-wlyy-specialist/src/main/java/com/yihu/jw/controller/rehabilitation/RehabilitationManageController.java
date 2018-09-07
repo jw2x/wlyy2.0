@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * Created by 刘文彬 on 2018/8/16.
  */
@@ -282,14 +284,15 @@ public class RehabilitationManageController {
 
     @PostMapping(value = SpecialistMapping.rehabilitation.updateNoteAndImageRehabilitationOperate)
     @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口并且确认完成")
-    public Envelop updateNoteAndImageRehabilitationOperate(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)@RequestParam(value = "planDetailId", required = true)String planDetailId,
+    public ObjEnvelop updateNoteAndImageRehabilitationOperate(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)@RequestParam(value = "planDetailId", required = true)String planDetailId,
                                                            @ApiParam(name = "node", value = "服务完成笔记", required = true)@RequestParam(value = "node", required = false)String node,
                                                            @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = false)String image){
         try {
-            if(rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId)>1){
-                return Envelop.getSuccess(SpecialistMapping.api_success);
+            Map<String,Object> map = rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId);
+            if(Integer.parseInt(String.valueOf(map.get("count")))>1){
+                return ObjEnvelop.getSuccess(SpecialistMapping.api_success,map);
             }
-            return Envelop.getError("update error!");
+            return ObjEnvelop.getError("update error!");
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
