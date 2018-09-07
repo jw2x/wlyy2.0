@@ -65,6 +65,8 @@ es:
     servicePackLog: base_service_package_log
   type:
     servicePackLog: base_service_package_log
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
 
 ---
 spring:
@@ -84,6 +86,8 @@ es:
     servicePackLog: base_service_package_log
   type:
     servicePackLog: base_service_package_log
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
 ---
 spring:
   profiles: jwprod
@@ -101,3 +105,5 @@ es:
     servicePackLog: base_service_package_log
   type:
     servicePackLog: base_service_package_log
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
