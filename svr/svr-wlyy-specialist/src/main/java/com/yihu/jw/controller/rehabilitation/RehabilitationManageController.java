@@ -155,9 +155,11 @@ public class RehabilitationManageController {
                                        @ApiParam(name = "content", value = "聊天内容", required = true)
                                        @RequestParam(value = "content", required = true)String content,
                                        @ApiParam(name = "planDetailId", value = "服务项目id", required = true)
-                                       @RequestParam(value = "planDetailId", required = true)String planDetailId){
+                                       @RequestParam(value = "planDetailId", required = true)String planDetailId,
+                                       @ApiParam(name = "contentType", value = "内容类型（1,6,8 - 文本， 2，9- 图片， 3 - 语音， 4-文章， 5,7系统消息。12-语音 18-居民名片， 19-聊天记录）", required = true)
+                                       @RequestParam(value = "contentType", required = true)Integer contentType){
         try {
-            return rehabilitationManageService.saveGuidanceMessage(messageId,doctorCode,doctorType,content,planDetailId);
+            return rehabilitationManageService.saveGuidanceMessage(messageId,doctorCode,doctorType,content,planDetailId,contentType);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -184,14 +186,14 @@ public class RehabilitationManageController {
     @ApiOperation(value = "康复管理-居民详情页")
     public Envelop patientRehabilitationDetail(@ApiParam(name = "patientCode", value = "居民code", required = true)
                                        @RequestParam(value = "patientCode", required = true)String patientCode,
-                                       @ApiParam(name = "healthDoctor", value = "健管师医生code", required = true)
-                                       @RequestParam(value = "healthDoctor", required = true)String healthDoctor,
-                                       @ApiParam(name = "healthDoctorName", value = "健管师医生名称", required = true)
-                                       @RequestParam(value = "healthDoctorName", required = true)String healthDoctorName,
-                                       @ApiParam(name = "generalDoctor", value = "全科医生code", required = true)
-                                       @RequestParam(value = "generalDoctor", required = true)String generalDoctor,
-                                       @ApiParam(name = "generalDoctorName", value = "全科医生名称", required = true)
-                                       @RequestParam(value = "generalDoctorName", required = true)String generalDoctorName){
+                                       @ApiParam(name = "healthDoctor", value = "健管师医生code", required = false)
+                                       @RequestParam(value = "healthDoctor", required = false)String healthDoctor,
+                                       @ApiParam(name = "healthDoctorName", value = "健管师医生名称", required = false)
+                                       @RequestParam(value = "healthDoctorName", required = false)String healthDoctorName,
+                                       @ApiParam(name = "generalDoctor", value = "全科医生code", required = false)
+                                       @RequestParam(value = "generalDoctor", required = false)String generalDoctor,
+                                       @ApiParam(name = "generalDoctorName", value = "全科医生名称", required = false)
+                                       @RequestParam(value = "generalDoctorName", required = false)String generalDoctorName){
         try {
             return rehabilitationManageService.patientRehabilitationDetail(patientCode,healthDoctor, healthDoctorName,generalDoctor,generalDoctorName);
         }catch (Exception e){
@@ -227,14 +229,14 @@ public class RehabilitationManageController {
     @ApiOperation(value = "康复管理-医生端居民详情服务医生列表")
     public Envelop serviceDoctorList(@ApiParam(name = "patientCode", value = "居民code", required = true)
                                                @RequestParam(value = "patientCode", required = true)String patientCode,
-                                               @ApiParam(name = "healthDoctor", value = "健管师医生code", required = true)
-                                               @RequestParam(value = "healthDoctor", required = true)String healthDoctor,
-                                               @ApiParam(name = "healthDoctorName", value = "健管师医生名称", required = true)
-                                               @RequestParam(value = "healthDoctorName", required = true)String healthDoctorName,
-                                               @ApiParam(name = "generalDoctor", value = "全科医生code", required = true)
-                                               @RequestParam(value = "generalDoctor", required = true)String generalDoctor,
-                                               @ApiParam(name = "generalDoctorName", value = "全科医生名称", required = true)
-                                               @RequestParam(value = "generalDoctorName", required = true)String generalDoctorName){
+                                               @ApiParam(name = "healthDoctor", value = "健管师医生code", required = false)
+                                               @RequestParam(value = "healthDoctor", required = false)String healthDoctor,
+                                               @ApiParam(name = "healthDoctorName", value = "健管师医生名称", required = false)
+                                               @RequestParam(value = "healthDoctorName", required = false)String healthDoctorName,
+                                               @ApiParam(name = "generalDoctor", value = "全科医生code", required = false)
+                                               @RequestParam(value = "generalDoctor", required = false)String generalDoctor,
+                                               @ApiParam(name = "generalDoctorName", value = "全科医生名称", required = false)
+                                               @RequestParam(value = "generalDoctorName", required = false)String generalDoctorName){
         try {
             return rehabilitationManageService.serviceDoctorList(patientCode,healthDoctor, healthDoctorName,generalDoctor,generalDoctorName);
         }catch (Exception e){
