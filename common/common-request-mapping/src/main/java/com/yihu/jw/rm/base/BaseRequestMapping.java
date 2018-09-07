@@ -36,6 +36,14 @@ public class BaseRequestMapping {
     }
 
     /**
+     * SAAS名片
+     */
+    public static class SaasBusinessCard extends Basic {
+        public static final String PREFIX  = "/saas_business_card";
+        public static final String GENERATE = "/generate";
+    }
+
+    /**
      * 模块
      */
     public static class Module extends Basic {
