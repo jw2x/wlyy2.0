@@ -24,19 +24,19 @@ public class BaseDoctorRoleDictVO extends IntegerIdentityVO{
     /**
 	 * 角色code
 	 */
-	@ApiModelProperty(value = "角色code", example = "模块1")
+	@ApiModelProperty(value = "角色code", example = "")
     private String code;
 
     /**
 	 * 角色名称：全科医生、专科医生、健康管理师、管理员等
 	 */
-	@ApiModelProperty(value = "角色名称：全科医生、专科医生、健康管理师、管理员等", example = "模块1")
+	@ApiModelProperty(value = "角色名称：全科医生、专科医生、健康管理师、管理员等", example = "")
     private String name;
 
     /**
 	 * 作废标识，1正常，0作废
 	 */
-	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "模块1")
+	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
 
 

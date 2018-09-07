@@ -32,6 +32,15 @@ public class DictHealthProblemDO extends IntegerIdentityEntity {
 	 * 字典名称
 	 */
 	private String name;
+    /**
+     * 是否慢病 1-是，0-否
+     */
+    private String chronicFlag;
+
+    /**
+     * 是否传染病 1-是，0-否
+     */
+    private String infectiousFlag;
 
     /**
 	 * 描述
@@ -69,7 +78,15 @@ public class DictHealthProblemDO extends IntegerIdentityEntity {
         this.name = name;
     }
 
-	@Column(name = "description")
+    @Column(name = "chronic_flag")
+    public String getChronicFlag() {
+        return chronicFlag;
+    }
+    public void setChronicFlag(String chronicFlag) {
+        this.chronicFlag = chronicFlag;
+    }
+
+    @Column(name = "description")
     public String getDescription() {
         return description;
     }

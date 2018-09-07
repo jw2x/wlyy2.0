@@ -23,37 +23,37 @@ public class BaseCommitteeVO extends UuidIdentityVOWithOperator {
     /**
 	 * 省标识
 	 */
-	@ApiModelProperty(value = "省标识", example = "模块1")
+	@ApiModelProperty(value = "省标识", example = "350000")
     private String province;
 
     /**
 	 * 市标识
 	 */
-	@ApiModelProperty(value = "市标识", example = "模块1")
+	@ApiModelProperty(value = "市标识", example = "350200")
     private String city;
 
     /**
 	 * 区县标识
 	 */
-	@ApiModelProperty(value = "区县标识", example = "模块1")
+	@ApiModelProperty(value = "区县标识", example = "350203")
     private String town;
 
     /**
 	 * 街道标识
 	 */
-	@ApiModelProperty(value = "街道标识", example = "模块1")
+	@ApiModelProperty(value = "街道标识", example = "350203006")
     private String street;
 
     /**
 	 * 居委会标识
 	 */
-	@ApiModelProperty(value = "居委会标识", example = "模块1")
+	@ApiModelProperty(value = "居委会标识", example = "350203006001")
     private String code;
 
     /**
 	 * 居委会名称
 	 */
-	@ApiModelProperty(value = "居委会名称", example = "模块1")
+	@ApiModelProperty(value = "居委会名称", example = "厦禾社区居民委员会")
     private String name;
 
 

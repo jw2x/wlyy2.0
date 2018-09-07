@@ -25,50 +25,50 @@ public class BaseDoctorHospitalVO extends IntegerIdentityVO{
     /**
 	 * 医院标识
 	 */
-	@ApiModelProperty(value = "医院标识", example = "模块1")
+	@ApiModelProperty(value = "医院标识", example = "")
     private String hospCode;
 
     /**
 	 * 医院名称
 	 */
-	@ApiModelProperty(value = "医院名称", example = "模块1")
+	@ApiModelProperty(value = "医院名称", example = "")
     private String hospName;
 
     /**
 	 * 医生角色标识
 	 */
-	@ApiModelProperty(value = "医生角色标识", example = "模块1")
+	@ApiModelProperty(value = "医生角色标识", example = "")
     private String roleCode;
 
     /**
 	 * 医院角色名称
 	 */
-	@ApiModelProperty(value = "医院角色名称", example = "模块1")
+	@ApiModelProperty(value = "医院角色名称", example = "")
     private String roleName;
 
     /**
 	 * 职称代码
 	 */
-	@ApiModelProperty(value = "职称代码", example = "模块1")
+	@ApiModelProperty(value = "职称代码", example = "")
     private String jobTitleCode;
 
     /**
 	 * 职称名称
 	 */
-	@ApiModelProperty(value = "职称名称", example = "模块1")
+	@ApiModelProperty(value = "职称名称", example = "")
     private String jobTitleName;
 
     /**
 	 * 作废标识，1正常，0作废
 	 */
-	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "模块1")
+	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
 
     /**
-	 * 
+	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "", example = "模块1")
+	@ApiModelProperty(value = "", example = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
 

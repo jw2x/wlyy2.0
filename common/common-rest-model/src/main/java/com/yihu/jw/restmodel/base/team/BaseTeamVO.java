@@ -24,37 +24,37 @@ public class BaseTeamVO extends UuidIdentityVOWithOperator {
     /**
 	 * 机构id
 	 */
-	@ApiModelProperty(value = "机构id", example = "模块1")
+	@ApiModelProperty(value = "机构id", example = "")
     private String orgId;
 
     /**
 	 * 团队名称
 	 */
-	@ApiModelProperty(value = "团队名称", example = "模块1")
+	@ApiModelProperty(value = "团队名称", example = "")
     private String name;
 
     /**
 	 * 领导医生标识
 	 */
-	@ApiModelProperty(value = "领导医生标识", example = "模块1")
+	@ApiModelProperty(value = "领导医生标识", example = "")
     private String leaderId;
 
     /**
 	 * 团队人数
 	 */
-	@ApiModelProperty(value = "团队人数", example = "模块1")
+	@ApiModelProperty(value = "团队人数", example = "自然数")
     private String teamNum;
 
     /**
 	 * 团队二维码
 	 */
-	@ApiModelProperty(value = "团队二维码", example = "模块1")
+	@ApiModelProperty(value = "团队二维码", example = "")
     private String qrcode;
 
     /**
 	 * 作废标识，1正常，0作废
 	 */
-	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "模块1")
+	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
 
 
