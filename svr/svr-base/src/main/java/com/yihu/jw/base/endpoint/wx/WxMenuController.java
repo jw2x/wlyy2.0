@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping(WechatRequestMapping.api_common)
-@Api(value = "微信菜单相关操作", description = "微信菜单相关操作")
+@Api(value = "微信菜单相关操作", description = "微信菜单相关操作", tags = {"微信管理 - 微信菜单相关操作"})
 public class WxMenuController extends EnvelopRestEndpoint {
 
     @Autowired

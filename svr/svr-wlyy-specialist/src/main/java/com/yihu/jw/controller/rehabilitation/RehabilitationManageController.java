@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.sleuth.Tracer;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * Created by 刘文彬 on 2018/8/16.
  */
@@ -106,7 +108,7 @@ public class RehabilitationManageController {
                                          @ApiParam(name = "status", value = "任务状态（0未完成，1已完成，2已预约）", required = false)
                                          @RequestParam(value = "status", required = false)Integer status,
                                          @ApiParam(name = "doctorCode", value = "医生code（专科医生、家庭医生）", required = false)
-                                         @RequestParam(value = "doctorCode", required = true)String doctorCode){
+                                         @RequestParam(value = "doctorCode", required = false)String doctorCode){
         try {
             return rehabilitationManageService.calendarPlanDetailList(planId,searchTask,status,doctorCode,executeStartTime,executeEndTime);
         }catch (Exception e){
@@ -146,8 +148,8 @@ public class RehabilitationManageController {
     @ApiOperation(value = "康复管理-保存指导留言")
     public Envelop saveGuidanceMessage(@ApiParam(name = "messageId", value = "消息id", required = true)
                                        @RequestParam(value = "messageId", required = true)String messageId,
-                                       @ApiParam(name = "patientCode", value = "居民code", required = true)
-                                       @RequestParam(value = "patientCode", required = true)String patientCode,
+//                                       @ApiParam(name = "patientCode", value = "居民code", required = true)
+//                                       @RequestParam(value = "patientCode", required = true)String patientCode,
                                        @ApiParam(name = "doctorCode", value = "医生code", required = true)
                                        @RequestParam(value = "doctorCode", required = true)String doctorCode,
                                        @ApiParam(name = "doctorType", value = "医生类型（1、专科医生，2、家庭医生）", required = true)
@@ -155,9 +157,11 @@ public class RehabilitationManageController {
                                        @ApiParam(name = "content", value = "聊天内容", required = true)
                                        @RequestParam(value = "content", required = true)String content,
                                        @ApiParam(name = "planDetailId", value = "服务项目id", required = true)
-                                       @RequestParam(value = "planDetailId", required = true)String planDetailId){
+                                       @RequestParam(value = "planDetailId", required = true)String planDetailId,
+                                       @ApiParam(name = "contentType", value = "内容类型（1,6,8 - 文本， 2，9- 图片， 3 - 语音， 4-文章， 5,7系统消息。12-语音 18-居民名片， 19-聊天记录）", required = true)
+                                       @RequestParam(value = "contentType", required = true)Integer contentType){
         try {
-            return rehabilitationManageService.saveGuidanceMessage(messageId,patientCode,doctorCode,doctorType,content,planDetailId);
+            return rehabilitationManageService.saveGuidanceMessage(messageId,doctorCode,doctorType,content,planDetailId,contentType);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -184,14 +188,14 @@ public class RehabilitationManageController {
     @ApiOperation(value = "康复管理-居民详情页")
     public Envelop patientRehabilitationDetail(@ApiParam(name = "patientCode", value = "居民code", required = true)
                                        @RequestParam(value = "patientCode", required = true)String patientCode,
-                                       @ApiParam(name = "healthDoctor", value = "健管师医生code", required = true)
-                                       @RequestParam(value = "healthDoctor", required = true)String healthDoctor,
-                                       @ApiParam(name = "healthDoctorName", value = "健管师医生名称", required = true)
-                                       @RequestParam(value = "healthDoctorName", required = true)String healthDoctorName,
-                                       @ApiParam(name = "generalDoctor", value = "全科医生code", required = true)
-                                       @RequestParam(value = "generalDoctor", required = true)String generalDoctor,
-                                       @ApiParam(name = "generalDoctorName", value = "全科医生名称", required = true)
-                                       @RequestParam(value = "generalDoctorName", required = true)String generalDoctorName){
+                                       @ApiParam(name = "healthDoctor", value = "健管师医生code", required = false)
+                                       @RequestParam(value = "healthDoctor", required = false)String healthDoctor,
+                                       @ApiParam(name = "healthDoctorName", value = "健管师医生名称", required = false)
+                                       @RequestParam(value = "healthDoctorName", required = false)String healthDoctorName,
+                                       @ApiParam(name = "generalDoctor", value = "全科医生code", required = false)
+                                       @RequestParam(value = "generalDoctor", required = false)String generalDoctor,
+                                       @ApiParam(name = "generalDoctorName", value = "全科医生名称", required = false)
+                                       @RequestParam(value = "generalDoctorName", required = false)String generalDoctorName){
         try {
             return rehabilitationManageService.patientRehabilitationDetail(patientCode,healthDoctor, healthDoctorName,generalDoctor,generalDoctorName);
         }catch (Exception e){
@@ -227,14 +231,14 @@ public class RehabilitationManageController {
     @ApiOperation(value = "康复管理-医生端居民详情服务医生列表")
     public Envelop serviceDoctorList(@ApiParam(name = "patientCode", value = "居民code", required = true)
                                                @RequestParam(value = "patientCode", required = true)String patientCode,
-                                               @ApiParam(name = "healthDoctor", value = "健管师医生code", required = true)
-                                               @RequestParam(value = "healthDoctor", required = true)String healthDoctor,
-                                               @ApiParam(name = "healthDoctorName", value = "健管师医生名称", required = true)
-                                               @RequestParam(value = "healthDoctorName", required = true)String healthDoctorName,
-                                               @ApiParam(name = "generalDoctor", value = "全科医生code", required = true)
-                                               @RequestParam(value = "generalDoctor", required = true)String generalDoctor,
-                                               @ApiParam(name = "generalDoctorName", value = "全科医生名称", required = true)
-                                               @RequestParam(value = "generalDoctorName", required = true)String generalDoctorName){
+                                               @ApiParam(name = "healthDoctor", value = "健管师医生code", required = false)
+                                               @RequestParam(value = "healthDoctor", required = false)String healthDoctor,
+                                               @ApiParam(name = "healthDoctorName", value = "健管师医生名称", required = false)
+                                               @RequestParam(value = "healthDoctorName", required = false)String healthDoctorName,
+                                               @ApiParam(name = "generalDoctor", value = "全科医生code", required = false)
+                                               @RequestParam(value = "generalDoctor", required = false)String generalDoctor,
+                                               @ApiParam(name = "generalDoctorName", value = "全科医生名称", required = false)
+                                               @RequestParam(value = "generalDoctorName", required = false)String generalDoctorName){
         try {
             return rehabilitationManageService.serviceDoctorList(patientCode,healthDoctor, healthDoctorName,generalDoctor,generalDoctorName);
         }catch (Exception e){
@@ -282,14 +286,15 @@ public class RehabilitationManageController {
 
     @PostMapping(value = SpecialistMapping.rehabilitation.updateNoteAndImageRehabilitationOperate)
     @ApiOperation(value = "康复计划完成时更新服务完成笔记和图片接口并且确认完成")
-    public Envelop updateNoteAndImageRehabilitationOperate(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)@RequestParam(value = "planDetailId", required = true)String planDetailId,
+    public ObjEnvelop updateNoteAndImageRehabilitationOperate(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)@RequestParam(value = "planDetailId", required = true)String planDetailId,
                                                            @ApiParam(name = "node", value = "服务完成笔记", required = true)@RequestParam(value = "node", required = false)String node,
                                                            @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = false)String image){
         try {
-            if(rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId)>1){
-                return Envelop.getSuccess(SpecialistMapping.api_success);
+            Map<String,Object> map = rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId);
+            if(Integer.parseInt(String.valueOf(map.get("count")))>1){
+                return ObjEnvelop.getSuccess(SpecialistMapping.api_success,map);
             }
-            return Envelop.getError("update error!");
+            return ObjEnvelop.getError("update error!");
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -309,6 +314,19 @@ public class RehabilitationManageController {
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
             return Envelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.rehabilitation.planSchedule)
+    @ApiOperation(value = "康复管理-计划总进度")
+    public ObjEnvelop planSchedule(@ApiParam(name = "planId", value = "计划id", required = true)
+                                                       @RequestParam(value = "planId", required = true)String planId){
+        try {
+            return rehabilitationManageService.planSchedule(planId);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
         }
     }
 }

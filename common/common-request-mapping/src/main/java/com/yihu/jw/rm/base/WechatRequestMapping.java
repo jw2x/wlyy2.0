@@ -18,6 +18,10 @@ public class WechatRequestMapping {
 
     }
 
+    public static  class  WxQrcode{
+        public static final String api_getQrcode="/getQrcode";
+    }
+
     //微信按钮模块常量
     public static class WxMenu{
         public static final String api_create="/menu";

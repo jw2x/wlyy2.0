@@ -27,7 +27,7 @@ public class SmsVO extends UuidIdentityVO {
     private String requestIp;
     //短信接收号码
     @ApiModelProperty(value = "短信接收号码", example = "18888888888")
-    private String to;
+    private String mobile;
     //短信内容
     @ApiModelProperty(value = "短信内容", example = "【i健康综合管理平台】您使用的是i健康综合管理平台短信模板，您的验证码是826612，请于10分钟内正确输入！")
     private String content;
@@ -35,6 +35,7 @@ public class SmsVO extends UuidIdentityVO {
     @ApiModelProperty(value = "过期时间", example = "2018-09-03 15:34:34")
     private Date deadline;
     //验证码
+    @ApiModelProperty(value = "验证码", example = "651187")
     private String captcha;
     @ApiModelProperty(value = "标签", example = "login")
     private SmsTemplateDO.Type type;
@@ -63,12 +64,12 @@ public class SmsVO extends UuidIdentityVO {
         this.requestIp = requestIp;
     }
 
-    public String getTo() {
-        return to;
+    public String getMobile() {
+        return mobile;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     public String getContent() {
