@@ -10,7 +10,7 @@ import java.util.Date;
  * 服务包属性值表
  * @author yeshijie on 2018/8/29.
  */
-@ApiModel(value = "ServicePackagePropvalueDO", description = "服务包属性值表")
+@ApiModel(value = "ServicePackagePropvalueVO", description = "服务包属性值表")
 public class ServicePackagePropvalueVO extends UuidIdentityVO {
 
     @ApiModelProperty(value = "saasId")
