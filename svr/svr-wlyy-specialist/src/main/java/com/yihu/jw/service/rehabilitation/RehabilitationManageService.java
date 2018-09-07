@@ -1068,10 +1068,11 @@ public class RehabilitationManageService {
         if (list!=null && list.size()>0){
             resultMap = list.get(0);
         }
-        String itemSql ="SELECT evaluation FROM `wlyy_service_item` WHERE id='"+String.valueOf(resultMap.get("service_item_id"))+"'";
+        String itemSql ="SELECT evaluation,title FROM `wlyy_service_item` WHERE id='"+String.valueOf(resultMap.get("service_item_id"))+"'";
         List<Map<String,Object>> itemList = jdbcTemplate.queryForList(itemSql);
         if (itemList!=null && itemList.size()>0){
             resultMap.put("evaluation",itemList.get(0).get("evaluation"));
+            resultMap.put("title",itemList.get(0).get("title"));
         }
         resultMap.put("count",i+j);
         return resultMap;
