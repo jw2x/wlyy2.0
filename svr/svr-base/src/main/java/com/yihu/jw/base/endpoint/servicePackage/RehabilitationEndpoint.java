@@ -6,7 +6,7 @@ import com.yihu.jw.entity.base.servicePackage.ServicePackageSignRecordDO;
 import com.yihu.jw.restmodel.base.servicePackage.RehabilitationVO;
 import com.yihu.jw.restmodel.base.servicePackage.ServicePackageLogVO;
 import com.yihu.jw.restmodel.base.servicePackage.ServicePackageVO;
-import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
@@ -29,7 +29,7 @@ public class RehabilitationEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.BaseRehabilitation.CREATE)
     @ApiOperation(value = "创建")
-    public Envelop create (
+    public ObjEnvelop<ServicePackageVO> create (
             @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception{
         RehabilitationVO rehabilitationVO = toDateEntity(jsonData, RehabilitationVO.class);
@@ -40,15 +40,15 @@ public class RehabilitationEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.BaseRehabilitation.CREATELOG)
     @ApiOperation(value = "新增服务包日志")
-    public Envelop addRehabilitationLog(@ApiParam(name = "jsonData", value = "Json数据", required = true)
+    public ObjEnvelop<ServicePackageLogVO> addRehabilitationLog(@ApiParam(name = "jsonData", value = "Json数据", required = true)
                           @RequestBody String jsonData) throws Exception{
         ServicePackageLogVO logVO = toEntity(jsonData,ServicePackageLogVO.class);
         return success(servicePackageService.addRehabilitationLog(logVO));
     }
 
     @GetMapping(value = BaseRequestMapping.BaseRehabilitation.FINDBYID)
-    @ApiOperation(value = "查找完成度")
-    public Envelop getFinish(@ApiParam(name = "servicePackId", value = "服务包id", required = true)
+    @ApiOperation(value = "查找完成度",notes = "返回值中的obj=完成数")
+    public ObjEnvelop getFinish(@ApiParam(name = "servicePackId", value = "服务包id", required = true)
                              @RequestParam(value = "servicePackId") String servicePackId) throws Exception{
         return success(servicePackageService.getFinish(servicePackId));
     }

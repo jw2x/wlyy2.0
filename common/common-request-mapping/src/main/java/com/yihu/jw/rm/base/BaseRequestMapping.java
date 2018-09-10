@@ -160,6 +160,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 服务包类目
+     */
+    public static class ServicePackageNormcat extends Basic{
+        public static final String PREFIX  = "/service_package_normcat";
+    }
+
+    /**
      * 康复计划
      */
     public static class BaseRehabilitation extends Basic{

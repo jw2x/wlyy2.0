@@ -2,8 +2,6 @@ package com.yihu.wlyy.entity.job;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
-
 /**
  * 计划任务
  */
