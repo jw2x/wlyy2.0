@@ -26,7 +26,7 @@ public class WeChatQrcodeController extends EnvelopRestEndpoint {
     @Autowired
     private WeChatQrcodeService weChatQrcodeService;
 
-    @PostMapping(value = WechatRequestMapping.WxMenu.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = WechatRequestMapping.WxQrcode.api_getQrcode, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "生成微信二维码", notes = "生成微信二维码")
     public Envelop getQrcode(@ApiParam(name = "wxId", value = "微信id")
                              @RequestParam(value = "wxId", required = true)String wxId,
