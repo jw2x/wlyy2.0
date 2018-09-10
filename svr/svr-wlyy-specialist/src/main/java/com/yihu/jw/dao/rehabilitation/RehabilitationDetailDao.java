@@ -57,7 +57,10 @@ public interface RehabilitationDetailDao extends PagingAndSortingRepository<Reha
     RehabilitationDetailDO findById(String planDetailId);
 
     @Query(value ="select d.doctor,p.patient,count(1) as num from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.status!=1 and d.execute_time>=?1 and d.execute_time<=?2 GROUP BY d.doctor,p.patient",nativeQuery = true)
-    List<Map<String,Object>> dailyJob(String startTime,String endTime);
+    List<Map> dailyJob(String startTime,String endTime);
+
+    @Query(value = "select d.id from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.status!=1 and d.execute_time>=?1 and d.execute_time<=?2 and d.doctor=?3 and p.patient=?4",nativeQuery = true)
+    List<String> findByPatientAndDoctor(String startTime,String endTime,String doctorCode,String patientCode);
 
     @Modifying
     @Query("update RehabilitationDetailDO t set t.status = ?1 where t.id=?2 ")
