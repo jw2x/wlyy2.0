@@ -1,9 +1,9 @@
 package com.yihu.jw.base.dao.dict;
 
+import com.yihu.jw.entity.base.dict.DictMedicineDistributeOrgDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import com.yihu.jw.entity.base.DictMedicineDistributeOrgDO;
 
 /**
  * 

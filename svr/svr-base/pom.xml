@@ -115,6 +115,11 @@
             <version>2.0.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.swagger2markup</groupId>
+            <artifactId>swagger2markup</artifactId>
+            <version>1.3.2</version>
+        </dependency>
 
     </dependencies>
 
