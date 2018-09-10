@@ -177,12 +177,13 @@ public class SpecialistServiceItemService {
             String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND service_item_id = '"+specialistServiceItemDO.getId()+"'"+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             if (StringUtils.isNoneBlank(hospital)){
-                if (hospitalServiceItemDOS.size() != 0 && hospitalServiceItemDOS != null){
+                if (hospitalServiceItemDOS.size() == 0 || hospitalServiceItemDOS == null){
                     specialistServiceItemDOList.add(specialistServiceItemDO);
                 }
-            }
-            if (hospitalServiceItemDOS.size() == 0 || hospitalServiceItemDOS == null){
-               specialistServiceItemDOList.add(specialistServiceItemDO);
+            }else {
+                if (hospitalServiceItemDOS.size() == 0 || hospitalServiceItemDOS == null){
+                    specialistServiceItemDOList.add(specialistServiceItemDO);
+                }
             }
         }
         envelop.setDetailModelList(specialistServiceItemDOList);

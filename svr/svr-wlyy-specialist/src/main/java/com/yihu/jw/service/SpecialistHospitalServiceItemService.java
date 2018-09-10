@@ -133,7 +133,7 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                     if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO1.getServiceItemId())){
                         if (isTrue==false){
                             hospitalServiceItemDO1.setFlag(3);
-                            hospitalServiceItemDOS1.add(hospitalServiceItemDO);
+                            hospitalServiceItemDOS1.add(hospitalServiceItemDO1);
                             flag = true;
                             break;
                         }
