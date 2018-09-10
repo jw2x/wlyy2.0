@@ -776,7 +776,7 @@ public class RehabilitationManageService {
             map.put("planTypeName",planTypeName);//安排类型名称
             map.put("statusName",statusName);//状态名称
             //已完成
-            Integer allFinishCount = rehabilitationDetailDao.findByStatusAndPlanId(2,one.getId());
+            Integer allFinishCount = rehabilitationDetailDao.findByStatusAndPlanId(1,one.getId());
             map.put("allFinishCount",allFinishCount);//已完成
 //            //未完成
 //            Integer notstartedCount = rehabilitationDetailDao.completenessCount(1,one.getId());//未开始
@@ -1073,7 +1073,11 @@ public class RehabilitationManageService {
             doctorCode = one.get("doctor")+"";
             patientCode = one.get("patient")+"";
             listMap = rehabilitationDetailDao.findByPatientAndDoctor(startTime,endTime,doctorCode,patientCode);
-            one.put("planDetailIds",listMap);
+            String ids = "";
+            for(String one2 : listMap){
+                ids += ","+one2;
+            }
+            one.put("planDetailIds",StringUtils.isNotEmpty(ids)?ids.substring(1):"");
         }
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
     }
