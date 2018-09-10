@@ -30,6 +30,19 @@ es:
   type:
     servicePackLog: base_service_package_log
 
+fast-dfs:
+  tracker-server: 172.19.103.54:22122 #服务器地址
+  connect-timeout: 2 #链接超时时间
+  network-timeout: 30
+  charset: ISO8859-1 #编码
+  http:
+    tracker-http-port: 80
+    anti-steal-token: no
+    secret-key: FastDFS1234567890
+  pool: #连接池大小
+    init-size: 5
+    max-size: 20
+    wait-time: 500
 ---
 spring:
   profiles: jwdev
@@ -51,6 +64,8 @@ spring:
     password: admin
   zipkin:
     base-url: http://localhost:9411 #日志追踪的地址
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
 
 ---
 spring:
@@ -73,6 +88,8 @@ spring:
     password: admin
   zipkin:
     base-url: http://localhost:9411 #日志追踪的地址
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/
 
 ---
 spring:
@@ -95,3 +112,5 @@ spring:
     password: admin
   zipkin:
     base-url: http://localhost:9411 #日志追踪的地址
+fastDFS:
+  fastdfs_file_url: http://172.19.103.54:80/

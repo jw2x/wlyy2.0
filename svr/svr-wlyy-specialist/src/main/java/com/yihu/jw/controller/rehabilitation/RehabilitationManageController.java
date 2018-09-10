@@ -121,9 +121,11 @@ public class RehabilitationManageController {
     @GetMapping(value = SpecialistMapping.rehabilitation.serviceItemList)
     @ApiOperation(value = "康复管理-多个康复计划服务项目内容信息列表")
     public ObjEnvelop serviceItemList(@ApiParam(name = "planDetailIds", value = "多个服务项目id用‘，’分隔", required = true)
-                                             @RequestParam(value = "planDetailIds", required = true)String planDetailIds){
+                                             @RequestParam(value = "planDetailIds", required = true)String planDetailIds,
+                                      @ApiParam(name = "doctorCode", value = "医生code", required = false)
+                                      @RequestParam(value = "doctorCode", required = false)String doctorCode){
         try {
-            return rehabilitationManageService.serviceItemList(planDetailIds);
+            return rehabilitationManageService.serviceItemList(planDetailIds,doctorCode);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -134,9 +136,11 @@ public class RehabilitationManageController {
     @GetMapping(value = SpecialistMapping.rehabilitation.serviceItem)
     @ApiOperation(value = "康复管理-康复计划服务项目确认详情页")
     public ObjEnvelop serviceItem(@ApiParam(name = "planDetailId", value = "服务项目id", required = true)
-                                   @RequestParam(value = "planDetailId", required = true)String planDetailId){
+                                  @RequestParam(value = "planDetailId", required = true)String planDetailId,
+                                  @ApiParam(name = "doctorCode", value = "医生code", required = false)
+                                  @RequestParam(value = "doctorCode", required = false)String doctorCode){
         try {
-            return rehabilitationManageService.serviceItem(planDetailId);
+            return rehabilitationManageService.serviceItem(planDetailId,doctorCode);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
