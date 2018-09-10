@@ -1063,8 +1063,18 @@ public class RehabilitationManageService {
      * @return
      */
     public ObjEnvelop dailyJob(String startTime,String endTime){
-
-        List<Map<String,Object>> list = rehabilitationDetailDao.dailyJob(startTime,endTime);
+        String sql = "select d.doctor,p.patient,count(1) as num from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.status!=1 and d.execute_time>='"+startTime+"' and d.execute_time<='"+endTime+"' GROUP BY d.doctor,p.patient";
+//        List<Object> list = rehabilitationDetailDao.dailyJob(startTime,endTime);
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        String doctorCode = "";
+        String patientCode = "";
+        List<String> listMap  = null;
+        for(Map<String,Object> one:list){
+            doctorCode = one.get("doctor")+"";
+            patientCode = one.get("patient")+"";
+            listMap = rehabilitationDetailDao.findByPatientAndDoctor(startTime,endTime,doctorCode,patientCode);
+            one.put("planDetailIds",listMap);
+        }
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
     }
 
