@@ -36,6 +36,14 @@ public class BaseRequestMapping {
     }
 
     /**
+     * SAAS名片
+     */
+    public static class SaasBusinessCard extends Basic {
+        public static final String PREFIX  = "/saas_business_card";
+        public static final String GENERATE = "/generate";
+    }
+
+    /**
      * 模块
      */
     public static class Module extends Basic {
@@ -149,6 +157,13 @@ public class BaseRequestMapping {
      */
     public static class ServicePackage extends Basic{
         public static final String PREFIX  = "/service_package";
+    }
+
+    /**
+     * 服务包类目
+     */
+    public static class ServicePackageNormcat extends Basic{
+        public static final String PREFIX  = "/service_package_normcat";
     }
 
     /**
@@ -347,6 +362,13 @@ public class BaseRequestMapping {
      */
     public static class DictMedicine extends Basic {
         public static final String PREFIX  = "/dictMedicine";
+    }
+
+    /**
+     * app版本升级
+     */
+    public static class AppVersion extends Basic {
+        public static final String PREFIX  = "/appVersion";
     }
 
     /**

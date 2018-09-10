@@ -1,15 +1,13 @@
 package com.yihu.jw.base.service.dict;
 
-import com.yihu.jw.base.dao.dict.DictMedicineDao;
-import com.yihu.jw.entity.base.dict.DictMedicineDO;
+import com.yihu.jw.base.dao.dict.DictMedicineDistributeOrgDao;
 import com.yihu.jw.entity.base.dict.DictMedicineDistributeOrgDO;
 import com.yihu.mysql.query.BaseJpaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
  * 
- * 药品字典服务service
+ * 机构药品分发字典服务service
  * 
  * @version 
  * <pre>
@@ -20,6 +18,5 @@ import org.springframework.stereotype.Service;
  * @since 1.
  */
 @Service
-public class DictMedicineService extends BaseJpaService<DictMedicineDO, DictMedicineDao> {
-
+public class DictMedicineDistributeOrgService extends BaseJpaService<DictMedicineDistributeOrgDO, DictMedicineDistributeOrgDao> {
 }

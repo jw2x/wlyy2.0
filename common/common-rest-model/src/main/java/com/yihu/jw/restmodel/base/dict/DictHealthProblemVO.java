@@ -25,32 +25,44 @@ public class DictHealthProblemVO extends IntegerIdentityVO{
     /**
 	 * saas配置id，null标识公共字典
 	 */
-	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "模块1")
+	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "402803ee656498890165649ad2da1112")
     private String saasId;
 
     /**
 	 * 字典编码
 	 */
-	@ApiModelProperty(value = "字典编码", example = "模块1")
+	@ApiModelProperty(value = "字典编码", example = "HP0001")
     private String code;
 
     /**
 	 * 字典名称
 	 */
-	@ApiModelProperty(value = "字典名称", example = "模块1")
+	@ApiModelProperty(value = "字典名称", example = "肠道传染病")
     private String name;
 
     /**
 	 * 描述
 	 */
-	@ApiModelProperty(value = "描述", example = "模块1")
+	@ApiModelProperty(value = "描述", example = "肠道疾病")
     private String description;
+
+    /**
+     * 是否慢病
+     */
+    @ApiModelProperty(value = "是否慢病", example = "1-是，0-否")
+    private String chronicFlag;
+
+    /**
+     * 是否传染病
+     */
+    @ApiModelProperty(value = "是否传染病", example = "1-是，0-否")
+    private String infectiousFlag;
 
     /**
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "创建时间", example = "模块1")
+	@ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd HH:mm:ss/该字段可不填")
     private Date createTime;
 
 
@@ -89,5 +101,18 @@ public class DictHealthProblemVO extends IntegerIdentityVO{
         this.createTime = createTime;
     }
 
+    public String getChronicFlag() {
+        return chronicFlag;
+    }
+    public void setChronicFlag(String chronicFlag) {
+        this.chronicFlag = chronicFlag;
+    }
+
+    public String getInfectiousFlag() {
+        return infectiousFlag;
+    }
+    public void setInfectiousFlag(String infectiousFlag) {
+        this.infectiousFlag = infectiousFlag;
+    }
 
 }

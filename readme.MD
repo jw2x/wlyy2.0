@@ -2,7 +2,7 @@
      common     公共依赖包
      svr     业务微服务  
         svr-base 基础微服务
-        svr-quota 统计微服务
+        svr-statistics 统计微服务
      server
          svr-configuration    配置服务 
             涉及主要技术 git(存储配置文件) 
@@ -12,9 +12,9 @@
             涉及主要技术 hystrix,hystrix-dashboard
          svr-logServer 分布式追踪
             涉及主要技术 zipkin 
-     common-lib-parent-pom    common公共工程的maven父pom
-     jw-lib-parent-pom   jw业务公共工程的maven父pom 
-     web-gateway 对外的接口网关
+     wlyy-lib-parent-pom    common公共工程的maven父pom
+     wlyy-parent-pom   jw业务公共工程的maven父pom
+     ag-basic 对外的接口网关
      manage-gateway 基卫后台管理系统的接口网关
      .gitignore   项目提交忽略配置文件
      

@@ -1,9 +1,8 @@
-package com.yihu.jw.base.endpoint.dict;
+package com.yihu.jw.base.endpoint.servicePackage;
 
-import com.yihu.jw.base.service.dict.DictMedicineDistributeOrgService;
-import com.yihu.jw.base.service.dict.DictMedicineService;
-import com.yihu.jw.entity.base.dict.DictMedicineDO;
-import com.yihu.jw.restmodel.base.dict.DictMedicineVO;
+import com.yihu.jw.base.service.servicePackage.ServicePackageNormcatService;
+import com.yihu.jw.entity.base.servicePackage.ServicePackageNormcatDO;
+import com.yihu.jw.restmodel.base.servicePackage.ServicePackageNormcatVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -20,60 +19,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * 药品字典控制器
- *
- * @version <pre>
- * Author	Version		Date		Changes
- * Administrator 	1.0  		2018年09月07日 	Created
- *
- * </pre>
- * @since 1.
+ * @author yeshijie on 2018/9/7.
  */
 @RestController
-@RequestMapping(value = BaseRequestMapping.DictMedicine.PREFIX)
-@Api(value = "药品字典管理", description = "药品字典管理服务接口", tags = {"wlyy基础服务 - 药品字典管理服务接口"})
-public class DictMedicineEndpoint extends EnvelopRestEndpoint {
+@RequestMapping(value = BaseRequestMapping.ServicePackageNormcat.PREFIX, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@Api(value = "服务包类目管理", description = "服务包类目管理服务接口", tags = {"wlyy基础服务 - 服务包类目管理服务接口"})
+public class ServicePackageNormcatEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
-    private DictMedicineService dictMedicineService;
-    @Autowired
-    private DictMedicineDistributeOrgService dictMedicineDistributeOrgService;
+    private ServicePackageNormcatService servicePackageNormcatService;
 
-    @PostMapping(value = BaseRequestMapping.DictMedicine.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.ServicePackageNormcat.CREATE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<DictMedicineVO> create(
+    public ObjEnvelop<ServicePackageNormcatVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        DictMedicineDO dictMedicine = toEntity(jsonData, DictMedicineDO.class);
-        dictMedicine = dictMedicineService.save(dictMedicine);
-        return success(dictMedicine, DictMedicineVO.class);
+        ServicePackageNormcatDO normcatDO = toEntity(jsonData, ServicePackageNormcatDO.class);
+        normcatDO = servicePackageNormcatService.save(normcatDO);
+        return success(convertToModel(normcatDO, ServicePackageNormcatVO.class));
     }
 
-    @PostMapping(value = BaseRequestMapping.DictMedicine.DELETE)
+    @PostMapping(value = BaseRequestMapping.ServicePackageNormcat.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
-            @RequestParam(value = "ids") String ids) {
-        dictMedicineService.delete(ids.split(","));
+            @RequestParam(value = "ids") String ids) throws Exception{
+        servicePackageNormcatService.delete(ids.split(","));
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.DictMedicine.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.ServicePackageNormcat.UPDATE)
     @ApiOperation(value = "更新")
-    public ObjEnvelop<DictMedicineVO> update(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+    public ObjEnvelop<ServicePackageNormcatVO> update (
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        DictMedicineDO dictMedicine = toEntity(jsonData, DictMedicineDO.class);
-        if (null == dictMedicine.getId()) {
+        ServicePackageNormcatDO normcatDO = toEntity(jsonData, ServicePackageNormcatDO.class);
+        if (null == normcatDO.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);
         }
-        dictMedicine = dictMedicineService.save(dictMedicine);
-        return success(dictMedicine, DictMedicineVO.class);
+        normcatDO = servicePackageNormcatService.save(normcatDO);
+        return success(normcatDO, ServicePackageNormcatVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.DictMedicine.PAGE)
+    @GetMapping(value = BaseRequestMapping.ServicePackageNormcat.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<DictMedicineVO> page(
+    public PageEnvelop<ServicePackageNormcatVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -84,22 +74,21 @@ public class DictMedicineEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<DictMedicineDO> dictMedicines = dictMedicineService.search(fields, filters, sorts, page, size);
-        int count = (int) dictMedicineService.getCount(filters);
-        return success(dictMedicines, count, page, size, DictMedicineVO.class);
+        List<ServicePackageNormcatDO> normcatDOS = servicePackageNormcatService.search(fields, filters, sorts, page, size);
+        int count = (int)servicePackageNormcatService.getCount(filters);
+        return success(normcatDOS, count, page, size, ServicePackageNormcatVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.DictMedicine.LIST)
+    @GetMapping(value = BaseRequestMapping.ServicePackageNormcat.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<DictMedicineVO> list(
+    public ListEnvelop<ServicePackageNormcatVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<DictMedicineDO> dictMedicines = dictMedicineService.search(fields, filters, sorts);
-        return success(dictMedicines, DictMedicineVO.class);
+        List<ServicePackageNormcatDO> normcatDOS = servicePackageNormcatService.search(fields, filters, sorts);
+        return success(normcatDOS, ServicePackageNormcatVO.class);
     }
-
 }

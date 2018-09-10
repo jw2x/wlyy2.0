@@ -1,101 +1,103 @@
-package com.yihu.jw.restmodel.base.team;
+package com.yihu.jw.entity.base.team;
 
-import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 
 /**
- * 
- * 团队信息vo
- * 
- * @version 
- * <pre>
- * Author	Version		Date		Changes
- * Administrator 	1.0  2018年09月05日 Created
+ * 团队信息实体
  *
- * </pre>
- * @since 1.
+ * @author litaohong on  2018年08月31日
  */
-@ApiModel(value = "BaseTeamVO", description = "团队信息")
-public class BaseTeamVO extends UuidIdentityVOWithOperator {
+@Entity
+@Table(name = "base_team")
+public class BaseTeamDO extends UuidIdentityEntityWithOperator {
 
     /**
-	 * 机构id
-	 */
-	@ApiModelProperty(value = "机构id", example = "")
+     * 机构id
+     */
     private String orgId;
 
     /**
-	 * 团队名称
-	 */
-	@ApiModelProperty(value = "团队名称", example = "")
+     * 团队名称
+     */
     private String name;
 
     /**
-	 * 领导医生标识
-	 */
-	@ApiModelProperty(value = "领导医生标识", example = "")
+     * 领导医生标识
+     */
     private String leaderId;
 
     /**
-	 * 团队人数
-	 */
-	@ApiModelProperty(value = "团队人数", example = "自然数")
+     * 团队人数
+     */
     private String teamNum;
 
     /**
-	 * 团队二维码
-	 */
-	@ApiModelProperty(value = "团队二维码", example = "")
+     * 团队二维码
+     */
     private String qrcode;
 
     /**
-	 * 作废标识，1正常，0作废
-	 */
-	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
+     * 作废标识，1正常，0作废
+     */
     private String del;
 
 
+    @Column(name = "org_id")
     public String getOrgId() {
         return orgId;
     }
+
     public void setOrgId(String orgId) {
         this.orgId = orgId;
     }
 
+    @Column(name = "name")
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
 
+    @Column(name = "leader_id")
     public String getLeaderId() {
         return leaderId;
     }
+
     public void setLeaderId(String leaderId) {
         this.leaderId = leaderId;
     }
 
+    @Column(name = "team_num")
     public String getTeamNum() {
         return teamNum;
     }
+
     public void setTeamNum(String teamNum) {
         this.teamNum = teamNum;
     }
 
+    @Column(name = "qrcode")
     public String getQrcode() {
         return qrcode;
     }
+
     public void setQrcode(String qrcode) {
         this.qrcode = qrcode;
     }
 
+    @Column(name = "del")
     public String getDel() {
         return del;
     }
+
     public void setDel(String del) {
         this.del = del;
     }

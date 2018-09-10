@@ -26,8 +26,10 @@ public class WeChatQrcodeService {
     private WxAccessTokenService wxAccessTokenService;
 
     public String getQrcode(String wechatId,String scene) throws Exception{
-        String token_url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + wxAccessTokenService.getWxAccessTokenById(wechatId);
+        String token_url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
         String params = "{\"action_name\": \"QR_LIMIT_STR_SCENE\", \"action_info\": {\"scene\": {\"scene_str\": \"" + scene + "\"}}}";
+        //服务号必须是通过腾讯认证，每年是300元，如果没有认证而导致的错误提示，那就去认证
+        //微信登录提示48001,{"errcode":48001,"errmsg":"api unauthorized, hints: [ req_id: 1QoCla0699ns81 ]"}
         String result = HttpUtil.sendPost(token_url, params);
 
         if (!StringUtils.isEmpty(result)) {
@@ -46,6 +48,6 @@ public class WeChatQrcodeService {
             }
         }
 
-        return null;
+        return "";
     }
 }

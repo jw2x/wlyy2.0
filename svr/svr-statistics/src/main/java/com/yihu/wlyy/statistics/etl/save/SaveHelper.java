@@ -1,6 +1,6 @@
 package com.yihu.wlyy.statistics.etl.save;
 
-import com.yihu.wlyy.statistics.etl.save.es.ElastricSearchSave;
+import com.yihu.wlyy.statistics.etl.save.es.ElasticSearchSave;
 import com.yihu.wlyy.statistics.util.SpringUtil;
 import com.yihu.wlyy.statistics.vo.SaveModel;
 import org.springframework.context.annotation.Scope;
@@ -16,13 +16,13 @@ import java.util.List;
 public class SaveHelper {
 
     public Boolean save(List<SaveModel> sms) {
-        return SpringUtil.getBean(ElastricSearchSave.class).save(sms);
+        return SpringUtil.getBean(ElasticSearchSave.class).save(sms);
 
 
     }
 
     public Boolean update(List<SaveModel> sms) {
-        return SpringUtil.getBean(ElastricSearchSave.class).update(sms);
+        return SpringUtil.getBean(ElasticSearchSave.class).update(sms);
 
 
     }

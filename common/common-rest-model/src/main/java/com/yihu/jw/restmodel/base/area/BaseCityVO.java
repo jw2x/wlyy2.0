@@ -25,26 +25,26 @@ public class BaseCityVO extends IntegerIdentityVO{
     /**
 	 * 省编码
 	 */
-	@ApiModelProperty(value = "省编码", example = "模块1")
+	@ApiModelProperty(value = "省编码", example = "350000")
     private String province;
 
     /**
 	 * 城市编码
 	 */
-	@ApiModelProperty(value = "城市编码", example = "模块1")
+	@ApiModelProperty(value = "城市编码", example = "350200")
     private String code;
 
     /**
 	 * 城市名称
 	 */
-	@ApiModelProperty(value = "城市名称", example = "模块1")
+	@ApiModelProperty(value = "城市名称", example = "厦门市")
     private String name;
 
     /**
 	 * 创建时间
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	@ApiModelProperty(value = "创建时间", example = "模块1")
+	@ApiModelProperty(value = "创建时间", example = "yyyy-MM-dd HH:mm:ss/该字段可不填")
     private Date createTime;
 
 

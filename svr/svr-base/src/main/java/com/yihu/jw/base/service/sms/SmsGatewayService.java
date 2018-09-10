@@ -60,7 +60,8 @@ public class SmsGatewayService extends BaseJpaService<SmsGatewayDO, SmsGatewayDa
          * 1 - 过期时间（分钟）
          */
         String [] contentDatas = new String[] {
-                randomInt(6),
+//                randomInt(6), 找不到该方法，先用空字符串替代，此类作者自己再纠正回来
+                "",
                 smsGatewayDO.getExpireMin().toString()
         };
         Matcher contentMatcher = PATTERN.matcher(rawContent);
