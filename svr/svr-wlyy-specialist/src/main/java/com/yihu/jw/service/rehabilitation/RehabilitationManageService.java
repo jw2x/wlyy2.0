@@ -372,8 +372,10 @@ public class RehabilitationManageService {
 //                    sql+="and d.type='"+role+"' " ;
 //                }
                 sql+=" and d.doctor='"+doctorCode+"' " ;
-            }else{
+            }else if(searchTask==2||searchTask==4){
                 sql+=" and i.type='"+searchTask+"' " ;
+            }else if(searchTask==2){
+                sql+=" and i.reserve='"+searchTask+"' " ;
             }
         }
         if(status!=null){
@@ -487,8 +489,10 @@ public class RehabilitationManageService {
         if(searchTask!=null){
             if(searchTask==1){
                 sql+="and d.doctor='"+doctorCode+"' ";
-            }else{
+            }else if(searchTask==2||searchTask==4){
                 sql+=" and i.type='"+searchTask+"' " ;
+            }else if(searchTask==2){
+                sql+=" and i.reserve='"+searchTask+"' " ;
             }
         }
         if(status!=null){
