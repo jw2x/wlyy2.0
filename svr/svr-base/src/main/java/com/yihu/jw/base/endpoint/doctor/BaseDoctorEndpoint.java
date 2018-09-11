@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import com.yihu.jw.entity.base.doctor.BaseDoctorDO;
 
@@ -99,5 +100,25 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
         List<BaseDoctorDO> baseDoctors = baseDoctorService.search(fields, filters, sorts);
         return success(baseDoctors, BaseDoctorVO.class);
     }
+
+    /**
+     * 医生信息（基本信息 + 医院执业信息）
+     * @param orgId
+     * @param doctorId
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = BaseRequestMapping.BaseDoctor.DOCINFO)
+    @ApiOperation(value = "获取列表")
+    public Envelop doctorHosplist(
+            @ApiParam(name = "orgId", value = "医院id")
+            @RequestParam(value = "orgId", required = true) String orgId,
+            @ApiParam(name = "doctorId", value = "医生id")
+            @RequestParam(value = "doctorId", required = true) String doctorId) throws Exception {
+        Map<String,Object> map = baseDoctorService.getDoctorInfo(orgId, doctorId);
+        return success(map.toString());
+    }
+
+
 
 }
