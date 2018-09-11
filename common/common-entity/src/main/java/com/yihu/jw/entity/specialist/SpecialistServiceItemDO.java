@@ -53,16 +53,16 @@ public class SpecialistServiceItemDO extends UuidIdentityEntityWithOperator impl
     private Integer hospitalGrade; //医院等级
 
     @Column(name = "three_hospitals")
-    private Integer threeHospitals; //三级医院收费标准
+    private Double threeHospitals; //三级医院收费标准
 
     @Column(name = "two_hospitals")
-    private Integer twoHospitals; //二级医院收费标准
+    private Double twoHospitals; //二级医院收费标准
 
     @Column(name = "one_hospitals")
-    private Integer oneHospitals;//一级医院以及一级以下的社区医院
+    private Double oneHospitals;//一级医院以及一级以下的社区医院
 
     @Column(name = "unit")
-    private Integer unit; //计价单位
+    private String unit; //计价单位
 
     @Column(name = "add_item")
     private String addItem;//加收项目
@@ -177,38 +177,38 @@ public class SpecialistServiceItemDO extends UuidIdentityEntityWithOperator impl
     }
 
     @Column(name = "three_hospitals")
-    public Integer getThreeHospitals() {
+    public Double getThreeHospitals() {
         return threeHospitals;
     }
 
-    public void setThreeHospitals(Integer threeHospitals) {
+    public void setThreeHospitals(Double threeHospitals) {
         this.threeHospitals = threeHospitals;
     }
 
     @Column(name = "two_hospitals")
-    public Integer getTwoHospitals() {
+    public Double getTwoHospitals() {
         return twoHospitals;
     }
 
-    public void setTwoHospitals(Integer twoHospitals) {
+    public void setTwoHospitals(Double twoHospitals) {
         this.twoHospitals = twoHospitals;
     }
 
     @Column(name = "one_hospitals")
-    public Integer getOneHospitals() {
+    public Double getOneHospitals() {
         return oneHospitals;
     }
 
-    public void setOneHospitals(Integer oneHospitals) {
+    public void setOneHospitals(Double oneHospitals) {
         this.oneHospitals = oneHospitals;
     }
 
     @Column(name = "unit")
-    public Integer getUnit() {
+    public String getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public void setUnit(String unit) {
         this.unit = unit;
     }
 
