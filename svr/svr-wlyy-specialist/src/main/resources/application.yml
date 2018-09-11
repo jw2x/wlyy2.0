@@ -89,6 +89,13 @@ neiwang:
 base:
   url: http://172.17.110.212:10020/
 
+wechat:
+  appId: wxd03f859efdf0873d
+  appSecret: 2935b54b53a957d9516c920a544f2537
+  wechat_token: 27eb3bb24f149a7760cf1bb154b08040
+  wechat_base_url: http%3a%2f%2fweixin.xmtyw.cn%2fwlyy-dev
+  accId: gh_ffd64560fb21
+
 ---
 spring:
   profiles: jwtest
@@ -110,6 +117,13 @@ neiwang:
 
 base:
   url: http://172.17.110.212:10020/
+
+wechat:
+  appId: wx1f129f7b51701428
+  appSecret: 988f005d8309ed1795939e0f042431fb
+  wechat_token: 27eb3bb24f149a7760cf1bb154b08040
+  wechat_base_url: http%3a%2f%2fehr.yihu.com%2fwlyy
+  accId: gh_ffd64560fb21
 ---
 spring:
   profiles: jwdevtest
@@ -127,10 +141,17 @@ fast-dfs:
 
 neiwang:
   enable: true
-  wlyy: http://172.19.103.88:10051/svr-slyy-specialist/
+  wlyy: http://172.19.103.33:9797/svr-wlyy-specialist/
 
 base:
   url: http://172.17.110.212:10020/
+
+wechat:
+  appId: wx1f129f7b51701428
+  appSecret: 988f005d8309ed1795939e0f042431fb
+  wechat_token: 27eb3bb24f149a7760cf1bb154b08040
+  wechat_base_url: http%3a%2f%2fehr.yihu.com%2fwlyy
+  accId: gh_ffd64560fb21
 ---
 spring:
   profiles: prod
@@ -148,3 +169,10 @@ fast-dfs:
 neiwang:
   enable: false
   #wlyy: http://59.61.92.90:9099/iot/
+
+wechat:
+  appId: wxad04e9c4c5255acf
+  appSecret: ae77c48ccf1af5d07069f5153d1ac8d3
+  wechat_token: 27eb3bb24f149a7760cf1bb154b08040
+  wechat_base_url: http%3a%2f%2fwww.xmtyw.cn%2fwlyy
+  accId: gh_ffd64560fb21
