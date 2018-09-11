@@ -256,6 +256,7 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
         }
         //服务包数据
         servicePackageVO.put("detailsVOList", detailsVOList);
+        servicePackageVO.put("num", detailsVOList.size());
         servicePackageVO.put("saasId", "xmihealth");
         servicePackageVO.put("name", planDO.getTitle());
         servicePackageVO.put("introduce", planDO.getTitle());
