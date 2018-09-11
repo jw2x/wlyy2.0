@@ -1163,4 +1163,14 @@ public class RehabilitationManageService {
         resultMap.put("healthyCondition","康复期");
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,resultMap);
     }
+
+    /**
+     * 根据居民获取康复计划
+     * @param patient
+     * @return
+     */
+    public ObjEnvelop planListByPatient(String patient){
+        List<PatientRehabilitationPlanDO> list = patientRehabilitationPlanDao.findbyPatients(patient);
+        return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
+    }
 }

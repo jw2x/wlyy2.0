@@ -333,4 +333,17 @@ public class RehabilitationManageController {
             return ObjEnvelop.getError(e.getMessage());
         }
     }
+
+    @GetMapping(value = SpecialistMapping.rehabilitation.planListByPatient)
+    @ApiOperation(value = "康复管理-根据居民获取康复计划")
+    public ObjEnvelop planListByPatient(@ApiParam(name = "patientCode", value = "居民code", required = true)
+                                   @RequestParam(value = "patientCode", required = true)String patientCode){
+        try {
+            return rehabilitationManageService.planListByPatient(patientCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
+        }
+    }
 }
