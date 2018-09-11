@@ -29,6 +29,11 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
 	private String hospName;
 
     /**
+     * 医生标识
+     */
+	private String doctorCode;
+
+    /**
 	 * 医生角色标识
 	 */
 	private String roleCode;
@@ -76,7 +81,16 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
         this.hospName = hospName;
     }
 
-	@Column(name = "role_code")
+    @Column(name = "doctor_code")
+    public String getDoctorCode() {
+        return doctorCode;
+    }
+
+    public void setDoctorCode(String doctorCode) {
+        this.doctorCode = doctorCode;
+    }
+
+    @Column(name = "role_code")
     public String getRoleCode() {
         return roleCode;
     }
