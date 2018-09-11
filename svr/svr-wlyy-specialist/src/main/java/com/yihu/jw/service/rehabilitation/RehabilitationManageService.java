@@ -373,13 +373,13 @@ public class RehabilitationManageService {
 //                }
                 sql+=" and d.doctor='"+doctorCode+"' " ;
             }else if(searchTask==2||searchTask==4){
-                sql+=" and i.type='"+searchTask+"' " ;
-            }else if(searchTask==2){
-                sql+=" and i.reserve='"+searchTask+"' " ;
+                sql+=" and i.type="+searchTask+" " ;
+            }else if(searchTask==3){
+                sql+=" and i.reserve="+searchTask+" " ;
             }
         }
         if(status!=null){
-            sql+= "and d.status="+status;
+            sql+= " and d.status="+status;
         }
 
         List<Map<String,Object>> rehabilitationDetailList = jdbcTemplate.queryForList(sql);
@@ -490,9 +490,9 @@ public class RehabilitationManageService {
             if(searchTask==1){
                 sql+="and d.doctor='"+doctorCode+"' ";
             }else if(searchTask==2||searchTask==4){
-                sql+=" and i.type='"+searchTask+"' " ;
-            }else if(searchTask==2){
-                sql+=" and i.reserve='"+searchTask+"' " ;
+                sql+=" and i.type="+searchTask+" " ;
+            }else if(searchTask==3){
+                sql+=" and i.reserve="+searchTask+" " ;
             }
         }
         if(status!=null){
