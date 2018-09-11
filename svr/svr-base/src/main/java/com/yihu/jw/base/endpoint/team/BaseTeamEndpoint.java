@@ -1,6 +1,7 @@
 package com.yihu.jw.base.endpoint.team;
 
 import com.yihu.jw.base.service.team.BaseTeamService;
+import com.yihu.jw.entity.base.team.BaseTeamDO;
 import com.yihu.jw.restmodel.base.team.BaseTeamVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -14,9 +15,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
-import com.yihu.jw.entity.base.team.BaseTeamDO;
+import java.util.List;
 
 /**
 *
