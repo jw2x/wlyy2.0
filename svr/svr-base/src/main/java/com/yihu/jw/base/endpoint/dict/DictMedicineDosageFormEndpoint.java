@@ -1,8 +1,8 @@
 package com.yihu.jw.base.endpoint.dict;
 
-import com.yihu.jw.base.service.dict.DictMedicineDistributeOrgService;
-import com.yihu.jw.entity.base.dict.DictMedicineDistributeOrgDO;
-import com.yihu.jw.restmodel.base.dict.DictMedicineDistributeOrgVO;
+import com.yihu.jw.base.service.dict.DictMedicineDosageFormService;
+import com.yihu.jw.entity.base.dict.DictMedicineDosageFormDO;
+import com.yihu.jw.restmodel.base.dict.DictMedicineDosageFormVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
 *
-* 机构药品分发字典控制器
+* 药品剂型字典控制器
 *
 * @version
 * <pre>
@@ -31,48 +31,48 @@ import java.util.List;
 * @since 1.
 */
 @RestController
-@RequestMapping(value = BaseRequestMapping.DictMedicineDistributeOrg.PREFIX)
-@Api(value = "机构药品分发字典管理", description = "机构药品分发字典管理服务接口", tags = {"wlyy基础服务 - 机构药品分发字典管理服务接口"})
-public class DictMedicineDistributeOrgEndpoint extends EnvelopRestEndpoint {
+@RequestMapping(value = BaseRequestMapping.DictMedicineDosageForm.PREFIX)
+@Api(value = "药品剂型字典管理", description = "药品剂型字典管理服务接口", tags = {"wlyy基础服务 - 药品剂型字典管理服务接口"})
+public class DictMedicineDosageFormEndpoint extends EnvelopRestEndpoint {
 
 @Autowired
-private DictMedicineDistributeOrgService dictMedicineDistributeOrgService;
+private DictMedicineDosageFormService dictMedicineDosageFormService;
 
-@PostMapping(value = BaseRequestMapping.DictMedicineDistributeOrg.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@PostMapping(value = BaseRequestMapping.DictMedicineDosageForm.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @ApiOperation(value = "创建")
-public ObjEnvelop<DictMedicineDistributeOrgVO> create (
+public ObjEnvelop<DictMedicineDosageFormVO> create (
     @ApiParam(name = "json_data", value = "Json数据", required = true)
     @RequestBody String jsonData) throws Exception {
-    DictMedicineDistributeOrgDO dictMedicineDistributeOrg = toEntity(jsonData, DictMedicineDistributeOrgDO.class);
-    dictMedicineDistributeOrg = dictMedicineDistributeOrgService.save(dictMedicineDistributeOrg);
-    return success(dictMedicineDistributeOrg, DictMedicineDistributeOrgVO.class);
+    DictMedicineDosageFormDO dictMedicineDosageForm = toEntity(jsonData, DictMedicineDosageFormDO.class);
+    dictMedicineDosageForm = dictMedicineDosageFormService.save(dictMedicineDosageForm);
+    return success(dictMedicineDosageForm, DictMedicineDosageFormVO.class);
     }
 
-    @PostMapping(value = BaseRequestMapping.DictMedicineDistributeOrg.DELETE)
+    @PostMapping(value = BaseRequestMapping.DictMedicineDosageForm.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
     @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
     @RequestParam(value = "ids") String ids) {
-    dictMedicineDistributeOrgService.delete(ids.split(","));
+    dictMedicineDosageFormService.delete(ids.split(","));
     return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.DictMedicineDistributeOrg.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.DictMedicineDosageForm.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public ObjEnvelop<DictMedicineDistributeOrgVO> update (
+    public ObjEnvelop<DictMedicineDosageFormVO> update (
         @ApiParam(name = "json_data", value = "Json数据", required = true)
         @RequestBody String jsonData) throws Exception {
-        DictMedicineDistributeOrgDO dictMedicineDistributeOrg = toEntity(jsonData, DictMedicineDistributeOrgDO.class);
-        if (null == dictMedicineDistributeOrg.getId()) {
+        DictMedicineDosageFormDO dictMedicineDosageForm = toEntity(jsonData, DictMedicineDosageFormDO.class);
+        if (null == dictMedicineDosageForm.getId()) {
         return failed("ID不能为空", ObjEnvelop.class);
         }
-        dictMedicineDistributeOrg = dictMedicineDistributeOrgService.save(dictMedicineDistributeOrg);
-        return success(dictMedicineDistributeOrg, DictMedicineDistributeOrgVO.class);
+        dictMedicineDosageForm = dictMedicineDosageFormService.save(dictMedicineDosageForm);
+        return success(dictMedicineDosageForm, DictMedicineDosageFormVO.class);
         }
 
-        @GetMapping(value = BaseRequestMapping.DictMedicineDistributeOrg.PAGE)
+        @GetMapping(value = BaseRequestMapping.DictMedicineDosageForm.PAGE)
         @ApiOperation(value = "获取分页")
-        public PageEnvelop<DictMedicineDistributeOrgVO> page (
+        public PageEnvelop<DictMedicineDosageFormVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -83,22 +83,22 @@ public ObjEnvelop<DictMedicineDistributeOrgVO> create (
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-            List<DictMedicineDistributeOrgDO> dictMedicineDistributeOrgs = dictMedicineDistributeOrgService.search(fields, filters, sorts, page, size);
-                int count = (int)dictMedicineDistributeOrgService.getCount(filters);
-                return success(dictMedicineDistributeOrgs, count, page, size, DictMedicineDistributeOrgVO.class);
+            List<DictMedicineDosageFormDO> dictMedicineDosageForms = dictMedicineDosageFormService.search(fields, filters, sorts, page, size);
+                int count = (int)dictMedicineDosageFormService.getCount(filters);
+                return success(dictMedicineDosageForms, count, page, size, DictMedicineDosageFormVO.class);
          }
 
-         @GetMapping(value = BaseRequestMapping.DictMedicineDistributeOrg.LIST)
+         @GetMapping(value = BaseRequestMapping.DictMedicineDosageForm.LIST)
          @ApiOperation(value = "获取列表")
-         public ListEnvelop<DictMedicineDistributeOrgVO> list (
+         public ListEnvelop<DictMedicineDosageFormVO> list (
              @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
              @RequestParam(value = "fields", required = false) String fields,
              @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
              @RequestParam(value = "filters", required = false) String filters,
              @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
              @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-             List<DictMedicineDistributeOrgDO> dictMedicineDistributeOrgs = dictMedicineDistributeOrgService.search(fields, filters, sorts);
-                  return success(dictMedicineDistributeOrgs, DictMedicineDistributeOrgVO.class);
+             List<DictMedicineDosageFormDO> dictMedicineDosageForms = dictMedicineDosageFormService.search(fields, filters, sorts);
+                  return success(dictMedicineDosageForms, DictMedicineDosageFormVO.class);
          }
 
  }

@@ -323,8 +323,7 @@ CREATE TABLE `dict_medicine_distribute_org` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `org_id` varchar(50) DEFAULT NULL COMMENT '机构编码',
   `medicine_code` varchar(50) DEFAULT NULL COMMENT '药品代码',
-#   `disp_quantity_untuck_flag` int(10) DEFAULT NULL,
-#   `disp_pack_untuck_flag` int(10) DEFAULT NULL,
+  `quantity` int(10) DEFAULT NULL COMMENT '分发数量',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构药品分发字典';
 
@@ -333,25 +332,40 @@ drop table IF EXISTS `dict_medicine`;
 create table `dict_medicine`(
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `code` varchar(50) DEFAULT NULL COMMENT '药品代码',
-  `name` varchar(2000) DEFAULT NULL COMMENT '药品名称',
-  `physic_spec` varchar(2000) DEFAULT NULL COMMENT '药品规格',
-  `subject_class` varchar(200) DEFAULT NULL COMMENT '药品科目  科目类别字典中定义',
-  `dose_unit` varchar(50) DEFAULT NULL COMMENT '剂量单位 计量单位字典中定义',
-  `quantity_unit` varchar(50) DEFAULT NULL COMMENT '数量单位  计量单位字典中定义',
-  `pack_unit` varchar(250) DEFAULT NULL COMMENT '包装单位   计量单位字典中定义',
-  `min_dose` double(20,6) DEFAULT NULL COMMENT '最小剂量',
-  `pack_spec` double(20,6) DEFAULT NULL,
-  `retail_price` double(20,6) DEFAULT NULL COMMENT '零售价',
-  `physic_form` varchar(50) DEFAULT NULL,
-  `toxicology_type` varchar(250) DEFAULT NULL COMMENT '毒理分类  药品毒理分类字典中定义',
-  `basic_flag` varchar(50) DEFAULT NULL COMMENT '基本药物标志  0：否；1：是',
-  `valid_flag` varchar(50) DEFAULT NULL COMMENT '有效标志 0：无效；1：有效',
+  `name` varchar(2000) DEFAULT NULL COMMENT '药品中文名',
+  `subject_code` varchar(2000) DEFAULT NULL COMMENT '药品所属科目代码',
+  `dosage_form` varchar(50) DEFAULT NULL COMMENT '药品剂型',
+  `specification` varchar(200) DEFAULT NULL COMMENT '药品规格',
+  `packing_specification` varchar(50) DEFAULT NULL COMMENT '包装规格',
+  `indication` varchar(250) DEFAULT NULL COMMENT '适应症',
   `spell_code` varchar(200) DEFAULT NULL COMMENT '拼音首码',
   `wbzx_code` varchar(200) DEFAULT NULL COMMENT '五笔首码',
   `sequence` int(10) DEFAULT NULL COMMENT '排序号',
   `storage_conditions` varchar(50) DEFAULT NULL COMMENT '2表示需要冷藏，其他表示不需要冷藏',
   PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='药品字典';
+
+-- 药品剂型字典表（颗粒型，注射液，胶囊）
+drop table IF EXISTS `dict_medicine_dosage_form`;
+create table `dict_medicine_dosage_form`(
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `code` varchar(50) DEFAULT NULL COMMENT '剂型代码',
+  `name` varchar(2000) DEFAULT NULL COMMENT '剂型名称（颗粒型，注射液，胶囊等）',
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='药品剂型字典';
+
+-- 药品科目类别表
+drop table IF EXISTS `dict_medicine_subject`;
+create table `dict_medicine_subject`(
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `code` varchar(50) DEFAULT NULL COMMENT '类别代码',
+  `name` varchar(2000) DEFAULT NULL COMMENT '类别名称',
+  `parent_code` varchar(2000) DEFAULT NULL COMMENT '父类code',
+  PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='药品科目类别字典';
+
+
+
 
 -- ICD10表
 drop table IF EXISTS `dict_icd10`;

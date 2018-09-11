@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * @version 
  * <pre>
  * Author	Version		Date		Changes
- * Administrator    1.0  2018年09月07日 Created
+ * litaohong    1.0  2018年09月11日 Created
  *
  * </pre>
  * @since 1.

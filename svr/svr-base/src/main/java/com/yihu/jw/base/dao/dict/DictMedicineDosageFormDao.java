@@ -1,13 +1,13 @@
 package com.yihu.jw.base.dao.dict;
 
-import com.yihu.jw.entity.base.dict.DictMedicineDO;
+import com.yihu.jw.entity.base.dict.DictMedicineDosageFormDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 
 /**
  * 
- * 药品字典 数据库访问层
+ * 药品剂型字典 数据库访问层
  * 
  * @version 
  * <pre>
@@ -17,5 +17,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * </pre>
  * @since 1.
  */
-public interface DictMedicineDao extends PagingAndSortingRepository<DictMedicineDO, Integer>, JpaSpecificationExecutor<DictMedicineDO>  {
+public interface DictMedicineDosageFormDao extends PagingAndSortingRepository<DictMedicineDosageFormDO, Integer>, JpaSpecificationExecutor<DictMedicineDosageFormDO>  {
 }

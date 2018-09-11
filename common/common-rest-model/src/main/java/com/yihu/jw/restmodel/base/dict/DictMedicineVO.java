@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @version 
  * <pre>
  * Author	Version		Date		Changes
- * Administrator 	1.0  2018年09月07日 Created
+ * litaohong 	1.0  2018年09月11日 Created
  *
  * </pre>
  * @since 1.
@@ -21,117 +21,69 @@ import io.swagger.annotations.ApiModelProperty;
 public class DictMedicineVO extends IntegerIdentityVO{
 
     /**
-     * 药品代码
-     */
-    @ApiModelProperty(value = "分发药品的机构名称", example = "")
-    private String orgName;
-
-    /**
 	 * 药品代码
 	 */
-	@ApiModelProperty(value = "药品代码", example = "")
+	@ApiModelProperty(value = "药品代码", example = "模块1")
     private String code;
 
     /**
-	 * 药品名称
+	 * 药品中文名
 	 */
-	@ApiModelProperty(value = "药品名称", example = "")
+	@ApiModelProperty(value = "药品中文名", example = "模块1")
     private String name;
+
+    /**
+	 * 药品所属科目代码
+	 */
+	@ApiModelProperty(value = "药品所属科目代码", example = "模块1")
+    private String subjectCode;
+
+    /**
+	 * 药品剂型
+	 */
+	@ApiModelProperty(value = "药品剂型", example = "模块1")
+    private String dosageForm;
 
     /**
 	 * 药品规格
 	 */
-	@ApiModelProperty(value = "药品规格", example = "")
-    private String physicSpec;
+	@ApiModelProperty(value = "药品规格", example = "模块1")
+    private String specification;
 
     /**
-	 * 药品科目  科目类别字典中定义
+	 * 包装规格
 	 */
-	@ApiModelProperty(value = "药品科目  科目类别字典中定义", example = "")
-    private String subjectClass;
+	@ApiModelProperty(value = "包装规格", example = "模块1")
+    private String packingSpecification;
 
     /**
-	 * 剂量单位 计量单位字典中定义
+	 * 适应症
 	 */
-	@ApiModelProperty(value = "剂量单位 计量单位字典中定义", example = "")
-    private String doseUnit;
-
-    /**
-	 * 数量单位  计量单位字典中定义
-	 */
-	@ApiModelProperty(value = "数量单位  计量单位字典中定义", example = "")
-    private String quantityUnit;
-
-    /**
-	 * 包装单位   计量单位字典中定义
-	 */
-	@ApiModelProperty(value = "包装单位   计量单位字典中定义", example = "")
-    private String packUnit;
-
-    /**
-	 * 最小剂量
-	 */
-	@ApiModelProperty(value = "最小剂量", example = "")
-    private double minDose;
-
-    /**
-	 * 
-	 */
-	@ApiModelProperty(value = "", example = "")
-    private double packSpec;
-
-    /**
-	 * 零售价
-	 */
-	@ApiModelProperty(value = "零售价", example = "")
-    private double retailPrice;
-
-    /**
-	 * 
-	 */
-	@ApiModelProperty(value = "", example = "")
-    private String physicForm;
-
-    /**
-	 * 毒理分类  药品毒理分类字典中定义
-	 */
-	@ApiModelProperty(value = "毒理分类  药品毒理分类字典中定义", example = "")
-    private String toxicologyType;
-
-    /**
-	 * 基本药物标志  0：否；1：是
-	 */
-	@ApiModelProperty(value = "基本药物标志  0：否；1：是", example = "1")
-    private String basicFlag;
-
-    /**
-	 * 有效标志 0：无效；1：有效
-	 */
-	@ApiModelProperty(value = "有效标志 0：无效；1：有效", example = "0")
-    private String validFlag;
+	@ApiModelProperty(value = "适应症", example = "模块1")
+    private String indication;
 
     /**
 	 * 拼音首码
 	 */
-	@ApiModelProperty(value = "拼音首码", example = "")
+	@ApiModelProperty(value = "拼音首码", example = "模块1")
     private String spellCode;
 
     /**
 	 * 五笔首码
 	 */
-	@ApiModelProperty(value = "五笔首码", example = "")
+	@ApiModelProperty(value = "五笔首码", example = "模块1")
     private String wbzxCode;
 
     /**
 	 * 排序号
 	 */
-	@ApiModelProperty(value = "排序号", example = "")
+	@ApiModelProperty(value = "排序号", example = "模块1")
     private Integer sequence;
 
     /**
 	 * 2表示需要冷藏，其他表示不需要冷藏
 	 */
-	@ApiModelProperty(value = "2表示需要冷藏，其他表示不需要冷藏", example = "2")
+	@ApiModelProperty(value = "2表示需要冷藏，其他表示不需要冷藏", example = "模块1")
     private String storageConditions;
 
 
@@ -149,88 +101,39 @@ public class DictMedicineVO extends IntegerIdentityVO{
         this.name = name;
     }
 
-    public String getPhysicSpec() {
-        return physicSpec;
+    public String getSubjectCode() {
+        return subjectCode;
     }
-    public void setPhysicSpec(String physicSpec) {
-        this.physicSpec = physicSpec;
-    }
-
-    public String getSubjectClass() {
-        return subjectClass;
-    }
-    public void setSubjectClass(String subjectClass) {
-        this.subjectClass = subjectClass;
+    public void setSubjectCode(String subjectCode) {
+        this.subjectCode = subjectCode;
     }
 
-    public String getDoseUnit() {
-        return doseUnit;
+    public String getDosageForm() {
+        return dosageForm;
     }
-    public void setDoseUnit(String doseUnit) {
-        this.doseUnit = doseUnit;
-    }
-
-    public String getQuantityUnit() {
-        return quantityUnit;
-    }
-    public void setQuantityUnit(String quantityUnit) {
-        this.quantityUnit = quantityUnit;
+    public void setDosageForm(String dosageForm) {
+        this.dosageForm = dosageForm;
     }
 
-    public String getPackUnit() {
-        return packUnit;
+    public String getSpecification() {
+        return specification;
     }
-    public void setPackUnit(String packUnit) {
-        this.packUnit = packUnit;
-    }
-
-    public double getMinDose() {
-        return minDose;
-    }
-    public void setMinDose(double minDose) {
-        this.minDose = minDose;
+    public void setSpecification(String specification) {
+        this.specification = specification;
     }
 
-    public double getPackSpec() {
-        return packSpec;
+    public String getPackingSpecification() {
+        return packingSpecification;
     }
-    public void setPackSpec(double packSpec) {
-        this.packSpec = packSpec;
-    }
-
-    public double getRetailPrice() {
-        return retailPrice;
-    }
-    public void setRetailPrice(double retailPrice) {
-        this.retailPrice = retailPrice;
+    public void setPackingSpecification(String packingSpecification) {
+        this.packingSpecification = packingSpecification;
     }
 
-    public String getPhysicForm() {
-        return physicForm;
+    public String getIndication() {
+        return indication;
     }
-    public void setPhysicForm(String physicForm) {
-        this.physicForm = physicForm;
-    }
-
-    public String getToxicologyType() {
-        return toxicologyType;
-    }
-    public void setToxicologyType(String toxicologyType) {
-        this.toxicologyType = toxicologyType;
-    }
-
-    public String getBasicFlag() {
-        return basicFlag;
-    }
-    public void setBasicFlag(String basicFlag) {
-        this.basicFlag = basicFlag;
-    }
-
-    public String getValidFlag() {
-        return validFlag;
-    }
-    public void setValidFlag(String validFlag) {
-        this.validFlag = validFlag;
+    public void setIndication(String indication) {
+        this.indication = indication;
     }
 
     public String getSpellCode() {
