@@ -535,9 +535,10 @@ public class RehabilitationManageService {
                 isMyTask=1;
             }
             resultMap.put("isMyTask",isMyTask);//0不是自己的任务，1是自己的任务
-            if(!(one.get("specialistDoctor")+"").equals((one.get("create_user")+""))){
-                executeDoctorList.add(one.get("create_user_name")+"");
-            }
+//            if(!(one.get("specialistDoctor")+"").equals((one.get("create_user")+""))){
+//                executeDoctorList.add(one.get("create_user_name")+"");
+//            }
+            resultMap.put("executeDoctorCode",one.get("specialistDoctor")+"");//执行医生code
             executeDoctorList.add(one.get("specialistDoctorName")+"");
             resultMap.put("specialistDoctorCode",one.get("create_user")+"");//专科医生code
             resultMap.put("specialistDoctorName",one.get("create_user_name")+"");//专科医生名字
@@ -613,11 +614,12 @@ public class RehabilitationManageService {
             isMyTask=1;
         }
         resultMap.put("isMyTask",isMyTask);//0不是自己的任务，1是自己的任务
-        if(!(one.get("specialistDoctor")+"").equals((one.get("create_user")+""))){
-            executeDoctorList.add(one.get("create_user_name")+"");
-        }
+//        if(!(one.get("specialistDoctor")+"").equals((one.get("create_user")+""))){
+//            executeDoctorList.add(one.get("create_user_name")+"");
+//        }
         executeDoctorList.add(one.get("specialistDoctorName")+"");
         resultMap.put("executeDoctorList",executeDoctorList);
+        resultMap.put("executeDoctorCode",one.get("specialistDoctor")+"");//执行医生code
         resultMap.put("specialistDoctorCode",one.get("create_user")+"");//专科医生code
         resultMap.put("specialistDoctorName",one.get("create_user_name")+"");//专科医生名字
         resultMap.put("title",one.get("title"));//项目标题
