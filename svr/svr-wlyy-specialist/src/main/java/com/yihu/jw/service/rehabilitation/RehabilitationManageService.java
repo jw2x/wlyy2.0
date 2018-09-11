@@ -743,7 +743,7 @@ public class RehabilitationManageService {
             serviceDoctorList.add(healthDoctorMap);
         }
 
-        String specialistRelationSql = "select * from wlyy_specialist.wlyy_specialist_patient_relation where patient='"+patientCode+"' and sign_status='1' and status='1'";
+        String specialistRelationSql = "select * from wlyy_specialist.wlyy_specialist_patient_relation where patient='"+patientCode+"' and sign_status='1' and status >=0  ";
         List<Map<String,Object>> specialistRelationList = jdbcTemplate.queryForList(specialistRelationSql);
         for(Map<String,Object> one:specialistRelationList){
             String doctor = one.get("doctor")+"";
