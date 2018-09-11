@@ -270,6 +270,7 @@ public class BaseRequestMapping {
      */
     public static class BasePatient extends Basic {
         public static final String PREFIX  = "/basePatient";
+        public static final String getPatientById  = "/getPatientById";
     }
 
     /**

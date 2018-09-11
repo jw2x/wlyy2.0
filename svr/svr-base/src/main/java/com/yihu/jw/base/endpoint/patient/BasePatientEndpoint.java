@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import com.yihu.jw.entity.base.patient.BasePatientDO;
 
@@ -67,6 +68,15 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
         }
         basePatient = basePatientService.save(basePatient);
         return success(basePatient, BasePatientVO.class);
+    }
+
+    @PostMapping(value = BaseRequestMapping.BasePatient.getPatientById)
+    @ApiOperation(value = "获取列表")
+    public Envelop getPatientById(
+            @ApiParam(name = "id", value = "居民id")
+            @RequestParam(value = "id", required = true) String id) throws Exception {
+        Map<String,Object> basePatients = basePatientService.getPatientInfo(id);
+        return success(basePatients.toString());
     }
 
     @GetMapping(value = BaseRequestMapping.BasePatient.PAGE)
