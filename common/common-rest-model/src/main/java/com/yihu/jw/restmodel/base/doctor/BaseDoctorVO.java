@@ -23,12 +23,6 @@ import java.util.Date;
 public class BaseDoctorVO extends UuidIdentityVOWithOperator {
 
     /**
-	 * 机构id
-	 */
-	@ApiModelProperty(value = "机构id", example = "q8q39888jojuuasdnfadf8j8h736ljv")
-    private String orgId;
-
-    /**
 	 * 密码
 	 */
 	@ApiModelProperty(value = "密码", example = "s9i8ujjhy7gtgf5e455asddddda33eedbbfsq")
@@ -191,14 +185,6 @@ public class BaseDoctorVO extends UuidIdentityVOWithOperator {
 	 */
 	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
-
-
-    public String getOrgId() {
-        return orgId;
-    }
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
-    }
 
     public String getPassword() {
         return password;

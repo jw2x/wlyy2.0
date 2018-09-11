@@ -237,6 +237,7 @@ public class BaseRequestMapping {
      */
     public static class BaseDoctor extends Basic {
         public static final String PREFIX  = "/baseDoctor";
+        public static final String DOCINFO  = "/docInfo";
     }
 
 

@@ -19,11 +19,6 @@ import java.util.Date;
 public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
 
     /**
-	 * 机构id
-	 */
-	private String orgId;
-
-    /**
 	 * 密码
 	 */
 	private String password;
@@ -159,15 +154,6 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
 	 * 作废标识，1正常，0作废
 	 */
 	private String del;
-
-
-	@Column(name = "org_id")
-    public String getOrgId() {
-        return orgId;
-    }
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
-    }
 
 	@Column(name = "password")
     public String getPassword() {
