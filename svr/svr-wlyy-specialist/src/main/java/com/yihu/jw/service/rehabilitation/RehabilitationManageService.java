@@ -273,10 +273,6 @@ public class RehabilitationManageService {
             String doctorCode = temp.get("doctor")+"";
             Map<String,Object> resultMap = new HashMap<>();
             Integer isOperator = 0;
-            if(currentDoctorCode.equals(doctorCode)){
-                isOperator = 1;
-            }
-            resultMap.put("isOperator",isOperator);
             resultMap.put("patientCode",patientCode);//居民code
             //专科医生
             String specialistRelationSql = "select r.*,t.name as teamName,h.name as specialistHospitalName from wlyy_specialist.wlyy_specialist_patient_relation r left join "+basedb+".wlyy_admin_team t on r.team_code=t.id left join "+basedb+".dm_hospital h on t.org_code=h.code where r.sign_status ='1' and r.status in('0','1') and r.patient='"+patientCode+"' and r.doctor='"+doctorCode+"'";
@@ -334,7 +330,10 @@ public class RehabilitationManageService {
                 }
                 planMap.put("planTypeName",planTypeName);
                 planMap.put("status",one.getStatus());//0已中止，1进行中，2已完成
-
+                if(currentDoctorCode.equals(doctorCode)){
+                    isOperator = 1;
+                }
+                planMap.put("isOperator",isOperator);
                 //状态（0未完成，1已完成，2已预约）
                 //今日待办
                 Date beginTime = DateUtil.strToDateLong(DateUtil.getStringDateShort()+ " "+"00:00:00");
