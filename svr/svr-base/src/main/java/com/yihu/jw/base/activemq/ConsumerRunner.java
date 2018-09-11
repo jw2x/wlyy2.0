@@ -15,6 +15,7 @@ import java.util.Set;
 /**
  * Runner - 消息执行者
  * Created by progr1mmer on 2018/8/2.
+ * @author progr1mmer
  */
 public class ConsumerRunner implements Runnable, ExceptionListener {
 

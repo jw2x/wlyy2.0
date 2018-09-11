@@ -8,6 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
+ * <p>
+ *     field - 必须和对应实体的字段名相同
+ * </p>
+ *
  * Entity - SAAS名片
  * Created by progr1mmer on 2018/9/7.
  */
