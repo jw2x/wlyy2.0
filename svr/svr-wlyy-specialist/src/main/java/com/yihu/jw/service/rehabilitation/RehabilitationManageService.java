@@ -72,7 +72,7 @@ public class RehabilitationManageService {
 //            leftSql += " left join "+basedb+".wlyy_patient_disease_server s on p.patient=s.patient and s.del=1 and s.disease ='"+diseaseCode+"'" ;
 //        }
         if(doctorType==2){//家医是根据签约关系过滤
-            leftSql+=" and f.doctor='"+doctorCode+"' ";
+            leftSql+=" and (f.doctor='"+doctorCode+"' or f.doctor_health='"+doctorCode+"') ";
         }
         String sql = " select p.*,f.idcard,f.hospital_name from wlyy_specialist.wlyy_patient_rehabilitation_plan p  " +leftSql+
                 " where 1=1 " ;
