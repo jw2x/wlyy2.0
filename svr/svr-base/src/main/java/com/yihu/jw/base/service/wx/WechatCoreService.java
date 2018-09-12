@@ -224,7 +224,23 @@ public class WechatCoreService {
      * @param message
      * @return
      */
-    public String clickProcess(Map<String, String> message){
+    public String clickProcess(Map<String, String> message)throws Exception{
+        //获取原始id
+        String toUserName = message.get("ToUserName");
+        //EventKey值为菜单的场景值
+        String eventKey = message.get("EventKey");
+        //查询需要对应匹配的点击事件值
+        List<WxReplySceneDO> scenes = wxReplySceneDao.findByAppOriginIdAndMsgTypeAndEventAndStatus(toUserName,WeiXinMessageUtils.REQ_MESSAGE_TYPE_EVENT,WeiXinMessageUtils.EVENT_TYPE_CLICK,1);
+        if(scenes!=null&&scenes.size()>0){
+            //匹配对应点击事件场景值
+            for(WxReplySceneDO scene:scenes){
+                //判断带参二维码中前缀是否包该场景值
+                if(StringUtils.isNotBlank(scene.getScene())&&eventKey.indexOf(scene.getScene())!=-1){
+                    return getGraphicXMl(scene.getScene(),scene.getWechatId(),message);
+                }
+            }
+        }
+
         return "";
     }
 

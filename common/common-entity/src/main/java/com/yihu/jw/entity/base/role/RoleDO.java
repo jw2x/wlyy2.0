@@ -14,11 +14,17 @@ import javax.persistence.Table;
 @Table(name = "base_role")
 public class RoleDO extends UuidIdentityEntityWithOperator {
 
-	//角色名称
+	/**
+	 * 角色名称
+	 */
 	private String name;
-	//备注
+	/**
+	 * 备注
+	 */
 	private String remark;
-	//是否系统管理员
+	/**
+	 * 是否系统管理员
+	 */
 	private Boolean system;
 
 	@Column(name = "name", length = 50)

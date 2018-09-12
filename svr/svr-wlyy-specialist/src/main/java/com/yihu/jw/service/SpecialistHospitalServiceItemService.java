@@ -97,27 +97,27 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
         MixEnvelop<JSONArray,JSONArray> envelop = new MixEnvelop<>();
         String sqlUtil = "";
         if (StringUtils.isNoneBlank(serviceItemName)||serviceItemName != null){
-            sqlUtil="and service_item_name LIKE '%"+serviceItemName+"%'";
+            sqlUtil=" AND service_item_id IN ( SELECT id FROM wlyy_service_item WHERE 1=1 and title LIKE '%"+serviceItemName+"%')";
         }
         List<HospitalServiceItemDO> hospitalServiceItemDOS1 = new ArrayList<>();
         if (StringUtils.isNoneBlank(hospital)&&hospital.equals(docHospital)){
-            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+docHospital+"' "+sqlUtil;
+            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+docHospital+"'"+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
                 hospitalServiceItemDO.setFlag(3);
                 hospitalServiceItemDOS1.add(hospitalServiceItemDO);
             }
         }else if (hospital == null || hospital == ""){
-            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+docHospital+"' "+sqlUtil;
+            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+docHospital+"'"+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
                 hospitalServiceItemDO.setFlag(2);
                 hospitalServiceItemDOS1.add(hospitalServiceItemDO);
             }
         }else{
-            String sql = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+hospital+"' ";
+            String sql = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+hospital+"' "+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
-            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+docHospital+"' "+sqlUtil;
+            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+docHospital+"' "+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
                 boolean flag = false;
@@ -139,22 +139,22 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                         }
                     }else{
                         if (isTrue == false){
-                            hospitalServiceItemDO1.setFlag(2);
+                            hospitalServiceItemDO1.setFlag(1);
                             hospitalServiceItemDOS1.add(hospitalServiceItemDO1);
                         }
                     }
                 }
                 if (flag==false){
-                    boolean isTure1 = false;
+                    boolean isTrue1 = false;
                     if (hospitalServiceItemDOS1 != null && hospitalServiceItemDOS1.size() != 0){
                         for (HospitalServiceItemDO hospitalServiceItemDO2:hospitalServiceItemDOS1){
                             if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO2.getServiceItemId())){
-                                isTure1 = true;
+                                isTrue1 = true;
                             }
                         }
                     }
-                    if (isTure1 == false){
-                        hospitalServiceItemDO.setFlag(1);
+                    if (isTrue1 == false){
+                        hospitalServiceItemDO.setFlag(2);
                         hospitalServiceItemDOS1.add(hospitalServiceItemDO);
                     }
                 }

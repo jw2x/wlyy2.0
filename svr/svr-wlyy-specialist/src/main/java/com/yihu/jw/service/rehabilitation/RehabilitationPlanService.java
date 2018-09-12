@@ -65,6 +65,10 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
     private String baseUrl;
     @Value("${basedb.name}")
     private String basedb;
+    @Value("${wechat.wechat_base_url}")
+    private String wechat_base_url;
+    @Value("${wechat.appId}")
+    private String appId;
 
     @Autowired
     private RehabilitationPlanTemplateDao templateDao;
@@ -252,6 +256,7 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
         }
         //服务包数据
         servicePackageVO.put("detailsVOList", detailsVOList);
+        servicePackageVO.put("num", detailsVOList.size());
         servicePackageVO.put("saasId", "xmihealth");
         servicePackageVO.put("name", planDO.getTitle());
         servicePackageVO.put("introduce", planDO.getTitle());
@@ -301,9 +306,8 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
                 fileUrl = rehabilitationDetailDO.getServiceQrCode();
             } else {
                 //String contentJsonStr="{\"planDetailId\":\""+planDetailId+"\",\"sessionId\":\""+sessionId+"\"}";
-                String contentJsonStr="html/kfgl/html/confirm-service.html"+"?paramStr="+planDetailId+","+doctorCode;
+                String contentJsonStr="https://open.weixin.qq.com/connect/oauth2/authorize?appid="+appId+"&redirect_uri="+wechat_base_url+"/wx/html/kfgl/html/confirm-service.html"+"?paramStr="+planDetailId+","+doctorCode+"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
                 InputStream ipt = QrcodeUtil.createQrcode(contentJsonStr, 300, "png");
-                isneiwang = false;
                 if (isneiwang) {
                     // 圖片列表
                     List<String> tempPaths = new ArrayList<String>();
