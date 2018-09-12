@@ -29,4 +29,10 @@ public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository
     @Modifying
     @Query("update PatientRehabilitationPlanDO p set p.servicePackageId = ?2 where p.id = ?1")
     void updateServicePackageId(String planId, String servicePackageId);
+
+    @Query("select count(distinct p.patient) from PatientRehabilitationPlanDO p where p.createUser=?1  and p.status>0 ")
+    Integer patientCount(String doctorCode);
+
+    @Query("select count(distinct p.patient) from PatientRehabilitationPlanDO p where p.createUser=?1  and p.status=1 ")
+    Integer patientCountByUnfinish(String doctorCode);
 }

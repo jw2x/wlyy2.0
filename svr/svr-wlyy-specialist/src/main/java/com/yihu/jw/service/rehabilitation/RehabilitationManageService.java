@@ -656,7 +656,8 @@ public class RehabilitationManageService {
             serviceDoctorList.add(healthDoctorMap);
         }
 
-        String specialistRelationSql = "select * from wlyy_specialist.wlyy_specialist_patient_relation where patient='"+patientCode+"' and sign_status='1' and status >=0  ";
+//        String specialistRelationSql = "select * from wlyy_specialist.wlyy_specialist_patient_relation where patient='"+patientCode+"' and sign_status='1' and status >=0  ";
+        String specialistRelationSql = "select DISTINCT d.doctor,d.doctor_name from wlyy_specialist.wlyy_rehabilitation_plan_detail d LEFT JOIN wlyy_specialist.wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.type=2 and  p.patient='"+patientCode+"'";
         List<Map<String,Object>> specialistRelationList = jdbcTemplate.queryForList(specialistRelationSql);
         for(Map<String,Object> one:specialistRelationList){
             String doctor = one.get("doctor")+"";
@@ -946,7 +947,8 @@ public class RehabilitationManageService {
             serviceDoctorList.add(healthDoctorMap);
         }
 
-        String specialistRelationSql = "select * from wlyy_specialist.wlyy_specialist_patient_relation where patient='"+patientCode+"' and sign_status='1' and status='1'";
+//        String specialistRelationSql = "select * from wlyy_specialist.wlyy_specialist_patient_relation where patient='"+patientCode+"' and sign_status='1' and status='1'";
+        String specialistRelationSql = "select DISTINCT d.doctor,d.doctor_name from wlyy_specialist.wlyy_rehabilitation_plan_detail d LEFT JOIN wlyy_specialist.wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.type=2 and  p.patient='"+patientCode+"'";
         List<Map<String,Object>> specialistRelationList = jdbcTemplate.queryForList(specialistRelationSql);
         for(Map<String,Object> one:specialistRelationList){
             String doctor = one.get("doctor")+"";
@@ -1098,6 +1100,48 @@ public class RehabilitationManageService {
      */
     public ObjEnvelop planListByPatient(String patient){
         List<PatientRehabilitationPlanDO> list = patientRehabilitationPlanDao.findByPatients(patient);
+        return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
+    }
+
+    /**
+     * 医生已计划数，已完成计划数（居民数）
+     * @param doctorCode
+     * @return
+     */
+    public ObjEnvelop patientCount(String doctorCode){
+        Integer count =patientRehabilitationPlanDao.patientCount(doctorCode);
+        Integer unfinishCount = patientRehabilitationPlanDao.patientCountByUnfinish(doctorCode);
+        Map<String,Object> map = new HashMap<>();
+        map.put("planCount",count);
+        map.put("finishedPlanCount",count-unfinishCount);
+        return ObjEnvelop.getSuccess(SpecialistMapping.api_success,map);
+    }
+
+    public ObjEnvelop dailyJobReserve(String startTime,String endTime){
+        String sql = "select DISTINCT d.doctor,p.patient,d.hospital from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id " +
+                " left join wlyy_hospital_service_item h on d.hospital_service_item_id=h.id " +
+                " left join wlyy_service_item i on i.id =h.service_item_id "+
+                " where d.status!=1 and d.execute_time>='"+startTime+"' and d.execute_time<='"+endTime+"' and i.reserve=1";
+//        List<Object> list = rehabilitationDetailDao.dailyJob(startTime,endTime);
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        String doctorCode = "";
+        String patientCode = "";
+//        List<String> listMap  = null;
+        for(Map<String,Object> one:list){
+            doctorCode = one.get("doctor")+"";
+            patientCode = one.get("patient")+"";
+            String sql2 ="select d.id from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id " +
+                    " left join wlyy_hospital_service_item h on d.hospital_service_item_id=h.id " +
+                    " left join wlyy_service_item i on i.id =h.service_item_id "+
+                    " where d.status!=1 and d.execute_time>='"+startTime+"' and d.execute_time<='"+endTime+"' and i.reserve=1 and d.doctor='"+doctorCode+"' and p.patient='"+patientCode+"'";
+            List<Map<String,Object>> list2 = jdbcTemplate.queryForList(sql2);
+//            listMap = rehabilitationDetailDao.findByPatientAndDoctor(startTime,endTime,doctorCode,patientCode);
+            String ids = "";
+            for(Map<String,Object> one2 : list2){
+                ids += ","+one2.get("id");
+            }
+            one.put("planDetailIds",StringUtils.isNotEmpty(ids)?ids.substring(1):"");
+        }
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
     }
 }
