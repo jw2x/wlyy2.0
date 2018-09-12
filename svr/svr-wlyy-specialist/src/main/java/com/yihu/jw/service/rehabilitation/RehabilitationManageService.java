@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -1102,7 +1103,7 @@ public class RehabilitationManageService {
     }
 
     /**
-     * 更新康复计划项目操作日志并且确认完成更新status
+     * 更新康复计划项目操作日志并且确认完成更新status.
      * @param node
      * @param image
      * @param planDeatilId
@@ -1112,6 +1113,21 @@ public class RehabilitationManageService {
         Map<String,Object> resultMap = new HashedMap();
         int i = rehabilitationDetailDao.updateStatusById(1,planDeatilId);
         int j = rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+        //如果整个计划的服务项都完成了，整个计划也完成了
+        String allSql ="SELECT * FROM wlyy_rehabilitation_plan_detail where plan_id = (SELECT plan_id FROM `wlyy_rehabilitation_plan_detail` WHERE id='"+planDeatilId+"')";
+        List<RehabilitationDetailDO> rehabilitationDetailDOList = jdbcTemplate.query(allSql,new BeanPropertyRowMapper<>(RehabilitationDetailDO.class));
+        int allCount=0;
+        String planId="";
+        for (RehabilitationDetailDO rehabilitationDetailDO : rehabilitationDetailDOList){
+            if (rehabilitationDetailDO.getStatus()==1){
+                allCount++;
+            }
+        }
+        if (rehabilitationDetailDOList.size()>0 && rehabilitationDetailDOList.size()==allCount){
+            planId = rehabilitationDetailDOList.get(0).getPlanId();
+            patientRehabilitationPlanDao.updateStatusById(2,planId);
+        }
+        //更新返回数据提供发送消息使用
         String sql ="SELECT" +
                 " i.service_item_id," +
                 " r.doctor_code," +
