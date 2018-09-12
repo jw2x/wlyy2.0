@@ -11,27 +11,16 @@ import java.io.Serializable;
 @Table(name = "iot_base_data_def")
 public class DataStandardDO extends UuidIdentityEntity implements Serializable {
 
-    @Column(name = "base_name")
+
     private String baseName;
-
-    @Column(name = "item_code")
     private String itemCode;
-
-    @Column(name = "item_name")
     private String itemName;
-
-    @Column(name = "item_type")
     private String itemType;
-
-    @Column(name = "required")
     private String required;
-
-    @Column(name = "item_value_min")
     private String itemValueMin;
-
-    @Column(name = "item_value_max")
     private String itemValueMax;
 
+    @Column(name = "base_name")
     public String getBaseName() {
         return baseName;
     }
@@ -40,6 +29,7 @@ public class DataStandardDO extends UuidIdentityEntity implements Serializable {
         this.baseName = baseName;
     }
 
+    @Column(name = "item_code")
     public String getItemCode() {
         return itemCode;
     }
@@ -48,6 +38,7 @@ public class DataStandardDO extends UuidIdentityEntity implements Serializable {
         this.itemCode = itemCode;
     }
 
+    @Column(name = "item_name")
     public String getItemName() {
         return itemName;
     }
@@ -56,6 +47,7 @@ public class DataStandardDO extends UuidIdentityEntity implements Serializable {
         this.itemName = itemName;
     }
 
+    @Column(name = "item_type")
     public String getItemType() {
         return itemType;
     }
@@ -64,6 +56,7 @@ public class DataStandardDO extends UuidIdentityEntity implements Serializable {
         this.itemType = itemType;
     }
 
+    @Column(name = "required")
     public String getRequired() {
         return required;
     }
@@ -72,6 +65,7 @@ public class DataStandardDO extends UuidIdentityEntity implements Serializable {
         this.required = required;
     }
 
+    @Column(name = "item_value_min")
     public String getItemValueMin() {
         return itemValueMin;
     }
@@ -80,6 +74,7 @@ public class DataStandardDO extends UuidIdentityEntity implements Serializable {
         this.itemValueMin = itemValueMin;
     }
 
+    @Column(name = "item_value_max")
     public String getItemValueMax() {
         return itemValueMax;
     }

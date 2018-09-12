@@ -3,7 +3,7 @@ package com.yihu.iot.datainput.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 //import com.yihu.base.hbase.HBaseHelper;
-import com.yihu.elasticsearch.jest.ElastricSearchHelper;
+import com.yihu.elasticsearch.ElasticSearchHelper;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
 import com.yihu.iot.service.common.ElasticSearchQueryGenerator;
@@ -20,6 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 import java.util.*;
 
 @Component
@@ -28,7 +30,7 @@ public class DataSearchService {
     private Logger logger = LoggerFactory.getLogger(DataSearchService.class);
 
     @Autowired
-    private ElastricSearchHelper elastricSearchHelper;
+    private ElasticSearchHelper elasticSearchHelper;
 
     @Autowired
     private ElasticSearchQueryGenerator elasticSearchQueryGenerator;
@@ -36,12 +38,12 @@ public class DataSearchService {
 //    @Autowired
 //    private HBaseHelper hBaseHelper;
 
-    public String getData(String jsonData){
+    public String getData(String jsonData) throws IOException {
         logger.info("load data from elasticsearch start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         JSONObject resultJsonObj = new JSONObject();
         JSONArray  resultArray = new JSONArray();
         SearchSourceBuilder query = elasticSearchQueryGenerator.getQueryBuilder("data",jsonData);
-        SearchResult esResult = elastricSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
+        SearchResult esResult = elasticSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
         if(esResult.getTotal() == 0){
             return "";
         }
@@ -78,7 +80,7 @@ public class DataSearchService {
      * @param json
      * @return
      */
-    public String updateData(String json) {
+    public String updateData(String json) throws IOException {
         JSONObject params = JSONObject.parseObject(json);
         //拿到rid，构造通用查询结构，查询对应es Id
         String rid = params.getString("rid");
@@ -95,7 +97,7 @@ public class DataSearchService {
         String _id = "";
         try {
             //将该rid的文档取出来
-            SearchResult searchResult = elastricSearchHelper.search(ConstantUtils.esIndex, ConstantUtils.esType, queryString.toString());
+            SearchResult searchResult = elasticSearchHelper.search(ConstantUtils.esIndex, ConstantUtils.esType, queryString.toString());
             params.remove("rid");
             _id = getEsId(searchResult.getJsonString());
             String resultSource = searchResult.getSourceAsString();
@@ -121,7 +123,7 @@ public class DataSearchService {
 //        boolean bool = elastricSearchHelper.update(ConstantUtils.esIndex, ConstantUtils.esType, _id, updateObj.toJSONString());
 //        Update update = new Update();
 //        update.
-        boolean bool = elastricSearchHelper.update(ConstantUtils.esIndex, ConstantUtils.esType, _id, resultObject);
+        boolean bool = elasticSearchHelper.update(ConstantUtils.esIndex, ConstantUtils.esType, _id, resultObject);
         return String.valueOf(bool);
     }
 
@@ -191,11 +193,11 @@ public class DataSearchService {
      * @param jsonData
      * @return
      */
-    public List<DataBodySignsVO> getDataToBean(String jsonData){
+    public List<DataBodySignsVO> getDataToBean(String jsonData) throws IOException {
         List<DataBodySignsVO> result = new ArrayList<>();
         logger.info("load data from elasticsearch start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         SearchSourceBuilder query = elasticSearchQueryGenerator.getQueryBuilder("data",jsonData);
-        SearchResult esResult = elastricSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
+        SearchResult esResult = elasticSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());
         if(null== esResult || esResult.getTotal()==null || esResult.getTotal() == 0){
             return result;
         }
@@ -212,14 +214,14 @@ public class DataSearchService {
      * @param json
      * @return
      */
-    public List<WeRunDataVO> getWeRunDataList(String json){
+    public List<WeRunDataVO> getWeRunDataList(String json) throws IOException {
         List<WeRunDataVO> result = new ArrayList<>();
         SearchSourceBuilder query = elasticSearchQueryGenerator.getQueryBuilder("stepInfoList",json);
-        SearchResult esResult = elastricSearchHelper.search(ConstantUtils.weRunDataIndex,ConstantUtils.weRunDataType,query.toString());
-        if(null != esResult && esResult.getTotal() == 0){
+        SearchResult esResult = elasticSearchHelper.search(ConstantUtils.weRunDataIndex,ConstantUtils.weRunDataType,query.toString());
+        if (null != esResult && esResult.getTotal() == 0){
             return result;
         }
-        for(String str:esResult.getSourceAsStringList()){
+        for (String str:esResult.getSourceAsStringList()){
             WeRunDataVO weRunDataVO = JSONObject.parseObject(str,WeRunDataVO.class);
             result.add(weRunDataVO);
         }

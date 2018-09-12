@@ -1,7 +1,7 @@
 package com.yihu.iot.service.device;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.elasticsearch.jest.ElastricSearchHelper;
+import com.yihu.elasticsearch.ElasticSearchHelper;
 import com.yihu.iot.dao.device.IotPatientDeviceDao;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.service.common.ElasticSearchQueryGenerator;
@@ -21,19 +21,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
  * @author yeshijie on 2018/1/16.
  */
 @Service
-public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,IotPatientDeviceDao> {
+public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO, IotPatientDeviceDao> {
 
     private Logger logger = LoggerFactory.getLogger(IotPatientDeviceService.class);
     @Autowired
     private IotPatientDeviceDao iotPatientDeviceDao;
     @Autowired
-    private ElastricSearchHelper elastricSearchHelper;
+    private ElasticSearchHelper elasticSearchHelper;
     @Autowired
     private ElasticSearchQueryGenerator elasticSearchQueryGenerator;
 
@@ -86,7 +87,7 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
             logger.info("地址:," + deviceVO.getAddress() + "坐标" + json.toString());
             dataDTO.setLocation(Double.valueOf(json.get("lat")), Double.valueOf(json.get("lng")));
 //            dataDTOs.add(dataDTO);
-            elastricSearchHelper.save(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType,JSONObject.toJSONString(dataDTO));
+            elasticSearchHelper.save(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType,JSONObject.toJSONString(dataDTO));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -179,9 +180,9 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      * 查询所有设备地址
      * @return
      */
-    public List<LocationDataVO> findAllDeviceLocations(){
+    public List<LocationDataVO> findAllDeviceLocations() throws IOException {
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryAllBuilder();
-        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        JestResult esResult = elasticSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
         return getESResultBeanList(esResult);
     }
 
@@ -189,9 +190,9 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      * 根据居民绑定的idCard查询设备地址
      * @return
      */
-    public List<LocationDataVO> findDeviceLocationsByIdCard(String jsonData){
+    public List<LocationDataVO> findDeviceLocationsByIdCard(String jsonData) throws IOException {
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
-        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        JestResult esResult = elasticSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
         return getESResultBeanList(esResult);
     }
 
@@ -199,9 +200,9 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      * 根据设备SN码查询设备地址
      * @return
      */
-    public List<LocationDataVO> findDeviceLocationsBySn(String jsonData){
+    public List<LocationDataVO> findDeviceLocationsBySn(String jsonData) throws IOException {
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
-        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        JestResult esResult = elasticSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
         return getESResultBeanList(esResult);
     }
 
@@ -222,10 +223,10 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      * 设备解绑，根据Sn或idCard删除地址
      * @return
      */
-    public boolean deleteLocationsByIdcardOrSn(String jsonData){
+    public boolean deleteLocationsByIdcardOrSn(String jsonData) throws IOException {
         List<Map<String,Object>> idList = new ArrayList<>();
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
-        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        JestResult esResult = elasticSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
         List<LocationDataVO> resultList = getESResultBeanList(esResult);
         for(LocationDataVO locationDataVO : resultList){
                 Map<String,Object> map = new HashMap<>();
@@ -234,7 +235,7 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
         }
         boolean bool = true;
         try {
-            elastricSearchHelper.delete(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType, idList);
+            elasticSearchHelper.delete(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType, idList);
         }catch (Exception e){
             bool = false;
         }
@@ -247,17 +248,17 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      * 设备地址修改，根据Sn或idCard修改地址
      * @return
      */
-    public boolean updateLocationsByIdcardOrSn(String jsonData){
+    public boolean updateLocationsByIdcardOrSn(String jsonData) throws IOException {
         List<Map<String,Object>> idList = new ArrayList<>();
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
-        JestResult esResult = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        JestResult esResult = elasticSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
         List<LocationDataVO> resultList = getESResultBeanList(esResult);
         for(LocationDataVO locationDataVO : resultList){
             Map<String,Object> map = new HashMap<>();
             map.put("_id",locationDataVO.getId());
             idList.add(map);
         }
-        boolean bool = elastricSearchHelper.updateByMap(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType,idList);
+        boolean bool = elasticSearchHelper.updateByMap(ConstantUtils.deviceLocationIndex, ConstantUtils.deviceLocationType,idList);
         return bool;
     }
 
@@ -266,10 +267,10 @@ public class IotPatientDeviceService extends BaseJpaService<IotPatientDeviceDO,I
      * @param jsonData
      * @return
      */
-    public int getESCount(String jsonData){
+    public int getESCount(String jsonData)throws IOException {
         int count = 0;
         SearchSourceBuilder queryStr = elasticSearchQueryGenerator.getQueryBuilder("",jsonData);
-        io.searchbox.core.SearchResult result = elastricSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
+        io.searchbox.core.SearchResult result = elasticSearchHelper.search(ConstantUtils.deviceLocationIndex,ConstantUtils.deviceLocationType,queryStr.toString());
         count = result.getTotal();
         return count;
     }
