@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping(DataRequestMapping.api_iot_common)
 @Api(tags = "数据上传操作", description = "数据上传操作")
@@ -35,7 +37,9 @@ public class DataInputController {
 
     @PostMapping(value = DataRequestMapping.DataInput.api_data_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "体征数据上传", notes = "数据上传入库")
-    public MixEnvelop uploadData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
+    public MixEnvelop uploadData(
+            @ApiParam(name = "json_data", value = "", defaultValue = "")
+            @RequestBody String jsonData) throws IOException  {
         String str = "";
         try {
             str = dataInputService.inputBodySignsData(jsonData);

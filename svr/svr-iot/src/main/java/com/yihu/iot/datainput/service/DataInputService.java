@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 //import com.yihu.base.hbase.HBaseAdmin;
 //import com.yihu.base.hbase.HBaseHelper;
-import com.yihu.elasticsearch.jest.ElastricSearchHelper;
+import com.yihu.elasticsearch.ElasticSearchHelper;
 import com.yihu.iot.datainput.enums.DataOperationTypeEnum;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.datainput.util.RowKeyUtils;
@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -41,7 +42,7 @@ public class DataInputService {
     private DataProcessLogService dataProcessLogService;
 
     @Autowired
-    private ElastricSearchHelper elastricSearchHelper;
+    private ElasticSearchHelper elasticSearchHelper;
 
 //    @Autowired
 //    private HBaseHelper hBaseHelper;
@@ -125,7 +126,7 @@ public class DataInputService {
      * @param json
      * @return
      */
-    public String uploadData(String json){
+    public String uploadData(String json) throws IOException {
         String fileName = "";
         String fileAbsPath = "";
         String rowkey = "";
@@ -186,7 +187,7 @@ public class DataInputService {
         }
 
         //将数据存入es
-        elastricSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, jsonObject.toJSONString());
+        elasticSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, jsonObject.toJSONString());
 
         try {
 //            boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
@@ -216,7 +217,7 @@ public class DataInputService {
      * @param json
      * @return
      */
-    public String inputBodySignsData(String json){
+    public String inputBodySignsData(String json) throws IOException {
         String fileName = "";
         String fileAbsPath = "";
         String rowkey = "";
@@ -279,7 +280,7 @@ public class DataInputService {
         JSONArray saveArray = new JSONArray();
         saveArray.add(bodySignsDO);
         //将数据存入es
-        elastricSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, saveArray.toJSONString());
+        elasticSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, saveArray.toJSONString());
 
         /*try {
             boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
@@ -323,7 +324,7 @@ public class DataInputService {
             return "invalid stepinfolist";
         }
         try{
-            bool = elastricSearchHelper.save(ConstantUtils.weRunDataIndex,ConstantUtils.weRunDataType,json);
+            bool = elasticSearchHelper.save(ConstantUtils.weRunDataIndex,ConstantUtils.weRunDataType,json);
         }catch (Exception e){
             logger.error("upload weRunData to elasticsearch failed," + e.getMessage());
             return e.getMessage();

@@ -103,8 +103,10 @@ public class SaasBusinessCardEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "saasId", value = "SAAS ID", required = true)
             @RequestParam(value = "saasId") String saasId,
             @ApiParam(name = "sourceId", value = "实体对象ID，如医生、居民", required = true)
-            @RequestParam(value = "sourceId") String sourceId) throws Exception {
-        Map<String, Object> card = saasBusinessCardService.generateBusinessCard(type, saasId, sourceId);
+            @RequestParam(value = "sourceId") String sourceId,
+            @ApiParam(name = "orgId", value = "机构编码")
+            @RequestParam(value = "orgId", required = false) String orgId) throws Exception {
+        Map<String, Object> card = saasBusinessCardService.generateBusinessCard(type, saasId, sourceId, orgId);
         return success(card);
     }
 
