@@ -528,7 +528,7 @@ public class RehabilitationManageService {
         }
         String planDetailResult = StringUtils.isNotEmpty(planDetailList)?planDetailList.substring(1):"";
         String sql = "select i.title,i.content,i.type as itemType,i.reserve,d.id,d.execute_time,d.hospital_name,d.status,d.type as detailType,d.expense,d.doctor as specialistDoctor," +
-                " d.doctor_name as specialistDoctorName,p.patient ,p.create_user ,p.create_user_name " +
+                " d.doctor_name as specialistDoctorName,p.patient ,p.create_user ,p.create_user_name, p.status as planStatus  " +
                 " from wlyy_specialist.wlyy_rehabilitation_plan_detail d " +
                 " LEFT JOIN wlyy_specialist.wlyy_hospital_service_item h on d.hospital_service_item_id = h.id "+
                 " LEFT JOIN wlyy_specialist.wlyy_service_item i on i.id = h.service_item_id " +
@@ -562,6 +562,7 @@ public class RehabilitationManageService {
             resultMap.put("executeTime",one.get("execute_time"));//执行时间
             resultMap.put("expense",one.get("expense"));//收费
             resultMap.put("reserve",one.get("reserve"));//是否需要预约（1预约、0不预约）
+            resultMap.put("planStatus",one.get("planStatus"));//计划的状态
             Integer status = Integer.valueOf(one.get("status").toString());//状态（0未完成，1已完成，2已预约）
             String statusName = "";
             switch (status){
@@ -610,7 +611,7 @@ public class RehabilitationManageService {
      */
     public ObjEnvelop serviceItem(String planDetailId,String doctorCode) throws Exception{
         String sql = "select i.title,i.content,i.type as itemType,i.reserve,d.id,d.execute_time,d.hospital_name,d.status,d.type,d.expense,d.doctor as specialistDoctor, " +
-                " d.doctor_name as specialistDoctorName,p.patient ,p.name as patientName,p.create_user ,p.create_user_name " +
+                " d.doctor_name as specialistDoctorName,p.patient ,p.name as patientName,p.create_user ,p.create_user_name, p.status as planStatus" +
                 " from wlyy_specialist.wlyy_rehabilitation_plan_detail d " +
                 " LEFT JOIN wlyy_specialist.wlyy_hospital_service_item h on d.hospital_service_item_id = h.id "+
                 " LEFT JOIN wlyy_specialist.wlyy_service_item i on i.id = h.service_item_id " +
@@ -640,6 +641,7 @@ public class RehabilitationManageService {
         resultMap.put("executeTime",one.get("execute_time"));//执行时间
         resultMap.put("expense",one.get("expense"));//收费
         resultMap.put("reserve",one.get("reserve"));//是否需要预约（1预约、0不预约）
+        resultMap.put("planStatus",one.get("planStatus"));//计划的状态
         Integer status = Integer.valueOf(one.get("status").toString());//状态（0未完成，1已完成，2已预约）
         String statusName = "";
         switch (status){
@@ -763,7 +765,7 @@ public class RehabilitationManageService {
 
         //康复计划
         List<Map<String,Object>> planList = new ArrayList<>();
-        List<PatientRehabilitationPlanDO> list = patientRehabilitationPlanDao.findbyPatients(patientCode);
+        List<PatientRehabilitationPlanDO> list = patientRehabilitationPlanDao.findByPatients(patientCode);
         Integer planUnderway = 0;//进行中
         Integer planFinish = 0;//已完成
         for(PatientRehabilitationPlanDO one:list){
@@ -1169,7 +1171,7 @@ public class RehabilitationManageService {
      * @return
      */
     public ObjEnvelop planListByPatient(String patient){
-        List<PatientRehabilitationPlanDO> list = patientRehabilitationPlanDao.findbyPatients(patient);
+        List<PatientRehabilitationPlanDO> list = patientRehabilitationPlanDao.findByPatients(patient);
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
     }
 }
