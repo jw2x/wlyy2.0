@@ -101,23 +101,23 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
         }
         List<HospitalServiceItemDO> hospitalServiceItemDOS1 = new ArrayList<>();
         if (StringUtils.isNoneBlank(hospital)&&hospital.equals(docHospital)){
-            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+docHospital+"'"+sqlUtil;
+            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+docHospital+"'"+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
                 hospitalServiceItemDO.setFlag(3);
                 hospitalServiceItemDOS1.add(hospitalServiceItemDO);
             }
         }else if (hospital == null || hospital == ""){
-            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+docHospital+"'"+sqlUtil;
+            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+docHospital+"'"+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
                 hospitalServiceItemDO.setFlag(2);
                 hospitalServiceItemDOS1.add(hospitalServiceItemDO);
             }
         }else{
-            String sql = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+hospital+"' "+sqlUtil;
+            String sql = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+hospital+"' "+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
-            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND hospital = '"+docHospital+"' "+sqlUtil;
+            String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+docHospital+"' "+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
                 boolean flag = false;
