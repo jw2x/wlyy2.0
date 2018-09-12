@@ -9,7 +9,7 @@ import javax.persistence.Table;
 /**
  * 药品字典实体
  * 
- * @author Administrator on  2018年09月07日
+ * @author litaohong on  2018年09月11日
  *
  */
 @Entity
@@ -22,69 +22,34 @@ public class DictMedicineDO extends IntegerIdentityEntity {
 	private String code;
 
     /**
-	 * 药品名称
+	 * 药品中文名
 	 */
 	private String name;
 
     /**
+	 * 药品所属科目代码
+	 */
+	private String subjectCode;
+
+    /**
+	 * 药品剂型
+	 */
+	private String dosageForm;
+
+    /**
 	 * 药品规格
 	 */
-	private String physicSpec;
+	private String specification;
 
     /**
-	 * 药品科目  科目类别字典中定义
+	 * 包装规格
 	 */
-	private String subjectClass;
+	private String packingSpecification;
 
     /**
-	 * 剂量单位 计量单位字典中定义
+	 * 适应症
 	 */
-	private String doseUnit;
-
-    /**
-	 * 数量单位  计量单位字典中定义
-	 */
-	private String quantityUnit;
-
-    /**
-	 * 包装单位   计量单位字典中定义
-	 */
-	private String packUnit;
-
-    /**
-	 * 最小剂量
-	 */
-	private double minDose;
-
-    /**
-	 * 
-	 */
-	private double packSpec;
-
-    /**
-	 * 零售价
-	 */
-	private double retailPrice;
-
-    /**
-	 * 
-	 */
-	private String physicForm;
-
-    /**
-	 * 毒理分类  药品毒理分类字典中定义
-	 */
-	private String toxicologyType;
-
-    /**
-	 * 基本药物标志  0：否；1：是
-	 */
-	private String basicFlag;
-
-    /**
-	 * 有效标志 0：无效；1：有效
-	 */
-	private String validFlag;
+	private String indication;
 
     /**
 	 * 拼音首码
@@ -123,100 +88,44 @@ public class DictMedicineDO extends IntegerIdentityEntity {
         this.name = name;
     }
 
-	@Column(name = "physic_spec")
-    public String getPhysicSpec() {
-        return physicSpec;
+	@Column(name = "subject_code")
+    public String getSubjectCode() {
+        return subjectCode;
     }
-    public void setPhysicSpec(String physicSpec) {
-        this.physicSpec = physicSpec;
-    }
-
-	@Column(name = "subject_class")
-    public String getSubjectClass() {
-        return subjectClass;
-    }
-    public void setSubjectClass(String subjectClass) {
-        this.subjectClass = subjectClass;
+    public void setSubjectCode(String subjectCode) {
+        this.subjectCode = subjectCode;
     }
 
-	@Column(name = "dose_unit")
-    public String getDoseUnit() {
-        return doseUnit;
+	@Column(name = "dosage_form")
+    public String getDosageForm() {
+        return dosageForm;
     }
-    public void setDoseUnit(String doseUnit) {
-        this.doseUnit = doseUnit;
-    }
-
-	@Column(name = "quantity_unit")
-    public String getQuantityUnit() {
-        return quantityUnit;
-    }
-    public void setQuantityUnit(String quantityUnit) {
-        this.quantityUnit = quantityUnit;
+    public void setDosageForm(String dosageForm) {
+        this.dosageForm = dosageForm;
     }
 
-	@Column(name = "pack_unit")
-    public String getPackUnit() {
-        return packUnit;
+	@Column(name = "specification")
+    public String getSpecification() {
+        return specification;
     }
-    public void setPackUnit(String packUnit) {
-        this.packUnit = packUnit;
-    }
-
-	@Column(name = "min_dose")
-    public double getMinDose() {
-        return minDose;
-    }
-    public void setMinDose(double minDose) {
-        this.minDose = minDose;
+    public void setSpecification(String specification) {
+        this.specification = specification;
     }
 
-	@Column(name = "pack_spec")
-    public double getPackSpec() {
-        return packSpec;
+	@Column(name = "packing_specification")
+    public String getPackingSpecification() {
+        return packingSpecification;
     }
-    public void setPackSpec(double packSpec) {
-        this.packSpec = packSpec;
-    }
-
-	@Column(name = "retail_price")
-    public double getRetailPrice() {
-        return retailPrice;
-    }
-    public void setRetailPrice(double retailPrice) {
-        this.retailPrice = retailPrice;
+    public void setPackingSpecification(String packingSpecification) {
+        this.packingSpecification = packingSpecification;
     }
 
-	@Column(name = "physic_form")
-    public String getPhysicForm() {
-        return physicForm;
+	@Column(name = "indication")
+    public String getIndication() {
+        return indication;
     }
-    public void setPhysicForm(String physicForm) {
-        this.physicForm = physicForm;
-    }
-
-	@Column(name = "toxicology_type")
-    public String getToxicologyType() {
-        return toxicologyType;
-    }
-    public void setToxicologyType(String toxicologyType) {
-        this.toxicologyType = toxicologyType;
-    }
-
-	@Column(name = "basic_flag")
-    public String getBasicFlag() {
-        return basicFlag;
-    }
-    public void setBasicFlag(String basicFlag) {
-        this.basicFlag = basicFlag;
-    }
-
-	@Column(name = "valid_flag")
-    public String getValidFlag() {
-        return validFlag;
-    }
-    public void setValidFlag(String validFlag) {
-        this.validFlag = validFlag;
+    public void setIndication(String indication) {
+        this.indication = indication;
     }
 
 	@Column(name = "spell_code")

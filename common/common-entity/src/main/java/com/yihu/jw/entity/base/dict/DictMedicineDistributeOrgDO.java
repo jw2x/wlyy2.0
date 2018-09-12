@@ -9,7 +9,7 @@ import javax.persistence.Table;
 /**
  * 机构药品分发字典实体
  * 
- * @author Administrator on  2018年09月07日
+ * @author litaohong on  2018年09月11日
  *
  */
 @Entity
@@ -26,6 +26,12 @@ public class DictMedicineDistributeOrgDO extends IntegerIdentityEntity {
 	 */
 	private String medicineCode;
 
+    /**
+	 * 分发数量
+	 */
+	private Integer quantity;
+
+
 	@Column(name = "org_id")
     public String getOrgId() {
         return orgId;
@@ -41,5 +47,15 @@ public class DictMedicineDistributeOrgDO extends IntegerIdentityEntity {
     public void setMedicineCode(String medicineCode) {
         this.medicineCode = medicineCode;
     }
+
+	@Column(name = "quantity")
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+
 
 }

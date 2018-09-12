@@ -1,4 +1,3 @@
-/*
 package com.yihu.jw.base.endpoint.dict;
 
 import com.yihu.jw.base.service.dict.DictMedicineDistributeOrgService;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-*/
 /**
 *
 * 机构药品分发字典控制器
@@ -27,12 +25,11 @@ import java.util.List;
 * @version
 * <pre>
  * Author	Version		Date		Changes
- * Administrator 	1.0  		2018年09月07日 	Created
+ * litaohong 	1.0  		2018年09月11日 	Created
  *
  * </pre>
 * @since 1.
-*//*
-
+*/
 @RestController
 @RequestMapping(value = BaseRequestMapping.DictMedicineDistributeOrg.PREFIX)
 @Api(value = "机构药品分发字典管理", description = "机构药品分发字典管理服务接口", tags = {"wlyy基础服务 - 机构药品分发字典管理服务接口"})
@@ -105,4 +102,3 @@ public ObjEnvelop<DictMedicineDistributeOrgVO> create (
          }
 
  }
-*/
