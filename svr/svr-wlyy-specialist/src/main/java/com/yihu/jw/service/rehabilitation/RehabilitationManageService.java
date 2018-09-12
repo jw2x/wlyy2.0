@@ -874,7 +874,7 @@ public class RehabilitationManageService {
             adminTeamCode = specialistPatientRelationDO.getTeamCode();
             doctorName = specialistPatientRelationDO.getDoctorName();
         }else if(doctorType==2){
-            String signFamilySql = " select f.* from "+basedb+".wlyy_sign_family f where f.status=1 and f.expenses_status='1' and f.patient='"+patient;
+            String signFamilySql = " select f.* from "+basedb+".wlyy_sign_family f where f.status=1 and f.expenses_status='1' and f.patient='"+patient+"'";
             List<Map<String,Object>> signFamily = jdbcTemplate.queryForList(signFamilySql);
             adminTeamCode = (Integer)signFamily.get(0).get("admin_team_code");
             doctorName = signFamily.get(0).get("doctor_name").toString();
