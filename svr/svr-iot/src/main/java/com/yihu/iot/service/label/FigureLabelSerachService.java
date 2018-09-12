@@ -2,8 +2,7 @@ package com.yihu.iot.service.label;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.elasticsearch.jest.ElasticFactory;
-import com.yihu.elasticsearch.jest.ElastricSearchHelper;
+import com.yihu.elasticsearch.ElasticSearchHelper;
 import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.iot.service.common.ElasticSearchQueryGenerator;
 import io.searchbox.client.JestClient;
@@ -17,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,20 +30,18 @@ public class FigureLabelSerachService implements Serializable {
     private Logger logger = LoggerFactory.getLogger(FigureLabelSerachService.class);
 
     @Autowired
-    private ElastricSearchHelper elastricSearchHelper;
-    @Autowired
-    private ElasticFactory elasticFactory;
+    private ElasticSearchHelper elastricSearchHelper;
     @Autowired
     private ElasticSearchQueryGenerator elasticSearchQueryGenerator;
+    @Autowired
+    private JestClient jestClient;
 
     /**
      * 查询标签
      * @param list
      */
     public void getFigureLabelByList(List<LocationDataVO> list){
-        JestClient jestClient = null;
         try {
-            jestClient = this.elasticFactory.getJestClient();
             for (LocationDataVO one:list) {
                 JSONArray jsonArray = new JSONArray();
                 JSONObject json = new JSONObject();
@@ -79,10 +77,6 @@ public class FigureLabelSerachService implements Serializable {
             }
         } catch (Exception var10) {
             var10.printStackTrace();
-        } finally {
-            if(jestClient != null) {
-                jestClient.shutdownClient();
-            }
         }
     }
 
@@ -110,7 +104,7 @@ public class FigureLabelSerachService implements Serializable {
      * @param json
      * @return
      */
-    public List<FigureLabelDataModelVO> getFigureLabelByIdcard(String json){
+    public List<FigureLabelDataModelVO> getFigureLabelByIdcard(String json) throws IOException {
         List<FigureLabelDataModelVO> list = new ArrayList<>();
         if(!json.contains("idcard")){
             logger.error("invalid elasticserach query condition,no parameter [idcard]!");
@@ -130,7 +124,7 @@ public class FigureLabelSerachService implements Serializable {
      * @param json
      * @return
      */
-    public List<FigureLabelDataModelVO> getFigureLabelByLabel(String json){
+    public List<FigureLabelDataModelVO> getFigureLabelByLabel(String json) throws IOException {
         List<FigureLabelDataModelVO> list = new ArrayList<>();
         if(!json.contains("labelType") || !json.contains("labelCode")){
             logger.error("invalid elasticserach query condition,no parameter [labelType] or [labelCode]!");

@@ -53,6 +53,7 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
         MixEnvelop<SpecialistEvaluateDO,SpecialistEvaluateDO> envelop = new MixEnvelop<>();
         JSONArray evaluate = jsonObject.getJSONArray("evaluate");
         JSONArray evaluateLabel = jsonObject.getJSONArray("evaluateLabel");
+        String patientCode = jsonObject.getString("patient");
         List<SpecialistEvaluateDO> specialistEvaluateDOList = new ArrayList<>();
         List<SpecialistEvaluateLabelDO> specialistEvaluateLabelDOS = new ArrayList<>();
         for (int i = 0;i<evaluate.size();i++){
@@ -70,6 +71,7 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
         if (specialistEvaluateDOList != null && specialistEvaluateDOList.size() != 0){
             for (SpecialistEvaluateDO specialistEvaluateDO:specialistEvaluateDOList){
                 specialistEvaluateDO.setRelationType(1);
+                specialistEvaluateDO.setPatient(patientCode);
                 specialistEvaluateDO.setCreateTime(new Date());
                 specialistEvaluateDO.setUpdateTime(new Date());
                 doctor = specialistEvaluateDO.getDoctor();
