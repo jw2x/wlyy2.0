@@ -10,7 +10,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>patient-co-figure-label</artifactId>
+    <artifactId>figure-label</artifactId>
 
     <dependencies>
         <dependency>
