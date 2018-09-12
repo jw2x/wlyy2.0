@@ -422,3 +422,45 @@ create table `dict_hospital_dept`
   primary key (id)
 )
   ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医院科室字典';
+
+-- 消息管理模块
+drop table IF EXISTS `base_message`;
+CREATE TABLE `base_message` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '与业务无关主键',
+  `code` varchar(50) NOT NULL COMMENT '消息标识',
+  `receiver` varchar(50) NOT NULL COMMENT '消息接收人（微信平台为患者标识，医生APP平台为医生标识）',
+  `receiver_name` varchar(200) DEFAULT NULL  COMMENT '接收人姓名',
+  `sender` varchar(50) DEFAULT NULL COMMENT '消息发送人标识',
+  `sender_name` varchar(1000) DEFAULT NULL  COMMENT '发送人姓名',
+  `sender_photo` varchar(200) DEFAULT NULL COMMENT '发送者头像',
+  `title` varchar(50) NOT NULL COMMENT '消息标题',
+  `msg_digest` varchar(100) NOT NULL COMMENT '消息摘要',
+  `msg_content` varchar(200) NOT NULL COMMENT '消息内容，存json',
+  `msg_type` int(11) DEFAULT NULL COMMENT '消息类型（1.是家庭签约信息  2体征 101患者申请取消签约、102患者同意取消签约、103患者拒绝取消签约、104患者填写了血糖记录、105患者填写了血压记录、106患者填写了体重记录、107患者填写了腰围记录、108患者填写了运动记录、109患者填写了用药记录、110患者填写了饮食记录、111患者提交了问卷随访、112请求添加好友消息、113入群消息、114群解散消息、115踢出群消息、116新的网络咨询、117网络咨询追问、201医生拒绝签约、202医生同意签约、203医生申请取消签约、204医生同意取消签约、205医生拒绝取消签约、206新的问卷随访、207新的健康干预、208请求添加好友消息、209入群消息、210群解散消息、211踢出群消息、212聊天消息提醒、213群聊天消息、214医生回复了网络咨询、215请求添加为家人、216电话随访，217、上门随访）',
+  `platform` int(11) DEFAULT NULL COMMENT '消息平台，1微信端/患者端，2医生APP端',
+  `read_state` int(11) DEFAULT '0' COMMENT '阅读状态，1 已读，0未读',
+  `readonly` int(11) DEFAULT NULL COMMENT '只读消息：1否，0是',
+  `del` varchar(1) DEFAULT '1' COMMENT '是否删除，1正常，0作废',
+  `sign_status` varchar(11) DEFAULT NULL COMMENT '//签约状态 如果是签约 1新的签约，2签约成功，3签约失败，4解约申请，5解约成功，6解约失败，7签约到期，8续签',
+  `prescription_status` varchar(50) DEFAULT NULL COMMENT '续方审核状态 0待审核，1审核通过，2审核失败',
+  `relation_code` text COMMENT '业务关联code，type=6时为咨询code,type=301时为患者code',
+  `consult_num` int(11) DEFAULT NULL COMMENT '待回复咨询数',
+  `session_id` varchar(150) DEFAULT NULL COMMENT 'im会话id',
+  `session_name` varchar(50) DEFAULT NULL COMMENT 'im会话名称',
+  `create_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'  COMMENT '消息发送时间',
+  `read_time` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'  COMMENT '消息阅读时间',
+  PRIMARY KEY (`id`),
+  KEY `idx_wlyy_message_uid` (`receiver`)
+) ENGINE=InnoDB AUTO_INCREMENT=52616 DEFAULT CHARSET=utf8mb4 COMMENT='消息表';
+
+-- 消息类型字典表
+drop table IF EXISTS `base_message_type`;
+create table `base_message_type`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
+  `saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id，null标识公共字典',
+  `code` varchar(50) not null COMMENT '类型编码（体征预警消息、提醒缴费消息、提醒测量体征数据消息、续签提醒消息、筛查提醒消息 1.是家庭签约信息  2体征 101患者申请取消签约、102患者同意取消签约、103患者拒绝取消签约、104患者填写了血糖记录、105患者填写了血压记录、106患者填写了体重记录、107患者填写了腰围记录、108患者填写了运动记录、109患者填写了用药记录、110患者填写了饮食记录、111患者提交了问卷随访、112请求添加好友消息、113入群消息、114群解散消息、115踢出群消息、116新的网络咨询、117网络咨询追问、201医生拒绝签约、202医生同意签约、203医生申请取消签约、204医生同意取消签约、205医生拒绝取消签约、206新的问卷随访、207新的健康干预、208请求添加好友消息、209入群消息、210群解散消息、211踢出群消息、212聊天消息提醒、213群聊天消息、214医生回复了网络咨询、215请求添加为家人、216电话随访，217、上门随访）',
+  `name` varchar(50) not null COMMENT '类型名称',
+  primary key (id)
+)
+  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息类型字典';
