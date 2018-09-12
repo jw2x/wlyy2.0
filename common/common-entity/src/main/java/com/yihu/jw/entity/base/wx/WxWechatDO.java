@@ -29,6 +29,8 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
     private String appSecret;//'微信app_secret'
     private String appOriginId;//原始ID
     private String baseUrl;//'微信base_url'
+    private String userName;//公总号登录账户
+    private String password;//用户密码
     private String remark;//'备注'
 
 
@@ -157,5 +159,23 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    @Column(name = "user_name", length = 200)
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Column(name = "password", length = 200)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

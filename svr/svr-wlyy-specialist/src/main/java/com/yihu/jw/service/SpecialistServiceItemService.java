@@ -165,7 +165,7 @@ public class SpecialistServiceItemService {
      */
     public MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> selectByHospital(String hospital){
         MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> envelop = new MixEnvelop<>();
-        String sql = "select * from wlyy_service_item where status = 1";
+        String sql = "select * from wlyy_service_item where status = 1 AND imediate = 1 ";
         List<SpecialistServiceItemDO> specialistServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SpecialistServiceItemDO.class));
         List<SpecialistServiceItemDO> specialistServiceItemDOList = new ArrayList<>();
         for (int i =0;i<specialistServiceItemDOS.size();i++){

@@ -170,6 +170,9 @@ neiwang:
   enable: false
   #wlyy: http://59.61.92.90:9099/iot/
 
+base:
+  url: http://172.17.110.212:10020/
+
 wechat:
   appId: wxad04e9c4c5255acf
   appSecret: ae77c48ccf1af5d07069f5153d1ac8d3
