@@ -181,9 +181,7 @@ public class SpecialistServiceItemService {
                     specialistServiceItemDOList.add(specialistServiceItemDO);
                 }
             }else {
-                if (hospitalServiceItemDOS.size() == 0 || hospitalServiceItemDOS == null){
                     specialistServiceItemDOList.add(specialistServiceItemDO);
-                }
             }
         }
         envelop.setDetailModelList(specialistServiceItemDOList);

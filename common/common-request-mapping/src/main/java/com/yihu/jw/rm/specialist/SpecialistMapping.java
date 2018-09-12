@@ -83,6 +83,7 @@ public class SpecialistMapping {
         public static final String updatePlanDetailStatusById = "/updatePlanDetailStatusById";
         public static final String updatePlanStatusById = "/updatePlanStatusById";
         public static final String planSchedule = "/planSchedule";
+        public static final String planListByPatient = "/planListByPatient";
     }
 
     public static class serviceItem{
