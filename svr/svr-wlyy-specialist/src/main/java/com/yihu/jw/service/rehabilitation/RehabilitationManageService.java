@@ -1101,7 +1101,7 @@ public class RehabilitationManageService {
     }
 
     /**
-     * 更新康复计划项目操作日志并且确认完成更新status
+     * 更新康复计划项目操作日志并且确认完成更新status.
      * @param node
      * @param image
      * @param planDeatilId
