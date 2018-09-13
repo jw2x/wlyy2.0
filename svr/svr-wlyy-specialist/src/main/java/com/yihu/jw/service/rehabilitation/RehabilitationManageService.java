@@ -1043,7 +1043,8 @@ public class RehabilitationManageService {
         String sql ="SELECT" +
                 " i.service_item_id," +
                 " r.doctor_code," +
-                " r.patient_code" +
+                " r.patient_code," +
+                " pd.hospital" +
                 " FROM" +
                 " wlyy_rehabilitation_plan_detail pd" +
                 " LEFT JOIN wlyy_hospital_service_item i ON pd.hospital_service_item_id = i.id" +
