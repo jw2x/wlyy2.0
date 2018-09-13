@@ -295,10 +295,8 @@ public class RehabilitationManageController {
                                                            @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = false)String image){
         try {
             Map<String,Object> map = rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId);
-            if(Integer.parseInt(String.valueOf(map.get("count")))>1){
-                return ObjEnvelop.getSuccess(SpecialistMapping.api_success,map);
-            }
-            return ObjEnvelop.getError("update error!");
+            return ObjEnvelop.getSuccess(SpecialistMapping.api_success,map);
+
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
