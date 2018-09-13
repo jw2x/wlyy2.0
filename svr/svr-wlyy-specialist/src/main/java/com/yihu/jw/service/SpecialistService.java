@@ -497,7 +497,7 @@ public class SpecialistService{
         }else{
             relation.setSignStatus("1");
             relation.setHealthAssistant(health_assistant);
-            relation.setHealthAssistant(health_assistant_name);
+            relation.setHealthAssistantName(health_assistant_name);
             relation.setSignDate(new Date());
             specialistPatientRelationDao.save(relation);
         }
