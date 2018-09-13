@@ -410,7 +410,7 @@ public class RehabilitationManageService {
                 sql+="and d.doctor='"+doctorCode+"' ";
             }else if(searchTask==2||searchTask==4||searchTask==3){
                 sql+=" and i.type="+searchTask+" " ;
-            }else if(searchTask==3){
+            }else if(searchTask==5){
                 sql+=" and i.reserve=1 " ;
             }
         }
