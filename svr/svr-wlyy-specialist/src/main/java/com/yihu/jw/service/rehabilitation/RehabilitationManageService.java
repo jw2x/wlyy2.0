@@ -291,10 +291,10 @@ public class RehabilitationManageService {
         if(searchTask!=null){
             if(searchTask==1){
                 sql+=" and d.doctor='"+doctorCode+"' " ;
-            }else if(searchTask==2||searchTask==4){
+            }else if(searchTask==2||searchTask==4||searchTask==3){
                 sql+=" and i.type="+searchTask+" " ;
-            }else if(searchTask==3){
-                sql+=" and i.reserve="+searchTask+" " ;
+            }else if(searchTask==5){
+                sql+=" and i.reserve=1 " ;
             }
         }
         if(status!=null){
@@ -408,10 +408,10 @@ public class RehabilitationManageService {
         if(searchTask!=null){
             if(searchTask==1){
                 sql+="and d.doctor='"+doctorCode+"' ";
-            }else if(searchTask==2||searchTask==4){
+            }else if(searchTask==2||searchTask==4||searchTask==3){
                 sql+=" and i.type="+searchTask+" " ;
             }else if(searchTask==3){
-                sql+=" and i.reserve="+searchTask+" " ;
+                sql+=" and i.reserve=1 " ;
             }
         }
         if(status!=null){
@@ -995,7 +995,7 @@ public class RehabilitationManageService {
      * @return
      */
     public ObjEnvelop dailyJob(String startTime,String endTime){
-        String sql = "select d.doctor,p.patient,count(1) as num from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.status!=1 and d.execute_time>='"+startTime+"' and d.execute_time<='"+endTime+"' GROUP BY d.doctor,p.patient";
+        String sql = "select d.doctor,p.patient,count(1) as num from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.status!=1 and p.status=1 and d.execute_time>='"+startTime+"' and d.execute_time<='"+endTime+"' GROUP BY d.doctor,p.patient";
 //        List<Object> list = rehabilitationDetailDao.dailyJob(startTime,endTime);
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
         String doctorCode = "";
@@ -1121,7 +1121,7 @@ public class RehabilitationManageService {
         String sql = "select DISTINCT d.doctor,p.patient,d.hospital from wlyy_rehabilitation_plan_detail d left join wlyy_patient_rehabilitation_plan p on d.plan_id=p.id " +
                 " left join wlyy_hospital_service_item h on d.hospital_service_item_id=h.id " +
                 " left join wlyy_service_item i on i.id =h.service_item_id "+
-                " where d.status!=1 and d.execute_time>='"+startTime+"' and d.execute_time<='"+endTime+"' and i.reserve=1";
+                " where d.status!=1 and d.execute_time>='"+startTime+"' and d.execute_time<='"+endTime+"' and i.reserve=1 and p.status!=0 and d.status=0 ";
 //        List<Object> list = rehabilitationDetailDao.dailyJob(startTime,endTime);
         List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
         String doctorCode = "";
