@@ -492,9 +492,10 @@ public class RehabilitationManageService {
                 map.put("createTime",DateUtil.dateToStr(one2.getCreateTime(),"MM-dd HH:mm"));
                 messageMapList.add(map);
             }
+            Integer itemType = (Integer) one.get("itemType");
             resultMap.put("messageList",messageMapList);//指导与汇报记录
             resultMap.put("patient",one.get("patient"));
-            resultMap.put("itemType",one.get("itemType"));
+            resultMap.put("itemType",itemType);
             resultMap.put("detaiType",one.get("detaiType"));
             resultMap.put("status",status);//状态
             //是否完成任务
@@ -502,6 +503,18 @@ public class RehabilitationManageService {
             Integer operate = 0;
             if(operateList.size()>0){
                 operate =1;
+                RehabilitationOperateRecordsDO temp = operateList.get(0);
+                operate =1;
+                Date completeTime = temp.getCompleteTime();
+                String completeTimeStr = DateUtil.dateToStr(completeTime,DateUtil.YYYY_MM_DD_HH_MM);
+                resultMap.put("completeTime",completeTimeStr);//完成时间
+                resultMap.put("operatorDoctorName",temp.getDoctorName());//执行医生名称
+                resultMap.put("node",temp.getNode());
+                resultMap.put("relationRecordImg",(temp.getRelationRecordImg()!=null&&StringUtils.isNotEmpty(temp.getRelationRecordImg()))?(new JSONArray(temp.getRelationRecordImg())):null);//json格式
+                if(itemType!=1&&itemType!=0){
+                    resultMap.put("relationRecordCode",temp.getRelationRecordCode());
+                    resultMap.put("completeTimeShort",DateUtil.dateToStr(completeTime,"yyyy/MM/dd"));
+                }
             }
             resultMap.put("operate",operate);//是否完成任务（默认0：未完成，1：已完成）
             resultList.add(resultMap);
