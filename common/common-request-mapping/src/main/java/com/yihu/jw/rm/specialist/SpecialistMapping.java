@@ -106,5 +106,6 @@ public class SpecialistMapping {
         public static final String selectByHospital1 = "/selectByHospital1";
         public static final String importData1 = "/importData1";
         public static final String importData2 = "/importData2";
+        public static final String selectByDoctor = "/selectByDoctor";
     }
 }

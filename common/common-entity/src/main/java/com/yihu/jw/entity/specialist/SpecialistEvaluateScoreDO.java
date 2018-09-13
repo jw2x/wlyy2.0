@@ -33,6 +33,8 @@ public class SpecialistEvaluateScoreDO extends UuidIdentityEntityWithOperator im
     @Column(name = "score")
     private Double score;//评论得分
 
+    @Column(name = "patient")
+    private String patient;//居民code
 
     @Column(name = "saas_id")
     public String getSaasId() {
@@ -77,5 +79,14 @@ public class SpecialistEvaluateScoreDO extends UuidIdentityEntityWithOperator im
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    @Column(name = "patient")
+    public String getPatient() {
+        return patient;
+    }
+
+    public void setPatient(String patient) {
+        this.patient = patient;
     }
 }

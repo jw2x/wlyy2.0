@@ -21,9 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author wangzhinan
@@ -193,6 +191,202 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
         specialistEvaluateScoreDO.setCreateTime(new Date());
         specialistEvaluateScoreDO.setUpdateTime(new Date());
         specialistEvaluateScoreDao.save(specialistEvaluateScoreDO);
+        return envelop;
+    }
+
+    public MixEnvelop<JSONObject,JSONObject> selectByDoctor(String doctor){
+        MixEnvelop<JSONObject,JSONObject> envelop = new MixEnvelop<>();
+        JSONObject object = new JSONObject();
+        String sql = "select AVG(score) AS total from wlyy_specialist_evaluate_score where doctor = '"+doctor+"'";
+        String sql1 = "select AVG(score) AS total from wlyy_specialist_evaluate where doctor = '"+doctor+"' AND evaluate_type = 1";
+        String sql2 =  "select AVG(score) AS total from wlyy_specialist_evaluate where doctor = '"+doctor+"' AND evaluate_type = 2";
+        String sql3 =  "select AVG(score) AS total from wlyy_specialist_evaluate where doctor = '"+doctor+"' AND evaluate_type = 3";
+        String sql4 = "select * from wlyy_specialist_evaluate where doctor = '"+doctor+"'";
+        List<Map<String,Object>> rstotal = jdbcTemplate.queryForList(sql);
+        Double totalScore = 0.0;
+        if(rstotal!=null&&rstotal.size()>0){
+            Object object1 = rstotal.get(0).get("total");
+            if (object1!=null){
+                totalScore = Double.parseDouble(object1.toString());
+            }
+        }
+        List<Map<String,Object>> rstotal1 = jdbcTemplate.queryForList(sql1);
+        Double totalScore1 = 0.0;
+        if(rstotal1!=null&&rstotal1.size()>0){
+            Object object1 = rstotal1.get(0).get("total");
+            if (object1!=null){
+                totalScore1 = Double.parseDouble(object1.toString());
+            }
+        }
+        List<Map<String,Object>> rstotal2 = jdbcTemplate.queryForList(sql2);
+        Double totalScore2 = 0.0;
+        if(rstotal2!=null&&rstotal2.size()>0){
+            Object object1 = rstotal2.get(0).get("total");
+            if (object1!=null){
+                totalScore2 = Double.parseDouble(object1.toString());
+            }
+        }
+        List<Map<String,Object>> rstotal3 = jdbcTemplate.queryForList(sql3);
+        Double totalScore3 = 0.0;
+        if(rstotal3!=null&&rstotal3.size()>0){
+            Object object1 = rstotal3.get(0).get("total");
+            if (object1!=null){
+                totalScore3 = Double.parseDouble(object1.toString());
+            }
+        }
+        String sql5 = "select * from wlyy_specialist_evaluate WHERE doctor = '"+doctor+"'";
+        String sql6 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score > 71)";
+        String sql7 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score > 41 and score < 71)";
+        String sql8 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score < 41 )";
+        List<SpecialistEvaluateDO> specialistEvaluateDOS = jdbcTemplate.query(sql5,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
+        List<SpecialistEvaluateDO> specialistEvaluateDOS1 = jdbcTemplate.query(sql5,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
+        List<SpecialistEvaluateDO> specialistEvaluateDOS3 = jdbcTemplate.query(sql6,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
+        List<SpecialistEvaluateDO> specialistEvaluateDOS4 = jdbcTemplate.query(sql6,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
+        List<SpecialistEvaluateDO> specialistEvaluateDOS5 = jdbcTemplate.query(sql7,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
+        List<SpecialistEvaluateDO> specialistEvaluateDOS6 = jdbcTemplate.query(sql7,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
+        List<SpecialistEvaluateDO> specialistEvaluateDOS7 = jdbcTemplate.query(sql8,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
+        List<SpecialistEvaluateDO> specialistEvaluateDOS8 = jdbcTemplate.query(sql8,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
+        JSONArray array = new JSONArray();
+        JSONArray array3 = new JSONArray();
+        JSONArray array4 = new JSONArray();
+        JSONArray array5 = new JSONArray();
+        JSONObject object2 = new JSONObject();
+        JSONObject object3 = new JSONObject();
+        JSONObject object4 = new JSONObject();
+        JSONObject object5 = new JSONObject();
+        //全部
+        for (int i=0;i<specialistEvaluateDOS.size();i++){
+            JSONArray array1 = new JSONArray();
+            JSONObject object1 = new JSONObject();
+            boolean isTrue = false;
+            SpecialistEvaluateDO specialistEvaluateDO = specialistEvaluateDOS.get(i);
+            Set<String> set = new HashSet<>();
+            Set<Double> scoreSet = new HashSet<>();
+            for (int j=0;j<specialistEvaluateDOS1.size();j++){
+                SpecialistEvaluateDO specialistEvaluateDO1 = specialistEvaluateDOS1.get(j);
+                JSONObject jsonObject = new JSONObject();
+                if (specialistEvaluateDO.getRelationCode().equals(specialistEvaluateDO1.getRelationCode())&&specialistEvaluateDO.getPatient().equals(specialistEvaluateDO1.getPatient())&&specialistEvaluateDO.getDoctor().equals(specialistEvaluateDO1.getDoctor())){
+                    String scoreSql = "select * from wlyy_specialist_evaluate_score where relation_code = '"+specialistEvaluateDO1.getRelationCode()+"' and patient = '"+specialistEvaluateDO1.getPatient()+"'";
+                    List<SpecialistEvaluateScoreDO> specialistEvaluateScoreDOS =jdbcTemplate.query(scoreSql,new BeanPropertyRowMapper(SpecialistEvaluateScoreDO.class));
+                    if (specialistEvaluateScoreDOS != null && specialistEvaluateScoreDOS.size()!=0){
+                        scoreSet.add(specialistEvaluateScoreDOS.get(0).getScore());
+                    }
+                    set.add(specialistEvaluateDO1.getPatient());
+                    array1.add(specialistEvaluateDO1);
+                }
+            }
+            object1.put("patient",set);
+            object1.put("score",scoreSet);
+            object1.put("evaluate",array1);
+            if (array1.size() !=0&&array1 != null){
+                specialistEvaluateDOS1.removeAll(array1);
+                array.add(object1);
+            }
+        }
+        //好评
+        for (int i=0;i<specialistEvaluateDOS3.size();i++){
+            JSONArray array1 = new JSONArray();
+            JSONObject object1 = new JSONObject();
+            boolean isTrue = false;
+            SpecialistEvaluateDO specialistEvaluateDO = specialistEvaluateDOS3.get(i);
+            Set<String> set = new HashSet<>();
+            Set<Double> scoreSet = new HashSet<>();
+            for (int j=0;j<specialistEvaluateDOS4.size();j++){
+                SpecialistEvaluateDO specialistEvaluateDO1 = specialistEvaluateDOS4.get(j);
+                JSONObject jsonObject = new JSONObject();
+                if (specialistEvaluateDO.getRelationCode().equals(specialistEvaluateDO1.getRelationCode())&&specialistEvaluateDO.getPatient().equals(specialistEvaluateDO1.getPatient())&&specialistEvaluateDO.getDoctor().equals(specialistEvaluateDO1.getDoctor())){
+                    String scoreSql = "select * from wlyy_specialist_evaluate_score where relation_code = '"+specialistEvaluateDO1.getRelationCode()+"' and patient = '"+specialistEvaluateDO1.getPatient()+"'";
+                    List<SpecialistEvaluateScoreDO> specialistEvaluateScoreDOS =jdbcTemplate.query(scoreSql,new BeanPropertyRowMapper(SpecialistEvaluateScoreDO.class));
+                    if (specialistEvaluateScoreDOS != null && specialistEvaluateScoreDOS.size()!=0){
+                        scoreSet.add(specialistEvaluateScoreDOS.get(0).getScore());
+                    }
+                    set.add(specialistEvaluateDO1.getPatient());
+                    array1.add(specialistEvaluateDO1);
+                }
+            }
+            object1.put("patient",set);
+            object1.put("score",scoreSet);
+            object1.put("evaluate",array1);
+            if (array1.size() !=0&&array1 != null){
+                specialistEvaluateDOS4.removeAll(array1);
+                array3.add(object1);
+            }
+        }
+        //中评
+        for (int i=0;i<specialistEvaluateDOS5.size();i++){
+            JSONArray array1 = new JSONArray();
+            JSONObject object1 = new JSONObject();
+            boolean isTrue = false;
+            SpecialistEvaluateDO specialistEvaluateDO = specialistEvaluateDOS5.get(i);
+            Set<String> set = new HashSet<>();
+            Set<Double> scoreSet = new HashSet<>();
+            for (int j=0;j<specialistEvaluateDOS6.size();j++){
+                SpecialistEvaluateDO specialistEvaluateDO1 = specialistEvaluateDOS6.get(j);
+                JSONObject jsonObject = new JSONObject();
+                if (specialistEvaluateDO.getRelationCode().equals(specialistEvaluateDO1.getRelationCode())&&specialistEvaluateDO.getPatient().equals(specialistEvaluateDO1.getPatient())&&specialistEvaluateDO.getDoctor().equals(specialistEvaluateDO1.getDoctor())){
+                    String scoreSql = "select * from wlyy_specialist_evaluate_score where relation_code = '"+specialistEvaluateDO1.getRelationCode()+"' and patient = '"+specialistEvaluateDO1.getPatient()+"'";
+                    List<SpecialistEvaluateScoreDO> specialistEvaluateScoreDOS =jdbcTemplate.query(scoreSql,new BeanPropertyRowMapper(SpecialistEvaluateScoreDO.class));
+                    if (specialistEvaluateScoreDOS != null && specialistEvaluateScoreDOS.size()!=0){
+                        scoreSet.add(specialistEvaluateScoreDOS.get(0).getScore());
+                    }
+                    set.add(specialistEvaluateDO1.getPatient());
+                    array1.add(specialistEvaluateDO1);
+                }
+            }
+            object1.put("patient",set);
+            object1.put("score",scoreSet);
+            object1.put("evaluate",array1);
+            if (array1.size() !=0&&array1 != null){
+                specialistEvaluateDOS6.removeAll(array1);
+                array4.add(object1);
+            }
+        }
+        //差评
+        for (int i=0;i<specialistEvaluateDOS7.size();i++){
+            JSONArray array1 = new JSONArray();
+            JSONObject object1 = new JSONObject();
+            boolean isTrue = false;
+            SpecialistEvaluateDO specialistEvaluateDO = specialistEvaluateDOS7.get(i);
+            Set<String> set = new HashSet<>();
+            Set<Double> scoreSet = new HashSet<>();
+            for (int j=0;j<specialistEvaluateDOS8.size();j++){
+                SpecialistEvaluateDO specialistEvaluateDO1 = specialistEvaluateDOS8.get(j);
+                JSONObject jsonObject = new JSONObject();
+                if (specialistEvaluateDO.getRelationCode().equals(specialistEvaluateDO1.getRelationCode())&&specialistEvaluateDO.getPatient().equals(specialistEvaluateDO1.getPatient())&&specialistEvaluateDO.getDoctor().equals(specialistEvaluateDO1.getDoctor())){
+                    String scoreSql = "select * from wlyy_specialist_evaluate_score where relation_code = '"+specialistEvaluateDO1.getRelationCode()+"' and patient = '"+specialistEvaluateDO1.getPatient()+"'";
+                    List<SpecialistEvaluateScoreDO> specialistEvaluateScoreDOS =jdbcTemplate.query(scoreSql,new BeanPropertyRowMapper(SpecialistEvaluateScoreDO.class));
+                    if (specialistEvaluateScoreDOS != null && specialistEvaluateScoreDOS.size()!=0){
+                        scoreSet.add(specialistEvaluateScoreDOS.get(0).getScore());
+                    }
+                    set.add(specialistEvaluateDO1.getPatient());
+                    array1.add(specialistEvaluateDO1);
+                }
+            }
+            object1.put("patient",set);
+            object1.put("score",scoreSet);
+            object1.put("evaluate",array1);
+            if (array1.size() !=0&&array1 != null){
+                specialistEvaluateDOS8.removeAll(array1);
+                array5.add(object1);
+            }
+        }
+        object2.put("evaluate",array);
+        object2.put("total",array.size());
+        object3.put("evaluate",array3);
+        object3.put("total",array3.size());
+        object4.put("evaluate",array4);
+        object4.put("total",array4.size());
+        object5.put("evaluate",array5);
+        object5.put("total",array5.size());
+        object.put("totalScore",totalScore);
+        object.put("1",totalScore1);//1、服务效率，
+        object.put("2",totalScore2);// 2、服务态度，
+        object.put("3",totalScore3);// 3、专业程度
+        object.put("4",object2);//全部
+        object.put("5",object3);//好评
+        object.put("6",object4);//中评
+        object.put("7",object5);//差评
+        envelop.setObj(object);
         return envelop;
     }
 
