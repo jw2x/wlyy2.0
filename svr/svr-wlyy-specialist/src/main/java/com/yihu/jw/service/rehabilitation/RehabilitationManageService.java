@@ -1036,27 +1036,32 @@ public class RehabilitationManageService {
      */
     public Map<String,Object> updateNodeAndRelationRecordImg(String node,String image,String planDeatilId)throws Exception{
         Map<String,Object> resultMap = new HashedMap();
-        int i = rehabilitationDetailDao.updateStatusById(1,planDeatilId);
-        int j = rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
-        //如果整个计划的服务项都完成了，整个计划也完成了
-        String allSql ="SELECT * FROM wlyy_rehabilitation_plan_detail where plan_id = (SELECT plan_id FROM `wlyy_rehabilitation_plan_detail` WHERE id='"+planDeatilId+"')";
-        List<RehabilitationDetailDO> rehabilitationDetailDOList = jdbcTemplate.query(allSql,new BeanPropertyRowMapper<>(RehabilitationDetailDO.class));
-        int allCount=0;
-        String planId="";
-        for (RehabilitationDetailDO rehabilitationDetailDO : rehabilitationDetailDOList){
-            if (rehabilitationDetailDO.getStatus()==1){
-                allCount++;
+        try{
+            int i = rehabilitationDetailDao.updateStatusById(1,planDeatilId);
+            int j = rehabilitationOperateRecordsDao.updateNodeAndRelationRecordImg(node,image,planDeatilId);
+            //如果整个计划的服务项都完成了，整个计划也完成了
+            String allSql ="SELECT * FROM wlyy_rehabilitation_plan_detail where plan_id = (SELECT plan_id FROM `wlyy_rehabilitation_plan_detail` WHERE id='"+planDeatilId+"')";
+            List<RehabilitationDetailDO> rehabilitationDetailDOList = jdbcTemplate.query(allSql,new BeanPropertyRowMapper<>(RehabilitationDetailDO.class));
+            int allCount=0;
+            String planId="";
+            for (RehabilitationDetailDO rehabilitationDetailDO : rehabilitationDetailDOList){
+                if (rehabilitationDetailDO.getStatus()==1){
+                    allCount++;
+                }
             }
-        }
-        if (rehabilitationDetailDOList.size()>0 && rehabilitationDetailDOList.size()==allCount){
-            planId = rehabilitationDetailDOList.get(0).getPlanId();
-            patientRehabilitationPlanDao.updateStatusById(2,planId);
+            if (rehabilitationDetailDOList.size()>0 && rehabilitationDetailDOList.size()==allCount){
+                planId = rehabilitationDetailDOList.get(0).getPlanId();
+                patientRehabilitationPlanDao.updateStatusById(2,planId);
+            }
+        }catch (Exception e){
+            throw  new Exception("更新服务状态失败！");
         }
         //更新返回数据提供发送消息使用
         String sql ="SELECT" +
                 " i.service_item_id," +
                 " r.doctor_code," +
-                " r.patient_code" +
+                " r.patient_code," +
+                " pd.hospital" +
                 " FROM" +
                 " wlyy_rehabilitation_plan_detail pd" +
                 " LEFT JOIN wlyy_hospital_service_item i ON pd.hospital_service_item_id = i.id" +
@@ -1073,7 +1078,6 @@ public class RehabilitationManageService {
             resultMap.put("evaluation",itemList.get(0).get("evaluation"));
             resultMap.put("title",itemList.get(0).get("title"));
         }
-        resultMap.put("count",i+j);
         return resultMap;
     }
 
