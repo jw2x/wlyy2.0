@@ -269,9 +269,10 @@ public class SpecialistController extends EnvelopRestEndpoint {
     @GetMapping(value = SpecialistMapping.specialist.findDoctorAndDoctorHealthBySpecialDoctor)
     @ApiOperation(value = "获取当前专科医生有关联的家庭医生和健管师列表")
     public MixEnvelop findDoctorAndDoctorHealthBySpecialDoctor(
-            @ApiParam(name = "doctor", value = "专科医生code") @RequestParam(required = true)String doctor){
+            @ApiParam(name = "doctor", value = "专科医生code") @RequestParam(required = true)String doctor,
+            @ApiParam(name = "name", value = "家庭医生姓名") @RequestParam(required = false)String name){
         try {
-            return specialistService.findDoctorAndDoctorHealthBySpecialDoctor(doctor);
+            return specialistService.findDoctorAndDoctorHealthBySpecialDoctor(doctor,name);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
