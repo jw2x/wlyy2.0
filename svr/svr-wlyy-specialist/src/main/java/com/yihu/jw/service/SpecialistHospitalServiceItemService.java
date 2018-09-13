@@ -126,7 +126,11 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                     if (hospitalServiceItemDOS1 != null && hospitalServiceItemDOS1.size() != 0){
                         for (HospitalServiceItemDO hospitalServiceItemDO2:hospitalServiceItemDOS1){
                             if (hospitalServiceItemDO1.getServiceItemId().equals(hospitalServiceItemDO2.getServiceItemId())){
+                                if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO1.getServiceItemId())){
+                                    hospitalServiceItemDO2.setFlag(3);
+                                }
                                 isTrue = true;
+
                             }
                         }
                     }
@@ -141,6 +145,7 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                         if (isTrue == false){
                             hospitalServiceItemDO1.setFlag(1);
                             hospitalServiceItemDOS1.add(hospitalServiceItemDO1);
+                            break;
                         }
                     }
                 }

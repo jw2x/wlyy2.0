@@ -96,6 +96,7 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
             for (SpecialistEvaluateLabelDO specialistEvaluateLabelDO:specialistEvaluateLabelDOS){
                 specialistEvaluateLabelDO.setSaasId("dev");
                 specialistEvaluateLabelDO.setEvaluateType(1);
+                specialistEvaluateLabelDO.setPatient(patientCode);
                 specialistEvaluateLabelDao.save(specialistEvaluateLabelDO);
             }
         }
