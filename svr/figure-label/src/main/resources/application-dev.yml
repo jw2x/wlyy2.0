@@ -1,0 +1,52 @@
+##开发的配置
+spring:
+  profiles: dev
+
+  datasource:
+#    wlyy:
+#      url: jdbc:mysql://172.19.103.85/figure_lable?useUnicode:true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+#      username: linzhou
+#      password: linzhou
+    wlyy:
+      url: jdbc:mysql://172.19.103.77/figure_lable?useUnicode:true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+      username: root
+      password: 123456
+    healtharchive:
+      url: jdbc:mysql://172.19.103.50:3306/healtharchive?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: chenweishan
+      password: chenweishan
+    wlyy85:
+      url: jdbc:mysql://172.19.103.85/wlyy?useUnicode:true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+      username: linzhou
+      password: linzhou
+  data:
+    elasticsearch:
+      cluster-name: jkzl #es集群的名字
+      cluster-nodes: 172.19.103.45:9300,172.19.103.68:9300 # 11.1.2.28:9300,11.1.2.29:9300
+      cluster-nodes-jest: http://172.19.103.68:9200,http://172.19.103.45:9200  #http://11.1.2.28:9200,http://11.1.2.29:9200   #多个逗号分割
+      repositories:
+        enabled: true
+      properties:
+        client:
+          transport:
+            sniff: false #开启嗅探集群  用nginx代理一层过后会出现ip解析失败问题
+    solr:
+      zk-host: node2.hde.h3c.com:2181,node1.hde.h3c.com:2181,node3.hde.h3c.com:2181/solr
+
+
+
+quartz:
+  namespace: patient-co-figure-label ##quartz的命名空间，名称一样实现消费负载
+  overwriteExistingJobs: false ##是否覆盖job
+
+
+JobService:
+  sleepTime: 40000
+
+hadoop:
+  hbase-properties:
+    hbase.zookeeper.property.clientPort: 2181
+    zookeeper.znode.parent: /hbase-unsecure
+    hbase.zookeeper.quorum:  node1.hde.h3c.com,node2.hde.h3c.com,node3.hde.h3c.com
+  user:
+    name: root

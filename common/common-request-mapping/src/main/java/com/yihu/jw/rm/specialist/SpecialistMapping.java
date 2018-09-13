@@ -79,11 +79,13 @@ public class SpecialistMapping {
         public static final String findServiceItemsByHospital = "/findServiceItemsByHospital";
         public static final String serviceDoctorList = "/serviceDoctorList";
         public static final String dailyJob = "/dailyJob";
+        public static final String dailyJobReserve = "/dailyJobReserve";
         public static final String appCalendarPlanDetailList = "/appCalendarPlanDetailList";
         public static final String updatePlanDetailStatusById = "/updatePlanDetailStatusById";
         public static final String updatePlanStatusById = "/updatePlanStatusById";
         public static final String planSchedule = "/planSchedule";
         public static final String planListByPatient = "/planListByPatient";
+        public static final String patientCount = "/patientCount";
     }
 
     public static class serviceItem{

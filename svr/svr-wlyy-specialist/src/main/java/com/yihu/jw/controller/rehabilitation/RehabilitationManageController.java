@@ -346,4 +346,32 @@ public class RehabilitationManageController {
             return ObjEnvelop.getError(e.getMessage());
         }
     }
+
+    @GetMapping(value = SpecialistMapping.rehabilitation.patientCount)
+    @ApiOperation(value = "医生已计划数，已完成计划数（居民数）")
+    public ObjEnvelop patientCount(@ApiParam(name = "doctorCode", value = "医生code", required = true)
+                               @RequestParam(value = "doctorCode", required = true)String doctorCode){
+        try {
+            return rehabilitationManageService.patientCount(doctorCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.rehabilitation.dailyJobReserve)
+    @ApiOperation(value = "10天、7天、5天、当天康复服务预约复诊通知")
+    public ObjEnvelop dailyJobReserve(@ApiParam(name = "startTime", value = "开始时间（格式：yyyy-MM-dd HH:mm:ss）", required = true)
+                               @RequestParam(value = "startTime", required = true)String startTime,
+                               @ApiParam(name = "endTime", value = "结束时间（格式：yyyy-MM-dd HH:mm:ss）", required = true)
+                               @RequestParam(value = "endTime", required = true)String endTime){
+        try {
+            return rehabilitationManageService.dailyJobReserve(startTime,endTime);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
+        }
+    }
 }

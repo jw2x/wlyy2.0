@@ -84,7 +84,7 @@ fast-dfs:
 
 neiwang:
   enable: true
-  wlyy: http://localhost:10051/
+  wlyy: http://172.19.103.54:22122/
 
 base:
   url: http://172.17.110.212:10020/
@@ -112,8 +112,8 @@ fast-dfs:
   public-server: http://172.19.103.54:80/
 
 neiwang:
-  enable: false
-  wlyy: http://59.61.92.90:10051/
+  enable: true
+  wlyy: http://172.19.103.54:22122/
 
 base:
   url: http://172.17.110.212:10020/
@@ -141,7 +141,7 @@ fast-dfs:
 
 neiwang:
   enable: true
-  wlyy: http://172.19.103.33:9797/svr-wlyy-specialist/
+  wlyy: http://172.19.103.54:22122/
 
 base:
   url: http://172.17.110.212:10020/
