@@ -123,7 +123,7 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
      */
     public MixEnvelop<JSONObject,JSONObject> selectByCondition(SpecialistEvaluateDO specialistEvaluateDO){
         MixEnvelop<JSONObject,JSONObject> envelop = new MixEnvelop<>();
-        String sql = ISqlUtils.getSql(specialistEvaluateDO,1,1,"*");
+        String sql = ISqlUtils.getSql(specialistEvaluateDO,1,100,"*");
         List<SpecialistEvaluateDO> specialistEvaluateDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
         String sql1 = "select * from wlyy_specialist_evaluate_label where doctor = '"+specialistEvaluateDO.getDoctor()+"' " +
                 "and relation_code = '"+specialistEvaluateDO.getRelationCode()+"' and patient = '"+specialistEvaluateDO.getPatient()+"'";
