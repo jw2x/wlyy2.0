@@ -234,6 +234,7 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
                 totalScore3 = Double.parseDouble(object1.toString());
             }
         }
+
         String sql5 = "select * from wlyy_specialist_evaluate WHERE doctor = '"+doctor+"'";
         String sql6 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score > 71 and doctor = '"+doctor+"')";
         String sql7 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score > 41 and score < 71 and doctor = '"+doctor+"')";
@@ -276,6 +277,15 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
                 }
             }
             object1.put("patient",set);
+            for (Double value:scoreSet){
+                if (value>71){
+                    object1.put("flag","好评");
+                }else if (value>41&&value<71){
+                    object1.put("flag","中评");
+                }else if (value<41){
+                    object1.put("flag","差评");
+                }
+            }
             object1.put("score",scoreSet);
             object1.put("evaluate",array1);
             if (array1.size() !=0&&array1 != null){
@@ -305,6 +315,7 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
                 }
             }
             object1.put("patient",set);
+            object1.put("flag","好评");
             object1.put("score",scoreSet);
             object1.put("evaluate",array1);
             if (array1.size() !=0&&array1 != null){
@@ -334,6 +345,7 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
                 }
             }
             object1.put("patient",set);
+            object1.put("flag","中评");
             object1.put("score",scoreSet);
             object1.put("evaluate",array1);
             if (array1.size() !=0&&array1 != null){
@@ -363,12 +375,19 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
                 }
             }
             object1.put("patient",set);
+            object1.put("flag","差评");
             object1.put("score",scoreSet);
             object1.put("evaluate",array1);
             if (array1.size() !=0&&array1 != null){
                 specialistEvaluateDOS8.removeAll(array1);
                 array5.add(object1);
             }
+        }
+        String lableSql = "select * from wlyy_specialist_evaluate_label where doctor ='"+doctor+"' AND flag IN (2,3)";
+        List<SpecialistEvaluateLabelDO> specialistEvaluateLabelDOS = jdbcTemplate.query(lableSql,new BeanPropertyRowMapper(SpecialistEvaluateLabelDO.class));
+        Set<String> labelSet = new HashSet<>();
+        for (SpecialistEvaluateLabelDO specialistEvaluateLabelDO:specialistEvaluateLabelDOS){
+            labelSet.add(specialistEvaluateLabelDO.getContent());
         }
         object2.put("evaluate",array);
         object2.put("total",array.size());
@@ -378,6 +397,7 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
         object4.put("total",array4.size());
         object5.put("evaluate",array5);
         object5.put("total",array5.size());
+        object.put("label",labelSet);
         object.put("totalScore",totalScore);
         object.put("1",totalScore1);//1、服务效率，
         object.put("2",totalScore2);// 2、服务态度，

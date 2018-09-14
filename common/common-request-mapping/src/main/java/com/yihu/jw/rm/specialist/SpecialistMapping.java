@@ -86,6 +86,7 @@ public class SpecialistMapping {
         public static final String planSchedule = "/planSchedule";
         public static final String planListByPatient = "/planListByPatient";
         public static final String patientCount = "/patientCount";
+        public static final String selectByIds = "/selectByIds";
     }
 
     public static class serviceItem{
