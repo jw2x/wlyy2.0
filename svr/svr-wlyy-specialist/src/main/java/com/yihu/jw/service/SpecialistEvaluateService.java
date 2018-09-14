@@ -235,9 +235,9 @@ public class SpecialistEvaluateService extends EnvelopRestEndpoint {
             }
         }
         String sql5 = "select * from wlyy_specialist_evaluate WHERE doctor = '"+doctor+"'";
-        String sql6 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score > 71)";
-        String sql7 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score > 41 and score < 71)";
-        String sql8 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score < 41 )";
+        String sql6 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score > 71 and doctor = '"+doctor+"')";
+        String sql7 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score > 41 and score < 71 and doctor = '"+doctor+"')";
+        String sql8 = "select * from wlyy_specialist_evaluate WHERE doctor IN (select doctor from wlyy_specialist_evaluate_score where score < 41 and doctor = '"+doctor+"')";
         List<SpecialistEvaluateDO> specialistEvaluateDOS = jdbcTemplate.query(sql5,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
         List<SpecialistEvaluateDO> specialistEvaluateDOS1 = jdbcTemplate.query(sql5,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
         List<SpecialistEvaluateDO> specialistEvaluateDOS3 = jdbcTemplate.query(sql6,new BeanPropertyRowMapper(SpecialistEvaluateDO.class));
