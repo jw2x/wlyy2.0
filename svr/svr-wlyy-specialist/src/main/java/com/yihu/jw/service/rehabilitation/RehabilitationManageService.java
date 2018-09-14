@@ -11,7 +11,6 @@ import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationOperateRecordsDO;
 import com.yihu.jw.restmodel.web.Envelop;
-import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
@@ -20,11 +19,8 @@ import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -1176,5 +1172,25 @@ public class RehabilitationManageService {
             one.put("planDetailIds",StringUtils.isNotEmpty(ids)?ids.substring(1):"");
         }
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
+    }
+
+    /**
+     * 根据ids获取数据
+     *
+     * @param ids
+     * @return
+     */
+    public ObjEnvelop selectByIds(String ids){
+        ObjEnvelop envelop = new ObjEnvelop();
+        List idList = Arrays.asList(ids.split(","));
+        StringBuffer buffer = new StringBuffer();
+        for (int i =0;i<idList.size();i++){
+            buffer.append("'"+idList.get(i)+"'").append(",");
+        }
+        buffer.deleteCharAt(buffer.length()-1);
+        String sql = "select * from wlyy_rehabilitation_plan_detail where id in("+buffer+")";
+        List<RehabilitationDetailDO> rehabilitationDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(RehabilitationDetailDO.class));
+        envelop.setObj(rehabilitationDetailDOS);
+        return envelop;
     }
 }
