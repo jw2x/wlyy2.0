@@ -128,10 +128,12 @@ public class RehabilitationManageService {
                 resultMap.put("id",one.get("id"));
                 resultMap.put("status",one.get("status"));//康复计划状态
                 //健康情况
-                String healthyConditionSql =" select  label_name from "+basedb+".wlyy_sign_patient_label_info where status=1 and patient='"+one.get("patient")+"' and label_type=8";
+                String healthyConditionSql =" select  label_name,label from "+basedb+".wlyy_sign_patient_label_info where status=1 and patient='"+one.get("patient")+"' and label_type=8";
                 List<Map<String,Object>> healthyConditionList = jdbcTemplate.queryForList(healthyConditionSql);
                 String healthyCondition = healthyConditionList.size()>0?healthyConditionList.get(0).get("label_name")+"":"";
+                String healthyConditionType = healthyConditionList.size()>0?healthyConditionList.get(0).get("label")+"":"";
                 resultMap.put("healthyCondition",healthyCondition);
+                resultMap.put("healthyConditionType",healthyConditionType);
                 //安排类型
                 String planTypeName = null;
                 Integer planTypeTemp = (Integer)one.get("plan_type");
@@ -186,6 +188,12 @@ public class RehabilitationManageService {
             Map<String,Object> resultMap = new HashMap<>();
             Integer isOperator = 0;
             resultMap.put("patientCode",patientCode);//居民code
+            String healthyConditionSql =" select  label_name,label from "+basedb+".wlyy_sign_patient_label_info where status=1 and patient='"+patientCode+"' and label_type=8";
+            List<Map<String,Object>> healthyConditionList = jdbcTemplate.queryForList(healthyConditionSql);
+            String healthyCondition = healthyConditionList.size()>0?healthyConditionList.get(0).get("label_name")+"":"";
+            String healthyConditionType = healthyConditionList.size()>0?healthyConditionList.get(0).get("label")+"":"";
+            resultMap.put("healthyCondition",healthyCondition);
+            resultMap.put("healthyConditionType",healthyConditionType);
             //专科医生
             String specialistRelationSql = "select r.*,t.name as teamName,h.name as specialistHospitalName from wlyy_specialist.wlyy_specialist_patient_relation r left join "+basedb+".wlyy_admin_team t on r.team_code=t.id left join "+basedb+".dm_hospital h on t.org_code=h.code where r.sign_status ='1' and r.status in('0','1') and r.patient='"+patientCode+"' and r.doctor='"+doctorCode+"'";
             List<Map<String,Object>> specialistRelationList = jdbcTemplate.queryForList(specialistRelationSql);
@@ -837,7 +845,10 @@ public class RehabilitationManageService {
             String id = one.get("id").toString();
             Map<String,Object> map = new HashMap<>();
             map.put("id",id);//id
-            map.put("executeTime",executeTime);//执行时间
+            List<RehabilitationOperateRecordsDO> rehabilitationOperateRecords = rehabilitationOperateRecordsDao.findByRehabilitationDetailId(id);
+            Date completeTime = rehabilitationOperateRecords!=null&&rehabilitationOperateRecords.size()>0?rehabilitationOperateRecords.get(0).getCompleteTime():null;
+            String completeTimeStr =  completeTime!=null?DateUtil.dateToStr(completeTime,"yyyy/MM/dd HH:mm"):"";
+            map.put("executeTime",completeTimeStr);//执行时间
             map.put("title",title);//项目标题
             map.put("content",content);//项目内容
             map.put("statusName",statusName);//状态名称
