@@ -814,8 +814,10 @@ public class RehabilitationManageService {
         Map<String,Object> resultMap = new HashMap<>();
         //近期康复相关记录
 //        String currentTime = DateUtil.getStringDate();
-        String planDetailSql = " select d.*,i.content,i.title from wlyy_specialist.wlyy_rehabilitation_plan_detail d LEFT JOIN wlyy_hospital_service_item h on d.hospital_service_item_id=h.id" +
-                " LEFT JOIN wlyy_service_item i on i.id=h.service_item_id LEFT JOIN wlyy_specialist.wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.status=1 and p.patient='"+patientCode+"' ";
+        String planDetailSql = " select d.*,i.content,i.title,s.complete_time from wlyy_specialist.wlyy_rehabilitation_plan_detail d LEFT JOIN wlyy_hospital_service_item h on d.hospital_service_item_id=h.id" +
+                " LEFT JOIN wlyy_service_item i on i.id=h.service_item_id LEFT JOIN wlyy_specialist.wlyy_patient_rehabilitation_plan p on d.plan_id=p.id" +
+                " left join wlyy_rehabilitation_operate_records s on s.rehabilitation_detail_id=d.id " +
+                " where d.status=1 and p.patient='"+patientCode+"' ";
         if(StringUtils.isNotEmpty(startTime)){
             planDetailSql += "  and d.execute_Time>='"+startTime+"' ";
         }
@@ -827,11 +829,11 @@ public class RehabilitationManageService {
 //        if(planDetailsCount!=null&&planDetailsCount.size()>0){
 //            count = planDetailsCount.size();
 //        }
-        planDetailSql += " ORDER BY d.execute_time DESC LIMIT "+(page-1)*pageSize+","+pageSize;
+        planDetailSql += " ORDER BY s.complete_time DESC LIMIT "+(page-1)*pageSize+","+pageSize;
         List<Map<String,Object>> planDetails = jdbcTemplate.queryForList(planDetailSql);
         List<Map<String,Object>> planDetailList = new ArrayList<>();
         for(Map<String,Object> one:planDetails){
-            Date executeTimeDate = (Date)one.get("execute_time");
+            Date executeTimeDate = (Date)one.get("complete_time");
             String executeTime = DateUtil.dateToStr(executeTimeDate,"yyyy/MM/dd HH:mm");
             String content = one.get("content")+"";
             String title = one.get("title")+"";
@@ -845,10 +847,10 @@ public class RehabilitationManageService {
             String id = one.get("id").toString();
             Map<String,Object> map = new HashMap<>();
             map.put("id",id);//id
-            List<RehabilitationOperateRecordsDO> rehabilitationOperateRecords = rehabilitationOperateRecordsDao.findByRehabilitationDetailId(id);
-            Date completeTime = rehabilitationOperateRecords!=null&&rehabilitationOperateRecords.size()>0?rehabilitationOperateRecords.get(0).getCompleteTime():null;
-            String completeTimeStr =  completeTime!=null?DateUtil.dateToStr(completeTime,"yyyy/MM/dd HH:mm"):"";
-            map.put("executeTime",completeTimeStr);//执行时间
+//            List<RehabilitationOperateRecordsDO> rehabilitationOperateRecords = rehabilitationOperateRecordsDao.findByRehabilitationDetailId(id);
+//            Date completeTime = rehabilitationOperateRecords!=null&&rehabilitationOperateRecords.size()>0?rehabilitationOperateRecords.get(0).getCompleteTime():null;
+//            String completeTimeStr =  completeTime!=null?DateUtil.dateToStr(completeTime,"yyyy/MM/dd HH:mm"):"";
+            map.put("executeTime",executeTime);//执行时间
             map.put("title",title);//项目标题
             map.put("content",content);//项目内容
             map.put("statusName",statusName);//状态名称
