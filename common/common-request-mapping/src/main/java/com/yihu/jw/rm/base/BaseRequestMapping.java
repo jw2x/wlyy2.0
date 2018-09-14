@@ -392,6 +392,20 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 基础消息
+     */
+    public static class BaseMessage extends Basic {
+        public static final String PREFIX  = "/baseMessage";
+    }
+
+    /**
+     * 基础消息类型
+     */
+    public static class BaseMessageType extends Basic {
+        public static final String PREFIX  = "/baseMessageType";
+    }
+
+    /**
      * 基于MQ的消息推送
      */
     public static class MqMessage extends Basic {
