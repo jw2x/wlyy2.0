@@ -161,6 +161,11 @@
                 <artifactId>common-web</artifactId>
                 <version>${version.wlyy-common}</version>
             </dependency>
+            <dependency>
+                <groupId>com.yihu.jw</groupId>
+                <artifactId>common-tracer</artifactId>
+                <version>${version.wlyy-common}</version>
+            </dependency>
 
             <!-- Jkzl Starter -->
             <dependency>
