@@ -132,7 +132,10 @@ public class RehabilitationManageService {
                 resultMap.put("id",one.get("id"));
                 resultMap.put("status",one.get("status"));//康复计划状态
                 //健康情况
-                resultMap.put("healthyCondition","康复期");
+                String healthyConditionSql =" select  label_name from "+basedb+".wlyy_sign_patient_label_info where status=1 and patient='"+one.get("patient")+"' and label_type=8";
+                List<Map<String,Object>> healthyConditionList = jdbcTemplate.queryForList(healthyConditionSql);
+                String healthyCondition = healthyConditionList.size()>0?healthyConditionList.get(0).get("label_name")+"":"";
+                resultMap.put("healthyCondition",healthyCondition);
                 //安排类型
                 String planTypeName = null;
                 Integer planTypeTemp = (Integer)one.get("plan_type");
@@ -1106,7 +1109,7 @@ public class RehabilitationManageService {
         Integer finishedCount = rehabilitationDetailDao.findByStatusAndPlanId(1,planId);
         resultMap.put("allCount",allCount);
         resultMap.put("finishedCount",finishedCount);
-        resultMap.put("healthyCondition","康复期");
+//        resultMap.put("healthyCondition",healthyCondition);
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,resultMap);
     }
 
