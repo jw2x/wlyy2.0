@@ -39,6 +39,8 @@ public class UserVO extends UuidIdentityVOWithOperator {
     //邮箱
     @ApiModelProperty(value = "邮箱", example = "wxm@jkzl.com")
     private String email;
+    @ApiModelProperty(value = "简化模式获取token所需要的凭证", example = "25f9e794323b453885f5181f1b624d0b")
+    private String ak;
     //是否可用
     @ApiModelProperty(value = "是否可用", example = "1")
     private Boolean enabled;
@@ -117,6 +119,14 @@ public class UserVO extends UuidIdentityVOWithOperator {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getAk() {
+        return ak;
+    }
+
+    public void setAk(String ak) {
+        this.ak = ak;
     }
 
     public Boolean getEnabled() {

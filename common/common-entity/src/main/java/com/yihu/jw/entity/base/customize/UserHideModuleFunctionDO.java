@@ -1,4 +1,4 @@
-package com.yihu.jw.entity.base.user;
+package com.yihu.jw.entity.base.customize;
 
 import com.yihu.jw.entity.IntegerIdentityEntity;
 
@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
+ * Entity - 用户取消订阅的模块或功能
  * @author progr1mmer
  * @date Created on 2018/8/14.
  */
@@ -15,9 +16,9 @@ import javax.persistence.Table;
 public class UserHideModuleFunctionDO extends IntegerIdentityEntity {
 
     /**
-     * 用户ID
+     * 对象ID
      */
-    private String userId;
+    private String objId;
     /**
      * 模块ID
      */
@@ -28,12 +29,12 @@ public class UserHideModuleFunctionDO extends IntegerIdentityEntity {
     private Integer functionId;
 
     @Column(name = "user_id", nullable = false, length = 50)
-    public String getUserId() {
-        return userId;
+    public String getObjId() {
+        return objId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setObjId(String objId) {
+        this.objId = objId;
     }
 
     @Column(name = "module_id", nullable = false)

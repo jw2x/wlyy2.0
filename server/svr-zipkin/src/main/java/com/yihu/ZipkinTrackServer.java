@@ -5,7 +5,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import zipkin.server.EnableZipkinServer;
 
 /**
- * Created by chenweida on 2017/5/18.
+ * @author chenweida
+ * @date Created on 2017/5/18.
  */
 @SpringBootApplication
 @EnableZipkinServer

@@ -1,6 +1,6 @@
 package com.yihu.jw.restmodel.base.message;
 
-import com.yihu.jw.restmodel.UuidIdentityVO;
+import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by progr1mmer on 2018/9/3.
  */
 @ApiModel(value = "MqMessageVO", description = "基于MQ的消息推送")
-public class MqMessageVO extends UuidIdentityVO {
+public class MqMessageVO extends UuidIdentityVOWithOperator {
 
     //主题
     @ApiModelProperty(value = "主题", example = "dailyReport")

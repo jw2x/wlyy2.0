@@ -1,7 +1,7 @@
 package com.yihu.jw.restmodel.base.sms;
 
 import com.yihu.jw.entity.base.sms.SmsTemplateDO;
-import com.yihu.jw.restmodel.UuidIdentityVO;
+import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -11,7 +11,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by progr1mmer on 2018/8/14.
  */
 @ApiModel(value = "SmsTemplateVO", description = "短信网关")
-public class SmsTemplateVO extends UuidIdentityVO {
+public class SmsTemplateVO extends UuidIdentityVOWithOperator {
 
     //应用ID
     @ApiModelProperty(value = "应用ID", example = "EwC0iRSrcS")

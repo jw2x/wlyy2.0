@@ -36,6 +36,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * Saas模块功能
+     */
+    public static class SaasModuleFunction extends Basic {
+        public static final String PREFIX  = "/saas_module_function";
+    }
+
+    /**
      * SAAS名片
      */
     public static class SaasBusinessCard extends Basic {
@@ -117,10 +124,10 @@ public class BaseRequestMapping {
     }
 
     /**
-     * 角色模块功能
+     * 角色权限
      */
-    public static class RoleModuleFunction extends Basic {
-        public static final String PREFIX  = "/role_module_function";
+    public static class RoleAuthority extends Basic {
+        public static final String PREFIX  = "/role_authority";
     }
 
     /**

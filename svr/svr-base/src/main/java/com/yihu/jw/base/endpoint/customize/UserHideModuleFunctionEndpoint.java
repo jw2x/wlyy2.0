@@ -1,8 +1,8 @@
-package com.yihu.jw.base.endpoint.saas;
+package com.yihu.jw.base.endpoint.customize;
 
-import com.yihu.jw.base.service.saas.SaasModuleFunctionService;
-import com.yihu.jw.entity.base.saas.SaasModuleFunctionDO;
-import com.yihu.jw.restmodel.base.saas.SaasModuleFunctionVO;
+import com.yihu.jw.base.service.customize.UserHideModuleFunctionService;
+import com.yihu.jw.entity.base.customize.UserHideModuleFunctionDO;
+import com.yihu.jw.restmodel.base.customize.UserHideModuleFunctionVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -19,52 +19,52 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Endpoint - Saas所分配的模块功能
+ * Endpoint - 用户取消订阅的模块或功能
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
-@RequestMapping(value = BaseRequestMapping.SaasModuleFunction.PREFIX)
-@Api(value = "Saas模块功能管理", description = "Saas模块功能管理服务接口", tags = {"wlyy基础服务 - Saas模块功能管理服务接口"})
-public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
+@RequestMapping(value = BaseRequestMapping.UserHideModuleFunction.PREFIX)
+@Api(value = "用户取消订阅的模块或功能（用户自定义）", description = "用户取消订阅的模块或功能（用户自定义）服务接口", tags = {"wlyy基础服务 - 用户取消订阅的模块或功能（用户自定义）服务接口"})
+public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
-    private SaasModuleFunctionService saasModuleFunctionService;
+    private UserHideModuleFunctionService userHideModuleFunctionService;
 
-    @PostMapping(value = BaseRequestMapping.SaasModuleFunction.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.UserHideModuleFunction.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<SaasModuleFunctionVO> create (
+    public ObjEnvelop<UserHideModuleFunctionVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SaasModuleFunctionDO saasModuleFunctionDO = toEntity(jsonData, SaasModuleFunctionDO.class);
-        saasModuleFunctionDO = saasModuleFunctionService.save(saasModuleFunctionDO);
-        return success(saasModuleFunctionDO, SaasModuleFunctionVO.class);
+        UserHideModuleFunctionDO userHideModuleFunctionDO = toEntity(jsonData, UserHideModuleFunctionDO.class);
+        userHideModuleFunctionDO = userHideModuleFunctionService.save(userHideModuleFunctionDO);
+        return success(userHideModuleFunctionDO, UserHideModuleFunctionVO.class);
     }
 
-    @PostMapping(value = BaseRequestMapping.SaasModuleFunction.DELETE)
+    @PostMapping(value = BaseRequestMapping.UserHideModuleFunction.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
             @RequestParam(value = "ids") String ids) {
-        saasModuleFunctionService.delete(ids.split(","));
+        userHideModuleFunctionService.delete(ids.split(","));
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.SaasModuleFunction.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.UserHideModuleFunction.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public Envelop update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        SaasModuleFunctionDO saasModuleFunctionDO = toEntity(jsonData, SaasModuleFunctionDO.class);
-        if (null == saasModuleFunctionDO.getId()) {
+        UserHideModuleFunctionDO userHideModuleFunctionDO = toEntity(jsonData, UserHideModuleFunctionDO.class);
+        if (null == userHideModuleFunctionDO.getId()) {
             return failed("ID不能为空", Envelop.class);
         }
-        saasModuleFunctionDO = saasModuleFunctionService.save(saasModuleFunctionDO);
-        return success(saasModuleFunctionDO);
+        userHideModuleFunctionDO = userHideModuleFunctionService.save(userHideModuleFunctionDO);
+        return success(userHideModuleFunctionDO);
     }
 
-    @GetMapping(value = BaseRequestMapping.SaasModuleFunction.PAGE)
+    @GetMapping(value = BaseRequestMapping.UserHideModuleFunction.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SaasModuleFunctionVO> page (
+    public PageEnvelop<UserHideModuleFunctionVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -75,22 +75,22 @@ public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<SaasModuleFunctionDO> saasModuleFunctionDOS = saasModuleFunctionService.search(fields, filters, sorts, page, size);
-        int count = (int)saasModuleFunctionService.getCount(filters);
-        return success(saasModuleFunctionDOS, count, page, size, SaasModuleFunctionVO.class);
+        List<UserHideModuleFunctionDO> userHideModuleFunctionDOS = userHideModuleFunctionService.search(fields, filters, sorts, page, size);
+        int count = (int)userHideModuleFunctionService.getCount(filters);
+        return success(userHideModuleFunctionDOS, count, page, size, UserHideModuleFunctionVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.SaasModuleFunction.LIST)
+    @GetMapping(value = BaseRequestMapping.UserHideModuleFunction.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SaasModuleFunctionVO> list (
+    public ListEnvelop<UserHideModuleFunctionVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<SaasModuleFunctionDO> saasModuleFunctionDOS = saasModuleFunctionService.search(fields, filters, sorts);
-        return success(saasModuleFunctionDOS, SaasModuleFunctionVO.class);
+        List<UserHideModuleFunctionDO> userHideModuleFunctionDOS = userHideModuleFunctionService.search(fields, filters, sorts);
+        return success(userHideModuleFunctionDOS, UserHideModuleFunctionVO.class);
     }
 
 }

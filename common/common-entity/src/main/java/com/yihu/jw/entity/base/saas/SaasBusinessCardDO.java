@@ -13,14 +13,21 @@ import javax.persistence.Table;
  * </p>
  *
  * Entity - SAAS名片
- * Created by progr1mmer on 2018/9/7.
+ * @author progr1mmer
+ * @date Created on 2018/9/7.
  */
 @Entity
 @Table(name = "base_saas_business_card")
 public class SaasBusinessCardDO extends IntegerIdentityEntity {
 
     public enum Type {
+        /**
+         * 医生
+         */
         doctor,
+        /**
+         * 患者
+         */
         patient
     }
 
