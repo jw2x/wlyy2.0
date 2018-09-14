@@ -25,6 +25,7 @@
         <module>../common/common-util</module>
         <module>../common/common-fegin</module>
         <module>../common/common-web</module>
+        <module>../common/common-tracer</module>
     </modules>
 
 </project>
