@@ -119,53 +119,59 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
             List<HospitalServiceItemDO> hospitalServiceItemDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
             String sql1 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+docHospital+"' "+sqlUtil;
             List<HospitalServiceItemDO> hospitalServiceItemDOList = jdbcTemplate.query(sql1,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
-            for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
-                boolean flag = false;
-                for (HospitalServiceItemDO hospitalServiceItemDO1 :hospitalServiceItemDOS){
-                    boolean isTrue = false;
-                    if (hospitalServiceItemDOS1 != null && hospitalServiceItemDOS1.size() != 0){
-                        for (HospitalServiceItemDO hospitalServiceItemDO2:hospitalServiceItemDOS1){
-                            if (hospitalServiceItemDO1.getServiceItemId().equals(hospitalServiceItemDO2.getServiceItemId())){
-                                if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO1.getServiceItemId())){
-                                    hospitalServiceItemDO2.setFlag(3);
-                                }
-                                isTrue = true;
+            if (hospitalServiceItemDOList != null && hospitalServiceItemDOList.size()!=0){
+                for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
+                    boolean flag = false;
+                    for (HospitalServiceItemDO hospitalServiceItemDO1 :hospitalServiceItemDOS){
+                        boolean isTrue = false;
+                        if (hospitalServiceItemDOS1 != null && hospitalServiceItemDOS1.size() != 0){
+                            for (HospitalServiceItemDO hospitalServiceItemDO2:hospitalServiceItemDOS1){
+                                if (hospitalServiceItemDO1.getServiceItemId().equals(hospitalServiceItemDO2.getServiceItemId())){
+                                    if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO1.getServiceItemId())){
+                                        hospitalServiceItemDO2.setFlag(3);
+                                    }
+                                    isTrue = true;
 
+                                }
+                            }
+                        }
+                        if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO1.getServiceItemId())){
+                            if (isTrue==false){
+                                hospitalServiceItemDO1.setFlag(3);
+                                hospitalServiceItemDOS1.add(hospitalServiceItemDO1);
+                                flag = true;
+                            }
+                        }else{
+                            if (isTrue == false){
+                                hospitalServiceItemDO1.setFlag(1);
+                                hospitalServiceItemDOS1.add(hospitalServiceItemDO1);
                             }
                         }
                     }
-                    if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO1.getServiceItemId())){
-                        if (isTrue==false){
-                            hospitalServiceItemDO1.setFlag(3);
-                            hospitalServiceItemDOS1.add(hospitalServiceItemDO1);
-                            flag = true;
-                            break;
+                    if (flag==false){
+                        boolean isTrue1 = false;
+                        if (hospitalServiceItemDOS1 != null && hospitalServiceItemDOS1.size() != 0){
+                            for (HospitalServiceItemDO hospitalServiceItemDO2:hospitalServiceItemDOS1){
+                                if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO2.getServiceItemId())){
+                                    isTrue1 = true;
+                                }
+                            }
                         }
-                    }else{
-                        if (isTrue == false){
-                            hospitalServiceItemDO1.setFlag(1);
-                            hospitalServiceItemDOS1.add(hospitalServiceItemDO1);
-                            break;
+                        if (isTrue1 == false){
+                            hospitalServiceItemDO.setFlag(2);
+                            hospitalServiceItemDOS1.add(hospitalServiceItemDO);
                         }
                     }
                 }
-                if (flag==false){
-                    boolean isTrue1 = false;
-                    if (hospitalServiceItemDOS1 != null && hospitalServiceItemDOS1.size() != 0){
-                        for (HospitalServiceItemDO hospitalServiceItemDO2:hospitalServiceItemDOS1){
-                            if (hospitalServiceItemDO.getServiceItemId().equals(hospitalServiceItemDO2.getServiceItemId())){
-                                isTrue1 = true;
-                            }
-                        }
-                    }
-                    if (isTrue1 == false){
-                        hospitalServiceItemDO.setFlag(2);
-                        hospitalServiceItemDOS1.add(hospitalServiceItemDO);
-                    }
+            }else {
+                String sql3 = "select * from wlyy_hospital_service_item where 1=1 AND status = 1 AND imediate=1 AND hospital = '"+hospital+"'"+sqlUtil;
+                List<HospitalServiceItemDO> hospitalServiceItemDOList1 = jdbcTemplate.query(sql3,new BeanPropertyRowMapper(HospitalServiceItemDO.class));
+                for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList1){
+                    hospitalServiceItemDO.setFlag(1);
+                    hospitalServiceItemDOS1.add(hospitalServiceItemDO);
                 }
             }
         }
-
         for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOS1){
             SpecialistServiceItemDO specialistServiceItemDO = specialistServiceItemDao.findOne(hospitalServiceItemDO.getServiceItemId());
             hospitalServiceItemDO.setSpecialistServiceItemDO(specialistServiceItemDO);
