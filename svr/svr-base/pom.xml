@@ -54,10 +54,10 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-config</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-zipkin</artifactId>
-        </dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.springframework.cloud</groupId>-->
+            <!--<artifactId>spring-cloud-starter-zipkin</artifactId>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-activemq</artifactId>
@@ -92,6 +92,10 @@
             <groupId>com.yihu.jw</groupId>
             <artifactId>common-web</artifactId>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.yihu.jw</groupId>-->
+            <!--<artifactId>common-tracer</artifactId>-->
+        <!--</dependency>-->
         <!-- 文件服务器 -->
         <dependency>
             <groupId>com.yihu</groupId>
