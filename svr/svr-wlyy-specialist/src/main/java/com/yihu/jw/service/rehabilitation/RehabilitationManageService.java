@@ -711,6 +711,8 @@ public class RehabilitationManageService {
                 case 2:planTypeName="（转）社区医院" ;break;
                 case 3:planTypeName="（转）转家庭病床" ;break;
             }
+            map.put("createUser",one.getCreateUser());
+            map.put("createUserName",one.getCreateUserName());
             map.put("planId",one.getId());
             map.put("planTypeName",planTypeName);
             String statusName = "";
