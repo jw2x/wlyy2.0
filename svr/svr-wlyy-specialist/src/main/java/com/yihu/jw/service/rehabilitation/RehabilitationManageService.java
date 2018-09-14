@@ -849,7 +849,10 @@ public class RehabilitationManageService {
             String id = one.get("id").toString();
             Map<String,Object> map = new HashMap<>();
             map.put("id",id);//id
-            map.put("executeTime",executeTime);//执行时间
+            List<RehabilitationOperateRecordsDO> rehabilitationOperateRecords = rehabilitationOperateRecordsDao.findByRehabilitationDetailId(id);
+            Date completeTime = rehabilitationOperateRecords!=null&&rehabilitationOperateRecords.size()>0?rehabilitationOperateRecords.get(0).getCompleteTime():null;
+            String completeTimeStr =  completeTime!=null?DateUtil.dateToStr(completeTime,"yyyy/MM/dd HH:mm"):"";
+            map.put("executeTime",completeTimeStr);//执行时间
             map.put("title",title);//项目标题
             map.put("content",content);//项目内容
             map.put("statusName",statusName);//状态名称
