@@ -90,13 +90,13 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
         try {
             JSONObject object = JSON.parseObject(serviceItem);
             if (object.getDouble("threeHospitals")!=null){
-                object.replace("threeHospitals", DataUtils.doubleTransferInteger(object.getDouble("threeHospitals"),"0.00"));
+                object.replace("threeHospitals", DataUtils.doubleToInt(object.getDouble("threeHospitals")));
             }
             if (object.getDouble("twoHospitals")!=null){
-                object.replace("twoHospitals",DataUtils.doubleTransferInteger(object.getDouble("twoHospitals"),"0.00"));
+                object.replace("twoHospitals",DataUtils.doubleToInt(object.getDouble("twoHospitals")));
             }
             if (object.getDouble("oneHospitals")!=null){
-                object.replace("oneHospitals",DataUtils.doubleTransferInteger(object.getDouble("oneHospitals"),"0.00"));
+                object.replace("oneHospitals",DataUtils.doubleToInt(object.getDouble("oneHospitals")));
             }
             SpecialistServiceItemDO serviceItemDO = toEntity(object.toJSONString(),SpecialistServiceItemDO.class);
             return specialistServiceItemService.insert(serviceItemDO);
@@ -148,13 +148,13 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
         try {
             JSONObject object = JSON.parseObject(serviceItem);
             if (object.getDouble("threeHospitals")!=null){
-                object.replace("threeHospitals", DataUtils.doubleTransferInteger(object.getDouble("threeHospitals"),"0.00"));
+                object.replace("threeHospitals", DataUtils.doubleToInt(object.getDouble("threeHospitals")));
             }
             if (object.getDouble("twoHospitals")!=null){
-                object.replace("twoHospitals",DataUtils.doubleTransferInteger(object.getDouble("twoHospitals"),"0.00"));
+                object.replace("twoHospitals",DataUtils.doubleToInt(object.getDouble("twoHospitals")));
             }
             if (object.getDouble("oneHospitals")!=null){
-                object.replace("oneHospitals",DataUtils.doubleTransferInteger(object.getDouble("oneHospitals"),"0.00"));
+                object.replace("oneHospitals",DataUtils.doubleToInt(object.getDouble("oneHospitals")));
             }
             SpecialistServiceItemDO serviceItemDO = toEntity(object.toJSONString(),SpecialistServiceItemDO.class);
             return specialistServiceItemService.update(serviceItemDO);
@@ -214,13 +214,13 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
             for (int i = 0;i<array.size();i++){
                 JSONObject object = array.getJSONObject(i);
                 if (object.getDouble("threeHospitals")!=null){
-                    object.replace("threeHospitals", DataUtils.doubleTransferInteger(object.getDouble("threeHospitals"),"0.00"));
+                    object.replace("threeHospitals", DataUtils.doubleToInt(object.getDouble("threeHospitals")));
                 }
                 if (object.getDouble("twoHospitals")!=null){
-                    object.replace("twoHospitals",DataUtils.doubleTransferInteger(object.getDouble("twoHospitals"),"0.00"));
+                    object.replace("twoHospitals",DataUtils.doubleToInt(object.getDouble("twoHospitals")));
                 }
                 if (object.getDouble("oneHospitals")!=null){
-                    object.replace("oneHospitals",DataUtils.doubleTransferInteger(object.getDouble("oneHospitals"),"0.00"));
+                    object.replace("oneHospitals",DataUtils.doubleToInt(object.getDouble("oneHospitals")));
                 }
                 SpecialistServiceItemDO specialistServiceItemDO = toEntity(object.toJSONString(),SpecialistServiceItemDO.class);
                 specialistServiceItemDOS.add(specialistServiceItemDO);
