@@ -362,7 +362,7 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                 List<SpecialistServiceItemDO> specialistServiceItemDOS = specialistServiceItemDao.findByTitleAndContent(hospitalServiceItemDO.getTitle(),hospitalServiceItemDO.getContent());
                 if (specialistServiceItemDOS != null && specialistServiceItemDOS.size()!=0){
                     List<HospitalServiceItemDO> hospitalServiceItemDOList = specialistHospitalServiceItemDao.findByHospitalAndServiceItemId(hospitalServiceItemDO.getHospital(),specialistServiceItemDOS.get(0).getId());
-                    if (hospitalServiceItemDOList == null && hospitalServiceItemDOList.size() ==0){
+                    if (hospitalServiceItemDOList != null && hospitalServiceItemDOList.size() !=0){
                         continue;
                     }else {
                         hospitalServiceItemDO.setStatus(1);
