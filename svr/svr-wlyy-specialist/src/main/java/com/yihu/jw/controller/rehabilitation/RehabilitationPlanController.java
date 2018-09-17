@@ -200,9 +200,10 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
     @PostMapping(value = SpecialistMapping.rehabilitation.createServiceQrCode)
     @ApiOperation(value = "根据康复计划明细id和医生code生成服务码")
     public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planDetailId", value = "康复计划项目明细ID")@RequestParam(value = "planDetailId", required = true)String planDetailId,
-                                                         @ApiParam(name = "doctorCode", value = "医生code")@RequestParam(value = "doctorCode", required = true)String doctorCode){
+                                                         @ApiParam(name = "doctorCode", value = "医生code")@RequestParam(value = "doctorCode", required = true)String doctorCode,
+                                                         @ApiParam(name = "imageUrl",value = "二维码地址")@RequestParam(value = "imageUrl",required = true)String imageUrl){
         try {
-            return rehabilitationPlanService.createServiceQrCode(planDetailId,doctorCode);
+            return rehabilitationPlanService.createServiceQrCode(planDetailId,doctorCode,imageUrl);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

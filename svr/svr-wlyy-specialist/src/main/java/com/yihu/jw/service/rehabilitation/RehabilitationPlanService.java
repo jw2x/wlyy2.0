@@ -298,8 +298,8 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
         patientRehabilitationPlanDao.updateServicePackageId(planId, servicePackageId);
     }
 
-    public MixEnvelop<String,String> createServiceQrCode(String planDetailId,String doctorCode){
-        RehabilitationDetailDO rehabilitationDetailDO = rehabilitationDetailDao.findById(planDetailId);
+    public MixEnvelop<String,String> createServiceQrCode(String planDetailId,String doctorCode,String imageUrl){
+        /*RehabilitationDetailDO rehabilitationDetailDO = rehabilitationDetailDao.findById(planDetailId);
         String fileUrl = "";
         if (rehabilitationDetailDO!=null) {
             if (org.apache.commons.lang3.StringUtils.isNotBlank(rehabilitationDetailDO.getServiceQrCode())) {
@@ -341,8 +341,11 @@ public class RehabilitationPlanService extends BaseJpaService<RehabilitationPlan
                 String sql = "update wlyy_rehabilitation_plan_detail set service_qr_code='" + fileUrl + "' where id='" + planDetailId + "'";
                 jdbcTemplate.update(sql);
             }
-        }
-        return MixEnvelop.getSuccess("获取二维码成功！",fileUrl);
+        }*/
+        //更新到康复计划居民关系表中
+        String sql = "update wlyy_rehabilitation_plan_detail set service_qr_code='" + imageUrl + "' where id='" + planDetailId + "'";
+        jdbcTemplate.update(sql);
+        return MixEnvelop.getSuccess("获取二维码成功！",imageUrl);
     }
 
     public Map<String,Object> checkAfterQrCode(String planDetailId,String patietCode)throws Exception{
