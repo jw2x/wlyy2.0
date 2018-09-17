@@ -39,7 +39,7 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
     private Integer status;//状态
 
     @Column(name = "expense")
-    private Integer expense;//价格
+    private Double expense;//价格
 
     @Transient
     private String title;//服务项目名称
@@ -111,11 +111,11 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
     }
 
     @Column(name = "expense")
-    public Integer getExpense() {
+    public Double getExpense() {
         return expense;
     }
 
-    public void setExpense(Integer expense) {
+    public void setExpense(Double expense) {
         this.expense = expense;
     }
 
