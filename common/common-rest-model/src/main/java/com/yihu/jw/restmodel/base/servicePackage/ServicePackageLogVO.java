@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.base.servicePackage;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -105,6 +106,7 @@ public class ServicePackageLogVO implements Serializable {
         this.id = id;
     }
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     public Date getCreateTime() {
         return createTime;
     }
