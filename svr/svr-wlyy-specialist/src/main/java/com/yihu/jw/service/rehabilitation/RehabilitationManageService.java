@@ -11,7 +11,6 @@ import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationDetailDO;
 import com.yihu.jw.entity.specialist.rehabilitation.RehabilitationOperateRecordsDO;
 import com.yihu.jw.restmodel.web.Envelop;
-import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
@@ -20,11 +19,8 @@ import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -132,10 +128,12 @@ public class RehabilitationManageService {
                 resultMap.put("id",one.get("id"));
                 resultMap.put("status",one.get("status"));//康复计划状态
                 //健康情况
-                String healthyConditionSql =" select  label_name from "+basedb+".wlyy_sign_patient_label_info where status=1 and patient='"+one.get("patient")+"' and label_type=8";
+                String healthyConditionSql =" select  label_name,label from "+basedb+".wlyy_sign_patient_label_info where status=1 and patient='"+one.get("patient")+"' and label_type=8";
                 List<Map<String,Object>> healthyConditionList = jdbcTemplate.queryForList(healthyConditionSql);
                 String healthyCondition = healthyConditionList.size()>0?healthyConditionList.get(0).get("label_name")+"":"";
+                String healthyConditionType = healthyConditionList.size()>0?healthyConditionList.get(0).get("label")+"":"";
                 resultMap.put("healthyCondition",healthyCondition);
+                resultMap.put("healthyConditionType",healthyConditionType);
                 //安排类型
                 String planTypeName = null;
                 Integer planTypeTemp = (Integer)one.get("plan_type");
@@ -190,6 +188,12 @@ public class RehabilitationManageService {
             Map<String,Object> resultMap = new HashMap<>();
             Integer isOperator = 0;
             resultMap.put("patientCode",patientCode);//居民code
+            String healthyConditionSql =" select  label_name,label from "+basedb+".wlyy_sign_patient_label_info where status=1 and patient='"+patientCode+"' and label_type=8";
+            List<Map<String,Object>> healthyConditionList = jdbcTemplate.queryForList(healthyConditionSql);
+            String healthyCondition = healthyConditionList.size()>0?healthyConditionList.get(0).get("label_name")+"":"";
+            String healthyConditionType = healthyConditionList.size()>0?healthyConditionList.get(0).get("label")+"":"";
+            resultMap.put("healthyCondition",healthyCondition);
+            resultMap.put("healthyConditionType",healthyConditionType);
             //专科医生
             String specialistRelationSql = "select r.*,t.name as teamName,h.name as specialistHospitalName from wlyy_specialist.wlyy_specialist_patient_relation r left join "+basedb+".wlyy_admin_team t on r.team_code=t.id left join "+basedb+".dm_hospital h on t.org_code=h.code where r.sign_status ='1' and r.status in('0','1') and r.patient='"+patientCode+"' and r.doctor='"+doctorCode+"'";
             List<Map<String,Object>> specialistRelationList = jdbcTemplate.queryForList(specialistRelationSql);
@@ -711,6 +715,8 @@ public class RehabilitationManageService {
                 case 2:planTypeName="（转）社区医院" ;break;
                 case 3:planTypeName="（转）转家庭病床" ;break;
             }
+            map.put("createUser",one.getCreateUser());
+            map.put("createUserName",one.getCreateUserName());
             map.put("planId",one.getId());
             map.put("planTypeName",planTypeName);
             String statusName = "";
@@ -808,8 +814,10 @@ public class RehabilitationManageService {
         Map<String,Object> resultMap = new HashMap<>();
         //近期康复相关记录
 //        String currentTime = DateUtil.getStringDate();
-        String planDetailSql = " select d.*,i.content,i.title from wlyy_specialist.wlyy_rehabilitation_plan_detail d LEFT JOIN wlyy_hospital_service_item h on d.hospital_service_item_id=h.id" +
-                " LEFT JOIN wlyy_service_item i on i.id=h.service_item_id LEFT JOIN wlyy_specialist.wlyy_patient_rehabilitation_plan p on d.plan_id=p.id where d.status=1 and p.patient='"+patientCode+"' ";
+        String planDetailSql = " select d.*,i.content,i.title,s.complete_time from wlyy_specialist.wlyy_rehabilitation_plan_detail d LEFT JOIN wlyy_hospital_service_item h on d.hospital_service_item_id=h.id" +
+                " LEFT JOIN wlyy_service_item i on i.id=h.service_item_id LEFT JOIN wlyy_specialist.wlyy_patient_rehabilitation_plan p on d.plan_id=p.id" +
+                " left join wlyy_rehabilitation_operate_records s on s.rehabilitation_detail_id=d.id " +
+                " where d.status=1 and p.patient='"+patientCode+"' ";
         if(StringUtils.isNotEmpty(startTime)){
             planDetailSql += "  and d.execute_Time>='"+startTime+"' ";
         }
@@ -821,11 +829,11 @@ public class RehabilitationManageService {
 //        if(planDetailsCount!=null&&planDetailsCount.size()>0){
 //            count = planDetailsCount.size();
 //        }
-        planDetailSql += " ORDER BY d.execute_time DESC LIMIT "+(page-1)*pageSize+","+pageSize;
+        planDetailSql += " ORDER BY s.complete_time DESC LIMIT "+(page-1)*pageSize+","+pageSize;
         List<Map<String,Object>> planDetails = jdbcTemplate.queryForList(planDetailSql);
         List<Map<String,Object>> planDetailList = new ArrayList<>();
         for(Map<String,Object> one:planDetails){
-            Date executeTimeDate = (Date)one.get("execute_time");
+            Date executeTimeDate = (Date)one.get("complete_time");
             String executeTime = DateUtil.dateToStr(executeTimeDate,"yyyy/MM/dd HH:mm");
             String content = one.get("content")+"";
             String title = one.get("title")+"";
@@ -839,6 +847,9 @@ public class RehabilitationManageService {
             String id = one.get("id").toString();
             Map<String,Object> map = new HashMap<>();
             map.put("id",id);//id
+//            List<RehabilitationOperateRecordsDO> rehabilitationOperateRecords = rehabilitationOperateRecordsDao.findByRehabilitationDetailId(id);
+//            Date completeTime = rehabilitationOperateRecords!=null&&rehabilitationOperateRecords.size()>0?rehabilitationOperateRecords.get(0).getCompleteTime():null;
+//            String completeTimeStr =  completeTime!=null?DateUtil.dateToStr(completeTime,"yyyy/MM/dd HH:mm"):"";
             map.put("executeTime",executeTime);//执行时间
             map.put("title",title);//项目标题
             map.put("content",content);//项目内容
@@ -1163,5 +1174,25 @@ public class RehabilitationManageService {
             one.put("planDetailIds",StringUtils.isNotEmpty(ids)?ids.substring(1):"");
         }
         return ObjEnvelop.getSuccess(SpecialistMapping.api_success,list);
+    }
+
+    /**
+     * 根据ids获取数据
+     *
+     * @param ids
+     * @return
+     */
+    public ObjEnvelop selectByIds(String ids){
+        ObjEnvelop envelop = new ObjEnvelop();
+        List idList = Arrays.asList(ids.split(","));
+        StringBuffer buffer = new StringBuffer();
+        for (int i =0;i<idList.size();i++){
+            buffer.append("'"+idList.get(i)+"'").append(",");
+        }
+        buffer.deleteCharAt(buffer.length()-1);
+        String sql = "select * from wlyy_rehabilitation_plan_detail where id in("+buffer+")";
+        List<RehabilitationDetailDO> rehabilitationDetailDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(RehabilitationDetailDO.class));
+        envelop.setObj(rehabilitationDetailDOS);
+        return envelop;
     }
 }

@@ -372,4 +372,23 @@ public class RehabilitationManageController {
             return ObjEnvelop.getError(e.getMessage());
         }
     }
+
+
+    /**
+     * 查询康复服务项目
+     * @param ids
+     * @return
+     */
+    @PostMapping(value = SpecialistMapping.rehabilitation.selectByIds)
+    @ApiOperation(value = "查询康复服务项目")
+    public ObjEnvelop selectByIds( @ApiParam(name = "ids",value = "康复服务套餐明细表ids")
+            @RequestParam(value = "ids",required = true)String ids){
+        try {
+            return rehabilitationManageService.selectByIds(ids);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
+        }
+    }
 }

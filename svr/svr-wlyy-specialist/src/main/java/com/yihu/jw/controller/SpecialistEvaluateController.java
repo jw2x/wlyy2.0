@@ -104,4 +104,24 @@ public class SpecialistEvaluateController extends EnvelopRestEndpoint {
             return MixEnvelop.getError(e.getMessage());
         }
     }
+
+
+    /**
+     * 医生获取评分
+     *
+     * @param doctor
+     * @return
+     */
+    @PostMapping(value = SpecialistMapping.serviceItem.selectByDoctor)
+    @ApiOperation(value = "医生获取评分")
+    public MixEnvelop<JSONObject,JSONObject> selectByDoctor(@ApiParam(name = "doctor", value = "评价")
+                                                    @RequestParam(value = "doctor")String doctor){
+        try {
+            return specialistEvaluateService.selectByDoctor(doctor);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return MixEnvelop.getError(e.getMessage());
+        }
+    }
 }
