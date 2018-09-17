@@ -27,6 +27,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -502,7 +503,8 @@ public class RehabilitationManageService {
             resultMap.put("content",one.get("content"));//项目内容
             resultMap.put("hospitalName",one.get("hospital_name"));//地点
             resultMap.put("executeTime",one.get("execute_time"));//执行时间
-            resultMap.put("expense",one.get("expense"));//收费
+            DecimalFormat df = new DecimalFormat("0.00");
+            resultMap.put("expense",df.format(((Integer)one.get("expense")*1.00)/100.00));//收费
             resultMap.put("reserve",one.get("reserve"));//是否需要预约（1预约、0不预约）
             resultMap.put("planStatus",one.get("planStatus"));//计划的状态
             Integer status = Integer.valueOf(one.get("status").toString());//状态（0未完成，1已完成，2已预约）
@@ -596,7 +598,8 @@ public class RehabilitationManageService {
         resultMap.put("content",one.get("content"));//项目内容
         resultMap.put("hospitalName",one.get("hospital_name"));//地点
         resultMap.put("executeTime",one.get("execute_time"));//执行时间
-        resultMap.put("expense",one.get("expense"));//收费
+        DecimalFormat df = new DecimalFormat("0.00");
+        resultMap.put("expense",df.format(((Integer)one.get("expense")*1.00)/100.00));//收费
         resultMap.put("reserve",one.get("reserve"));//是否需要预约（1预约、0不预约）
         resultMap.put("planStatus",one.get("planStatus"));//计划的状态
         Integer status = Integer.valueOf(one.get("status").toString());//状态（0未完成，1已完成，2已预约）
