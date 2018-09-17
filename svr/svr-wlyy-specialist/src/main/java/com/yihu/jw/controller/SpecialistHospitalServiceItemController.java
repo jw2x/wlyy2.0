@@ -50,7 +50,7 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
             List<HospitalServiceItemDO> hospitalServiceItemDOS = new ArrayList<>();
             for (int i =0 ; i<array.size();i++){
                 JSONObject object = array.getJSONObject(i);
-                object.replace("expense", DataUtils.doubleTransferInteger(object.getDouble("expense"),"0.00"));
+                object.replace("expense", DataUtils.doubleToInt(object.getDouble("expense")));
                 HospitalServiceItemDO hospitalServiceItemDO = toEntity(object.toJSONString(),HospitalServiceItemDO.class);
                 hospitalServiceItemDOS.add(hospitalServiceItemDO);
             }
@@ -234,7 +234,7 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
             List<HospitalServiceItemDO> hospitalServiceItemDOList = new ArrayList<>();
             for (int i = 0;i<array.size();i++){
                 JSONObject object = array.getJSONObject(i);
-                object.replace("expense", DataUtils.doubleTransferInteger(object.getDouble("expense"),"0.00"));
+                object.replace("expense", DataUtils.doubleToInt(object.getDouble("expense")));
                 HospitalServiceItemDO hospitalServiceItemDO = toEntity(object.toJSONString(),HospitalServiceItemDO.class);
                 hospitalServiceItemDOList.add(hospitalServiceItemDO);
             }
