@@ -37,7 +37,7 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
     @Column(name = "status")
     private Integer status;//状态（0未完成，1已完成，2已预约）
     @Column(name = "expense")
-    private Double expense;
+    private Integer expense;
     @Column(name = "service_qr_code")
     private String serviceQrCode;//服务码
 
@@ -132,11 +132,11 @@ public class RehabilitationDetailDO extends UuidIdentityEntityWithOperator imple
     }
 
     @Column(name = "expense")
-    public Double getExpense() {
+    public Integer getExpense() {
         return expense;
     }
 
-    public void setExpense(Double expense) {
+    public void setExpense(Integer expense) {
         this.expense = expense;
     }
 
