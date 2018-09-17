@@ -42,6 +42,12 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
     private Integer expense;//价格
 
     @Transient
+    private String title;//服务项目名称
+
+    @Transient
+    private String content;//服务项目内容
+
+    @Transient
     private Integer flag;//标识（1：社区，2、医院，3、社区、医院）
 
     @Column(name = "imediate")
@@ -138,5 +144,23 @@ public class HospitalServiceItemDO extends UuidIdentityEntityWithOperator implem
 
     public void setImediate(Integer imediate) {
         this.imediate = imediate;
+    }
+
+    @Transient
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    @Transient
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

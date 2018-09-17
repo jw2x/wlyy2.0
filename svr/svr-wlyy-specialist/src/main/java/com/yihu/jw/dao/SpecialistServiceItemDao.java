@@ -6,6 +6,7 @@ import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import sun.plugin.javascript.navig.LinkArray;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ public interface SpecialistServiceItemDao extends PagingAndSortingRepository<Spe
 
     @Query("select p from SpecialistServiceItemDO p where p.title =?1")
     public List<SpecialistServiceItemDO> findByTitle(String title);
+
+    @Query("select p from SpecialistServiceItemDO p where p.title =?1 and p.content=?2")
+    public List<SpecialistServiceItemDO> findByTitleAndContent(String title,String content);
 
 
 }
