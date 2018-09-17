@@ -25,8 +25,8 @@ spring:
 
 ---
 spring:
-  profiles: jwprod
+  profiles: prod
   cloud:
     config:
-      uri: ${wlyy.pring.config.uri:http://172.17.110.212:1221}
-      label: ${wlyy.spring.config.label:jwprod}
+      uri: ${wlyy.pring.config.uri:http://192.168.120.153:1221}
+      label: ${wlyy.spring.config.label:prod}
