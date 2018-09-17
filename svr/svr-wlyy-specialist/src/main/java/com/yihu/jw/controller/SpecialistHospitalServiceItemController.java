@@ -211,7 +211,7 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
                                               @ApiParam(name = "serviceItemName", value = "服务项目名称")
                                               @RequestParam(name = "serviceItemName",required = false)String serviceItemName){
         try {
-            return specialistHospitalServiceItemService.selectByHospital1(hospital,docHospital,serviceItemName);
+            return  specialistHospitalServiceItemService.selectByHospital1(hospital,docHospital,serviceItemName);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
