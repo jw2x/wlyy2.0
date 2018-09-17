@@ -201,35 +201,42 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                 SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS1.get(j).getSpecialistServiceItemDO();
                 if (itemType.get(i).equals(specialistServiceItemDO.getItemType())){
             type.add(specialistServiceItemDO.getDiseaseItem());
+                }
             }
-        }
         JSONArray itemArray = new JSONArray();
         List<String> serviceItems = new ArrayList<>();
         if (type != null && type.size() != 0){
-            for (int z =0 ;z<type.size();z++){
-                List<HospitalServiceItemDO> hospitalServiceItemDOS2 = new ArrayList<>();
-                JSONObject object1 =new JSONObject();
-                for (int j = 0;j<hospitalServiceItemDOS1.size();j++){
-                    SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS1.get(j).getSpecialistServiceItemDO();
-                        if (type.get(z).equals(specialistServiceItemDO.getDiseaseItem())) {
-                            hospitalServiceItemDOS2.add(hospitalServiceItemDOS1.get(j));
+                for (int z =0 ;z<type.size();z++){
+                    List<HospitalServiceItemDO> hospitalServiceItemDOS2 = new ArrayList<>();
+                    JSONObject object1 =new JSONObject();
+                    for (int j = 0;j<hospitalServiceItemDOS1.size();j++){
+                        SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS1.get(j).getSpecialistServiceItemDO();
+                        if (itemType.get(i).equals(specialistServiceItemDO.getItemType())){
+                            System.out.println(itemType.get(i));
+                            System.out.println(specialistServiceItemDO.getDiseaseItem());
+                            if (type.get(z).equals(specialistServiceItemDO.getDiseaseItem())) {
+                                hospitalServiceItemDOS2.add(hospitalServiceItemDOS1.get(j));
+                            }
                         }
-                }
-                if (serviceItems!=null && serviceItems.size()!=0){
-                    if (!serviceItems.contains(type.get(z))){
+                    }
+                    if (serviceItems!=null && serviceItems.size()!=0){
+                        if (!serviceItems.contains(type.get(z))){
+                            serviceItems.add(type.get(z));
+                            object1.put("itemName",type.get(z));
+                            object1.put("hospitalServiceItems",hospitalServiceItemDOS2);
+                            itemArray.add(object1);
+                        }else {
+                            object1.put("itemName",type.get(z));
+                            object1.put("hospitalServiceItems",hospitalServiceItemDOS2);
+                            itemArray.add(object1);
+                        }
+                    }else {
                         serviceItems.add(type.get(z));
                         object1.put("itemName",type.get(z));
                         object1.put("hospitalServiceItems",hospitalServiceItemDOS2);
                         itemArray.add(object1);
                     }
-                }else {
-                    serviceItems.add(type.get(z));
-                    object1.put("itemName",type.get(z));
-                    object1.put("hospitalServiceItems",hospitalServiceItemDOS2);
-                    itemArray.add(object1);
                 }
-            }
-
         }
         if (itemArray !=null && itemArray.size()!=0){
             JSONArray jsonArray = new JSONArray();
