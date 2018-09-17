@@ -212,8 +212,6 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                     for (int j = 0;j<hospitalServiceItemDOS1.size();j++){
                         SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS1.get(j).getSpecialistServiceItemDO();
                         if (itemType.get(i).equals(specialistServiceItemDO.getItemType())){
-                            System.out.println(itemType.get(i));
-                            System.out.println(specialistServiceItemDO.getDiseaseItem());
                             if (type.get(z).equals(specialistServiceItemDO.getDiseaseItem())) {
                                 hospitalServiceItemDOS2.add(hospitalServiceItemDOS1.get(j));
                             }
