@@ -171,7 +171,7 @@ neiwang:
   wlyy: http://59.61.92.90:9099/iot/
 
 base:
-  url: http://192.168.120.167:10020/
+  url: http://192.168.120.167:10020/svr-base/
 
 wechat:
   appId: wxad04e9c4c5255acf
