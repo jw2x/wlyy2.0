@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +49,8 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
         MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> envelop = new MixEnvelop<>();
         if (hospitalServiceItemDOS !=null && hospitalServiceItemDOS.size()!=0){
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOS){
+                hospitalServiceItemDO.setCreateTime(new Date());
+                hospitalServiceItemDO.setUpdateTime(new Date());
                 specialistHospitalServiceItemDao.save(hospitalServiceItemDO);
             }
         }
@@ -356,13 +359,22 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
         MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
         if (hospitalServiceItemDOS != null && hospitalServiceItemDOS.size()!=0){
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOS){
-                List<HospitalServiceItemDO> hospitalServiceItemDOList = specialistHospitalServiceItemDao.findByHospitalAndServiceItemId(hospitalServiceItemDO.getHospital(),hospitalServiceItemDO.getServiceItemId());
-                if (hospitalServiceItemDOList == null && hospitalServiceItemDOList.size() ==0){
-                    continue;
-                }else {
-                    hospitalServiceItemDO.setStatus(1);
-                    hospitalServiceItemDO.setId(UUID.randomUUID().toString());
-                    specialistHospitalServiceItemDao.save(hospitalServiceItemDO);
+                List<SpecialistServiceItemDO> specialistServiceItemDOS = specialistServiceItemDao.findByTitleAndContent(hospitalServiceItemDO.getTitle(),hospitalServiceItemDO.getContent());
+                if (specialistServiceItemDOS != null && specialistServiceItemDOS.size()!=0){
+                    List<HospitalServiceItemDO> hospitalServiceItemDOList = specialistHospitalServiceItemDao.findByHospitalAndServiceItemId(hospitalServiceItemDO.getHospital(),specialistServiceItemDOS.get(0).getId());
+                    if (hospitalServiceItemDOList == null && hospitalServiceItemDOList.size() ==0){
+                        continue;
+                    }else {
+                        hospitalServiceItemDO.setStatus(1);
+                        hospitalServiceItemDO.setImediate(0);
+                        hospitalServiceItemDO.setSaasId("dev");
+                        hospitalServiceItemDO.setId(UUID.randomUUID().toString());
+                        hospitalServiceItemDO.setServiceItemId(specialistServiceItemDOS.get(0).getId());
+                        hospitalServiceItemDO.setServiceItemName(specialistServiceItemDOS.get(0).getDiseaseItem());
+                        hospitalServiceItemDO.setCreateTime(new Date());
+                        hospitalServiceItemDO.setUpdateTime(new Date());
+                        specialistHospitalServiceItemDao.save(hospitalServiceItemDO);
+                    }
                 }
             }
         }

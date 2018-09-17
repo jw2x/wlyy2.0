@@ -155,7 +155,7 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      *
      * @return
      */
-    @RequestMapping(value = "importData")
+    @RequestMapping(value = "importData1")
     @ResponseBody
     public MixEnvelop<Boolean,Boolean> importData(@ApiParam(name = "serviceItems", value = "服务项目集合")
                                                       @RequestParam(value = "serviceItems")String serviceItems) {
