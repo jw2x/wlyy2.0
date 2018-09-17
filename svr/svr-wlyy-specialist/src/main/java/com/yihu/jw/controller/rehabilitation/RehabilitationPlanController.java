@@ -17,6 +17,7 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.rehabilitation.RehabilitationPlanService;
+import com.yihu.jw.util.DataUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -139,6 +140,7 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
                                                                        @RequestParam(value = "rehabilitationPlan", required = true)String rehabilitationPlan){
         try {
             JSONObject json = new JSONObject(rehabilitationPlan);
+            json.put("totalExpense", DataUtils.doubleToInt(json.getDouble("totalExpense")));
             JSONArray array = new JSONArray();
             for(Object planDetail : json.getJSONArray("detail")) {
                 JSONObject j = (JSONObject)planDetail;
@@ -164,7 +166,7 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             ObjectMapper object = new ObjectMapper();
             object.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm"));
             List<RehabilitationDetailDO> details = object.readValue(planDetails, new TypeReference<List<RehabilitationDetailDO>>(){});
-            PatientRehabilitationPlanDO planDO = toEntity(rehabilitationPlan, PatientRehabilitationPlanDO.class);
+            PatientRehabilitationPlanDO planDO = toEntity(json.toString(), PatientRehabilitationPlanDO.class);
             planDO = rehabilitationPlanService.createPatientRehabilitationPlan(planDO);
             details = rehabilitationPlanService.createRehabilitationDetail(details, planDO.getId());
             //调用服务包接口
