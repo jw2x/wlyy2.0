@@ -30,3 +30,11 @@ spring:
     config:
       uri: ${wlyy.spring.config.uri:http://192.168.120.153:1221}
       label: ${wlyy.spring.config.label:prod}
+
+---
+spring:
+  profiles: local
+  cloud:
+    config:
+      uri: ${wlyy.spring.config.uri:http://192.168.120.153:1221}
+      label: ${wlyy.spring.config.label:local}
