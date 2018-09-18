@@ -1,5 +1,6 @@
 package com.yihu.jw.base.service.servicePackage;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.elasticsearch.ElasticSearchHelper;
 import com.yihu.elasticsearch.ElasticSearchUtil;
 import com.yihu.jw.base.dao.servicePackage.ServicePackageDao;
@@ -46,6 +47,8 @@ public class ServicePackageService extends BaseJpaService<ServicePackageDO, Serv
     private ElasticSearchUtil elasticSearchUtil;
     @Autowired
     private ElasticSearchHelper elastricSearchHelper;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Value("${es.index.servicePackLog}")
     private String servicePackLongIndex;
@@ -86,15 +89,17 @@ public class ServicePackageService extends BaseJpaService<ServicePackageDO, Serv
         logVO.setFlag(ServicePackageLogVO.Flag.success.getValue());
         logVO.setFinish(0);
         logVO.setId(getCode());
-        logVO.setMessage(signRecordDO.getSignDoctorName()+"新增了一条康复计划");
+        String message = "新增了一条康复计划";
+        if(StringUtils.isNotBlank(signRecordDO.getSignDoctorName())){
+            message = signRecordDO.getSignDoctorName()+message;
+        }
+        logVO.setMessage(message);
         logVO.setSaasId(servicePackageVO.getSaasId());
         logVO.setSevicePackageId(servicePackageDO.getId());
         logVO.setUserType(ServicePackageLogVO.UserType.doctor.getValue());
         logVO.setUserCode(signRecordDO.getSignDoctor());
         logVO.setUserName(signRecordDO.getSignDoctorName());
-        List<ServicePackageLogVO> logVOList = new ArrayList<>(1);
-        logVOList.add(logVO);
-        elastricSearchHelper.save(servicePackLongIndex,servicePackLongType,logVOList);
+        elastricSearchHelper.save(servicePackLongIndex,servicePackLongType, objectMapper.writeValueAsString(logVO));
 
         return servicePackageDO;
     }
