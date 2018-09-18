@@ -1,10 +1,10 @@
 ##如果有配置服务的话，远程服务器和本地服务器配置不一致的情况下，优先远程的为主  git上 svr-base ->  git application ->本地 appliction ->本地 bootstarp
 server:
-  port: 10051
+  port: 10081
 
 spring:
-  jmx:
-    default-domain: jkzl_specialist
+  application:
+    name:  svr-healthy-house
 
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
@@ -49,8 +49,7 @@ hibernate:
   show_sql: true
   ejb:
     naming_strategy: org.hibernate.cfg.ImprovedNamingStrategy
-  physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
-  implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+
 fast-dfs:
   tracker-server: 172.19.103.54:22122 #服务器地址
   connect-timeout: 2 #链接超时时间
@@ -65,117 +64,25 @@ fast-dfs:
     max-size: 20
     wait-time: 500
 
-basedb: #base数据基础数据数据源，用于跨库查询
-  name: wlyy
 ---
 spring:
-  profiles: jwdev
+  profiles: dev
 
   datasource:
-    url: jdbc:mysql://172.19.103.77:3306/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+    url: jdbc:mysql://172.19.103.77:3306/wlyy_archives?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root
     password: 123456
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
-fast-dfs:
-  tracker-server: 172.19.103.54:22122
-  public-server: http://172.19.103.54:80/
-
-neiwang:
-  enable: true
-  wlyy: http://172.19.103.54:22122/
-
-base:
-  url: http://172.17.110.212:10020/
-
-wechat:
-  appId: wxd03f859efdf0873d
-  appSecret: 2935b54b53a957d9516c920a544f2537
-  wechat_token: 27eb3bb24f149a7760cf1bb154b08040
-  wechat_base_url: http%3a%2f%2fweixin.xmtyw.cn%2fwlyy-dev
-  accId: gh_ffd64560fb21
-
 ---
 spring:
   profiles: jwtest
-
-  datasource:
-    url: jdbc:mysql://172.17.110.160/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
-    username: ssgg
-    password: ssgg
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
-fast-dfs:
-  tracker-server: 172.19.103.54:22122
-  public-server: http://172.19.103.54:80/
-
-neiwang:
-  enable: true
-  wlyy: http://172.19.103.54:22122/
-
-base:
-  url: http://172.17.110.212:10020/
-
-wechat:
-  appId: wx1f129f7b51701428
-  appSecret: 988f005d8309ed1795939e0f042431fb
-  wechat_token: 27eb3bb24f149a7760cf1bb154b08040
-  wechat_base_url: http%3a%2f%2fehr.yihu.com%2fwlyy
-  accId: gh_ffd64560fb21
 ---
 spring:
-  profiles: jwdevtest
-
-  datasource:
-    url: jdbc:mysql://172.19.103.85/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
-    username: linzhou
-    password: linzhou
+  profiles: jwprod
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
-
-fast-dfs:
-  tracker-server: 172.19.103.54:22122
-  public-server: http://172.19.103.54:80/
-
-neiwang:
-  enable: true
-  wlyy: http://172.19.103.54:22122/
-
-base:
-  url: http://172.17.110.212:10020/
-
-wechat:
-  appId: wx1f129f7b51701428
-  appSecret: 988f005d8309ed1795939e0f042431fb
-  wechat_token: 27eb3bb24f149a7760cf1bb154b08040
-  wechat_base_url: http%3a%2f%2fehr.yihu.com%2fwlyy
-  accId: gh_ffd64560fb21
----
-spring:
-  profiles: prod
-  datasource:
-    url: jdbc:mysql://59.61.92.90:9069/wlyy_specialist?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
-    username: wlyy
-    password: jkzlehr@123
-fastDFS:
-  fastdfs_file_url: http://172.19.103.54:80/
-
-fast-dfs:
-  tracker-server: 172.19.103.54:22122
-  public-server: http://172.19.103.54:80/
-
-neiwang:
-  enable: false
-  wlyy: http://59.61.92.90:9099/iot/
-
-base:
-  url: http://192.168.120.167:10020/svr-base/
-
-wechat:
-  appId: wxad04e9c4c5255acf
-  appSecret: ae77c48ccf1af5d07069f5153d1ac8d3
-  wechat_token: 27eb3bb24f149a7760cf1bb154b08040
-  wechat_base_url: http%3a%2f%2fwww.xmtyw.cn%2fwlyy
-  accId: gh_ffd64560fb21

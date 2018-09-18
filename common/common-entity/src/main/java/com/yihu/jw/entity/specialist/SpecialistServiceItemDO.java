@@ -53,13 +53,13 @@ public class SpecialistServiceItemDO extends UuidIdentityEntityWithOperator impl
     private Integer hospitalGrade; //医院等级
 
     @Column(name = "three_hospitals")
-    private Double threeHospitals; //三级医院收费标准
+    private Integer threeHospitals; //三级医院收费标准
 
     @Column(name = "two_hospitals")
-    private Double twoHospitals; //二级医院收费标准
+    private Integer twoHospitals; //二级医院收费标准
 
     @Column(name = "one_hospitals")
-    private Double oneHospitals;//一级医院以及一级以下的社区医院
+    private Integer oneHospitals;//一级医院以及一级以下的社区医院
 
     @Column(name = "unit")
     private String unit; //计价单位
@@ -177,29 +177,29 @@ public class SpecialistServiceItemDO extends UuidIdentityEntityWithOperator impl
     }
 
     @Column(name = "three_hospitals")
-    public Double getThreeHospitals() {
+    public Integer getThreeHospitals() {
         return threeHospitals;
     }
 
-    public void setThreeHospitals(Double threeHospitals) {
+    public void setThreeHospitals(Integer threeHospitals) {
         this.threeHospitals = threeHospitals;
     }
 
     @Column(name = "two_hospitals")
-    public Double getTwoHospitals() {
+    public Integer getTwoHospitals() {
         return twoHospitals;
     }
 
-    public void setTwoHospitals(Double twoHospitals) {
+    public void setTwoHospitals(Integer twoHospitals) {
         this.twoHospitals = twoHospitals;
     }
 
     @Column(name = "one_hospitals")
-    public Double getOneHospitals() {
+    public Integer getOneHospitals() {
         return oneHospitals;
     }
 
-    public void setOneHospitals(Double oneHospitals) {
+    public void setOneHospitals(Integer oneHospitals) {
         this.oneHospitals = oneHospitals;
     }
 

@@ -6,7 +6,6 @@ import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import sun.plugin.javascript.navig.LinkArray;
 
 import java.util.List;
 

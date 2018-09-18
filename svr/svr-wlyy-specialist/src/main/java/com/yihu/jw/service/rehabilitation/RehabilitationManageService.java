@@ -21,11 +21,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -200,23 +202,48 @@ public class RehabilitationManageService {
             Map<String,Object> specialistMap = specialistRelationList.get(0);
             resultMap.put("specialistAdminTeamName",specialistMap.get("teamName"));
             resultMap.put("specialistHospitalName",specialistMap.get("specialistHospitalName"));//专科医生所在医院
-            Integer specialistUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(doctorCode,patientCode,1);
-            Integer specialistFinishCount = rehabilitationDetailDao.findItemByDoctor(doctorCode,patientCode);
-            Integer specialistServiceCount = rehabilitationDetailDao.completeServiceByDoctor(doctorCode,patientCode,1);
-            resultMap.put("specialistFinishItemCount",specialistFinishCount-specialistUnfinishCount);//完成项目
-            resultMap.put("specialistServiceRecordCount",specialistServiceCount);//服务次数
+//            Integer specialistUnfinishCount = null;
+//            Integer specialistFinishCount = null;
+//            Integer specialistServiceCount = null;
+//            if(specialistMap.get("health_assistant")==null){
+//
+//                specialistUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(doctorCode,patientCode,1);
+//                specialistFinishCount = rehabilitationDetailDao.findItemByDoctor(doctorCode,patientCode);
+//                specialistServiceCount = rehabilitationDetailDao.completeServiceByDoctor(doctorCode,patientCode,1);
+//            }else{
+//                specialistUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(doctorCode,specialistMap.get("health_assistant")+"",patientCode,1);
+//                specialistFinishCount = rehabilitationDetailDao.findItemByDoctor(doctorCode,specialistMap.get("health_assistant")+"",patientCode);
+//                specialistServiceCount = rehabilitationDetailDao.completeServiceByDoctor(doctorCode,specialistMap.get("health_assistant")+"",patientCode,1);
+//            }
+//            resultMap.put("specialistFinishItemCount",specialistFinishCount-specialistUnfinishCount);//完成项目
+//            resultMap.put("specialistServiceRecordCount",specialistServiceCount);//服务次数
 
+            Integer specialistUnfinishCount1 = rehabilitationDetailDao.unfinishItemByDoctor(doctorCode,patientCode,1);
+            Integer specialistFinishCount1 = rehabilitationDetailDao.findItemByDoctor(doctorCode,patientCode);
+            Integer specialistServiceCount1 = rehabilitationDetailDao.completeServiceByDoctor(doctorCode,patientCode,1);
+
+            Integer specialistUnfinishCount2 = rehabilitationDetailDao.unfinishItemByDoctor(specialistMap.get("health_assistant")+"",patientCode,1);
+            Integer specialistFinishCount2 = rehabilitationDetailDao.findItemByDoctor(specialistMap.get("health_assistant")+"",patientCode);
+            Integer specialistServiceCount2 = rehabilitationDetailDao.completeServiceByDoctor(specialistMap.get("health_assistant")+"",patientCode,1);
+
+            resultMap.put("specialistFinishItemCount",specialistFinishCount1-specialistUnfinishCount1+specialistFinishCount2-specialistUnfinishCount2);//完成项目
+            resultMap.put("specialistServiceRecordCount",specialistServiceCount1+specialistServiceCount2);//服务次数
             //家庭医生（包括全科医生、健管师）
             String signFamilySql = "SELECT f.*,t.name as teamName FROM "+basedb+".wlyy_sign_family f LEFT JOIN "+basedb+".wlyy_admin_team t on f.admin_team_code=t.id where f.status =1 and f.expenses_status='1' and f.patient='"+patientCode+"'";
             List<Map<String,Object>> signFamilyList = jdbcTemplate.queryForList(signFamilySql);
             Map<String,Object> signFamilyMap = signFamilyList.get(0);
             resultMap.put("signFamilyAdminTeamName",signFamilyMap.get("teamName"));
             resultMap.put("familyHospitalName",signFamilyMap.get("hospital_name"));//家庭医生所在医院
-            Integer familyUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(signFamilyMap.get("doctor")+"",signFamilyMap.get("doctor_health")+"",patientCode,1);
-            Integer familyFinishCount = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor")+"",signFamilyMap.get("doctor_health")+"",patientCode);
-            Integer familyServiceCount = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor")+"",signFamilyMap.get("doctor_health")+"",patientCode,1);
-            resultMap.put("signFamilyFinishItemCount",familyFinishCount-familyUnfinishCount);//完成项目
-            resultMap.put("signFamilyServiceRecordCount",familyServiceCount);//服务次数
+            Integer familyUnfinishCount1 = rehabilitationDetailDao.unfinishItemByDoctor(signFamilyMap.get("doctor")+"",patientCode,1);
+            Integer familyFinishCount1 = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor")+"",patientCode);
+            Integer familyServiceCount1 = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor")+"",patientCode,1);
+
+            Integer familyUnfinishCount2 = rehabilitationDetailDao.unfinishItemByDoctor(signFamilyMap.get("doctor_health")+"",patientCode,1);
+            Integer familyFinishCount2 = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor_health")+"",patientCode);
+            Integer familyServiceCount2 = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor_health")+"",patientCode,1);
+
+            resultMap.put("signFamilyFinishItemCount",familyFinishCount1-familyUnfinishCount1+familyFinishCount2-familyUnfinishCount2);//完成项目
+            resultMap.put("signFamilyServiceRecordCount",familyServiceCount1+familyServiceCount2);//服务次数
 
             //基础信息
             resultMap.put("hospitalName",signFamilyMap.get("hospital_name"));
@@ -476,7 +503,8 @@ public class RehabilitationManageService {
             resultMap.put("content",one.get("content"));//项目内容
             resultMap.put("hospitalName",one.get("hospital_name"));//地点
             resultMap.put("executeTime",one.get("execute_time"));//执行时间
-            resultMap.put("expense",one.get("expense"));//收费
+            DecimalFormat df = new DecimalFormat("0.00");
+            resultMap.put("expense",df.format(((Integer)one.get("expense")*1.00)/100.00));//收费
             resultMap.put("reserve",one.get("reserve"));//是否需要预约（1预约、0不预约）
             resultMap.put("planStatus",one.get("planStatus"));//计划的状态
             Integer status = Integer.valueOf(one.get("status").toString());//状态（0未完成，1已完成，2已预约）
@@ -570,7 +598,8 @@ public class RehabilitationManageService {
         resultMap.put("content",one.get("content"));//项目内容
         resultMap.put("hospitalName",one.get("hospital_name"));//地点
         resultMap.put("executeTime",one.get("execute_time"));//执行时间
-        resultMap.put("expense",one.get("expense"));//收费
+        DecimalFormat df = new DecimalFormat("0.00");
+        resultMap.put("expense",df.format(((Integer)one.get("expense")*1.00)/100.00));//收费
         resultMap.put("reserve",one.get("reserve"));//是否需要预约（1预约、0不预约）
         resultMap.put("planStatus",one.get("planStatus"));//计划的状态
         Integer status = Integer.valueOf(one.get("status").toString());//状态（0未完成，1已完成，2已预约）
