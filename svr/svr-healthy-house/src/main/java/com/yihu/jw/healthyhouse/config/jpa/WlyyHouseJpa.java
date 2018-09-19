@@ -37,7 +37,7 @@ public class WlyyHouseJpa {
 
         LocalContainerEntityManagerFactoryBean emfb = new LocalContainerEntityManagerFactoryBean();
         emfb.setDataSource(dataSource);
-        emfb.setPackagesToScan("com.yihu.jw.healthyhouse.entity");
+        emfb.setPackagesToScan("com.yihu.jw.healthyhouse.model");
         emfb.setPersistenceUnitName("archives");
         JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         emfb.setJpaVendorAdapter(vendorAdapter);

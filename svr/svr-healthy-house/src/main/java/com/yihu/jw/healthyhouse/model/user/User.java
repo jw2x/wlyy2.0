@@ -190,4 +190,6 @@ public class User extends IdEntity implements Serializable{
     public void setSalt(String salt) {
         this.salt = salt;
     }
+
+    
 }
