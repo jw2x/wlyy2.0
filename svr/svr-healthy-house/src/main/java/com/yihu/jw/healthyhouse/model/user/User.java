@@ -5,7 +5,6 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -18,8 +17,6 @@ import java.util.Date;
 @Table(name = "user")
 public class User extends UuidIdentityEntityWithOperator {
 
-    @Id
-    private String id;
     @Column(name = "login_code", nullable = false)
     private String loginCode;
     @Column(name = "name", nullable = false)
@@ -49,12 +46,7 @@ public class User extends UuidIdentityEntityWithOperator {
 
     @Column(name = "salt")
     private String salt; //加密种子
-    @Column(name = "creator")
-    private String creator;
-    @Column(name = "modifier")
-    private String modifier;
-    @Column(name = "modifier_name")
-    private String modifierName;
+
 
     public String getLoginCode() {
         return loginCode;
@@ -158,30 +150,6 @@ public class User extends UuidIdentityEntityWithOperator {
 
     public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
-    }
-
-    public String getCreator() {
-        return creator;
-    }
-
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
-    public String getModifierName() {
-        return modifierName;
-    }
-
-    public void setModifierName(String modifierName) {
-        this.modifierName = modifierName;
     }
 
     public String getSalt() {

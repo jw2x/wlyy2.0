@@ -48,7 +48,6 @@ public class LoginService {
             user.setLoginCode(loginCode);
             user.setName(loginCode);
             user.setTelephone(loginCode);
-            user.setCreator(loginCode);
             user.setPassword(LoginInfo.DEFAULT_PASSWORD);
             userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_PHONE);//设置默认密码123456
         }else {

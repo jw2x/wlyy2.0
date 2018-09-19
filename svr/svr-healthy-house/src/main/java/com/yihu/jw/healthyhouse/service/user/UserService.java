@@ -85,8 +85,8 @@ public class UserService {
         for(String code:codes.split(",")){
             User user1 = findByCode(code);
             user1.setActivated(status);
-            user1.setModifierName(userName);
-            user1.setModifier(userCode);
+            user1.setUpdateUserName(userName);
+            user1.setUpdateUser(userCode);
             userDao.save(user1);
         }
     }
@@ -94,7 +94,6 @@ public class UserService {
     /**
      *  新增/修改用户
      * @param user      用户信息
-     * @param oldPsd    密码
      * @param userCode  操作者编码
      * @return
      * @throws ManageException
@@ -112,10 +111,8 @@ public class UserService {
             user.setSalt(salt);
             String password = MD5.GetMD5Code(user.getPassword() + salt);
             user.setPassword(password);
-            String code = UUID.randomUUID().toString().replaceAll("-", "");
-            user.setId(code);
-            user.setCreator(userCode);
-            user.setCreateDate(new Date());
+            user.setCreateUser(userCode);
+            user.setCreateTime(new Date());
             user.setActivated(1);
             userDao.save(user);
             return Envelop.getSuccess("保存成功");
@@ -125,8 +122,8 @@ public class UserService {
 //            if(!user1.getPassword().equals(psd)){//判断密码是否相同
 //                throw new ManageException("原密码错误");
 //            }
-            user.setModifier(userCode);
-            user.setModifierName(userName);
+            user.setUpdateUser(userCode);
+            user.setUpdateUserName(userName);
             userDao.save(user);
             return Envelop.getSuccess("修改成功");
         }
