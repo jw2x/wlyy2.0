@@ -52,7 +52,7 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建字典项")
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.SystemDictEntry.CREATE)
     public ObjEnvelop<SystemDictEntry> createDictEntry (
-            @ApiParam(name = "entryJson", value = "字典JSON结构")
+            @ApiParam(name = "entryJson", value = "字典项JSON结构")
             @RequestParam(value = "entryJson") String entryJson) throws IOException{
         SystemDictEntry entry = toEntity(entryJson, SystemDictEntry.class);
         SystemDict systemDict = dictService.retrieve(entry.getDictId());
@@ -91,7 +91,7 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
     @ApiOperation(value = "修改字典项")
     @PutMapping(value =HealthyHouseMapping.HealthyHouse.SystemDictEntry.UPDATE)
     public ObjEnvelop<SystemDictEntry> updateDictEntry(
-            @ApiParam(name = "entryJson", value = "字典JSON结构")
+            @ApiParam(name = "entryJson", value = "字典项JSON结构")
             @RequestParam(value = "entryJson") String entryJson) throws IOException {
         SystemDictEntry entry = toEntity(entryJson, SystemDictEntry.class);
         SystemDictEntry temp = systemDictEntryService.retrieve(new DictEntryKey(entry.getCode(), entry.getDictId()));
@@ -106,7 +106,7 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
     @GetMapping(value =HealthyHouseMapping.HealthyHouse.SystemDictEntry.ISEXISTSDICTENTRYBYDICTIDANDCODE)
     @ApiOperation(value = "根据dictId和code判断提交的字典项是否已经存在")
     public boolean isDictEntryCodeExists(
-            @ApiParam(name = "dictId", value = "字典", defaultValue = "")
+            @ApiParam(name = "dictId", value = "字典id", defaultValue = "")
             @RequestParam(value = "dictId",required = true) String dictId,
             @ApiParam(name = "code", value = "字典项编码", defaultValue = "")
             @RequestParam(value = "code") String code){
@@ -116,7 +116,7 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
     @GetMapping(value =HealthyHouseMapping.HealthyHouse.SystemDictEntry.GETDICTENTRYBYDICTIDANDNAME)
     @ApiOperation(value = "根据dictId和name判断提交的字典项是否已经存在")
     public boolean isDictEntryNameExists(
-            @ApiParam(name = "dictId", value = "字典", defaultValue = "")
+            @ApiParam(name = "dictId", value = "字典id", defaultValue = "")
             @RequestParam(value = "dictId",required = true) String dictId,
             @ApiParam(name = "name", value = "字典项名称")
             @RequestParam(value = "name") String name){

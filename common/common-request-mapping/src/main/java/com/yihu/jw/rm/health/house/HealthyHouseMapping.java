@@ -37,6 +37,16 @@ public class HealthyHouseMapping {
             public static final String DELETEBYDICTIDANDCODE = "/deleteByDictIdAndCode";
             public static final String ISEXISTSDICTENTRYBYDICTIDANDCODE = "/isExistsDictEntryByDictIdAndCode";
         }
+
+        public static class Facilities{
+            public static final String CREATE = "/create/facilities";
+            public static final String DELETE = "/delete/facilities";
+            public static final String UPDATE = "/update/facilities";
+            public static final String PAGE = "/page/facilities";
+            public static final String LIST = "/list/facilities";
+            public static final String GET_FACILITIES_BY_ID = "/getFacilitiesById";
+            public static final String GET_FACILITIES_BY_FIELD = "/getFacilitiesByField";
+        }
     }
 
 
