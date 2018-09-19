@@ -21,10 +21,6 @@ import java.util.List;
  */
 public interface SystemDictEntryDao extends JpaRepository<SystemDictEntry, DictEntryKey> {
 
-    List<SystemDictEntry> findByDictId(String dictId);
-
-    Page<SystemDictEntry> findByDictId(String dictId, Pageable pageable);
-
     @Query("select entry from SystemDictEntry entry where entry.dictId = :dictId and entry.value =:value")
     List<SystemDictEntry> findByDictIdAndValueLike(@Param("dictId")String dictId, @Param("value") String value);
 
@@ -40,19 +36,5 @@ public interface SystemDictEntryDao extends JpaRepository<SystemDictEntry, DictE
     @Query("select max(entry.sort) from SystemDictEntry entry where entry.dictId = :dictId")
     Integer getNextEntrySN(@Param("dictId") String dictId);
 
-    /**
-     * 批量获取字典项列表.
-     *
-     * @param dictId
-     * @param codes
-     * @return
-     */
-    @Query("select entry from SystemDictEntry entry where entry.dictId = :dictId and entry.code in (:codes) order by entry.sort asc")
-    List<SystemDictEntry> findByDictIdAndCodes(@Param("dictId") String dictId, @Param("codes") String[] codes);
-
-    @Query("select entry from SystemDictEntry entry where entry.dictId = :dictId and entry.value = :value")
-    List<SystemDictEntry> findByDictIdAndValue(@Param("dictId") String dictId, @Param("value") String value);
-
-    List<SystemDictEntry> findByDictIdAndCode(@Param("dictId") String dictId, @Param("code") String code);
 }
 
