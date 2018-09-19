@@ -1,6 +1,6 @@
 spring:
   application:
-    name: svr-authentication-lyx
+    name: svr-authentication
   cloud:
     config:
       failFast: true
