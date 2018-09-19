@@ -76,8 +76,8 @@ public class UserService {
         for(String code:codes.split(",")){
             User user1 = findByCode(code);
             user1.setActivated(-1);
-            user1.setModifierName(userName);
-            user1.setModifier(userCode);
+            user1.setUpdateUserName(userName);
+            user1.setUpdateUser(userCode);
             userDao.save(user1);
         }
     }
@@ -97,7 +97,7 @@ public class UserService {
             user.setPassword(password);
             String code = UUID.randomUUID().toString().replaceAll("-", "");
             user.setId(code);
-            user.setCreator(userCode);
+            user.setCreateUser(userCode);
             user.setActivated(1);
             userDao.save(user);
             return Envelop.getSuccess("保存成功");
@@ -107,8 +107,8 @@ public class UserService {
             if(!user1.getPassword().equals(psd)){//判断密码是否相同
                 throw new ManageException("原密码错误");
             }
-            user.setModifier(userCode);
-            user.setModifierName(userName);
+            user.setUpdateUser(userCode);
+            user.setUpdateUserName(userName);
             userDao.save(user);
             return Envelop.getSuccess("修改成功");
         }
