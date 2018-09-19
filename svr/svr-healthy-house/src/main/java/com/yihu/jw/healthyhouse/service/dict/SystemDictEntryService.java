@@ -96,14 +96,11 @@ public class SystemDictEntryService extends BaseJpaService<SystemDictEntry, Syst
      *
      * @param dictId
      * @param value
-     * @param page
-     * @param size
      * @return
      */
-    public Page<SystemDictEntry> findByDictIdAndValueLike(String dictId, String value, int page, int size) {
+    public List<SystemDictEntry> findByDictIdAndValueLike(String dictId, String value) {
         SystemDictEntryDao repo = (SystemDictEntryDao) getJpaRepository();
-
-        return repo.findByDictIdAndValueLike(dictId, value, new PageRequest(page, size));
+        return repo.findByDictIdAndValueLike(dictId, value);
     }
 
     /**

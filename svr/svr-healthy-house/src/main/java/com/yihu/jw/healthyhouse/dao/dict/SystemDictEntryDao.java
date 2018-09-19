@@ -25,7 +25,8 @@ public interface SystemDictEntryDao extends JpaRepository<SystemDictEntry, DictE
 
     Page<SystemDictEntry> findByDictId(String dictId, Pageable pageable);
 
-    Page<SystemDictEntry> findByDictIdAndValueLike(String dictId, String value, Pageable pageable);
+    @Query("select entry from SystemDictEntry entry where entry.dictId = :dictId and entry.value =:value")
+    List<SystemDictEntry> findByDictIdAndValueLike(@Param("dictId")String dictId, @Param("value") String value);
 
     @Modifying
     void deleteByDictId(String dictId);

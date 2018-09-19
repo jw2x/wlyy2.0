@@ -113,7 +113,7 @@ public class SystemDictEntry implements Serializable {
 
     @CreatedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    @Column(name = "create_time", nullable = false, length = 0,updatable = false)
+    @Column(name = "create_time", length = 0,updatable = false)
     public Date getCreateTime() {
         return createTime;
     }
@@ -144,7 +144,7 @@ public class SystemDictEntry implements Serializable {
 
     @LastModifiedDate
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-    @Column(name = "update_time", nullable = false, length = 0)
+    @Column(name = "update_time", length = 0)
     public Date getUpdateTime() {
         return updateTime;
     }

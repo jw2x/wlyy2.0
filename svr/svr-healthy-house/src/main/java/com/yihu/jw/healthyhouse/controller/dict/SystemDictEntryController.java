@@ -1,7 +1,6 @@
 package com.yihu.jw.healthyhouse.controller.dict;
 
 
-import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.healthyhouse.model.dict.DictEntryKey;
 import com.yihu.jw.healthyhouse.model.dict.SystemDict;
 import com.yihu.jw.healthyhouse.model.dict.SystemDictEntry;
@@ -12,19 +11,11 @@ import com.yihu.jw.rm.health.house.HealthyHouseMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author zdm
@@ -70,7 +61,8 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
         }
         int nextSort = systemDictEntryService.getNextSN(entry.getDictId());
         entry.setSort(nextSort);
-        systemDictEntryService.createDictEntry(entry);
+        entry.setCreateTime(new Date());
+        systemDictEntryService.save(entry);
         return success(entry);
     }
 
@@ -96,16 +88,6 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
         return success("success");
     }
 
-    @ApiOperation(value = "删除字典")
-    @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.SystemDictEntry.DELETE)
-    public Envelop deleteSystemDictEntry(
-            @ApiParam(name = "entryId", value = "字典项ID")
-            @RequestParam(value = "entryId") String entryId) throws Exception {
-        systemDictEntryService.delete(entryId);
-        return success("success");
-    }
-
-
     @ApiOperation(value = "修改字典项")
     @PutMapping(value =HealthyHouseMapping.HealthyHouse.SystemDictEntry.UPDATE)
     public ObjEnvelop<SystemDictEntry> updateDictEntry(
@@ -116,6 +98,7 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
         if (null == temp) {
             failed("字典项不存在!",ObjEnvelop.class);
         }
+        entry.setUpdateTime(new Date());
         systemDictEntryService.saveDictEntry(entry);
         return success(entry);
     }
@@ -131,14 +114,14 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
     }
 
     @GetMapping(value =HealthyHouseMapping.HealthyHouse.SystemDictEntry.GETDICTENTRYBYDICTIDANDNAME)
-    @ApiOperation(value = "根据dictId和code判断提交的字典项是否已经存在")
+    @ApiOperation(value = "根据dictId和name判断提交的字典项是否已经存在")
     public boolean isDictEntryNameExists(
             @ApiParam(name = "dictId", value = "字典", defaultValue = "")
             @RequestParam(value = "dictId",required = true) String dictId,
             @ApiParam(name = "name", value = "字典项名称")
             @RequestParam(value = "name") String name){
-        Page<SystemDictEntry> systemDictEntryPage= systemDictEntryService.findByDictIdAndValueLike(dictId, name,0,100);
-        if(null!=systemDictEntryPage&&systemDictEntryPage.getSize()>0){
+        List<SystemDictEntry> systemDictEntryPage= systemDictEntryService.findByDictIdAndValueLike(dictId, name);
+        if(null!=systemDictEntryPage&&systemDictEntryPage.size()>0){
             return  true;
         }
         return false;
