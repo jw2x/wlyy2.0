@@ -1,6 +1,7 @@
 package com.yihu.jw.healthyhouse.model.user;
 
-import com.yihu.jw.healthyhouse.model.IdEntity;
+
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,7 +16,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "user")
-public class User extends IdEntity implements Serializable{
+public class User extends UuidIdentityEntityWithOperator {
 
     @Id
     private String id;
