@@ -12,8 +12,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.IOException;
 import java.util.List;
+
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
@@ -53,8 +55,22 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     public ObjEnvelop<Facilities> createDictionary(
             @ApiParam(name = "facilities", value = "设施JSON结构")
             @RequestBody Facilities facilities) throws IOException {
+        List<Facilities> facilitiesList = null;
         if (StringUtils.isEmpty(facilities.getCode())) {
             return failed("设施编码不能为空！", ObjEnvelop.class);
+        } else {
+            facilitiesList = facilitiesService.findByField("code", facilities.getCode());
+            if (null != facilitiesList && facilitiesList.size() > 0) {
+                return failed("设施编码已存在！", ObjEnvelop.class);
+            }
+        }
+        if (StringUtils.isEmpty(facilities.getName())) {
+            return failed("设施名称不能为空！", ObjEnvelop.class);
+        } else {
+            facilitiesList = facilitiesService.findByField("name", facilities.getName());
+            if (null != facilitiesList && facilitiesList.size() > 0) {
+                return failed("设施名称已存在！", ObjEnvelop.class);
+            }
         }
         if (!(facilities.getLongitude() > 0)) {
             return failed("设施经度不能为空！", ObjEnvelop.class);
@@ -100,6 +116,9 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facilities.getCode())) {
             return failed("设施编码不能为空！", ObjEnvelop.class);
         }
+        if (StringUtils.isEmpty(facilities.getName())) {
+            return failed("设施名称不能为空！", ObjEnvelop.class);
+        }
         if (!(facilities.getLongitude() > 0)) {
             return failed("设施经度不能为空！", ObjEnvelop.class);
         }
@@ -118,7 +137,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     public Envelop deleteDictionary(
             @ApiParam(name = "facilitiesId", value = "设施ID")
             @RequestParam(value = "facilitiesId") String facilitiesId) throws Exception {
-        Facilities facilities=new Facilities();
+        Facilities facilities = new Facilities();
         facilities.setId(facilitiesId);
         facilitiesService.delete(facilities);
         return success("success");
