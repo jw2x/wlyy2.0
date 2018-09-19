@@ -191,5 +191,5 @@ public class User extends IdEntity implements Serializable{
         this.salt = salt;
     }
 
-    
+
 }
