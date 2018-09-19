@@ -1,14 +1,13 @@
-package com.yihu.jw.healthyhouse;
+package com.yihu;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.oauth2.OAuth2AutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication(exclude = OAuth2AutoConfiguration.class)
-@ComponentScan(basePackages = {"com"})
+@SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
+@EnableJpaAuditing
 public class HealthyHouseApplication {
 
 	public static void main(String[] args) {

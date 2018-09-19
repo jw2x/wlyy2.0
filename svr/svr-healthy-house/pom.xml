@@ -90,6 +90,10 @@
 			<groupId>com.yihu.jw</groupId>
 			<artifactId>common-entity</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.yihu.jw</groupId>
+			<artifactId>common-rest-model</artifactId>
+		</dependency>
 
 	</dependencies>
 
