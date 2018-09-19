@@ -76,6 +76,9 @@ public class Facilities extends UuidIdentityEntityWithOperator {
     // 备注
     @Column(name = "remarks")
     private String remarks;
+    //小屋形象照
+    @Column(name = "img_path")
+    private String imgPath;
 
     public String getCode() {
         return code;
@@ -235,5 +238,13 @@ public class Facilities extends UuidIdentityEntityWithOperator {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }

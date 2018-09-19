@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * 系统字典管理器.
+ * 设施管理器.
  *
  * @author zdm
  * @version 1.0
