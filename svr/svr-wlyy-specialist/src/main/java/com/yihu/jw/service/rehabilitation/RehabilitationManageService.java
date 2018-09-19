@@ -238,12 +238,17 @@ public class RehabilitationManageService {
             Integer familyFinishCount1 = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor")+"",patientCode);
             Integer familyServiceCount1 = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor")+"",patientCode,1);
 
-            Integer familyUnfinishCount2 = rehabilitationDetailDao.unfinishItemByDoctor(signFamilyMap.get("doctor_health")+"",patientCode,1);
-            Integer familyFinishCount2 = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor_health")+"",patientCode);
-            Integer familyServiceCount2 = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor_health")+"",patientCode,1);
+            if((signFamilyMap.get("doctor")+"").equals(signFamilyMap.get("doctor_health")+"")){
+                resultMap.put("signFamilyFinishItemCount",familyFinishCount1-familyUnfinishCount1);//完成项目
+                resultMap.put("signFamilyServiceRecordCount",familyServiceCount1);//服务次数
+            }else{
+                Integer familyUnfinishCount2 = rehabilitationDetailDao.unfinishItemByDoctor(signFamilyMap.get("doctor_health")+"",patientCode,1);
+                Integer familyFinishCount2 = rehabilitationDetailDao.findItemByDoctor(signFamilyMap.get("doctor_health")+"",patientCode);
+                Integer familyServiceCount2 = rehabilitationDetailDao.completeServiceByDoctor(signFamilyMap.get("doctor_health")+"",patientCode,1);
 
-            resultMap.put("signFamilyFinishItemCount",familyFinishCount1-familyUnfinishCount1+familyFinishCount2-familyUnfinishCount2);//完成项目
-            resultMap.put("signFamilyServiceRecordCount",familyServiceCount1+familyServiceCount2);//服务次数
+                resultMap.put("signFamilyFinishItemCount",familyFinishCount1-familyUnfinishCount1+familyFinishCount2-familyUnfinishCount2);//完成项目
+                resultMap.put("signFamilyServiceRecordCount",familyServiceCount1+familyServiceCount2);//服务次数
+            }
 
             //基础信息
             resultMap.put("hospitalName",signFamilyMap.get("hospital_name"));
@@ -678,6 +683,23 @@ public class RehabilitationManageService {
         //服务医生
         //完成项目=全部的服务项目-未完成的服务项目
         List<Map<String,Object>> serviceDoctorList = new ArrayList<>();
+        //全科医生和健管师要是同一个人，就显示全科医生
+        if(!generalDoctor.equals(healthDoctor)){
+
+            if(StringUtils.isNotEmpty(healthDoctor)){
+
+                Map<String,Object> healthDoctorMap =  new HashMap<>();
+                healthDoctorMap.put("type","健管师");
+                healthDoctorMap.put("doctorName",healthDoctorName);
+                healthDoctorMap.put("doctorCode",healthDoctor);
+                Integer healthUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(healthDoctor,patientCode,1);
+                Integer healthFinishCount = rehabilitationDetailDao.findItemByDoctor(healthDoctor,patientCode);
+                Integer healthServiceCount = rehabilitationDetailDao.completeServiceByDoctor(healthDoctor,patientCode,1);
+                healthDoctorMap.put("finishedItem",healthFinishCount-healthUnfinishCount);
+                healthDoctorMap.put("serviceCount",healthServiceCount);
+                serviceDoctorList.add(healthDoctorMap);
+            }
+        }
         if(StringUtils.isNotEmpty(generalDoctor)){
 
             Map<String,Object> generalDoctorMap =  new HashMap<>();
@@ -690,19 +712,6 @@ public class RehabilitationManageService {
             generalDoctorMap.put("finishedItem",generalFinishCount-generalUnfinishCount);
             generalDoctorMap.put("serviceCount",generalServiceCount);
             serviceDoctorList.add(generalDoctorMap);
-        }
-        if(StringUtils.isNotEmpty(healthDoctor)){
-
-            Map<String,Object> healthDoctorMap =  new HashMap<>();
-            healthDoctorMap.put("type","健管师");
-            healthDoctorMap.put("doctorName",healthDoctorName);
-            healthDoctorMap.put("doctorCode",healthDoctor);
-            Integer healthUnfinishCount = rehabilitationDetailDao.unfinishItemByDoctor(healthDoctor,patientCode,1);
-            Integer healthFinishCount = rehabilitationDetailDao.findItemByDoctor(healthDoctor,patientCode);
-            Integer healthServiceCount = rehabilitationDetailDao.completeServiceByDoctor(healthDoctor,patientCode,1);
-            healthDoctorMap.put("finishedItem",healthFinishCount-healthUnfinishCount);
-            healthDoctorMap.put("serviceCount",healthServiceCount);
-            serviceDoctorList.add(healthDoctorMap);
         }
 
 //        String specialistRelationSql = "select * from wlyy_specialist.wlyy_specialist_patient_relation where patient='"+patientCode+"' and sign_status='1' and status >=0  ";

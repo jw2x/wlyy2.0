@@ -28,6 +28,13 @@ public class WxTemplateController extends EnvelopRestEndpoint {
         return wxTemplateService.sendWeTempMesTest(wechatId,openid);
     }
 
+    @PostMapping(value = WechatRequestMapping.WxTemplate.api_getAllTemplate, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "获取所有微信模板", notes = "获取所有微信模板")
+    public String  getAllTemp(String wechatId) {
+        return wxTemplateService.getAllTemp(wechatId);
+    }
+
+
 
 //    @PostMapping(value = WechatRequestMapping.WxTemplate.api_create, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 //    @ApiOperation(value = "创建微信模版", notes = "创建微信模版")

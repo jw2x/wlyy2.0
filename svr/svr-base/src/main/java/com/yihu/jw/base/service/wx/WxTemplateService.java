@@ -2,7 +2,9 @@ package com.yihu.jw.base.service.wx;
 
 import com.yihu.jw.base.dao.wx.WxTemplateConfigDao;
 import com.yihu.jw.entity.base.wx.WxTemplateConfigDO;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.util.wechat.WeixinMessagePushUtils;
+import com.yihu.jw.util.wechat.wxhttp.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,13 @@ public class WxTemplateService {
         config.setKeyword2("2018-08-21");
         weixinMessagePushUtils.putWxMsg(wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken(),openid,config);
         return "success";
+    }
+
+    public String  getAllTemp(String wechatId){
+
+        String url ="https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
+        String result = HttpUtil.sendGet(url);
+        return result;
     }
 
 
