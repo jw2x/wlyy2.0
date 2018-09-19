@@ -4,6 +4,7 @@ import com.yihu.jw.healthyhouse.model.IdEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,23 +17,25 @@ import java.util.Date;
 @Table(name = "user")
 public class User extends IdEntity implements Serializable{
 
+    @Id
+    private String id;
     @Column(name = "login_code", nullable = false)
     private String loginCode;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "gender", nullable = false)
+    @Column(name = "gender" )
     private String gender;
-    @Column(name = "birthday", nullable = false)
+    @Column(name = "birthday" )
     private Date birthday;
     @Column(name = "id_card_no", nullable = false)
     private String idCardNo;
     @Column(name = "telephone", nullable = false)
     private String telephone;
-    @Column(name = "last_login_time", nullable = false, length = 0)
+    @Column(name = "last_login_time", length = 0)
     private String lastLoginTime;
-    @Column(name = "img_remote_path", nullable = false)
+    @Column(name = "img_remote_path")
     private String imgRemotePath;   //头像地址
     @Column(name = "user_type", nullable = false)
     private String userType;         //用户类型
@@ -43,6 +46,14 @@ public class User extends IdEntity implements Serializable{
     @Column(name = "city_code", nullable = false)
     private String cityCode;        //市编码
 
+    @Column(name = "salt")
+    private String salt; //加密种子
+    @Column(name = "creator")
+    private String creator;
+    @Column(name = "modifier")
+    private String modifier;
+    @Column(name = "modifier_name")
+    private String modifierName;
 
     public String getLoginCode() {
         return loginCode;
@@ -146,5 +157,37 @@ public class User extends IdEntity implements Serializable{
 
     public void setCityCode(String cityCode) {
         this.cityCode = cityCode;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
+    public String getModifierName() {
+        return modifierName;
+    }
+
+    public void setModifierName(String modifierName) {
+        this.modifierName = modifierName;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

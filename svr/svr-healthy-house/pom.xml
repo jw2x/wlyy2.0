@@ -90,6 +90,20 @@
 			<groupId>com.yihu.jw</groupId>
 			<artifactId>common-entity</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.yihu.jw</groupId>
+			<artifactId>common-rest-model</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.yihu.jw</groupId>
+			<artifactId>common-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springside</groupId>
+			<artifactId>springside-core</artifactId>
+			<version>4.2.3-GA</version>
+			<!--<classifier>GA</classifier>-->
+		</dependency>
 
 	</dependencies>
 
