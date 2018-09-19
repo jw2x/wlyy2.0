@@ -17,6 +17,7 @@ import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -35,11 +36,19 @@ public class UserService {
         return userDao.findByLoginCode(code);
     }
 
-    public User findByAccount(String username) {
+    public User findByName(String username) {
         return userDao.findByName(username);
     }
 
 
+    /**
+     *  分页获取用户列表
+     * @param page
+     * @param pageSize
+     * @param map
+     * @return
+     * @throws ManageException
+     */
     public Page<User> userList(Integer page, Integer pageSize, Map<String,String> map)throws ManageException {
         // 排序
         Sort sort = new Sort(Sort.Direction.DESC, "modifyDate");
@@ -65,24 +74,31 @@ public class UserService {
 
 
     /**
-     *
+     * 更改用户状态
      * @param codes        待删除code
      * @param userCode     修改者code
      */
     @Transactional
-    public void delete(String codes, String userCode) {
+    public void updateStatus(String codes, String userCode,Integer status) {
         User user = userDao.findByLoginCode(userCode);
         String userName = user.getName();
         for(String code:codes.split(",")){
             User user1 = findByCode(code);
-            user1.setActivated(-1);
+            user1.setActivated(status);
             user1.setUpdateUserName(userName);
             user1.setUpdateUser(userCode);
             userDao.save(user1);
         }
     }
 
-    public Envelop saveOrUpdate(User user, String oldPsd, String userCode) throws ManageException {
+    /**
+     *  新增/修改用户
+     * @param user      用户信息
+     * @param userCode  操作者编码
+     * @return
+     * @throws ManageException
+     */
+    public Envelop saveOrUpdate(User user, String userCode) throws ManageException {
         User loginUser = userDao.findByLoginCode(userCode);
         String userName = loginUser.getName();
         if(user.getId()==null){//保存
@@ -95,18 +111,17 @@ public class UserService {
             user.setSalt(salt);
             String password = MD5.GetMD5Code(user.getPassword() + salt);
             user.setPassword(password);
-            String code = UUID.randomUUID().toString().replaceAll("-", "");
-            user.setId(code);
             user.setCreateUser(userCode);
+            user.setCreateTime(new Date());
             user.setActivated(1);
             userDao.save(user);
             return Envelop.getSuccess("保存成功");
         }else{//修改
             User user1 = findByCode(user.getLoginCode());
-            String psd = MD5.GetMD5Code(oldPsd + user1.getSalt());
-            if(!user1.getPassword().equals(psd)){//判断密码是否相同
-                throw new ManageException("原密码错误");
-            }
+//            String psd = MD5.GetMD5Code(oldPsd + user1.getSalt());
+//            if(!user1.getPassword().equals(psd)){//判断密码是否相同
+//                throw new ManageException("原密码错误");
+//            }
             user.setUpdateUser(userCode);
             user.setUpdateUserName(userName);
             userDao.save(user);

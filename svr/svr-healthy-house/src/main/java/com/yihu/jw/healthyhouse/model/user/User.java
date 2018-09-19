@@ -5,7 +5,6 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
@@ -47,6 +46,7 @@ public class User extends UuidIdentityEntityWithOperator {
 
     @Column(name = "salt")
     private String salt; //加密种子
+
 
     public String getLoginCode() {
         return loginCode;
