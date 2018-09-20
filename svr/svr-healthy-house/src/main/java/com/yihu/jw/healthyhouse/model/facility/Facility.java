@@ -55,8 +55,8 @@ public class Facility extends UuidIdentityEntityWithOperator {
     @Column(name = "street")
     private String street;
     //服务时间：周一至周天，用逗号隔开
-    @Column(name = "service_date")
-    private String serviceDate ;
+    @Column(name = "service_day")
+    private String serviceDay ;
     //服务开始时间：默认00:00:00
     @Column(name = "service_start_time")
     private String serviceStartTime;
@@ -175,12 +175,12 @@ public class Facility extends UuidIdentityEntityWithOperator {
         this.street = street;
     }
 
-    public String getServiceDate() {
-        return serviceDate;
+    public String getServiceDay() {
+        return serviceDay;
     }
 
-    public void setServiceDate(String serviceDate) {
-        this.serviceDate = serviceDate;
+    public void setServiceDay(String serviceDay) {
+        this.serviceDay = serviceDay;
     }
 
     public String getServiceStartTime() {
