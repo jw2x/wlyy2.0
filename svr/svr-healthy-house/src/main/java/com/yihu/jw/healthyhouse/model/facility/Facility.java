@@ -1,59 +1,83 @@
 package com.yihu.jw.healthyhouse.model.facility;
 
-import com.yihu.jw.entity.UuidIdentityEntity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+
+import javax.persistence.*;
 
 /**
- *  设施服务
- * @author HZY
- * @created 2018/9/20 8:48
+ * 设施
+ * @author zdm
+ * @version 1.0
+ * @created 2018.09.19
  */
 @Entity
-@Table(name = "facility")
-public class Facility extends UuidIdentityEntity{
-
+@Table(name = "facilities")
+@Access(value = AccessType.PROPERTY)
+public class Facility extends UuidIdentityEntityWithOperator {
+    //设施编码
     @Column(name = "code", nullable = false)
     private String code;
-    @Column(name = "code", nullable = false)
+    //设施名字
+    @Column(name = "name", nullable = false)
     private String name;
+    //设施类别-系统字典-设施类别
     @Column(name = "category", nullable = false)
-    private String category;
-    @Column(name = "org_code", nullable = false)
+    private Integer category ;
+    //设施联系人隶属机构编码
+    @Column(name = "org_code")
     private String orgCode;
+    //设施联系人隶属机构名称
     @Column(name = "org_name")
     private String orgName;
-    @Column(name = "user_id", nullable = false)
+    // （管理员）联系人id
+    @Column(name = "user_id")
     private String userId;
-    @Column(name = "user_telephone", nullable = false)
-    private String userTelephone;
-    @Column(name = "province_id", nullable = false)
+    //联系人电话
+    @Column(name = "user_telephone")
+    private String userTelephone ;
+    //设施所在省份id
+    @Column(name = "province_id")
     private String provinceId;
-    @Column(name = "city_code", nullable = false)
+    //城市编码
+    @Column(name = "city_code")
     private String cityCode;
-    @Column(name = "county_code", nullable = false)
-    private String countyCode;
-    @Column(name = "street", nullable = false)
+    //城市名称
+    @Column(name = "city_name")
+    private String cityName;
+    //县编码
+    @Column(name = "county_code")
+    private String countyCode ;
+    //县名称
+    @Column(name = "county_name")
+    private String countyName;
+    //街道
+    @Column(name = "street")
     private String street;
-    @Column(name = "service_day", nullable = false)
-    private String serviceDay;
-    @Column(name = "service_start_time", nullable = false)
+    //服务时间：周一至周天，用逗号隔开
+    @Column(name = "service_date")
+    private String serviceDate ;
+    //服务开始时间：默认00:00:00
+    @Column(name = "service_start_time")
     private String serviceStartTime;
-    @Column(name = "service_end_time", nullable = false)
+    // 服务结束时间：默认23:59:59
+    @Column(name = "service_end_time")
     private String serviceEndTime;
-    @Column(name = "status", nullable = false)
-    private String status;
-    @Column(name = "longitude", nullable = false)
-    private String longitude;
-    @Column(name = "latitude", nullable = false)
-    private String latitude;
-    @Column(name = "img_path")
-    private String imgPath;
+    // 运营状态：0开放，1关闭，2损坏，3维修
+    @Column(name = "state")
+    private String state;
+    //  设施经度
+    @Column(name = "longitude")
+    private double longitude;
+    // 设施维度
+    @Column(name = "latitude")
+    private double latitude;
+    // 备注
     @Column(name = "remarks")
     private String remarks;
-
+    //小屋形象照
+    @Column(name = "img_path")
+    private String imgPath;
 
     public String getCode() {
         return code;
@@ -63,19 +87,11 @@ public class Facility extends UuidIdentityEntity{
         this.code = code;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCategory() {
+    public Integer getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Integer category) {
         this.category = category;
     }
 
@@ -127,12 +143,28 @@ public class Facility extends UuidIdentityEntity{
         this.cityCode = cityCode;
     }
 
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
     public String getCountyCode() {
         return countyCode;
     }
 
     public void setCountyCode(String countyCode) {
         this.countyCode = countyCode;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
     }
 
     public String getStreet() {
@@ -143,12 +175,12 @@ public class Facility extends UuidIdentityEntity{
         this.street = street;
     }
 
-    public String getServiceDay() {
-        return serviceDay;
+    public String getServiceDate() {
+        return serviceDate;
     }
 
-    public void setServiceDay(String serviceDay) {
-        this.serviceDay = serviceDay;
+    public void setServiceDate(String serviceDate) {
+        this.serviceDate = serviceDate;
     }
 
     public String getServiceStartTime() {
@@ -167,36 +199,28 @@ public class Facility extends UuidIdentityEntity{
         this.serviceEndTime = serviceEndTime;
     }
 
-    public String getStatus() {
-        return status;
+    public String getState() {
+        return state;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setState(String state) {
+        this.state = state;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
-    }
-
-    public String getImgPath() {
-        return imgPath;
-    }
-
-    public void setImgPath(String imgPath) {
-        this.imgPath = imgPath;
     }
 
     public String getRemarks() {
@@ -205,5 +229,21 @@ public class Facility extends UuidIdentityEntity{
 
     public void setRemarks(String remarks) {
         this.remarks = remarks;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }

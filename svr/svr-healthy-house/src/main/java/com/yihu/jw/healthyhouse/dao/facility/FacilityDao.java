@@ -1,4 +1,4 @@
-package com.yihu.jw.healthyhouse.dao.facilities;
+package com.yihu.jw.healthyhouse.dao.facility;
 
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @version 1.0
  * @created 2018.09.19
  */
-public interface FacilitiesDao extends JpaRepository<Facility, Long> {
+public interface FacilityDao extends JpaRepository<Facility, Long> {
 
     Facility findById(String id);
 }

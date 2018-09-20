@@ -1,7 +1,7 @@
 package com.yihu.jw.healthyhouse.controller.facilities;
 
-import com.yihu.jw.healthyhouse.model.facilities.FacilitiesServer;
-import com.yihu.jw.healthyhouse.service.facilities.FacilitiesServerService;
+import com.yihu.jw.healthyhouse.model.facility.FacilityServer;
+import com.yihu.jw.healthyhouse.service.facility.FacilityServerService;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -26,15 +26,15 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(HealthyHouseMapping.api_healthyHouse_common)
-@Api(value = "FacilitiesServer", description = "设施服务管理", tags = {"设施服务管理"})
+@Api(value = "FacilityServer", description = "设施服务管理", tags = {"设施服务管理"})
 public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @Autowired
-    private FacilitiesServerService facilitiesServerService;
+    private FacilityServerService facilityServerService;
 
     @ApiOperation(value = "获取设施服务列表", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.PAGE)
-    public PageEnvelop<FacilitiesServer> getDictionaries(
+    public PageEnvelop<FacilityServer> getDictionaries(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
@@ -45,80 +45,80 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
             @RequestParam(value = "size", required = false) Integer size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
-        List<FacilitiesServer> facilitiesServerList = facilitiesServerService.search(fields, filters, sorts, page, size);
-        return success(facilitiesServerList, facilitiesServerList.size(), page, size);
+        List<FacilityServer> facilityServerList = facilityServerService.search(fields, filters, sorts, page, size);
+        return success(facilityServerList, facilityServerList.size(), page, size);
     }
 
     @ApiOperation(value = "创建设施服务")
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.CREATE)
-    public ObjEnvelop<FacilitiesServer> createDictionary(
-            @ApiParam(name = "FacilitiesServer", value = "设施服务JSON结构")
-            @RequestBody FacilitiesServer facilitiesServer) throws IOException {
-        List<FacilitiesServer> facilitiesServerList = null;
-        if (StringUtils.isEmpty(facilitiesServer.getCode())) {
+    public ObjEnvelop<FacilityServer> createDictionary(
+            @ApiParam(name = "FacilityServer", value = "设施服务JSON结构")
+            @RequestBody FacilityServer facilityServer) throws IOException {
+        List<FacilityServer> facilityServerList = null;
+        if (StringUtils.isEmpty(facilityServer.getCode())) {
             return failed("设施服务编码不能为空！", ObjEnvelop.class);
         } else {
-            facilitiesServerList = facilitiesServerService.findByField("code", facilitiesServer.getCode());
-            if (null != facilitiesServerList && facilitiesServerList.size() > 0) {
+            facilityServerList = facilityServerService.findByField("code", facilityServer.getCode());
+            if (null != facilityServerList && facilityServerList.size() > 0) {
                 return failed("设施服务编码已存在！", ObjEnvelop.class);
             }
         }
-        if (StringUtils.isEmpty(facilitiesServer.getName())) {
+        if (StringUtils.isEmpty(facilityServer.getName())) {
             return failed("设施服务名称不能为空！", ObjEnvelop.class);
         } else {
-            facilitiesServerList = facilitiesServerService.findByField("name", facilitiesServer.getName());
-            if (null != facilitiesServerList && facilitiesServerList.size() > 0) {
+            facilityServerList = facilityServerService.findByField("name", facilityServer.getName());
+            if (null != facilityServerList && facilityServerList.size() > 0) {
                 return failed("设施服务名称已存在！", ObjEnvelop.class);
             }
         }
 
-        if (StringUtils.isEmpty(facilitiesServer.getType())) {
+        if (StringUtils.isEmpty(facilityServer.getType())) {
             return failed("设施服务类别不正确，请参考系统字典：设施服务类别！", ObjEnvelop.class);
         }
-        facilitiesServer = facilitiesServerService.save(facilitiesServer);
-        return success(facilitiesServer);
+        facilityServer = facilityServerService.save(facilityServer);
+        return success(facilityServer);
     }
 
     @ApiOperation(value = "获取设施服务")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.GET_FACILITIESERVERS_BY_ID)
-    public ObjEnvelop<FacilitiesServer> getDictionary(
+    public ObjEnvelop<FacilityServer> getDictionary(
             @ApiParam(name = "id", value = "设施服务ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
-        FacilitiesServer facilitiesServer = facilitiesServerService.findById(id);
-        if (facilitiesServer == null) {
+        FacilityServer facilityServer = facilityServerService.findById(id);
+        if (facilityServer == null) {
             return failed("设施服务不存在！", ObjEnvelop.class);
         }
-        return success(facilitiesServer);
+        return success(facilityServer);
     }
 
     @ApiOperation(value = "获取设施服务")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.GET_FACILITIESERVERS_BY_FIELD)
-    public ListEnvelop<FacilitiesServer> getDictionaryByPhoneticCode(
+    public ListEnvelop<FacilityServer> getDictionaryByPhoneticCode(
             @ApiParam(name = "field", value = "查找字段名", required = true)
             @RequestParam(value = "field") String field,
             @ApiParam(name = "value", value = "检索值")
             @RequestParam(value = "value") String value) throws Exception {
-        List<FacilitiesServer> facilitiesServerList = facilitiesServerService.findByField(field, value);
-        return success(facilitiesServerList);
+        List<FacilityServer> facilityServerList = facilityServerService.findByField(field, value);
+        return success(facilityServerList);
     }
 
     @ApiOperation(value = "更新设施服务")
     @PutMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ObjEnvelop<FacilitiesServer> updateDictionary(
-            @ApiParam(name = "FacilitiesServer", value = "设施服务JSON结构")
-            @RequestBody FacilitiesServer facilitiesServer) throws Exception {
-        if (StringUtils.isEmpty(facilitiesServer.getCode())) {
+    public ObjEnvelop<FacilityServer> updateDictionary(
+            @ApiParam(name = "FacilityServer", value = "设施服务JSON结构")
+            @RequestBody FacilityServer facilityServer) throws Exception {
+        if (StringUtils.isEmpty(facilityServer.getCode())) {
             return failed("设施服务编码不能为空！", ObjEnvelop.class);
         }
-        if (StringUtils.isEmpty(facilitiesServer.getName())) {
+        if (StringUtils.isEmpty(facilityServer.getName())) {
             return failed("设施服务名称不能为空！", ObjEnvelop.class);
         }
 
-        if (StringUtils.isEmpty(facilitiesServer.getType())) {
+        if (StringUtils.isEmpty(facilityServer.getType())) {
             return failed("设施服务类别不正确，请参考系统字典：设施服务类别！", ObjEnvelop.class);
         }
-        facilitiesServer = facilitiesServerService.save(facilitiesServer);
-        return success(facilitiesServer);
+        facilityServer = facilityServerService.save(facilityServer);
+        return success(facilityServer);
     }
 
     @ApiOperation(value = "删除设施服务")
@@ -126,9 +126,9 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
     public Envelop deleteDictionary(
             @ApiParam(name = "facilitiesServerId", value = "设施服务ID")
             @RequestParam(value = "facilitiesServerId") String facilitiesServerId) throws Exception {
-        FacilitiesServer facilitiesServer = new FacilitiesServer();
-        facilitiesServer.setId(facilitiesServerId);
-        facilitiesServerService.delete(facilitiesServer);
+        FacilityServer facilityServer = new FacilityServer();
+        facilityServer.setId(facilitiesServerId);
+        facilityServerService.delete(facilityServer);
         return success("success");
     }
 
