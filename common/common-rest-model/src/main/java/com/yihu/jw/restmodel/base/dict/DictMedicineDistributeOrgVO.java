@@ -12,7 +12,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @version 
  * <pre>
  * Author	Version		Date		Changes
- * Administrator 	1.0  2018年09月07日 Created
+ * litaohong 	1.0  2018年09月11日 Created
  *
  * </pre>
  * @since 1.
@@ -23,14 +23,20 @@ public class DictMedicineDistributeOrgVO extends IntegerIdentityVO{
     /**
 	 * 机构编码
 	 */
-	@ApiModelProperty(value = "机构编码", example = "")
+	@ApiModelProperty(value = "机构编码", example = "模块1")
     private String orgId;
 
     /**
 	 * 药品代码
 	 */
-	@ApiModelProperty(value = "药品代码", example = "")
+	@ApiModelProperty(value = "药品代码", example = "模块1")
     private String medicineCode;
+
+    /**
+	 * 分发数量
+	 */
+	@ApiModelProperty(value = "分发数量", example = "模块1")
+    private Integer quantity;
 
 
     public String getOrgId() {
@@ -46,5 +52,13 @@ public class DictMedicineDistributeOrgVO extends IntegerIdentityVO{
     public void setMedicineCode(String medicineCode) {
         this.medicineCode = medicineCode;
     }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
 
 }

@@ -1,32 +1,27 @@
-package com.yihu.jw.entity.base.user;
+package com.yihu.jw.entity.base.role;
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * BaseRoleMenu entity. @author MyEclipse Persistence Tools
+ * @author progr1mmer
+ * @date 2018/09/20
  */
 @Entity
 @Table(name = "base_role_menu")
-public class BaseRoleMenuDO extends UuidIdentityEntity implements java.io.Serializable {
+public class BaseRoleMenuDO extends IntegerIdentityEntity {
 
-	// Fields
+	/**
+	 * 角色ID
+	 */
 	private String roleId;
+	/**
+	 * 菜单ID
+	 */
 	private String menuId;
-
-	/** default constructor */
-	public BaseRoleMenuDO() {
-	}
-
-	/** minimal constructor */
-	public BaseRoleMenuDO(String id) {
-		this.id = id;
-	}
-
-
 
 	@Column(name = "role_id", length = 50)
 	public String getRoleId() {

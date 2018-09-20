@@ -111,6 +111,7 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         }
         if (StringUtils.isEmpty(parameters.get("captcha"))) {
             parameters.put("grant_type", "password");
+            //解密密码
 //            if (parameters.get("password") != null) {
 //                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
 //                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
@@ -280,7 +281,7 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
             Map<String, Object> sms =  (Map)result.get("obj");
             String captcha = (String) sms.get("captcha");
             Date deadline = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String) sms.get("deadline"));
-            Long expire = (deadline.getTime() - new Date().getTime()) / 1000;
+            Long expire = (deadline.getTime() - System.currentTimeMillis()) / 1000;
             Captcha _captcha = new Captcha();
             _captcha.setCode(captcha);
             _captcha.setExpiresIn(expire.intValue());

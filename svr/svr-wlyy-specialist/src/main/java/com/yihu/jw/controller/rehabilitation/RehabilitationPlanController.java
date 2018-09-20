@@ -17,6 +17,7 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.rehabilitation.RehabilitationPlanService;
+import com.yihu.jw.util.DataUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -139,6 +140,7 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
                                                                        @RequestParam(value = "rehabilitationPlan", required = true)String rehabilitationPlan){
         try {
             JSONObject json = new JSONObject(rehabilitationPlan);
+            json.put("totalExpense", DataUtils.doubleToInt(json.getDouble("totalExpense")));
             JSONArray array = new JSONArray();
             for(Object planDetail : json.getJSONArray("detail")) {
                 JSONObject j = (JSONObject)planDetail;
@@ -164,7 +166,7 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
             ObjectMapper object = new ObjectMapper();
             object.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm"));
             List<RehabilitationDetailDO> details = object.readValue(planDetails, new TypeReference<List<RehabilitationDetailDO>>(){});
-            PatientRehabilitationPlanDO planDO = toEntity(rehabilitationPlan, PatientRehabilitationPlanDO.class);
+            PatientRehabilitationPlanDO planDO = toEntity(json.toString(), PatientRehabilitationPlanDO.class);
             planDO = rehabilitationPlanService.createPatientRehabilitationPlan(planDO);
             details = rehabilitationPlanService.createRehabilitationDetail(details, planDO.getId());
             //调用服务包接口
@@ -200,9 +202,10 @@ public class RehabilitationPlanController extends EnvelopRestEndpoint {
     @PostMapping(value = SpecialistMapping.rehabilitation.createServiceQrCode)
     @ApiOperation(value = "根据康复计划明细id和医生code生成服务码")
     public MixEnvelop<String,String> createServiceQrCode(@ApiParam(name = "planDetailId", value = "康复计划项目明细ID")@RequestParam(value = "planDetailId", required = true)String planDetailId,
-                                                         @ApiParam(name = "doctorCode", value = "医生code")@RequestParam(value = "doctorCode", required = true)String doctorCode){
+                                                         @ApiParam(name = "doctorCode", value = "医生code")@RequestParam(value = "doctorCode", required = true)String doctorCode,
+                                                         @ApiParam(name = "imageUrl",value = "二维码地址")@RequestParam(value = "imageUrl",required = true)String imageUrl){
         try {
-            return rehabilitationPlanService.createServiceQrCode(planDetailId,doctorCode);
+            return rehabilitationPlanService.createServiceQrCode(planDetailId,doctorCode,imageUrl);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

@@ -372,12 +372,44 @@ public class BaseRequestMapping {
     public static class DictMedicine extends Basic {
         public static final String PREFIX  = "/dictMedicine";
     }
+   /**
+     * 药品剂型
+     */
+    public static class DictMedicineDosageForm extends Basic {
+        public static final String PREFIX  = "/dictMedicineDosageForm";
+    }
+   /**
+     * 药品字典科目类别
+     */
+    public static class DictMedicineSubject extends Basic {
+        public static final String PREFIX  = "/dictMedicineSubject";
+    }
+   /**
+     * 药品分发机构
+     */
+    public static class DictMedicineDistributeOrg extends Basic {
+        public static final String PREFIX  = "/dictMedicineDistributeOrg";
+    }
 
     /**
      * app版本升级
      */
     public static class AppVersion extends Basic {
         public static final String PREFIX  = "/appVersion";
+    }
+
+    /**
+     * 基础消息
+     */
+    public static class BaseMessage extends Basic {
+        public static final String PREFIX  = "/baseMessage";
+    }
+
+    /**
+     * 基础消息类型
+     */
+    public static class BaseMessageType extends Basic {
+        public static final String PREFIX  = "/baseMessageType";
     }
 
     /**

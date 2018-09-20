@@ -1,0 +1,63 @@
+-- 新增居民标签索引映射
+PUT http://172.19.103.45:9200/figure_label_index
+{
+
+        "mappings": {
+            "figure_label_type": {
+                "properties": {
+                    "createTime": {
+                        "type": "date",
+                        "format": "yyyy-MM-dd HH:mm:ss"
+                    },
+                    "currentActive": {
+                        "type": "boolean"
+                    },
+                    "id": {
+                        "type": "string"
+                    },
+                    "idcard": {
+                        "type": "string"
+                    },
+                    "labeName": {
+                        "type": "string"
+                    },
+                    "labeValue": {
+                        "type": "string"
+                    },
+                    "labelCode": {
+                        "type": "string"
+                    },
+                    "labelName": {
+                        "type": "string"
+                    },
+                    "labelType": {
+                        "type": "string"
+                    },
+                    "labelValue": {
+                        "type": "string"
+                    },
+                    "modelId": {
+                        "type": "string"
+                    },
+                    "query": {
+                        "properties": {
+                            "match_all": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "source": {
+                        "type": "string"
+                    },
+                    "sourceTime": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+
+}
+
+
+-- 给索引建立别名
+PUT http://172.19.103.45:9200/figure_label_index/figure_label_index_a

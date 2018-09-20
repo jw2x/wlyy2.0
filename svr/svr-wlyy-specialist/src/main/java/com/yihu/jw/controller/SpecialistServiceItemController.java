@@ -2,13 +2,16 @@ package com.yihu.jw.controller;/**
  * Created by nature of king on 2018/8/17.
  */
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.entity.specialist.SpecialistEvaluateDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.SpecialistServiceItemService;
+import com.yihu.jw.util.DataUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -52,7 +55,20 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
                                                        @RequestParam(value = "pageSize") Integer pageSize){
         try {
             SpecialistServiceItemDO serviceItemDO = toEntity(serviceItem,SpecialistServiceItemDO.class);
-            return specialistServiceItemService.select(serviceItemDO,page,pageSize);
+            MixEnvelop envelop = specialistServiceItemService.select(serviceItemDO,page,pageSize);
+            JSONArray array = new JSONArray();
+            List<SpecialistServiceItemDO> specialistServiceItemDOS =  envelop.getDetailModelList();
+            if (specialistServiceItemDOS != null && specialistServiceItemDOS.size()!=0){
+                for (SpecialistServiceItemDO specialistServiceItemDO:specialistServiceItemDOS){
+                    JSONObject jsonObject = (JSONObject)JSONObject.toJSON(specialistServiceItemDO);
+                    jsonObject.replace("threeHospitals", DataUtils.integerTransferDouble(specialistServiceItemDO.getThreeHospitals()));
+                    jsonObject.replace("twoHospitals",DataUtils.integerTransferDouble(specialistServiceItemDO.getTwoHospitals()));
+                    jsonObject.replace("oneHospitals",DataUtils.integerTransferDouble(specialistServiceItemDO.getOneHospitals()));
+                    array.add(jsonObject);
+                }
+            }
+            envelop.setDetailModelList(array);
+            return envelop;
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -72,7 +88,17 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
     public MixEnvelop<Boolean,Boolean> insert(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                                        @RequestParam(value = "serviceItem")String serviceItem){
         try {
-            SpecialistServiceItemDO serviceItemDO = toEntity(serviceItem,SpecialistServiceItemDO.class);
+            JSONObject object = JSON.parseObject(serviceItem);
+            if (object.getDouble("threeHospitals")!=null){
+                object.replace("threeHospitals", DataUtils.doubleToInt(object.getDouble("threeHospitals")));
+            }
+            if (object.getDouble("twoHospitals")!=null){
+                object.replace("twoHospitals",DataUtils.doubleToInt(object.getDouble("twoHospitals")));
+            }
+            if (object.getDouble("oneHospitals")!=null){
+                object.replace("oneHospitals",DataUtils.doubleToInt(object.getDouble("oneHospitals")));
+            }
+            SpecialistServiceItemDO serviceItemDO = toEntity(object.toJSONString(),SpecialistServiceItemDO.class);
             return specialistServiceItemService.insert(serviceItemDO);
         }catch (Exception e){
             e.printStackTrace();
@@ -120,7 +146,17 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
     public MixEnvelop<Boolean,Boolean> udpate(@ApiParam(name = "serviceItem", value = "服务项目JSON")
                                               @RequestParam(value = "serviceItem")String serviceItem){
         try {
-            SpecialistServiceItemDO serviceItemDO = toEntity(serviceItem,SpecialistServiceItemDO.class);
+            JSONObject object = JSON.parseObject(serviceItem);
+            if (object.getDouble("threeHospitals")!=null){
+                object.replace("threeHospitals", DataUtils.doubleToInt(object.getDouble("threeHospitals")));
+            }
+            if (object.getDouble("twoHospitals")!=null){
+                object.replace("twoHospitals",DataUtils.doubleToInt(object.getDouble("twoHospitals")));
+            }
+            if (object.getDouble("oneHospitals")!=null){
+                object.replace("oneHospitals",DataUtils.doubleToInt(object.getDouble("oneHospitals")));
+            }
+            SpecialistServiceItemDO serviceItemDO = toEntity(object.toJSONString(),SpecialistServiceItemDO.class);
             return specialistServiceItemService.update(serviceItemDO);
         }catch (Exception e){
             e.printStackTrace();
@@ -138,10 +174,23 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      */
     @PostMapping(value = SpecialistMapping.serviceItem.selectItemByHospital)
     @ApiOperation(value = "根据医院code获取服务项目")
-    public MixEnvelop<SpecialistServiceItemDO,SpecialistServiceItemDO> selectByHospital(@ApiParam(name = "hospital", value = "医院code")
+    public MixEnvelop selectByHospital(@ApiParam(name = "hospital", value = "医院code")
                                               @RequestParam(value = "hospital")String hospital){
         try {
-            return specialistServiceItemService.selectByHospital(hospital);
+            MixEnvelop envelop = specialistServiceItemService.selectByHospital(hospital);
+            JSONArray array = new JSONArray();
+            List<SpecialistServiceItemDO> specialistServiceItemDOS =  envelop.getDetailModelList();
+            if (specialistServiceItemDOS != null && specialistServiceItemDOS.size()!=0){
+                for (SpecialistServiceItemDO specialistServiceItemDO:specialistServiceItemDOS){
+                    JSONObject jsonObject = (JSONObject)JSONObject.toJSON(specialistServiceItemDO);
+                    jsonObject.replace("threeHospitals", DataUtils.integerTransferDouble(specialistServiceItemDO.getThreeHospitals()));
+                    jsonObject.replace("twoHospitals",DataUtils.integerTransferDouble(specialistServiceItemDO.getTwoHospitals()));
+                    jsonObject.replace("oneHospitals",DataUtils.integerTransferDouble(specialistServiceItemDO.getOneHospitals()));
+                    array.add(jsonObject);
+                }
+            }
+            envelop.setDetailModelList(array);
+            return envelop;
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -155,7 +204,7 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
      *
      * @return
      */
-    @RequestMapping(value = "importData")
+    @RequestMapping(value = "importData1")
     @ResponseBody
     public MixEnvelop<Boolean,Boolean> importData(@ApiParam(name = "serviceItems", value = "服务项目集合")
                                                       @RequestParam(value = "serviceItems")String serviceItems) {
@@ -163,7 +212,17 @@ public class SpecialistServiceItemController extends EnvelopRestEndpoint {
             JSONArray array = JSONArray.parseArray(serviceItems);
             List<SpecialistServiceItemDO> specialistServiceItemDOS = new ArrayList<>();
             for (int i = 0;i<array.size();i++){
-                SpecialistServiceItemDO specialistServiceItemDO = toEntity(array.getJSONObject(i).toJSONString(),SpecialistServiceItemDO.class);
+                JSONObject object = array.getJSONObject(i);
+                if (object.getDouble("threeHospitals")!=null){
+                    object.replace("threeHospitals", DataUtils.doubleToInt(object.getDouble("threeHospitals")));
+                }
+                if (object.getDouble("twoHospitals")!=null){
+                    object.replace("twoHospitals",DataUtils.doubleToInt(object.getDouble("twoHospitals")));
+                }
+                if (object.getDouble("oneHospitals")!=null){
+                    object.replace("oneHospitals",DataUtils.doubleToInt(object.getDouble("oneHospitals")));
+                }
+                SpecialistServiceItemDO specialistServiceItemDO = toEntity(object.toJSONString(),SpecialistServiceItemDO.class);
                 specialistServiceItemDOS.add(specialistServiceItemDO);
             }
             return specialistServiceItemService.importData(specialistServiceItemDOS);

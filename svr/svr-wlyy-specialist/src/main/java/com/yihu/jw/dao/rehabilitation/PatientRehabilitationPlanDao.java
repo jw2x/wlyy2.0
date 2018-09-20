@@ -2,6 +2,7 @@ package com.yihu.jw.dao.rehabilitation;
 
 import com.yihu.jw.entity.specialist.PatientHospitalRecordDO;
 import com.yihu.jw.entity.specialist.rehabilitation.PatientRehabilitationPlanDO;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -16,6 +17,7 @@ public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository
 
     PatientRehabilitationPlanDO findById(String id);
 
+    @Query(" select p from PatientRehabilitationPlanDO p where p.patient=?1 and p.createUser=?2 order by p.createTime desc ")
     List<PatientRehabilitationPlanDO> findByPatientAndCreateUser(String patient, String doctor);
 
     @Query(" select p from PatientRehabilitationPlanDO p where p.patient=?1 order by p.createTime desc ")
@@ -29,4 +31,10 @@ public interface PatientRehabilitationPlanDao extends PagingAndSortingRepository
     @Modifying
     @Query("update PatientRehabilitationPlanDO p set p.servicePackageId = ?2 where p.id = ?1")
     void updateServicePackageId(String planId, String servicePackageId);
+
+    @Query("select count(distinct p.patient) from PatientRehabilitationPlanDO p where p.createUser=?1  and p.status>0 ")
+    Integer patientCount(String doctorCode);
+
+    @Query("select count(distinct p.patient) from PatientRehabilitationPlanDO p where p.createUser=?1  and p.status=1 ")
+    Integer patientCountByUnfinish(String doctorCode);
 }

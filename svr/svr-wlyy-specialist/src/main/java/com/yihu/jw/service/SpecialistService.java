@@ -243,7 +243,7 @@ public class SpecialistService{
                     "a.health_assistant AS healthAssistant," +
                     "a.health_assistant_name AS healthAssistantName " +
                     "FROM wlyy_specialist.wlyy_specialist_patient_relation a " +
-                    "JOIN "+basedb+".wlyy_patient_disease_server b ON a.patient=b.patient AND b.disease=" +labelCode+" and b.del=1 "+
+                    "JOIN "+basedb+".wlyy_patient_disease_server b ON a.id=b.specialist_relation_code AND b.disease=" +labelCode+" and b.del=1 "+
                     "JOIN "+basedb+".wlyy_patient c ON a.patient=c.CODE " +
                     "LEFT JOIN "+basedb+".wlyy_sign_patient_label_info d ON a.patient=d.patient AND d.label_type=8 AND d.`status`=1" +
                     " WHERE a.sign_status> 0 AND a.`status`>=0 AND a.doctor='"+doctor+"'"+
@@ -497,7 +497,7 @@ public class SpecialistService{
         }else{
             relation.setSignStatus("1");
             relation.setHealthAssistant(health_assistant);
-            relation.setHealthAssistant(health_assistant_name);
+            relation.setHealthAssistantName(health_assistant_name);
             relation.setSignDate(new Date());
             specialistPatientRelationDao.save(relation);
         }
@@ -626,33 +626,66 @@ public class SpecialistService{
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs.get(0));
     }
     
-    public MixEnvelop findDoctorAndDoctorHealthBySpecialDoctor(String doctor) {
-        String sql = "SELECT " +
-                "doctor.CODE AS CODE," +
-                "doctor.NAME AS NAME," +
-                "doctor.sex AS sex," +
-                "doctor.birthday AS birthday," +
-                "doctor.photo AS photo," +
-                "doctor.mobile AS mobile," +
-                "doctor.hospital AS hospital," +
-                "doctor.hospital_name AS hospitalName," +
-                "doctor.dept AS dept," +
-                "doctor.dept_name AS deptName," +
-                "doctor.job AS job," +
-                "doctor.job_name AS jobName," +
-                "doctor.LEVEL AS LEVEL," +
-                "doctor.qrcode AS qrcode," +
-                "doctor.czrq AS czrq," +
-                "doctor.del AS del," +
-                "doctor.idcard AS idcard " +
-                "FROM wlyy.wlyy_doctor doctor JOIN ( " +
-                "SELECT a.doctor AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
-                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
-                "UNION  " +
-                "SELECT a.doctor_health AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
-                "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
-                ") " +
-                "t ON doctor.CODE=t.doctorcode";
+    public MixEnvelop findDoctorAndDoctorHealthBySpecialDoctor(String doctor,String name) {
+    
+        String sql = "";
+        
+        if(StringUtils.isNotBlank(name)){
+            sql = "SELECT " +
+                    "doctor.CODE AS CODE," +
+                    "doctor.NAME AS NAME," +
+                    "doctor.sex AS sex," +
+                    "doctor.birthday AS birthday," +
+                    "doctor.photo AS photo," +
+                    "doctor.mobile AS mobile," +
+                    "doctor.hospital AS hospital," +
+                    "doctor.hospital_name AS hospitalName," +
+                    "doctor.dept AS dept," +
+                    "doctor.dept_name AS deptName," +
+                    "doctor.job AS job," +
+                    "doctor.job_name AS jobName," +
+                    "doctor.LEVEL AS LEVEL," +
+                    "doctor.qrcode AS qrcode," +
+                    "doctor.czrq AS czrq," +
+                    "doctor.del AS del," +
+                    "doctor.idcard AS idcard " +
+                    "FROM wlyy.wlyy_doctor doctor JOIN ( " +
+                    "SELECT a.doctor AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
+                    "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
+                    "UNION  " +
+                    "SELECT a.doctor_health AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
+                    "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
+                    ") " +
+                    "t ON doctor.CODE=t.doctorcode and doctor.NAME like '%"+name+"%'";
+        }else{
+            sql = "SELECT " +
+                    "doctor.CODE AS CODE," +
+                    "doctor.NAME AS NAME," +
+                    "doctor.sex AS sex," +
+                    "doctor.birthday AS birthday," +
+                    "doctor.photo AS photo," +
+                    "doctor.mobile AS mobile," +
+                    "doctor.hospital AS hospital," +
+                    "doctor.hospital_name AS hospitalName," +
+                    "doctor.dept AS dept," +
+                    "doctor.dept_name AS deptName," +
+                    "doctor.job AS job," +
+                    "doctor.job_name AS jobName," +
+                    "doctor.LEVEL AS LEVEL," +
+                    "doctor.qrcode AS qrcode," +
+                    "doctor.czrq AS czrq," +
+                    "doctor.del AS del," +
+                    "doctor.idcard AS idcard " +
+                    "FROM wlyy.wlyy_doctor doctor JOIN ( " +
+                    "SELECT a.doctor AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
+                    "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
+                    "UNION  " +
+                    "SELECT a.doctor_health AS doctorcode FROM wlyy.wlyy_sign_family a RIGHT JOIN ( " +
+                    "SELECT patient FROM wlyy_specialist_patient_relation WHERE sign_status> 0 AND `status`>=0 AND doctor='"+doctor+"') b ON a.patient=b.patient WHERE a.`status`=1 AND a.expenses_status = 1 " +
+                    ") " +
+                    "t ON doctor.CODE=t.doctorcode";
+        }
+        
         List<SignFamilyDoctorVO> patientSignInfoVOs = jdbcTemplate.query(sql,new BeanPropertyRowMapper(SignFamilyDoctorVO.class));
         return MixEnvelop.getSuccess(SpecialistMapping.api_success,patientSignInfoVOs);
     }

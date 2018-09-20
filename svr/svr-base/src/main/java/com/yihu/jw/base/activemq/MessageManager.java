@@ -47,9 +47,11 @@ public class MessageManager {
                 });
                 groups.put(mqMessageDo.getTopic(), subUrl);
             }
-            executorService = Executors.newFixedThreadPool(groups.size());
-            for (String key : groups.keySet()) {
-                executorService.execute(new ConsumerRunner(key, groups.get(key)));
+            if(groups.size()>0){
+                executorService = Executors.newFixedThreadPool(groups.size());
+                for (String key : groups.keySet()) {
+                    executorService.execute(new ConsumerRunner(key, groups.get(key)));
+                }
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);

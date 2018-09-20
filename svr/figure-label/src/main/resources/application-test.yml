@@ -1,0 +1,14 @@
+##开发的配置
+spring:
+  profiles: dev
+
+  datasource:
+    wlyy:
+      url: jdbc:mysql://172.19.103.77/figure_lable?useUnicode:true&amp;characterEncoding=utf-8&amp;autoReconnect=true
+      username: root
+      password: 123456
+
+
+quartz:
+  namespace: patient-co-figure-label ##quartz的命名空间，名称一样实现消费负载
+  overwriteExistingJobs: false ##是否覆盖job

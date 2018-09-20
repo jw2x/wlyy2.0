@@ -51,6 +51,8 @@ public class SpecialistServiceItemService {
      */
     public MixEnvelop<Boolean,Boolean> insert(SpecialistServiceItemDO specialistServiceItemDO){
         MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
+        specialistServiceItemDO.setCreateTime(new Date());
+        specialistServiceItemDO.setUpdateTime(new Date());
         specialistServiceItemDao.save(specialistServiceItemDO);
         envelop.setObj(true);
         return envelop;
@@ -205,6 +207,8 @@ public class SpecialistServiceItemService {
                 }else {
                     specialistServiceItemDO.setStatus(1);
                     specialistServiceItemDO.setId(UUID.randomUUID().toString());
+                    specialistServiceItemDO.setCreateTime(new Date());
+                    specialistServiceItemDO.setUpdateTime(new Date());
                     specialistServiceItemDao.save(specialistServiceItemDO);
                 }
             }

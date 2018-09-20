@@ -80,7 +80,7 @@ public class RehabilitationManageController {
                                           @RequestParam(value = "executeEndTime", required = true)String executeEndTime,
                                           @ApiParam(name = "planId", value = "计划id", required = true)
                                           @RequestParam(value = "planId", required = true)String planId,
-                                          @ApiParam(name = "searchTask", value = "快速查找任务：（1、我的任务，2、健康教育，3、复诊，4、随访）", required = false)
+                                          @ApiParam(name = "searchTask", value = "快速查找任务：（1、我的任务，2、健康教育，3、健康指导，4、随访，5、复诊）", required = false)
                                           @RequestParam(value = "searchTask", required = false)Integer searchTask,
                                           @ApiParam(name = "status", value = "任务状态（0未完成，1已完成，2已预约）", required = false)
                                           @RequestParam(value = "status", required = false)Integer status,
@@ -103,7 +103,7 @@ public class RehabilitationManageController {
                                          @RequestParam(value = "executeEndTime", required = true)String executeEndTime,
                                          @ApiParam(name = "planId", value = "计划id", required = true)
                                          @RequestParam(value = "planId", required = true)String planId,
-                                         @ApiParam(name = "searchTask", value = "快速查找任务：（1、我的任务，2、健康教育，3、复诊，4、随访）", required = false)
+                                         @ApiParam(name = "searchTask", value = "快速查找任务：（1、我的任务，2、健康教育，3、健康指导，4、随访，5、复诊）", required = false)
                                          @RequestParam(value = "searchTask", required = false)Integer searchTask,
                                          @ApiParam(name = "status", value = "任务状态（0未完成，1已完成，2已预约）", required = false)
                                          @RequestParam(value = "status", required = false)Integer status,
@@ -295,10 +295,8 @@ public class RehabilitationManageController {
                                                            @ApiParam(name = "image", value = "相关记录图片，json格式", required = true)@RequestParam(value = "image", required = false)String image){
         try {
             Map<String,Object> map = rehabilitationManageService.updateNodeAndRelationRecordImg(node,image,planDetailId);
-            if(Integer.parseInt(String.valueOf(map.get("count")))>1){
-                return ObjEnvelop.getSuccess(SpecialistMapping.api_success,map);
-            }
-            return ObjEnvelop.getError("update error!");
+            return ObjEnvelop.getSuccess(SpecialistMapping.api_success,map);
+
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -340,6 +338,53 @@ public class RehabilitationManageController {
                                    @RequestParam(value = "patientCode", required = true)String patientCode){
         try {
             return rehabilitationManageService.planListByPatient(patientCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.rehabilitation.patientCount)
+    @ApiOperation(value = "医生已计划数，已完成计划数（居民数）")
+    public ObjEnvelop patientCount(@ApiParam(name = "doctorCode", value = "医生code", required = true)
+                               @RequestParam(value = "doctorCode", required = true)String doctorCode){
+        try {
+            return rehabilitationManageService.patientCount(doctorCode);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = SpecialistMapping.rehabilitation.dailyJobReserve)
+    @ApiOperation(value = "10天、7天、5天、当天康复服务预约复诊通知")
+    public ObjEnvelop dailyJobReserve(@ApiParam(name = "startTime", value = "开始时间（格式：yyyy-MM-dd HH:mm:ss）", required = true)
+                               @RequestParam(value = "startTime", required = true)String startTime,
+                               @ApiParam(name = "endTime", value = "结束时间（格式：yyyy-MM-dd HH:mm:ss）", required = true)
+                               @RequestParam(value = "endTime", required = true)String endTime){
+        try {
+            return rehabilitationManageService.dailyJobReserve(startTime,endTime);
+        }catch (Exception e){
+            e.printStackTrace();
+            tracer.getCurrentSpan().logEvent(e.getMessage());
+            return ObjEnvelop.getError(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 查询康复服务项目
+     * @param ids
+     * @return
+     */
+    @PostMapping(value = SpecialistMapping.rehabilitation.selectByIds)
+    @ApiOperation(value = "查询康复服务项目")
+    public ObjEnvelop selectByIds( @ApiParam(name = "ids",value = "康复服务套餐明细表ids")
+            @RequestParam(value = "ids",required = true)String ids){
+        try {
+            return rehabilitationManageService.selectByIds(ids);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());

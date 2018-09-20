@@ -9,6 +9,7 @@ import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.specialist.SpecialistMapping;
 import com.yihu.jw.service.SpecialistHospitalServiceItemService;
+import com.yihu.jw.util.DataUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -49,6 +50,7 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
             List<HospitalServiceItemDO> hospitalServiceItemDOS = new ArrayList<>();
             for (int i =0 ; i<array.size();i++){
                 JSONObject object = array.getJSONObject(i);
+                object.replace("expense", DataUtils.doubleToInt(object.getDouble("expense")));
                 HospitalServiceItemDO hospitalServiceItemDO = toEntity(object.toJSONString(),HospitalServiceItemDO.class);
                 hospitalServiceItemDOS.add(hospitalServiceItemDO);
             }
@@ -78,7 +80,22 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
                     hospitalList.add(array.getString(i));
                 }
             }
-            return specialistHospitalServiceItemService.selectByHospital(hospitalList);
+            MixEnvelop envelop = specialistHospitalServiceItemService.selectByHospital(hospitalList);
+            List<HospitalServiceItemDO> hospitalServiceItemDOList = envelop.getDetailModelList();
+            JSONArray array1 = new JSONArray();
+            if (hospitalServiceItemDOList != null && hospitalServiceItemDOList.size()!=0){
+                for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
+                    JSONObject object = (JSONObject) JSONObject.toJSON(hospitalServiceItemDO);
+                    object.replace("expense", DataUtils.integerTransferDouble(hospitalServiceItemDO.getExpense()));
+                    JSONObject jsonObject = object.getJSONObject("specialistServiceItemDO");
+                    jsonObject.replace("threeHospitals", DataUtils.integerTransferDouble(hospitalServiceItemDO.getSpecialistServiceItemDO().getThreeHospitals()));
+                    jsonObject.replace("twoHospitals",DataUtils.integerTransferDouble(hospitalServiceItemDO.getSpecialistServiceItemDO().getTwoHospitals()));
+                    jsonObject.replace("oneHospitals",DataUtils.integerTransferDouble(hospitalServiceItemDO.getSpecialistServiceItemDO().getOneHospitals()));
+                    array1.add(object);
+                }
+            }
+            envelop.setDetailModelList(array1);
+            return envelop;
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -103,7 +120,22 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
             for (int i =0 ;i<array.size();i++){
                 idList.add(array.getString(i));
             }
-            return specialistHospitalServiceItemService.selectById(idList);
+            MixEnvelop envelop = specialistHospitalServiceItemService.selectById(idList);
+            List<HospitalServiceItemDO> hospitalServiceItemDOList = envelop.getDetailModelList();
+            JSONArray array1 = new JSONArray();
+            if (hospitalServiceItemDOList != null && hospitalServiceItemDOList.size()!=0){
+                for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOList){
+                    JSONObject object = (JSONObject) JSONObject.toJSON(hospitalServiceItemDO);
+                    object.replace("expense", DataUtils.integerTransferDouble(hospitalServiceItemDO.getExpense()));
+                    JSONObject jsonObject = object.getJSONObject("specialistServiceItemDO");
+                    jsonObject.replace("threeHospitals", DataUtils.integerTransferDouble(hospitalServiceItemDO.getSpecialistServiceItemDO().getThreeHospitals()));
+                    jsonObject.replace("twoHospitals",DataUtils.integerTransferDouble(hospitalServiceItemDO.getSpecialistServiceItemDO().getTwoHospitals()));
+                    jsonObject.replace("oneHospitals",DataUtils.integerTransferDouble(hospitalServiceItemDO.getSpecialistServiceItemDO().getOneHospitals()));
+                    array1.add(object);
+                }
+            }
+            envelop.setDetailModelList(array1);
+            return envelop;
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -179,7 +211,7 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
                                               @ApiParam(name = "serviceItemName", value = "服务项目名称")
                                               @RequestParam(name = "serviceItemName",required = false)String serviceItemName){
         try {
-            return specialistHospitalServiceItemService.selectByHospital1(hospital,docHospital,serviceItemName);
+            return  specialistHospitalServiceItemService.selectByHospital1(hospital,docHospital,serviceItemName);
         }catch (Exception e){
             e.printStackTrace();
             tracer.getCurrentSpan().logEvent(e.getMessage());
@@ -201,7 +233,9 @@ public class SpecialistHospitalServiceItemController extends EnvelopRestEndpoint
             JSONArray array = JSONArray.parseArray(hospitalItems);
             List<HospitalServiceItemDO> hospitalServiceItemDOList = new ArrayList<>();
             for (int i = 0;i<array.size();i++){
-                HospitalServiceItemDO hospitalServiceItemDO = toEntity(array.getJSONObject(i).toJSONString(),HospitalServiceItemDO.class);
+                JSONObject object = array.getJSONObject(i);
+                object.replace("expense", DataUtils.doubleToInt(object.getDouble("expense")));
+                HospitalServiceItemDO hospitalServiceItemDO = toEntity(object.toJSONString(),HospitalServiceItemDO.class);
                 hospitalServiceItemDOList.add(hospitalServiceItemDO);
             }
             return specialistHospitalServiceItemService.importData(hospitalServiceItemDOList);
