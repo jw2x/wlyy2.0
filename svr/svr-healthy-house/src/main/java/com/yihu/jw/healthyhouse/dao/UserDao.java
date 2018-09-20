@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface UserDao extends PagingAndSortingRepository<User, String>, JpaSpecificationExecutor<User> {
 
+    @Query("from User u where u.id=?1 and u.activated<>0 ")
+    User findById(String id);
+
     @Query("from User u where u.loginCode=?1 and u.activated<>0 ")
     User findByLoginCode(String loginCode);
 

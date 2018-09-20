@@ -32,6 +32,10 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
+    public User findById(String id){
+        return userDao.findById(id);
+    }
+
     public User findByCode(String code){
         return userDao.findByLoginCode(code);
     }
@@ -49,13 +53,24 @@ public class UserService {
      * @return
      * @throws ManageException
      */
-    public Page<User> userList(Integer page, Integer pageSize, Map<String,String> map)throws ManageException {
+    public Page<User> userList(Integer page, Integer pageSize, Map<String,String> map,String order)throws ManageException {
+         order = order == null ? "ASC" :order;
         // 排序
-        Sort sort = new Sort(Sort.Direction.DESC, "modifyDate");
+        Sort sort = new Sort(Sort.Direction.DESC, "facilityUsedCount");
         // 分页信息
-        PageRequest pageRequest = new PageRequest(page, pageSize, sort);
+        PageRequest pageRequest = new PageRequest(page - 1, pageSize, sort);
         // 设置查询条件
         Map<String, SearchFilter> filters = new HashMap<String, SearchFilter>();
+        // 所在市区
+        String cityCode = map.get("cityCode");
+        if (!StringUtils.isEmpty(cityCode)) {
+            filters.put("cityCode", new SearchFilter("cityCode", SearchFilter.Operator.EQ, cityCode));
+        }
+        // 激活状态
+        String activated = map.get("activated");
+        if (!StringUtils.isEmpty(activated)) {
+            filters.put("activated", new SearchFilter("activated", SearchFilter.Operator.EQ, activated));
+        }
         // 用户名称
         String name = map.get("name");
         if (!StringUtils.isEmpty(name)) {
@@ -66,8 +81,7 @@ public class UserService {
         if (!StringUtils.isEmpty(mobile)) {
             filters.put("telephone", new SearchFilter("telephone", SearchFilter.Operator.LIKE, mobile));
         }
-        // 激活状态
-        filters.put("activated", new SearchFilter("activated", SearchFilter.Operator.EQ, HouseUserContant.activated_active));
+
         Specification<User> spec = DynamicSpecifications.bySearchFilter(filters.values(), User.class);
         return userDao.findAll(spec, pageRequest);
     }
@@ -79,16 +93,15 @@ public class UserService {
      * @param userCode     修改者code
      */
     @Transactional
-    public void updateStatus(String codes, String userCode,Integer status) {
+    public void updateStatus(String id, String userCode,Integer status) {
         User user = userDao.findByLoginCode(userCode);
         String userName = user.getName();
-        for(String code:codes.split(",")){
-            User user1 = findByCode(code);
+            User user1 = findById(id);
             user1.setActivated(status);
             user1.setUpdateUserName(userName);
             user1.setUpdateUser(userCode);
             userDao.save(user1);
-        }
+
     }
 
     /**
@@ -100,7 +113,6 @@ public class UserService {
      */
     public Envelop saveOrUpdate(User user, String userCode) throws ManageException {
         User loginUser = userDao.findByLoginCode(userCode);
-        String userName = loginUser.getName();
         if(user.getId()==null){//保存
             //判断登陆账号是否存在
             User user1 = userDao.findByLoginCode(userCode);
@@ -117,13 +129,11 @@ public class UserService {
             userDao.save(user);
             return Envelop.getSuccess("保存成功");
         }else{//修改
-            User user1 = findByCode(user.getLoginCode());
-//            String psd = MD5.GetMD5Code(oldPsd + user1.getSalt());
-//            if(!user1.getPassword().equals(psd)){//判断密码是否相同
-//                throw new ManageException("原密码错误");
-//            }
+            if (loginUser!=null) {
+                String userName = loginUser.getName();
+                user.setUpdateUserName(userName);
+            }
             user.setUpdateUser(userCode);
-            user.setUpdateUserName(userName);
             userDao.save(user);
             return Envelop.getSuccess("修改成功");
         }

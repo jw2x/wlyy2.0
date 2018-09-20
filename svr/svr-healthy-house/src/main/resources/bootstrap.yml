@@ -12,7 +12,7 @@ spring:
 
 ---
 spring:
-  profiles: dev
+  profiles: jwdev
 
 ##发现服务的地址
 eureka:

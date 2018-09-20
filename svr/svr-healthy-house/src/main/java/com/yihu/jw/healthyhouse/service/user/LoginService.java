@@ -31,7 +31,6 @@ public class LoginService {
     private UserService userService;
     @Autowired
     private RestTemplate restTemplate;
-    private String clientId;
     /**
      *  手机验证码方式登录并自动注册
      * @param loginCode
@@ -49,18 +48,17 @@ public class LoginService {
             user.setName(loginCode);
             user.setTelephone(loginCode);
             user.setPassword(LoginInfo.DEFAULT_PASSWORD);
-            userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_PHONE);//设置默认密码123456
         }else {
             //已注册用户更改用户状态
             user.setActivated(HouseUserContant.activated_active);
-            userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_PHONE);
         }
         request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
         request.getSession().setAttribute(LoginInfo.TOKEN, ""); //TODO token是否添加
         request.getSession().setAttribute(LoginInfo.LOGIN_NAME, user.getName());
         request.getSession().setAttribute(LoginInfo.LOGIN_CODE, user.getLoginCode());
         request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
-
+        user.setLastLoginTime(new Date());
+        userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_PHONE);
         return user;
     }
 
@@ -73,12 +71,12 @@ public class LoginService {
      * @throws Exception
      */
     @Transactional(noRollbackForClassName = "ManageException")
-    public User iJklogin(HttpServletRequest request, String loginCode, String password) throws ManageException {
+    public User iJklogin(HttpServletRequest request,String clientId, String loginCode, String password) throws ManageException {
         //判断登陆信息是否正确
         User user = userService.findByCode(loginCode);
         if (user == null) {
             //i健康登录认证
-            Map<String, Object> data = oauthIjkLogin(loginCode, password);
+            Map<String, Object> data = oauthIjkLogin(clientId,loginCode, password);
             if (data!=null ) {
                 user = new User();
                 user.setPassword(password);
@@ -87,7 +85,6 @@ public class LoginService {
                 user.setGender((String) data.get("gender"));
                 user.setIdCardNo((String) data.get("idcard"));
                 user.setTelephone((String) data.get("mobile"));
-                userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_IJK);
 
             }else {
                 String message = "账号不存在";
@@ -104,7 +101,8 @@ public class LoginService {
         request.getSession().setAttribute(LoginInfo.LOGIN_NAME, user.getName());
         request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
         user.setActivated(HouseUserContant.activated_active);
-        userService.saveOrUpdate(user,"systemLogin");
+        user.setLastLoginTime(new Date());
+        userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_IJK);
         return user;
     }
 
@@ -116,7 +114,7 @@ public class LoginService {
      * @return
      * @throws ManageException
      */
-    public Map<String, Object> oauthIjkLogin(String username, String password) throws ManageException{
+    public Map<String, Object> oauthIjkLogin(String clientId,String username, String password) throws ManageException{
         HashMap<String, Object> userDetail = null;
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -138,16 +136,15 @@ public class LoginService {
 
     /**
      *  登出
-     * @param username
+     * @param loginCode
      * @param password
      * @return
      * @throws Exception
      */
     @Transactional(noRollbackForClassName = "ManageException")
-    public User logout(HttpServletRequest request, String username, String password) throws ManageException {
-        Map<String, List> data = new HashMap<>();
+    public User logout(HttpServletRequest request, String loginCode, String password) throws ManageException {
         //判断登陆信息是否正确
-        User user = userService.findByCode(username);
+        User user = userService.findByCode(loginCode);
         if (user == null) {
             //保存登陆信息
             String message = "账号不存在";
@@ -159,7 +156,7 @@ public class LoginService {
             throw new ManageException(message);
         }
         request.getSession().removeAttribute(LoginInfo.IS_LOGIN);
-        request.getSession().removeAttribute(LoginInfo.TOKEN); //TODO token是否添加
+        request.getSession().removeAttribute(LoginInfo.TOKEN);
         request.getSession().removeAttribute(LoginInfo.LOGIN_NAME);
         request.getSession().removeAttribute(LoginInfo.USER_ID);
         user.setActivated(HouseUserContant.activated_offline);

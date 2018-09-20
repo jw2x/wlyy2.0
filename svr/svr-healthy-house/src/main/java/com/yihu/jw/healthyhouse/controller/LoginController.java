@@ -37,7 +37,6 @@ public class LoginController extends EnvelopRestEndpoint {
     private LoginService loginService;
     @Autowired
     private RestTemplate restTemplate;
-    private String clientId;
     @Autowired
     private WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
 
@@ -86,10 +85,11 @@ public class LoginController extends EnvelopRestEndpoint {
 
     @GetMapping("/mobile/login")
     @ApiOperation(value = "手机登录注册")
-    public ObjEnvelop register(
+    public ObjEnvelop mobileLogin(
             HttpServletRequest request,
+            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
-            @ApiParam(name = "username", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
+            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
         if (wlyyRedisVerifyCodeService.verification(clientId, username, captcha)) {
             User user = loginService.phoneLogin(request,username);
             ObjEnvelop envelop = new ObjEnvelop();
@@ -107,9 +107,10 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "i健康用户登陆")
     public ObjEnvelop ijkLogin(
             HttpServletRequest request,
+            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
             @ApiParam(name = "password", value = "密码", required = true)@RequestParam(required = true, name = "password") String password) throws ManageException {
-        User user = loginService.iJklogin(request,username, password);
+        User user = loginService.iJklogin(request,clientId,username, password);
         if (user !=null) {
             ObjEnvelop envelop = new ObjEnvelop();
             envelop.setStatus(200);

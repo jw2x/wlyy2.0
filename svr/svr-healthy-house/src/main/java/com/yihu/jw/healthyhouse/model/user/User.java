@@ -6,7 +6,6 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -32,7 +31,7 @@ public class User extends UuidIdentityEntityWithOperator {
     @Column(name = "telephone", nullable = false)
     private String telephone;
     @Column(name = "last_login_time", length = 0)
-    private String lastLoginTime;
+    private Date lastLoginTime;
     @Column(name = "img_remote_path")
     private String imgRemotePath;   //头像地址
     @Column(name = "user_type", nullable = false)
@@ -46,6 +45,8 @@ public class User extends UuidIdentityEntityWithOperator {
 
     @Column(name = "salt")
     private String salt; //加密种子
+    @Column(name = "facility_used_count")
+    private String facilityUsedCount;//设施使用次数
 
 
     public String getLoginCode() {
@@ -104,11 +105,11 @@ public class User extends UuidIdentityEntityWithOperator {
         this.telephone = telephone;
     }
 
-    public String getLastLoginTime() {
+    public Date getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLoginTime(String lastLoginTime) {
+    public void setLastLoginTime(Date lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
 
@@ -160,5 +161,11 @@ public class User extends UuidIdentityEntityWithOperator {
         this.salt = salt;
     }
 
+    public String getFacilityUsedCount() {
+        return facilityUsedCount;
+    }
 
+    public void setFacilityUsedCount(String facilityUsedCount) {
+        this.facilityUsedCount = facilityUsedCount;
+    }
 }
