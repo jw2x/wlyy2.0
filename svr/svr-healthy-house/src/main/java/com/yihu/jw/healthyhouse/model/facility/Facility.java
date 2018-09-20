@@ -12,7 +12,7 @@ import javax.persistence.*;
  * @created 2018.09.19
  */
 @Entity
-@Table(name = "facilities")
+@Table(name = "facility")
 @Access(value = AccessType.PROPERTY)
 public class Facility extends UuidIdentityEntityWithOperator {
     //设施编码
@@ -55,8 +55,8 @@ public class Facility extends UuidIdentityEntityWithOperator {
     @Column(name = "street")
     private String street;
     //服务时间：周一至周天，用逗号隔开
-    @Column(name = "service_date")
-    private String serviceDate ;
+    @Column(name = "service_day")
+    private String serviceDay ;
     //服务开始时间：默认00:00:00
     @Column(name = "service_start_time")
     private String serviceStartTime;
@@ -64,8 +64,8 @@ public class Facility extends UuidIdentityEntityWithOperator {
     @Column(name = "service_end_time")
     private String serviceEndTime;
     // 运营状态：0开放，1关闭，2损坏，3维修
-    @Column(name = "state")
-    private String state;
+    @Column(name = "status")
+    private String status;
     //  设施经度
     @Column(name = "longitude")
     private double longitude;
@@ -175,12 +175,12 @@ public class Facility extends UuidIdentityEntityWithOperator {
         this.street = street;
     }
 
-    public String getServiceDate() {
-        return serviceDate;
+    public String getServiceDay() {
+        return serviceDay;
     }
 
-    public void setServiceDate(String serviceDate) {
-        this.serviceDate = serviceDate;
+    public void setServiceDay(String serviceDay) {
+        this.serviceDay = serviceDay;
     }
 
     public String getServiceStartTime() {
@@ -199,12 +199,12 @@ public class Facility extends UuidIdentityEntityWithOperator {
         this.serviceEndTime = serviceEndTime;
     }
 
-    public String getState() {
-        return state;
+    public String getStatus() {
+        return status;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public double getLongitude() {
