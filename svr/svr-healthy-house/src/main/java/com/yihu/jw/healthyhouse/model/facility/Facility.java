@@ -64,8 +64,8 @@ public class Facility extends UuidIdentityEntityWithOperator {
     @Column(name = "service_end_time")
     private String serviceEndTime;
     // 运营状态：0开放，1关闭，2损坏，3维修
-    @Column(name = "state")
-    private String state;
+    @Column(name = "status")
+    private String status;
     //  设施经度
     @Column(name = "longitude")
     private double longitude;
@@ -199,12 +199,12 @@ public class Facility extends UuidIdentityEntityWithOperator {
         this.serviceEndTime = serviceEndTime;
     }
 
-    public String getState() {
-        return state;
+    public String getStatus() {
+        return status;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public double getLongitude() {
