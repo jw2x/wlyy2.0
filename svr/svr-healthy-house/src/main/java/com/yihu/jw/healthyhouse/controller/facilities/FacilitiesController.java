@@ -46,8 +46,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @RequestParam(value = "size", required = false) Integer size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
-        List<Facility> facilityList = facilityService.search(fields, filters, sorts, page, size);
-        return success(facilityList, facilityList.size(), page, size);
+         List<Facility> facilityList = facilityService.search(fields, filters, sorts, page, size);
+        return success(facilityList, (null==facilityList)?0:facilityList.size(), page, size);
     }
 
     @ApiOperation(value = "创建设施")
