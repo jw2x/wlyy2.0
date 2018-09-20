@@ -19,10 +19,12 @@ public class SwaggerDocs {
         //1.请求 http://ip:port/swagger-resources获取group
         String group = "Default";
         //2.定义请求地址 new URL("http://ip:port/v2/api-docs?group=" + groupName)
-        URL remoteSwaggerFile = new URL("http://127.0.0.1:10020/v2/api-docs?group=" + group); //项目的swagger-ui地址
+        //项目的swagger-ui地址
+        URL remoteSwaggerFile = new URL("http://127.0.0.1:10020/v2/api-docs?group=" + group);
         //3.定义文件输出路径
         String prefix = Thread.currentThread().getContextClassLoader().getResource("").getPath();
-        Path outputFile = Paths.get(prefix.substring(prefix.lastIndexOf(":") + 1, prefix.indexOf("target") - 1) + "/build/" + group); //文档输出地址
+        //文档输出地址
+        Path outputFile = Paths.get(prefix.substring(prefix.lastIndexOf(":") + 1, prefix.indexOf("target") - 1) + "/build/" + group);
 
         Swagger2MarkupConfig config = new Swagger2MarkupConfigBuilder()
                 .withMarkupLanguage(MarkupLanguage.ASCIIDOC)

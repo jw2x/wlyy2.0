@@ -1,43 +1,48 @@
-package com.yihu.jw.entity.base.user;
+package com.yihu.jw.entity.base.role;
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
-import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * BaseMenu entity. @author MyEclipse Persistence Tools
+ * @author progr1mmer
+ * @date 2018/09/20
  */
 @Entity
 @Table(name = "base_menu")
-public class BaseMenuDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
+public class MenuDO extends UuidIdentityEntityWithOperator {
 
 	private String saasId;
-	private String parentId; //父级ID
-	private String name; //名称
-	private String url; //请求路径
-	private String method; //请求方式 get post
-	private Integer sort; //排序
-	private Integer status; //状态
-	private String remark; //备注
-
-
-	// Constructors
-	/** default constructor */
-	public BaseMenuDO() {
-	}
-
-	/** minimal constructor */
-	public BaseMenuDO(String id, Timestamp createTime, Timestamp updateTime) {
-		this.id = id;
-		this.createTime = createTime;
-		this.updateTime = updateTime;
-	}
-
-
-	// Property accessors
+	/**
+	 * 名称
+	 */
+	private String name;
+	/**
+	 * 请求路径
+	 */
+	private String url;
+	/**
+	 * 请求方式
+	 */
+	private String method;
+	/**
+	 * 排序
+	 */
+	private Integer sort;
+	/**
+	 * 父级ID
+	 */
+	private String parentId;
+	/**
+	 * 状态
+	 */
+	private Integer status;
+	/**
+	 * 备注
+	 */
+	private String remark;
 
 	@Column(name = "saas_id", length = 50)
 	public String getSaasId() {
@@ -93,7 +98,7 @@ public class BaseMenuDO extends UuidIdentityEntityWithOperator implements java.i
 		this.remark = remark;
 	}
 
-	@Column(name = "url", length = 255)
+	@Column(name = "url")
 	public String getUrl() {
 		return url;
 	}
@@ -102,7 +107,7 @@ public class BaseMenuDO extends UuidIdentityEntityWithOperator implements java.i
 		this.url = url;
 	}
 
-	@Column(name = "method", length = 255)
+	@Column(name = "method")
 	public String getMethod() {
 		return method;
 	}

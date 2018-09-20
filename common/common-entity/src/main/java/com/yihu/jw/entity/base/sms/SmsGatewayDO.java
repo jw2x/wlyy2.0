@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.sms;
 
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,11 +9,12 @@ import javax.persistence.Table;
 
 /**
  * Entity - 短信网关
- * Created by progr1mmer on 2018/8/14.
+ * @author progr1mmer
+ * @date Created on 2018/8/14.
  */
 @Entity
 @Table(name = "base_sms_gateway")
-public class SmsGatewayDO extends UuidIdentityEntity {
+public class SmsGatewayDO extends UuidIdentityEntityWithOperator {
 
 	/**
 	 * 0-禁用，1-可用，2-不可用

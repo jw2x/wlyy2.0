@@ -1,6 +1,6 @@
 package com.yihu.jw.restmodel.base.message;
 
-import com.yihu.jw.restmodel.UuidIdentityVO;
+import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by progr1mmer on 2018/8/14.
  */
 @ApiModel(value = "MqMessageSubscriberVO", description = "基于MQ的消息推送订阅者")
-public class MqMessageSubscriberVO extends UuidIdentityVO {
+public class MqMessageSubscriberVO extends UuidIdentityVOWithOperator {
 
     @ApiModelProperty(value = "SAAS ID", example = "402803ee656498890165649ad2xaaba2")
     private String saasId;

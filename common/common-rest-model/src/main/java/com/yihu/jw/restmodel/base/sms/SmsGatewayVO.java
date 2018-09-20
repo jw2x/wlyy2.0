@@ -1,7 +1,7 @@
 package com.yihu.jw.restmodel.base.sms;
 
 import com.yihu.jw.entity.base.sms.SmsGatewayDO;
-import com.yihu.jw.restmodel.UuidIdentityVO;
+import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -10,7 +10,7 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by Progr1mmer on 2018/8/27.
  */
 @ApiModel(value = "SmsGatewayVO", description = "短信网关")
-public class SmsGatewayVO extends UuidIdentityVO {
+public class SmsGatewayVO extends UuidIdentityVOWithOperator {
 
     @ApiModelProperty(value = "client id", example = "EwC0iRSrcS")
     private String clientId;

@@ -32,7 +32,7 @@ public class MixEnvelop<T, J> extends Envelop {
     private int currPage = 1;
 
     @ApiModelProperty(value = "每页大小 默认10", example = "15")
-    private int pageSize = 10;
+    private int pageSize = 15;
 
     @ApiModelProperty(value = "总共多少页", example = "2")
     private int totalPage;

@@ -1,6 +1,6 @@
 package com.yihu.jw.entity.base.message;
 
-import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,16 +8,29 @@ import javax.persistence.Table;
 
 /**
  * Entity - 基于MQ的消息推送订阅者
- * Created by progr1mmer on 2018/8/14.
+ * @author progr1mmer
+ * @date Created on 2018/8/14
  */
 @Entity
 @Table(name = "base_mq_message_subscriber")
-public class MqMessageSubscriberDO extends UuidIdentityEntity {
+public class MqMessageSubscriberDO extends UuidIdentityEntityWithOperator {
 
-    private String saasId; //saas id
-    private String topic; //主题
-    private String url; //推送地址
-    private String remark; //备注
+    /**
+     * saas id
+     */
+    private String saasId;
+    /**
+     * 主题
+     */
+    private String topic;
+    /**
+     * 推送地址
+     */
+    private String url;
+    /**
+     * 备注
+     */
+    private String remark;
 
     @Column(name = "saas_id", nullable = false, length = 50)
     public String getSaasId() {

@@ -1,7 +1,6 @@
 package com.yihu.jw.entity.base.message;
 
-import com.yihu.jw.entity.UuidIdentityEntity;
-import org.springframework.stereotype.Component;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_mq_message")
-public class MqMessageDO extends UuidIdentityEntity {
+public class MqMessageDO extends UuidIdentityEntityWithOperator {
 
     //主题
     private String topic;
