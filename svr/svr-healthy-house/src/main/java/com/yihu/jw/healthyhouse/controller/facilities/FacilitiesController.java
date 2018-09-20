@@ -5,6 +5,7 @@ import com.yihu.jw.healthyhouse.service.facility.FacilityService;
 import com.yihu.jw.restmodel.web.*;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.house.HealthyHouseMapping;
+import com.yihu.jw.util.date.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -35,7 +36,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "获取设施列表", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.PAGE)
-    public PageEnvelop<Facility> getDictionaries(
+    public PageEnvelop<Facility> getFacilities(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
@@ -52,42 +53,47 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "创建设施")
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.CREATE)
-    public ObjEnvelop<Facility> createDictionary(
+    public ObjEnvelop<Facility> createFacilities(
             @ApiParam(name = "facility", value = "设施JSON结构")
-            @RequestBody Facility facility) throws IOException {
+            @RequestParam(value = "facility")String facility,
+            @ApiParam(name = "facilityServerStr", value = "服务字符串，使用‘,’隔开")
+            @RequestParam(value = "facilityServerStr")String facilityServerStr) throws IOException {
+        Facility facility1=toEntity(facility,Facility.class);
+        String[] server=facilityServerStr.split(",");
+
         List<Facility> facilityList = null;
-        if (StringUtils.isEmpty(facility.getCode())) {
+        if (StringUtils.isEmpty(facility1.getCode())) {
             return failed("设施编码不能为空！", ObjEnvelop.class);
         } else {
-            facilityList = facilityService.findByField("code", facility.getCode());
+            facilityList = facilityService.findByField("code", facility1.getCode());
             if (null != facilityList && facilityList.size() > 0) {
                 return failed("设施编码已存在！", ObjEnvelop.class);
             }
         }
-        if (StringUtils.isEmpty(facility.getName())) {
+        if (StringUtils.isEmpty(facility1.getName())) {
             return failed("设施名称不能为空！", ObjEnvelop.class);
         } else {
-            facilityList = facilityService.findByField("name", facility.getName());
+            facilityList = facilityService.findByField("name", facility1.getName());
             if (null != facilityList && facilityList.size() > 0) {
                 return failed("设施名称已存在！", ObjEnvelop.class);
             }
         }
-        if (!(facility.getLongitude() > 0)) {
+        if (!(facility1.getLongitude() > 0)) {
             return failed("设施经度不能为空！", ObjEnvelop.class);
         }
-        if (!(facility.getLatitude() > 0)) {
+        if (!(facility1.getLatitude() > 0)) {
             return failed("设施纬度不能为空！", ObjEnvelop.class);
         }
-        if (StringUtils.isEmpty(facility.getCategory().toString())) {
+        if (StringUtils.isEmpty(facility1.getCategory().toString())) {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
-        Facility Facility = facilityService.save(facility);
+        Facility Facility = facilityService.save(facility1);
         return success(Facility);
     }
 
     @ApiOperation(value = "获取设施")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.GET_FACILITIES_BY_ID)
-    public ObjEnvelop<Facility> getDictionary(
+    public ObjEnvelop<Facility> getFacilitie(
             @ApiParam(name = "id", value = "设施ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
         Facility facility = facilityService.findById(id);
@@ -99,7 +105,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "获取设施")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.GET_FACILITIES_BY_FIELD)
-    public ListEnvelop<Facility> getDictionaryByPhoneticCode(
+    public ListEnvelop<Facility> getFacilitiesByfield(
             @ApiParam(name = "field", value = "查找字段名", required = true)
             @RequestParam(value = "field") String field,
             @ApiParam(name = "value", value = "检索值")
@@ -110,7 +116,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "更新设施")
     @PutMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ObjEnvelop<Facility> updateDictionary(
+    public ObjEnvelop<Facility> updateFacilities(
             @ApiParam(name = "facility", value = "设施JSON结构")
             @RequestBody Facility facility) throws Exception {
         if (StringUtils.isEmpty(facility.getCode())) {
@@ -134,13 +140,33 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "删除设施")
     @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.DELETE)
-    public Envelop deleteDictionary(
+    public Envelop deleteFacilities(
             @ApiParam(name = "facilitiesId", value = "设施ID")
             @RequestParam(value = "facilitiesId") String facilitiesId) throws Exception {
         Facility facility = new Facility();
         facility.setId(facilitiesId);
         facilityService.delete(facility);
         return success("success");
+    }
+
+    @ApiOperation(value = "设施统计：设施总数/今日新增设施")
+    @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.COUNT_FACILITIES)
+    public ObjEnvelop<Long> countFacilities(
+            @ApiParam(name = "totalCountFlag", value = "设施总数:true;今日新增设施:false",defaultValue = "true")
+            @RequestParam(value = "totalCountFlag") boolean totalCountFlag) throws Exception {
+        String filters="";
+        long count;
+        //设施总数:true
+        if (totalCountFlag) {
+            count= facilityService.getCount(filters);
+        } else {
+            //今日新增设施:false
+            String todayStart = DateUtil.getStringDateShort()+" "+"00:00:00";
+            String todayEnd = DateUtil.getStringDateShort()+" "+"23:59:59";
+            filters= "createTime>="+todayStart+";createTime<="+todayEnd;
+            count= facilityService.getCount(filters);
+        }
+        return success("success", count);
     }
 
 
