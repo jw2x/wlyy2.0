@@ -11,11 +11,11 @@
 	</parent>
 
 	<groupId>com.yihu.jw</groupId>
-	<artifactId>healthy-house</artifactId>
+	<artifactId>svr-healthy-house</artifactId>
 	<version>${parent.version}</version>
 	<packaging>jar</packaging>
 
-	<name>healthy-house</name>
+	<name>svr-healthy-house</name>
 	<description>healthy-house for jw2.0</description>
 
 
@@ -125,5 +125,23 @@
 
 	</dependencies>
 
-
+	<build>
+		<finalName>svr-healthy-house</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.yihu.HealthyHouseApplication</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
