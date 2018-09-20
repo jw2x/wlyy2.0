@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_role_menu")
-public class BaseRoleMenuDO extends IntegerIdentityEntity {
+public class RoleMenuDO extends IntegerIdentityEntity {
 
 	/**
 	 * 角色ID

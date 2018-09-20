@@ -161,13 +161,13 @@ public abstract class EnvelopRestEndpoint {
     }
 
     protected <T, J> MixEnvelop<T, J> success(String message, int status, List<T> contents, J obj) {
-        return success(message, status, contents, obj, contents.size(), 1, contents.size());
+        return success(message, status, contents, obj, contents.size(), 1, contents.size() != 0 ? contents.size() : 15);
     }
 
     protected <T, J, _T, _J> MixEnvelop<_T, _J> success(String message, int status, List<T> contents, J obj, Class<_T> targetContents, Class<_J> targetObj) {
         List<_T> _contents = convertToModels(contents, new ArrayList<>(contents.size()), targetContents);
         _J _obj = convertToModel(obj, targetObj);
-        return success(message, status, _contents, _obj, _contents.size(), 1, _contents.size());
+        return success(message, status, _contents, _obj, _contents.size(), 1, _contents.size() != 0 ? _contents.size() : 15);
     }
 
     protected <T, J> MixEnvelop<T, J> success(String message, int status, List<T> contents, J obj, int totalCount, int currPage, int pageSize) {
