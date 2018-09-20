@@ -41,6 +41,10 @@ public class UserDO extends UuidIdentityEntityWithOperator {
     private String mobile;
     //邮箱
     private String email;
+    /**
+     * 简化模式获取token所需要的凭证
+     */
+    private String ak;
     //是否可用
     private Boolean enabled;
     //是否锁定
@@ -122,6 +126,15 @@ public class UserDO extends UuidIdentityEntityWithOperator {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Column(name = "ak", length = 200)
+    public String getAk() {
+        return ak;
+    }
+
+    public void setAk(String ak) {
+        this.ak = ak;
     }
 
     @Column(name = "enabled", nullable = false)

@@ -1,13 +1,12 @@
-package com.yihu.jw.restmodel.base.user;
+package com.yihu.jw.restmodel.base.customize;
 
 import com.yihu.jw.restmodel.IntegerIdentityVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-
 
 /**
+ * VO - 用户取消订阅的模块或功能
  * @author progr1mmer
  * @date Created on 2018/9/11.
  */
@@ -18,7 +17,7 @@ public class UserHideModuleFunctionVO extends IntegerIdentityVO {
      * 用户ID
      */
     @ApiModelProperty(value = "用户ID", example = "402303ee65634dfs0234sf9a324a0023")
-    private String userId;
+    private String objId;
     /**
      * 模块ID
      */
@@ -30,16 +29,14 @@ public class UserHideModuleFunctionVO extends IntegerIdentityVO {
     @ApiModelProperty(value = "功能ID", example = "402303ee65634dfs0234sf9a324a0025")
     private Integer functionId;
 
-    @Column(name = "user_id", nullable = false, length = 50)
-    public String getUserId() {
-        return userId;
+    public String getObjId() {
+        return objId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setObjId(String objId) {
+        this.objId = objId;
     }
 
-    @Column(name = "module_id", nullable = false)
     public Integer getModuleId() {
         return moduleId;
     }
@@ -48,7 +45,6 @@ public class UserHideModuleFunctionVO extends IntegerIdentityVO {
         this.moduleId = moduleId;
     }
 
-    @Column(name = "function_id")
     public Integer getFunctionId() {
         return functionId;
     }

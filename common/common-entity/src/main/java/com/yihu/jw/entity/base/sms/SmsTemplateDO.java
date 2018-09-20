@@ -1,6 +1,7 @@
 package com.yihu.jw.entity.base.sms;
 
 import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "base_sms_template")
-public class SmsTemplateDO extends UuidIdentityEntity {
+public class SmsTemplateDO extends UuidIdentityEntityWithOperator {
 
     /**
      * 0 - 注册

@@ -89,15 +89,18 @@ public class UserService {
 
     /**
      * 更改用户状态
-     * @param codes        待删除code
+     * @param id            待删除id
      * @param userCode     修改者code
-     */
+     * @param status        更改状态
+     * @param reason        更改状态原因
+     * */
     @Transactional
-    public void updateStatus(String id, String userCode,Integer status) {
+    public void updateStatus(String id, String userCode,Integer status,String reason) {
         User user = userDao.findByLoginCode(userCode);
         String userName = user.getName();
             User user1 = findById(id);
             user1.setActivated(status);
+            user1.setActivatedContent(reason);
             user1.setUpdateUserName(userName);
             user1.setUpdateUser(userCode);
             userDao.save(user1);
@@ -138,4 +141,8 @@ public class UserService {
             return Envelop.getSuccess("修改成功");
         }
     }
+
+
+
+
 }

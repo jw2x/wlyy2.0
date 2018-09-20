@@ -6,7 +6,8 @@ import zipkin.server.internal.EnableZipkinServer;
 
 
 /**
- * Created by chenweida on 2017/5/18.
+ * @author chenweida
+ * @date Created on 2017/5/18.
  */
 @SpringBootApplication
 @EnableZipkinServer

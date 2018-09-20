@@ -7,6 +7,7 @@ import com.yihu.jw.healthyhouse.service.user.LoginService;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import java.util.Map;
  * @author HZY
  * @created 2018/9/18 19:55
  */
+@Api(value = "LoginController", description = "登录", tags = {"登录"})
 @RestController
 public class LoginController extends EnvelopRestEndpoint {
 
@@ -40,6 +42,7 @@ public class LoginController extends EnvelopRestEndpoint {
     @Autowired
     private WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
 
+    /******************************************    用户相关    **********************************/
     /**
      * 获取验证码
      * @param parameters
@@ -135,5 +138,11 @@ public class LoginController extends EnvelopRestEndpoint {
             return ObjEnvelop.getError("登出成功:" + e.getMessage(), -1);
         }
     }
+
+
+    /***************************  管理员相关 **************************************/
+
+
+
 
 }

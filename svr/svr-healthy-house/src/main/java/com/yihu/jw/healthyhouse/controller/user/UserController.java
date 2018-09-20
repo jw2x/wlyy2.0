@@ -9,6 +9,7 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.Map;
  * @author HZY
  * @created 2018/9/19 17:29
  */
+@Api(value = "UserController", description = "用户信息", tags = {"用户"})
 @RequestMapping("/user")
 @RestController
 public class UserController  extends EnvelopRestEndpoint {
@@ -72,7 +74,7 @@ public class UserController  extends EnvelopRestEndpoint {
     public Envelop activeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "operator", value = "操作者", required = true)@RequestParam(required = true, name = "operator") String operator ) {
-         userService.updateStatus(userId,operator, HouseUserContant.activated_active);
+         userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
         return ObjEnvelop.getSuccess("激活成功");
     }
 
@@ -85,8 +87,10 @@ public class UserController  extends EnvelopRestEndpoint {
     @GetMapping("/freezeUser")
     public Envelop freezeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "reason", value = "冻结原因", required = true)@RequestParam(required = true, name = "reason") String reason ,
             @ApiParam(name = "operator", value = "操作者", required = true)@RequestParam(required = true, name = "operator") String operator ) {
-        userService.updateStatus(userId,operator, HouseUserContant.activated_lock);
+
+        userService.updateStatus(userId,operator, HouseUserContant.activated_lock,reason);
         return ObjEnvelop.getSuccess("冻结成功");
     }
 }

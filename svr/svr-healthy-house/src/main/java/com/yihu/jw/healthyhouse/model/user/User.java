@@ -38,6 +38,8 @@ public class User extends UuidIdentityEntityWithOperator {
     private String userType;         //用户类型
     @Column(name = "activated", nullable = false)
     private Integer activated;       //用户状态 0冻结，1激活
+    @Column(name = "activated_content", nullable = false)
+    private String activatedContent;       //账户冻结原因
     @Column(name = "province_code", nullable = false)
     private String provinceCode;    //省编码
     @Column(name = "city_code", nullable = false)
@@ -167,5 +169,13 @@ public class User extends UuidIdentityEntityWithOperator {
 
     public void setFacilityUsedCount(String facilityUsedCount) {
         this.facilityUsedCount = facilityUsedCount;
+    }
+
+    public String getActivatedContent() {
+        return activatedContent;
+    }
+
+    public void setActivatedContent(String activatedContent) {
+        this.activatedContent = activatedContent;
     }
 }
