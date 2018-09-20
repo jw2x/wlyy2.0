@@ -12,7 +12,7 @@ import javax.persistence.*;
  * @created 2018.09.19
  */
 @Entity
-@Table(name = "facilities")
+@Table(name = "facility")
 @Access(value = AccessType.PROPERTY)
 public class Facility extends UuidIdentityEntityWithOperator {
     //设施编码
