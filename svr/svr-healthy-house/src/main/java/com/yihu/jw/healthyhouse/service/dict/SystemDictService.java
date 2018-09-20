@@ -30,11 +30,6 @@ public class SystemDictService extends BaseJpaService<SystemDict, SystemDictDao>
     @Autowired
     private SystemDictEntryDao entryRepo;
 
-    public Page<SystemDict> getDictList(String sorts, int page, int size) {
-        Pageable pageable = new PageRequest(page, size, parseSorts(sorts));
-        return dictRepo.findAll(pageable);
-    }
-
     public void updateDict(SystemDict dict) {
         dictRepo.save(dict);
     }
@@ -48,15 +43,6 @@ public class SystemDictService extends BaseJpaService<SystemDict, SystemDictDao>
         SystemDict systemDict = dictRepo.findByName(name);
 
         return systemDict != null;
-    }
-
-    public Page<SystemDict> searchDict(String name, String phoneticCode, int page, int size) {
-        return dictRepo.findByNameOrPhoneticCodeOrderByNameAsc(name, phoneticCode, new PageRequest(page, size));
-    }
-
-    public long getNextId() {
-        long id = dictRepo.getNextId()+1;
-        return id;
     }
 
     public SystemDict findByPhoneticCode(String code) {
