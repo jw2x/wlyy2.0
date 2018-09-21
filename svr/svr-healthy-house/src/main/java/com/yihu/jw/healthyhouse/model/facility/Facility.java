@@ -4,6 +4,7 @@ package com.yihu.jw.healthyhouse.model.facility;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 设施
@@ -82,6 +83,7 @@ public class Facility extends UuidIdentityEntityWithOperator {
     private String imgPath;
 
     private String statusName;
+    private List<FacilityServerRelation> facilityServerRelation;
 
     public String getCode() {
         return code;
@@ -266,5 +268,13 @@ public class Facility extends UuidIdentityEntityWithOperator {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
+    }
+    @Transient
+    public List<FacilityServerRelation> getFacilityServerRelation() {
+        return facilityServerRelation;
+    }
+
+    public void setFacilityServerRelation(List<FacilityServerRelation> facilityServerRelation) {
+        this.facilityServerRelation = facilityServerRelation;
     }
 }
