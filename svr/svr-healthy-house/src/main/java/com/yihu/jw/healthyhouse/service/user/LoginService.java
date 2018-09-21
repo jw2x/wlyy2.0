@@ -221,7 +221,7 @@ public class LoginService {
     @Transactional(noRollbackForClassName = "ManageException")
     public User managerPhoneLogin(HttpServletRequest request, String loginCode) throws ManageException {
         //判断管理员用户信息是否存在
-        User user = userService.findByLoginCodeAAndUserType(loginCode, LoginInfo.USER_TYPE_AdminManager);
+        User user = userService.findByLoginCodeAndUserType(loginCode, LoginInfo.USER_TYPE_AdminManager);
         if (user == null) {
             throw new ManageException("该管理员账号不存在!");
         } else {

@@ -39,8 +39,8 @@ public class UserService {
         return userDao.findByLoginCode(code);
     }
 
-    public User findByLoginCodeAAndUserType(String loginCode,String userType) {
-        return userDao.findByLoginCodeAAndUserType(loginCode,userType);
+    public User findByLoginCodeAndUserType(String loginCode,String userType) {
+        return userDao.findByLoginCodeAndUserType(loginCode,userType);
     }
 
 
