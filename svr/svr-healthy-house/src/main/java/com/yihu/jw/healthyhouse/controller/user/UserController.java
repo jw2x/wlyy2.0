@@ -91,7 +91,7 @@ public class UserController  extends EnvelopRestEndpoint {
 
 
     @PostMapping("/facilityUseUpdate")
-    @ApiOperation(value = "用户使用设备次数总和")
+    @ApiOperation(value = "更新设施使用次数")
     public Envelop facilityUseUpdate(
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "facilityId", value = "设施Id", required = true)@RequestParam(required = true, name = "facilityId") String facilityId ) throws ManageException {
