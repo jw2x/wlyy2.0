@@ -84,6 +84,18 @@ public class HealthyHouseMapping {
             public static final String GET_FACILITY_USED_RECORD_BY_FIELD = "/getFacilityUsedRecordByField";
             public static final String UPDATE_FACILITY_USED_RECORD_BY_ID = "/updateFacilityUsedRecordById";
         }
+
+        //服务评价
+        public static class NavigationServiceEvaluation {
+            public static final String CREATE = "/create/navigationServiceEvaluation";
+            public static final String DELETE = "/delete/navigationServiceEvaluation";
+            public static final String UPDATE = "/update/navigationServiceEvaluation";
+            public static final String PAGE = "/page/navigationServiceEvaluation";
+            public static final String LIST = "/list/navigationServiceEvaluation";
+            public static final String GET_NAVIGATION_SERVICE_EVALUATION_BY_ID = "/getNavigationServiceEvaluationById";
+            public static final String GET_NAVIGATION_SERVICE_EVALUATION_BY_FIELD = "/getNavigationServiceEvaluationByField";
+            public static final String UPDATE_NAVIGATION_SERVICE_EVALUATION_BY_ID = "/updateNavigationServiceEvaluationById";
+        }
     }
 
 
