@@ -46,7 +46,7 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<SystemDictEntry> systemDictEntryList = systemDictEntryService.search(fields,filters,sorts,page,size);
-        return success(systemDictEntryList,systemDictEntryList.size(),page, size);
+        return success(systemDictEntryList,(null==systemDictEntryList)?0:systemDictEntryList.size(),page, size);
     }
 
     @ApiOperation(value = "创建字典项")

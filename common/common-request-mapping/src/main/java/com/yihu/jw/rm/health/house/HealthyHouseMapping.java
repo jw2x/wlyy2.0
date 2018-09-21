@@ -47,6 +47,7 @@ public class HealthyHouseMapping {
             public static final String LIST = "/list/facilities";
             public static final String GET_FACILITIES_BY_ID = "/getFacilitiesById";
             public static final String GET_FACILITIES_BY_FIELD = "/getFacilitiesByField";
+            public static final String COUNT_FACILITIES = "/count/facilities";
         }
 
         //设施服务

@@ -4,6 +4,7 @@ package com.yihu.jw.healthyhouse.model.facility;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * 设施
@@ -13,7 +14,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "facility")
-@Access(value = AccessType.PROPERTY)
 public class Facility extends UuidIdentityEntityWithOperator {
     //设施编码
     @Column(name = "code", nullable = false)
@@ -33,6 +33,9 @@ public class Facility extends UuidIdentityEntityWithOperator {
     // （管理员）联系人id
     @Column(name = "user_id")
     private String userId;
+    // （管理员）联系人姓名
+    @Column(name = "user_name")
+    private String userName;
     //联系人电话
     @Column(name = "user_telephone")
     private String userTelephone ;
@@ -78,6 +81,9 @@ public class Facility extends UuidIdentityEntityWithOperator {
     //小屋形象照
     @Column(name = "img_path")
     private String imgPath;
+
+    private String statusName;
+    private List<FacilityServerRelation> facilityServerRelation;
 
     public String getCode() {
         return code;
@@ -245,5 +251,30 @@ public class Facility extends UuidIdentityEntityWithOperator {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Transient
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+    @Transient
+    public List<FacilityServerRelation> getFacilityServerRelation() {
+        return facilityServerRelation;
+    }
+
+    public void setFacilityServerRelation(List<FacilityServerRelation> facilityServerRelation) {
+        this.facilityServerRelation = facilityServerRelation;
     }
 }
