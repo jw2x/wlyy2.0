@@ -32,9 +32,8 @@ public class UserController  extends EnvelopRestEndpoint {
     @Autowired
     private UserService userService;
 
-    //用户列表
     @GetMapping("/userList")
-    @ApiOperation(value = "i健康用户登陆")
+    @ApiOperation(value = "获取用户列表")
     public PageEnvelop userList(
             @ApiParam(name = "page", value = "页数", required = true)@RequestParam(required = true, name = "page") Integer page,
             @ApiParam(name = "pageSize", value = "每页数量", required = true)@RequestParam(required = true, name = "pageSize") Integer pageSize,
@@ -52,12 +51,8 @@ public class UserController  extends EnvelopRestEndpoint {
     }
 
 
-    /**
-     *  获取用户详情
-     * @param userId
-     * @return
-     */
     @GetMapping("/userDetail")
+    @ApiOperation(value = "获取用户详情")
     public ObjEnvelop userDetail(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ) {
         User user = userService.findById(userId);
@@ -65,12 +60,16 @@ public class UserController  extends EnvelopRestEndpoint {
     }
 
 
-    /**
-     *  用户激活
-     * @param userId
-     * @return
-     */
-    @GetMapping("/activateUser")
+    @GetMapping("/usedFacilityCount")
+    @ApiOperation(value = "获取用户统计信息")
+    public ObjEnvelop usedFacilityCount(
+            @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ) {
+        Map<String, Long> userStatistics = userService.findUserStatistics();
+        return ObjEnvelop.getSuccess("获取成功",userStatistics);
+    }
+
+    @PostMapping("/activateUser")
+    @ApiOperation(value = "用户激活")
     public Envelop activeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "operator", value = "操作者", required = true)@RequestParam(required = true, name = "operator") String operator ) {
@@ -79,12 +78,8 @@ public class UserController  extends EnvelopRestEndpoint {
     }
 
 
-    /**
-     *  用户冻结
-     * @param userId
-     * @return
-     */
-    @GetMapping("/freezeUser")
+    @PostMapping("/freezeUser")
+    @ApiOperation(value = "用户冻结")
     public Envelop freezeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "reason", value = "冻结原因", required = true)@RequestParam(required = true, name = "reason") String reason ,
@@ -93,4 +88,18 @@ public class UserController  extends EnvelopRestEndpoint {
         userService.updateStatus(userId,operator, HouseUserContant.activated_lock,reason);
         return ObjEnvelop.getSuccess("冻结成功");
     }
+
+
+    @PostMapping("/facilityUseUpdate")
+    @ApiOperation(value = "更新设施使用次数")
+    public Envelop facilityUseUpdate(
+            @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "facilityId", value = "设施Id", required = true)@RequestParam(required = true, name = "facilityId") String facilityId ) throws ManageException {
+
+        userService.updateFacilityUse(userId,facilityId);
+        return ObjEnvelop.getSuccess("更新用户使用设施次数成功");
+    }
+
+
+
 }

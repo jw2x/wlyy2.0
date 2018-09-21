@@ -48,7 +48,7 @@ public class User extends UuidIdentityEntityWithOperator {
     @Column(name = "salt")
     private String salt; //加密种子
     @Column(name = "facility_used_count")
-    private String facilityUsedCount;//设施使用次数
+    private Integer facilityUsedCount;//设施使用次数
 
 
     public String getLoginCode() {
@@ -163,11 +163,11 @@ public class User extends UuidIdentityEntityWithOperator {
         this.salt = salt;
     }
 
-    public String getFacilityUsedCount() {
+    public Integer getFacilityUsedCount() {
         return facilityUsedCount;
     }
 
-    public void setFacilityUsedCount(String facilityUsedCount) {
+    public void setFacilityUsedCount(Integer facilityUsedCount) {
         this.facilityUsedCount = facilityUsedCount;
     }
 
