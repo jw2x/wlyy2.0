@@ -1,4 +1,4 @@
-package com.yihu.jw.healthyhouse.dao;
+package com.yihu.jw.healthyhouse.dao.user;
 
 import com.yihu.jw.healthyhouse.model.user.User;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

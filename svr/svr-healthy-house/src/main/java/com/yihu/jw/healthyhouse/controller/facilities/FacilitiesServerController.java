@@ -34,7 +34,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "获取设施服务列表", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.PAGE)
-    public PageEnvelop<FacilityServer> getDictionaries(
+    public PageEnvelop<FacilityServer> getFacilitiesServer(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
@@ -51,7 +51,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "创建设施服务")
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.CREATE)
-    public ObjEnvelop<FacilityServer> createDictionary(
+    public ObjEnvelop<FacilityServer> createFacilitiesServer(
             @ApiParam(name = "FacilityServer", value = "设施服务JSON结构")
             @RequestBody FacilityServer facilityServer) throws IOException {
         List<FacilityServer> facilityServerList = null;
@@ -81,7 +81,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "获取设施服务")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.GET_FACILITIESERVERS_BY_ID)
-    public ObjEnvelop<FacilityServer> getDictionary(
+    public ObjEnvelop<FacilityServer> getFacilitiesServer(
             @ApiParam(name = "id", value = "设施服务ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
         FacilityServer facilityServer = facilityServerService.findById(id);
@@ -93,7 +93,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "获取设施服务")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.GET_FACILITIESERVERS_BY_FIELD)
-    public ListEnvelop<FacilityServer> getDictionaryByPhoneticCode(
+    public ListEnvelop<FacilityServer> getFacilitiesServerByField(
             @ApiParam(name = "field", value = "查找字段名", required = true)
             @RequestParam(value = "field") String field,
             @ApiParam(name = "value", value = "检索值")
@@ -104,7 +104,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "更新设施服务")
     @PutMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ObjEnvelop<FacilityServer> updateDictionary(
+    public ObjEnvelop<FacilityServer> updateFacilitiesServer(
             @ApiParam(name = "FacilityServer", value = "设施服务JSON结构")
             @RequestBody FacilityServer facilityServer) throws Exception {
         if (StringUtils.isEmpty(facilityServer.getCode())) {
@@ -123,7 +123,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "删除设施服务")
     @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.DELETE)
-    public Envelop deleteDictionary(
+    public Envelop deleteFacilitiesServer(
             @ApiParam(name = "facilitiesServerId", value = "设施服务ID")
             @RequestParam(value = "facilitiesServerId") String facilitiesServerId) throws Exception {
         FacilityServer facilityServer = new FacilityServer();

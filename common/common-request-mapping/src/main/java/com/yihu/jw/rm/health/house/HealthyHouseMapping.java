@@ -60,6 +60,18 @@ public class HealthyHouseMapping {
             public static final String GET_FACILITIESERVERS_BY_ID = "/getFacilitieServersById";
             public static final String GET_FACILITIESERVERS_BY_FIELD = "/getFacilitieServersByField";
         }
+
+        //意见反馈
+        public static class FeedBack {
+            public static final String CREATE = "/create/feedBacks";
+            public static final String DELETE = "/delete/feedBacks";
+            public static final String UPDATE = "/update/feedBacks";
+            public static final String PAGE = "/page/feedBacks";
+            public static final String LIST = "/list/feedBacks";
+            public static final String GET_FEEDBACK_BY_ID = "/getFeedBackById";
+            public static final String GET_FEEDBACKS_BY_FIELD = "/getFeedBacksByField";
+            public static final String UPDATE_FEEDBACKS_BY_ID = "/updateFeedBacksById";
+        }
     }
 
 

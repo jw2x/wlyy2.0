@@ -2,7 +2,7 @@ package com.yihu.jw.healthyhouse.service.user;
 
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
-import com.yihu.jw.healthyhouse.dao.UserDao;
+import com.yihu.jw.healthyhouse.dao.user.UserDao;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
@@ -18,7 +18,6 @@ import org.springframework.util.StringUtils;
 import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
 
-import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
 import java.util.*;
 
