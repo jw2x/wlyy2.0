@@ -1,6 +1,7 @@
 package com.yihu.jw.healthyhouse.controller.user;
 
 import com.yihu.jw.exception.business.ManageException;
+import com.yihu.jw.healthyhouse.cache.WlyyRedisVerifyCodeService;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.service.user.UserService;
@@ -31,6 +32,8 @@ public class UserController  extends EnvelopRestEndpoint {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
 
     @GetMapping("/userList")
     @ApiOperation(value = "获取用户列表")
@@ -99,6 +102,37 @@ public class UserController  extends EnvelopRestEndpoint {
         userService.updateFacilityUse(userId,facilityId);
         return ObjEnvelop.getSuccess("更新用户使用设施次数成功");
     }
+
+    @PostMapping("/updatePwd")
+    @ApiOperation(value = "更新密码")
+    public Envelop updatePwd(
+            @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "oldPwd", value = "原密码", required = true)@RequestParam(required = true, name = "oldPwd") String oldPwd ,
+            @ApiParam(name = "newPwd", value = "新密码", required = true)@RequestParam(required = true, name = "newPwd") String newPwd ) throws ManageException {
+
+        userService.updatePwd(userId,oldPwd,newPwd);
+        return ObjEnvelop.getSuccess("更新密码成功");
+    }
+
+    @PostMapping("/updatePhone")
+    @ApiOperation(value = "更新安全手机号码")
+    public Envelop updatePhone(
+            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "newPhone", value = "新安全手机号", required = true)@RequestParam(required = true, name = "newPhone") String newPhone ,
+            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha ) throws ManageException {
+
+        //验证码
+        if (wlyyRedisVerifyCodeService.verification(clientId, newPhone, captcha)) {
+            userService.updateSecurePhone(userId,newPhone);
+            return ObjEnvelop.getSuccess("更新安全手机号码成功");
+        } else {
+            return ObjEnvelop.getError("验证码错误");
+        }
+    }
+
+
+
 
 
 

@@ -66,7 +66,9 @@ spring:
 #    base-url: http://localhost:9411 #日志追踪的地址
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
-
+# 短信发送地址
+jw:
+  smsUrl: http://svr-base:10020/sms_gateway/send
 ---
 spring:
   profiles: jwtest

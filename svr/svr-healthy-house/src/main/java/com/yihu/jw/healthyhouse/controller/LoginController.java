@@ -24,7 +24,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,51 +42,31 @@ public class LoginController extends EnvelopRestEndpoint {
     private WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
 
     /******************************************    用户相关    **********************************/
-    /**
-     * 获取验证码
-     * @param parameters
-     * @return
-     * @throws Exception
-     */
-    @GetMapping(value = "/login/captcha")
-    public ResponseEntity<HashMap> captcha(@RequestParam Map<String, String> parameters) throws  Exception{
-        String client_id = parameters.get("client_id");
-        String username = parameters.get("username");
-        if (StringUtils.isEmpty(client_id)) {
-            throw new InvalidRequestException("client_id");
+
+    @ApiOperation(value = "发送短信验证码")
+    @GetMapping(value = "/captcha/send")
+    public ResponseEntity<HashMap> captcha(
+            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "msgType", value = "消息类型（login：登录验证，checkPhone：验证安全手机，resetPhone：重设安全手机", required = true)@RequestParam(required = true, name = "msgType") String msgType,
+            @ApiParam(name = "username", value = "手机账号", required = true)@RequestParam(required = true, name = "username") String username ) throws  Exception{
+        if (StringUtils.isEmpty(clientId)) {
+            throw new InvalidRequestException("clientId");
         }
         if (StringUtils.isEmpty(username)){
             throw new InvalidRequestException("username");
         }
         //验证请求间隔超时，防止频繁获取验证码
-        if (!wlyyRedisVerifyCodeService.isIntervalTimeout(client_id, username)) {
+        if (!wlyyRedisVerifyCodeService.isIntervalTimeout(clientId, username)) {
             throw new IllegalAccessException("SMS request frequency is too fast");
         }
         //发送短信获取验证码
-        HttpHeaders reqHeaders = new HttpHeaders();
-        reqHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        params.add("clientId", client_id);
-        params.add("type", "login");
-        params.add("to", username);
-        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, reqHeaders);
-        HashMap<String, Object> result = restTemplate.postForObject("http://svr-base:10020/sms_gateway/send", httpEntity, HashMap.class);
-        if (200 == (Integer) result.get("status")){
-            Map<String, Object> sms =  (Map)result.get("obj");
-            String captcha = (String) sms.get("captcha");
-            Date deadline = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String) sms.get("deadline"));
-            Long expire = (deadline.getTime() - System.currentTimeMillis()) / 1000;
-            wlyyRedisVerifyCodeService.store(client_id, username, captcha, expire.intValue());
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Cache-Control", "no-store");
-            headers.set("Pragma", "no-cache");
-            return new ResponseEntity<>(result, headers, HttpStatus.OK);
-        }
-        throw new IllegalStateException((String) result.get("message"));
+        ResponseEntity<HashMap> result = loginService.sendSms(clientId,msgType,username);
+        return result;
+
     }
 
     @GetMapping("/mobile/login")
-    @ApiOperation(value = "手机登录注册")
+    @ApiOperation(value = "【普通用户】-手机登录注册")
     public ObjEnvelop mobileLogin(
             HttpServletRequest request,
             @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
@@ -107,7 +86,7 @@ public class LoginController extends EnvelopRestEndpoint {
     }
 
     @PostMapping("/ijk/login")
-    @ApiOperation(value = "i健康用户登陆")
+    @ApiOperation(value = "【普通用户】-i健康用户登陆")
     public ObjEnvelop ijkLogin(
             HttpServletRequest request,
             @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
@@ -142,7 +121,35 @@ public class LoginController extends EnvelopRestEndpoint {
 
     /***************************  管理员相关 **************************************/
 
+    @GetMapping("/mobile/manage/login")
+    @ApiOperation(value = "【管理员】-手机验证登录")
+    public ObjEnvelop administratorMobileLogin(
+            HttpServletRequest request,
+            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
+        if (wlyyRedisVerifyCodeService.verification(clientId, username, captcha)) {
+            User user = loginService.managerPhoneLogin(request,username);
+            return ObjEnvelop.getSuccess("登录成功",user);
+        } else {
+            return ObjEnvelop.getError("验证码错误");
+        }
+    }
 
+    @PostMapping("/manage/login")
+    @ApiOperation(value = "【管理员】-用户账号登陆")
+    public ObjEnvelop administratorLogin(
+            HttpServletRequest request,
+            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "password", value = "密码", required = true)@RequestParam(required = true, name = "password") String password) throws ManageException {
+        User user = loginService.managerLogin(request,clientId,username, password);
+        if (user !=null) {
+            return ObjEnvelop.getSuccess("登录成功",user);
+        }else {
+            return ObjEnvelop.getError("登录失败");
+        }
+    }
 
 
 }

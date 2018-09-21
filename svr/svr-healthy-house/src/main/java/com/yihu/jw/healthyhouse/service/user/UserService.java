@@ -39,8 +39,8 @@ public class UserService {
         return userDao.findByLoginCode(code);
     }
 
-    public User findByName(String username) {
-        return userDao.findByName(username);
+    public User findByLoginCodeAAndUserType(String loginCode,String userType) {
+        return userDao.findByLoginCodeAAndUserType(loginCode,userType);
     }
 
 
@@ -145,9 +145,15 @@ public class UserService {
         }
     }
 
+    /**
+     * 更新设施使用次数
+     * @param userId            用户id
+     * @param facilityId    设施id
+     * @throws ManageException
+     */
     @Transactional
-    public void updateFacilityUse(String id, String facilityId) throws ManageException {
-        User user1 = findById(id);
+    public void updateFacilityUse(String userId, String facilityId) throws ManageException {
+        User user1 = findById(userId);
         if (user1==null) {
             throw new ManageException("该账号不存在");
         }
@@ -156,6 +162,34 @@ public class UserService {
         //TODO 设施的使用次数更新
     }
 
+    @Transactional
+    public void updatePwd(String userId, String oldPwd,String newPwd) throws ManageException {
+        User user = findById(userId);
+        if (user==null) {
+            throw new ManageException("该账号不存在");
+        }
+
+        if (!user.getPassword().equals(MD5.GetMD5Code(oldPwd + user.getSalt()))) {
+            //保存登陆信息
+            String message = "原密码错误";
+            throw new ManageException(message);
+        }
+
+        String password = MD5.GetMD5Code(newPwd + user.getSalt());
+        user.setPassword(password);
+        userDao.save(user);
+    }
+
+    @Transactional
+    public void updateSecurePhone(String userId, String phone) throws ManageException {
+        User user = findById(userId);
+        if (user==null) {
+            throw new ManageException("该账号不存在");
+        }
+
+        user.setTelephone(phone);
+        userDao.save(user);
+    }
 
     /**
      * 获取 用户统计信息
@@ -177,7 +211,7 @@ public class UserService {
         result.put("totalCount",totalCount);
         result.put("newCount",newCount);
         result.put("activeCount",activeCount);
-        result.put("activeCount",activeCount);
+        result.put("usePricilityCount",usePricilityCount);
         return result;
     }
 
