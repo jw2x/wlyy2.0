@@ -38,8 +38,10 @@ public class LoginService {
     private WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
     @Value("${jw.smsUrl}")
     private String smsUrl;
+
     /**
-     *  手机验证码方式登录并自动注册
+     * 手机验证码方式登录并自动注册
+     *
      * @param loginCode
      * @return
      * @throws Exception
@@ -55,7 +57,7 @@ public class LoginService {
             user.setName(loginCode);
             user.setTelephone(loginCode);
             user.setPassword(LoginInfo.DEFAULT_PASSWORD);
-        }else {
+        } else {
             //已注册用户更改用户状态
             user.setActivated(HouseUserContant.activated_active);
         }
@@ -65,26 +67,27 @@ public class LoginService {
         request.getSession().setAttribute(LoginInfo.LOGIN_CODE, user.getLoginCode());
         request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
         user.setLastLoginTime(new Date());
-        userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_PHONE);
+        userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
         return user;
     }
 
 
     /**
      * i健康账户登录&注册
+     *
      * @param loginCode
      * @param password
      * @return
      * @throws Exception
      */
     @Transactional(noRollbackForClassName = "ManageException")
-    public User iJklogin(HttpServletRequest request,String clientId, String loginCode, String password) throws ManageException {
+    public User iJklogin(HttpServletRequest request, String clientId, String loginCode, String password) throws ManageException {
         //判断登陆信息是否正确
         User user = userService.findByCode(loginCode);
         if (user == null) {
             //i健康登录认证
-            Map<String, Object> data = oauthIjkLogin(clientId,loginCode, password);
-            if (data!=null ) {
+            Map<String, Object> data = oauthIjkLogin(clientId, loginCode, password);
+            if (data != null) {
                 user = new User();
                 user.setPassword(password);
                 user.setLoginCode((String) data.get("user"));
@@ -93,7 +96,7 @@ public class LoginService {
                 user.setIdCardNo((String) data.get("idcard"));
                 user.setTelephone((String) data.get("mobile"));
 
-            }else {
+            } else {
                 String message = "账号不存在";
                 throw new ManageException(message);
             }
@@ -108,19 +111,20 @@ public class LoginService {
         request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
         user.setActivated(HouseUserContant.activated_active);
         user.setLastLoginTime(new Date());
-        userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_IJK);
+        userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
         return user;
     }
 
 
     /**
-     *  i健康用户信息认证
+     * i健康用户信息认证
+     *
      * @param username
      * @param password
      * @return
      * @throws ManageException
      */
-    public Map<String, Object> oauthIjkLogin(String clientId,String username, String password) throws ManageException{
+    public Map<String, Object> oauthIjkLogin(String clientId, String username, String password) throws ManageException {
         HashMap<String, Object> userDetail = null;
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -131,17 +135,18 @@ public class LoginService {
         params.add("login_type", "1");
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, reqHeaders);
         HashMap<String, Object> result = restTemplate.postForObject("http://svr-authentication:10260/oauth/login", httpEntity, HashMap.class);
-        if (200 == (Integer) result.get("status")){
-            userDetail =  (HashMap)result.get("obj");
-        return userDetail;
-        }else {
+        if (200 == (Integer) result.get("status")) {
+            userDetail = (HashMap) result.get("obj");
+            return userDetail;
+        } else {
             throw new ManageException("i健康用户认证失败");
         }
     }
 
 
     /**
-     *  登出
+     * 登出
+     *
      * @param loginCode
      * @param password
      * @return
@@ -166,19 +171,20 @@ public class LoginService {
         request.getSession().removeAttribute(LoginInfo.LOGIN_NAME);
         request.getSession().removeAttribute(LoginInfo.USER_ID);
         user.setActivated(HouseUserContant.activated_offline);
-        userService.saveOrUpdate(user,"systemLogin");
+        userService.saveOrUpdate(user, "systemLogin");
         return user;
     }
 
 
     /**
-     *  发送短信
-     * @param clientId     应用id
-     * @param type          短信类型
-     * @param phone         接收手机号码
+     * 发送短信
+     *
+     * @param clientId 应用id
+     * @param type     短信类型
+     * @param phone    接收手机号码
      * @return
      */
-    public  ResponseEntity<HashMap> sendSms(String clientId, String type, String phone) throws ParseException, ManageException {
+    public ResponseEntity<HashMap> sendSms(String clientId, String type, String phone) throws ParseException, ManageException {
         //发送短信获取验证码
         HttpHeaders reqHeaders = new HttpHeaders();
         reqHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
@@ -188,8 +194,8 @@ public class LoginService {
         params.add("to", phone);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(params, reqHeaders);
         HashMap<String, Object> result = restTemplate.postForObject(smsUrl, httpEntity, HashMap.class);
-        if (200 == (Integer) result.get("status")){
-            Map<String, Object> sms =  (Map)result.get("obj");
+        if (200 == (Integer) result.get("status")) {
+            Map<String, Object> sms = (Map) result.get("obj");
             String captcha = (String) sms.get("captcha");
             Date deadline = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String) sms.get("deadline"));
             Long expire = (deadline.getTime() - System.currentTimeMillis()) / 1000;
@@ -198,26 +204,27 @@ public class LoginService {
             headers.set("Cache-Control", "no-store");
             headers.set("Pragma", "no-cache");
             return new ResponseEntity<>(result, headers, HttpStatus.OK);
-        }else {
+        } else {
             throw new ManageException("验证码获取失败!");
         }
     }
 
 
     /**
-     *  管理员手机登录
+     * 管理员手机登录
+     *
      * @param request
-     * @param loginCode  登录名
+     * @param loginCode 登录名
      * @return
      * @throws ManageException
      */
     @Transactional(noRollbackForClassName = "ManageException")
     public User managerPhoneLogin(HttpServletRequest request, String loginCode) throws ManageException {
         //判断管理员用户信息是否存在
-        User user = userService.findByLoginCodeAAndUserType(loginCode,LoginInfo.USER_TYPE_AdminManager);
+        User user = userService.findByLoginCodeAndUserType(loginCode, LoginInfo.USER_TYPE_AdminManager);
         if (user == null) {
             throw new ManageException("该管理员账号不存在!");
-        }else {
+        } else {
             //已注册用户更改用户状态
             user.setActivated(HouseUserContant.activated_active);
             request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
@@ -226,28 +233,29 @@ public class LoginService {
             request.getSession().setAttribute(LoginInfo.LOGIN_CODE, user.getLoginCode());
             request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
             user.setLastLoginTime(new Date());
-            userService.saveOrUpdate(user,LoginInfo.SAVE_TYPE_PHONE);
+            userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
         }
         return user;
     }
 
     /**
-     *  管理员-账号密码登录
+     * 管理员-账号密码登录
+     *
      * @param request
-     * @param clientId      应用id
-     * @param loginCode     登录账号
-     * @param password      密码
+     * @param clientId  应用id
+     * @param loginCode 登录账号
+     * @param password  密码
      * @return
      * @throws ManageException
      */
     @Transactional(noRollbackForClassName = "ManageException")
-    public User managerLogin(HttpServletRequest request,String clientId, String loginCode, String password) throws ManageException {
+    public User managerLogin(HttpServletRequest request, String clientId, String loginCode, String password) throws ManageException {
         //判断登陆信息是否正确
         User user = userService.findByCode(loginCode);
         if (user == null) {
             String message = "该管理员账号不存在！";
             throw new ManageException(message);
-        }else {
+        } else {
             if (!user.getPassword().equals(MD5.GetMD5Code(password + user.getSalt()))) {
                 String message = "密码错误";
                 throw new ManageException(message);

@@ -77,6 +77,9 @@ spring:
     password: 123456
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
+# 短信发送地址
+jw:
+  smsUrl: http://svr-base:10020/sms_gateway/send
 
 ---
 spring:

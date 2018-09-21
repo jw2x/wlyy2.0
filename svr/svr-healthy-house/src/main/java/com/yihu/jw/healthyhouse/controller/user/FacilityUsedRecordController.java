@@ -1,0 +1,94 @@
+package com.yihu.jw.healthyhouse.controller.user;
+
+
+import com.yihu.jw.healthyhouse.model.user.FacilityUsedRecord;
+import com.yihu.jw.healthyhouse.service.user.FacilityUsedRecordService;
+import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.ListEnvelop;
+import com.yihu.jw.restmodel.web.ObjEnvelop;
+import com.yihu.jw.restmodel.web.PageEnvelop;
+import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import com.yihu.jw.rm.health.house.HealthyHouseMapping;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
+
+
+/**
+ * 用户使用导航记录
+ * Created by zdm on 2018/9/21.
+ */
+@RestController
+@RequestMapping(HealthyHouseMapping.api_healthyHouse_common)
+@Api(value = "FacilityUsedRecord", description = "用户使用导航记录管理", tags = {"用户使用导航记录管理"})
+public class FacilityUsedRecordController extends EnvelopRestEndpoint {
+
+    @Autowired
+    private FacilityUsedRecordService facilityUsedRecordService;
+
+    @ApiOperation(value = "获取用户使用导航记录列表", responseContainer = "List")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.PAGE)
+    public PageEnvelop<FacilityUsedRecord> getFacilityUsedRecords(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序", defaultValue = "")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) Integer size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) Integer page) throws Exception {
+        List<FacilityUsedRecord> FacilityUsedRecordList = facilityUsedRecordService.search(fields, filters, sorts, page, size);
+        return success(FacilityUsedRecordList, (null == FacilityUsedRecordList) ? 0 : FacilityUsedRecordList.size(), page, size);
+    }
+
+    @ApiOperation(value = "创建/更新（id存在）用户使用导航记录")
+    @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.CREATE)
+    public ObjEnvelop<FacilityUsedRecord> createFacilityUsedRecord(
+            @ApiParam(name = "FacilityUsedRecord", value = "用户使用导航记录JSON结构")
+            @RequestBody FacilityUsedRecord FacilityUsedRecord) throws IOException {
+        FacilityUsedRecord = facilityUsedRecordService.save(FacilityUsedRecord);
+        return success(FacilityUsedRecord);
+    }
+
+    @ApiOperation(value = "获取用户使用导航记录")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.GET_FACILITY_USED_RECORD_BY_ID)
+    public ObjEnvelop<FacilityUsedRecord> getFacilityUsedRecord(
+            @ApiParam(name = "id", value = "用户使用导航记录ID", defaultValue = "")
+            @RequestParam(value = "id") String id) throws Exception {
+        FacilityUsedRecord FacilityUsedRecord = facilityUsedRecordService.findById(id);
+        if (FacilityUsedRecord == null) {
+            return failed("用户使用导航记录不存在！", ObjEnvelop.class);
+        }
+        return success(FacilityUsedRecord);
+    }
+
+    @ApiOperation(value = "获取用户使用导航记录:根据日期，根据反馈人等")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.GET_FACILITY_USED_RECORD_BY_FIELD)
+    public ListEnvelop<FacilityUsedRecord> getFacilityUsedRecordByField(
+            @ApiParam(name = "field", value = "查找字段名", required = true)
+            @RequestParam(value = "field") String field,
+            @ApiParam(name = "value", value = "检索值")
+            @RequestParam(value = "value") String value) throws Exception {
+        List<FacilityUsedRecord> FacilityUsedRecordList = facilityUsedRecordService.findByField(field, value);
+        return success(FacilityUsedRecordList);
+    }
+
+    @ApiOperation(value = "删除用户使用导航记录")
+    @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.DELETE)
+    public Envelop deleteFacilityUsedRecord(
+            @ApiParam(name = "facilitiesServerId", value = "用户使用导航记录ID")
+            @RequestParam(value = "facilitiesServerId") String facilitiesServerId) throws Exception {
+        FacilityUsedRecord FacilityUsedRecord = facilityUsedRecordService.findById(facilitiesServerId);
+        facilityUsedRecordService.delete(FacilityUsedRecord);
+        return success("success");
+    }
+
+}

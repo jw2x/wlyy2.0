@@ -72,6 +72,18 @@ public class HealthyHouseMapping {
             public static final String GET_FEEDBACKS_BY_FIELD = "/getFeedBacksByField";
             public static final String UPDATE_FEEDBACKS_BY_ID = "/updateFeedBacksById";
         }
+
+        //用户使用导航记录
+        public static class FacilityUsedRecord {
+            public static final String CREATE = "/create/facilityUsedRecords";
+            public static final String DELETE = "/delete/facilityUsedRecords";
+            public static final String UPDATE = "/update/facilityUsedRecords";
+            public static final String PAGE = "/page/facilityUsedRecords";
+            public static final String LIST = "/list/facilityUsedRecords";
+            public static final String GET_FACILITY_USED_RECORD_BY_ID = "/getFacilityUsedRecordById";
+            public static final String GET_FACILITY_USED_RECORD_BY_FIELD = "/getFacilityUsedRecordByField";
+            public static final String UPDATE_FACILITY_USED_RECORD_BY_ID = "/updateFacilityUsedRecordById";
+        }
     }
 
 
