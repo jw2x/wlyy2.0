@@ -1026,4 +1026,40 @@ public class DateUtil {
         int week = c.get(Calendar.DAY_OF_WEEK);
         return week;
     }
+
+    /**
+     * 获取当天0点
+     * @return
+     */
+    public static Date getDateStart(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Date zero = calendar.getTime();
+        return zero;
+    }
+
+    /**
+     * 获取当天23:59:59
+     * @return
+     */
+    public static Date getDateEnd(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        Date zero = calendar.getTime();
+        return zero;
+    }
+
+    public static void main(String[] args) {
+        Date dateStart = getDateStart();
+        Date dateEnd = getDateEnd();
+        System.out.println(dateStart );
+        System.out.println(dateEnd);
+    }
+
 }

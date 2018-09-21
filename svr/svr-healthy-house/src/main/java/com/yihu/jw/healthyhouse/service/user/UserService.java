@@ -1,10 +1,12 @@
 package com.yihu.jw.healthyhouse.service.user;
 
 import com.yihu.jw.exception.business.ManageException;
+import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.dao.UserDao;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
+import com.yihu.jw.util.date.DateUtil;
 import com.yihu.jw.util.security.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,11 +18,9 @@ import org.springframework.util.StringUtils;
 import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
 
+import javax.persistence.criteria.*;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author HZY
@@ -32,11 +32,11 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public User findById(String id){
+    public User findById(String id) {
         return userDao.findById(id);
     }
 
-    public User findByCode(String code){
+    public User findByCode(String code) {
         return userDao.findByLoginCode(code);
     }
 
@@ -46,15 +46,16 @@ public class UserService {
 
 
     /**
-     *  分页获取用户列表
+     * 分页获取用户列表
+     *
      * @param page
      * @param pageSize
      * @param map
      * @return
      * @throws ManageException
      */
-    public Page<User> userList(Integer page, Integer pageSize, Map<String,String> map,String order)throws ManageException {
-         order = order == null ? "ASC" :order;
+    public Page<User> userList(Integer page, Integer pageSize, Map<String, String> map, String order) throws ManageException {
+        order = order == null ? "ASC" : order;
         // 排序
         Sort sort = new Sort(Sort.Direction.DESC, "facilityUsedCount");
         // 分页信息
@@ -89,40 +90,43 @@ public class UserService {
 
     /**
      * 更改用户状态
-     * @param id            待删除id
-     * @param userCode     修改者code
-     * @param status        更改状态
-     * @param reason        更改状态原因
-     * */
+     *
+     * @param id       待删除id
+     * @param userCode 修改者code
+     * @param status   更改状态
+     * @param reason   更改状态原因
+     */
     @Transactional
-    public void updateStatus(String id, String userCode,Integer status,String reason) {
+    public void updateStatus(String id, String userCode, Integer status, String reason) {
         User user = userDao.findByLoginCode(userCode);
-        String userName = user.getName();
-            User user1 = findById(id);
-            user1.setActivated(status);
-            user1.setActivatedContent(reason);
+        User user1 = findById(id);
+        user1.setActivated(status);
+        user1.setActivatedContent(reason);
+        if (user != null) {
+            String userName = user.getName();
             user1.setUpdateUserName(userName);
-            user1.setUpdateUser(userCode);
-            userDao.save(user1);
-
+        }
+        user1.setUpdateUser(userCode);
+        userDao.save(user1);
     }
 
     /**
-     *  新增/修改用户
-     * @param user      用户信息
-     * @param userCode  操作者编码
+     * 新增/修改用户
+     *
+     * @param user     用户信息
+     * @param userCode 操作者编码
      * @return
      * @throws ManageException
      */
     public Envelop saveOrUpdate(User user, String userCode) throws ManageException {
         User loginUser = userDao.findByLoginCode(userCode);
-        if(user.getId()==null){//保存
+        if (user.getId() == null) {//保存
             //判断登陆账号是否存在
             User user1 = userDao.findByLoginCode(userCode);
-            if(user1!=null){//登陆账号已存在
+            if (user1 != null) {//登陆账号已存在
                 throw new ManageException("该登陆账号已存在");
             }
-            String salt = UUID.randomUUID().toString().replaceAll("-","");
+            String salt = UUID.randomUUID().toString().replaceAll("-", "");
             user.setSalt(salt);
             String password = MD5.GetMD5Code(user.getPassword() + salt);
             user.setPassword(password);
@@ -131,8 +135,8 @@ public class UserService {
             user.setActivated(1);
             userDao.save(user);
             return Envelop.getSuccess("保存成功");
-        }else{//修改
-            if (loginUser!=null) {
+        } else {//修改
+            if (loginUser != null) {
                 String userName = loginUser.getName();
                 user.setUpdateUserName(userName);
             }
@@ -142,7 +146,50 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public void updateFacilityUse(String id, String facilityId) throws ManageException {
+        User user1 = findById(id);
+        if (user1==null) {
+            throw new ManageException("该账号不存在");
+        }
+        user1.setFacilityUsedCount(user1.getFacilityUsedCount()+1);
+        userDao.save(user1);
+        //TODO 设施的使用次数更新
+    }
 
+
+    /**
+     * 获取 用户统计信息
+     *
+     * @return
+     */
+    public Map<String, Long> findUserStatistics() {
+        Map<String, Long> result = new HashMap<>();
+        //用户总数
+        Long totalCount = userDao.countAllByUserType(LoginInfo.USER_TYPE_PATIENT);
+        //今日新增数
+        Date start = DateUtil.getDateStart();
+        Date end = DateUtil.getDateEnd();
+        Long newCount = userDao.countAllByCreateTimeBetween(start, end);
+        //在线用户数
+        Long activeCount = userDao.countAllByActivated(HouseUserContant.activated_active);
+        //用户设施使用总次数
+        Long usePricilityCount = sumFacilityCount();
+        result.put("totalCount",totalCount);
+        result.put("newCount",newCount);
+        result.put("activeCount",activeCount);
+        result.put("activeCount",activeCount);
+        return result;
+    }
+
+    /**
+     * 用户使用设施次数总和
+     * @return
+     */
+    public Long sumFacilityCount(){
+        Long aLong = userDao.sumFacilityUseCout();
+        return aLong;
+    }
 
 
 }
