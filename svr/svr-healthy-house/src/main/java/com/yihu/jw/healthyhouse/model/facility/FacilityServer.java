@@ -13,7 +13,6 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "facility_server")
-@Access(value = AccessType.PROPERTY)
 public class FacilityServer extends UuidIdentityEntityWithOperator {
     //设施服务编码
     @Column(name = "code", nullable = false)

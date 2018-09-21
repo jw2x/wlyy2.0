@@ -2,8 +2,10 @@ package com.yihu.jw.healthyhouse.controller.facilities;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
+import com.yihu.jw.healthyhouse.model.facility.FacilityServer;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerRelationService;
+import com.yihu.jw.healthyhouse.service.facility.FacilityServerService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityService;
 import com.yihu.jw.restmodel.web.*;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
@@ -38,6 +40,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private FacilityServerService facilityServerService;
     @Autowired
     private FacilityServerRelationService facilityServerRelationService;
 
@@ -99,6 +103,13 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (null != models && models.size() > 0) {
             for (FacilityServerRelation facilityServerRelation : models) {
                 facilityServerRelationService.save(facilityServerRelation);
+                //添加设施的时候，追加改服务的使用设施数量。
+                List<FacilityServer> facilityServerList = facilityServerService.findByField("code", facilityServerRelation.getServiceCode());
+                for (FacilityServer facilityServer : facilityServerList) {
+                    Integer num = Integer.valueOf(facilityServer.getNum()) + 1;
+                    facilityServer.setNum(num.toString());
+                    facilityServerService.save(facilityServer);
+                }
             }
         }
         facilityBack.setFacilityServerRelation(models);
@@ -164,6 +175,16 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "facilitiesId", value = "设施ID")
             @RequestParam(value = "facilitiesId") String facilitiesId) throws Exception {
         Facility facility = facilityService.findById(facilitiesId);
+        List<FacilityServerRelation> facilityServerRelationList = facilityServerRelationService.findByField("facilitieCode", facility.getCode());
+        //通过设施与服务关系，变更设施服务使用数量
+        for (FacilityServerRelation facilityServerRelation : facilityServerRelationList) {
+            List<FacilityServer> facilityServiceList = facilityServerService.findByField("code", facilityServerRelation.getServiceCode());
+            for (FacilityServer facilityServer : facilityServiceList) {
+                Integer num = Integer.valueOf(facilityServer.getNum()) - 1;
+                facilityServer.setNum(num.toString());
+                facilityServerService.save(facilityServer);
+            }
+        }
         facilityServerRelationService.deleteByFacilitieCode(facility.getCode());
         facilityService.delete(facility);
         return success("success");
