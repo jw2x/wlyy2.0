@@ -88,6 +88,45 @@ public class UserService {
 
 
     /**
+     *  不分页条件搜索
+     * @param map
+     * @param order
+     * @return
+     * @throws ManageException
+     */
+    public List<User> userList( Map<String, String> map, String order) throws ManageException {
+        order = order == null ? "ASC" : order;
+        // 排序
+        Sort sort = new Sort(Sort.Direction.fromString(order), "facilityUsedCount");
+        // 设置查询条件
+        Map<String, SearchFilter> filters = new HashMap<String, SearchFilter>();
+        // 所在市区
+        String cityCode = map.get("cityCode");
+        if (!StringUtils.isEmpty(cityCode)) {
+            filters.put("cityCode", new SearchFilter("cityCode", SearchFilter.Operator.EQ, cityCode));
+        }
+        // 激活状态
+        String activated = map.get("activated");
+        if (!StringUtils.isEmpty(activated)) {
+            filters.put("activated", new SearchFilter("activated", SearchFilter.Operator.EQ, activated));
+        }
+        // 用户名称
+        String name = map.get("name");
+        if (!StringUtils.isEmpty(name)) {
+            filters.put("name", new SearchFilter("name", SearchFilter.Operator.LIKE, name));
+        }
+        // 电话号码
+        String mobile = map.get("telephone");
+        if (!StringUtils.isEmpty(mobile)) {
+            filters.put("telephone", new SearchFilter("telephone", SearchFilter.Operator.LIKE, mobile));
+        }
+
+        Specification<User> spec = DynamicSpecifications.bySearchFilter(filters.values(), User.class);
+        return userDao.findAll(spec,sort);
+    }
+
+
+    /**
      * 更改用户状态
      *
      * @param id       待删除id
