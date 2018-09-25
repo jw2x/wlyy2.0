@@ -210,5 +210,25 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         return success("success", count);
     }
 
+    @ApiOperation(value = "变更设施状态")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.UPDATE_FACILITIE_STATE)
+    public ObjEnvelop<Facility> updateFacilitieState(
+            @ApiParam(name = "facilitiesId", value = "设施id", required = true)
+            @RequestParam(value = "facilitiesId") String facilitiesId,
+            @ApiParam(name = "state", value = "状态：0开放，1关闭，2损坏，3维修")
+            @RequestParam(value = "state") String state) throws Exception {
+        Facility facility = facilityService.findById(facilitiesId);
+        facility.setStatus(state);
+        facility = facilityService.save(facility);
+        return success(facility);
+    }
+
+    @ApiOperation(value = "今日使用设施数统计")
+    @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.COUNT_FACILITIES_BY_TIME)
+    public ObjEnvelop<Long> countFacilitiesByTime() throws Exception {
+        long count = facilityServerRelationService.countDistinctByFacilitieCodeAndCreateTimeBetween();
+        return success("success", count);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.yihu.jw.healthyhouse.service.facility;
 
 import com.yihu.jw.healthyhouse.dao.facility.FacilityServerRelationDao;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
+import com.yihu.jw.util.date.DateUtil;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,5 +29,13 @@ public class FacilityServerRelationService extends BaseJpaService<FacilityServer
     public void deleteByFacilitieCode(String facilitieCode) {
         facilityServerRelationDao.deleteByFacilitieCode(facilitieCode);
     }
+
+    public long countDistinctByFacilitieCodeAndCreateTimeBetween() throws Exception {
+        String date=DateUtil.getStringDateShort();
+        String sql = "select COUNT(DISTINCT facilitie_code ) from facility_used_records  WHERE LEFT(create_time,10)=?";
+        String count = jdbcTemplate.queryForObject(sql, String.class, date);
+        return Long.parseLong(count);
+    }
+
 
 }
