@@ -44,6 +44,14 @@ public class User extends UuidIdentityEntityWithOperator {
     private String provinceCode;    //省编码
     @Column(name = "city_code", nullable = false)
     private String cityCode;        //市编码
+    @Column(name = "city_name", nullable = false)
+    private String cityName;        //市名称
+    @Column(name = "area_code", nullable = false)
+    private String areaCode;        //所在县区编码
+    @Column(name = "area_name", nullable = false)
+    private String areaName;        //所在县区名称
+    @Column(name = "street", nullable = false)
+    private String street;        //所在街道名称
 
     @Column(name = "salt")
     private String salt; //加密种子
@@ -177,5 +185,37 @@ public class User extends UuidIdentityEntityWithOperator {
 
     public void setActivatedContent(String activatedContent) {
         this.activatedContent = activatedContent;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getAreaCode() {
+        return areaCode;
+    }
+
+    public void setAreaCode(String areaCode) {
+        this.areaCode = areaCode;
+    }
+
+    public String getAreaName() {
+        return areaName;
+    }
+
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }
