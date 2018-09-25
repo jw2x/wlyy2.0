@@ -31,14 +31,10 @@ import java.util.*;
 @Api(value = "FastDFSController", description = "FastDFS服务", tags = {"FastDFS服务"})
 public class FastDFSController extends EnvelopRestEndpoint {
 
-    private static String CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
     @Value("${fastDFS.fastdfs_file_url}")
     private String fastdfs_file_url;
     @Autowired
     private FastDFSUtil fastDFSUtil;
-    @Autowired
-    private FastDFSConfig fastDFSConfig;
     @Autowired
     private FileResourceService fileResourceService;
 
@@ -78,7 +74,6 @@ public class FastDFSController extends EnvelopRestEndpoint {
         fileResource=  fileResourceService.save(fileResource);
         path = groupName.substring(1, groupName.length() - 1) + "/" + remoteFileName.substring(1, remoteFileName.length() - 1);
         fileResource.setStoragePath( fastdfs_file_url + path);
-        System.out.println( fastDFSConfig.getPublicServer() + "/" + path);
         return success(fileResource);
     }
 
@@ -117,7 +112,6 @@ public class FastDFSController extends EnvelopRestEndpoint {
         fileResource=  fileResourceService.save(fileResource);
          path = groupName.substring(1, groupName.length() - 1) + "/" + remoteFileName.substring(1, remoteFileName.length() - 1);
         fileResource.setStoragePath( fastdfs_file_url + path);
-        System.out.println( fastDFSConfig.getPublicServer() + "/" + path);
         return success(fileResource);
     }
 
@@ -172,25 +166,6 @@ public class FastDFSController extends EnvelopRestEndpoint {
         fileResourceService.delete(ids);
         return success("success");
     }
-
-
-//    /**
-//     * 获取文件信息
-//     * @param path
-//     * @return
-//     * @throws Exception
-//     */
-//    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FastDFS.GET_FILE_INFO)
-//    @ApiOperation(value = "获取文件信息")
-//    public Envelop getInfo(
-//            @ApiParam(name = "path", value = "路径", required = true)
-//            @RequestParam(value = "path") String path) throws Exception {
-//        if (path.split(":").length < 2) {
-//            return failed("参数有误");
-//        }
-//        FileInfo fileInfo = fastDFSUtil.getFileInfo(path.split(":")[0], path.split(":")[1]);
-//        return success(fileInfo);
-//    }
 
     /**
      * 下载文件
