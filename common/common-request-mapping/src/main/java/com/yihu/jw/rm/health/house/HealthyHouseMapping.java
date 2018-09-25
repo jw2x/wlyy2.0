@@ -105,6 +105,18 @@ public class HealthyHouseMapping {
         public static class Town {
             public static final String LIST = "/list/city";
         }
+
+        public static class FastDFS{
+            public static final String UPLOAD="/dfs/upload";
+            public static final String UPLOADJSON="/dfs/jsonUpload";
+            public static final String DOWN="/dfs/down";
+            public static final String DELETE_BY_ID="/dfs/deleteById";
+            public static final String DELETE_BY_PATH="/dfs/deleteByPath";
+            public static final String GET_FILE_INFO ="/dfs/getFileInfo";
+            public static final String DOWNLOAD_BY_ID="/dfs/downloadById";
+            public static final String DOWNLOAD_BY_PATH="/dfs/downloadByPath";
+
+        }
     }
 
 
