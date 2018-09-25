@@ -1,7 +1,7 @@
 package com.yihu.jw.healthyhouse.controller.area;
 
 
-import com.yihu.jw.healthyhouse.model.area.BaseStreetDO;
+import com.yihu.jw.healthyhouse.model.area.BaseStreet;
 import com.yihu.jw.healthyhouse.service.area.BaseStreetService;
 import com.yihu.jw.restmodel.base.area.BaseStreetVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -44,7 +44,7 @@ private BaseStreetService baseStreetService;
 public ObjEnvelop<BaseStreetVO> create (
     @ApiParam(name = "json_data", value = "Json数据", required = true)
     @RequestBody String jsonData) throws Exception {
-    BaseStreetDO baseStreet = toEntity(jsonData, BaseStreetDO.class);
+    BaseStreet baseStreet = toEntity(jsonData, BaseStreet.class);
     baseStreet = baseStreetService.save(baseStreet);
     return success(baseStreet, BaseStreetVO.class);
     }
@@ -63,7 +63,7 @@ public ObjEnvelop<BaseStreetVO> create (
     public ObjEnvelop<BaseStreetVO> update (
         @ApiParam(name = "json_data", value = "Json数据", required = true)
         @RequestBody String jsonData) throws Exception {
-        BaseStreetDO baseStreet = toEntity(jsonData, BaseStreetDO.class);
+        BaseStreet baseStreet = toEntity(jsonData, BaseStreet.class);
         if (null == baseStreet.getId()) {
         return failed("ID不能为空", ObjEnvelop.class);
         }
@@ -84,7 +84,7 @@ public ObjEnvelop<BaseStreetVO> create (
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-            List<BaseStreetDO> baseStreets = baseStreetService.search(fields, filters, sorts, page, size);
+            List<BaseStreet> baseStreets = baseStreetService.search(fields, filters, sorts, page, size);
                 int count = (int)baseStreetService.getCount(filters);
                 return success(baseStreets, count, page, size, BaseStreetVO.class);
          }
@@ -98,7 +98,7 @@ public ObjEnvelop<BaseStreetVO> create (
              @RequestParam(value = "filters", required = false) String filters,
              @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
              @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-             List<BaseStreetDO> baseStreets = baseStreetService.search(fields, filters, sorts);
+             List<BaseStreet> baseStreets = baseStreetService.search(fields, filters, sorts);
                   return success(baseStreets, BaseStreetVO.class);
          }
 

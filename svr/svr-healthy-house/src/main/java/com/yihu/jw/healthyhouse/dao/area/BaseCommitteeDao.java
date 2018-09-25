@@ -1,6 +1,6 @@
 package com.yihu.jw.healthyhouse.dao.area;
 
-import com.yihu.jw.healthyhouse.model.area.BaseCommitteeDO;
+import com.yihu.jw.healthyhouse.model.area.BaseCommittee;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -16,5 +16,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * </pre>
  * @since 1.
  */
-public interface BaseCommitteeDao extends PagingAndSortingRepository<BaseCommitteeDO, Integer>, JpaSpecificationExecutor<BaseCommitteeDO>  {
+public interface BaseCommitteeDao extends PagingAndSortingRepository<BaseCommittee, Integer>, JpaSpecificationExecutor<BaseCommittee>  {
 }

@@ -1,21 +1,23 @@
 package com.yihu.jw.healthyhouse.model.area;
 
-import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 
 /**
-* 居委会实体
-*
-* @author Administrator on  2018年09月05日
-*
-*/
+ * 街道字典实体
+ * 
+ * @author Administrator on  2018年09月05日
+ *
+ */
 @Entity
-@Table(name = "base_committee")
-public class BaseCommitteeDO extends UuidIdentityEntityWithOperator {
+@Table(name = "base_street")
+public class BaseStreet extends IntegerIdentityEntity {
 
     /**
 	 * 省标识
@@ -35,17 +37,18 @@ public class BaseCommitteeDO extends UuidIdentityEntityWithOperator {
     /**
 	 * 街道标识
 	 */
-	private String street;
-
-    /**
-	 * 居委会标识
-	 */
 	private String code;
 
     /**
-	 * 居委会名称
+	 * 街道名称
 	 */
 	private String name;
+
+    /**
+	 * 创建时间
+	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
+	private Date createTime;
 
 
 	@Column(name = "province")
@@ -72,14 +75,6 @@ public class BaseCommitteeDO extends UuidIdentityEntityWithOperator {
         this.town = town;
     }
 
-	@Column(name = "street")
-    public String getStreet() {
-        return street;
-    }
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
 	@Column(name = "code")
     public String getCode() {
         return code;
@@ -94,6 +89,14 @@ public class BaseCommitteeDO extends UuidIdentityEntityWithOperator {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+	@Column(name = "create_time")
+    public Date getCreateTime() {
+        return createTime;
+    }
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
 

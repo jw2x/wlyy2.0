@@ -1,7 +1,7 @@
 package com.yihu.jw.healthyhouse.service.area;
 
 import com.yihu.jw.healthyhouse.dao.area.BaseCityDao;
-import com.yihu.jw.healthyhouse.model.area.BaseCityDO;
+import com.yihu.jw.healthyhouse.model.area.BaseCity;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +18,5 @@ import org.springframework.stereotype.Service;
  * @since 1.
  */
 @Service
-public class BaseCityService extends BaseJpaService<BaseCityDO, BaseCityDao> {
+public class BaseCityService extends BaseJpaService<BaseCity, BaseCityDao> {
 }

@@ -98,6 +98,13 @@ public class HealthyHouseMapping {
             public static final String GET_NAVIGATION_SERVICE_EVALUATION_BY_FIELD = "/getNavigationServiceEvaluationByField";
             public static final String UPDATE_NAVIGATION_SERVICE_EVALUATION_BY_ID = "/updateNavigationServiceEvaluationById";
         }
+
+        /**
+         * 城市
+         */
+        public static class Town {
+            public static final String LIST = "/list/city";
+        }
     }
 
 

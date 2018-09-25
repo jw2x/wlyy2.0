@@ -1,7 +1,7 @@
 package com.yihu.jw.healthyhouse.service.area;
 
 import com.yihu.jw.healthyhouse.dao.area.BaseCommitteeDao;
-import com.yihu.jw.healthyhouse.model.area.BaseCommitteeDO;
+import com.yihu.jw.healthyhouse.model.area.BaseCommittee;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +18,5 @@ import org.springframework.stereotype.Service;
  * @since 1.
  */
 @Service
-public class BaseCommitteeService extends BaseJpaService<BaseCommitteeDO, BaseCommitteeDao> {
+public class BaseCommitteeService extends BaseJpaService<BaseCommittee, BaseCommitteeDao> {
 }
