@@ -185,6 +185,9 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "facilitiesId", value = "设施ID")
             @RequestParam(value = "facilitiesId") String facilitiesId) throws Exception {
         Facility facility = facilityService.findById(facilitiesId);
+        if (null == facility) {
+            return failed("设施不存在！");
+        }
         List<FacilityServerRelation> facilityServerRelationList = facilityServerRelationService.findByField("facilitieCode", facility.getCode());
         //通过设施与服务关系，变更设施服务使用数量
         for (FacilityServerRelation facilityServerRelation : facilityServerRelationList) {
