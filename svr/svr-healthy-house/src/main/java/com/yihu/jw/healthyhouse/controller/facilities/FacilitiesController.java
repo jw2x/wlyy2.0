@@ -299,5 +299,18 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         response.flushBuffer();
     }
 
+    @ApiOperation(value = "获取设施列表--不分页(app)", responseContainer = "List")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.GET_FACILITIELIST)
+    public ListEnvelop<Facility> getFacilitieLists(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序", defaultValue = "")
+            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        List<Facility> facilityList = facilityService.search(fields, filters, sorts);
+        return success(facilityList);
+    }
+
 
 }

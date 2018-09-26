@@ -32,7 +32,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     @Autowired
     private FacilityUsedRecordService facilityUsedRecordService;
 
-    @ApiOperation(value = "获取用户使用导航记录列表", responseContainer = "List")
+    @ApiOperation(value = "获取用户使用导航记录列表--分页（web）", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.PAGE)
     public PageEnvelop<FacilityUsedRecord> getFacilityUsedRecords(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
@@ -58,7 +58,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
         return success(facilityUsedRecord);
     }
 
-    @ApiOperation(value = "获取用户使用导航记录")
+    @ApiOperation(value = "获取记录id查找导航记录")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.GET_FACILITY_USED_RECORD_BY_ID)
     public ObjEnvelop<FacilityUsedRecord> getFacilityUsedRecord(
             @ApiParam(name = "id", value = "用户使用导航记录ID", defaultValue = "")
@@ -90,5 +90,24 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
         facilityUsedRecordService.delete(facilityUsedRecord);
         return success("success");
     }
+
+    @ApiOperation(value = "获取用户查找导航记录，包含设施使用次数统计")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.GET_FACILITY_USED_RECORD_AND_COUNT_BY_ID)
+    public PageEnvelop<FacilityUsedRecord> getFacilityUsedRecordAndCountById(
+            @ApiParam(name = "userId", value = "用户ID", defaultValue = "")
+            @RequestParam(value = "userId") String userId,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) Integer size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) Integer page) throws Exception {
+        //根据用户id
+        List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.countDistinctByFacilitieCodeAndUserId(userId,page,size);
+        for(FacilityUsedRecord facilityUsedRecord1:facilityUsedRecordList){
+         long count=   facilityUsedRecordService.countByFacilitieCodeAndUserId(facilityUsedRecord1.getFacilitieCode(),userId);
+            facilityUsedRecord1.setNum((int)count);
+        }
+        return success(facilityUsedRecordList, (null == facilityUsedRecordList) ? 0 : facilityUsedRecordList.size(), page, size);
+    }
+
 
 }
