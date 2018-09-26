@@ -12,5 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FacilityDao extends JpaRepository<Facility, String> {
 
     Facility findById(String id);
+    Facility findByLongitudeAndLatitude(double longitude,double latitude);
 }
 

@@ -4,11 +4,12 @@ import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.dao.facility.FacilityDao;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.service.area.BaseCityService;
-import com.yihu.jw.healthyhouse.service.area.BaseStreetService;
 import com.yihu.jw.healthyhouse.service.area.BaseTownService;
+import com.yihu.jw.healthyhouse.service.dict.SystemDictEntryService;
 import com.yihu.jw.healthyhouse.util.facility.msg.FacilityMsg;
 import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
 import com.yihu.mysql.query.BaseJpaService;
+import io.swagger.models.auth.In;
 import jxl.write.Colour;
 import jxl.write.WritableCellFormat;
 import org.apache.commons.lang.StringUtils;
@@ -22,7 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 设施管理器.
@@ -42,11 +45,20 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
     @Autowired
     private BaseTownService baseTownService;
     @Autowired
-    private BaseStreetService baseStreetService;
+    private SystemDictEntryService systemDictEntryService;
 
 
     public Facility findById(String id) {
         return  facilityDao.findById(id);
+    }
+
+    public boolean isHasFacility(double longitude,double latitude){
+        boolean flag = false;
+        Facility facility = facilityDao.findByLongitudeAndLatitude(longitude, latitude);
+        if (facility!=null) {
+            flag = true;
+        }
+        return flag;
     }
 
     //excel中添加固定内容
@@ -135,9 +147,13 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
      * 批量存储的集合
      * @param facilities    设施列表
      */
-    public void batchInsertFacility(List<FacilityMsg> facilities){
+    public Map<String,Object> batchInsertFacility(List<FacilityMsg> facilities) throws ManageException{
+        Map<String,Object> result = new HashMap<>();
         //批量存储的集合
-        List<Facility> data = new ArrayList<>();
+        int correctCount = 0;
+        List<Facility> corrects = new ArrayList<>();
+        List<Facility> errors = new ArrayList<>();
+
         Facility facility = null;
         //批量存储
         for(FacilityMsg facilityMsg : facilities) {
@@ -146,9 +162,10 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             Double latitude = StringUtils.isEmpty(facilityMsg.getLongitude()) ? null :Double.parseDouble(facilityMsg.getLongitude());
             String cityCode = baseCityService.getCodeByname(facilityMsg.getCity());
             String townCode = baseTownService.getCodeByname(facilityMsg.getCounty());
-
+            Integer categoryCode = systemDictEntryService.getDictEntryCodeByName("FacilityType",facilityMsg.getCategory());
             facility.setCode(genFacilityCode());
-            facility.setCategory(Integer.parseInt(facilityMsg.getCategory()));
+            facility.setCategory(categoryCode);
+            facility.setCategoryValue(facilityMsg.getCategory());
             facility.setUserName(facilityMsg.getUserName());
             facility.setUserTelephone(facilityMsg.getUserTelePhone());
             facility.setProvinceId(facilityMsg.getProvince());
@@ -165,15 +182,26 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             facility.setLongitude(longitude);
             facility.setLatitude(latitude);
 
-            data.add(facility);
-            if (data.size()>100){
-                facilityDao.save(data);
-                data.clear();
+            if (isHasFacility(longitude,latitude)) {
+                errors.add(facility);
+            }else {
+                corrects.add(facility);
+            }
+
+            if (corrects.size()>100){
+                facilityDao.save(corrects);
+                correctCount +=corrects.size();
+                corrects.clear();
             }
         }
-        if(!data.isEmpty()) {
-            facilityDao.save(data);
+        if(!corrects.isEmpty()) {
+            facilityDao.save(corrects);
+            correctCount +=corrects.size();
         }
+
+        result.put("correctCount",correctCount);
+        result.put("errors",errors);
+        return result;
     }
 
     /**
