@@ -264,7 +264,7 @@ public class Facility extends UuidIdentityEntityWithOperator {
     }
 
 
-    @Formula("( SELECT a.value FROM system_dict_entries a WHERE a.dict_id = 5 AND a.code = status )")
+    @Formula("( SELECT a.value FROM system_dict_entries a WHERE a.dict_id = 3 AND a.code = status )")
     public String getStatusName() {
         return statusName;
     }
@@ -281,7 +281,7 @@ public class Facility extends UuidIdentityEntityWithOperator {
         this.facilityServerRelation = facilityServerRelation;
     }
 
-    @Formula("( SELECT a.value FROM system_dict_entries a WHERE a.dict_id = 3 AND a.code = category )")
+    @Formula("( SELECT a.value FROM system_dict_entries a WHERE a.dict_id = 5 AND a.code = category )")
     public String getCategoryValue() {
         return categoryValue;
     }
