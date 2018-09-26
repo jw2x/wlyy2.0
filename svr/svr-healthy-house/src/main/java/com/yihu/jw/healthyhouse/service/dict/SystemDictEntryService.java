@@ -92,4 +92,18 @@ public class SystemDictEntryService extends BaseJpaService<SystemDictEntry, Syst
         sqlQuery.setParameter("dict_id", dict_id);
         return sqlQuery.list();
     }
+
+    public Integer getDictEntryCodeByName(String dictCode, String value){
+        String sql = "SELECT t.code FROM system_dict_entries t LEFT JOIN system_dicts d ON t.dict_id = d.id where d.code=:dictCode and t.value=:dictEntryValue";
+        SQLQuery sqlQuery = currentSession().createSQLQuery(sql);
+        sqlQuery.setParameter("dictCode", dictCode);
+        sqlQuery.setParameter("dictEntryValue", value);
+        Object result = sqlQuery.uniqueResult();
+        if (result !=null ){
+            return Integer.parseInt(result.toString());
+        }else {
+            return null;
+        }
+
+    }
 }

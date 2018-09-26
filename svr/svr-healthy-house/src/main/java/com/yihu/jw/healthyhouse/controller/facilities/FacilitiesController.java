@@ -261,39 +261,22 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
 
     @PostMapping(value = "/batchImport")
-    @ApiOperation(value = "设施列表导入")
-    public void importData(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @ApiOperation(value = "设施列表导入（经纬度重复的不导入）")
+    public ObjEnvelop importData(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException, ManageException {
         try {
-
-            writerResponse(response, 1 + "", "l_upd_progress");
             request.setCharacterEncoding("UTF-8");
             AExcelReader excelReader = new FacilityMsgReader();
             excelReader.read(file);
-            List<FacilityMsg> correctLs = excelReader.getCorrectLs();
-            writerResponse(response, 35+"", "l_upd_progress");
-            if(correctLs.size()>0) {
-                facilityService.batchInsertFacility(correctLs);
+            List<FacilityMsg> dataList = excelReader.getCorrectLs();
+            if(dataList.size()>0) {
+                Map<String,Object> result = facilityService.batchInsertFacility(dataList);
+                return ObjEnvelop.getSuccess("导入成功!",result);
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
-            writerResponse(response, "-1", "l_upd_progress");
+            throw new ManageException("导入设施列表异常！",e);
         }
-    }
-
-    private void writerResponse(HttpServletResponse response, String body, String client_method) throws IOException {
-        StringBuffer sb = new StringBuffer();
-        sb.append("<script type=\"text/javascript\">//<![CDATA[\n");
-        sb.append("     parent.").append(client_method).append("(").append(body).append(");\n");
-        sb.append("//]]></script>");
-
-        response.setContentType("text/html;charset=UTF-8");
-        response.addHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
-        response.setHeader("Cache-Control", "pre-check=0,post-check=0");
-        response.setDateHeader("Expires", 0);
-        response.getWriter().write(sb.toString());
-        response.flushBuffer();
+        return ObjEnvelop.getError("导入失败");
     }
 
 
