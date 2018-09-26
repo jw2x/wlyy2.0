@@ -124,6 +124,21 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 菜单
+     */
+    public static class Menu extends Basic {
+        public static final String PREFIX  = "/menu";
+        public static final String STATUS  = "/status";
+    }
+
+    /**
+     * 错误码
+     */
+    public static class ErrorCode extends Basic {
+        public static final String PREFIX  = "/error";
+    }
+
+    /**
      * 角色权限
      */
     public static class RoleAuthority extends Basic {
