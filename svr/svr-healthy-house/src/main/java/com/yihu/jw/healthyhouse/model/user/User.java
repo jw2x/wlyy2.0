@@ -6,6 +6,7 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 /**
@@ -217,5 +218,20 @@ public class User extends UuidIdentityEntityWithOperator {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    @Transient
+    public String getAddress(){
+        String address ="";
+        if (this.getCityName()!=null) {
+            address += this.getCityName();
+        }
+        if (this.getAreaName()!=null) {
+            address += this.getAreaName();
+        }
+        if (this.getStreet() !=null ){
+            address += this.getStreet();
+        }
+        return address;
     }
 }

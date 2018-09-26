@@ -33,7 +33,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
     private FacilityServerService facilityServerService;
 
     @ApiOperation(value = "获取设施服务列表", responseContainer = "List")
-    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.PAGE)
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.PAGE )
     public PageEnvelop<FacilityServer> getFacilitiesServer(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
@@ -50,7 +50,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
     }
 
     @ApiOperation(value = "创建设施服务")
-    @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.CREATE)
+    @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.CREATE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ObjEnvelop<FacilityServer> createFacilitiesServer(
             @ApiParam(name = "FacilityServer", value = "设施服务JSON结构")
             @RequestBody FacilityServer facilityServer) throws IOException {

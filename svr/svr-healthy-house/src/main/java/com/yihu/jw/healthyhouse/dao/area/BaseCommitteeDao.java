@@ -17,4 +17,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @since 1.
  */
 public interface BaseCommitteeDao extends PagingAndSortingRepository<BaseCommittee, Integer>, JpaSpecificationExecutor<BaseCommittee>  {
+    BaseCommittee findByName(String name);
+
 }

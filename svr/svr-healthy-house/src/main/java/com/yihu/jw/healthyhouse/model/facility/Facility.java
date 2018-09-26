@@ -289,4 +289,21 @@ public class Facility extends UuidIdentityEntityWithOperator {
     public void setCategoryValue(String categoryValue) {
         this.categoryValue = categoryValue;
     }
+    @Transient
+    public String getAddress(){
+        String address = "";
+        if (this.getProvinceId()!=null ) {
+
+        }
+        if (this.getCityName() !=null ){
+            address += this.getCityName();
+        }
+        if (this.getCountyName() !=null ){
+            address += this.getCountyName();
+        }
+        if (this.getStreet() !=null) {
+            address += this.getStreet();
+        }
+        return address;
+    }
 }

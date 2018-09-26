@@ -4,10 +4,16 @@ import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.dao.user.UserDao;
 import com.yihu.jw.healthyhouse.model.user.User;
+import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
 import com.yihu.jw.util.date.DateUtil;
 import com.yihu.jw.util.security.MD5;
+import jxl.write.Colour;
+import jxl.write.WritableCellFormat;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +24,9 @@ import org.springframework.util.StringUtils;
 import org.springside.modules.persistence.DynamicSpecifications;
 import org.springside.modules.persistence.SearchFilter;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
+import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -262,6 +270,87 @@ public class UserService {
         Long aLong = userDao.sumFacilityUseCout();
         return aLong;
     }
+
+
+   
+    //excel中添加固定内容
+    private void addStaticCell(Sheet sheet){
+        //设置样式
+        Workbook workbook = sheet.getWorkbook();
+        CellStyle style = workbook.createCellStyle();
+        style.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());//設置背景色
+        Font font = workbook.createFont();
+        font.setFontName("黑体");
+        font.setFontHeightInPoints((short) 12);
+        style.setFont(font);
+        ExcelUtils.addCellData(sheet,0,0,"序号",style);
+        ExcelUtils.addCellData(sheet,1,0,"内部标识",style);
+        ExcelUtils.addCellData(sheet,2,0,"登录账号",style);
+        ExcelUtils.addCellData(sheet,3,0,"名称",style);
+        ExcelUtils.addCellData(sheet,4,0,"身份证号",style);
+        ExcelUtils.addCellData(sheet,5,0,"性别",style);
+        ExcelUtils.addCellData(sheet,6,0,"电话",style);
+        ExcelUtils.addCellData(sheet,7,0,"地址",style);
+        ExcelUtils.addCellData(sheet,8,0,"设施使用次数",style);
+
+    }
+
+    /**
+     *  导出用户列表excel
+     * @param response  响应体
+     * @param userList  用户列表
+     * @throws ManageException
+     */
+    public void exportUsersExcel(HttpServletResponse response, List<User> userList) throws ManageException {
+        try {
+            String fileName = "健康小屋-用户列表";
+            //设置下载
+            response.setContentType("octets/stream");
+            response.setHeader("Content-Disposition", "attachment; filename="
+                    + new String( fileName.getBytes("gb2312"), "ISO8859-1" )+".xlsx");
+            OutputStream os = response.getOutputStream();
+            //获取导出数据集
+            JSONObject order = new JSONObject();
+            order.put("id","asc");
+
+            //写excel
+            Workbook workbook = new XSSFWorkbook();
+            int k=0;
+            User metaData = null;
+            int row=0;
+            //创建Excel工作表 指定名称和位置
+            String streetName = "健康小屋-用户列表";
+            Sheet sheet = workbook.createSheet(streetName);
+            addStaticCell(sheet);
+
+            //添加数据元信息
+            WritableCellFormat wc = new WritableCellFormat();
+            wc.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.THIN, Colour.SKY_BLUE);//边框
+            for(int j=0;k<userList.size(); j++,k++){
+                metaData = userList.get(k);
+                row=j+1;
+                ExcelUtils.addCellData(sheet,0,row,j+1+"");//序号
+                ExcelUtils.addCellData(sheet,1,row, metaData.getId());//内部id
+                ExcelUtils.addCellData(sheet,2,row, metaData.getLoginCode());//登录名
+                ExcelUtils.addCellData(sheet,3,row, metaData.getName());//名称
+                ExcelUtils.addCellData(sheet,4,row, metaData.getIdCardNo());//身份证
+                ExcelUtils.addCellData(sheet,5,row, metaData.getGender());//性别
+                ExcelUtils.addCellData(sheet,6,row, metaData.getTelephone());//电话
+                ExcelUtils.addCellData(sheet,7,row, metaData.getAddress());//地区
+                ExcelUtils.addCellData(sheet,8,row, metaData.getFacilityUsedCount().toString());//使用设施次数
+
+            }
+
+            //写入工作表
+            workbook.write(os);
+            workbook.close();
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            throw new ManageException("导出用户列表异常",e);
+        }
+    }
+
 
 
 }
