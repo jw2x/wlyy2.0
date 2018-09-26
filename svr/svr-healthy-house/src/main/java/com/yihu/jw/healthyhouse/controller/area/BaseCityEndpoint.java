@@ -1,7 +1,7 @@
 package com.yihu.jw.healthyhouse.controller.area;
 
 
-import com.yihu.jw.healthyhouse.model.area.BaseCityDO;
+import com.yihu.jw.healthyhouse.model.area.BaseCity;
 import com.yihu.jw.healthyhouse.service.area.BaseCityService;
 import com.yihu.jw.restmodel.base.area.BaseCityVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -44,7 +44,7 @@ private BaseCityService baseCityService;
 public ObjEnvelop<BaseCityVO> create (
     @ApiParam(name = "json_data", value = "Json数据", required = true)
     @RequestBody String jsonData) throws Exception {
-    BaseCityDO baseCity = toEntity(jsonData, BaseCityDO.class);
+    BaseCity baseCity = toEntity(jsonData, BaseCity.class);
     baseCity = baseCityService.save(baseCity);
     return success(baseCity, BaseCityVO.class);
     }
@@ -63,7 +63,7 @@ public ObjEnvelop<BaseCityVO> create (
     public ObjEnvelop<BaseCityVO> update (
         @ApiParam(name = "json_data", value = "Json数据", required = true)
         @RequestBody String jsonData) throws Exception {
-        BaseCityDO baseCity = toEntity(jsonData, BaseCityDO.class);
+        BaseCity baseCity = toEntity(jsonData, BaseCity.class);
         if (null == baseCity.getId()) {
         return failed("ID不能为空", ObjEnvelop.class);
         }
@@ -84,7 +84,7 @@ public ObjEnvelop<BaseCityVO> create (
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-            List<BaseCityDO> baseCitys = baseCityService.search(fields, filters, sorts, page, size);
+            List<BaseCity> baseCitys = baseCityService.search(fields, filters, sorts, page, size);
                 int count = (int)baseCityService.getCount(filters);
                 return success(baseCitys, count, page, size, BaseCityVO.class);
          }
@@ -98,7 +98,7 @@ public ObjEnvelop<BaseCityVO> create (
              @RequestParam(value = "filters", required = false) String filters,
              @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
              @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-             List<BaseCityDO> baseCitys = baseCityService.search(fields, filters, sorts);
+             List<BaseCity> baseCitys = baseCityService.search(fields, filters, sorts);
              return success(baseCitys, BaseCityVO.class);
          }
 

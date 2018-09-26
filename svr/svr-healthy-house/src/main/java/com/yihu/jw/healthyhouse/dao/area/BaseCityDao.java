@@ -1,6 +1,6 @@
 package com.yihu.jw.healthyhouse.dao.area;
 
-import com.yihu.jw.healthyhouse.model.area.BaseCityDO;
+import com.yihu.jw.healthyhouse.model.area.BaseCity;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -16,7 +16,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * </pre>
  * @since 1.
  */
-public interface BaseCityDao extends PagingAndSortingRepository<BaseCityDO, Integer>, JpaSpecificationExecutor<BaseCityDO>  {
+public interface BaseCityDao extends PagingAndSortingRepository<BaseCity, Integer>, JpaSpecificationExecutor<BaseCity>  {
+    BaseCity findByName(String name);
 
-    BaseCityDO findByName(String name);
 }

@@ -48,6 +48,8 @@ public class HealthyHouseMapping {
             public static final String GET_FACILITIES_BY_ID = "/getFacilitiesById";
             public static final String GET_FACILITIES_BY_FIELD = "/getFacilitiesByField";
             public static final String COUNT_FACILITIES = "/count/facilities";
+            public static final String UPDATE_FACILITIE_STATE = "/update/facilitieState";
+            public static final String COUNT_FACILITIES_BY_TIME = "/count/facilitiesByTime";
         }
 
         //设施服务
@@ -83,6 +85,37 @@ public class HealthyHouseMapping {
             public static final String GET_FACILITY_USED_RECORD_BY_ID = "/getFacilityUsedRecordById";
             public static final String GET_FACILITY_USED_RECORD_BY_FIELD = "/getFacilityUsedRecordByField";
             public static final String UPDATE_FACILITY_USED_RECORD_BY_ID = "/updateFacilityUsedRecordById";
+        }
+
+        //服务评价
+        public static class NavigationServiceEvaluation {
+            public static final String CREATE = "/create/navigationServiceEvaluation";
+            public static final String DELETE = "/delete/navigationServiceEvaluation";
+            public static final String UPDATE = "/update/navigationServiceEvaluation";
+            public static final String PAGE = "/page/navigationServiceEvaluation";
+            public static final String LIST = "/list/navigationServiceEvaluation";
+            public static final String GET_NAVIGATION_SERVICE_EVALUATION_BY_ID = "/getNavigationServiceEvaluationById";
+            public static final String GET_NAVIGATION_SERVICE_EVALUATION_BY_FIELD = "/getNavigationServiceEvaluationByField";
+            public static final String UPDATE_NAVIGATION_SERVICE_EVALUATION_BY_ID = "/updateNavigationServiceEvaluationById";
+        }
+
+        /**
+         * 城市
+         */
+        public static class Town {
+            public static final String LIST = "/list/city";
+        }
+
+        public static class FastDFS{
+            public static final String UPLOAD="/dfs/upload";
+            public static final String UPLOADJSON="/dfs/jsonUpload";
+            public static final String DOWN="/dfs/down";
+            public static final String DELETE_BY_ID="/dfs/deleteById";
+            public static final String DELETE_BY_PATH="/dfs/deleteByPath";
+            public static final String GET_FILE_INFO ="/dfs/getFileInfo";
+            public static final String DOWNLOAD_BY_ID="/dfs/downloadById";
+            public static final String DOWNLOAD_BY_PATH="/dfs/downloadByPath";
+
         }
     }
 

@@ -1,8 +1,7 @@
 package com.yihu.jw.healthyhouse.service.area;
 
 import com.yihu.jw.healthyhouse.dao.area.BaseTownDao;
-import com.yihu.jw.healthyhouse.model.area.BaseStreetDO;
-import com.yihu.jw.healthyhouse.model.area.BaseTownDO;
+import com.yihu.jw.healthyhouse.model.area.BaseTown;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,18 +19,16 @@ import org.springframework.stereotype.Service;
  * @since 1.
  */
 @Service
-public class BaseTownService extends BaseJpaService<BaseTownDO, BaseTownDao> {
-
+public class BaseTownService extends BaseJpaService<BaseTown, BaseTownDao> {
     @Autowired
     public BaseTownDao baseTownDao;
 
     public String getCodeByname(String name) {
-        BaseTownDO townDO = baseTownDao.findByName(name);
+        BaseTown townDO = baseTownDao.findByName(name);
         if (townDO != null) {
             return townDO.getCode();
         } else {
             return null;
         }
     }
-
 }

@@ -1,7 +1,7 @@
 package com.yihu.jw.healthyhouse.controller.area;
 
 
-import com.yihu.jw.healthyhouse.model.area.BaseProvinceDO;
+import com.yihu.jw.healthyhouse.model.area.BaseProvince;
 import com.yihu.jw.healthyhouse.service.area.BaseProvinceService;
 import com.yihu.jw.restmodel.base.area.BaseProvinceVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -44,7 +44,7 @@ private BaseProvinceService baseProvinceService;
 public ObjEnvelop<BaseProvinceVO> create (
     @ApiParam(name = "json_data", value = "Json数据", required = true)
     @RequestBody String jsonData) throws Exception {
-    BaseProvinceDO baseProvince = toEntity(jsonData, BaseProvinceDO.class);
+    BaseProvince baseProvince = toEntity(jsonData, BaseProvince.class);
     baseProvince = baseProvinceService.save(baseProvince);
     return success(baseProvince, BaseProvinceVO.class);
     }
@@ -63,7 +63,7 @@ public ObjEnvelop<BaseProvinceVO> create (
     public ObjEnvelop<BaseProvinceVO> update (
         @ApiParam(name = "json_data", value = "Json数据", required = true)
         @RequestBody String jsonData) throws Exception {
-        BaseProvinceDO baseProvince = toEntity(jsonData, BaseProvinceDO.class);
+        BaseProvince baseProvince = toEntity(jsonData, BaseProvince.class);
         if (null == baseProvince.getId()) {
         return failed("ID不能为空", ObjEnvelop.class);
         }
@@ -84,7 +84,7 @@ public ObjEnvelop<BaseProvinceVO> create (
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-            List<BaseProvinceDO> baseProvinces = baseProvinceService.search(fields, filters, sorts, page, size);
+            List<BaseProvince> baseProvinces = baseProvinceService.search(fields, filters, sorts, page, size);
                 int count = (int)baseProvinceService.getCount(filters);
                 return success(baseProvinces, count, page, size, BaseProvinceVO.class);
          }
@@ -98,7 +98,7 @@ public ObjEnvelop<BaseProvinceVO> create (
              @RequestParam(value = "filters", required = false) String filters,
              @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
              @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-             List<BaseProvinceDO> baseProvinces = baseProvinceService.search(fields, filters, sorts);
+             List<BaseProvince> baseProvinces = baseProvinceService.search(fields, filters, sorts);
                   return success(baseProvinces, BaseProvinceVO.class);
          }
 

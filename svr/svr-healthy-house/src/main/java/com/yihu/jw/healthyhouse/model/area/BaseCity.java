@@ -17,7 +17,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "base_city")
-public class BaseCityDO extends IntegerIdentityEntity {
+public class BaseCity extends IntegerIdentityEntity {
 
     /**
 	 * 省编码
