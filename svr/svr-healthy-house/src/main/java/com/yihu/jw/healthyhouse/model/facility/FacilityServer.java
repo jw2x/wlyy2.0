@@ -2,6 +2,7 @@ package com.yihu.jw.healthyhouse.model.facility;
 
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 
@@ -26,6 +27,8 @@ public class FacilityServer extends UuidIdentityEntityWithOperator {
     //设施服务提供量：多少设施提供此服务
     @Column(name = "num")
     private String num;
+    //设施类型字典值
+    private String typeValue ;
 
     public String getCode() {
         return code;
@@ -57,5 +60,13 @@ public class FacilityServer extends UuidIdentityEntityWithOperator {
 
     public void setNum(String num) {
         this.num = num;
+    }
+    @Formula("( SELECT a.value FROM system_dict_entries a WHERE a.dict_id = 7 AND a.code = type )")
+    public String getTypeValue() {
+        return typeValue;
+    }
+
+    public void setTypeValue(String typeValue) {
+        this.typeValue = typeValue;
     }
 }

@@ -2,6 +2,7 @@ package com.yihu.jw.healthyhouse.model.facility;
 
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
 import java.util.List;
@@ -83,6 +84,7 @@ public class Facility extends UuidIdentityEntityWithOperator {
     private String imgPath;
 
     private String statusName;
+    private String  categoryValue ;
     private List<FacilityServerRelation> facilityServerRelation;
 
     public String getCode() {
@@ -261,7 +263,8 @@ public class Facility extends UuidIdentityEntityWithOperator {
         this.userName = userName;
     }
 
-    @Transient
+
+    @Formula("( SELECT a.value FROM system_dict_entries a WHERE a.dict_id = 5 AND a.code = status )")
     public String getStatusName() {
         return statusName;
     }
@@ -276,5 +279,14 @@ public class Facility extends UuidIdentityEntityWithOperator {
 
     public void setFacilityServerRelation(List<FacilityServerRelation> facilityServerRelation) {
         this.facilityServerRelation = facilityServerRelation;
+    }
+
+    @Formula("( SELECT a.value FROM system_dict_entries a WHERE a.dict_id = 3 AND a.code = category )")
+    public String getCategoryValue() {
+        return categoryValue;
+    }
+
+    public void setCategoryValue(String categoryValue) {
+        this.categoryValue = categoryValue;
     }
 }
