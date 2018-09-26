@@ -244,23 +244,21 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     }
 
 
-
     @GetMapping("/exportToExcel")
     @ApiOperation(value = "设施列表导出excel")
     public void exportToExcel(
             HttpServletResponse response,
-            @ApiParam(name = "filters", value = "过滤条件", required = false)@RequestParam(required = false, name = "filters") String filters,
-            @ApiParam(name = "sorts", value = "排序", required = false)@RequestParam(required = false, name = "sorts") String sorts) throws ManageException {
+            @ApiParam(name = "filters", value = "过滤条件", required = false) @RequestParam(required = false, name = "filters") String filters,
+            @ApiParam(name = "sorts", value = "排序", required = false) @RequestParam(required = false, name = "sorts") String sorts) throws ManageException {
         //获取设施数据
         List<Facility> facilityList = null;
         try {
-           facilityList = facilityService.search( filters, sorts);
+            facilityList = facilityService.search(filters, sorts);
         } catch (ParseException e) {
-            throw new ManageException("获取设施列表异常",e);
+            throw new ManageException("获取设施列表异常", e);
         }
-        facilityService.exportFacilityExcel(response,facilityList);
+        facilityService.exportFacilityExcel(response, facilityList);
     }
-
 
 
     @PostMapping(value = "/batchImport")
@@ -273,8 +271,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             AExcelReader excelReader = new FacilityMsgReader();
             excelReader.read(file);
             List<FacilityMsg> correctLs = excelReader.getCorrectLs();
-            writerResponse(response, 35+"", "l_upd_progress");
-            if(correctLs.size()>0) {
+            writerResponse(response, 35 + "", "l_upd_progress");
+            if (correctLs.size() > 0) {
                 facilityService.batchInsertFacility(correctLs);
             }
 
@@ -310,6 +308,25 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<Facility> facilityList = facilityService.search(fields, filters, sorts);
         return success(facilityList);
+    }
+
+
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.GET_ALL_FACILITIELISTS_COUNT)
+    @ApiOperation(value = "设施统计-三个统计值")
+    public ObjEnvelop<Map> usedFacilityCount() throws Exception {
+        Map<String, Long> map = new HashMap<>();
+        //今日使用设施数
+        long countUsedFacilitieToday = facilityServerRelationService.countDistinctByFacilitieCodeAndCreateTimeBetween();
+        map.put("countUsedFacilitieToday",countUsedFacilitieToday);
+        long countAllFacilitie = facilityService.getCount("");
+        map.put("countAllFacilitie",countAllFacilitie);
+        //今日新增设施:false
+        String todayStart = DateUtil.getStringDateShort() + " " + "00:00:00";
+        String todayEnd = DateUtil.getStringDateShort() + " " + "23:59:59";
+        String  filters = "createTime>=" + todayStart + ";createTime<=" + todayEnd;
+        long countCreatedFacilitieToday = facilityService.getCount(filters);
+        map.put("countCreatedFacilitieToday",countCreatedFacilitieToday);
+        return ObjEnvelop.getSuccess("获取成功", map);
     }
 
 

@@ -36,6 +36,12 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
         return facilityUsedRecords;
     }
 
+    public long countPageDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
+        String sql = "select count(DISTINCT facilitie_code )  from facility_used_records  fur WHERE  fur.user_id=? ";
+        String count = jdbcTemplate.queryForObject(sql, String.class,userId);
+        return Long.parseLong(count);
+    }
+
 
     public long countByFacilitieCodeAndUserId(String facilitieCode,String userId) {
         return facilityUsedRecordDao.countByFacilitieCodeAndUserId( facilitieCode, userId);

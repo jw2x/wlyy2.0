@@ -101,12 +101,30 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         //根据用户id
-        List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.countDistinctByFacilitieCodeAndUserId(userId,page,size);
-        for(FacilityUsedRecord facilityUsedRecord1:facilityUsedRecordList){
-         long count=   facilityUsedRecordService.countByFacilitieCodeAndUserId(facilityUsedRecord1.getFacilitieCode(),userId);
-            facilityUsedRecord1.setNum((int)count);
+        List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.countDistinctByFacilitieCodeAndUserId(userId, page, size);
+        for (FacilityUsedRecord facilityUsedRecord1 : facilityUsedRecordList) {
+            long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facilityUsedRecord1.getFacilitieCode(), userId);
+            facilityUsedRecord1.setNum((int) count);
         }
-        return success(facilityUsedRecordList, (null == facilityUsedRecordList) ? 0 : facilityUsedRecordList.size(), page, size);
+        int total=(int)facilityUsedRecordService.countPageDistinctByFacilitieCodeAndUserId(userId);
+        return success(facilityUsedRecordList, total, page, size);
+    }
+
+    @ApiOperation(value = "app-用户使用设施次数", responseContainer = "List")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.COUNT_FACILITY_USED_RECORD_BY_USERID)
+    public ObjEnvelop<Long> getFacilityUsedRecords(
+            @ApiParam(name = "userId", value = "登录用户id", defaultValue = "")
+            @RequestParam(value = "userId") String userId,
+            @ApiParam(name = "facilitieCode", value = "设施id", defaultValue = "")
+            @RequestParam(value = "facilitieCode", required = false) String facilitieCode) throws Exception {
+        StringBuffer stringBuffer = new StringBuffer();
+        stringBuffer.append("userId=" + userId + ";");
+        if (StringUtils.isNotEmpty(facilitieCode)) {
+            stringBuffer.append("facilitieCode=" + facilitieCode);
+        }
+        String filters = stringBuffer.toString();
+        long count = facilityUsedRecordService.getCount(filters);
+        return success(count);
     }
 
 
