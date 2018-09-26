@@ -117,6 +117,18 @@ public class HealthyHouseMapping {
             public static final String DOWNLOAD_BY_PATH="/dfs/downloadByPath";
 
         }
+
+        //账号申诉
+        public static class Appeal {
+            public static final String CREATE = "/create/appeals";
+            public static final String DELETE = "/delete/appeals";
+            public static final String UPDATE = "/update/appeals";
+            public static final String PAGE = "/page/appeals";
+            public static final String LIST = "/list/appeals";
+            public static final String GET_APPEAL_BY_ID = "/getAppealById";
+            public static final String GET_APPEALS_BY_FIELD = "/getAppealsByField";
+            public static final String UPDATE_APPEAL_BY_ID = "/updateAppealById";
+        }
     }
 
 

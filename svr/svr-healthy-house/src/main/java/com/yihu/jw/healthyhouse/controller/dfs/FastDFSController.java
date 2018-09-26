@@ -71,6 +71,7 @@ public class FastDFSController extends EnvelopRestEndpoint {
         fileResource.setStoragePath(path);
         fileResource.setFileSize(String.valueOf(fileSize));
         fileResource.setFileName(fileName);
+        fileResource.setCreateUser(creator);
         fileResource=  fileResourceService.save(fileResource);
         path = groupName.substring(1, groupName.length() - 1) + "/" + remoteFileName.substring(1, remoteFileName.length() - 1);
         fileResource.setStoragePath( fastdfs_file_url + path);
