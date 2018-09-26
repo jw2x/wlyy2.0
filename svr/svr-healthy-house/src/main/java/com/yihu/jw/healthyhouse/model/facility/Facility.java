@@ -277,4 +277,22 @@ public class Facility extends UuidIdentityEntityWithOperator {
     public void setFacilityServerRelation(List<FacilityServerRelation> facilityServerRelation) {
         this.facilityServerRelation = facilityServerRelation;
     }
+
+    @Transient
+    public String getAddress(){
+        String address = "";
+        if (this.getProvinceId()!=null ) {
+
+        }
+        if (this.getCityName() !=null ){
+            address += this.getCityName();
+        }
+        if (this.getCountyName() !=null ){
+            address += this.getCountyName();
+        }
+        if (this.getStreet() !=null) {
+            address += this.getStreet();
+        }
+        return address;
+    }
 }

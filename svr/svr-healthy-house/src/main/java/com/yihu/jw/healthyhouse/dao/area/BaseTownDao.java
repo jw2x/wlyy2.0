@@ -17,4 +17,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @since 1.
  */
 public interface BaseTownDao extends PagingAndSortingRepository<BaseTownDO, Integer>, JpaSpecificationExecutor<BaseTownDO>  {
+
+    BaseTownDO findByName(String name);
 }

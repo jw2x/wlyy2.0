@@ -1,12 +1,17 @@
 package com.yihu.jw.healthyhouse.controller.facilities;
 
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.cfg.ContextAttributes;
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServer;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerRelationService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityService;
+import com.yihu.jw.healthyhouse.util.facility.FacilityMsgReader;
+import com.yihu.jw.healthyhouse.util.facility.msg.FacilityMsg;
+import com.yihu.jw.healthyhouse.util.poi.AExcelReader;
 import com.yihu.jw.restmodel.web.*;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.health.house.HealthyHouseMapping;
@@ -17,16 +22,21 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.text.ParseException;
+import java.util.*;
 
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -208,6 +218,62 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             count = facilityService.getCount(filters);
         }
         return success("success", count);
+    }
+
+
+
+    @GetMapping("/exportToExcel")
+    @ApiOperation(value = "设施列表导出excel")
+    public void exportToExcel(
+            HttpServletResponse response,
+            @ApiParam(name = "filters", value = "过滤条件", required = false)@RequestParam(required = false, name = "filters") String filters,
+            @ApiParam(name = "sorts", value = "排序", required = false)@RequestParam(required = false, name = "sorts") String sorts) throws ManageException {
+        //获取设施数据
+        List<Facility> facilityList = null;
+        try {
+           facilityList = facilityService.search( filters, sorts);
+        } catch (ParseException e) {
+            throw new ManageException("获取设施列表异常",e);
+        }
+        facilityService.exportFacilityExcel(response,facilityList);
+    }
+
+
+
+    @PostMapping(value = "/batchImport")
+    @ApiOperation(value = "设施列表导入")
+    public void importData(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+
+            writerResponse(response, 1 + "", "l_upd_progress");
+            request.setCharacterEncoding("UTF-8");
+            AExcelReader excelReader = new FacilityMsgReader();
+            excelReader.read(file);
+            List<FacilityMsg> correctLs = excelReader.getCorrectLs();
+            writerResponse(response, 35+"", "l_upd_progress");
+            if(correctLs.size()>0) {
+                facilityService.batchInsertFacility(correctLs);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            writerResponse(response, "-1", "l_upd_progress");
+        }
+    }
+
+    private void writerResponse(HttpServletResponse response, String body, String client_method) throws IOException {
+        StringBuffer sb = new StringBuffer();
+        sb.append("<script type=\"text/javascript\">//<![CDATA[\n");
+        sb.append("     parent.").append(client_method).append("(").append(body).append(");\n");
+        sb.append("//]]></script>");
+
+        response.setContentType("text/html;charset=UTF-8");
+        response.addHeader("Pragma", "no-cache");
+        response.setHeader("Cache-Control", "no-cache,no-store,must-revalidate");
+        response.setHeader("Cache-Control", "pre-check=0,post-check=0");
+        response.setDateHeader("Expires", 0);
+        response.getWriter().write(sb.toString());
+        response.flushBuffer();
     }
 
 
