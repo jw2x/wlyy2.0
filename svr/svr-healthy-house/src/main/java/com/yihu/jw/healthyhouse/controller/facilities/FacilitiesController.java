@@ -201,7 +201,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     }
 
     @ApiOperation(value = "设施统计：设施总数/今日新增设施")
-    @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.COUNT_FACILITIES)
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.COUNT_FACILITIES)
     public ObjEnvelop<Long> countFacilities(
             @ApiParam(name = "totalCountFlag", value = "设施总数:true;今日新增设施:false", defaultValue = "true")
             @RequestParam(value = "totalCountFlag") boolean totalCountFlag) throws Exception {
@@ -221,7 +221,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     }
 
     @ApiOperation(value = "变更设施状态")
-    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.UPDATE_FACILITIE_STATE)
+    @PostMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.UPDATE_FACILITIE_STATE)
     public ObjEnvelop<Facility> updateFacilitieState(
             @ApiParam(name = "facilitiesId", value = "设施id", required = true)
             @RequestParam(value = "facilitiesId") String facilitiesId,
@@ -234,7 +234,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     }
 
     @ApiOperation(value = "今日使用设施数统计")
-    @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.COUNT_FACILITIES_BY_TIME)
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.COUNT_FACILITIES_BY_TIME)
     public ObjEnvelop<Long> countFacilitiesByTime() throws Exception {
         long count = facilityServerRelationService.countDistinctByFacilitieCodeAndCreateTimeBetween();
         return success("success", count);
