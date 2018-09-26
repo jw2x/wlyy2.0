@@ -150,6 +150,8 @@ public class BaseRequestMapping {
      */
     public static class WeChat extends Basic {
         public static final String PREFIX  = "/wechat";
+        public static final String api_success ="success";
+        public static final String getWechatInfos ="/getWechatInfos";
     }
 
     /**

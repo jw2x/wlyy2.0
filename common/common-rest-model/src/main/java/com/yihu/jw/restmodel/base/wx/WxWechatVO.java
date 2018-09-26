@@ -1,5 +1,7 @@
 package com.yihu.jw.restmodel.base.wx;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,26 +12,18 @@ import java.util.Map;
  */
 public class WxWechatVO {
 
-    private String id;
-    private String saasId;//'saas配置id'
-    private String name;//名称
-    private String token;//token
-    private String encodingAesKey;//加密密钥
-    private Integer encType;//加密方式  0:明文模式   1:兼容模式   2:安全模式
-    private Integer status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
-    private String type;//'1：服务号 2 订阅号
-    private String appId;//'微信app_id'
-    private String appSecret;//'微信app_secret'
-    private String baseUrl;//'微信base_url'
-    private String createUser;//'创建人'
-    private String createUserName;//'创建人名'
-    private Date createTime;//'创建时间'
-    private String updateUser;//'修改人
-    private String updateUserName;//'修改人名'
-    private Date updateTime;//'修改时间'
-    private String remark;//'备注'
-    private List<Map<String,Object>> children = new ArrayList<>();
-    private String state;
+    @ApiModelProperty(value = "id")
+    private String id ;
+    @ApiModelProperty(value = "名称")
+    private String name;
+    @ApiModelProperty(value = "备注")
+    private String remark;
+    @ApiModelProperty(value = "状态")
+    private Integer status;
+    @ApiModelProperty(value = "对接类型")
+    private Integer publicType;
+    @ApiModelProperty(value = "租户")
+    private List<WxSaasVO> saas;
 
     public String getId() {
         return id;
@@ -37,14 +31,6 @@ public class WxWechatVO {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
     }
 
     public String getName() {
@@ -55,28 +41,12 @@ public class WxWechatVO {
         this.name = name;
     }
 
-    public String getToken() {
-        return token;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getEncodingAesKey() {
-        return encodingAesKey;
-    }
-
-    public void setEncodingAesKey(String encodingAesKey) {
-        this.encodingAesKey = encodingAesKey;
-    }
-
-    public Integer getEncType() {
-        return encType;
-    }
-
-    public void setEncType(Integer encType) {
-        this.encType = encType;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public Integer getStatus() {
@@ -87,107 +57,19 @@ public class WxWechatVO {
         this.status = status;
     }
 
-    public String getType() {
-        return type;
+    public Integer getPublicType() {
+        return publicType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPublicType(Integer publicType) {
+        this.publicType = publicType;
     }
 
-    public String getAppId() {
-        return appId;
+    public List<WxSaasVO> getSaas() {
+        return saas;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getAppSecret() {
-        return appSecret;
-    }
-
-    public void setAppSecret(String appSecret) {
-        this.appSecret = appSecret;
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public String getCreateUserName() {
-        return createUserName;
-    }
-
-    public void setCreateUserName(String createUserName) {
-        this.createUserName = createUserName;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    public String getUpdateUserName() {
-        return updateUserName;
-    }
-
-    public void setUpdateUserName(String updateUserName) {
-        this.updateUserName = updateUserName;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public List<Map<String, Object>> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Map<String, Object>> children) {
-        this.children = children;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
+    public void setSaas(List<WxSaasVO> saas) {
+        this.saas = saas;
     }
 }
