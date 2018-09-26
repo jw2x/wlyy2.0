@@ -53,7 +53,7 @@ public class FeedBackController extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建/更新（id存在）意见反馈")
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.FeedBack.CREATE)
     public ObjEnvelop<FeedBack> createFeedBack(
-            @ApiParam(name = "FeedBack", value = "意见反馈JSON结构")
+            @ApiParam(name = "feedBack", value = "意见反馈JSON结构")
             @RequestBody FeedBack feedBack) throws IOException {
         feedBack = feedBackService.save(feedBack);
         return success(feedBack);

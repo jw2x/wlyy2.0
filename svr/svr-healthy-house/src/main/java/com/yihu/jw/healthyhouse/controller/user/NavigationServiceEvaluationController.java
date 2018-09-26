@@ -52,7 +52,7 @@ public class NavigationServiceEvaluationController extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建/更新（id存在）服务评价")
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.NavigationServiceEvaluation.CREATE)
     public ObjEnvelop<NavigationServiceEvaluation> createNavigationServiceEvaluation(
-            @ApiParam(name = "NavigationServiceEvaluation", value = "服务评价JSON结构")
+            @ApiParam(name = "navigationServiceEvaluation", value = "服务评价JSON结构")
             @RequestBody NavigationServiceEvaluation navigationServiceEvaluation) throws IOException {
         navigationServiceEvaluation = navigationServiceEvaluationService.save(navigationServiceEvaluation);
         return success(navigationServiceEvaluation);
@@ -84,9 +84,9 @@ public class NavigationServiceEvaluationController extends EnvelopRestEndpoint {
     @ApiOperation(value = "删除服务评价")
     @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.NavigationServiceEvaluation.DELETE)
     public Envelop deleteNavigationServiceEvaluation(
-            @ApiParam(name = "facilitiesServerId", value = "服务评价ID")
-            @RequestParam(value = "facilitiesServerId") String facilitiesServerId) throws Exception {
-        NavigationServiceEvaluation navigationServiceEvaluation = navigationServiceEvaluationService.findById(facilitiesServerId);
+            @ApiParam(name = "navigationServiceEvaluationId", value = "服务评价ID")
+            @RequestParam(value = "navigationServiceEvaluationId") String navigationServiceEvaluationId) throws Exception {
+        NavigationServiceEvaluation navigationServiceEvaluation = navigationServiceEvaluationService.findById(navigationServiceEvaluationId);
         navigationServiceEvaluationService.delete(navigationServiceEvaluation);
         return success("success");
     }

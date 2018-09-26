@@ -45,17 +45,17 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @RequestParam(value = "size", required = false) Integer size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
-        List<FacilityUsedRecord> FacilityUsedRecordList = facilityUsedRecordService.search(fields, filters, sorts, page, size);
-        return success(FacilityUsedRecordList, (null == FacilityUsedRecordList) ? 0 : FacilityUsedRecordList.size(), page, size);
+        List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.search(fields, filters, sorts, page, size);
+        return success(facilityUsedRecordList, (null == facilityUsedRecordList) ? 0 : facilityUsedRecordList.size(), page, size);
     }
 
     @ApiOperation(value = "创建/更新（id存在）用户使用导航记录")
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.CREATE)
     public ObjEnvelop<FacilityUsedRecord> createFacilityUsedRecord(
-            @ApiParam(name = "FacilityUsedRecord", value = "用户使用导航记录JSON结构")
-            @RequestBody FacilityUsedRecord FacilityUsedRecord) throws IOException {
-        FacilityUsedRecord = facilityUsedRecordService.save(FacilityUsedRecord);
-        return success(FacilityUsedRecord);
+            @ApiParam(name = "facilityUsedRecord", value = "用户使用导航记录JSON结构")
+            @RequestBody FacilityUsedRecord facilityUsedRecord) throws IOException {
+        facilityUsedRecord = facilityUsedRecordService.save(facilityUsedRecord);
+        return success(facilityUsedRecord);
     }
 
     @ApiOperation(value = "获取用户使用导航记录")
@@ -63,11 +63,11 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop<FacilityUsedRecord> getFacilityUsedRecord(
             @ApiParam(name = "id", value = "用户使用导航记录ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
-        FacilityUsedRecord FacilityUsedRecord = facilityUsedRecordService.findById(id);
-        if (FacilityUsedRecord == null) {
+        FacilityUsedRecord facilityUsedRecord = facilityUsedRecordService.findById(id);
+        if (facilityUsedRecord == null) {
             return failed("用户使用导航记录不存在！", ObjEnvelop.class);
         }
-        return success(FacilityUsedRecord);
+        return success(facilityUsedRecord);
     }
 
     @ApiOperation(value = "获取用户使用导航记录:根据日期，根据反馈人等")
@@ -77,17 +77,17 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @RequestParam(value = "field") String field,
             @ApiParam(name = "value", value = "检索值")
             @RequestParam(value = "value") String value) throws Exception {
-        List<FacilityUsedRecord> FacilityUsedRecordList = facilityUsedRecordService.findByField(field, value);
-        return success(FacilityUsedRecordList);
+        List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.findByField(field, value);
+        return success(facilityUsedRecordList);
     }
 
     @ApiOperation(value = "删除用户使用导航记录")
     @DeleteMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.DELETE)
     public Envelop deleteFacilityUsedRecord(
-            @ApiParam(name = "facilitiesServerId", value = "用户使用导航记录ID")
-            @RequestParam(value = "facilitiesServerId") String facilitiesServerId) throws Exception {
-        FacilityUsedRecord FacilityUsedRecord = facilityUsedRecordService.findById(facilitiesServerId);
-        facilityUsedRecordService.delete(FacilityUsedRecord);
+            @ApiParam(name = "facilityUsedRecordId", value = "用户使用导航记录ID")
+            @RequestParam(value = "facilityUsedRecordId") String facilityUsedRecordId) throws Exception {
+        FacilityUsedRecord facilityUsedRecord = facilityUsedRecordService.findById(facilityUsedRecordId);
+        facilityUsedRecordService.delete(facilityUsedRecord);
         return success("success");
     }
 
