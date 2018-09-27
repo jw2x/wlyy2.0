@@ -1,8 +1,10 @@
 package com.yihu.jw.healthyhouse.controller.user;
 
 
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.model.user.FacilityUsedRecord;
 import com.yihu.jw.healthyhouse.service.user.FacilityUsedRecordService;
+import com.yihu.jw.healthyhouse.service.user.UserService;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -31,6 +33,8 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
 
     @Autowired
     private FacilityUsedRecordService facilityUsedRecordService;
+    @Autowired
+    private UserService userService;
 
     @ApiOperation(value = "获取用户使用导航记录列表--分页（web）", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.PAGE)
@@ -53,8 +57,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.CREATE)
     public ObjEnvelop<FacilityUsedRecord> createFacilityUsedRecord(
             @ApiParam(name = "facilityUsedRecord", value = "用户使用导航记录JSON结构")
-            @RequestBody FacilityUsedRecord facilityUsedRecord) throws IOException {
+            @RequestBody FacilityUsedRecord facilityUsedRecord) throws IOException, ManageException {
         facilityUsedRecord = facilityUsedRecordService.save(facilityUsedRecord);
+        userService.updateFacilityUse(facilityUsedRecord.getUserId());
         return success(facilityUsedRecord);
     }
 

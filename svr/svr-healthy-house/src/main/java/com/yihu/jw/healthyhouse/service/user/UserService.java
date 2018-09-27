@@ -3,7 +3,9 @@ package com.yihu.jw.healthyhouse.service.user;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.constant.UserConstant;
+import com.yihu.jw.healthyhouse.dao.facility.FacilityDao;
 import com.yihu.jw.healthyhouse.dao.user.UserDao;
+import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -11,6 +13,7 @@ import com.yihu.jw.restmodel.wlyy.HouseUserContant;
 import com.yihu.jw.util.common.IdCardUtil;
 import com.yihu.jw.util.date.DateUtil;
 import com.yihu.jw.util.security.MD5;
+import com.yihu.mysql.query.BaseJpaService;
 import jxl.write.Colour;
 import jxl.write.WritableCellFormat;
 import org.apache.poi.ss.usermodel.*;
@@ -37,7 +40,7 @@ import java.util.regex.Pattern;
  * @created 2018/9/18 19:48
  */
 @Service
-public class UserService {
+public class UserService extends BaseJpaService<User, UserDao> {
 
     @Autowired
     private UserDao userDao;
@@ -347,6 +350,21 @@ public class UserService {
         } catch (Exception e) {
             throw new ManageException("导出用户列表异常",e);
         }
+    }
+
+    /**
+     * 更新设施使用次数
+     * @param userId            用户id
+     * @throws ManageException
+     */
+    @Transactional
+    public void updateFacilityUse(String userId) throws ManageException {
+        User user1 = findById(userId);
+        if (user1==null) {
+            throw new ManageException("该账号不存在");
+        }
+        user1.setFacilityUsedCount(user1.getFacilityUsedCount()+1);
+        userDao.save(user1);
     }
 
 

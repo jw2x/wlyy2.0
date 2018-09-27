@@ -2,6 +2,7 @@ package com.yihu.jw.healthyhouse.controller.user;
 
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.cache.WlyyRedisVerifyCodeService;
+import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.service.user.UserService;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,19 +52,19 @@ public class UserController  extends EnvelopRestEndpoint {
     @GetMapping("/userList")
     @ApiOperation(value = "获取用户列表")
     public PageEnvelop userList(
-            @ApiParam(name = "page", value = "页数", required = true)@RequestParam(required = true, name = "page") Integer page,
-            @ApiParam(name = "pageSize", value = "每页数量", required = true)@RequestParam(required = true, name = "pageSize") Integer pageSize,
-            @ApiParam(name = "city", value = "所在市区", required = false)@RequestParam(required = false, name = "city") String city,
-            @ApiParam(name = "activated", value = "用户状态", required = false)@RequestParam(required = false, name = "activated") String activated ,
-            @ApiParam(name = "name", value = "姓名/手机号", required = false)@RequestParam(required = false, name = "name") String name ,
-            @ApiParam(name = "order", value = "使用次数排序", required = false)@RequestParam(required = false, name = "order") String order  ) throws ManageException {
-        Map<String, String> map = new HashMap<>();
-        map.put("cityCode",city);
-        map.put("activated",activated);
-        map.put("name",name);
-        map.put("telephone",name);
-        Page<User> users = userService.userList(page, pageSize, map, order);
-        return PageEnvelop.getSuccessListWithPage("列表获取成功",users.getContent(),page,pageSize,users.getTotalElements());
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序", defaultValue = "")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) Integer size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) Integer page ) throws ManageException, ParseException {
+
+        List<User> userList = userService.search(fields, filters, sorts, page, size);
+        return success(userList, userList == null ? 0 : userList.size(), page, size);
     }
 
 
