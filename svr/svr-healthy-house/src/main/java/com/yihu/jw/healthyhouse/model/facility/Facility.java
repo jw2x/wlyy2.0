@@ -58,6 +58,9 @@ public class Facility extends UuidIdentityEntityWithOperator {
     //街道
     @Column(name = "street")
     private String street;
+    //地址
+    @Column(name = "adress")
+    private String adress;
     //服务时间：周一至周天，用逗号隔开
     @Column(name = "service_day")
     private String serviceDay ;

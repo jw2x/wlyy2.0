@@ -28,22 +28,20 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
         return facilityUsedRecordDao.findById(id);
     }
 
-    public List<FacilityUsedRecord> countDistinctByFacilitieCodeAndUserId(String userId,Integer page,Integer size) throws Exception {
-        Integer pageStart = (page - 1) * size;
-        Integer pageEnd = page * size;
-        String sql = "select fur.*  from facility_used_records  fur WHERE  fur.user_id=? GROUP BY fur.facilitie_code LIMIT "+pageStart+","+pageEnd;
+    public List<FacilityUsedRecord> countDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
+        String sql = "select fur.*  from facility_used_records  fur WHERE  fur.create_user=? GROUP BY fur.facilitie_code ";
         List<FacilityUsedRecord> facilityUsedRecords = jdbcTemplate.query(sql, new BeanPropertyRowMapper(FacilityUsedRecord.class), userId);
         return facilityUsedRecords;
     }
 
     public long countPageDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
-        String sql = "select count(DISTINCT facilitie_code )  from facility_used_records  fur WHERE  fur.user_id=? ";
+        String sql = "select count(DISTINCT facilitie_code )  from facility_used_records  fur WHERE  fur.create_user=? ";
         String count = jdbcTemplate.queryForObject(sql, String.class,userId);
         return Long.parseLong(count);
     }
 
 
     public long countByFacilitieCodeAndUserId(String facilitieCode,String userId) {
-        return facilityUsedRecordDao.countByFacilitieCodeAndUserId( facilitieCode, userId);
+        return facilityUsedRecordDao.countByFacilitieCodeAndCreateUser( facilitieCode, userId);
     }
 }
