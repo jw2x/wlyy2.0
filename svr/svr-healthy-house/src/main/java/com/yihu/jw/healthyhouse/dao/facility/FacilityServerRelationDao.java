@@ -4,6 +4,8 @@ import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
+import java.util.List;
+
 /**
  * 设施与服务关系 dao
  * @author zdm
@@ -13,6 +15,8 @@ import org.springframework.data.jpa.repository.Modifying;
 public interface FacilityServerRelationDao extends JpaRepository<FacilityServerRelation, Long> {
 
     FacilityServerRelation findById(String id);
+
+    List<FacilityServerRelation> findByFacilitieCode(String facilityCode);
 
     @Modifying
     void deleteByFacilitieCode(String facilitieCode);

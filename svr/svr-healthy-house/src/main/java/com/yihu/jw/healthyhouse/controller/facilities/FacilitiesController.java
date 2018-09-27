@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping(HealthyHouseMapping.api_healthyHouse_common)
-@Api(value = "Facility", description = "设施管理", tags = {"设施管理"})
+@Api(value = "Facility", description = "设施管理", tags = {"3设施管理"})
 public class FacilitiesController extends EnvelopRestEndpoint {
 
     @Autowired

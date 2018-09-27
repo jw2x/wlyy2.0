@@ -96,6 +96,7 @@ public class HealthyHouseMapping {
             public static final String UPDATE_FACILITY_USED_RECORD_BY_ID = "/updateFacilityUsedRecordById";
             public static final String GET_FACILITY_USED_RECORD_AND_COUNT_BY_ID = "/getFacilityUsedRecordAndCountById";
             public static final String COUNT_FACILITY_USED_RECORD_BY_USERID = "/countFacilityUsedRecordByUserId";
+            public static final String GET_FACILITY_USED_RECORD_DETAIL = "/getUsedRecordDetail";
         }
 
         //服务评价
