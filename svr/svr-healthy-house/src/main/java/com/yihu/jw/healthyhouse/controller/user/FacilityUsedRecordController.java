@@ -151,7 +151,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @ApiParam(name = "facilitieCode", value = "设施id", defaultValue = "")
             @RequestParam(value = "facilitieCode", required = false) String facilitieCode) throws Exception {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append("userId=" + userId + ";");
+        stringBuffer.append("createUser=" + userId + ";");
         if (StringUtils.isNotEmpty(facilitieCode)) {
             stringBuffer.append("facilitieCode=" + facilitieCode);
         }

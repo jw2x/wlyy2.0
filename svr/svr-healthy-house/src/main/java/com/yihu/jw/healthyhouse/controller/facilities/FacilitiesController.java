@@ -108,7 +108,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
         Facility facilityBack = facilityService.save(facility1);
-        List<FacilityServerRelation>  facilityServerRelationList = createRelationByServerCode(facility1,facilityServerJson);
+        List<FacilityServerRelation> facilityServerRelationList = createRelationByServerCode(facility1, facilityServerJson);
         facilityBack.setFacilityServerRelation(facilityServerRelationList);
         return success(facilityBack);
     }
@@ -157,7 +157,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
         Facility facilityBack = facilityService.save(facility1);
-        List<FacilityServerRelation>  facilityServerRelationList = createRelationByServerCode(facility1,facilityServerJson);
+        List<FacilityServerRelation> facilityServerRelationList = createRelationByServerCode(facility1, facilityServerJson);
         facilityBack.setFacilityServerRelation(facilityServerRelationList);
         return success(facilityBack);
     }
@@ -193,7 +193,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     }
 
     @ApiOperation(value = "新增/更新（idy已存在）设施")
-    @PutMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ObjEnvelop<Facility> updateFacilities(
             @ApiParam(name = "facility", value = "设施JSON结构（不包括设施与服务关联关系）")
             @RequestBody Facility facility) throws Exception {
@@ -357,6 +357,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     /**
      * 根据设施，删除设施关联服务，变更设施服务关联设施数，删除设施
+     *
      * @param facility 设施
      * @throws Exception
      */
@@ -366,7 +367,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         for (FacilityServerRelation facilityServerRelation : facilityServerRelationList) {
             List<FacilityServer> facilityServiceList = facilityServerService.findByField("code", facilityServerRelation.getServiceCode());
             for (FacilityServer facilityServer : facilityServiceList) {
-                Integer num = Integer.valueOf(facilityServer.getNum()) - 1;
+                Integer num = (null == facilityServer.getNum() ? 0 : (Integer.valueOf(facilityServer.getNum()) - 1));
                 facilityServer.setNum(num.toString());
                 facilityServerService.save(facilityServer);
             }
@@ -378,7 +379,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     /**
      * 根据设施及服务编码管理关联关系
      *
-     * @param facility1 设施
+     * @param facility1          设施
      * @param facilityServerJson 设施服务编码
      * @return
      */
@@ -389,22 +390,24 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             String[] fs = facilityServerJson.split(",");
             FacilityServerRelation facilityServerRelation;
             for (String code : fs) {
-                List<FacilityServer> facilityServerList = facilityServerService.findByField("code", code);
-                for (FacilityServer facilityServer : facilityServerList) {
-                    facilityServerRelation = new FacilityServerRelation();
-                    facilityServerRelation.setFacilitieCode(facility1.getCode());
-                    facilityServerRelation.setFacilitieName(facility1.getName());
-                    facilityServerRelation.setServiceCode(facilityServer.getCode());
-                    facilityServerRelation.setServiceName(facilityServer.getName());
-                    facilityServerRelation.setCreateUser(facility1.getCreateUser());
-                    facilityServerRelation.setCreateUserName(facility1.getCreateUserName());
-                    //追加设施与服务的关联关系
-                    facilityServerRelationService.save(facilityServerRelation);
-                    //添加设施的时候，追加改服务的使用设施数量。
-                    Integer num = Integer.valueOf(facilityServer.getNum()) + 1;
-                    facilityServer.setNum(num.toString());
-                    facilityServerService.save(facilityServer);
-                    list.add(facilityServerRelation);
+                if (StringUtils.isNotEmpty(code)) {
+                    List<FacilityServer> facilityServerList = facilityServerService.findByField("code", code);
+                    for (FacilityServer facilityServer : facilityServerList) {
+                        facilityServerRelation = new FacilityServerRelation();
+                        facilityServerRelation.setFacilitieCode(facility1.getCode());
+                        facilityServerRelation.setFacilitieName(facility1.getName());
+                        facilityServerRelation.setServiceCode(facilityServer.getCode());
+                        facilityServerRelation.setServiceName(facilityServer.getName());
+                        facilityServerRelation.setCreateUser(facility1.getCreateUser());
+                        facilityServerRelation.setCreateUserName(facility1.getCreateUserName());
+                        //追加设施与服务的关联关系
+                        facilityServerRelationService.save(facilityServerRelation);
+                        //添加设施的时候，追加改服务的使用设施数量。
+                        Integer num = (null == facilityServer.getNum() ? 0 + 1 : (Integer.valueOf(facilityServer.getNum()) + 1));
+                        facilityServer.setNum(num.toString());
+                        facilityServerService.save(facilityServer);
+                        list.add(facilityServerRelation);
+                    }
                 }
             }
         }
