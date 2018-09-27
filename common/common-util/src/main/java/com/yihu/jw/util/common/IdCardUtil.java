@@ -140,7 +140,7 @@ public class IdCardUtil {
 //        error.put("cardId", "身份证号码长度必须等于15或18位");
 //    }
 
-    private boolean cardCodeVerifySimple(String cardcode) {
+    public static boolean cardCodeVerifySimple(String cardcode) {
         //第一代身份证正则表达式(15位)
         String isIDCard1 = "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$";
         //第二代身份证正则表达式(18位)

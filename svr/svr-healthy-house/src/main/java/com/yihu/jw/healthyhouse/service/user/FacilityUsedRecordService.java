@@ -25,4 +25,12 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
         return  facilityUsedRecordDao.findById(id);
     }
 
+    public Long countByUserId(String userId){
+        return facilityUsedRecordDao.countByUserId(userId);
+    }
+
+    public Long countAll(){
+        return facilityUsedRecordDao.countAllByUserIdIsNotNull();
+    }
+
 }

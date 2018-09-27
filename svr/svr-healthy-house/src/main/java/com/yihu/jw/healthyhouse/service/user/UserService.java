@@ -2,11 +2,13 @@ package com.yihu.jw.healthyhouse.service.user;
 
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
+import com.yihu.jw.healthyhouse.constant.UserConstant;
 import com.yihu.jw.healthyhouse.dao.user.UserDao;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
+import com.yihu.jw.util.common.IdCardUtil;
 import com.yihu.jw.util.date.DateUtil;
 import com.yihu.jw.util.security.MD5;
 import jxl.write.Colour;
@@ -28,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * @author HZY
@@ -38,6 +41,8 @@ public class UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private FacilityUsedRecordService facilityUsedRecordService;
 
     public User findById(String id) {
         return userDao.findById(id);
@@ -192,22 +197,6 @@ public class UserService {
         }
     }
 
-    /**
-     * 更新设施使用次数
-     * @param userId            用户id
-     * @param facilityId    设施id
-     * @throws ManageException
-     */
-    @Transactional
-    public void updateFacilityUse(String userId, String facilityId) throws ManageException {
-        User user1 = findById(userId);
-        if (user1==null) {
-            throw new ManageException("该账号不存在");
-        }
-        user1.setFacilityUsedCount(user1.getFacilityUsedCount()+1);
-        userDao.save(user1);
-        //TODO 设施的使用次数更新
-    }
 
     @Transactional
     public void updatePwd(String userId, String oldPwd,String newPwd) throws ManageException {
@@ -254,7 +243,7 @@ public class UserService {
         //在线用户数
         Long activeCount = userDao.countAllByActivated(HouseUserContant.activated_active);
         //用户设施使用总次数
-        Long usePricilityCount = sumFacilityCount();
+        Long usePricilityCount = facilityUsedRecordService.countAll();
         result.put("totalCount",totalCount);
         result.put("newCount",newCount);
         result.put("activeCount",activeCount);
@@ -263,14 +252,23 @@ public class UserService {
     }
 
     /**
-     * 用户使用设施次数总和
-     * @return
+     *  用户身份证认证
+     * @param userId    用户ID
+     * @param idCardNo  身份证
+     * @throws ManageException
      */
-    public Long sumFacilityCount(){
-        Long aLong = userDao.sumFacilityUseCout();
-        return aLong;
+    public void checkIdCardNo(String userId, String idCardNo) throws ManageException {
+        User user1 = findById(userId);
+        if (user1==null) {
+            throw new ManageException("该账号不存在");
+        }
+        if(!IdCardUtil.cardCodeVerifySimple(idCardNo)){
+            throw new ManageException("身份证号格式有误");
+        }
+        // 更新身份证验证字段
+        user1.setRealnameAuthentication(UserConstant.AUTHORIZED);
+        userDao.save(user1);
     }
-
 
    
     //excel中添加固定内容

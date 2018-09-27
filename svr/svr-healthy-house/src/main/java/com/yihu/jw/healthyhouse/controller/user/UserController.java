@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  *  用户相关 接口
@@ -44,6 +45,7 @@ public class UserController  extends EnvelopRestEndpoint {
     private UserService userService;
     @Autowired
     private WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
+
 
     @GetMapping("/userList")
     @ApiOperation(value = "获取用户列表")
@@ -75,8 +77,7 @@ public class UserController  extends EnvelopRestEndpoint {
 
     @GetMapping("/usedFacilityCount")
     @ApiOperation(value = "获取用户统计信息")
-    public ObjEnvelop usedFacilityCount(
-            @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ) {
+    public ObjEnvelop usedFacilityCount() {
         Map<String, Long> userStatistics = userService.findUserStatistics();
         return ObjEnvelop.getSuccess("获取成功",userStatistics);
     }
@@ -102,16 +103,6 @@ public class UserController  extends EnvelopRestEndpoint {
         return ObjEnvelop.getSuccess("冻结成功");
     }
 
-
-    @PostMapping("/facilityUseUpdate")
-    @ApiOperation(value = "更新设施使用次数")
-    public Envelop facilityUseUpdate(
-            @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
-            @ApiParam(name = "facilityId", value = "设施Id", required = true)@RequestParam(required = true, name = "facilityId") String facilityId ) throws ManageException {
-
-        userService.updateFacilityUse(userId,facilityId);
-        return ObjEnvelop.getSuccess("更新用户使用设施次数成功");
-    }
 
     @PostMapping("/updatePwd")
     @ApiOperation(value = "更新密码")
@@ -141,6 +132,16 @@ public class UserController  extends EnvelopRestEndpoint {
         }
     }
 
+    @PostMapping("/checkIdCardNo")
+    @ApiOperation(value = "用户身份证号码认证")
+    public Envelop checkIdCardNo(
+            @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "idCardNo", value = "身份证号码", required = true)@RequestParam(required = true, name = "idCardNo") String idCardNo ) throws ManageException {
+
+        userService.checkIdCardNo(userId, idCardNo);
+        return ObjEnvelop.getSuccess("身份证认证完成！");
+    }
+
 
     @GetMapping("/exportToExcel")
     @ApiOperation(value = "用户列表导出excel")
@@ -160,11 +161,6 @@ public class UserController  extends EnvelopRestEndpoint {
         List<User> userList = userService.userList( map, sort);
         userService.exportUsersExcel(response,userList);
     }
-
-
-
-
-
 
 
 

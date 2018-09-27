@@ -3,6 +3,7 @@ package com.yihu.jw.healthyhouse.service.user;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.cache.WlyyRedisVerifyCodeService;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
+import com.yihu.jw.healthyhouse.constant.UserConstant;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
 import com.yihu.jw.util.security.MD5;
@@ -56,11 +57,12 @@ public class LoginService {
             user.setLoginCode(loginCode);
             user.setName(loginCode);
             user.setTelephone(loginCode);
+            // 更新身份证验证字段
+            user.setPhoneAuthentication(UserConstant.AUTHORIZED);
             user.setPassword(LoginInfo.DEFAULT_PASSWORD);
-        } else {
-            //已注册用户更改用户状态
-            user.setActivated(HouseUserContant.activated_active);
         }
+        //已注册用户更改用户状态
+        user.setActivated(HouseUserContant.activated_active);
         request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
         request.getSession().setAttribute(LoginInfo.TOKEN, ""); //TODO token是否添加
         request.getSession().setAttribute(LoginInfo.LOGIN_NAME, user.getName());

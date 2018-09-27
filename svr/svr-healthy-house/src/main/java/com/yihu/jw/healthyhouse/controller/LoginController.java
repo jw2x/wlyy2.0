@@ -41,7 +41,7 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "发送短信验证码")
     @GetMapping(value = "/captcha/send")
     public ResponseEntity<HashMap> captcha(
-            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "clientId", value = "应用id",defaultValue = "EwC0iRSrcS", required = true)@RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "msgType", value = "消息类型（login：登录验证，checkPhone：验证安全手机，resetPhone：重设安全手机", required = true)@RequestParam(required = true, name = "msgType") String msgType,
             @ApiParam(name = "username", value = "手机账号", required = true)@RequestParam(required = true, name = "username") String username ) throws  Exception{
         if (StringUtils.isEmpty(clientId)) {
@@ -60,7 +60,7 @@ public class LoginController extends EnvelopRestEndpoint {
 
     }
 
-    @GetMapping("/mobile/login")
+    @PostMapping("/mobile/login")
     @ApiOperation(value = "【普通用户】-手机登录注册")
     public ObjEnvelop mobileLogin(
             HttpServletRequest request,
@@ -116,7 +116,7 @@ public class LoginController extends EnvelopRestEndpoint {
 
     /***************************  管理员相关 **************************************/
 
-    @GetMapping("/mobile/manage/login")
+    @PostMapping("/mobile/manage/login")
     @ApiOperation(value = "【管理员】-手机验证登录")
     public ObjEnvelop administratorMobileLogin(
             HttpServletRequest request,
