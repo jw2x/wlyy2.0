@@ -82,7 +82,6 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @RequestParam(value = "facilityServerJson") String facilityServerJson) throws IOException {
         Facility facility1 = toEntity(facility, Facility.class);
         List<Facility> facilityList = null;
-        List<FacilityServerRelation> facilityServerRelationList = new ArrayList<>();
         if (StringUtils.isEmpty(facility1.getCode())) {
             return failed("设施编码不能为空！", ObjEnvelop.class);
         } else {
@@ -109,7 +108,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
         Facility facilityBack = facilityService.save(facility1);
-        createRelationByServerCode(facility1,facilityServerJson);
+        List<FacilityServerRelation>  facilityServerRelationList = createRelationByServerCode(facility1,facilityServerJson);
         facilityBack.setFacilityServerRelation(facilityServerRelationList);
         return success(facilityBack);
     }
@@ -124,7 +123,6 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @RequestParam(value = "facilityServerJson") String facilityServerJson) throws Exception {
         Facility facility1 = toEntity(facility, Facility.class);
         List<Facility> facilityList = null;
-        List<FacilityServerRelation> facilityServerRelationList = new ArrayList<>();
         List<Facility> faList = facilityService.findByField("id", facility1.getId());
         if (!(faList != null && faList.size() > 0)) {
             return failed("设施不存在！", ObjEnvelop.class);
@@ -159,7 +157,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
         Facility facilityBack = facilityService.save(facility1);
-        createRelationByServerCode(facility1,facilityServerJson);
+        List<FacilityServerRelation>  facilityServerRelationList = createRelationByServerCode(facility1,facilityServerJson);
         facilityBack.setFacilityServerRelation(facilityServerRelationList);
         return success(facilityBack);
     }

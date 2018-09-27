@@ -38,7 +38,7 @@ import java.util.regex.Pattern;
  * @author HZY
  * @created 2018/9/19 17:29
  */
-@Api(value = "UserController", description = "用户信息", tags = {"用户"})
+@Api(value = "UserController", description = "用户管理信息", tags = {"用户管理"})
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @RestController
 public class UserController  extends EnvelopRestEndpoint {

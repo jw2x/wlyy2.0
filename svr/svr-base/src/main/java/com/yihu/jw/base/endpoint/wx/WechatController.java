@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Trick on 2018/9/26.
  */
 @RestController
-@RequestMapping(BaseRequestMapping.WeChat.PREFIX)
+@RequestMapping(BaseRequestMapping.WeChat.wechat_base)
 @Api(value = "微信基础信息管理", description = "微信基础信息管理", tags = {"微信基础 - 微信基础信息管理"})
 public class WechatController extends EnvelopRestEndpoint {
 
