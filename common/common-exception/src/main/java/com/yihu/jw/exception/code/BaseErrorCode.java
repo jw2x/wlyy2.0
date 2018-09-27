@@ -14,11 +14,11 @@ public class BaseErrorCode {
      */
     public static class Common{
 
-        public static final String fail_upload = "-1";//上传失败
-        public static final String fail_update = "-2";//修改失败
-        public static final String fail_create = "-3";//新增失败
-        public static final String fail_delete = "-4";//删除失败
-        public static final String id_is_null = "-5";//ID不能为空
+        public static final String FAIL_UPLOAD = "-1";//上传失败
+        public static final String FAIL_UPDATE = "-2";//修改失败
+        public static final String FAIL_CREATE = "-3";//新增失败
+        public static final String FAIL_DELETE = "-4";//删除失败
+        public static final String ID_IS_NULL = "-5";//ID不能为空
 
     }
 
@@ -26,13 +26,55 @@ public class BaseErrorCode {
      * 错误码模块
      */
     public static class ErrorCode{
-        public static final String is_exist = "-10000";
+        public static final String IS_EXIST = "-10000";
+    }
+
+    /**
+     * 租户模块
+     */
+    public static class Saas{
+        public static final String SAAS = "-101000";
     }
 
     /**
      * 菜单模块
      */
     public static class Menu{
-        public static final String findDictByCode = "findDictByCode";
+        public static final String FINDDICTBYCODE = "-102000";
+    }
+
+    /**
+     * 业务模块
+     */
+    public static class Module{
+        public static final String FINDDICTBYCODE = "-103000";
+    }
+
+    /**
+     * 字典模块
+     */
+    public static class Dict{
+        public static final String FINDDICTBYCODE = "-104000";
+    }
+
+    /**
+     * 通知公告模块
+     */
+    public static class Notice{
+        public static final String FINDDICTBYCODE = "-105000";
+    }
+
+    /**
+     * 接口模块
+     */
+    public static class Interface{
+        public static final String FINDDICTBYCODE = "-106000";
+    }
+
+    /**
+     * 微信模块
+     */
+    public static class Wechat{
+        public static final String WECHAT = "-1000000";
     }
 }
