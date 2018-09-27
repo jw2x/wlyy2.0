@@ -57,6 +57,8 @@ public class HealthyHouseMapping {
 
             public static final String UPDATE_FACILITIES_AND_RELATION = "/update/facilitieAndRelations";
 
+            public static final String GET_ALL_FACILITIELISTS_BY_CATEGORY_AND_SERVERCODE = "/list/getAllFacilitiesByCategoryAndServerCode";
+
         }
 
         //设施服务
