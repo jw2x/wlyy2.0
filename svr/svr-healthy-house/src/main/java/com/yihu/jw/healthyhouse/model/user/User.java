@@ -1,6 +1,7 @@
 package com.yihu.jw.healthyhouse.model.user;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
@@ -25,12 +26,14 @@ public class User extends UuidIdentityEntityWithOperator {
     private String password;
     @Column(name = "gender" )
     private String gender;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
     @Column(name = "birthday" )
     private Date birthday;
     @Column(name = "id_card_no", nullable = false)
     private String idCardNo;
     @Column(name = "telephone", nullable = false)
     private String telephone;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     @Column(name = "last_login_time", length = 0)
     private Date lastLoginTime;
     @Column(name = "img_remote_path")
