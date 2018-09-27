@@ -25,7 +25,7 @@ import java.util.HashMap;
  * @author HZY
  * @created 2018/9/18 19:55
  */
-@Api(value = "LoginController", description = "登录", tags = {"登录"})
+@Api(value = "LoginController", description = "登录管理", tags = {"登录","验证"})
 @RestController
 public class LoginController extends EnvelopRestEndpoint {
 
@@ -51,9 +51,9 @@ public class LoginController extends EnvelopRestEndpoint {
             throw new InvalidRequestException("username");
         }
         //验证请求间隔超时，防止频繁获取验证码
-        if (!wlyyRedisVerifyCodeService.isIntervalTimeout(clientId, username)) {
-            throw new IllegalAccessException("SMS request frequency is too fast");
-        }
+//        if (!wlyyRedisVerifyCodeService.isIntervalTimeout(clientId, username)) {
+//            throw new IllegalAccessException("SMS request frequency is too fast");
+//        }
         //发送短信获取验证码
         ResponseEntity<HashMap> result = loginService.sendDemoSms(clientId,msgType,username);
         return result;

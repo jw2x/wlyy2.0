@@ -313,20 +313,4 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     }
 
 
-//    @ApiOperation(value = "搜索附近的小屋", responseContainer = "List")
-//    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.NEARBY_FACILITY)
-//    public PageEnvelop<Facility> nearbyFacility(
-//            @ApiParam(name = "lng", value = "当前经度", defaultValue = "")
-//            @RequestParam(value = "lng", required = false) String lng,
-//            @ApiParam(name = "lat", value = "当前纬度", defaultValue = "")
-//            @RequestParam(value = "lat", required = false) String lat,
-//            @ApiParam(name = "page", value = "页码", defaultValue = "1")
-//            @RequestParam(value = "page", required = false) Integer page,
-//            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
-//            @RequestParam(value = "size", required = false) Integer size) throws Exception {
-//        List<Facility> facilityList = facilityService.search(fields, filters, sorts, page, size);
-//        return success(facilityList, (null == facilityList) ? 0 : facilityList.size(), page, size);
-//    }
-
-
 }

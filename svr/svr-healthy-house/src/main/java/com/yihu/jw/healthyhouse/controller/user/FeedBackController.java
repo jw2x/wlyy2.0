@@ -1,7 +1,9 @@
 package com.yihu.jw.healthyhouse.controller.user;
 
 
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.model.user.FeedBack;
+import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.service.user.FeedBackService;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -17,8 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -114,6 +120,20 @@ public class FeedBackController extends EnvelopRestEndpoint {
         FeedBack feedBack = feedBackService.findById(facilitiesServerId);
         feedBackService.delete(feedBack);
         return success("success");
+    }
+
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FeedBack.EXPORT_EXCEL)
+    @ApiOperation(value = "意见反馈列表导出excel")
+    public void exportToExcel(
+            HttpServletResponse response,
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序", defaultValue = "")
+            @RequestParam(value = "sorts", required = false) String sorts) throws ManageException, ParseException {
+        List<FeedBack> feedBackList = feedBackService.search(fields, filters, sorts);
+        feedBackService.exportUsersExcel(response,feedBackList);
     }
 
 }
