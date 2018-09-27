@@ -56,16 +56,9 @@ public class BasicZuulFilter extends ZuulFilter {
         HttpServletRequest request = ctx.getRequest();
         String url = request.getRequestURI();
         //内部微服务有不需要认证的地址请在URL上追加/open/来进行过滤，如/api/v1.0/open/**，不要在此继续追加！！！
-        if (url.contains("/authentication/")
-                || url.contains("/file/")
-                || url.contains("/open/")
-                || url.contains("/jkzl/")
-                || url.contains("/fzGateway/")
-                || url.contains("/usersOfApp")
-                || url.contains("/users/h5/handshake")
-                || url.contains("/appVersion/getAppVersion")
-                || url.contains("/messageTemplate/messageOrderPush")
-                || url.contains("/account/")) {
+        if (url.contains("/auth/")//验证服务
+                || url.contains("/wechat/")//微信
+                || url.contains("/open/")) {//开发接口
             return true;
         }
         return this.authenticate(ctx, request, url);
