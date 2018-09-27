@@ -38,6 +38,9 @@ public class NavigationServiceEvaluation extends UuidIdentityEntityWithOperator 
     //备注、意见或建议
     @Column(name = "remark")
     private String remark;
+    //设施使用记录ID
+    @Column(name = "use_record_id")
+    private String useRecordId;
 
     public String getFacilitieCode() {
         return facilitieCode;
@@ -93,5 +96,13 @@ public class NavigationServiceEvaluation extends UuidIdentityEntityWithOperator 
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public String getUseRecordId() {
+        return useRecordId;
+    }
+
+    public void setUseRecordId(String useRecordId) {
+        this.useRecordId = useRecordId;
     }
 }

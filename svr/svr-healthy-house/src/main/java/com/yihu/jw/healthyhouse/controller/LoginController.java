@@ -25,7 +25,7 @@ import java.util.HashMap;
  * @author HZY
  * @created 2018/9/18 19:55
  */
-@Api(value = "LoginController", description = "登录管理", tags = {"登录","验证"})
+@Api(value = "LoginController", description = "登录管理", tags = {"2登录及验证"})
 @RestController
 public class LoginController extends EnvelopRestEndpoint {
 

@@ -26,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(HealthyHouseMapping.api_healthyHouse_common)
-@Api(value = "FacilityServer", description = "设施服务管理", tags = {"设施服务管理"})
+@Api(value = "FacilityServer", description = "设施服务管理", tags = {"4设施服务管理"})
 public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @Autowired

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -31,7 +32,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(HealthyHouseMapping.api_healthyHouse_common)
-@Api(value = "FacilityUsedRecord", description = "用户使用导航记录管理", tags = {"用户使用导航记录管理"})
+@Api(value = "FacilityUsedRecord", description = "用户使用导航记录管理", tags = {"5用户使用导航记录管理"})
 public class FacilityUsedRecordController extends EnvelopRestEndpoint {
 
     @Autowired
@@ -156,6 +157,16 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
         String filters = stringBuffer.toString();
         long count = facilityUsedRecordService.getCount(filters);
         return success(count);
+    }
+
+
+    @ApiOperation(value = "app-设施使用记录-详情页", responseContainer = "List")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.GET_FACILITY_USED_RECORD_DETAIL)
+    public ObjEnvelop facilityUsedRecordDetail(
+            @ApiParam(name = "id", value = "使用记录ID", defaultValue = "")
+            @RequestParam(value = "id") String id) throws Exception {
+        Map<String, Object> usedRecordDetail = facilityUsedRecordService.getUsedRecordDetail(id);
+        return success(usedRecordDetail);
     }
 
 
