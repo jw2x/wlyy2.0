@@ -404,5 +404,4 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         ResponseEntity<Oauth2Envelop> response = new ResponseEntity<>(authenticationFailed, headers, HttpStatus.OK);
         return response;
     }
-
 }

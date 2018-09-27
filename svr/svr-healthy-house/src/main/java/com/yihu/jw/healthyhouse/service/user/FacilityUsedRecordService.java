@@ -46,37 +46,24 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
         return facilityUsedRecordDao.findById(id);
     }
 
+    //根据用户id获取用户历史记录，按设施编码分组
     public List<FacilityUsedRecord> countDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
         String sql = "select fur.*  from facility_used_records  fur WHERE  fur.create_user=? GROUP BY fur.facilitie_code ";
         List<FacilityUsedRecord> facilityUsedRecords = jdbcTemplate.query(sql, new BeanPropertyRowMapper(FacilityUsedRecord.class), userId);
         return facilityUsedRecords;
     }
 
-    public Long countByUserId(String userId){
+    public Long countByUserId(String userId) {
         return facilityUsedRecordDao.countByUserId(userId);
     }
 
-    public Long countAll(){
+    public Long countAll() {
         return facilityUsedRecordDao.countAllByUserIdIsNotNull();
     }
 
-    public List<FacilityUsedRecord> countDistinctByFacilitieCodeAndUserId(String userId,Integer page,Integer size) throws Exception {
-        Integer pageStart = (page - 1) * size;
-        Integer pageEnd = page * size;
-        String sql = "select fur.*  from facility_used_records  fur WHERE  fur.user_id=? GROUP BY fur.facilitie_code LIMIT "+pageStart+","+pageEnd;
-        List<FacilityUsedRecord> facilityUsedRecords = jdbcTemplate.query(sql, new BeanPropertyRowMapper(FacilityUsedRecord.class), userId);
-        return facilityUsedRecords;
-    }
-
-    public long countPageDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
-        String sql = "select count(DISTINCT facilitie_code )  from facility_used_records  fur WHERE  fur.create_user=? ";
-        String count = jdbcTemplate.queryForObject(sql, String.class,userId);
-        return Long.parseLong(count);
-    }
-
-
-    public long countByFacilitieCodeAndUserId(String facilitieCode,String userId) {
-        return facilityUsedRecordDao.countByFacilitieCodeAndCreateUser( facilitieCode, userId);
+    //根据用户id及设施编码统计历史导航记录总数
+    public long countByFacilitieCodeAndUserId(String facilitieCode, String userId) {
+        return facilityUsedRecordDao.countByFacilitieCodeAndCreateUser(facilitieCode, userId);
     }
 
     /**

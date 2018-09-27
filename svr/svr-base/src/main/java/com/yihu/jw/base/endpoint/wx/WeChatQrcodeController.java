@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Trick on 2018/9/7.
  */
 @RestController
-@RequestMapping(BaseRequestMapping.WeChat.PREFIX)
+@RequestMapping(BaseRequestMapping.WeChat.wechat_base)
 @Api(value = "微信二维码", description = "微信二维码", tags = {"微信二维码服务 - 微信二维码"})
 public class WeChatQrcodeController extends EnvelopRestEndpoint {
 
