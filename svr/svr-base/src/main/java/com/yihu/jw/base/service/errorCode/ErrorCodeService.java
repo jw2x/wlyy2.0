@@ -25,7 +25,7 @@ public class ErrorCodeService extends BaseJpaService<ErrorCodeDO, ErrorCodeDao> 
      * 初始化错误码，如果redis没有则查询数据库导入到redis中
      */
     public void initErrorCode(){
-        String msg = redisTemplate.opsForValue().get(BaseErrorCode.PREFIX + BaseErrorCode.Common.fail_create);
+        String msg = redisTemplate.opsForValue().get(BaseErrorCode.PREFIX + BaseErrorCode.Common.FAIL_CREATE);
         if(StringUtils.isBlank(msg)){
             Iterable<ErrorCodeDO> list = errorCodeDao.findAll();
             list.forEach(code->{
@@ -38,9 +38,10 @@ public class ErrorCodeService extends BaseJpaService<ErrorCodeDO, ErrorCodeDao> 
      * 新增
      * @param errorCodeDO
      */
-    public void addErrorCode(ErrorCodeDO errorCodeDO){
+    public ErrorCodeDO addErrorCode(ErrorCodeDO errorCodeDO){
         errorCodeDao.save(errorCodeDO);
         redisTemplate.opsForValue().set(BaseErrorCode.PREFIX + errorCodeDO.getErrorCode(),errorCodeDO.getErrorMsg());
+        return errorCodeDO;
     }
 
     /**

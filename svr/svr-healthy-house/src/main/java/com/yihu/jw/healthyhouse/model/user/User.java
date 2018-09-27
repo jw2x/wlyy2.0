@@ -59,6 +59,13 @@ public class User extends UuidIdentityEntityWithOperator {
     @Column(name = "facility_used_count")
     private Integer facilityUsedCount;//设施使用次数
 
+    @Column(name = "realname_authentication")
+    private String realnameAuthentication;//实名认证
+    @Column(name = "phone_authentication")
+    private String phoneAuthentication;//手机认证
+    @Column(name = "ijk_authentication")
+    private String ijkAuthentication;//i健康认证
+
 
     public String getLoginCode() {
         return loginCode;
@@ -218,6 +225,30 @@ public class User extends UuidIdentityEntityWithOperator {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getRealnameAuthentication() {
+        return realnameAuthentication;
+    }
+
+    public void setRealnameAuthentication(String realnameAuthentication) {
+        this.realnameAuthentication = realnameAuthentication;
+    }
+
+    public String getPhoneAuthentication() {
+        return phoneAuthentication;
+    }
+
+    public void setPhoneAuthentication(String phoneAuthentication) {
+        this.phoneAuthentication = phoneAuthentication;
+    }
+
+    public String getIjkAuthentication() {
+        return ijkAuthentication;
+    }
+
+    public void setIjkAuthentication(String ijkAuthentication) {
+        this.ijkAuthentication = ijkAuthentication;
     }
 
     @Transient

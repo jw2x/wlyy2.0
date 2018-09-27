@@ -50,6 +50,8 @@ public class HealthyHouseMapping {
             public static final String COUNT_FACILITIES = "/count/facilities";
             public static final String UPDATE_FACILITIE_STATE = "/update/facilitieState";
             public static final String COUNT_FACILITIES_BY_TIME = "/count/facilitiesByTime";
+            public static final String NEARBY_FACILITY = "/nearbyFacility";
+
             public static final String GET_FACILITIELIST = "/list/getAppFacilities";
             public static final String GET_ALL_FACILITIELISTS_COUNT = "/list/getAllFacilitiesCount";
         }

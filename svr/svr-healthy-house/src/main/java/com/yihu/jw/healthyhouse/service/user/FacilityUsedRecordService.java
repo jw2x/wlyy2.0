@@ -30,6 +30,18 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
 
     public List<FacilityUsedRecord> countDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
         String sql = "select fur.*  from facility_used_records  fur WHERE  fur.create_user=? GROUP BY fur.facilitie_code ";
+    public Long countByUserId(String userId){
+        return facilityUsedRecordDao.countByUserId(userId);
+    }
+
+    public Long countAll(){
+        return facilityUsedRecordDao.countAllByUserIdIsNotNull();
+    }
+
+    public List<FacilityUsedRecord> countDistinctByFacilitieCodeAndUserId(String userId,Integer page,Integer size) throws Exception {
+        Integer pageStart = (page - 1) * size;
+        Integer pageEnd = page * size;
+        String sql = "select fur.*  from facility_used_records  fur WHERE  fur.user_id=? GROUP BY fur.facilitie_code LIMIT "+pageStart+","+pageEnd;
         List<FacilityUsedRecord> facilityUsedRecords = jdbcTemplate.query(sql, new BeanPropertyRowMapper(FacilityUsedRecord.class), userId);
         return facilityUsedRecords;
     }
