@@ -38,9 +38,9 @@ public class ErrorCodeEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         ErrorCodeDO errorCodeDO = toEntity(jsonData, ErrorCodeDO.class);
         if(errorCodeService.isExistsErrorCode(errorCodeDO.getErrorCode())>0){
-            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.ErrorCode.is_exist), ObjEnvelop.class);
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.ErrorCode.IS_EXIST), ObjEnvelop.class);
         }
-        errorCodeDO = errorCodeService.save(errorCodeDO);
+        errorCodeDO = errorCodeService.addErrorCode(errorCodeDO);
         return success(errorCodeDO, ErrorCodeVO.class);
     }
 
@@ -53,7 +53,7 @@ public class ErrorCodeEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "errorMsg", required = true) String errorMsg) throws Exception {
 
         if (null == id) {
-            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.id_is_null), ObjEnvelop.class);
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), ObjEnvelop.class);
         }
         ErrorCodeDO errorCodeDO = errorCodeService.updateMsg(id, errorMsg);
         return success(errorCodeDO, ErrorCodeVO.class);

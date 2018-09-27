@@ -62,7 +62,7 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         MenuDO menuDO = toEntity(jsonData, MenuDO.class);
         if (null == menuDO.getId()) {
-            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.id_is_null), Envelop.class);
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), Envelop.class);
         }
         menuDO = menuService.save(menuDO);
         return success(menuDO);
