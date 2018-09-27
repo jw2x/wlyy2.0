@@ -28,6 +28,8 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
         return facilityUsedRecordDao.findById(id);
     }
 
+    public List<FacilityUsedRecord> countDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
+        String sql = "select fur.*  from facility_used_records  fur WHERE  fur.create_user=? GROUP BY fur.facilitie_code ";
     public Long countByUserId(String userId){
         return facilityUsedRecordDao.countByUserId(userId);
     }
@@ -45,13 +47,13 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
     }
 
     public long countPageDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
-        String sql = "select count(DISTINCT facilitie_code )  from facility_used_records  fur WHERE  fur.user_id=? ";
+        String sql = "select count(DISTINCT facilitie_code )  from facility_used_records  fur WHERE  fur.create_user=? ";
         String count = jdbcTemplate.queryForObject(sql, String.class,userId);
         return Long.parseLong(count);
     }
 
 
     public long countByFacilitieCodeAndUserId(String facilitieCode,String userId) {
-        return facilityUsedRecordDao.countByFacilitieCodeAndUserId( facilitieCode, userId);
+        return facilityUsedRecordDao.countByFacilitieCodeAndCreateUser( facilitieCode, userId);
     }
 }
