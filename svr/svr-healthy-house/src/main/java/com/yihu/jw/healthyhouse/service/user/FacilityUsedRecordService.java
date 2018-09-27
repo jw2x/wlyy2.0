@@ -86,10 +86,11 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
         List<FacilityServerRelation> facilityServerRelations = facilityServerRelationDao.findByFacilitieCode(facilityCode);
         List<String> services = facilityServerRelations.stream().map(FacilityServerRelation::getServiceName).collect(Collectors.toList());
         if (comment ==null) {
-            result.put("Commented",false); //未评价
+            result.put("commented",false); //未评价
+            result.put("star",0);//评分
         }else {
-            result.put("Commented",true);//已评价
-            result.put("Star",comment.getScore());//评分
+            result.put("commented",true);//已评价
+            result.put("star",comment.getScore());//评分
         }
         result.put("usedCount",historyNum);//前往设施次数
         result.put("serviceList",services);//设施包含服务
