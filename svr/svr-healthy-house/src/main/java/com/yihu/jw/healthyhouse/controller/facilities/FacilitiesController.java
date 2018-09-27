@@ -185,6 +185,9 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "facilitiesId", value = "设施ID")
             @RequestParam(value = "facilitiesId") String facilitiesId) throws Exception {
         Facility facility = facilityService.findById(facilitiesId);
+        if (null == facility) {
+            return failed("设施不存在！");
+        }
         List<FacilityServerRelation> facilityServerRelationList = facilityServerRelationService.findByField("facilitieCode", facility.getCode());
         //通过设施与服务关系，变更设施服务使用数量
         for (FacilityServerRelation facilityServerRelation : facilityServerRelationList) {
@@ -241,7 +244,6 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     }
 
 
-
     @GetMapping("/exportToExcel")
     @ApiOperation(value = "设施列表导出excel")
     public void exportToExcel(
@@ -257,7 +259,6 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         }
         facilityService.exportFacilityExcel(response,facilityList);
     }
-
 
 
     @PostMapping(value = "/batchImport")
@@ -277,6 +278,38 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             throw new ManageException("导入设施列表异常！",e);
         }
         return ObjEnvelop.getError("导入失败");
+    }
+
+    @ApiOperation(value = "获取设施列表--不分页(app)", responseContainer = "List")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.GET_FACILITIELIST)
+    public ListEnvelop<Facility> getFacilitieLists(
+            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
+            @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
+            @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "sorts", value = "排序", defaultValue = "")
+            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        List<Facility> facilityList = facilityService.search(fields, filters, sorts);
+        return success(facilityList);
+    }
+
+
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.GET_ALL_FACILITIELISTS_COUNT)
+    @ApiOperation(value = "设施统计-三个统计值")
+    public ObjEnvelop<Map> usedFacilityCount() throws Exception {
+        Map<String, Long> map = new HashMap<>();
+        //今日使用设施数
+        long countUsedFacilitieToday = facilityServerRelationService.countDistinctByFacilitieCodeAndCreateTimeBetween();
+        map.put("countUsedFacilitieToday",countUsedFacilitieToday);
+        long countAllFacilitie = facilityService.getCount("");
+        map.put("countAllFacilitie",countAllFacilitie);
+        //今日新增设施:false
+        String todayStart = DateUtil.getStringDateShort() + " " + "00:00:00";
+        String todayEnd = DateUtil.getStringDateShort() + " " + "23:59:59";
+        String  filters = "createTime>=" + todayStart + ";createTime<=" + todayEnd;
+        long countCreatedFacilitieToday = facilityService.getCount(filters);
+        map.put("countCreatedFacilitieToday",countCreatedFacilitieToday);
+        return ObjEnvelop.getSuccess("获取成功", map);
     }
 
 

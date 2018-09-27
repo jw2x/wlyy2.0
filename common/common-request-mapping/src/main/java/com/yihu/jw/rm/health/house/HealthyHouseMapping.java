@@ -50,6 +50,8 @@ public class HealthyHouseMapping {
             public static final String COUNT_FACILITIES = "/count/facilities";
             public static final String UPDATE_FACILITIE_STATE = "/update/facilitieState";
             public static final String COUNT_FACILITIES_BY_TIME = "/count/facilitiesByTime";
+            public static final String GET_FACILITIELIST = "/list/getAppFacilities";
+            public static final String GET_ALL_FACILITIELISTS_COUNT = "/list/getAllFacilitiesCount";
         }
 
         //设施服务
@@ -85,6 +87,8 @@ public class HealthyHouseMapping {
             public static final String GET_FACILITY_USED_RECORD_BY_ID = "/getFacilityUsedRecordById";
             public static final String GET_FACILITY_USED_RECORD_BY_FIELD = "/getFacilityUsedRecordByField";
             public static final String UPDATE_FACILITY_USED_RECORD_BY_ID = "/updateFacilityUsedRecordById";
+            public static final String GET_FACILITY_USED_RECORD_AND_COUNT_BY_ID = "/getFacilityUsedRecordAndCountById";
+            public static final String COUNT_FACILITY_USED_RECORD_BY_USERID = "/countFacilityUsedRecordByUserId";
         }
 
         //服务评价
