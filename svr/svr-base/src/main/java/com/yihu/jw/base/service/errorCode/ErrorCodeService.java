@@ -38,9 +38,10 @@ public class ErrorCodeService extends BaseJpaService<ErrorCodeDO, ErrorCodeDao> 
      * 新增
      * @param errorCodeDO
      */
-    public void addErrorCode(ErrorCodeDO errorCodeDO){
+    public ErrorCodeDO addErrorCode(ErrorCodeDO errorCodeDO){
         errorCodeDao.save(errorCodeDO);
         redisTemplate.opsForValue().set(BaseErrorCode.PREFIX + errorCodeDO.getErrorCode(),errorCodeDO.getErrorMsg());
+        return errorCodeDO;
     }
 
     /**

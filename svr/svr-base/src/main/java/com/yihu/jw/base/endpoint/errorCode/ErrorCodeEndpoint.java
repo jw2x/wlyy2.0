@@ -40,7 +40,7 @@ public class ErrorCodeEndpoint extends EnvelopRestEndpoint {
         if(errorCodeService.isExistsErrorCode(errorCodeDO.getErrorCode())>0){
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.ErrorCode.IS_EXIST), ObjEnvelop.class);
         }
-        errorCodeDO = errorCodeService.save(errorCodeDO);
+        errorCodeDO = errorCodeService.addErrorCode(errorCodeDO);
         return success(errorCodeDO, ErrorCodeVO.class);
     }
 
