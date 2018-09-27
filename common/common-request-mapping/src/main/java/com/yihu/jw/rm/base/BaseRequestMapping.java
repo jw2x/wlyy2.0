@@ -124,6 +124,21 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 菜单
+     */
+    public static class Menu extends Basic {
+        public static final String PREFIX  = "/menu";
+        public static final String STATUS  = "/status";
+    }
+
+    /**
+     * 错误码
+     */
+    public static class ErrorCode extends Basic {
+        public static final String PREFIX  = "/error";
+    }
+
+    /**
      * 角色权限
      */
     public static class RoleAuthority extends Basic {
@@ -135,6 +150,8 @@ public class BaseRequestMapping {
      */
     public static class WeChat extends Basic {
         public static final String PREFIX  = "/wechat";
+        public static final String api_success ="success";
+        public static final String getWechatInfos ="/getWechatInfos";
     }
 
     /**

@@ -23,7 +23,7 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
     private String token;//token
     private String encodingAesKey;//加密密钥
     private Integer encType;//加密方式  0:明文模式   1:兼容模式   2:安全模式
-    private Integer status;//'类型 -1 已删除 0待审核 1审核通过 2 审核不通过'
+    private Integer status;//'类型 -1 已删除 0未认证 1已认证 2 审核中 3.审核未通过'
     private String type;//'1：服务号 2 订阅号
     private String appId;//'微信app_id'
     private String appSecret;//'微信app_secret'
@@ -31,6 +31,7 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
     private String baseUrl;//'微信base_url'
     private String userName;//公总号登录账户
     private String password;//用户密码
+    private String publicType;//1.自运营，2.外接
     private String remark;//'备注'
 
 
@@ -177,5 +178,14 @@ public class WxWechatDO extends UuidIdentityEntityWithOperator implements java.i
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Column(name = "public_type", length = 200)
+    public String getPublicType() {
+        return publicType;
+    }
+
+    public void setPublicType(String publicType) {
+        this.publicType = publicType;
     }
 }

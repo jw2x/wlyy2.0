@@ -4,8 +4,11 @@ import com.yihu.jw.healthyhouse.dao.user.FacilityUsedRecordDao;
 import com.yihu.jw.healthyhouse.model.user.FacilityUsedRecord;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 用户导航记录.
@@ -22,7 +25,7 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
     private FacilityUsedRecordDao facilityUsedRecordDao;
 
     public FacilityUsedRecord findById(String id) {
-        return  facilityUsedRecordDao.findById(id);
+        return facilityUsedRecordDao.findById(id);
     }
 
     public Long countByUserId(String userId){
@@ -33,4 +36,22 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
         return facilityUsedRecordDao.countAllByUserIdIsNotNull();
     }
 
+    public List<FacilityUsedRecord> countDistinctByFacilitieCodeAndUserId(String userId,Integer page,Integer size) throws Exception {
+        Integer pageStart = (page - 1) * size;
+        Integer pageEnd = page * size;
+        String sql = "select fur.*  from facility_used_records  fur WHERE  fur.user_id=? GROUP BY fur.facilitie_code LIMIT "+pageStart+","+pageEnd;
+        List<FacilityUsedRecord> facilityUsedRecords = jdbcTemplate.query(sql, new BeanPropertyRowMapper(FacilityUsedRecord.class), userId);
+        return facilityUsedRecords;
+    }
+
+    public long countPageDistinctByFacilitieCodeAndUserId(String userId) throws Exception {
+        String sql = "select count(DISTINCT facilitie_code )  from facility_used_records  fur WHERE  fur.user_id=? ";
+        String count = jdbcTemplate.queryForObject(sql, String.class,userId);
+        return Long.parseLong(count);
+    }
+
+
+    public long countByFacilitieCodeAndUserId(String facilitieCode,String userId) {
+        return facilityUsedRecordDao.countByFacilitieCodeAndUserId( facilitieCode, userId);
+    }
 }

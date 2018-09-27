@@ -14,5 +14,7 @@ public interface FacilityUsedRecordDao extends JpaRepository<FacilityUsedRecord,
     FacilityUsedRecord findById(String id);
     Long countByUserId(String userId);
     Long countAllByUserIdIsNotNull();
+
+    long countByFacilitieCodeAndUserId(String facilitieCode,String userId);
 }
 
