@@ -5,6 +5,7 @@ import com.yihu.jw.security.model.WlyyUserDetails;
 import com.yihu.jw.security.model.WlyyUserSimple;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.security.core.GrantedAuthority;
@@ -241,4 +242,18 @@ public class WlyyUserDetailsService extends JdbcDaoSupport implements UserDetail
         return loginType;
     }
 
+
+    public boolean setRolePhth(String loginType, String token, String id, RedisTemplate redisTemplate){
+
+        if(org.apache.commons.lang.StringUtils.isBlank(loginType)||"1".equals(loginType)){ //1或默认查找user表，为平台管理员账号
+
+        }else if("2".equals(loginType)){//2.为医生账号
+
+        }else if("3".equals(loginType)){ //3.患者账号
+
+        }else{
+            return false;
+        }
+        return true;
+    }
 }
