@@ -54,6 +54,9 @@ public class HealthyHouseMapping {
 
             public static final String GET_FACILITIELIST = "/list/getAppFacilities";
             public static final String GET_ALL_FACILITIELISTS_COUNT = "/list/getAllFacilitiesCount";
+
+            public static final String UPDATE_FACILITIES_AND_RELATION = "/update/facilitieAndRelations";
+
         }
 
         //设施服务
