@@ -38,6 +38,9 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
     //设施地址
     @Column(name = "facilitie_addr", nullable = false)
     private String facilitieAddr;
+    //设施id
+    @Column(name = "facilitie_id")
+    private String facilitieId;
     //服务编码
     @Column(name = "service_code")
     private String serviceCode;
@@ -160,5 +163,13 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    public String getFacilitieId() {
+        return facilitieId;
+    }
+
+    public void setFacilitieId(String facilitieId) {
+        this.facilitieId = facilitieId;
     }
 }

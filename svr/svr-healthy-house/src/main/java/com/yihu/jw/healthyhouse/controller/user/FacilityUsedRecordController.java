@@ -126,6 +126,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
                 facilityUsedRecord.setFacilitieLatitudes(facility.getLatitude());
                 facilityUsedRecord.setFacilitieAddr(facility.getAddress());
                 facilityUsedRecord.setCreateUser(userId);
+                facilityUsedRecord.setFacilitieId(facility.getId());
                 long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facility.getCode(), userId);
                 facilityUsedRecord.setNum((int)count);
                 facilityUsedRecordList.add(facilityUsedRecord);
