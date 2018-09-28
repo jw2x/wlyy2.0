@@ -89,7 +89,7 @@ public class UserController  extends EnvelopRestEndpoint {
     @ApiOperation(value = "用户激活")
     public Envelop activeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
-            @ApiParam(name = "operator", value = "操作者", required = true)@RequestParam(required = true, name = "operator") String operator ) {
+            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
          userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
         return ObjEnvelop.getSuccess("激活成功");
     }
@@ -100,7 +100,7 @@ public class UserController  extends EnvelopRestEndpoint {
     public Envelop freezeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "reason", value = "冻结原因", required = true)@RequestParam(required = true, name = "reason") String reason ,
-            @ApiParam(name = "operator", value = "操作者", required = true)@RequestParam(required = true, name = "operator") String operator ) {
+            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
 
         userService.updateStatus(userId,operator, HouseUserContant.activated_lock,reason);
         return ObjEnvelop.getSuccess("冻结成功");
@@ -154,7 +154,7 @@ public class UserController  extends EnvelopRestEndpoint {
             @ApiParam(name = "activated", value = "用户状态", required = false)@RequestParam(required = false, name = "activated") String activated ,
             @ApiParam(name = "name", value = "姓名/手机号", required = false)@RequestParam(required = false, name = "name") String name ,
             @ApiParam(name = "sort", value = "使用次数排序", required = false)@RequestParam(required = false, name = "sort") String sort) throws ManageException {
-        Envelop envelop = new Envelop();
+        response.setCharacterEncoding("UTF-8");
         //获取用户数据
         Map<String, String> map = new HashMap<>();
         map.put("cityCode",city);

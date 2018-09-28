@@ -15,14 +15,13 @@ import java.util.Date;
  */
 public interface UserDao extends PagingAndSortingRepository<User, String>, JpaSpecificationExecutor<User> {
 
-    @Query("from User u where u.id=?1 and u.activated<>0 ")
+    User findByIdAAndActivated(String id,String activated);
     User findById(String id);
-
     @Query("from User u where u.loginCode=?1 and u.activated<>0 ")
     User findByLoginCode(String loginCode);
 
-    @Query("from User u where u.name=?1 and u.activated<>0 ")
-    User findByName(String name);
+    @Query("from User u where u.name=?1 and u.activated=?2 ")
+    User findByNameAAndActivated(String name,String activated);
 
     @Override
     @Transactional
