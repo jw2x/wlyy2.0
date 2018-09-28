@@ -3,9 +3,13 @@ package com.yihu.jw.healthyhouse.controller.user;
 
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.exception.business.ManageException;
+import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
 import com.yihu.jw.healthyhouse.model.user.FacilityUsedRecord;
+import com.yihu.jw.healthyhouse.model.user.NavigationServiceEvaluation;
+import com.yihu.jw.healthyhouse.service.facility.FacilityServerRelationService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityService;
 import com.yihu.jw.healthyhouse.service.user.FacilityUsedRecordService;
+import com.yihu.jw.healthyhouse.service.user.NavigationServiceEvaluationService;
 import com.yihu.jw.healthyhouse.service.user.UserService;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -18,12 +22,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -41,6 +47,10 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     private UserService userService;
     @Autowired
     private FacilityService facilityService;
+    @Autowired
+    private NavigationServiceEvaluationService navigationServiceEvaluationService;
+    @Autowired
+    private FacilityServerRelationService facilityServerRelationService;
 
     @ApiOperation(value = "获取用户使用导航记录列表--分页（web）", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.PAGE)
@@ -60,12 +70,13 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     }
 
     @ApiOperation(value = "创建/更新（id存在）用户使用导航记录")
+    @Transactional(rollbackFor = Exception.class)
     @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.CREATE)
     public ObjEnvelop<FacilityUsedRecord> createFacilityUsedRecord(
             @ApiParam(name = "facilityUsedRecord", value = "用户使用导航记录JSON结构")
             @RequestBody FacilityUsedRecord facilityUsedRecord) throws IOException, ManageException {
         facilityUsedRecord = facilityUsedRecordService.save(facilityUsedRecord);
-        userService.updateFacilityUse(facilityUsedRecord.getUserId());
+        userService.updateFacilityUse(facilityUsedRecord.getCreateUser());
         return success(facilityUsedRecord);
     }
 
@@ -170,5 +181,34 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
         return success(usedRecordDetail);
     }
 
+    @ApiOperation(value = "获取用户使用导航记录列表--分页（app）", responseContainer = "List")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.PAGE_FACILITY_USED_RECORD_BY_USERID)
+    public PageEnvelop<FacilityUsedRecord> getFacilityUsedRecordsByUserId(
+            @ApiParam(name = "userId", value = "必输参数：登录用户id", defaultValue = "")
+            @RequestParam(value = "userId") String userId,
+            @ApiParam(name = "sorts", value = "排序", defaultValue = "-createTime")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "size", value = "分页大小", defaultValue = "15")
+            @RequestParam(value = "size", required = false) Integer size,
+            @ApiParam(name = "page", value = "页码", defaultValue = "1")
+            @RequestParam(value = "page", required = false) Integer page) throws Exception {
+        String filters="createUser="+userId;
+        List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.search("", filters, sorts, page, size);
+        for(FacilityUsedRecord record:facilityUsedRecordList){
+            //根据设施编码获取关联服务的名称
+            String facilityCode = record.getFacilitieCode();
+            List<FacilityServerRelation> facilityServerRelations = facilityServerRelationService.findByField("facilitieCode",facilityCode);
+            List<String> services = facilityServerRelations.stream().map(FacilityServerRelation::getServiceName).collect(Collectors.toList());
+            record.setFacilityRelationServiceName(services);
+            //根据记录获取评价记录
+            NavigationServiceEvaluation comment = navigationServiceEvaluationService.findByUseRecordId(record.getId());
+            if (comment ==null) {
+                record.setNavigationServiceEvaluationFlag("未评价");
+            }else {
+                record.setNavigationServiceEvaluationFlag("已评价");
+            }
+        }
+        return success(facilityUsedRecordList, (null == facilityUsedRecordList) ? 0 : facilityUsedRecordList.size(), page, size);
+    }
 
 }

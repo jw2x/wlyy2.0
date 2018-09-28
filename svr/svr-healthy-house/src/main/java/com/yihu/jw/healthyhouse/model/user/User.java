@@ -268,4 +268,17 @@ public class User extends UuidIdentityEntityWithOperator {
         }
         return address;
     }
+
+    @Transient
+    public String getGenderValue(){
+        String genderValue ="";
+
+        if (this.getGender().equals("0")) {
+            genderValue="男";
+        }
+        if (this.getGender().equals("1")) {
+            genderValue="女";
+        }
+        return genderValue;
+    }
 }
