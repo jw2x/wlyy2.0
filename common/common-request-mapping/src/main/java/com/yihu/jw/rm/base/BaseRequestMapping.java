@@ -276,8 +276,8 @@ public class BaseRequestMapping {
     /**
      * 基础人口基数
      */
-    public static class BasePeopleNum extends Basic {
-        public static final String PREFIX  = "/basePeopleNum";
+    public static class BasePopulation extends Basic {
+        public static final String PREFIX  = "/basePopulation";
     }
 
 

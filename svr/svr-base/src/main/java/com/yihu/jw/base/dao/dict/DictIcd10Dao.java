@@ -5,6 +5,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.yihu.jw.entity.base.dict.DictIcd10DO;
 
+import java.util.List;
+
 /**
  * 
  * ICD10字典 数据库访问层
@@ -18,4 +20,8 @@ import com.yihu.jw.entity.base.dict.DictIcd10DO;
  * @since 1.
  */
 public interface DictIcd10Dao extends PagingAndSortingRepository<DictIcd10DO, Integer>, JpaSpecificationExecutor<DictIcd10DO>  {
+
+    List<DictIcd10DO> findCodeAndNameBySaasId(String saasId);
+
+    List<DictIcd10DO> findCodeAndName();
 }

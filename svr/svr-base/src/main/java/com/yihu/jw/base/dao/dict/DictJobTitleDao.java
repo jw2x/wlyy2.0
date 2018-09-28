@@ -1,9 +1,12 @@
 package com.yihu.jw.base.dao.dict;
 
+import com.yihu.jw.entity.base.dict.DictIcd10DO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.yihu.jw.entity.base.dict.DictJobTitleDO;
+
+import java.util.List;
 
 /**
  * 
@@ -18,4 +21,8 @@ import com.yihu.jw.entity.base.dict.DictJobTitleDO;
  * @since 1.
  */
 public interface DictJobTitleDao extends PagingAndSortingRepository<DictJobTitleDO, Integer>, JpaSpecificationExecutor<DictJobTitleDO>  {
+    
+    List<DictIcd10DO> findCodeAndNameBySaasId(String saasId);
+
+    List<DictIcd10DO> findCodeAndName();
 }

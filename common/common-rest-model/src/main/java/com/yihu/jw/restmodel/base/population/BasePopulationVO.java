@@ -1,4 +1,4 @@
-package com.yihu.jw.restmodel.base.people_num;
+package com.yihu.jw.restmodel.base.population;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
@@ -14,13 +14,13 @@ import java.util.Date;
  * @version 
  * <pre>
  * Author	Version		Date		Changes
- * Administrator 	1.0  2018年09月05日 Created
+ * litaohong 	1.0  2018年09月26日 update
  *
  * </pre>
  * @since 1.
  */
-@ApiModel(value = "BasePeopleNumVO", description = "基础人口基数信息")
-public class BasePeopleNumVO extends UuidIdentityVOWithOperator {
+@ApiModel(value = "BasePopulationVO", description = "基础人口基数信息")
+public class BasePopulationVO extends UuidIdentityVOWithOperator {
 
     /**
 	 * saas化的id
@@ -49,14 +49,14 @@ public class BasePeopleNumVO extends UuidIdentityVOWithOperator {
     /**
 	 * 所属具体名称
 	 */
-	@ApiModelProperty(value = "所属具体名称", example = "自然数")
+	@ApiModelProperty(value = "所属具体名称", example = "")
     private String name;
 
     /**
 	 * 人口数
 	 */
 	@ApiModelProperty(value = "人口数", example = "自然数")
-    private Integer num;
+    private Integer populationNum;
 
     /**
 	 * 类别 0是省，1是市，2是区，3是机构
@@ -71,40 +71,40 @@ public class BasePeopleNumVO extends UuidIdentityVOWithOperator {
     private Integer year;
 
     /**
-	 * 高血压发病数
+	 * 高血压发病数,HBP为医学简称
 	 */
-	@ApiModelProperty(value = "高血压发病数", example = "自然数")
-    private Integer gxyNum;
+	@ApiModelProperty(value = "高血压发病数,HBP为医学简称", example = "模块1")
+    private Integer hbpNum;
 
     /**
-	 * 糖尿病发病数
+	 * 糖尿病发病数,DM为医学简称
 	 */
-	@ApiModelProperty(value = "糖尿病发病数", example = "自然数")
-    private Integer tnbNum;
+	@ApiModelProperty(value = "糖尿病发病数,DM为医学简称", example = "模块1")
+    private Integer dmNum;
 
     /**
 	 * 65岁以上老年人口数
 	 */
 	@ApiModelProperty(value = "65岁以上老年人口数", example = "自然数")
-    private Integer sixFiveNum;
+    private Integer olderThan65Num;
 
     /**
 	 * 高血压任务数
 	 */
 	@ApiModelProperty(value = "高血压任务数", example = "自然数")
-    private Integer gxyTaskNum;
+    private Integer hbpTaskNum;
 
     /**
 	 * 糖尿病任务数
 	 */
 	@ApiModelProperty(value = "糖尿病任务数", example = "自然数")
-    private Integer tnbTaskNum;
+    private Integer dmTaskNum;
 
     /**
 	 * 65岁以上老年人口任务数
 	 */
 	@ApiModelProperty(value = "65岁以上老年人口任务数", example = "自然数")
-    private Integer sixFiveTaskNum;
+    private Integer olderThan65TaskNum;
 
     /**
 	 * 户籍人口任务数
@@ -155,11 +155,11 @@ public class BasePeopleNumVO extends UuidIdentityVOWithOperator {
         this.name = name;
     }
 
-    public Integer getNum() {
-        return num;
+    public Integer getPopulationNum() {
+        return populationNum;
     }
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setPopulationNum(Integer populationNum) {
+        this.populationNum = populationNum;
     }
 
     public String getType() {
@@ -176,46 +176,46 @@ public class BasePeopleNumVO extends UuidIdentityVOWithOperator {
         this.year = year;
     }
 
-    public Integer getGxyNum() {
-        return gxyNum;
+    public Integer getHbpNum() {
+        return hbpNum;
     }
-    public void setGxyNum(Integer gxyNum) {
-        this.gxyNum = gxyNum;
-    }
-
-    public Integer getTnbNum() {
-        return tnbNum;
-    }
-    public void setTnbNum(Integer tnbNum) {
-        this.tnbNum = tnbNum;
+    public void setHbpNum(Integer hbpNum) {
+        this.hbpNum = hbpNum;
     }
 
-    public Integer getSixFiveNum() {
-        return sixFiveNum;
+    public Integer getDmNum() {
+        return dmNum;
     }
-    public void setSixFiveNum(Integer sixFiveNum) {
-        this.sixFiveNum = sixFiveNum;
-    }
-
-    public Integer getGxyTaskNum() {
-        return gxyTaskNum;
-    }
-    public void setGxyTaskNum(Integer gxyTaskNum) {
-        this.gxyTaskNum = gxyTaskNum;
+    public void setDmNum(Integer dmNum) {
+        this.dmNum = dmNum;
     }
 
-    public Integer getTnbTaskNum() {
-        return tnbTaskNum;
+    public Integer getOlderThan65Num() {
+        return olderThan65Num;
     }
-    public void setTnbTaskNum(Integer tnbTaskNum) {
-        this.tnbTaskNum = tnbTaskNum;
+    public void setOlderThan65Num(Integer olderThan65Num) {
+        this.olderThan65Num = olderThan65Num;
     }
 
-    public Integer getSixFiveTaskNum() {
-        return sixFiveTaskNum;
+    public Integer getHbpTaskNum() {
+        return hbpTaskNum;
     }
-    public void setSixFiveTaskNum(Integer sixFiveTaskNum) {
-        this.sixFiveTaskNum = sixFiveTaskNum;
+    public void setHbpTaskNum(Integer hbpTaskNum) {
+        this.hbpTaskNum = hbpTaskNum;
+    }
+
+    public Integer getDmTaskNum() {
+        return dmTaskNum;
+    }
+    public void setDmTaskNum(Integer dmTaskNum) {
+        this.dmTaskNum = dmTaskNum;
+    }
+
+    public Integer getOlderThan65TaskNum() {
+        return olderThan65TaskNum;
+    }
+    public void setOlderThan65TaskNum(Integer olderThan65TaskNum) {
+        this.olderThan65TaskNum = olderThan65TaskNum;
     }
 
     public Integer getTaskNum() {

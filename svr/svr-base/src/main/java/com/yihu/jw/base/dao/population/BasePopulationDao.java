@@ -1,6 +1,6 @@
-package com.yihu.jw.base.dao.people_num;
+package com.yihu.jw.base.dao.population;
 
-import com.yihu.jw.entity.base.peopel_num.BasePeopleNumDO;
+import com.yihu.jw.entity.base.population.BasePopulationDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
@@ -12,10 +12,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @version 
  * <pre>
  * Author	Version		Date		Changes
- * Administrator 	1.0  		2018年09月05日 	Created
+ * litaohong 	1.0  		2018年09月26日 	update
  *
  * </pre>
  * @since 1.
  */
-public interface BasePeopleNumDao extends PagingAndSortingRepository<BasePeopleNumDO, String>, JpaSpecificationExecutor<BasePeopleNumDO>  {
+public interface BasePopulationDao extends PagingAndSortingRepository<BasePopulationDO, String>, JpaSpecificationExecutor<BasePopulationDO>  {
 }

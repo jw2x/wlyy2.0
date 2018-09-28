@@ -216,23 +216,23 @@ CREATE TABLE `base_team_member` (
 
 
 -- 基础人口信息
-drop table IF EXISTS `base_people_num`;
-CREATE TABLE `base_people_num` (
+drop table IF EXISTS `base_population`;
+CREATE TABLE `base_population` (
   `id` varchar(50) NOT NULL DEFAULT '' COMMENT '主键(uuid)，基础人口信息uuid',
   `saas_id`  varchar(100) NOT NULL COMMENT 'saas化的id',
   `province_code` varchar(50) DEFAULT NULL COMMENT '所属省代码',
   `city_code` varchar(50) DEFAULT NULL COMMENT '所属市代码',
   `district_code` varchar(50) DEFAULT NULL COMMENT '所属区代码',
   `name` varchar(200) DEFAULT NULL COMMENT '所属具体名称',
-  `num` int(10) DEFAULT NULL COMMENT '人口数',
+  `population_num` int(10) DEFAULT NULL COMMENT '人口数',
   `type` varchar(2) DEFAULT NULL COMMENT '类别 0是省，1是市，2是区，3是机构',
   `year` int(10) DEFAULT NULL COMMENT '每年的人口数',
-  `gxy_num` int(10) DEFAULT  '0' COMMENT '高血压发病数',
-  `tnb_num` int(10) DEFAULT  '0' COMMENT '糖尿病发病数',
-  `six_five_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口数',
-  `gxy_task_num` int(10) DEFAULT  '0' COMMENT '高血压任务数',
-  `tnb_task_num` int(10) DEFAULT  '0' COMMENT '糖尿病任务数',
-  `six_five_task_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口任务数',
+  `HBP_num` int(10) DEFAULT  '0' COMMENT '高血压发病数,HBP为医学简称',
+  `DM_num` int(10) DEFAULT  '0' COMMENT '糖尿病发病数,DM为医学简称',
+  `older_than_65_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口数',
+  `HBP_task_num` int(10) DEFAULT  '0' COMMENT '高血压任务数',
+  `DM_task_num` int(10) DEFAULT  '0' COMMENT '糖尿病任务数',
+  `older_than_65_task_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口任务数',
   `task_num` int(10) DEFAULT  '0' COMMENT '户籍人口任务数',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
