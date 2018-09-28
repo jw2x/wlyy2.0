@@ -201,8 +201,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             //根据设施编码获取关联服务的名称
             String facilityCode = record.getFacilitieCode();
             List<FacilityServerRelation> facilityServerRelations = facilityServerRelationService.findByField("facilitieCode", facilityCode);
-            List<String> services = facilityServerRelations.stream().map(FacilityServerRelation::getServiceName).collect(Collectors.toList());
-            String servicesValue = Joiner.on("、").join(services);
+            String servicesValue = facilityServerRelations.stream().map(FacilityServerRelation::getServiceName).collect(Collectors.joining("、"));
             record.setFacilityRelationServiceName(servicesValue);
             //根据记录获取评价记录
             NavigationServiceEvaluation comment = navigationServiceEvaluationService.findByUseRecordId(record.getId());
