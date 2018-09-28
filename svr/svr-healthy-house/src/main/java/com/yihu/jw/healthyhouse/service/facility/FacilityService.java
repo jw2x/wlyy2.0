@@ -179,6 +179,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             facility.setCountyCode(townCode);
             facility.setCountyName(facilityMsg.getCounty());
             facility.setStreet(facilityMsg.getStreet());
+            facility.setAddress( facilityMsg.getCity() + facilityMsg.getCounty() + facilityMsg.getStreet());
             facility.setStatus(facilityMsg.getStatus());
             facility.setOrgName(facilityMsg.getOrgName());
             facility.setServiceDay(facilityMsg.getServiceDate());

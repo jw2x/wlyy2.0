@@ -276,7 +276,20 @@ public class UserService extends BaseJpaService<User, UserDao> {
         userDao.save(user1);
     }
 
-   
+    /**
+     *  验证管理员是否存在
+     * @param userCode   登录账号
+     * @throws ManageException
+     */
+    public void checkManageUser(String userCode) throws ManageException {
+        User user1 = findByLoginCodeAndUserType(userCode, LoginInfo.USER_TYPE_SUPER_AdminManager);
+        if (user1==null) {
+            throw new ManageException("该管理员账号不存在");
+        }
+    }
+
+
+
     //excel中添加固定内容
     private void addStaticCell(Sheet sheet){
         //设置样式
