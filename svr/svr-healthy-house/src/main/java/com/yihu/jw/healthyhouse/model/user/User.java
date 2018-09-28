@@ -24,10 +24,10 @@ public class User extends UuidIdentityEntityWithOperator {
     private String name;
     @Column(name = "password", nullable = false)
     private String password;
-    @Column(name = "gender" )
+    @Column(name = "gender")
     private String gender;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
-    @Column(name = "birthday" )
+    @Column(name = "birthday")
     private Date birthday;
     @Column(name = "id_card_no", nullable = false)
     private String idCardNo;
@@ -255,17 +255,30 @@ public class User extends UuidIdentityEntityWithOperator {
     }
 
     @Transient
-    public String getAddress(){
-        String address ="";
-        if (this.getCityName()!=null) {
+    public String getAddress() {
+        String address = "";
+        if (this.getCityName() != null) {
             address += this.getCityName();
         }
-        if (this.getAreaName()!=null) {
+        if (this.getAreaName() != null) {
             address += this.getAreaName();
         }
-        if (this.getStreet() !=null ){
+        if (this.getStreet() != null) {
             address += this.getStreet();
         }
         return address;
+    }
+
+    @Transient
+    public String getGenderValue() {
+        String genderValue = "";
+
+        if (null != this.getGender() && this.getGender().equals("male")) {
+            genderValue = "男";
+        }
+        if (null != this.getGender() && this.getGender().equals("female")) {
+            genderValue = "女";
+        }
+        return genderValue;
     }
 }

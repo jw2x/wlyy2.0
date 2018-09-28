@@ -18,8 +18,8 @@ public class LoginInfo {
     public static final String SAVE_TYPE_PHONE = "phoneLogin";//手机登录注册
 
     //用户类型
-    public static final String USER_TYPE_PATIENT = "Patient";//居民
-    public static final String USER_TYPE_AdminManager = "AdminManager";//超管
-    public static final String USER_TYPE_Server = "Server";//运营维护
+    public static final String USER_TYPE_PATIENT = "patient";//居民
+    public static final String USER_TYPE_SUPER_AdminManager = "superAdmin";//超管
+    public static final String USER_TYPE_Server = "admin";//运营维护
 
 }

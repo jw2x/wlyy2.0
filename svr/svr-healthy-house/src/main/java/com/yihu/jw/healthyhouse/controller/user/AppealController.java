@@ -46,7 +46,8 @@ public class AppealController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<Appeal> appealList = AppealService.search(fields, filters, sorts, page, size);
-        return success(appealList, (null == appealList) ? 0 : appealList.size(), page, size);
+        int count = (int)AppealService.getCount(filters);
+        return success(appealList, count, page, size);
     }
 
     @ApiOperation(value = "创建/更新（id存在）账号申诉")
@@ -54,9 +55,9 @@ public class AppealController extends EnvelopRestEndpoint {
     public ObjEnvelop<Appeal> createAppeal(
             @ApiParam(name = "Appeal", value = "账号申诉JSON结构")
             @RequestBody Appeal appeal) throws IOException {
-        if(StringUtils.isEmpty(appeal.getCreateUser())){
-            return failed("账号申诉人（createUser）不能为空！",ObjEnvelop.class);
-        }
+//        if(StringUtils.isEmpty(appeal.getCreateUser())){
+//            return failed("账号申诉人（createUser）不能为空！",ObjEnvelop.class);
+//        }
         appeal = AppealService.save(appeal);
         return success(appeal);
     }

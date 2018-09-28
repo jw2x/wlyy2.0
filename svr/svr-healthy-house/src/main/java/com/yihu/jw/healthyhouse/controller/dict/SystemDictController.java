@@ -47,8 +47,8 @@ public class SystemDictController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<SystemDict> systemDictList = dictService.search(fields, filters, sorts, page, size);
-        Long count = (long) (null == systemDictList ? 0 : systemDictList.size());
-        return success(systemDictList, count.intValue(), page, size);
+        int count = (int)dictService.getCount(filters);
+        return success(systemDictList, count, page, size);
     }
 
     @ApiOperation(value = "创建字典")

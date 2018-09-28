@@ -19,6 +19,15 @@ spring:
     test-while-idle: true #指明连接是否被空闲连接回收器(如果有)进行检验，如果检测失败，则连接将被从池中去除
     min-evictable-idle-time-millis: 3600000 #连接池中连接，在时间段内一直空闲，被逐出连接池的时间(1000*60*60)，以毫秒为单位
     time-between-eviction-runs-millis: 300000 #在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位，一般比minEvictableIdleTimeMillis小
+  redis:
+    database: 0 # Database index used by the connection factory.
+    timeout: 0 # Connection timeout in milliseconds.
+    pool:
+      max-active: 8 # Max number of connections that can be allocated by the pool at a given time. Use a negative value for no limit.
+      max-idle: 8 # Max number of "idle" connections in the pool. Use a negative value to indicate an unlimited number of idle connections.
+      max-wait: -1 # Maximum amount of time (in milliseconds) a connection allocation should block before throwing an exception when the pool is exhausted. Use a negative value to block indefinitely.
+      min-idle: 1 # Target for the minimum number of idle connections to maintain in the pool. This setting only has an effect if it is positive.
+
 #  sleuth:
 #    sampler:
 #      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
@@ -33,10 +42,10 @@ zuul:
       serviceId: svr-iot
     svr-base:
       path: /base/**
-      serviceId: svr-base
+      serviceId: svr-base-lyx
     svr-authentication:
       path: /auth/**
-      serviceId: svr-authentication
+      serviceId: svr-authentication-lyx
 
 ---
 spring:
@@ -45,6 +54,10 @@ spring:
     url: jdbc:mysql://172.19.103.77/base?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
     username: root
     password: 123456
+  redis:
+    host: 172.19.103.88 # Redis server host.
+    port: 6379 # Redis server port.
+#    password: jkzl_ehr
 #  zipkin:
 #    base-url: http://localhost:9411 #日志追踪的地址
 

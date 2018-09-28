@@ -10,6 +10,7 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
+import com.yihu.jw.rm.health.house.HealthyHouseMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -64,7 +65,8 @@ public class UserController  extends EnvelopRestEndpoint {
             @RequestParam(value = "page", required = false) Integer page ) throws ManageException, ParseException {
 
         List<User> userList = userService.search(fields, filters, sorts, page, size);
-        return success(userList, userList == null ? 0 : userList.size(), page, size);
+        int count = (int)userService.getCount(filters);
+        return success(userList,count, page, size);
     }
 
 
@@ -84,27 +86,40 @@ public class UserController  extends EnvelopRestEndpoint {
         return ObjEnvelop.getSuccess("获取成功",userStatistics);
     }
 
-    @PostMapping("/activateUser")
-    @ApiOperation(value = "用户激活")
-    public Envelop activeUser(
-            @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
-            @ApiParam(name = "operator", value = "操作者", required = true)@RequestParam(required = true, name = "operator") String operator ) {
-         userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
-        return ObjEnvelop.getSuccess("激活成功");
-    }
+    @ApiOperation(value = "新增/更新（idy已存在）用户信息")
+    @PostMapping(value = "saveOrUpdate")
+    public ObjEnvelop<User> saveOrUpdateUser(
+            @ApiParam(name = "user", value = "用户JSON结构")
+            @RequestBody User user) throws Exception {
 
+        if (org.apache.commons.lang3.StringUtils.isEmpty(user.getName())) {
+            return failed("用户名称不能为空！", ObjEnvelop.class);
+        }
+
+        user = userService.save(user);
+        return success(user);
+    }
 
     @PostMapping("/freezeUser")
     @ApiOperation(value = "用户冻结")
     public Envelop freezeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "reason", value = "冻结原因", required = true)@RequestParam(required = true, name = "reason") String reason ,
-            @ApiParam(name = "operator", value = "操作者", required = true)@RequestParam(required = true, name = "operator") String operator ) {
+            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
 
         userService.updateStatus(userId,operator, HouseUserContant.activated_lock,reason);
         return ObjEnvelop.getSuccess("冻结成功");
     }
 
+
+    @PostMapping("/activateUser")
+    @ApiOperation(value = "用户激活")
+    public Envelop activeUser(
+            @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
+        userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
+        return ObjEnvelop.getSuccess("激活成功");
+    }
 
     @PostMapping("/updatePwd")
     @ApiOperation(value = "更新密码")
@@ -153,7 +168,7 @@ public class UserController  extends EnvelopRestEndpoint {
             @ApiParam(name = "activated", value = "用户状态", required = false)@RequestParam(required = false, name = "activated") String activated ,
             @ApiParam(name = "name", value = "姓名/手机号", required = false)@RequestParam(required = false, name = "name") String name ,
             @ApiParam(name = "sort", value = "使用次数排序", required = false)@RequestParam(required = false, name = "sort") String sort) throws ManageException {
-        Envelop envelop = new Envelop();
+        response.setCharacterEncoding("UTF-8");
         //获取用户数据
         Map<String, String> map = new HashMap<>();
         map.put("cityCode",city);

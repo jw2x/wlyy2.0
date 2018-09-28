@@ -25,4 +25,8 @@ public class NavigationServiceEvaluationService extends BaseJpaService<Navigatio
         return  navigationServiceEvaluationDao.findById(id);
     }
 
+    public NavigationServiceEvaluation findByUseRecordId(String useRecordId) {
+        return  navigationServiceEvaluationDao.findByUseRecordId(useRecordId);
+    }
+
 }

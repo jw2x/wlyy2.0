@@ -62,18 +62,18 @@ public class LoginController extends EnvelopRestEndpoint {
 
     @PostMapping("/mobile/login")
     @ApiOperation(value = "【普通用户】-手机登录注册")
-    public ObjEnvelop mobileLogin(
+    public ObjEnvelop<User> mobileLogin(
             HttpServletRequest request,
             @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
             @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
         if (wlyyRedisVerifyCodeService.verification(clientId, username, captcha)) {
             User user = loginService.phoneLogin(request,username);
-            ObjEnvelop envelop = new ObjEnvelop();
-            envelop.setStatus(200);
-            envelop.setMessage("登录成功");
-            envelop.setObj(user);
-            return envelop;
+//            ObjEnvelop envelop = new ObjEnvelop();
+//            envelop.setStatus(200);
+//            envelop.setMessage("登录成功");
+//            envelop.setObj(user);
+            return success(user);
 
         } else {
             return ObjEnvelop.getError("验证码错误");
