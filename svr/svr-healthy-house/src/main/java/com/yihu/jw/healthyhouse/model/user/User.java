@@ -273,10 +273,10 @@ public class User extends UuidIdentityEntityWithOperator {
     public String getGenderValue(){
         String genderValue ="";
 
-        if (this.getGender().equals("0")) {
+        if (this.getGender().equals("male")) {
             genderValue="男";
         }
-        if (this.getGender().equals("1")) {
+        if (this.getGender().equals("female")) {
             genderValue="女";
         }
         return genderValue;

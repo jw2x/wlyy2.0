@@ -63,7 +63,7 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
     private Integer num;
 
     //设施关联的服务名称
-    private List<String> facilityRelationServiceName;
+    private String facilityRelationServiceName;
 
     //评价记录
     private String navigationServiceEvaluationFlag;
@@ -180,11 +180,11 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
         this.facilitieId = facilitieId;
     }
     @Transient
-    public List<String> getFacilityRelationServiceName() {
+    public String getFacilityRelationServiceName() {
         return facilityRelationServiceName;
     }
 
-    public void setFacilityRelationServiceName(List<String> facilityRelationServiceName) {
+    public void setFacilityRelationServiceName(String facilityRelationServiceName) {
         this.facilityRelationServiceName =facilityRelationServiceName;
     }
     @Transient

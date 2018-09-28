@@ -1,6 +1,7 @@
 package com.yihu.jw.healthyhouse.controller.user;
 
 
+import com.google.common.base.Joiner;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
@@ -119,19 +120,19 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @ApiParam(name = "userId", value = "用户ID", defaultValue = "")
             @RequestParam(value = "userId") String userId,
             @ApiParam(name = "filters", value = "检索字段", defaultValue = "")
-            @RequestParam(value = "filters",required = false) String filters,
+            @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "nearbyFlag", value = "是否为“附近”的功能", defaultValue = "false")
             @RequestParam(value = "nearbyFlag") boolean nearbyFlag) throws Exception {
-        List<FacilityUsedRecord> facilityUsedRecordList =new ArrayList<>();
+        List<FacilityUsedRecord> facilityUsedRecordList = new ArrayList<>();
         FacilityUsedRecord facilityUsedRecord;
-        if(nearbyFlag){
-            if(StringUtils.isNotEmpty(filters)){
-                filters=  "name?"+filters+" g1;cityName?"+filters+" g1;countyName?"+filters+" g1;street?"+filters+" g1";
+        if (nearbyFlag) {
+            if (StringUtils.isNotEmpty(filters)) {
+                filters = "name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1";
             }
             //获取所有设施，并根据设施编码及用户id查找使用次数
             List<Facility> facilityList = facilityService.search(filters);
-            for(Facility facility:facilityList){
-                facilityUsedRecord=new FacilityUsedRecord();
+            for (Facility facility : facilityList) {
+                facilityUsedRecord = new FacilityUsedRecord();
                 facilityUsedRecord.setFacilitieCode(facility.getCode());
                 facilityUsedRecord.setFacilitieName(facility.getName());
                 facilityUsedRecord.setFacilitieLongitude(facility.getLongitude());
@@ -140,10 +141,10 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
                 facilityUsedRecord.setCreateUser(userId);
                 facilityUsedRecord.setFacilitieId(facility.getId());
                 long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facility.getCode(), userId);
-                facilityUsedRecord.setNum((int)count);
+                facilityUsedRecord.setNum((int) count);
                 facilityUsedRecordList.add(facilityUsedRecord);
             }
-        }else{
+        } else {
             //根据用户id,获取我的历史记录
             facilityUsedRecordList = facilityUsedRecordService.countDistinctByFacilitieCodeAndUserId(userId);
             for (FacilityUsedRecord facilityUsedRecord1 : facilityUsedRecordList) {
@@ -192,19 +193,20 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @RequestParam(value = "size", required = false) Integer size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
-        String filters="createUser="+userId;
+        String filters = "createUser=" + userId;
         List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.search("", filters, sorts, page, size);
-        for(FacilityUsedRecord record:facilityUsedRecordList){
+        for (FacilityUsedRecord record : facilityUsedRecordList) {
             //根据设施编码获取关联服务的名称
             String facilityCode = record.getFacilitieCode();
-            List<FacilityServerRelation> facilityServerRelations = facilityServerRelationService.findByField("facilitieCode",facilityCode);
+            List<FacilityServerRelation> facilityServerRelations = facilityServerRelationService.findByField("facilitieCode", facilityCode);
             List<String> services = facilityServerRelations.stream().map(FacilityServerRelation::getServiceName).collect(Collectors.toList());
-            record.setFacilityRelationServiceName(services);
+            String servicesValue = Joiner.on("、").join(services);
+            record.setFacilityRelationServiceName(servicesValue);
             //根据记录获取评价记录
             NavigationServiceEvaluation comment = navigationServiceEvaluationService.findByUseRecordId(record.getId());
-            if (comment ==null) {
+            if (comment == null) {
                 record.setNavigationServiceEvaluationFlag("未评价");
-            }else {
+            } else {
                 record.setNavigationServiceEvaluationFlag("已评价");
             }
         }
