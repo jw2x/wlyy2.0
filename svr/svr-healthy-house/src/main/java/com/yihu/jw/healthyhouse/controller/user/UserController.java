@@ -10,6 +10,7 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
+import com.yihu.jw.rm.health.house.HealthyHouseMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -85,15 +86,19 @@ public class UserController  extends EnvelopRestEndpoint {
         return ObjEnvelop.getSuccess("获取成功",userStatistics);
     }
 
-    @PostMapping("/activateUser")
-    @ApiOperation(value = "用户激活")
-    public Envelop activeUser(
-            @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
-            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
-         userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
-        return ObjEnvelop.getSuccess("激活成功");
-    }
+    @ApiOperation(value = "新增/更新（idy已存在）用户信息")
+    @PostMapping(value = "saveOrUpdate")
+    public ObjEnvelop<User> saveOrUpdateUser(
+            @ApiParam(name = "user", value = "用户JSON结构")
+            @RequestBody User user) throws Exception {
 
+        if (org.apache.commons.lang3.StringUtils.isEmpty(user.getName())) {
+            return failed("用户名称不能为空！", ObjEnvelop.class);
+        }
+
+        user = userService.save(user);
+        return success(user);
+    }
 
     @PostMapping("/freezeUser")
     @ApiOperation(value = "用户冻结")
@@ -106,6 +111,15 @@ public class UserController  extends EnvelopRestEndpoint {
         return ObjEnvelop.getSuccess("冻结成功");
     }
 
+
+    @PostMapping("/activateUser")
+    @ApiOperation(value = "用户激活")
+    public Envelop activeUser(
+            @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
+        userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
+        return ObjEnvelop.getSuccess("激活成功");
+    }
 
     @PostMapping("/updatePwd")
     @ApiOperation(value = "更新密码")

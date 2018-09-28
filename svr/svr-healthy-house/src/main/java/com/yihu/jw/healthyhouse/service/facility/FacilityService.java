@@ -123,15 +123,16 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
                 row=j+1;
                 ExcelUtils.addCellData(sheet,0,row,j+1+"");//序号
                 ExcelUtils.addCellData(sheet,1,row, metaData.getCode());//设施编码
-                ExcelUtils.addCellData(sheet,2,row, metaData.getCategory().toString());//类型名称
-                ExcelUtils.addCellData(sheet,3,row, metaData.getAddress());//信息地址
-                ExcelUtils.addCellData(sheet,4,row, metaData.getUserName());//联系人
-                ExcelUtils.addCellData(sheet,5,row, metaData.getUserTelephone());//联系电话
-                ExcelUtils.addCellData(sheet,6,row, metaData.getProvinceId());//省
-                ExcelUtils.addCellData(sheet,7,row, metaData.getCityName());//市
-                ExcelUtils.addCellData(sheet,8,row, metaData.getCountyName());//区县
-                ExcelUtils.addCellData(sheet,9,row, metaData.getStreet());//街道
-                ExcelUtils.addCellData(sheet,10,row, metaData.getStatus());//运营状态
+                ExcelUtils.addCellData(sheet,2,row, metaData.getName());//设施名称
+                ExcelUtils.addCellData(sheet,3,row, metaData.getCategory().toString());//类型名称
+                ExcelUtils.addCellData(sheet,4,row, metaData.getAddress());//信息地址
+                ExcelUtils.addCellData(sheet,5,row, metaData.getUserName());//联系人
+                ExcelUtils.addCellData(sheet,6,row, metaData.getUserTelephone());//联系电话
+                ExcelUtils.addCellData(sheet,7,row, metaData.getProvinceId());//省
+                ExcelUtils.addCellData(sheet,8,row, metaData.getCityName());//市
+                ExcelUtils.addCellData(sheet,9,row, metaData.getCountyName());//区县
+                ExcelUtils.addCellData(sheet,10,row, metaData.getStreet());//街道
+                ExcelUtils.addCellData(sheet,11,row, metaData.getStatus());//运营状态
 
             }
 
@@ -167,6 +168,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             String townCode = baseTownService.getCodeByname(facilityMsg.getCounty());
             Integer categoryCode = systemDictEntryService.getDictEntryCodeByName("FacilityType",facilityMsg.getCategory());
             facility.setCode(genFacilityCode());
+            facility.setName(facilityMsg.getName());
             facility.setCategory(categoryCode);
             facility.setCategoryValue(facilityMsg.getCategory());
             facility.setUserName(facilityMsg.getUserName());
@@ -212,7 +214,13 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
      * @return
      */
     public String genFacilityCode(){
-        return "CSHF" + randomString(5);
+        String code = "CSHF" + randomString(5);
+        Facility facility = facilityDao.findByCode(code);
+        while (facility!=null) {
+            code = "CSHF" + randomString(5);
+            facility = facilityDao.findByCode(code);
+        }
+        return code;
     }
 
     /**

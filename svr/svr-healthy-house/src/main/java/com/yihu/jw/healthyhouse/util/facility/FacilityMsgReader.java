@@ -30,56 +30,56 @@ public class FacilityMsgReader extends AExcelReader {
 
                 for (int i = 1; i <= rows; i++) {
                     facilityMsg = new FacilityMsg();
-                    //设施编码
-//                    if(null != getCellCont(sheet, i, 2)){
-//                        //去除空格、回车、换行、制表符
-//                        facilityMsg.setCode(replaceBlank(getCellCont(sheet, i, 1)));
-//                    }else{
-//                        facilityMsg.setCode(getCellCont(sheet, i, 1));
-//                    }
-
-                    //设施类型名称
+                    //设施名称
                     if(null != getCellCont(sheet, i, 0)){
                         //去除空格、回车、换行、制表符
-                        facilityMsg.setCategory(replaceBlank(getCellCont(sheet, i, 0)));
+                        facilityMsg.setName(replaceBlank(getCellCont(sheet, i, 0)));
                     }else{
-                        facilityMsg.setCategory(getCellCont(sheet, i, 0));
+                        facilityMsg.setName(getCellCont(sheet, i, 0));
                     }
 
-                    facilityMsg.setUserName(getCellCont(sheet, i, 1));
-                    facilityMsg.setUserTelePhone(getCellCont(sheet, i, 2));
-                    //省
-                    if(null != getCellCont(sheet, i, 3)){
+                    //设施类型名称
+                    if(null != getCellCont(sheet, i, 1)){
                         //去除空格、回车、换行、制表符
-                        facilityMsg.setProvince(replaceBlank(getCellCont(sheet, i, 3)));
+                        facilityMsg.setCategory(replaceBlank(getCellCont(sheet, i, 1)));
                     }else{
-                        facilityMsg.setProvince(getCellCont(sheet, i, 3));
+                        facilityMsg.setCategory(getCellCont(sheet, i, 1));
+                    }
+
+                    facilityMsg.setUserName(getCellCont(sheet, i, 2));
+                    facilityMsg.setUserTelePhone(getCellCont(sheet, i, 3));
+                    //省
+                    if(null != getCellCont(sheet, i, 4)){
+                        //去除空格、回车、换行、制表符
+                        facilityMsg.setProvince(replaceBlank(getCellCont(sheet, i, 4)));
+                    }else{
+                        facilityMsg.setProvince(getCellCont(sheet, i, 4));
                     }
 
                     //市
-                    if(null != getCellCont(sheet, i, 4)){
+                    if(null != getCellCont(sheet, i, 5)){
                         //去除空格、回车、换行、制表符
-                        facilityMsg.setCity(replaceBlank(getCellCont(sheet, i, 4)));
+                        facilityMsg.setCity(replaceBlank(getCellCont(sheet, i, 5)));
                     }else{
-                        facilityMsg.setCity(getCellCont(sheet, i, 4));
+                        facilityMsg.setCity(getCellCont(sheet, i, 5));
                     }
 
                     //区
-                    if(null != getCellCont(sheet, i, 5)){
+                    if(null != getCellCont(sheet, i, 6)){
                         //去除空格、回车、换行、制表符
-                        facilityMsg.setCounty(replaceBlank(getCellCont(sheet, i, 5)));
+                        facilityMsg.setCounty(replaceBlank(getCellCont(sheet, i, 6)));
                     }else{
-                        facilityMsg.setCounty(getCellCont(sheet, i, 5));
+                        facilityMsg.setCounty(getCellCont(sheet, i, 6));
                     }
 
-                    facilityMsg.setStreet(getCellCont(sheet, i, 6));
-                    facilityMsg.setStatus(getCellCont(sheet, i, 7));
-                    facilityMsg.setOrgName(getCellCont(sheet, i, 8));
-                    facilityMsg.setServiceDate(getCellCont(sheet, i, 9));
-                    facilityMsg.setServiceStartTime(getCellCont(sheet, i, 10));
-                    facilityMsg.setServiceEndTime(getCellCont(sheet, i, 11));
-                    facilityMsg.setLongitude(getCellCont(sheet, i, 12));
-                    facilityMsg.setLatitude(getCellCont(sheet, i, 13));
+                    facilityMsg.setStreet(getCellCont(sheet, i, 7));
+                    facilityMsg.setStatus(getCellCont(sheet, i, 8));
+                    facilityMsg.setOrgName(getCellCont(sheet, i, 9));
+                    facilityMsg.setServiceDate(getCellCont(sheet, i, 10));
+                    facilityMsg.setServiceStartTime(getCellCont(sheet, i, 11));
+                    facilityMsg.setServiceEndTime(getCellCont(sheet, i, 12));
+                    facilityMsg.setLongitude(getCellCont(sheet, i, 13));
+                    facilityMsg.setLatitude(getCellCont(sheet, i, 14));
 
                     facilityMsg.setExcelSeq(i);
                     correctLs.add(facilityMsg);
