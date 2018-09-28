@@ -50,8 +50,15 @@ public class HealthyHouseMapping {
             public static final String COUNT_FACILITIES = "/count/facilities";
             public static final String UPDATE_FACILITIE_STATE = "/update/facilitieState";
             public static final String COUNT_FACILITIES_BY_TIME = "/count/facilitiesByTime";
+            public static final String NEARBY_FACILITY = "/nearbyFacility";
+
             public static final String GET_FACILITIELIST = "/list/getAppFacilities";
             public static final String GET_ALL_FACILITIELISTS_COUNT = "/list/getAllFacilitiesCount";
+
+            public static final String UPDATE_FACILITIES_AND_RELATION = "/update/facilitieAndRelations";
+
+            public static final String GET_ALL_FACILITIELISTS_BY_CATEGORY_AND_SERVERCODE = "/list/getAllFacilitiesByCategoryAndServerCode";
+
         }
 
         //设施服务
@@ -63,6 +70,7 @@ public class HealthyHouseMapping {
             public static final String LIST = "/list/facilitieServers";
             public static final String GET_FACILITIESERVERS_BY_ID = "/getFacilitieServersById";
             public static final String GET_FACILITIESERVERS_BY_FIELD = "/getFacilitieServersByField";
+            public static final String LIST_FACILITIESERVERS = "/list/listFacilitieServers";
         }
 
         //意见反馈
@@ -75,6 +83,7 @@ public class HealthyHouseMapping {
             public static final String GET_FEEDBACK_BY_ID = "/getFeedBackById";
             public static final String GET_FEEDBACKS_BY_FIELD = "/getFeedBacksByField";
             public static final String UPDATE_FEEDBACKS_BY_ID = "/updateFeedBacksById";
+            public static final String EXPORT_EXCEL = "/exportExcel/feedBacks";
         }
 
         //用户使用导航记录
@@ -89,6 +98,7 @@ public class HealthyHouseMapping {
             public static final String UPDATE_FACILITY_USED_RECORD_BY_ID = "/updateFacilityUsedRecordById";
             public static final String GET_FACILITY_USED_RECORD_AND_COUNT_BY_ID = "/getFacilityUsedRecordAndCountById";
             public static final String COUNT_FACILITY_USED_RECORD_BY_USERID = "/countFacilityUsedRecordByUserId";
+            public static final String GET_FACILITY_USED_RECORD_DETAIL = "/getUsedRecordDetail";
         }
 
         //服务评价

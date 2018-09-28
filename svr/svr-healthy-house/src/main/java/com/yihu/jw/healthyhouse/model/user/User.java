@@ -1,6 +1,7 @@
 package com.yihu.jw.healthyhouse.model.user;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
@@ -25,12 +26,14 @@ public class User extends UuidIdentityEntityWithOperator {
     private String password;
     @Column(name = "gender" )
     private String gender;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+08:00")
     @Column(name = "birthday" )
     private Date birthday;
     @Column(name = "id_card_no", nullable = false)
     private String idCardNo;
     @Column(name = "telephone", nullable = false)
     private String telephone;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     @Column(name = "last_login_time", length = 0)
     private Date lastLoginTime;
     @Column(name = "img_remote_path")
@@ -58,6 +61,13 @@ public class User extends UuidIdentityEntityWithOperator {
     private String salt; //加密种子
     @Column(name = "facility_used_count")
     private Integer facilityUsedCount;//设施使用次数
+
+    @Column(name = "realname_authentication")
+    private String realnameAuthentication;//实名认证
+    @Column(name = "phone_authentication")
+    private String phoneAuthentication;//手机认证
+    @Column(name = "ijk_authentication")
+    private String ijkAuthentication;//i健康认证
 
 
     public String getLoginCode() {
@@ -218,6 +228,30 @@ public class User extends UuidIdentityEntityWithOperator {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public String getRealnameAuthentication() {
+        return realnameAuthentication;
+    }
+
+    public void setRealnameAuthentication(String realnameAuthentication) {
+        this.realnameAuthentication = realnameAuthentication;
+    }
+
+    public String getPhoneAuthentication() {
+        return phoneAuthentication;
+    }
+
+    public void setPhoneAuthentication(String phoneAuthentication) {
+        this.phoneAuthentication = phoneAuthentication;
+    }
+
+    public String getIjkAuthentication() {
+        return ijkAuthentication;
+    }
+
+    public void setIjkAuthentication(String ijkAuthentication) {
+        this.ijkAuthentication = ijkAuthentication;
     }
 
     @Transient

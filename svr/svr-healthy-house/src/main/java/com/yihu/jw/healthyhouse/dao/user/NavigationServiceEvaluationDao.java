@@ -12,5 +12,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface NavigationServiceEvaluationDao extends JpaRepository<NavigationServiceEvaluation, Long> {
 
     NavigationServiceEvaluation findById(String id);
+    NavigationServiceEvaluation findByUseRecordId(String recordId);
 }
 

@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -84,13 +85,14 @@ public class FastDFSController extends EnvelopRestEndpoint {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = HealthyHouseMapping.HealthyHouse.FastDFS.UPLOADJSON)
+    @PostMapping(value = HealthyHouseMapping.HealthyHouse.FastDFS.UPLOADJSON,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "文件上传", notes = "返回相关索引信息,以及HttpUrl下载连接(兼容旧接口)")
     public ObjEnvelop<FileResource> upload(
             @ApiParam(name = "jsonData", value = "文件资源", required = true)
             @RequestBody String jsonData) throws Exception {
         Map<String, String> paramMap = toEntity(jsonData, Map.class);
         String fileStr = paramMap.get("fileStr");
+        //解码
         byte[] bytes = Base64.getDecoder().decode(fileStr);
         InputStream inputStream = new ByteArrayInputStream(bytes);
         String fileName = paramMap.get("fileName");

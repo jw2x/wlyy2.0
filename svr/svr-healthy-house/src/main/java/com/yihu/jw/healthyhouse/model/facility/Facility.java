@@ -58,6 +58,9 @@ public class Facility extends UuidIdentityEntityWithOperator {
     //街道
     @Column(name = "street")
     private String street;
+    //地址
+    @Column(name = "address")
+    private String address;
     //服务时间：周一至周天，用逗号隔开
     @Column(name = "service_day")
     private String serviceDay ;
@@ -289,21 +292,29 @@ public class Facility extends UuidIdentityEntityWithOperator {
     public void setCategoryValue(String categoryValue) {
         this.categoryValue = categoryValue;
     }
-    @Transient
-    public String getAddress(){
-        String address = "";
-        if (this.getProvinceId()!=null ) {
 
-        }
-        if (this.getCityName() !=null ){
-            address += this.getCityName();
-        }
-        if (this.getCountyName() !=null ){
-            address += this.getCountyName();
-        }
-        if (this.getStreet() !=null) {
-            address += this.getStreet();
-        }
+    public String getAddress() {
         return address;
     }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    //    @Transient
+//    public String getAddress(){
+//        String address = "";
+//        if (this.getProvinceId()!=null ) {
+//
+//        }
+//        if (this.getCityName() !=null ){
+//            address += this.getCityName();
+//        }
+//        if (this.getCountyName() !=null ){
+//            address += this.getCountyName();
+//        }
+//        if (this.getStreet() !=null) {
+//            address += this.getStreet();
+//        }
+//        return address;
+//    }
 }

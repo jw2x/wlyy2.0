@@ -12,7 +12,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface FacilityUsedRecordDao extends JpaRepository<FacilityUsedRecord, Long> {
 
     FacilityUsedRecord findById(String id);
+    Long countByUserId(String userId);
+    Long countAllByUserIdIsNotNull();
 
-    long countByFacilitieCodeAndUserId(String facilitieCode,String userId);
+    long countByFacilitieCodeAndCreateUser(String facilitieCode,String createUser);
 }
 

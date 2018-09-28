@@ -1,11 +1,15 @@
 package com.yihu.jw.healthyhouse.service.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.jw.entity.base.sms.SmsGatewayDO;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.cache.WlyyRedisVerifyCodeService;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
+import com.yihu.jw.healthyhouse.constant.UserConstant;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
 import com.yihu.jw.util.security.MD5;
+import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -16,6 +20,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,7 +33,7 @@ import java.util.Map;
  * @created 2018/9/18 20:02
  */
 @Service
-public class LoginService {
+public class LoginService  extends BaseJpaService {
 
     @Autowired
     private UserService userService;
@@ -56,11 +61,12 @@ public class LoginService {
             user.setLoginCode(loginCode);
             user.setName(loginCode);
             user.setTelephone(loginCode);
+            // 更新身份证验证字段
+            user.setPhoneAuthentication(UserConstant.AUTHORIZED);
             user.setPassword(LoginInfo.DEFAULT_PASSWORD);
-        } else {
-            //已注册用户更改用户状态
-            user.setActivated(HouseUserContant.activated_active);
         }
+        //已注册用户更改用户状态
+        user.setActivated(HouseUserContant.activated_active);
         request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
         request.getSession().setAttribute(LoginInfo.TOKEN, ""); //TODO token是否添加
         request.getSession().setAttribute(LoginInfo.LOGIN_NAME, user.getName());
@@ -207,6 +213,43 @@ public class LoginService {
         } else {
             throw new ManageException("验证码获取失败!");
         }
+    }
+
+    public ResponseEntity<HashMap> sendDemoSms(String clientId, String type, String phone) throws ParseException, ManageException, IOException {
+        //发送短信获取验证码
+        String resultStr = "{\n" +
+                "    \"obj\": {\n" +
+                "        \"id\": \"4028cb816615a019016615b662b10003\",\n" +
+                "        \"createTime\": \"2018-09-26 19:49:26\",\n" +
+                "        \"createUser\": null,\n" +
+                "        \"createUserName\": null,\n" +
+                "        \"updateTime\": \"2018-09-26 19:49:26\",\n" +
+                "        \"updateUser\": null,\n" +
+                "        \"updateUserName\": null,\n" +
+                "        \"clientId\": \"EwC0iRSrcS\",\n" +
+                "        \"smsGatewayId\": \"402803f9657fa37b01657fb58b9b0000\",\n" +
+                "        \"requestIp\": \"127.0.0.1\",\n" +
+                "        \"mobile\": \"18250165552\",\n" +
+                "        \"content\": \"【i健康综合管理平台】您使用的是i健康综合管理平台短信模板，您的验证码是329931，请于10分钟内正确输入！\",\n" +
+                "        \"deadline\": \"2018-09-26 19:59:26\",\n" +
+                "        \"captcha\": \"329931\",\n" +
+                "        \"type\": \"login\"\n" +
+                "    },\n" +
+                "    \"message\": \"success\",\n" +
+                "    \"status\": 200\n" +
+                "}";
+        String captcha = randomInt(6);
+        resultStr = resultStr.replaceAll("329931",captcha);
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        HashMap<String, Object> result = objectMapper.readValue(resultStr,HashMap.class);
+            Long expire = 600L;
+            wlyyRedisVerifyCodeService.store(clientId, phone, captcha, expire.intValue());
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Cache-Control", "no-store");
+            headers.set("Pragma", "no-cache");
+            return new ResponseEntity<>(result, headers, HttpStatus.OK);
+
     }
 
 

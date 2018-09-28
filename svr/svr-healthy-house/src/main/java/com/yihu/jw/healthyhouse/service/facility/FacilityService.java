@@ -9,12 +9,15 @@ import com.yihu.jw.healthyhouse.service.dict.SystemDictEntryService;
 import com.yihu.jw.healthyhouse.util.facility.msg.FacilityMsg;
 import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
 import com.yihu.mysql.query.BaseJpaService;
-import io.swagger.models.auth.In;
 import jxl.write.Colour;
 import jxl.write.WritableCellFormat;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.transform.Transformers;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -210,6 +213,29 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
      */
     public String genFacilityCode(){
         return "CSHF" + randomString(5);
+    }
+
+    /**
+     * 根据服务类型获取设施
+     */
+    public List<String> getFacilityCodeByServerType(String type){
+        Session s = currentSession();
+        String hql = "(SELECT  DISTINCT fsr.facilitie_code FROM  facility_server_relation fsr,facility_server fs WHERE fsr.service_code=fs.code and fs.type=:type)";
+        Query query = s.createSQLQuery(hql);
+        query.setParameter("type",type);
+        return query.list();
+    }
+
+    public List<String> getFacilityCodeByServerCode( String[] codes)
+    {
+        String sql =  "(SELECT  DISTINCT fsr.facilitie_code FROM  facility_server_relation fsr WHERE fsr.service_code IN(:codes))";
+        SQLQuery sqlQuery = currentSession().createSQLQuery(sql);
+        sqlQuery.setParameterList("codes", codes);
+        return sqlQuery.list();
+    }
+
+    public List<Facility> getFacilityByFacilityCode( List<String> facilityCodes){
+        return facilityDao.findByCode(facilityCodes);
     }
 
 

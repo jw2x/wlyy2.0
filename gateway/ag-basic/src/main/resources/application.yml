@@ -34,9 +34,9 @@ zuul:
     svr-base:
       path: /base/**
       serviceId: svr-base
-    demo:
-      path: /baidu/**
-      url: https://www.baidu.com
+    svr-authentication:
+      path: /auth/**
+      serviceId: svr-authentication
 
 ---
 spring:
