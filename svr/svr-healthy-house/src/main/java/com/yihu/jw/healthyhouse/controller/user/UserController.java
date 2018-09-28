@@ -159,6 +159,15 @@ public class UserController  extends EnvelopRestEndpoint {
         return ObjEnvelop.getSuccess("身份证认证完成！");
     }
 
+    @GetMapping("/existence")
+    @ApiOperation(value = "【管理员】-验证管理员是否存在")
+    public Envelop existence(
+            @ApiParam(name = "telephone", value = "管理员账号", required = true)@RequestParam(required = true, name = "telephone") String telephone  ) throws ManageException {
+
+        userService.checkManageUser( telephone);
+        return ObjEnvelop.getSuccess("该管理员账号存在！");
+    }
+
 
     @GetMapping("/exportToExcel")
     @ApiOperation(value = "用户列表导出excel")

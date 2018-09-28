@@ -55,7 +55,9 @@ public class BaseRequestMapping {
      */
     public static class Module extends Basic {
         public static final String PREFIX  = "/module";
-
+        public static final String STATUS  = "/status";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String FIND_ALL  = "/findAll";
     }
 
     /**
@@ -129,9 +131,10 @@ public class BaseRequestMapping {
     public static class Menu extends Basic {
         public static final String PREFIX  = "/menu";
         public static final String STATUS  = "/status";
-        public static final String ISNAMEEXIST  = "/isNameExist";
-        public static final String MOVEUP  = "/moveUp";
-        public static final String MOVEDOWN  = "/moveDown";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String MOVE_UP  = "/moveUp";
+        public static final String MOVE_DOWN  = "/moveDown";
+        public static final String FIND_ALL  = "/findAll";
     }
 
     /**
