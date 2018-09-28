@@ -46,8 +46,8 @@ public class NavigationServiceEvaluationController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<NavigationServiceEvaluation> navigationServiceEvaluationList = navigationServiceEvaluationService.search(fields, filters, sorts, page, size);
-        int count = (int)navigationServiceEvaluationService.getCount(filters);
-        return success(navigationServiceEvaluationList,count, page, size);
+        int count = (int) navigationServiceEvaluationService.getCount(filters);
+        return success(navigationServiceEvaluationList, count, page, size);
     }
 
     @ApiOperation(value = "创建/更新（id存在）服务评价")
@@ -55,7 +55,17 @@ public class NavigationServiceEvaluationController extends EnvelopRestEndpoint {
     public ObjEnvelop<NavigationServiceEvaluation> createNavigationServiceEvaluation(
             @ApiParam(name = "navigationServiceEvaluation", value = "服务评价JSON结构")
             @RequestBody NavigationServiceEvaluation navigationServiceEvaluation) throws IOException {
-        navigationServiceEvaluation = navigationServiceEvaluationService.save(navigationServiceEvaluation);
+        //判断该导航记录是否已经评价
+        NavigationServiceEvaluation navi = navigationServiceEvaluationService.findByUseRecordId(navigationServiceEvaluation.getUseRecordId());
+        if (null != navi) {
+            navi.setScore(navigationServiceEvaluation.getScore());
+            navi.setRemark(navigationServiceEvaluation.getRemark());
+            navigationServiceEvaluation = navigationServiceEvaluationService.save(navi);
+        } else {
+            navigationServiceEvaluation = navigationServiceEvaluationService.save(navigationServiceEvaluation);
+        }
+
+
         return success(navigationServiceEvaluation);
     }
 
