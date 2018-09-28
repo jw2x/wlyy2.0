@@ -129,6 +129,9 @@ public class BaseRequestMapping {
     public static class Menu extends Basic {
         public static final String PREFIX  = "/menu";
         public static final String STATUS  = "/status";
+        public static final String ISNAMEEXIST  = "/isNameExist";
+        public static final String MOVEUP  = "/moveUp";
+        public static final String MOVEDOWN  = "/moveDown";
     }
 
     /**

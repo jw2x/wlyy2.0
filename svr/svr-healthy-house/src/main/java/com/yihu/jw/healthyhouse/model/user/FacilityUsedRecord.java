@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * 用户导航记录
@@ -41,10 +42,10 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
     //设施id
     @Column(name = "facilitie_id")
     private String facilitieId;
-    //服务编码
+    //使用的服务编码--冗余
     @Column(name = "service_code")
     private String serviceCode;
-    //服务名称
+    //使用的服务名称--冗余
     @Column(name = "service_name")
     private String serviceName;
     //导航时长
@@ -60,6 +61,12 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
     //使用次数
     @Column(name = "num")
     private Integer num;
+
+    //设施关联的服务名称
+    private String facilityRelationServiceName;
+
+    //评价记录
+    private String navigationServiceEvaluationFlag;
 
     public double getUserInitialLongitude() {
         return userInitialLongitude;
@@ -171,5 +178,21 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
 
     public void setFacilitieId(String facilitieId) {
         this.facilitieId = facilitieId;
+    }
+    @Transient
+    public String getFacilityRelationServiceName() {
+        return facilityRelationServiceName;
+    }
+
+    public void setFacilityRelationServiceName(String facilityRelationServiceName) {
+        this.facilityRelationServiceName =facilityRelationServiceName;
+    }
+    @Transient
+    public String getNavigationServiceEvaluationFlag() {
+        return navigationServiceEvaluationFlag;
+    }
+
+    public void setNavigationServiceEvaluationFlag(String navigationServiceEvaluationFlag) {
+        this.navigationServiceEvaluationFlag = navigationServiceEvaluationFlag;
     }
 }

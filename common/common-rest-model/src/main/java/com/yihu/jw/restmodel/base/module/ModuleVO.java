@@ -1,6 +1,5 @@
 package com.yihu.jw.restmodel.base.module;
 
-import com.yihu.jw.entity.base.module.ModuleDO;
 import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,12 +18,14 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
     private String name;
     @ApiModelProperty(value = "父ID", example = "402803ee656498890165649ad2da0000")
     private String parentId;
-    @ApiModelProperty(value = "状态", example = "disable")
-    private ModuleDO.Status status;
+    @ApiModelProperty(value = "url", example = "/doctor/*")
+    private String url;
+    @ApiModelProperty(value = "状态", example = "1有效，0失效")
+    private Integer status;
     @ApiModelProperty(value = "备注", example = "我是备注")
     private String remark;
-    @ApiModelProperty(value = "节点信息（closed-表示有子节点，open-表示没有子节点)", example = "open")
-    private String state ;
+    @ApiModelProperty(value = "节点信息（0-表示有子节点，1-表示没有子节点)", example = "1")
+    private Integer isEnd ;
     @ApiModelProperty(value = "子集")
     private List<ModuleVO> children = new ArrayList<>();
 
@@ -44,11 +45,11 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
         this.parentId = parentId;
     }
 
-    public ModuleDO.Status getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(ModuleDO.Status status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
@@ -60,12 +61,20 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
         this.remark = remark;
     }
 
-    public String getState() {
-        return state;
+    public String getUrl() {
+        return url;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getIsEnd() {
+        return isEnd;
+    }
+
+    public void setIsEnd(Integer isEnd) {
+        this.isEnd = isEnd;
     }
 
     public List<ModuleVO> getChildren() {

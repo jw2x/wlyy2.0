@@ -54,9 +54,9 @@ public class AppealController extends EnvelopRestEndpoint {
     public ObjEnvelop<Appeal> createAppeal(
             @ApiParam(name = "Appeal", value = "账号申诉JSON结构")
             @RequestBody Appeal appeal) throws IOException {
-        if(StringUtils.isEmpty(appeal.getCreateUser())){
-            return failed("账号申诉人（createUser）不能为空！",ObjEnvelop.class);
-        }
+//        if(StringUtils.isEmpty(appeal.getCreateUser())){
+//            return failed("账号申诉人（createUser）不能为空！",ObjEnvelop.class);
+//        }
         appeal = AppealService.save(appeal);
         return success(appeal);
     }

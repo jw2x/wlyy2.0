@@ -40,7 +40,7 @@ public class BaseErrorCode {
      * 菜单模块
      */
     public static class Menu{
-        public static final String FINDDICTBYCODE = "-102000";
+        public static final String NAME_IS_EXIST = "-102000";
     }
 
     /**

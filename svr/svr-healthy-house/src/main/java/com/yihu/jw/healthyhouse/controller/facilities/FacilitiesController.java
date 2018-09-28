@@ -1,7 +1,6 @@
 package com.yihu.jw.healthyhouse.controller.facilities;
 
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.cfg.ContextAttributes;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServer;
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.yihu.jw.restmodel.web.Envelop;
@@ -318,8 +318,30 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "filters", value = "过滤器", defaultValue = "")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序", defaultValue = "")
-            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<Facility> facilityList = facilityService.search(fields, filters, sorts);
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "facilityCategory", value = "设施分类：1小屋、2步道、3餐厅", defaultValue = "1")
+            @RequestParam(value = "facilityCategory", required = false) String facilityCategory,
+            @ApiParam(name = "facilityServerType", value = "非必传参数：设施服务类型：dinner吃饭、measure测量、sports运动", defaultValue = "measure")
+            @RequestParam(value = "facilityServerType", required = false) String facilityServerType,
+            @ApiParam(name = "facilityServerCodes", value = "非必传参数：设施服务编码，可多个，用逗号隔开", defaultValue = "jkxwServer003,HFHS7C5B5")
+            @RequestParam(value = "facilityServerCodes", required = false) String facilityServerCodes) throws Exception {
+        List<Facility> facilityList = new ArrayList<>();
+        //设施服务编码存在，查找使用该服务的设施
+        if (StringUtils.isNotEmpty(facilityServerCodes)) {
+            String[] faServerCodes = facilityServerCodes.split(",");
+            List<String> facilityCodeList = facilityService.getFacilityCodeByServerCode(faServerCodes);
+            facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
+        } else if (StringUtils.isNotEmpty(facilityServerType)) {
+            //设施编码为空，设施服务类型不为空，按设施服务类型获取设施
+            List<String> facilityCodeList = facilityService.getFacilityCodeByServerType(facilityServerType);
+            facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
+        } else if (StringUtils.isNotEmpty(facilityCategory)) {
+            //设施编码为空，设施服务类型为空，按照设施分类获取按设施服务类型获取设施
+            filters = "category=" + facilityCategory;
+            facilityList = facilityService.search(fields, filters, sorts);
+        } else {
+            facilityList = facilityService.search(fields, filters, sorts);
+        }
         return success(facilityList);
     }
 

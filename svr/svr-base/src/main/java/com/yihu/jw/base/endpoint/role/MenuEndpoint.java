@@ -44,15 +44,41 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
         return success(menuDO, MenuVO.class);
     }
 
+    @PostMapping(value = BaseRequestMapping.Menu.MOVEDOWN)
+    @ApiOperation(value = "下移")
+    public Envelop moveDown(
+            @ApiParam(name = "id", value = "id", required = true)
+            @RequestParam(value = "id") String id) {
+        menuService.moveDown(id);
+        return success("修改成功");
+    }
+
+    @PostMapping(value = BaseRequestMapping.Menu.MOVEUP)
+    @ApiOperation(value = "上移")
+    public Envelop moveUp(
+            @ApiParam(name = "id", value = "id", required = true)
+            @RequestParam(value = "id") String id) {
+        menuService.moveUp(id);
+        return success("修改成功");
+    }
+
     @PostMapping(value = BaseRequestMapping.Menu.STATUS)
     @ApiOperation(value = "生效/失效")
-    public Envelop delete(
+    public Envelop status(
             @ApiParam(name = "id", value = "id", required = true)
             @RequestParam(value = "id") String id,
             @ApiParam(name = "status", value = "1生效，0失效", required = true)
             @RequestParam(value = "status") Integer status) {
         menuService.updateStatus(id, status);
         return success("修改成功");
+    }
+
+    @GetMapping(value = BaseRequestMapping.Menu.ISNAMEEXIST)
+    @ApiOperation(value = "名称是否存在",notes = "返回值中的obj=1表示名称已经存在，0表示名称不存在")
+    public ObjEnvelop isNameExist(
+            @ApiParam(name = "name", value = "菜单名称", required = true)
+            @RequestParam(value = "name") String name) {
+        return success(menuService.isExistName(name));
     }
 
     @PostMapping(value = BaseRequestMapping.Menu.UPDATE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
