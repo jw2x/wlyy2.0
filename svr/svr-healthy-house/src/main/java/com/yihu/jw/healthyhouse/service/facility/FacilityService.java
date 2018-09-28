@@ -144,7 +144,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
 
 
     /**
-     * 批量存储的集合
+     * 批量导入设施的集合
      * @param facilities    设施列表
      */
     public Map<String,Object> batchInsertFacility(List<FacilityMsg> facilities) throws ManageException{

@@ -151,9 +151,12 @@ public class UserService extends BaseJpaService<User, UserDao> {
      * @param reason   更改状态原因
      */
     @Transactional
-    public void updateStatus(String id, String userCode, Integer status, String reason) {
+    public void updateStatus(String id, String userCode, Integer status, String reason) throws ManageException {
         User user = userDao.findByLoginCode(userCode);
         User user1 = findById(id);
+        if (user1 == null) {
+            throw new ManageException("激活用户不存在!");
+        }
         user1.setActivated(status);
         user1.setActivatedContent(reason);
         if (user != null) {

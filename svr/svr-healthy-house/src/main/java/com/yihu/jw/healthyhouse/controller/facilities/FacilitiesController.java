@@ -289,7 +289,11 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @PostMapping(value = "/batchImport")
     @ApiOperation(value = "设施列表导入（经纬度重复的不导入）")
-    public ObjEnvelop importData(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws IOException, ManageException {
+    public ObjEnvelop importData(
+            @ApiParam(name = "file", value = "文件", required = true)
+            @RequestPart(value = "file") MultipartFile file,
+            HttpServletRequest request,
+            HttpServletResponse response) throws IOException, ManageException {
         try {
             request.setCharacterEncoding("UTF-8");
             AExcelReader excelReader = new FacilityMsgReader();
