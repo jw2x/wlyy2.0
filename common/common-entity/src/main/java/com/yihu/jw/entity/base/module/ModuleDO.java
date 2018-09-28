@@ -46,6 +46,35 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
 		}
 	}
 
+	public enum Type {
+		common("通用", 0),
+		doctor("医生端", 1),
+		patient("居民端", 2);
+		private String name;
+		private Integer value;
+
+		Type(String name, Integer value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+
+		public void setValue(Integer value) {
+			this.value = value;
+		}
+	}
+
 	//模块名称
 	private String name;
 	//模块连接
@@ -60,6 +89,8 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
 	private String remark;
 	//0-表示有子节点，1-表示没有子节点
 	private Integer isEnd ;
+	//0-表示非必选，1-表示必选
+	private Integer isMust ;
 	//逻辑删除标志1正常，0删除
 	private Integer del ;
 	//子集
@@ -112,6 +143,15 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
 		this.url = url;
 	}
 
+	@Column(name = "type")
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
 	@Column(name = "is_end")
 	public Integer getIsEnd() {
 		return isEnd;
@@ -128,6 +168,15 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
 
 	public void setDel(Integer del) {
 		this.del = del;
+	}
+
+	@Column(name = "is_must")
+	public Integer getIsMust() {
+		return isMust;
+	}
+
+	public void setIsMust(Integer isMust) {
+		this.isMust = isMust;
 	}
 
 	@Transient
