@@ -10,12 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -34,6 +36,8 @@ public class BasicZuulFilter extends ZuulFilter {
     private ObjectMapper objectMapper;
     @Autowired
     private TokenStore tokenStore;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Override
     public String filterType() {
@@ -64,6 +68,13 @@ public class BasicZuulFilter extends ZuulFilter {
         return this.authenticate(ctx, request, url);
     }
 
+    /**
+     * 验证token 权限地址
+     * @param ctx
+     * @param request
+     * @param path
+     * @return
+     */
     private Object authenticate(RequestContext ctx, HttpServletRequest request, String path) {
         String accessToken = this.extractToken(request);
         if (null == accessToken) {
@@ -76,26 +87,32 @@ public class BasicZuulFilter extends ZuulFilter {
         if (oAuth2AccessToken.isExpired()) {
             return this.forbidden(ctx, HttpStatus.PAYMENT_REQUIRED.value(), "expired token"); //返回402 登陆过期
         }
-//        //将token的认证信息附加到请求中，转发给下游微服务
-//        OAuth2Authentication auth = tokenStore.readAuthentication(accessToken);
-//        ctx.addZuulRequestHeader("x-auth-name", auth.getName());
-//        //以下代码取消注释可开启Oauth2应用资源授权验证
+        //将token的认证信息附加到请求中，转发给下游微服务
+        OAuth2Authentication auth = tokenStore.readAuthentication(accessToken);
+        ctx.addZuulRequestHeader("x-auth-name", auth.getName());
+        //以下代码取消注释可开启Oauth2应用资源授权验证
 //        Set<String> resourceIds = auth.getOAuth2Request().getResourceIds();
-//        for (String resourceId : resourceIds) {
-//            if (resourceId.equals("*")) {
-//                return true;
-//            }
-//            if (!resourceId.startsWith("/")) {
-//                resourceId = "/" + resourceId;
-//            }
-//            path = path.toLowerCase();
-//            if (path.startsWith(resourceId)
-//                    && (path.length() == resourceId.length() || path.charAt(resourceId.length()) == '/')) {
-//                return true;
-//            }
-//        }
-//        return this.forbidden(ctx, HttpStatus.FORBIDDEN.value(), "invalid token does not contain request resource " + path);
-        return true;
+        String urls = redisTemplate.opsForValue().get("wlyy2:auth:token:"+accessToken);
+        if(StringUtils.isEmpty(urls)){
+           return this.forbidden(ctx, HttpStatus.FORBIDDEN.value(), "invalid token does not contain request resource " + path);
+        }
+        //获取所有token资源
+        String resourceIds[] = urls.split(",");
+
+        for (String resourceId : resourceIds) {
+            if (resourceId.equals("/**")) {
+                return true;
+            }
+            if (!resourceId.startsWith("/")) {
+                resourceId = "/" + resourceId;
+            }
+            path = path.toLowerCase();
+            if (path.startsWith(resourceId)
+                    && (path.length() == resourceId.length() || path.charAt(resourceId.length()) == '/')) {
+                return true;
+            }
+        }
+        return this.forbidden(ctx, HttpStatus.FORBIDDEN.value(), "invalid token does not contain request resource " + path);
     }
 
     private String extractToken(HttpServletRequest request) {

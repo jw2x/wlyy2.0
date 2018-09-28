@@ -5,7 +5,7 @@ import com.yihu.jw.security.model.WlyyUserDetails;
 import com.yihu.jw.security.model.WlyyUserSimple;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Service - 用户信息
@@ -243,10 +245,12 @@ public class WlyyUserDetailsService extends JdbcDaoSupport implements UserDetail
     }
 
 
-    public boolean setRolePhth(String loginType, String token, String id, RedisTemplate redisTemplate){
+    public boolean setRolePhth(String loginType, OAuth2AccessToken token, String id, StringRedisTemplate redisTemplate){
 
         if(org.apache.commons.lang.StringUtils.isBlank(loginType)||"1".equals(loginType)){ //1或默认查找user表，为平台管理员账号
-
+            String key = "wlyy2:auth:token:"+token.getValue();
+            redisTemplate.opsForValue().set(key,"/**");
+            redisTemplate.expire(key,token.getExpiresIn(), TimeUnit.SECONDS);
         }else if("2".equals(loginType)){//2.为医生账号
 
         }else if("3".equals(loginType)){ //3.患者账号
