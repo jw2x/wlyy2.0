@@ -10,6 +10,7 @@ import com.yihu.jw.entity.specialist.HospitalServiceItemDO;
 import com.yihu.jw.entity.specialist.SpecialistServiceItemDO;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import com.yihu.jw.util.DataUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -48,6 +50,8 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
         MixEnvelop<HospitalServiceItemDO,HospitalServiceItemDO> envelop = new MixEnvelop<>();
         if (hospitalServiceItemDOS !=null && hospitalServiceItemDOS.size()!=0){
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOS){
+                hospitalServiceItemDO.setCreateTime(new Date());
+                hospitalServiceItemDO.setUpdateTime(new Date());
                 specialistHospitalServiceItemDao.save(hospitalServiceItemDO);
             }
         }
@@ -197,38 +201,62 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
                 SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS1.get(j).getSpecialistServiceItemDO();
                 if (itemType.get(i).equals(specialistServiceItemDO.getItemType())){
             type.add(specialistServiceItemDO.getDiseaseItem());
+                }
             }
-        }
         JSONArray itemArray = new JSONArray();
         List<String> serviceItems = new ArrayList<>();
         if (type != null && type.size() != 0){
-            for (int z =0 ;z<type.size();z++){
-                List<HospitalServiceItemDO> hospitalServiceItemDOS2 = new ArrayList<>();
-                JSONObject object1 =new JSONObject();
-                for (int j = 0;j<hospitalServiceItemDOS1.size();j++){
-                    SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS1.get(j).getSpecialistServiceItemDO();
-                        if (type.get(z).equals(specialistServiceItemDO.getDiseaseItem())) {
-                            hospitalServiceItemDOS2.add(hospitalServiceItemDOS1.get(j));
+                for (int z =0 ;z<type.size();z++){
+                    List<HospitalServiceItemDO> hospitalServiceItemDOS2 = new ArrayList<>();
+                    JSONObject object1 =new JSONObject();
+                    for (int j = 0;j<hospitalServiceItemDOS1.size();j++){
+                        SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS1.get(j).getSpecialistServiceItemDO();
+                        if (itemType.get(i).equals(specialistServiceItemDO.getItemType())){
+                            if (type.get(z).equals(specialistServiceItemDO.getDiseaseItem())) {
+                                hospitalServiceItemDOS2.add(hospitalServiceItemDOS1.get(j));
+                            }
                         }
-                }
-                if (serviceItems!=null && serviceItems.size()!=0){
-                    if (!serviceItems.contains(type.get(z))){
+                    }
+                    if (serviceItems!=null && serviceItems.size()!=0){
+                        if (!serviceItems.contains(type.get(z))){
+                            serviceItems.add(type.get(z));
+                            object1.put("itemName",type.get(z));
+                            object1.put("hospitalServiceItems",hospitalServiceItemDOS2);
+                            itemArray.add(object1);
+                        }else {
+                            object1.put("itemName",type.get(z));
+                            object1.put("hospitalServiceItems",hospitalServiceItemDOS2);
+                            itemArray.add(object1);
+                        }
+                    }else {
                         serviceItems.add(type.get(z));
                         object1.put("itemName",type.get(z));
                         object1.put("hospitalServiceItems",hospitalServiceItemDOS2);
                         itemArray.add(object1);
                     }
-                }else {
-                    serviceItems.add(type.get(z));
-                    object1.put("itemName",type.get(z));
-                    object1.put("hospitalServiceItems",hospitalServiceItemDOS2);
-                    itemArray.add(object1);
                 }
+        }
+        if (itemArray !=null && itemArray.size()!=0){
+            JSONArray jsonArray = new JSONArray();
+            for (int j = 0;j<itemArray.size();j++){
+                JSONObject object1 = itemArray.getJSONObject(j);
+                JSONObject jsonObject1 = new JSONObject();
+                JSONArray array1 = object1.getJSONArray("hospitalServiceItems");
+                JSONArray array2 = new JSONArray();
+                for (int k=0;k<array1.size();k++){
+                    JSONObject jsonObject = array1.getJSONObject(k);
+                    jsonObject.replace("expense", DataUtils.integerTransferDouble(jsonObject.getInteger("expense")));
+                    array2.add(jsonObject);
+                }
+                jsonObject1.put("itemName",object1.getString("itemName"));
+                jsonObject1.put("hospitalServiceItems",array2);
+                jsonArray.add(jsonObject1);
             }
-
+            object.put("item",jsonArray);
+        }else {
+            object.put("item",itemArray);
         }
         object.put("itemType",itemType.get(i));
-        object.put("item",itemArray);
         array.add(object);
     }
     List<JSONArray> list = new ArrayList<>();
@@ -313,7 +341,13 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
             SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS.get(i).getSpecialistServiceItemDO();
             JSONObject object = new JSONObject();
             object.put("itemName",specialistServiceItemDO.getItemType());
-            object.put("hospitalServiceItem",hospitalServiceItemDOS.get(i));
+            JSONObject jsonObject = (JSONObject) JSONObject.toJSON(hospitalServiceItemDOS.get(i));
+            jsonObject.replace("expense", DataUtils.integerTransferDouble(hospitalServiceItemDOS.get(i).getExpense()));
+            JSONObject object1 = jsonObject.getJSONObject("specialistServiceItemDO");
+            object1.replace("threeHospitals", DataUtils.integerTransferDouble(hospitalServiceItemDOS.get(i).getSpecialistServiceItemDO().getThreeHospitals()));
+            object1.replace("twoHospitals",DataUtils.integerTransferDouble(hospitalServiceItemDOS.get(i).getSpecialistServiceItemDO().getTwoHospitals()));
+            object1.replace("oneHospitals",DataUtils.integerTransferDouble(hospitalServiceItemDOS.get(i).getSpecialistServiceItemDO().getOneHospitals()));
+            object.put("hospitalServiceItem",jsonObject);
             array.add(object);
         }
         List<JSONArray> list = new ArrayList<>();
@@ -356,13 +390,22 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
         MixEnvelop<Boolean,Boolean> envelop = new MixEnvelop<>();
         if (hospitalServiceItemDOS != null && hospitalServiceItemDOS.size()!=0){
             for (HospitalServiceItemDO hospitalServiceItemDO:hospitalServiceItemDOS){
-                List<HospitalServiceItemDO> hospitalServiceItemDOList = specialistHospitalServiceItemDao.findByHospitalAndServiceItemId(hospitalServiceItemDO.getHospital(),hospitalServiceItemDO.getServiceItemId());
-                if (hospitalServiceItemDOList == null && hospitalServiceItemDOList.size() ==0){
-                    continue;
-                }else {
-                    hospitalServiceItemDO.setStatus(1);
-                    hospitalServiceItemDO.setId(UUID.randomUUID().toString());
-                    specialistHospitalServiceItemDao.save(hospitalServiceItemDO);
+                List<SpecialistServiceItemDO> specialistServiceItemDOS = specialistServiceItemDao.findByTitleAndContent(hospitalServiceItemDO.getTitle(),hospitalServiceItemDO.getContent());
+                if (specialistServiceItemDOS != null && specialistServiceItemDOS.size()!=0){
+                    List<HospitalServiceItemDO> hospitalServiceItemDOList = specialistHospitalServiceItemDao.findByHospitalAndServiceItemId(hospitalServiceItemDO.getHospital(),specialistServiceItemDOS.get(0).getId());
+                    if (hospitalServiceItemDOList != null && hospitalServiceItemDOList.size() !=0){
+                        continue;
+                    }else {
+                        hospitalServiceItemDO.setStatus(1);
+                        hospitalServiceItemDO.setImediate(0);
+                        hospitalServiceItemDO.setSaasId("dev");
+                        hospitalServiceItemDO.setId(UUID.randomUUID().toString());
+                        hospitalServiceItemDO.setServiceItemId(specialistServiceItemDOS.get(0).getId());
+                        hospitalServiceItemDO.setServiceItemName(specialistServiceItemDOS.get(0).getDiseaseItem());
+                        hospitalServiceItemDO.setCreateTime(new Date());
+                        hospitalServiceItemDO.setUpdateTime(new Date());
+                        specialistHospitalServiceItemDao.save(hospitalServiceItemDO);
+                    }
                 }
             }
         }

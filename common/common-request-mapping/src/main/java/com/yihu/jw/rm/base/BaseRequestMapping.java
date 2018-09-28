@@ -36,6 +36,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * Saas模块功能
+     */
+    public static class SaasModuleFunction extends Basic {
+        public static final String PREFIX  = "/saas_module_function";
+    }
+
+    /**
      * SAAS名片
      */
     public static class SaasBusinessCard extends Basic {
@@ -48,7 +55,9 @@ public class BaseRequestMapping {
      */
     public static class Module extends Basic {
         public static final String PREFIX  = "/module";
-
+        public static final String STATUS  = "/status";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String FIND_ALL  = "/findAll";
     }
 
     /**
@@ -117,10 +126,29 @@ public class BaseRequestMapping {
     }
 
     /**
-     * 角色模块功能
+     * 菜单
      */
-    public static class RoleModuleFunction extends Basic {
-        public static final String PREFIX  = "/role_module_function";
+    public static class Menu extends Basic {
+        public static final String PREFIX  = "/menu";
+        public static final String STATUS  = "/status";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String MOVE_UP  = "/moveUp";
+        public static final String MOVE_DOWN  = "/moveDown";
+        public static final String FIND_ALL  = "/findAll";
+    }
+
+    /**
+     * 错误码
+     */
+    public static class ErrorCode extends Basic {
+        public static final String PREFIX  = "/error";
+    }
+
+    /**
+     * 角色权限
+     */
+    public static class RoleAuthority extends Basic {
+        public static final String PREFIX  = "/role_authority";
     }
 
     /**
@@ -128,6 +156,9 @@ public class BaseRequestMapping {
      */
     public static class WeChat extends Basic {
         public static final String PREFIX  = "/wechat";
+        public static final String wechat_base ="/wechatBase";
+        public static final String api_success ="success";
+        public static final String getWechatInfos ="/getWechatInfos";
     }
 
     /**

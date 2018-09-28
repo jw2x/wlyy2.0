@@ -20,10 +20,18 @@ spring:
     test-while-idle: true #指明连接是否被空闲连接回收器(如果有)进行检验，如果检测失败，则连接将被从池中去除
     min-evictable-idle-time-millis: 3600000 #连接池中连接，在时间段内一直空闲，被逐出连接池的时间(1000*60*60)，以毫秒为单位
     time-between-eviction-runs-millis: 300000 #在空闲连接回收器线程运行期间休眠的时间值,以毫秒为单位，一般比minEvictableIdleTimeMillis小
-  sleuth:
-    sampler:
-      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
-
+#  sleuth:
+#    sampler:
+#      percentage: 1.0 #采用需要的请求的百分比 默认是0.1 即 10%
+  redis:
+    database: 0 # Database index used by the connection factory.
+    password: # Login password of the redis server.
+    timeout: 120000 # 连接超时时间（毫秒） 60秒
+    pool:
+      max-active: 20 # 连接池最大连接数（使用负值表示没有限制）
+      max-wait: -1  # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-idle: 20  # 连接池中的最大空闲连接
+      min-idle: 5  # 连接池中的最小空闲连接
 es:
   index:
     servicePackLog: base_service_package_log
@@ -43,6 +51,9 @@ fast-dfs:
     init-size: 5
     max-size: 20
     wait-time: 500
+
+configDefault: # 默认配置
+  saasId: xmjkzl_saasId
 ---
 spring:
   profiles: jwdev
@@ -62,11 +73,17 @@ spring:
     broker-url: tcp://172.19.103.87:61616
     user: admin
     password: admin
-  zipkin:
-    base-url: http://localhost:9411 #日志追踪的地址
+  redis:
+    host: 172.19.103.88 # Redis server host.
+    port: 6379 # Redis server port.
+#    password: jkzl_ehr
+#  zipkin:
+#    base-url: http://localhost:9411 #日志追踪的地址
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
-
+# 短信发送地址
+jw:
+  smsUrl: http://svr-base:10020/sms_gateway/send
 ---
 spring:
   profiles: jwtest
@@ -86,31 +103,39 @@ spring:
     broker-url: tcp://172.19.103.87:61616
     user: admin
     password: admin
-  zipkin:
-    base-url: http://localhost:9411 #日志追踪的地址
+  redis:
+    host: 172.19.103.88 # Redis server host.
+    port: 6379 # Redis server port.
+#    password: jkzl_ehr
+#  zipkin:
+#    base-url: http://localhost:9411 #日志追踪的地址
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
 ---
 spring:
-  profiles: jwprod
+  profiles: prod
   datasource:
-    url: jdbc:mysql://172.19.103.77/base?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
-    username: root
-    password: 123456
+    url: jdbc:mysql://59.61.92.90:9069/base?useUnicode:true&characterEncoding=utf-8&autoReconnect=true
+    username: wlyy
+    password: jkzlehr@123
   elasticsearch:
     cluster-name: jkzl #集群名 默认elasticsearch
-    cluster-nodes: 172.19.103.45:9300,172.19.103.68:9300 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
+    cluster-nodes: 59.61.92.90:9066,59.61.92.90:9068 #配置es节点信息，逗号分隔，如果没有指定，则启动ClientNode
     client-transport-sniff: false
     jest:
-      uris: http://172.19.103.45:9200,http://172.19.103.68:9200
+      uris: http://59.61.92.90:9065,http://59.61.92.90:9067
       connection-timeout: 60000 # Connection timeout in milliseconds.
       multi-threaded: true # Enable connection requests from multiple execution threads.
   activemq:
-    broker-url: tcp://172.19.103.87:61616
-    user: admin
-    password: admin
-  zipkin:
-    base-url: http://localhost:9411 #日志追踪的地址
+    broker-url: tcp://59.61.92.90:9103
+    user: jkzl
+    password: jkzlehr
+  redis:
+    host: 172.19.103.88 # Redis server host.
+    port: 6379 # Redis server port.
+#    password: jkzl_ehr
+#  zipkin:
+#    base-url: http://localhost:9411 #日志追踪的地址
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/

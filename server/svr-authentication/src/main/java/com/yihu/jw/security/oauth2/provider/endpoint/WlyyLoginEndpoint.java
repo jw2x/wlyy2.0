@@ -1,23 +1,27 @@
 package com.yihu.jw.security.oauth2.provider.endpoint;
 
-import com.yihu.jw.security.model.Captcha;
-import com.yihu.jw.security.model.PublicKey;
-import com.yihu.jw.security.oauth2.core.redis.WlyyRedisVerifyCodeService;
-import com.yihu.jw.security.oauth2.provider.error.WlyyOAuth2ExceptionTranslator;
-import com.yihu.jw.security.oauth2.provider.WlyyTokenGranter;
 import com.yihu.jw.security.core.userdetails.jdbc.WlyyUserDetailsService;
+import com.yihu.jw.security.model.Captcha;
 import com.yihu.jw.security.model.Oauth2Envelop;
+import com.yihu.jw.security.model.PublicKey;
 import com.yihu.jw.security.model.WlyyUserSimple;
+import com.yihu.jw.security.oauth2.core.redis.WlyyRedisVerifyCodeService;
+import com.yihu.jw.security.oauth2.provider.WlyyTokenGranter;
+import com.yihu.jw.security.oauth2.provider.error.WlyyOAuth2ExceptionTranslator;
 import com.yihu.utils.security.RSAUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
-import org.springframework.security.oauth2.common.exceptions.*;
+import org.springframework.security.oauth2.common.exceptions.InvalidGrantException;
+import org.springframework.security.oauth2.common.exceptions.InvalidRequestException;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.common.exceptions.UnsupportedGrantTypeException;
 import org.springframework.security.oauth2.provider.*;
 import org.springframework.security.oauth2.provider.endpoint.AbstractEndpoint;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
@@ -80,6 +84,8 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
     private RestTemplate restTemplate;
     @Autowired
     private WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @PostConstruct
     private void init() {
@@ -111,6 +117,7 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         }
         if (StringUtils.isEmpty(parameters.get("captcha"))) {
             parameters.put("grant_type", "password");
+            //解密密码
 //            if (parameters.get("password") != null) {
 //                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
 //                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
@@ -148,6 +155,11 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         wlyyUserSimple.setRefreshToken(token.getRefreshToken().getValue());
         wlyyUserSimple.setUser(parameters.get("username"));
         wlyyUserSimple.setState(parameters.get("state"));
+
+        String loginType = parameters.get("login_type");
+
+        userDetailsService.setRolePhth(loginType,token,wlyyUserSimple.getId(),redisTemplate);
+
         return getResponse(wlyyUserSimple);
     }
 
@@ -280,7 +292,7 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
             Map<String, Object> sms =  (Map)result.get("obj");
             String captcha = (String) sms.get("captcha");
             Date deadline = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String) sms.get("deadline"));
-            Long expire = (deadline.getTime() - new Date().getTime()) / 1000;
+            Long expire = (deadline.getTime() - System.currentTimeMillis()) / 1000;
             Captcha _captcha = new Captcha();
             _captcha.setCode(captcha);
             _captcha.setExpiresIn(expire.intValue());
@@ -403,5 +415,4 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         ResponseEntity<Oauth2Envelop> response = new ResponseEntity<>(authenticationFailed, headers, HttpStatus.OK);
         return response;
     }
-
 }

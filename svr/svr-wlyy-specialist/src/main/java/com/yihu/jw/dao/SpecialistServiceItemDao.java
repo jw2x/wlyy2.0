@@ -20,5 +20,8 @@ public interface SpecialistServiceItemDao extends PagingAndSortingRepository<Spe
     @Query("select p from SpecialistServiceItemDO p where p.title =?1")
     public List<SpecialistServiceItemDO> findByTitle(String title);
 
+    @Query("select p from SpecialistServiceItemDO p where p.title =?1 and p.content=?2")
+    public List<SpecialistServiceItemDO> findByTitleAndContent(String title,String content);
+
 
 }

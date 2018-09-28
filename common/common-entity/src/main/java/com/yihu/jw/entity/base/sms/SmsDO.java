@@ -2,6 +2,7 @@ package com.yihu.jw.entity.base.sms;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntity;
+import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -12,7 +13,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "base_sms")
-public class SmsDO extends UuidIdentityEntity {
+public class SmsDO extends UuidIdentityEntityWithOperator {
 
 	//应用ID
 	private String clientId;

@@ -23,14 +23,14 @@ import java.util.List;
  * Created by progr1mmer on 2018/8/16.
  */
 @RestController
-@RequestMapping(value = BaseRequestMapping.RoleModuleFunction.PREFIX)
+@RequestMapping(value = BaseRequestMapping.SaasModuleFunction.PREFIX)
 @Api(value = "Saas模块功能管理", description = "Saas模块功能管理服务接口", tags = {"wlyy基础服务 - Saas模块功能管理服务接口"})
 public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
     private SaasModuleFunctionService saasModuleFunctionService;
 
-    @PostMapping(value = BaseRequestMapping.RoleModuleFunction.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasModuleFunction.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<SaasModuleFunctionVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
@@ -40,7 +40,7 @@ public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
         return success(saasModuleFunctionDO, SaasModuleFunctionVO.class);
     }
 
-    @PostMapping(value = BaseRequestMapping.RoleModuleFunction.DELETE)
+    @PostMapping(value = BaseRequestMapping.SaasModuleFunction.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
@@ -49,7 +49,7 @@ public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.RoleModuleFunction.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasModuleFunction.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public Envelop update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
@@ -62,7 +62,7 @@ public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
         return success(saasModuleFunctionDO);
     }
 
-    @GetMapping(value = BaseRequestMapping.RoleModuleFunction.PAGE)
+    @GetMapping(value = BaseRequestMapping.SaasModuleFunction.PAGE)
     @ApiOperation(value = "获取分页")
     public PageEnvelop<SaasModuleFunctionVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
@@ -80,7 +80,7 @@ public class SaasModuleFunctionEndpoint extends EnvelopRestEndpoint {
         return success(saasModuleFunctionDOS, count, page, size, SaasModuleFunctionVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.RoleModuleFunction.LIST)
+    @GetMapping(value = BaseRequestMapping.SaasModuleFunction.LIST)
     @ApiOperation(value = "获取列表")
     public ListEnvelop<SaasModuleFunctionVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")

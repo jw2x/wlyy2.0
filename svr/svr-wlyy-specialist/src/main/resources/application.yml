@@ -163,15 +163,15 @@ fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 
 fast-dfs:
-  #tracker-server: 172.19.103.54:22122
-  #public-server: http://172.19.103.54:80/
+  tracker-server: 172.19.103.54:22122
+  public-server: http://172.19.103.54:80/
 
 neiwang:
   enable: false
-  #wlyy: http://59.61.92.90:9099/iot/
+  wlyy: http://59.61.92.90:9099/iot/
 
 base:
-  url: http://172.17.110.212:10020/
+  url: http://192.168.120.167:10020/svr-base/
 
 wechat:
   appId: wxad04e9c4c5255acf

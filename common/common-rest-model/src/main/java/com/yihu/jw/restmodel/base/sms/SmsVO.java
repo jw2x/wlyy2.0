@@ -2,7 +2,7 @@ package com.yihu.jw.restmodel.base.sms;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.base.sms.SmsTemplateDO;
-import com.yihu.jw.restmodel.UuidIdentityVO;
+import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -14,7 +14,7 @@ import java.util.Date;
  * Created by progr1mmer on 2018/8/28.
  */
 @ApiModel(value = "SmsVO", description = "短信记录")
-public class SmsVO extends UuidIdentityVO {
+public class SmsVO extends UuidIdentityVOWithOperator {
 
     //应用ID
     @ApiModelProperty(value = "应用ID", example = "EwC0iRSrcS")

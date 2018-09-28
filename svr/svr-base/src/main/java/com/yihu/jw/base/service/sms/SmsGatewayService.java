@@ -60,8 +60,7 @@ public class SmsGatewayService extends BaseJpaService<SmsGatewayDO, SmsGatewayDa
          * 1 - 过期时间（分钟）
          */
         String [] contentDatas = new String[] {
-//                randomInt(6), 找不到该方法，先用空字符串替代，此类作者自己再纠正回来
-                "",
+                randomInt(6),
                 smsGatewayDO.getExpireMin().toString()
         };
         Matcher contentMatcher = PATTERN.matcher(rawContent);
@@ -111,11 +110,6 @@ public class SmsGatewayService extends BaseJpaService<SmsGatewayDO, SmsGatewayDa
         } else {
             throw new ApiException(httpResponse.getContent());
         }
-    }
-
-    public static void main(String [] args) {
-        Object obj = 1;
-        System.out.println(obj.toString());
     }
 
 }
