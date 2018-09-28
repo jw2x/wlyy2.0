@@ -46,7 +46,8 @@ public class NavigationServiceEvaluationController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<NavigationServiceEvaluation> navigationServiceEvaluationList = navigationServiceEvaluationService.search(fields, filters, sorts, page, size);
-        return success(navigationServiceEvaluationList, (null == navigationServiceEvaluationList) ? 0 : navigationServiceEvaluationList.size(), page, size);
+        int count = (int)navigationServiceEvaluationService.getCount(filters);
+        return success(navigationServiceEvaluationList,count, page, size);
     }
 
     @ApiOperation(value = "创建/更新（id存在）服务评价")

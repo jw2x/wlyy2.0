@@ -53,7 +53,8 @@ public class FeedBackController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<FeedBack> feedBackList = feedBackService.search(fields, filters, sorts, page, size);
-        return success(feedBackList, (null == feedBackList) ? 0 : feedBackList.size(), page, size);
+        int count = (int)feedBackService.getCount(filters);
+        return success(feedBackList,count, page, size);
     }
 
     @ApiOperation(value = "创建/更新（id存在）意见反馈")

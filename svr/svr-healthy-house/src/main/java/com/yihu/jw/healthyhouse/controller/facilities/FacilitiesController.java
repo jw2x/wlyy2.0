@@ -1,6 +1,5 @@
 package com.yihu.jw.healthyhouse.controller.facilities;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServer;
@@ -24,10 +23,8 @@ import org.springframework.http.MediaType;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.yihu.jw.restmodel.web.Envelop;
@@ -69,7 +66,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<Facility> facilityList = facilityService.search(fields, filters, sorts, page, size);
-        return success(facilityList, (null == facilityList) ? 0 : facilityList.size(), page, size);
+        int count = (int)facilityService.getCount(filters);
+        return success(facilityList, count, page, size);
     }
 
     @ApiOperation(value = "创建设施，包含设施与服务的关联关系")

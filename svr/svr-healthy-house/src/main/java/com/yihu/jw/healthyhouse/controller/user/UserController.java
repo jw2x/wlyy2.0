@@ -64,7 +64,8 @@ public class UserController  extends EnvelopRestEndpoint {
             @RequestParam(value = "page", required = false) Integer page ) throws ManageException, ParseException {
 
         List<User> userList = userService.search(fields, filters, sorts, page, size);
-        return success(userList, userList == null ? 0 : userList.size(), page, size);
+        int count = (int)userService.getCount(filters);
+        return success(userList,count, page, size);
     }
 
 
