@@ -15,8 +15,9 @@ import java.util.Date;
  */
 public interface UserDao extends PagingAndSortingRepository<User, String>, JpaSpecificationExecutor<User> {
 
-    User findByIdAAndActivated(String id,String activated);
+    User findByIdAndActivated(String id,String activated);
     User findById(String id);
+
     @Query("from User u where u.loginCode=?1 and u.activated<>0 ")
     User findByLoginCode(String loginCode);
 
