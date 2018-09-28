@@ -1,10 +1,10 @@
 package com.yihu.jw.base.contant;
 
 /**
- * 菜单常量
+ * 常量
  * @author yeshijie on 2018/9/27.
  */
-public class MenuContant {
+public class CommonContant {
 
     /**
      * 默认父类id 0

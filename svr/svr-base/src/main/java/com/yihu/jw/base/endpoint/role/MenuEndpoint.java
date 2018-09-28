@@ -1,5 +1,6 @@
 package com.yihu.jw.base.endpoint.role;
 
+import com.yihu.jw.base.contant.CommonContant;
 import com.yihu.jw.base.service.role.MenuService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
 import com.yihu.jw.entity.base.role.MenuDO;
@@ -14,11 +15,15 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author yeshijie on 2018/9/26.
@@ -40,11 +45,15 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         MenuDO menuDO = toEntity(jsonData, MenuDO.class);
-        menuDO = menuService.save(menuDO);
+        int count = menuService.isExistName(menuDO.getName());
+        if(count>0){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Menu.NAME_IS_EXIST), ObjEnvelop.class);
+        }
+        menuDO = menuService.addMenu(menuDO);
         return success(menuDO, MenuVO.class);
     }
 
-    @PostMapping(value = BaseRequestMapping.Menu.MOVEDOWN)
+    @PostMapping(value = BaseRequestMapping.Menu.MOVE_DOWN)
     @ApiOperation(value = "下移")
     public Envelop moveDown(
             @ApiParam(name = "id", value = "id", required = true)
@@ -53,7 +62,7 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
         return success("修改成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.Menu.MOVEUP)
+    @PostMapping(value = BaseRequestMapping.Menu.MOVE_UP)
     @ApiOperation(value = "上移")
     public Envelop moveUp(
             @ApiParam(name = "id", value = "id", required = true)
@@ -73,7 +82,7 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
         return success("修改成功");
     }
 
-    @GetMapping(value = BaseRequestMapping.Menu.ISNAMEEXIST)
+    @GetMapping(value = BaseRequestMapping.Menu.IS_NAME_EXIST)
     @ApiOperation(value = "名称是否存在",notes = "返回值中的obj=1表示名称已经存在，0表示名称不存在")
     public ObjEnvelop isNameExist(
             @ApiParam(name = "name", value = "菜单名称", required = true)
@@ -89,6 +98,10 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
         MenuDO menuDO = toEntity(jsonData, MenuDO.class);
         if (null == menuDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), Envelop.class);
+        }
+        int count = menuService.isExistName(menuDO.getName());
+        if(count>1){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Menu.NAME_IS_EXIST), ObjEnvelop.class);
         }
         menuDO = menuService.save(menuDO);
         return success(menuDO);
@@ -125,5 +138,26 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
         return success(menuDOS, MenuVO.class);
     }
 
+    @GetMapping(value = BaseRequestMapping.Module.FIND_ALL)
+    @ApiOperation(value = "获取列表")
+    public ListEnvelop<MenuVO> findAll (
+            @ApiParam(name = "status", value = "状态")
+            @RequestParam(value = "status", required = false) String status) throws Exception {
+        String filters = null;
+        if(StringUtils.isNotBlank(status)){
+            filters = "status="+status;
+        }
+        List<MenuDO> menuDOs = menuService.search(null, filters, null);
+        List<MenuVO> menuVOs = convertToModels(menuDOs,new ArrayList<>(menuDOs.size()),MenuVO.class);
+        Map<String,List<MenuVO>> map = menuVOs.stream().collect(Collectors.groupingBy(MenuVO::getParentId));
+        menuVOs.forEach(menu->{
+            List<MenuVO> tmp = map.get(menu.getId());
+            menu.setChildren(tmp);
+        });
+        menuVOs = menuVOs.stream()
+                .filter(menu -> CommonContant.DEFAULT_PARENTID.equals(menu.getParentId()))
+                .collect(Collectors.toList());
 
+        return success(menuVOs);
+    }
 }

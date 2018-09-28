@@ -48,6 +48,7 @@ public class BaseErrorCode {
      */
     public static class Module{
         public static final String FINDDICTBYCODE = "-103000";
+        public static final String NAME_IS_EXIST = "-103001";
     }
 
     /**

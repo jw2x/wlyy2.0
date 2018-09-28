@@ -4,6 +4,9 @@ import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author yeshijie on 2018/9/26.
  */
@@ -24,6 +27,8 @@ public class MenuVO extends UuidIdentityVOWithOperator {
     private Integer status;
     @ApiModelProperty(value = "备注", example = "说明")
     private String remark;
+    @ApiModelProperty(value = "子集")
+    private List<MenuVO> children = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -71,5 +76,13 @@ public class MenuVO extends UuidIdentityVOWithOperator {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public List<MenuVO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<MenuVO> children) {
+        this.children = children;
     }
 }
