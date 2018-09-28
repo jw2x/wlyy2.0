@@ -1,7 +1,9 @@
 package com.yihu.jw.base.endpoint.module;
 
 import com.yihu.jw.base.service.module.ModuleService;
+import com.yihu.jw.base.util.ErrorCodeUtil;
 import com.yihu.jw.entity.base.module.ModuleDO;
+import com.yihu.jw.exception.code.BaseErrorCode;
 import com.yihu.jw.restmodel.base.module.ModuleVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -29,6 +31,8 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
     private ModuleService moduleService;
+    @Autowired
+    private ErrorCodeUtil errorCodeUtil;
 
     @PostMapping(value = BaseRequestMapping.Module.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
@@ -56,7 +60,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         ModuleDO module = toEntity(jsonData, ModuleDO.class);
         if (null == module.getId()) {
-            return failed("ID不能为空", ObjEnvelop.class);
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), ObjEnvelop.class);
         }
         module = moduleService.save(module);
         return success(module, ModuleVO.class);

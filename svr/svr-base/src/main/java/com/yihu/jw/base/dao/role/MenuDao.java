@@ -14,4 +14,18 @@ public interface MenuDao extends PagingAndSortingRepository<MenuDO, String>, Jpa
     @Modifying
     @Query("update MenuDO p set p.status=?2 where p.id=?1")
     void updateStatus(String id,Integer status);
+
+    @Modifying
+    @Query("update MenuDO p set p.sort=p.sort+1 where p.parentId=?1 and p.sort=?2")
+    void addSort(String parentId,Integer sort);
+
+    @Modifying
+    @Query("update MenuDO p set p.sort=p.sort-1 where p.parentId=?1 and p.sort=?2")
+    void subSort(String parentId,Integer sort);
+
+    @Query("select count(*) from MenuDO a where a.name = ?1 ")
+    int isExistName(String name);
+
+    @Query("select count(*) from MenuDO a where a.parentId = ?1 ")
+    int countMenuByParentId(String parentId);
 }
