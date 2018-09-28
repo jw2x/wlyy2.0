@@ -20,12 +20,16 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
     private String parentId;
     @ApiModelProperty(value = "url", example = "/doctor/*")
     private String url;
+    @ApiModelProperty(value = "类型", example = "0通用，1医生端你，2居民端")
+    private String type;
     @ApiModelProperty(value = "状态", example = "1有效，0失效")
     private Integer status;
     @ApiModelProperty(value = "备注", example = "我是备注")
     private String remark;
     @ApiModelProperty(value = "节点信息（0-表示有子节点，1-表示没有子节点)", example = "1")
     private Integer isEnd ;
+    @ApiModelProperty(value = "节点信息（0-表示非必选，1-表示必选)", example = "1")
+    private Integer isMust ;
     @ApiModelProperty(value = "子集")
     private List<ModuleVO> children = new ArrayList<>();
 
@@ -75,6 +79,22 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
 
     public void setIsEnd(Integer isEnd) {
         this.isEnd = isEnd;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getIsMust() {
+        return isMust;
+    }
+
+    public void setIsMust(Integer isMust) {
+        this.isMust = isMust;
     }
 
     public List<ModuleVO> getChildren() {

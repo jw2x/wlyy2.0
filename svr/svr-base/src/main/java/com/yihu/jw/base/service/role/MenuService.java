@@ -1,6 +1,6 @@
 package com.yihu.jw.base.service.role;
 
-import com.yihu.jw.base.contant.MenuContant;
+import com.yihu.jw.base.contant.CommonContant;
 import com.yihu.jw.base.dao.role.MenuDao;
 import com.yihu.jw.entity.base.role.MenuDO;
 import com.yihu.mysql.query.BaseJpaService;
@@ -38,7 +38,7 @@ public class MenuService extends BaseJpaService<MenuDO, MenuDao> {
      */
     public MenuDO addMenu(MenuDO menuDO){
         if(StringUtils.isBlank(menuDO.getParentId())){
-            menuDO.setParentId(MenuContant.DEFAULT_PARENTID);
+            menuDO.setParentId(CommonContant.DEFAULT_PARENTID);
         }
         int sort = menuDao.countMenuByParentId(menuDO.getParentId())+1;
         menuDO.setSort(sort);
