@@ -52,8 +52,9 @@ public class FacilityMsg extends ExcelUtil implements Validation {
     String longitude; //经度
     @Location(x=15)
     String latitude; //纬度
+    @Location(x=16)
+    String name; //设施名称
     int hashCode;
-
 
 
     @Override
@@ -263,5 +264,13 @@ public class FacilityMsg extends ExcelUtil implements Validation {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
