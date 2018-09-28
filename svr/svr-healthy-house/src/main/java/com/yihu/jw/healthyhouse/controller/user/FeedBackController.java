@@ -79,7 +79,7 @@ public class FeedBackController extends EnvelopRestEndpoint {
     }
 
     @ApiOperation(value = "管理员根据id获取/或回复意见反馈,需改变意见反馈回复状态")
-    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FeedBack.UPDATE_FEEDBACKS_BY_ID)
+    @PostMapping(value = HealthyHouseMapping.HealthyHouse.FeedBack.UPDATE_FEEDBACKS_BY_ID)
     public ObjEnvelop<FeedBack> getFeedBackAndUpdate(
             @ApiParam(name = "id", value = "意见反馈ID(必要)", defaultValue = "")
             @RequestParam(value = "id", required = true) String id,

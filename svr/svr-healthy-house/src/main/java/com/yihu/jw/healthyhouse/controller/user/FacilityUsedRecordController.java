@@ -67,7 +67,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.search(fields, filters, sorts, page, size);
-        int count = (int)facilityUsedRecordService.getCount(filters);
+        int count = (int) facilityUsedRecordService.getCount(filters);
         return success(facilityUsedRecordList, count, page, size);
     }
 
@@ -195,6 +195,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         String filters = "createUser=" + userId;
+        sorts = "-createTime";
         List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.search("", filters, sorts, page, size);
         for (FacilityUsedRecord record : facilityUsedRecordList) {
             //根据设施编码获取关联服务的名称
@@ -211,7 +212,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
                 record.setNavigationServiceEvaluationFlag("已评价");
             }
         }
-        int count = (int)facilityUsedRecordService.getCount(filters);
+        int count = (int) facilityUsedRecordService.getCount(filters);
         return success(facilityUsedRecordList, count, page, size);
     }
 
