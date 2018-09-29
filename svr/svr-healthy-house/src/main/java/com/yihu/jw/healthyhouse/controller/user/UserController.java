@@ -152,13 +152,14 @@ public class UserController  extends EnvelopRestEndpoint {
     }
 
     @PostMapping("/checkIdCardNo")
-    @ApiOperation(value = "用户身份证号码认证")
+    @ApiOperation(value = "用户实名认证")
     public Envelop checkIdCardNo(
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "name", value = "用户姓名", required = true)@RequestParam(required = true, name = "name") String name ,
             @ApiParam(name = "idCardNo", value = "身份证号码", required = true)@RequestParam(required = true, name = "idCardNo") String idCardNo ) throws ManageException {
 
-        userService.checkIdCardNo(userId, idCardNo);
-        return ObjEnvelop.getSuccess("身份证认证完成！");
+        userService.checkIdCardNo(userId,name,idCardNo);
+        return ObjEnvelop.getSuccess("用户实名认证完成！");
     }
 
     @GetMapping("/existence")

@@ -285,12 +285,13 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
     /**
-     *  用户身份证认证
+     *  用户实名认证
      * @param userId    用户ID
+     * @param name  用户姓名
      * @param idCardNo  身份证
      * @throws ManageException
      */
-    public void checkIdCardNo(String userId, String idCardNo) throws ManageException {
+    public void checkIdCardNo(String userId,String name, String idCardNo) throws ManageException {
         User user1 = findById(userId);
         if (user1==null) {
             throw new ManageException("该账号不存在");
@@ -300,6 +301,8 @@ public class UserService extends BaseJpaService<User, UserDao> {
         }
         // 更新身份证验证字段
         user1.setRealnameAuthentication(UserConstant.AUTHORIZED);
+        user1.setIdCardNo(idCardNo);
+        user1.setName(name);
         userDao.save(user1);
     }
 

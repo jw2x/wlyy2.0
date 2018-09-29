@@ -84,7 +84,7 @@ jw:
 
 ---
 spring:
-  profiles: test
+  profiles: jwtest
   datasource:
     url: jdbc:mysql://172.19.103.77:3306/healthy_house?useUnicode=true&amp;characterEncoding=utf-8&amp;autoReconnect=true
     username: root

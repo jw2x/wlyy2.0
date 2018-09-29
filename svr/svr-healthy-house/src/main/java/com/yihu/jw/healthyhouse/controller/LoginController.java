@@ -174,7 +174,7 @@ public class LoginController extends EnvelopRestEndpoint {
             randomValidateCode.getRandcode(request, response);//输出验证码图片方法
             return ObjEnvelop.getSuccess("获取验证码成功");
         } catch (Exception e) {
-           return ObjEnvelop.getError("获取验证码失败");
+            return ObjEnvelop.getError("获取验证码失败");
         }
     }
 
