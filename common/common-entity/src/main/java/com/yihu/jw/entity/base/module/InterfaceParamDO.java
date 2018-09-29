@@ -13,16 +13,49 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "base_interface_param")
 public class InterfaceParamDO extends UuidIdentityEntity {
-    
+
+    /**
+     *
+     */
+    public enum Type{
+        entry("入参",1),
+        out("出参",2);
+        private String name;
+        private Integer value;
+
+        Type(String name, Integer value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public void setValue(Integer value) {
+            this.value = value;
+        }
+    }
+
     private String interfaceId;//接口id
     private String name;//参数名
     private Integer paramType;//参数类型
     private Integer dataType;//数据类型
     private Integer isRequire;//是否必填(1是，0否)
     private Integer maxLength;//最大长度
-    private String describe;//描述
+    private String description;//描述
     private String example;//示例
     private Integer type;//类型（1入参，2出参）
+    private Integer sort;//排序
+    private Integer del;//删除标志
 
     @Column(name = "interface_id")
     public String getInterfaceId() {
@@ -78,13 +111,13 @@ public class InterfaceParamDO extends UuidIdentityEntity {
         this.maxLength = maxLength;
     }
 
-    @Column(name = "describe")
-    public String getDescribe() {
-        return describe;
+    @Column(name = "description")
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Column(name = "example")
@@ -103,5 +136,23 @@ public class InterfaceParamDO extends UuidIdentityEntity {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    @Column(name = "sort")
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    @Column(name = "del")
+    public Integer getDel() {
+        return del;
+    }
+
+    public void setDel(Integer del) {
+        this.del = del;
     }
 }
