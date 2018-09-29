@@ -40,5 +40,6 @@ public interface UserDao extends PagingAndSortingRepository<User, String>, JpaSp
     Long countAllByCreateTimeBetween(Date start,Date end);
 
     User findByLoginCodeAndUserType(String loginCode,String userType);
+    User findByTelephoneAndUserType(String telephone,String userType);
 
 }

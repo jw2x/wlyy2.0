@@ -59,6 +59,9 @@ public class UserService extends BaseJpaService<User, UserDao> {
         return userDao.findByLoginCodeAndUserType(loginCode,userType);
     }
 
+    public User findByTelephoneAndUserType(String telephone,String userType) {
+        return userDao.findByTelephoneAndUserType(telephone,userType);
+    }
 
     /**
      * 分页获取用户列表
@@ -249,8 +252,31 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
 
+    /**
+     * 普通用户密保手机修改
+     * @param userId    普通用户id
+     * @param phone     手机号
+     * @throws ManageException
+     */
     @Transactional
     public void updateSecurePhone(String userId, String phone) throws ManageException {
+        User user = findById(userId);
+        if (user==null) {
+            throw new ManageException("该账号不存在");
+        }
+        user.setLoginCode(phone);
+        user.setTelephone(phone);
+        userDao.save(user);
+    }
+
+    /**
+     * 修改管理员密保手机
+     * @param userId    用户id
+     * @param phone     密保手机
+     * @throws ManageException
+     */
+    @Transactional
+    public void updateAdministorSecurePhone(String userId, String phone) throws ManageException {
         User user = findById(userId);
         if (user==null) {
             throw new ManageException("该账号不存在");

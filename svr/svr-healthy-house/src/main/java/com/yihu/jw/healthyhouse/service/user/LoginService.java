@@ -265,7 +265,7 @@ public class LoginService  extends BaseJpaService {
     @Transactional(noRollbackForClassName = "ManageException")
     public User managerPhoneLogin(HttpServletRequest request, String loginCode) throws ManageException {
         //判断管理员用户信息是否存在
-        User user = userService.findByLoginCodeAndUserType(loginCode, LoginInfo.USER_TYPE_SUPER_AdminManager);
+        User user = userService.findByTelephoneAndUserType(loginCode, LoginInfo.USER_TYPE_SUPER_AdminManager);
         if (user == null) {
             throw new ManageException("该管理员账号不存在!");
         } else {
