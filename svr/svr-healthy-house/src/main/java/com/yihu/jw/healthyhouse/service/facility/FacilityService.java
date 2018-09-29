@@ -57,8 +57,8 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
 
     public boolean isHasFacility(double longitude,double latitude){
         boolean flag = false;
-        Facility facility = facilityDao.findByLongitudeAndLatitude(longitude, latitude);
-        if (facility!=null) {
+        List<Facility> facilitys = facilityDao.findByLongitudeAndLatitude(longitude, latitude);
+        if (facilitys!=null && facilitys.size()>0) {
             flag = true;
         }
         return flag;
