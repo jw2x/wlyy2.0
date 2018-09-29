@@ -57,8 +57,8 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
 
     public boolean isHasFacility(double longitude,double latitude){
         boolean flag = false;
-        Facility facility = facilityDao.findByLongitudeAndLatitude(longitude, latitude);
-        if (facility!=null) {
+        List<Facility> facilitys = facilityDao.findByLongitudeAndLatitude(longitude, latitude);
+        if (facilitys!=null && facilitys.size()>0) {
             flag = true;
         }
         return flag;
@@ -179,6 +179,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             facility.setCountyCode(townCode);
             facility.setCountyName(facilityMsg.getCounty());
             facility.setStreet(facilityMsg.getStreet());
+            facility.setAddress( facilityMsg.getCity() + facilityMsg.getCounty() + facilityMsg.getStreet());
             facility.setStatus(facilityMsg.getStatus());
             facility.setOrgName(facilityMsg.getOrgName());
             facility.setServiceDay(facilityMsg.getServiceDate());

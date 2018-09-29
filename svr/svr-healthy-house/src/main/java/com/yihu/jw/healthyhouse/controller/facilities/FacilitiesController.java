@@ -290,8 +290,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     public ObjEnvelop importData(
             @ApiParam(name = "file", value = "文件", required = true)
             @RequestPart(value = "file") MultipartFile file,
-            HttpServletRequest request,
-            HttpServletResponse response) throws IOException, ManageException {
+            HttpServletRequest request) throws IOException, ManageException {
         try {
             request.setCharacterEncoding("UTF-8");
             AExcelReader excelReader = new FacilityMsgReader();

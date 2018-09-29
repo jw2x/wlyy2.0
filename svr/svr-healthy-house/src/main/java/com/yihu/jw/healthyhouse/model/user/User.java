@@ -69,6 +69,10 @@ public class User extends UuidIdentityEntityWithOperator {
     @Column(name = "ijk_authentication")
     private String ijkAuthentication;//i健康认证
 
+    @Column(name = "organization_code")
+    private String organizationCode;//机构编码
+    @Column(name = "organization_name")
+    private String organizationName;//机构名称
 
     public String getLoginCode() {
         return loginCode;
@@ -252,6 +256,22 @@ public class User extends UuidIdentityEntityWithOperator {
 
     public void setIjkAuthentication(String ijkAuthentication) {
         this.ijkAuthentication = ijkAuthentication;
+    }
+
+    public String getOrganizationCode() {
+        return organizationCode;
+    }
+
+    public void setOrganizationCode(String organizationCode) {
+        this.organizationCode = organizationCode;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 
     @Transient
