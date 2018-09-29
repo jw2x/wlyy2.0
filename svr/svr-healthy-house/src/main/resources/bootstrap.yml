@@ -24,7 +24,7 @@ eureka:
 
 ---
 spring:
-  profiles: jwtest
+  profiles: test
 
 
 eureka:
