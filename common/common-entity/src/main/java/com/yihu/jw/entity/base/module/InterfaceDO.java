@@ -5,6 +5,8 @@ import com.yihu.jw.entity.UuidIdentityEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * 接口
@@ -24,6 +26,10 @@ public class InterfaceDO extends UuidIdentityEntity {
     private Integer status;//状态（1生效中，0已失效）
     private String remark;//接口说明
     private String url;//https请求地址
+
+    private List<InterfaceParamDO> entryParams;//入参
+    private List<InterfaceParamDO> outParams;//出参
+    private List<InterfaceErrorCodeDO> errorCodes;//错误说明
 
     @Column(name = "name")
     public String getName() {
@@ -113,5 +119,32 @@ public class InterfaceDO extends UuidIdentityEntity {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Transient
+    public List<InterfaceParamDO> getEntryParams() {
+        return entryParams;
+    }
+
+    public void setEntryParams(List<InterfaceParamDO> entryParams) {
+        this.entryParams = entryParams;
+    }
+
+    @Transient
+    public List<InterfaceParamDO> getOutParams() {
+        return outParams;
+    }
+
+    public void setOutParams(List<InterfaceParamDO> outParams) {
+        this.outParams = outParams;
+    }
+
+    @Transient
+    public List<InterfaceErrorCodeDO> getErrorCodes() {
+        return errorCodes;
+    }
+
+    public void setErrorCodes(List<InterfaceErrorCodeDO> errorCodes) {
+        this.errorCodes = errorCodes;
     }
 }

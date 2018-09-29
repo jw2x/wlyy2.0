@@ -18,6 +18,7 @@ public class BaseRequestMapping {
         public static final String UPDATE = "/update";
         public static final String PAGE = "/page";
         public static final String LIST = "/list";
+        public static final String FINDBYID = "/findById";
     }
 
     /**
@@ -55,6 +56,16 @@ public class BaseRequestMapping {
      */
     public static class Module extends Basic {
         public static final String PREFIX  = "/module";
+        public static final String STATUS  = "/status";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String FIND_ALL  = "/findAll";
+    }
+
+    /**
+     * 接口
+     */
+    public static class Interface extends Basic {
+        public static final String PREFIX  = "/interface";
         public static final String STATUS  = "/status";
         public static final String IS_NAME_EXIST  = "/isNameExist";
         public static final String FIND_ALL  = "/findAll";
