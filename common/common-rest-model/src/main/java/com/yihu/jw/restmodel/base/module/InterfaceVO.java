@@ -4,6 +4,8 @@ import com.yihu.jw.restmodel.UuidIdentityVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.List;
+
 /**
  * @author yeshijie on 2018/9/28.
  */
@@ -28,8 +30,15 @@ public class InterfaceVO extends UuidIdentityVO {
     private Integer status;
     @ApiModelProperty(value = "接口说明", example = "明")
     private String remark;
-    @ApiModelProperty(value = "https请求地址", example = "https://")
+    @ApiModelProperty(value = "https请求地址", example = "")
     private String url;
+
+    @ApiModelProperty(value = "入参", example = "")
+    private List<InterfaceParamVO> entryParams;
+    @ApiModelProperty(value = "出参", example = "")
+    private List<InterfaceParamVO> outParams;
+    @ApiModelProperty(value = "错误说明", example = "")
+    private List<InterfaceErrorCodeVO> errorCodes;
 
     public String getName() {
         return name;
@@ -109,5 +118,29 @@ public class InterfaceVO extends UuidIdentityVO {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public List<InterfaceParamVO> getEntryParams() {
+        return entryParams;
+    }
+
+    public void setEntryParams(List<InterfaceParamVO> entryParams) {
+        this.entryParams = entryParams;
+    }
+
+    public List<InterfaceParamVO> getOutParams() {
+        return outParams;
+    }
+
+    public void setOutParams(List<InterfaceParamVO> outParams) {
+        this.outParams = outParams;
+    }
+
+    public List<InterfaceErrorCodeVO> getErrorCodes() {
+        return errorCodes;
+    }
+
+    public void setErrorCodes(List<InterfaceErrorCodeVO> errorCodes) {
+        this.errorCodes = errorCodes;
     }
 }

@@ -3,12 +3,10 @@ package com.yihu.jw.restmodel.base.module;
 import com.yihu.jw.restmodel.UuidIdentityVO;
 import io.swagger.annotations.ApiModel;
 
-import javax.persistence.Column;
-
 /**
  * @author yeshijie on 2018/9/28.
  */
-@ApiModel(value = "InterfaceVO", description = "接口入参出参")
+@ApiModel(value = "InterfaceParamVO", description = "接口入参出参")
 public class InterfaceParamVO extends UuidIdentityVO {
     
     private String interfaceId;//接口id
@@ -17,11 +15,12 @@ public class InterfaceParamVO extends UuidIdentityVO {
     private Integer dataType;//数据类型
     private Integer isRequire;//是否必填(1是，0否)
     private Integer maxLength;//最大长度
-    private String describe;//描述
+    private String description;//描述
     private String example;//示例
     private Integer type;//类型（1入参，2出参）
+    private Integer sort;//排序
+    private Integer del;//删除标志
 
-    @Column(name = "interface_id")
     public String getInterfaceId() {
         return interfaceId;
     }
@@ -30,7 +29,6 @@ public class InterfaceParamVO extends UuidIdentityVO {
         this.interfaceId = interfaceId;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -39,7 +37,6 @@ public class InterfaceParamVO extends UuidIdentityVO {
         this.name = name;
     }
 
-    @Column(name = "param_type")
     public Integer getParamType() {
         return paramType;
     }
@@ -48,7 +45,6 @@ public class InterfaceParamVO extends UuidIdentityVO {
         this.paramType = paramType;
     }
 
-    @Column(name = "data_type")
     public Integer getDataType() {
         return dataType;
     }
@@ -57,7 +53,6 @@ public class InterfaceParamVO extends UuidIdentityVO {
         this.dataType = dataType;
     }
 
-    @Column(name = "is_require")
     public Integer getIsRequire() {
         return isRequire;
     }
@@ -66,7 +61,6 @@ public class InterfaceParamVO extends UuidIdentityVO {
         this.isRequire = isRequire;
     }
 
-    @Column(name = "max_length")
     public Integer getMaxLength() {
         return maxLength;
     }
@@ -75,16 +69,14 @@ public class InterfaceParamVO extends UuidIdentityVO {
         this.maxLength = maxLength;
     }
 
-    @Column(name = "describe")
-    public String getDescribe() {
-        return describe;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    @Column(name = "example")
     public String getExample() {
         return example;
     }
@@ -93,12 +85,27 @@ public class InterfaceParamVO extends UuidIdentityVO {
         this.example = example;
     }
 
-    @Column(name = "type")
     public Integer getType() {
         return type;
     }
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public Integer getDel() {
+        return del;
+    }
+
+    public void setDel(Integer del) {
+        this.del = del;
     }
 }
