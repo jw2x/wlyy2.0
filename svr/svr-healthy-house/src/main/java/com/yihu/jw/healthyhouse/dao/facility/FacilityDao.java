@@ -18,7 +18,7 @@ public interface FacilityDao extends JpaRepository<Facility, String> {
 
     Facility findById(String id);
 
-    Facility findByLongitudeAndLatitude(double longitude, double latitude);
+    List<Facility> findByLongitudeAndLatitude(double longitude, double latitude);
 
     Facility findByCode(String code);
 

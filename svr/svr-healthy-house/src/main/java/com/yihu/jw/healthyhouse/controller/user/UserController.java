@@ -2,6 +2,7 @@ package com.yihu.jw.healthyhouse.controller.user;
 
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.cache.WlyyRedisVerifyCodeService;
+import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.service.user.UserService;
@@ -16,6 +17,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import jxl.write.Colour;
 import jxl.write.WritableCellFormat;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.spi.ErrorCode;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -164,8 +166,42 @@ public class UserController  extends EnvelopRestEndpoint {
     public Envelop existence(
             @ApiParam(name = "telephone", value = "管理员账号", required = true)@RequestParam(required = true, name = "telephone") String telephone  ) throws ManageException {
 
-        userService.checkManageUser( telephone);
-        return ObjEnvelop.getSuccess("该管理员账号存在！");
+        boolean b = userService.checkManageUser(telephone);
+        if (b) {
+            return ObjEnvelop.getSuccess("该管理员账号存在！",b);
+        }else {
+            return ObjEnvelop.getSuccess("该管理员账号不存在！",b);
+        }
+    }
+
+    @GetMapping("/findUserByPhoneOrName")
+    @ApiOperation(value = "根据手机号或者用户查询用户",notes = "找回密码时验证")
+    public Envelop findUserByPhoneOrName(
+            @ApiParam(name = "loginName", value = "管理员登录账号", required = true)@RequestParam(required = true, name = "loginName") String loginName  ) throws ManageException {
+
+        User user = userService.findByLoginCodeAndUserType(loginName, LoginInfo.USER_TYPE_SUPER_AdminManager);
+        if (user != null) {
+            return ObjEnvelop.getSuccess("该管理员账号存在！",user);
+        }else {
+            return ObjEnvelop.getSuccess("该管理员账号不存在！",user);
+        }
+    }
+
+    @PostMapping(value = "/resetPassWord")
+    @ApiOperation(value = "重设密码", notes = "根基传入的用户id和新的密码重设用户的密码")
+    public ObjEnvelop resetPassWord(
+            @ApiParam(name = "userId", value = "用户ID", defaultValue = "")
+            @RequestParam(value = "userId") String userId,
+            @ApiParam(name = "password", value = "密码", defaultValue = "")
+            @RequestParam(value = "password") String password) {
+
+        try {
+            String resetPwd = userService.resetPwd(userId, password);
+            return ObjEnvelop.getSuccess("重设密码成功",password);
+        } catch (ManageException e) {
+            return ObjEnvelop.getError(e.getMessage());
+        }
+
     }
 
 

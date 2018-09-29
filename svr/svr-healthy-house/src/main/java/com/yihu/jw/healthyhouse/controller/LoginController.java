@@ -7,6 +7,7 @@ import com.yihu.jw.healthyhouse.service.user.LoginService;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import com.yihu.jw.util.security.RandomValidateCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.HashMap;
 
@@ -58,6 +60,20 @@ public class LoginController extends EnvelopRestEndpoint {
         ResponseEntity<HashMap> result = loginService.sendDemoSms(clientId,msgType,username);
         return result;
 
+    }
+
+    @PostMapping("/captcha/check")
+    @ApiOperation(value = "验证短信验证码")
+    public Envelop checkCaptcha(
+            HttpServletRequest request,
+            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "username", value = "登录账号", required = true)@RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
+        if (wlyyRedisVerifyCodeService.verification(clientId, username, captcha)) {
+            return ObjEnvelop.getSuccess("验证码正确");
+        } else {
+            return ObjEnvelop.getError("验证码错误");
+        }
     }
 
     @PostMapping("/mobile/login")
@@ -143,6 +159,38 @@ public class LoginController extends EnvelopRestEndpoint {
             return ObjEnvelop.getSuccess("登录成功",user);
         }else {
             return ObjEnvelop.getError("登录失败");
+        }
+    }
+
+    @GetMapping(value = "/getRandomImageCode")
+    @ApiOperation(value = "修改密码时生成图形验证码",notes = "修改密码时生成图形验证码")
+    public Envelop getImageCode (HttpServletRequest request, HttpServletResponse response)throws Exception{
+        try {
+            response.setContentType("image/jpeg");//设置相应类型,告诉浏览器输出的内容为图片
+            response.setHeader("Pragma", "No-cache");//设置响应头信息，告诉浏览器不要缓存此内容
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expire", 0);
+            RandomValidateCode randomValidateCode = new RandomValidateCode();
+            randomValidateCode.getRandcode(request, response);//输出验证码图片方法
+            return ObjEnvelop.getSuccess("获取验证码成功");
+        } catch (Exception e) {
+           return ObjEnvelop.getError("获取验证码失败");
+        }
+    }
+
+    @PostMapping(value = "/checkRandomImageCode")
+    @ApiOperation(value = "检验图片验证码",notes = "检验图片验证码")
+    public Envelop checkImageCode(@ApiParam(name = "code",value = "输入的验证码")@RequestParam(value = "code",required = true)String code,
+                                     HttpServletRequest request){
+        if (StringUtils.isEmpty(code)){
+            return ObjEnvelop.getError("请输入验证码！");
+        }
+        String codeRescource = String.valueOf(request.getSession().getAttribute(RandomValidateCode.RANDOMCODEKEY));
+        if (code.toLowerCase().equals(codeRescource.toLowerCase())){
+            request.getSession().removeAttribute(RandomValidateCode.RANDOMCODEKEY);
+            return ObjEnvelop.getSuccess("验证码正确！");
+        }else {
+            return ObjEnvelop.getError("验证码错误！");
         }
     }
 

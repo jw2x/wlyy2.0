@@ -204,6 +204,13 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
 
+    /**
+     *  修改密码
+     * @param userId    用户ID
+     * @param oldPwd    原密码
+     * @param newPwd    新密码
+     * @throws ManageException
+     */
     @Transactional
     public void updatePwd(String userId, String oldPwd,String newPwd) throws ManageException {
         User user = findById(userId);
@@ -221,6 +228,26 @@ public class UserService extends BaseJpaService<User, UserDao> {
         user.setPassword(password);
         userDao.save(user);
     }
+
+    /**
+     *  重设密码
+     * @param userId    用户ID
+     * @param newPwd    新密码
+     * @throws ManageException
+     */
+    @Transactional
+    public String resetPwd(String userId, String newPwd) throws ManageException {
+        User user = findById(userId);
+        if (user==null) {
+            throw new ManageException("该账号不存在");
+        }
+
+        String password = MD5.GetMD5Code(newPwd + user.getSalt());
+        user.setPassword(password);
+        userDao.save(user);
+        return newPwd;
+    }
+
 
     @Transactional
     public void updateSecurePhone(String userId, String phone) throws ManageException {
@@ -281,10 +308,12 @@ public class UserService extends BaseJpaService<User, UserDao> {
      * @param userCode   登录账号
      * @throws ManageException
      */
-    public void checkManageUser(String userCode) throws ManageException {
+    public boolean checkManageUser(String userCode) throws ManageException {
         User user1 = findByLoginCodeAndUserType(userCode, LoginInfo.USER_TYPE_SUPER_AdminManager);
         if (user1==null) {
-            throw new ManageException("该管理员账号不存在");
+            return false;
+        }else {
+            return true;
         }
     }
 
