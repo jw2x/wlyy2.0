@@ -66,7 +66,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<Facility> facilityList = facilityService.search(fields, filters, sorts, page, size);
-        int count = (int)facilityService.getCount(filters);
+        int count = (int) facilityService.getCount(filters);
         return success(facilityList, count, page, size);
     }
 
@@ -334,7 +334,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
         } else if (StringUtils.isNotEmpty(facilityCategory)) {
             //设施编码为空，设施服务类型为空，按照设施分类获取按设施服务类型获取设施
-            filters = "category=" + facilityCategory;
+            filters = "category=" + facilityCategory + ";status=0;";
             facilityList = facilityService.search(fields, filters, sorts);
         } else {
             facilityList = facilityService.search(fields, filters, sorts);
