@@ -178,7 +178,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
      * @return
      * @throws ManageException
      */
-    public Envelop saveOrUpdate(User user, String userCode) throws ManageException {
+    public User saveOrUpdate(User user, String userCode) throws ManageException {
         User loginUser = userDao.findByLoginCode(userCode);
         if (user.getId() == null) {//保存
             //判断登陆账号是否存在
@@ -194,16 +194,16 @@ public class UserService extends BaseJpaService<User, UserDao> {
             user.setCreateTime(new Date());
             user.setActivated(1);
             user.setFacilityUsedCount(0);
-            userDao.save(user);
-            return Envelop.getSuccess("保存成功");
+            user=userDao.save(user);
+            return user;
         } else {//修改
             if (loginUser != null) {
                 String userName = loginUser.getName();
                 user.setUpdateUserName(userName);
             }
             user.setUpdateUser(userCode);
-            userDao.save(user);
-            return Envelop.getSuccess("修改成功");
+            user=userDao.save(user);
+            return user;
         }
     }
 

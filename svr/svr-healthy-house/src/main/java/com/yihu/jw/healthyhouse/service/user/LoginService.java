@@ -77,7 +77,7 @@ public class LoginService  extends BaseJpaService {
         request.getSession().setAttribute(LoginInfo.LOGIN_CODE, user.getLoginCode());
         request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
         user.setLastLoginTime(new Date());
-        userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
+        user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
         return user;
     }
 
@@ -123,7 +123,7 @@ public class LoginService  extends BaseJpaService {
         request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
         user.setActivated(HouseUserContant.activated_active);
         user.setLastLoginTime(new Date());
-        userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
+        user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
         return user;
     }
 
@@ -183,7 +183,7 @@ public class LoginService  extends BaseJpaService {
         request.getSession().removeAttribute(LoginInfo.LOGIN_NAME);
         request.getSession().removeAttribute(LoginInfo.USER_ID);
         user.setActivated(HouseUserContant.activated_offline);
-        userService.saveOrUpdate(user, "systemLogin");
+        user= userService.saveOrUpdate(user, "systemLogin");
         return user;
     }
 
@@ -285,7 +285,7 @@ public class LoginService  extends BaseJpaService {
             request.getSession().setAttribute(LoginInfo.LOGIN_CODE, user.getLoginCode());
             request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
             user.setLastLoginTime(new Date());
-            userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
+            user=  userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
         }
         return user;
     }
@@ -322,7 +322,7 @@ public class LoginService  extends BaseJpaService {
             request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
             user.setActivated(HouseUserContant.activated_active);
             user.setLastLoginTime(new Date());
-            userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
+            user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
             return user;
         }
     }

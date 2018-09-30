@@ -94,10 +94,6 @@ public class LoginController extends EnvelopRestEndpoint {
             @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
         if (wlyyRedisVerifyCodeService.verification(clientId, username, captcha)) {
             User user = loginService.phoneLogin(request,username);
-//            ObjEnvelop envelop = new ObjEnvelop();
-//            envelop.setStatus(200);
-//            envelop.setMessage("登录成功");
-//            envelop.setObj(user);
             return success(user);
 
         } else {
