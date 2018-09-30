@@ -193,6 +193,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
             user.setCreateUser(userCode);
             user.setCreateTime(new Date());
             user.setActivated(1);
+            user.setFacilityUsedCount(0);
             userDao.save(user);
             return Envelop.getSuccess("保存成功");
         } else {//修改

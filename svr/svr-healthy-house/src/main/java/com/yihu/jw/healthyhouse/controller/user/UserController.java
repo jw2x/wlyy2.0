@@ -189,7 +189,7 @@ public class UserController  extends EnvelopRestEndpoint {
         if (b) {
             return success("该管理员账号存在！",b);
         }else {
-            return success("该管理员账号不存在！",b);
+            return failed("该管理员账号不存在！");
         }
     }
 
@@ -202,7 +202,7 @@ public class UserController  extends EnvelopRestEndpoint {
         if (user != null) {
             return success("该管理员账号存在！",user);
         }else {
-            return success("该管理员账号不存在！",user);
+            return failed("该管理员账号不存在！");
         }
     }
 
