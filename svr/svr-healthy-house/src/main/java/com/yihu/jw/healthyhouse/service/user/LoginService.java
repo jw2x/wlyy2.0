@@ -1,6 +1,7 @@
 package com.yihu.jw.healthyhouse.service.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.bcel.internal.generic.I2F;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.cache.WlyyRedisVerifyCodeService;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
@@ -63,6 +64,10 @@ public class LoginService  extends BaseJpaService {
             user.setPhoneAuthentication(UserConstant.AUTHORIZED);
             user.setPassword(LoginInfo.DEFAULT_PASSWORD);
             user.setUserType(LoginInfo.USER_TYPE_PATIENT);
+        }
+
+        if (HouseUserContant.activated_lock.equals(user)) {
+            throw new ManageException("该用户已被冻结!");
         }
         //已注册用户更改用户状态
         user.setActivated(HouseUserContant.activated_active);
@@ -269,6 +274,9 @@ public class LoginService  extends BaseJpaService {
         if (user == null) {
             throw new ManageException("该管理员账号不存在!");
         } else {
+            if (HouseUserContant.activated_lock.equals(user)) {
+                throw new ManageException("该用户已被冻结!");
+            }
             //已注册用户更改用户状态
             user.setActivated(HouseUserContant.activated_active);
             request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
@@ -300,6 +308,10 @@ public class LoginService  extends BaseJpaService {
             String message = "该管理员账号不存在！";
             throw new ManageException(message);
         } else {
+            if (HouseUserContant.activated_lock.equals(user)) {
+                throw new ManageException("该用户已被冻结!");
+            }
+
             if (!user.getPassword().equals(MD5.GetMD5Code(password + user.getSalt()))) {
                 String message = "密码错误";
                 throw new ManageException(message);

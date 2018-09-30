@@ -4,9 +4,11 @@ import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.cache.WlyyRedisVerifyCodeService;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.service.user.LoginService;
+import com.yihu.jw.healthyhouse.service.user.UserService;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import com.yihu.jw.restmodel.wlyy.HouseUserContant;
 import com.yihu.jw.util.security.RandomValidateCode;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +39,8 @@ public class LoginController extends EnvelopRestEndpoint {
     private RestTemplate restTemplate;
     @Autowired
     private WlyyRedisVerifyCodeService wlyyRedisVerifyCodeService;
+    @Autowired
+    private UserService userService;
 
     /******************************************    用户相关    **********************************/
 
@@ -52,10 +56,15 @@ public class LoginController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(username)){
             failed("username 为空！");
         }
-        //验证请求间隔超时，防止频繁获取验证码
-        if (!wlyyRedisVerifyCodeService.isIntervalTimeout(clientId, username)) {
-            throw new IllegalAccessException("SMS request frequency is too fast");
+        //验证用户是否被冻结
+        User user = userService.findByCode(username);
+        if (HouseUserContant.activated_lock.equals(user)) {
+            failed("该用户已被冻结，无法发送验证码!");
         }
+        //验证请求间隔超时，防止频繁获取验证码
+//        if (!wlyyRedisVerifyCodeService.isIntervalTimeout(clientId, username)) {
+//            throw new IllegalAccessException("SMS request frequency is too fast");
+//        }
         //发送短信获取验证码
         ResponseEntity<HashMap> result = loginService.sendSms(clientId,msgType,username);
         return result;
@@ -154,13 +163,18 @@ public class LoginController extends EnvelopRestEndpoint {
             HttpServletRequest request,
             @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
-            @ApiParam(name = "password", value = "密码", required = true)@RequestParam(required = true, name = "password") String password) throws ManageException {
-        User user = loginService.managerLogin(request,clientId,username, password);
-        if (user !=null) {
-            return success("登录成功",user);
-        }else {
-            return failed("登录失败");
+            @ApiParam(name = "password", value = "密码", required = true)@RequestParam(required = true, name = "password") String password) {
+        try {
+            User user = loginService.managerLogin(request,clientId,username, password);
+            if (user !=null) {
+                return success("登录成功",user);
+            }else {
+                return failed("登录失败");
+            }
+        } catch (ManageException e) {
+           return failed(e.getMessage());
         }
+
     }
 
     @GetMapping(value = "/getRandomImageCode")

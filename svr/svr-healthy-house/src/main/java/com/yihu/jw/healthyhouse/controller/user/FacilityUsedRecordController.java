@@ -179,6 +179,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop facilityUsedRecordDetail(
             @ApiParam(name = "id", value = "使用记录ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
+        if (id == null ){
+            throw new ManageException("使用记录ID为空！");
+        }
         Map<String, Object> usedRecordDetail = facilityUsedRecordService.getUsedRecordDetail(id);
         return success(usedRecordDetail);
     }

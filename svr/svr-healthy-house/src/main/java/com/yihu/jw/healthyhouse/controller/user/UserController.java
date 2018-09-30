@@ -139,11 +139,12 @@ public class UserController  extends EnvelopRestEndpoint {
     public Envelop updatePhone(
             @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "oldPhone", value = "旧安全手机号", required = true)@RequestParam(required = true, name = "oldPhone") String oldPhone ,
             @ApiParam(name = "newPhone", value = "新安全手机号", required = true)@RequestParam(required = true, name = "newPhone") String newPhone ,
             @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha ) throws ManageException {
 
         //验证码
-        if (wlyyRedisVerifyCodeService.verification(clientId, newPhone, captcha)) {
+        if (wlyyRedisVerifyCodeService.verification(clientId, oldPhone, captcha)) {
             userService.updateSecurePhone(userId,newPhone);
             return success("更新安全手机号码成功");
         } else {

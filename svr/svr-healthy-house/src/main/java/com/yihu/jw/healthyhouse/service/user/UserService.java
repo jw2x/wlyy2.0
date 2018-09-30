@@ -287,7 +287,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
     /**
-     * 获取 用户统计信息
+     * 获取 健康小屋用户统计信息
      *
      * @return
      */
@@ -298,9 +298,9 @@ public class UserService extends BaseJpaService<User, UserDao> {
         //今日新增数
         Date start = DateUtil.getDateStart();
         Date end = DateUtil.getDateEnd();
-        Long newCount = userDao.countAllByCreateTimeBetween(start, end);
+        Long newCount = userDao.countAllByUserTypeAndCreateTimeBetween(LoginInfo.USER_TYPE_PATIENT,start, end);
         //在线用户数
-        Long activeCount = userDao.countAllByActivated(HouseUserContant.activated_active);
+        Long activeCount = userDao.countAllByActivatedAndUserType(HouseUserContant.activated_active,LoginInfo.USER_TYPE_PATIENT);
         //用户设施使用总次数
         Long usePricilityCount = facilityUsedRecordService.countAll();
         result.put("totalCount",totalCount);
