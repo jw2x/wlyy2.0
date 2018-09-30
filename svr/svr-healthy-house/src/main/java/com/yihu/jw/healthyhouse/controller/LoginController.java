@@ -47,13 +47,13 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "发送短信验证码")
     @GetMapping(value = "/captcha/send")
     public ResponseEntity<HashMap> captcha(
-            @ApiParam(name = "clientId", value = "应用id",defaultValue = "EwC0iRSrcS", required = true)@RequestParam(required = true, name = "clientId") String clientId,
-            @ApiParam(name = "msgType", value = "消息类型（login：登录验证，checkPhone：验证安全手机，resetPhone：重设安全手机", required = true)@RequestParam(required = true, name = "msgType") String msgType,
-            @ApiParam(name = "username", value = "手机账号", required = true)@RequestParam(required = true, name = "username") String username ) throws  Exception{
+            @ApiParam(name = "clientId", value = "应用id", defaultValue = "EwC0iRSrcS", required = true) @RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "msgType", value = "消息类型（login：登录验证，checkPhone：验证安全手机，resetPhone：重设安全手机", required = true) @RequestParam(required = true, name = "msgType") String msgType,
+            @ApiParam(name = "username", value = "手机账号", required = true) @RequestParam(required = true, name = "username") String username) throws Exception {
         if (StringUtils.isEmpty(clientId)) {
             failed("clientId 为空！");
         }
-        if (StringUtils.isEmpty(username)){
+        if (StringUtils.isEmpty(username)) {
             failed("username 为空！");
         }
         //验证用户是否被冻结
@@ -66,7 +66,7 @@ public class LoginController extends EnvelopRestEndpoint {
 //            throw new IllegalAccessException("SMS request frequency is too fast");
 //        }
         //发送短信获取验证码
-        ResponseEntity<HashMap> result = loginService.sendSms(clientId,msgType,username);
+        ResponseEntity<HashMap> result = loginService.sendSms(clientId, msgType, username);
         return result;
 
     }
@@ -75,9 +75,9 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "验证短信验证码")
     public Envelop checkCaptcha(
             HttpServletRequest request,
-            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
-            @ApiParam(name = "username", value = "登录账号", required = true)@RequestParam(required = true, name = "username") String username,
-            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
+            @ApiParam(name = "clientId", value = "应用id", required = true) @RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "username", value = "登录账号", required = true) @RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "captcha", value = "短信验证码", required = true) @RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
         if (wlyyRedisVerifyCodeService.verification(clientId, username, captcha)) {
             return success("验证码正确");
         } else {
@@ -89,11 +89,16 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "【普通用户】-手机登录注册")
     public Envelop mobileLogin(
             HttpServletRequest request,
-            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
-            @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
-            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ManageException, ParseException {
+            @ApiParam(name = "clientId", value = "应用id", required = true) @RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "username", value = "账号", required = true) @RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "captcha", value = "短信验证码", required = true) @RequestParam(required = true, name = "captcha") String captcha) throws ParseException {
         if (wlyyRedisVerifyCodeService.verification(clientId, username, captcha)) {
-            User user = loginService.phoneLogin(request,username);
+            User user = null;
+            try {
+                user = loginService.phoneLogin(request, username);
+            } catch (ManageException e) {
+                return failed(e.getMessage());
+            }
             return success(user);
 
         } else {
@@ -105,13 +110,18 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "【普通用户】-i健康用户登陆")
     public Envelop ijkLogin(
             HttpServletRequest request,
-            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
-            @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
-            @ApiParam(name = "password", value = "密码", required = true)@RequestParam(required = true, name = "password") String password) throws ManageException {
-        User user = loginService.iJklogin(request,clientId,username, password);
-        if (user !=null) {
-            return success("登录成功",user);
-        }else {
+            @ApiParam(name = "clientId", value = "应用id", required = true) @RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "username", value = "账号", required = true) @RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "password", value = "密码", required = true) @RequestParam(required = true, name = "password") String password) {
+        User user = null;
+        try {
+            user = loginService.iJklogin(request, clientId, username, password);
+        } catch (ManageException e) {
+            failed(e.getMessage());
+        }
+        if (user != null) {
+            return success("登录成功", user);
+        } else {
             return failed("登录失败");
         }
     }
@@ -120,10 +130,10 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "登出")
     public Envelop loginout(
             HttpServletRequest request,
-            @ApiParam(name = "userCode", value = "用户code", required = true)@RequestParam(required = true, name = "userCode") String userCode) {
+            @ApiParam(name = "userCode", value = "用户code", required = true) @RequestParam(required = true, name = "userCode") String userCode) {
         try {
             //修改用户状态  离线
-           return success("登出成功");
+            return success("登出成功");
         } catch (Exception e) {
             e.printStackTrace();
             return failed("登出失败");
@@ -137,17 +147,17 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "【管理员】-手机验证登录")
     public Envelop administratorMobileLogin(
             HttpServletRequest request,
-            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
-            @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
-            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha) throws ParseException {
+            @ApiParam(name = "clientId", value = "应用id", required = true) @RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "username", value = "账号", required = true) @RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "captcha", value = "短信验证码", required = true) @RequestParam(required = true, name = "captcha") String captcha) throws ParseException {
         if (wlyyRedisVerifyCodeService.verification(clientId, username, captcha)) {
             User user = null;
             try {
-                user = loginService.managerPhoneLogin(request,username);
+                user = loginService.managerPhoneLogin(request, username);
             } catch (ManageException e) {
                 return failed(e.getMessage());
             }
-            return success("登录成功",user);
+            return success("登录成功", user);
         } else {
             return failed("验证码错误");
         }
@@ -157,25 +167,25 @@ public class LoginController extends EnvelopRestEndpoint {
     @ApiOperation(value = "【管理员】-用户账号登陆")
     public Envelop administratorLogin(
             HttpServletRequest request,
-            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
-            @ApiParam(name = "username", value = "账号", required = true)@RequestParam(required = true, name = "username") String username,
-            @ApiParam(name = "password", value = "密码", required = true)@RequestParam(required = true, name = "password") String password) {
+            @ApiParam(name = "clientId", value = "应用id", required = true) @RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "username", value = "账号", required = true) @RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "password", value = "密码", required = true) @RequestParam(required = true, name = "password") String password) {
         try {
-            User user = loginService.managerLogin(request,clientId,username, password);
-            if (user !=null) {
-                return success("登录成功",user);
-            }else {
+            User user = loginService.managerLogin(request, clientId, username, password);
+            if (user != null) {
+                return success("登录成功", user);
+            } else {
                 return failed("登录失败");
             }
         } catch (ManageException e) {
-           return failed(e.getMessage());
+            return failed(e.getMessage());
         }
 
     }
 
     @GetMapping(value = "/getRandomImageCode")
-    @ApiOperation(value = "修改密码时生成图形验证码",notes = "修改密码时生成图形验证码")
-    public Envelop getImageCode (HttpServletRequest request, HttpServletResponse response)throws Exception{
+    @ApiOperation(value = "修改密码时生成图形验证码", notes = "修改密码时生成图形验证码")
+    public Envelop getImageCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             response.setContentType("image/jpeg");//设置相应类型,告诉浏览器输出的内容为图片
             response.setHeader("Pragma", "No-cache");//设置响应头信息，告诉浏览器不要缓存此内容
@@ -190,17 +200,17 @@ public class LoginController extends EnvelopRestEndpoint {
     }
 
     @PostMapping(value = "/checkRandomImageCode")
-    @ApiOperation(value = "检验图片验证码",notes = "检验图片验证码")
-    public Envelop checkImageCode(@ApiParam(name = "code",value = "输入的验证码")@RequestParam(value = "code",required = true)String code,
-                                     HttpServletRequest request){
-        if (StringUtils.isEmpty(code)){
+    @ApiOperation(value = "检验图片验证码", notes = "检验图片验证码")
+    public Envelop checkImageCode(@ApiParam(name = "code", value = "输入的验证码") @RequestParam(value = "code", required = true) String code,
+                                  HttpServletRequest request) {
+        if (StringUtils.isEmpty(code)) {
             return failed("请输入验证码！");
         }
         String codeRescource = String.valueOf(request.getSession().getAttribute(RandomValidateCode.RANDOMCODEKEY));
-        if (code.toLowerCase().equals(codeRescource.toLowerCase())){
+        if (code.toLowerCase().equals(codeRescource.toLowerCase())) {
             request.getSession().removeAttribute(RandomValidateCode.RANDOMCODEKEY);
             return success("验证码正确！");
-        }else {
+        } else {
             return failed("验证码错误！");
         }
     }
