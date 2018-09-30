@@ -107,9 +107,13 @@ public class UserController  extends EnvelopRestEndpoint {
     public Envelop freezeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "reason", value = "冻结原因", required = true)@RequestParam(required = true, name = "reason") String reason ,
-            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
+            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) {
 
-        userService.updateStatus(userId,operator, HouseUserContant.activated_lock,reason);
+        try {
+            userService.updateStatus(userId,operator, HouseUserContant.activated_lock,reason);
+        } catch (ManageException e) {
+            return failed(e.getMessage());
+        }
         return success("冻结成功");
     }
 
@@ -118,8 +122,12 @@ public class UserController  extends EnvelopRestEndpoint {
     @ApiOperation(value = "用户激活")
     public Envelop activeUser(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
-            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
-        userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
+            @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) {
+        try {
+            userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
+        } catch (ManageException e) {
+            return failed(e.getMessage());
+        }
         return success("激活成功");
     }
 
@@ -128,9 +136,13 @@ public class UserController  extends EnvelopRestEndpoint {
     public Envelop updatePwd(
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "oldPwd", value = "原密码", required = true)@RequestParam(required = true, name = "oldPwd") String oldPwd ,
-            @ApiParam(name = "newPwd", value = "新密码", required = true)@RequestParam(required = true, name = "newPwd") String newPwd ) throws ManageException {
+            @ApiParam(name = "newPwd", value = "新密码", required = true)@RequestParam(required = true, name = "newPwd") String newPwd ) {
 
-        userService.updatePwd(userId,oldPwd,newPwd);
+        try {
+            userService.updatePwd(userId,oldPwd,newPwd);
+        } catch (ManageException e) {
+            return failed(e.getMessage());
+        }
         return success("更新密码成功");
     }
 
@@ -141,14 +153,18 @@ public class UserController  extends EnvelopRestEndpoint {
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "oldPhone", value = "旧安全手机号", required = true)@RequestParam(required = true, name = "oldPhone") String oldPhone ,
             @ApiParam(name = "newPhone", value = "新安全手机号", required = true)@RequestParam(required = true, name = "newPhone") String newPhone ,
-            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha ) throws ManageException {
+            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha ) {
 
-        //验证码
-        if (wlyyRedisVerifyCodeService.verification(clientId, oldPhone, captcha)) {
-            userService.updateSecurePhone(userId,newPhone);
-            return success("更新安全手机号码成功");
-        } else {
-            return failed("验证码错误");
+        try {
+            //验证码
+            if (wlyyRedisVerifyCodeService.verification(clientId, oldPhone, captcha)) {
+                userService.updateSecurePhone(userId, newPhone);
+                return success("更新安全手机号码成功");
+            } else {
+                return failed("验证码错误");
+            }
+        }catch (ManageException e){
+            return failed(e.getMessage());
         }
     }
 
@@ -158,14 +174,18 @@ public class UserController  extends EnvelopRestEndpoint {
             @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "newPhone", value = "新安全手机号", required = true)@RequestParam(required = true, name = "newPhone") String newPhone ,
-            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha ) throws ManageException {
+            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha ) {
 
+        try {
         //验证码
         if (wlyyRedisVerifyCodeService.verification(clientId, newPhone, captcha)) {
             userService.updateAdministorSecurePhone(userId,newPhone);
             return success("更新安全手机号码成功");
         } else {
             return failed("验证码错误");
+        }
+        }catch (ManageException e) {
+            return failed(e.getMessage());
         }
     }
 
@@ -174,29 +194,37 @@ public class UserController  extends EnvelopRestEndpoint {
     public Envelop checkIdCardNo(
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "name", value = "用户姓名", required = true)@RequestParam(required = true, name = "name") String name ,
-            @ApiParam(name = "idCardNo", value = "身份证号码", required = true)@RequestParam(required = true, name = "idCardNo") String idCardNo ) throws ManageException {
+            @ApiParam(name = "idCardNo", value = "身份证号码", required = true)@RequestParam(required = true, name = "idCardNo") String idCardNo ) {
 
-        userService.checkIdCardNo(userId,name,idCardNo);
+        try {
+            userService.checkIdCardNo(userId,name,idCardNo);
+        } catch (ManageException e) {
+            return failed(e.getMessage());
+        }
         return success("用户实名认证完成！");
     }
 
     @GetMapping("/existence")
     @ApiOperation(value = "【管理员】-验证管理员是否存在")
     public Envelop existence(
-            @ApiParam(name = "telephone", value = "管理员账号", required = true)@RequestParam(required = true, name = "telephone") String telephone  ) throws ManageException {
+            @ApiParam(name = "telephone", value = "管理员账号", required = true)@RequestParam(required = true, name = "telephone") String telephone  ) {
 
-        boolean b = userService.checkManageUser(telephone);
-        if (b) {
-            return success("该管理员账号存在！",b);
-        }else {
-            return failed("该管理员账号不存在！");
+        try {
+            boolean b = userService.checkManageUser(telephone);
+            if (b) {
+                return success("该管理员账号存在！", b);
+            } else {
+                return failed("该管理员账号不存在！");
+            }
+        } catch (ManageException e) {
+            return failed(e.getMessage());
         }
     }
 
     @GetMapping("/findUserByPhoneOrName")
     @ApiOperation(value = "根据手机号或者用户查询用户",notes = "找回密码时验证")
     public Envelop findUserByPhoneOrName(
-            @ApiParam(name = "loginName", value = "管理员登录账号", required = true)@RequestParam(required = true, name = "loginName") String loginName  ) throws ManageException {
+            @ApiParam(name = "loginName", value = "管理员登录账号", required = true)@RequestParam(required = true, name = "loginName") String loginName  ) {
 
         User user = userService.findByLoginCodeAndUserType(loginName, LoginInfo.USER_TYPE_SUPER_AdminManager);
         if (user != null) {
@@ -226,13 +254,14 @@ public class UserController  extends EnvelopRestEndpoint {
 
     @GetMapping("/exportToExcel")
     @ApiOperation(value = "用户列表导出excel")
-    public void exportToExcel(
+    public Envelop exportToExcel(
             HttpServletResponse response,
             @ApiParam(name = "city", value = "所在市区", required = false)@RequestParam(required = false, name = "city") String city,
             @ApiParam(name = "activated", value = "用户状态", required = false)@RequestParam(required = false, name = "activated") String activated ,
             @ApiParam(name = "name", value = "姓名/手机号", required = false)@RequestParam(required = false, name = "name") String name ,
-            @ApiParam(name = "sort", value = "使用次数排序", required = false)@RequestParam(required = false, name = "sort") String sort) throws ManageException {
+            @ApiParam(name = "sort", value = "使用次数排序", required = false)@RequestParam(required = false, name = "sort") String sort) {
         response.setCharacterEncoding("UTF-8");
+        try {
         //获取用户数据
         Map<String, String> map = new HashMap<>();
         map.put("cityCode",city);
@@ -241,6 +270,10 @@ public class UserController  extends EnvelopRestEndpoint {
         map.put("telephone",name);
         List<User> userList = userService.userList( map, sort);
         userService.exportUsersExcel(response,userList);
+        return success("导出成功");
+        }catch (ManageException e){
+            return failed(e.getMessage());
+        }
     }
 
 
