@@ -337,6 +337,11 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             filters = "category=" + facilityCategory + ";status=0;";
             facilityList = facilityService.search(fields, filters, sorts);
         } else {
+            if(StringUtils.isEmpty(filters)){
+                filters = "status=0;";
+            }else{
+                filters = filters+ ";status=0;";
+            }
             facilityList = facilityService.search(fields, filters, sorts);
         }
         return success(facilityList);
