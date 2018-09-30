@@ -22,7 +22,7 @@ public interface FacilityDao extends JpaRepository<Facility, String> {
 
     Facility findByCode(String code);
 
-    @Query("select f from Facility f where f.code in (:code) and status=0")
+    @Query("select f from Facility f where  f.status = 0 and f.code in (:code) ")
     List<Facility> findByCode(@Param("code") List<String> code);
 }
 
