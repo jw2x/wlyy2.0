@@ -287,7 +287,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @PostMapping(value = "/batchImport")
     @ApiOperation(value = "设施列表导入（经纬度重复的不导入）")
-    public ObjEnvelop importData(
+    public Envelop importData(
             @ApiParam(name = "file", value = "文件", required = true)
             @RequestPart(value = "file") MultipartFile file,
             HttpServletRequest request) throws IOException, ManageException {
@@ -298,13 +298,13 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             List<FacilityMsg> dataList = excelReader.getCorrectLs();
             if (dataList.size() > 0) {
                 Map<String, Object> result = facilityService.batchInsertFacility(dataList);
-                return ObjEnvelop.getSuccess("导入成功!", result);
+                return success("导入成功!", result);
             }
 
         } catch (Exception e) {
             throw new ManageException("导入设施列表异常！", e);
         }
-        return ObjEnvelop.getError("导入失败");
+        return failed("导入失败");
     }
 
     @ApiOperation(value = "获取设施列表--不分页(app)", responseContainer = "List")
@@ -358,7 +358,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         String filters = "createTime>=" + todayStart + ";createTime<=" + todayEnd;
         long countCreatedFacilitieToday = facilityService.getCount(filters);
         map.put("countCreatedFacilitieToday", countCreatedFacilitieToday);
-        return ObjEnvelop.getSuccess("获取成功", map);
+        return success("获取成功", map);
     }
 
 

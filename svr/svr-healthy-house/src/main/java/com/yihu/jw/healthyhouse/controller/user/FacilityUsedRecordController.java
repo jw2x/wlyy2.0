@@ -77,6 +77,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop<FacilityUsedRecord> createFacilityUsedRecord(
             @ApiParam(name = "facilityUsedRecord", value = "用户使用导航记录JSON结构")
             @RequestBody FacilityUsedRecord facilityUsedRecord) throws IOException, ManageException {
+        facilityUsedRecord.setUserId(facilityUsedRecord.getCreateUser());
         facilityUsedRecord = facilityUsedRecordService.save(facilityUsedRecord);
         userService.updateFacilityUse(facilityUsedRecord.getCreateUser());
         return success(facilityUsedRecord);
@@ -140,6 +141,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
                 facilityUsedRecord.setFacilitieLatitudes(facility.getLatitude());
                 facilityUsedRecord.setFacilitieAddr(facility.getAddress());
                 facilityUsedRecord.setCreateUser(userId);
+                facilityUsedRecord.setUserId(userId);
                 facilityUsedRecord.setFacilitieId(facility.getId());
                 long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facility.getCode(), userId);
                 facilityUsedRecord.setNum((int) count);
@@ -179,6 +181,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop facilityUsedRecordDetail(
             @ApiParam(name = "id", value = "使用记录ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
+        if (id == null ){
+            throw new ManageException("使用记录ID为空！");
+        }
         Map<String, Object> usedRecordDetail = facilityUsedRecordService.getUsedRecordDetail(id);
         return success(usedRecordDetail);
     }

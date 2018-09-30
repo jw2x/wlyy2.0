@@ -77,7 +77,7 @@ public class UserController  extends EnvelopRestEndpoint {
     public ObjEnvelop userDetail(
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ) {
         User user = userService.findById(userId);
-        return ObjEnvelop.getSuccess("获取成功",user);
+        return success("获取成功",user);
     }
 
 
@@ -85,7 +85,7 @@ public class UserController  extends EnvelopRestEndpoint {
     @ApiOperation(value = "获取用户统计信息")
     public ObjEnvelop usedFacilityCount() {
         Map<String, Long> userStatistics = userService.findUserStatistics();
-        return ObjEnvelop.getSuccess("获取成功",userStatistics);
+        return success("获取成功",userStatistics);
     }
 
     @ApiOperation(value = "新增/更新（idy已存在）用户信息")
@@ -110,7 +110,7 @@ public class UserController  extends EnvelopRestEndpoint {
             @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
 
         userService.updateStatus(userId,operator, HouseUserContant.activated_lock,reason);
-        return ObjEnvelop.getSuccess("冻结成功");
+        return success("冻结成功");
     }
 
 
@@ -120,7 +120,7 @@ public class UserController  extends EnvelopRestEndpoint {
             @ApiParam(name = "userId", value = "用户id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "operator", value = "操作者ID", required = true)@RequestParam(required = true, name = "operator") String operator ) throws ManageException {
         userService.updateStatus(userId,operator, HouseUserContant.activated_active,null);
-        return ObjEnvelop.getSuccess("激活成功");
+        return success("激活成功");
     }
 
     @PostMapping("/updatePwd")
@@ -131,12 +131,30 @@ public class UserController  extends EnvelopRestEndpoint {
             @ApiParam(name = "newPwd", value = "新密码", required = true)@RequestParam(required = true, name = "newPwd") String newPwd ) throws ManageException {
 
         userService.updatePwd(userId,oldPwd,newPwd);
-        return ObjEnvelop.getSuccess("更新密码成功");
+        return success("更新密码成功");
     }
 
     @PostMapping("/updatePhone")
-    @ApiOperation(value = "更新安全手机号码")
+    @ApiOperation(value = "【app端普通用户】更新安全手机号码")
     public Envelop updatePhone(
+            @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
+            @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "oldPhone", value = "旧安全手机号", required = true)@RequestParam(required = true, name = "oldPhone") String oldPhone ,
+            @ApiParam(name = "newPhone", value = "新安全手机号", required = true)@RequestParam(required = true, name = "newPhone") String newPhone ,
+            @ApiParam(name = "captcha", value = "短信验证码", required = true)@RequestParam(required = true, name = "captcha") String captcha ) throws ManageException {
+
+        //验证码
+        if (wlyyRedisVerifyCodeService.verification(clientId, oldPhone, captcha)) {
+            userService.updateSecurePhone(userId,newPhone);
+            return success("更新安全手机号码成功");
+        } else {
+            return failed("验证码错误");
+        }
+    }
+
+    @PostMapping("/updateAdminPhone")
+    @ApiOperation(value = "【web端管理员】更新安全手机号码")
+    public Envelop updateAdminPhone(
             @ApiParam(name = "clientId", value = "应用id", required = true)@RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
             @ApiParam(name = "newPhone", value = "新安全手机号", required = true)@RequestParam(required = true, name = "newPhone") String newPhone ,
@@ -144,21 +162,22 @@ public class UserController  extends EnvelopRestEndpoint {
 
         //验证码
         if (wlyyRedisVerifyCodeService.verification(clientId, newPhone, captcha)) {
-            userService.updateSecurePhone(userId,newPhone);
-            return ObjEnvelop.getSuccess("更新安全手机号码成功");
+            userService.updateAdministorSecurePhone(userId,newPhone);
+            return success("更新安全手机号码成功");
         } else {
-            return ObjEnvelop.getError("验证码错误");
+            return failed("验证码错误");
         }
     }
 
     @PostMapping("/checkIdCardNo")
-    @ApiOperation(value = "用户身份证号码认证")
+    @ApiOperation(value = "用户实名认证")
     public Envelop checkIdCardNo(
             @ApiParam(name = "userId", value = "用户Id", required = true)@RequestParam(required = true, name = "userId") String userId ,
+            @ApiParam(name = "name", value = "用户姓名", required = true)@RequestParam(required = true, name = "name") String name ,
             @ApiParam(name = "idCardNo", value = "身份证号码", required = true)@RequestParam(required = true, name = "idCardNo") String idCardNo ) throws ManageException {
 
-        userService.checkIdCardNo(userId, idCardNo);
-        return ObjEnvelop.getSuccess("身份证认证完成！");
+        userService.checkIdCardNo(userId,name,idCardNo);
+        return success("用户实名认证完成！");
     }
 
     @GetMapping("/existence")
@@ -168,9 +187,9 @@ public class UserController  extends EnvelopRestEndpoint {
 
         boolean b = userService.checkManageUser(telephone);
         if (b) {
-            return ObjEnvelop.getSuccess("该管理员账号存在！",b);
+            return success("该管理员账号存在！",b);
         }else {
-            return ObjEnvelop.getSuccess("该管理员账号不存在！",b);
+            return success("该管理员账号不存在！",b);
         }
     }
 
@@ -181,15 +200,15 @@ public class UserController  extends EnvelopRestEndpoint {
 
         User user = userService.findByLoginCodeAndUserType(loginName, LoginInfo.USER_TYPE_SUPER_AdminManager);
         if (user != null) {
-            return ObjEnvelop.getSuccess("该管理员账号存在！",user);
+            return success("该管理员账号存在！",user);
         }else {
-            return ObjEnvelop.getSuccess("该管理员账号不存在！",user);
+            return success("该管理员账号不存在！",user);
         }
     }
 
     @PostMapping(value = "/resetPassWord")
     @ApiOperation(value = "重设密码", notes = "根基传入的用户id和新的密码重设用户的密码")
-    public ObjEnvelop resetPassWord(
+    public Envelop resetPassWord(
             @ApiParam(name = "userId", value = "用户ID", defaultValue = "")
             @RequestParam(value = "userId") String userId,
             @ApiParam(name = "password", value = "密码", defaultValue = "")
@@ -197,9 +216,9 @@ public class UserController  extends EnvelopRestEndpoint {
 
         try {
             String resetPwd = userService.resetPwd(userId, password);
-            return ObjEnvelop.getSuccess("重设密码成功",password);
+            return success("重设密码成功",password);
         } catch (ManageException e) {
-            return ObjEnvelop.getError(e.getMessage());
+            return failed(e.getMessage());
         }
 
     }

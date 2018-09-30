@@ -59,6 +59,9 @@ public class UserService extends BaseJpaService<User, UserDao> {
         return userDao.findByLoginCodeAndUserType(loginCode,userType);
     }
 
+    public User findByTelephoneAndUserType(String telephone,String userType) {
+        return userDao.findByTelephoneAndUserType(telephone,userType);
+    }
 
     /**
      * 分页获取用户列表
@@ -249,8 +252,31 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
 
+    /**
+     * 普通用户密保手机修改
+     * @param userId    普通用户id
+     * @param phone     手机号
+     * @throws ManageException
+     */
     @Transactional
     public void updateSecurePhone(String userId, String phone) throws ManageException {
+        User user = findById(userId);
+        if (user==null) {
+            throw new ManageException("该账号不存在");
+        }
+        user.setLoginCode(phone);
+        user.setTelephone(phone);
+        userDao.save(user);
+    }
+
+    /**
+     * 修改管理员密保手机
+     * @param userId    用户id
+     * @param phone     密保手机
+     * @throws ManageException
+     */
+    @Transactional
+    public void updateAdministorSecurePhone(String userId, String phone) throws ManageException {
         User user = findById(userId);
         if (user==null) {
             throw new ManageException("该账号不存在");
@@ -261,7 +287,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
     /**
-     * 获取 用户统计信息
+     * 获取 健康小屋用户统计信息
      *
      * @return
      */
@@ -272,9 +298,9 @@ public class UserService extends BaseJpaService<User, UserDao> {
         //今日新增数
         Date start = DateUtil.getDateStart();
         Date end = DateUtil.getDateEnd();
-        Long newCount = userDao.countAllByCreateTimeBetween(start, end);
+        Long newCount = userDao.countAllByUserTypeAndCreateTimeBetween(LoginInfo.USER_TYPE_PATIENT,start, end);
         //在线用户数
-        Long activeCount = userDao.countAllByActivated(HouseUserContant.activated_active);
+        Long activeCount = userDao.countAllByActivatedAndUserType(HouseUserContant.activated_active,LoginInfo.USER_TYPE_PATIENT);
         //用户设施使用总次数
         Long usePricilityCount = facilityUsedRecordService.countAll();
         result.put("totalCount",totalCount);
@@ -285,12 +311,13 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
     /**
-     *  用户身份证认证
+     *  用户实名认证
      * @param userId    用户ID
+     * @param name  用户姓名
      * @param idCardNo  身份证
      * @throws ManageException
      */
-    public void checkIdCardNo(String userId, String idCardNo) throws ManageException {
+    public void checkIdCardNo(String userId,String name, String idCardNo) throws ManageException {
         User user1 = findById(userId);
         if (user1==null) {
             throw new ManageException("该账号不存在");
@@ -300,6 +327,8 @@ public class UserService extends BaseJpaService<User, UserDao> {
         }
         // 更新身份证验证字段
         user1.setRealnameAuthentication(UserConstant.AUTHORIZED);
+        user1.setIdCardNo(idCardNo);
+        user1.setName(name);
         userDao.save(user1);
     }
 
