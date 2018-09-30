@@ -66,7 +66,7 @@ public class LoginController extends EnvelopRestEndpoint {
 //            throw new IllegalAccessException("SMS request frequency is too fast");
 //        }
         //发送短信获取验证码
-        ResponseEntity<HashMap> result = loginService.sendSms(clientId,msgType,username);
+        ResponseEntity<HashMap> result = loginService.sendDemoSms(clientId,msgType,username);
         return result;
 
     }
