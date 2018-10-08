@@ -41,7 +41,8 @@ public interface UserDao extends PagingAndSortingRepository<User, String>, JpaSp
 
     Long countAllByUserTypeAndCreateTimeBetween(String userType,Date start,Date end);
 
-    User findByLoginCodeAndUserType(String loginCode,String userType);
+    @Query("from User u where u.userType=?1 and (u.telephone=?2 or u.loginCode=?3 ) ")
+    User findByUserTypeAndTelephoneOrLoginCode(String userType,String telephone,String loginCode);
     User findByTelephoneAndUserType(String telephone,String userType);
 
 }

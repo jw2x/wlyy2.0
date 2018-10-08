@@ -303,7 +303,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             }
 
         } catch (Exception e) {
-            return failed("导入异常");
+            e.printStackTrace();
+            return failed("导入异常,请检查导入文件格式"+e.getMessage());
         }
         return failed("导入失败");
     }

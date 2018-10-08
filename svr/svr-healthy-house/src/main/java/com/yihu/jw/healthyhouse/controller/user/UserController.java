@@ -157,7 +157,7 @@ public class UserController  extends EnvelopRestEndpoint {
 
         try {
             //验证码
-            if (wlyyRedisVerifyCodeService.verification(clientId, oldPhone, captcha)) {
+            if (wlyyRedisVerifyCodeService.verification(clientId, newPhone, captcha)) {
                 userService.updateSecurePhone(userId, newPhone);
                 return success("更新安全手机号码成功");
             } else {
@@ -284,7 +284,7 @@ public class UserController  extends EnvelopRestEndpoint {
             @RequestParam(value = "userId") String userId) {
 
         try {
-              userService.setUserActivated(userId, 60);
+              userService.setUserActivated(userId, 10);
             return success("心跳正常");
         } catch (Exception e) {
             return failed("心跳异常");
