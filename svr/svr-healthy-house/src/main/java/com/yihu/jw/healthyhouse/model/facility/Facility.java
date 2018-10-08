@@ -86,6 +86,10 @@ public class Facility extends UuidIdentityEntityWithOperator {
     @Column(name = "img_path")
     private String imgPath;
 
+    //设施是否删除：默认0为未删除、1为已删除
+    @Column(name = "delete_flag")
+    private String deleteFlag;
+
     private String statusName;
     private String  categoryValue ;
     private List<FacilityServerRelation> facilityServerRelation;
@@ -317,4 +321,13 @@ public class Facility extends UuidIdentityEntityWithOperator {
 //        }
 //        return address;
 //    }
+
+
+    public String getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(String deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
 }
