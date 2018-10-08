@@ -13,16 +13,16 @@ import java.util.Date;
 @ApiModel(value = "UserNoticeVO", description = "用户公告通知")
 public class UserNoticeVO extends UuidIdentityEntity{
 
-    @ApiModelProperty(value = "公告id", example = "标题")
+    @ApiModelProperty(value = "公告id", example = "公告id")
     private String noticeId;
-    @ApiModelProperty(value = "用户id", example = "标题")
+    @ApiModelProperty(value = "用户id", example = "用户id")
     private String userId;
-    @ApiModelProperty(value = "是否已读（1已读，0未读）", example = "标题")
+    @ApiModelProperty(value = "是否已读（1已读，0未读）", example = "1")
     private Integer isRead;
-    @ApiModelProperty(value = "删除标志（1正常，0删除）", example = "标题")
+    @ApiModelProperty(value = "删除标志（1正常，0删除）", example = "1")
     private Integer del;
     @ApiModelProperty(value = "公告标题", example = "标题")
-    private Integer status;
+    private String title;
     @ApiModelProperty(value = "发布时间", example = "2019-01-01 12:20:59")
     private Date sendTime;
     @ApiModelProperty(value = "公告内容", example = "内容")
@@ -60,12 +60,12 @@ public class UserNoticeVO extends UuidIdentityEntity{
         this.del = del;
     }
 
-    public Integer getStatus() {
-        return status;
+    public String getTitle() {
+        return title;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getSendTime() {
