@@ -349,13 +349,13 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             }
         } else if (StringUtils.isNotEmpty(facilityCategory)) {
             //设施编码为空，设施服务类型为空，按照设施分类获取按设施服务类型获取设施
-            filters = "category=" + facilityCategory + ";status=0;";
+            filters = "deleteFlag=0;category=" + facilityCategory + ";status=0;";
             facilityList = facilityService.search(fields, filters, sorts);
         } else {
             if (StringUtils.isEmpty(filters)) {
-                filters = "status=0;";
+                filters = "deleteFlag=0;status=0;";
             } else {
-                filters = filters + ";status=0;";
+                filters = filters + ";status=0;deleteFlag=0;";
             }
             facilityList = facilityService.search(fields, filters, sorts);
         }
