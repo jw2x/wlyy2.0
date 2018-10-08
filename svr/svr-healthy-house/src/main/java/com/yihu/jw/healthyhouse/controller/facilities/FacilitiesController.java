@@ -66,7 +66,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         if (StringUtils.isNotEmpty(filters)) {
-            filters = filters + ";deleteFlag=0;";
+            filters = filters + "deleteFlag=0;";
         } else {
             filters = "deleteFlag=0;";
         }
