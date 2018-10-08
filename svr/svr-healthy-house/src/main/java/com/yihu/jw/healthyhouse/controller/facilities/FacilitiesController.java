@@ -65,6 +65,11 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @RequestParam(value = "size", required = false) Integer size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
+        if (StringUtils.isNotEmpty(filters)) {
+            filters = filters + "deleteFlag=0;";
+        } else {
+            filters = "deleteFlag=0;";
+        }
         List<Facility> facilityList = facilityService.search(fields, filters, sorts, page, size);
         int count = (int) facilityService.getCount(filters);
         return success(facilityList, count, page, size);
@@ -105,6 +110,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facility1.getCategory().toString())) {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
+        facility1.setDeleteFlag("0");
         Facility facilityBack = facilityService.save(facility1);
         List<FacilityServerRelation> facilityServerRelationList = createRelationByServerCode(facility1, facilityServerJson);
         facilityBack.setFacilityServerRelation(facilityServerRelationList);
@@ -133,7 +139,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facility1.getCode())) {
             return failed("设施编码不能为空！", ObjEnvelop.class);
         } else {
-            boolean existFlag = facilityService.checkFacilityByFacilityId(facility1.getId(),"code",facility1.getCode());
+            boolean existFlag = facilityService.checkFacilityByFacilityId(facility1.getId(), "code", facility1.getCode());
             if (existFlag) {
                 return failed("设施编码已存在！", ObjEnvelop.class);
             }
@@ -141,7 +147,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facility1.getName())) {
             return failed("设施名称不能为空！", ObjEnvelop.class);
         } else {
-            boolean existFlag = facilityService.checkFacilityByFacilityId(facility1.getId(),"name",facility1.getName());;
+            boolean existFlag = facilityService.checkFacilityByFacilityId(facility1.getId(), "name", facility1.getName());
+            ;
             if (existFlag) {
                 return failed("设施名称已存在！", ObjEnvelop.class);
             }
@@ -155,6 +162,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facility1.getCategory().toString())) {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
+        facility1.setDeleteFlag("0");
         Facility facilityBack = facilityService.save(facility1);
         List<FacilityServerRelation> facilityServerRelationList = createRelationByServerCode(facility1, facilityServerJson);
         facilityBack.setFacilityServerRelation(facilityServerRelationList);
@@ -211,6 +219,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facility.getCategory().toString())) {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
+        facility.setDeleteFlag("0");
         facility = facilityService.save(facility);
         return success(facility);
     }
@@ -224,7 +233,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (null == facility) {
             return failed("设施不存在！");
         }
-        deleteFacilityByCode(facility);
+        facility.setDeleteFlag("1");
+        facilityService.save(facility);
         return success("success");
     }
 
@@ -233,7 +243,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     public ObjEnvelop<Long> countFacilities(
             @ApiParam(name = "totalCountFlag", value = "设施总数:true;今日新增设施:false", defaultValue = "true")
             @RequestParam(value = "totalCountFlag") boolean totalCountFlag) throws Exception {
-        String filters = "";
+        String filters = "deleteFlag=0;";
         long count;
         //设施总数:true
         if (totalCountFlag) {
@@ -242,7 +252,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             //今日新增设施:false
             String todayStart = DateUtil.getStringDateShort() + " " + "00:00:00";
             String todayEnd = DateUtil.getStringDateShort() + " " + "23:59:59";
-            filters = "createTime>=" + todayStart + ";createTime<=" + todayEnd;
+            filters = filters + "createTime>=" + todayStart + ";createTime<=" + todayEnd;
             count = facilityService.getCount(filters);
         }
         return success("success", count);
@@ -340,13 +350,13 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             }
         } else if (StringUtils.isNotEmpty(facilityCategory)) {
             //设施编码为空，设施服务类型为空，按照设施分类获取按设施服务类型获取设施
-            filters = "category=" + facilityCategory + ";status=0;";
+            filters = "deleteFlag=0;category=" + facilityCategory + ";status=0;";
             facilityList = facilityService.search(fields, filters, sorts);
         } else {
             if (StringUtils.isEmpty(filters)) {
-                filters = "status=0;";
+                filters = "deleteFlag=0;status=0;";
             } else {
-                filters = filters + ";status=0;";
+                filters = filters + ";status=0;deleteFlag=0;";
             }
             facilityList = facilityService.search(fields, filters, sorts);
         }
@@ -361,12 +371,12 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         //今日使用设施数
         long countUsedFacilitieToday = facilityServerRelationService.countDistinctByFacilitieCodeAndCreateTimeBetween();
         map.put("countUsedFacilitieToday", countUsedFacilitieToday);
-        long countAllFacilitie = facilityService.getCount("");
+        long countAllFacilitie = facilityService.getCount("deleteFlag=0;");
         map.put("countAllFacilitie", countAllFacilitie);
         //今日新增设施:false
         String todayStart = DateUtil.getStringDateShort() + " " + "00:00:00";
         String todayEnd = DateUtil.getStringDateShort() + " " + "23:59:59";
-        String filters = "createTime>=" + todayStart + ";createTime<=" + todayEnd;
+        String filters = "deleteFlag=0;createTime>=" + todayStart + ";createTime<=" + todayEnd;
         long countCreatedFacilitieToday = facilityService.getCount(filters);
         map.put("countCreatedFacilitieToday", countCreatedFacilitieToday);
         return success("获取成功", map);
@@ -416,7 +426,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
      * @param facilityServerJson 设施服务编码
      * @return
      */
-    public List<FacilityServerRelation> createRelationByServerCode(Facility facility1, String facilityServerJson) throws Exception{
+    public List<FacilityServerRelation> createRelationByServerCode(Facility facility1, String facilityServerJson) throws Exception {
         List<FacilityServerRelation> list = new ArrayList<>();
         if (StringUtils.isNotEmpty(facilityServerJson)) {
             //设施编码

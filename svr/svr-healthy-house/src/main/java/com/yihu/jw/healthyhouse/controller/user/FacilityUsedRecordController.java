@@ -129,9 +129,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
         FacilityUsedRecord facilityUsedRecord;
         if (nearbyFlag) {
             if (StringUtils.isNotEmpty(filters)) {
-                filters =  "status=0;"+"name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1;address?"  + filters + " g1;";
+                filters =  "deleteFlag=0;status=0;"+"name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1;address?"  + filters + " g1;";
             }else{
-                filters =  "status=0;";
+                filters =  "deleteFlag=0;status=0;";
             }
             //获取所有设施，并根据设施编码及用户id查找使用次数
             List<Facility> facilityList = facilityService.search(filters);
