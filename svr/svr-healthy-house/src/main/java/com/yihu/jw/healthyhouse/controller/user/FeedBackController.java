@@ -95,6 +95,7 @@ public class FeedBackController extends EnvelopRestEndpoint {
             feedBackOld.setFlag(2);
             feedBackOld.setReplyContent(feedBack.getReplyContent());
             feedBackOld.setUpdateUser(feedBack.getUpdateUser());
+            feedBackOld.setUpdateUserName(feedBack.getUpdateUserName());
         }
         feedBackOld = feedBackService.save(feedBackOld);
         return success(feedBackOld);
