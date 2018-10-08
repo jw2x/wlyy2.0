@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,20 +53,20 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
 
 
     public Facility findById(String id) {
-        return  facilityDao.findById(id);
+        return facilityDao.findById(id);
     }
 
-    public boolean isHasFacility(double longitude,double latitude){
+    public boolean isHasFacility(double longitude, double latitude) {
         boolean flag = false;
         List<Facility> facilitys = facilityDao.findByLongitudeAndLatitude(longitude, latitude);
-        if (facilitys!=null && facilitys.size()>0) {
+        if (facilitys != null && facilitys.size() > 0) {
             flag = true;
         }
         return flag;
     }
 
     //excel中添加固定内容
-    private void addStaticCell(Sheet sheet){
+    private void addStaticCell(Sheet sheet) {
         //设置样式
         Workbook workbook = sheet.getWorkbook();
         CellStyle style = workbook.createCellStyle();
@@ -74,24 +75,25 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
         font.setFontName("黑体");
         font.setFontHeightInPoints((short) 12);
         style.setFont(font);
-        ExcelUtils.addCellData(sheet,0,0,"序号",style);
-        ExcelUtils.addCellData(sheet,1,0,"设施编码",style);
-        ExcelUtils.addCellData(sheet,2,0,"设施类型名称",style);
-        ExcelUtils.addCellData(sheet,3,0,"设施详细地址",style);
-        ExcelUtils.addCellData(sheet,4,0,"联系人",style);
-        ExcelUtils.addCellData(sheet,5,0,"联系方式",style);
-        ExcelUtils.addCellData(sheet,6,0,"所在省",style);
-        ExcelUtils.addCellData(sheet,7,0,"所在市",style);
-        ExcelUtils.addCellData(sheet,8,0,"所在区",style);
-        ExcelUtils.addCellData(sheet,9,0,"所在街道",style);
-        ExcelUtils.addCellData(sheet,10,0,"运营状态",style);
+        ExcelUtils.addCellData(sheet, 0, 0, "序号", style);
+        ExcelUtils.addCellData(sheet, 1, 0, "设施编码", style);
+        ExcelUtils.addCellData(sheet, 2, 0, "设施类型名称", style);
+        ExcelUtils.addCellData(sheet, 3, 0, "设施详细地址", style);
+        ExcelUtils.addCellData(sheet, 4, 0, "联系人", style);
+        ExcelUtils.addCellData(sheet, 5, 0, "联系方式", style);
+        ExcelUtils.addCellData(sheet, 6, 0, "所在省", style);
+        ExcelUtils.addCellData(sheet, 7, 0, "所在市", style);
+        ExcelUtils.addCellData(sheet, 8, 0, "所在区", style);
+        ExcelUtils.addCellData(sheet, 9, 0, "所在街道", style);
+        ExcelUtils.addCellData(sheet, 10, 0, "运营状态", style);
 
     }
 
     /**
-     *  导出设施列表excel
-     * @param response  响应体
-     * @param facilityList  用户列表
+     * 导出设施列表excel
+     *
+     * @param response     响应体
+     * @param facilityList 用户列表
      * @throws ManageException
      */
     public void exportFacilityExcel(HttpServletResponse response, List<Facility> facilityList) throws ManageException {
@@ -100,17 +102,17 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             //设置下载
             response.setContentType("octets/stream");
             response.setHeader("Content-Disposition", "attachment; filename="
-                    + new String( fileName.getBytes("gb2312"), "ISO8859-1" )+".xlsx");
+                    + new String(fileName.getBytes("gb2312"), "ISO8859-1") + ".xlsx");
             OutputStream os = response.getOutputStream();
             //获取导出数据集
             JSONObject order = new JSONObject();
-            order.put("id","asc");
+            order.put("id", "asc");
 
             //写excel
             Workbook workbook = new XSSFWorkbook();
-            int k=0;
+            int k = 0;
             Facility metaData = null;
-            int row=0;
+            int row = 0;
             //创建Excel工作表 指定名称和位置
             String streetName = "健康小屋-设施列表";
             Sheet sheet = workbook.createSheet(streetName);
@@ -118,21 +120,21 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             //添加数据元信息
             WritableCellFormat wc = new WritableCellFormat();
             wc.setBorder(jxl.format.Border.ALL, jxl.format.BorderLineStyle.THIN, Colour.SKY_BLUE);//边框
-            for(int j=0;k<facilityList.size(); j++,k++){
+            for (int j = 0; k < facilityList.size(); j++, k++) {
                 metaData = facilityList.get(k);
-                row=j+1;
-                ExcelUtils.addCellData(sheet,0,row,j+1+"");//序号
-                ExcelUtils.addCellData(sheet,1,row, metaData.getCode());//设施编码
-                ExcelUtils.addCellData(sheet,2,row, metaData.getName());//设施名称
-                ExcelUtils.addCellData(sheet,3,row, metaData.getCategory().toString());//类型名称
-                ExcelUtils.addCellData(sheet,4,row, metaData.getAddress());//信息地址
-                ExcelUtils.addCellData(sheet,5,row, metaData.getUserName());//联系人
-                ExcelUtils.addCellData(sheet,6,row, metaData.getUserTelephone());//联系电话
-                ExcelUtils.addCellData(sheet,7,row, metaData.getProvinceId());//省
-                ExcelUtils.addCellData(sheet,8,row, metaData.getCityName());//市
-                ExcelUtils.addCellData(sheet,9,row, metaData.getCountyName());//区县
-                ExcelUtils.addCellData(sheet,10,row, metaData.getStreet());//街道
-                ExcelUtils.addCellData(sheet,11,row, metaData.getStatus());//运营状态
+                row = j + 1;
+                ExcelUtils.addCellData(sheet, 0, row, j + 1 + "");//序号
+                ExcelUtils.addCellData(sheet, 1, row, metaData.getCode());//设施编码
+                ExcelUtils.addCellData(sheet, 2, row, metaData.getName());//设施名称
+                ExcelUtils.addCellData(sheet, 3, row, metaData.getCategory().toString());//类型名称
+                ExcelUtils.addCellData(sheet, 4, row, metaData.getAddress());//信息地址
+                ExcelUtils.addCellData(sheet, 5, row, metaData.getUserName());//联系人
+                ExcelUtils.addCellData(sheet, 6, row, metaData.getUserTelephone());//联系电话
+                ExcelUtils.addCellData(sheet, 7, row, metaData.getProvinceId());//省
+                ExcelUtils.addCellData(sheet, 8, row, metaData.getCityName());//市
+                ExcelUtils.addCellData(sheet, 9, row, metaData.getCountyName());//区县
+                ExcelUtils.addCellData(sheet, 10, row, metaData.getStreet());//街道
+                ExcelUtils.addCellData(sheet, 11, row, metaData.getStatus());//运营状态
 
             }
 
@@ -142,17 +144,18 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             os.flush();
             os.close();
         } catch (Exception e) {
-            throw new ManageException("导出设施列表异常",e);
+            throw new ManageException("导出设施列表异常", e);
         }
     }
 
 
     /**
      * 批量导入设施的集合
-     * @param facilities    设施列表
+     *
+     * @param facilities 设施列表
      */
-    public Map<String,Object> batchInsertFacility(List<FacilityMsg> facilities) throws ManageException{
-        Map<String,Object> result = new HashMap<>();
+    public Map<String, Object> batchInsertFacility(List<FacilityMsg> facilities) throws ManageException {
+        Map<String, Object> result = new HashMap<>();
         //批量存储的集合
         int correctCount = 0;
         List<Facility> corrects = new ArrayList<>();
@@ -160,13 +163,13 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
 
         Facility facility = null;
         //批量存储
-        for(FacilityMsg facilityMsg : facilities) {
+        for (FacilityMsg facilityMsg : facilities) {
             facility = new Facility();
-            Double longitude = StringUtils.isEmpty(facilityMsg.getLongitude()) ? null :Double.parseDouble(facilityMsg.getLongitude());
-            Double latitude = StringUtils.isEmpty(facilityMsg.getLongitude()) ? null :Double.parseDouble(facilityMsg.getLongitude());
+            Double longitude = StringUtils.isEmpty(facilityMsg.getLongitude()) ? null : Double.parseDouble(facilityMsg.getLongitude());
+            Double latitude = StringUtils.isEmpty(facilityMsg.getLongitude()) ? null : Double.parseDouble(facilityMsg.getLongitude());
             String cityCode = baseCityService.getCodeByname(facilityMsg.getCity());
             String townCode = baseTownService.getCodeByname(facilityMsg.getCounty());
-            Integer categoryCode = systemDictEntryService.getDictEntryCodeByName("FacilityType",facilityMsg.getCategory());
+            Integer categoryCode = systemDictEntryService.getDictEntryCodeByName("FacilityType", facilityMsg.getCategory());
             facility.setCode(genFacilityCode());
             facility.setName(facilityMsg.getName());
             facility.setCategory(categoryCode);
@@ -179,7 +182,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             facility.setCountyCode(townCode);
             facility.setCountyName(facilityMsg.getCounty());
             facility.setStreet(facilityMsg.getStreet());
-            facility.setAddress( facilityMsg.getCity() + facilityMsg.getCounty() + facilityMsg.getStreet());
+            facility.setAddress(facilityMsg.getCity() + facilityMsg.getCounty() + facilityMsg.getStreet());
             facility.setStatus(facilityMsg.getStatus());
             facility.setOrgName(facilityMsg.getOrgName());
             facility.setServiceDay(facilityMsg.getServiceDate());
@@ -188,36 +191,37 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             facility.setLongitude(longitude);
             facility.setLatitude(latitude);
 
-            if (isHasFacility(longitude,latitude)) {
+            if (isHasFacility(longitude, latitude)) {
                 errors.add(facility);
-            }else {
+            } else {
                 corrects.add(facility);
             }
 
-            if (corrects.size()>100){
+            if (corrects.size() > 100) {
                 facilityDao.save(corrects);
-                correctCount +=corrects.size();
+                correctCount += corrects.size();
                 corrects.clear();
             }
         }
-        if(!corrects.isEmpty()) {
+        if (!corrects.isEmpty()) {
             facilityDao.save(corrects);
-            correctCount +=corrects.size();
+            correctCount += corrects.size();
         }
 
-        result.put("correctCount",correctCount);
-        result.put("errors",errors);
+        result.put("correctCount", correctCount);
+        result.put("errors", errors);
         return result;
     }
 
     /**
      * 设施编码生成
+     *
      * @return
      */
-    public String genFacilityCode(){
+    public String genFacilityCode() {
         String code = "CSHF" + randomString(5);
         Facility facility = facilityDao.findByCode(code);
-        while (facility!=null) {
+        while (facility != null) {
             code = "CSHF" + randomString(5);
             facility = facilityDao.findByCode(code);
         }
@@ -227,24 +231,45 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
     /**
      * 根据服务类型获取设施
      */
-    public List<String> getFacilityCodeByServerType(String type){
+    public List<String> getFacilityCodeByServerType(String type) {
         Session s = currentSession();
         String hql = "(SELECT  DISTINCT fsr.facilitie_code FROM  facility_server_relation fsr,facility_server fs WHERE fsr.service_code=fs.code and fs.type=:type)";
         Query query = s.createSQLQuery(hql);
-        query.setParameter("type",type);
+        query.setParameter("type", type);
         return query.list();
     }
 
-    public List<String> getFacilityCodeByServerCode( String[] codes)
-    {
-        String sql =  "(SELECT  DISTINCT fsr.facilitie_code FROM  facility_server_relation fsr WHERE fsr.service_code IN(:codes))";
+    public List<String> getFacilityCodeByServerCode(String[] codes) {
+        String sql = "(SELECT  DISTINCT fsr.facilitie_code FROM  facility_server_relation fsr WHERE fsr.service_code IN(:codes))";
         SQLQuery sqlQuery = currentSession().createSQLQuery(sql);
         sqlQuery.setParameterList("codes", codes);
         return sqlQuery.list();
     }
 
-    public List<Facility> getFacilityByFacilityCode( List<String> facilityCodes){
+    public List<Facility> getFacilityByFacilityCode(List<String> facilityCodes) {
         return facilityDao.findByCode(facilityCodes);
+    }
+
+    public boolean checkFacilityByFacilityId(String id, String fild, String value) {
+        SQLQuery sqlQuery;
+        String sql = "";
+        if (fild.equals("code")) {
+            //验证编码
+            sql = "select count(1) from facility f where  f.status = 0 and f.code =:code and f.id !=:id";
+            sqlQuery = currentSession().createSQLQuery(sql);
+            sqlQuery.setParameter("id", id);
+            sqlQuery.setParameter("code", value);
+            BigInteger count = (BigInteger) sqlQuery.uniqueResult();
+            return count.compareTo(new BigInteger("0")) > 0;
+        } else {
+            //验证名称
+            sql = "select count(1) from facility f where  f.status = 0 and f.name =:name and f.id !=:id";
+            sqlQuery = currentSession().createSQLQuery(sql);
+            sqlQuery.setParameter("id", id);
+            sqlQuery.setParameter("name", value);
+            BigInteger count = (BigInteger) sqlQuery.uniqueResult();
+            return count.compareTo(new BigInteger("0")) > 0;
+        }
     }
 
 

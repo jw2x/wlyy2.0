@@ -62,6 +62,7 @@ public class FeedBackController extends EnvelopRestEndpoint {
     public ObjEnvelop<FeedBack> createFeedBack(
             @ApiParam(name = "feedBack", value = "意见反馈JSON结构")
             @RequestBody FeedBack feedBack) throws IOException {
+        feedBack.setFlag(0);
         feedBack = feedBackService.save(feedBack);
         return success(feedBack);
     }

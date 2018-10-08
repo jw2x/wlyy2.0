@@ -77,7 +77,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "facility", value = "设施JSON结构")
             @RequestParam(value = "facility") String facility,
             @ApiParam(name = "facilityServerJson", value = "设施关联的服务字符串用,号隔开")
-            @RequestParam(value = "facilityServerJson") String facilityServerJson) throws IOException {
+            @RequestParam(value = "facilityServerJson") String facilityServerJson) throws Exception {
         Facility facility1 = toEntity(facility, Facility.class);
         List<Facility> facilityList = null;
         if (StringUtils.isEmpty(facility1.getCode())) {
@@ -120,28 +120,29 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "facilityServerJson", value = "设施关联的服务字符串用,号隔开")
             @RequestParam(value = "facilityServerJson") String facilityServerJson) throws Exception {
         Facility facility1 = toEntity(facility, Facility.class);
-        List<Facility> facilityList = null;
-        List<Facility> faList = facilityService.findByField("id", facility1.getId());
-        if (!(faList != null && faList.size() > 0)) {
+        Facility facility2 = facilityService.findById(facility1.getId());
+        if (null == facility2) {
             return failed("设施不存在！", ObjEnvelop.class);
         }
+        facility1.setCreateTime(facility2.getCreateTime());
         if (StringUtils.isNotEmpty(facility1.getId())) {
             //删除设施，设施关联关系，设施服务使用设施数
             deleteFacilityByCode(facility1);
         }
+
         if (StringUtils.isEmpty(facility1.getCode())) {
             return failed("设施编码不能为空！", ObjEnvelop.class);
         } else {
-            facilityList = facilityService.findByField("code", facility1.getCode());
-            if (null != facilityList && facilityList.size() > 0) {
+            boolean existFlag = facilityService.checkFacilityByFacilityId(facility1.getId(),"code",facility1.getCode());
+            if (existFlag) {
                 return failed("设施编码已存在！", ObjEnvelop.class);
             }
         }
         if (StringUtils.isEmpty(facility1.getName())) {
             return failed("设施名称不能为空！", ObjEnvelop.class);
         } else {
-            facilityList = facilityService.findByField("name", facility1.getName());
-            if (null != facilityList && facilityList.size() > 0) {
+            boolean existFlag = facilityService.checkFacilityByFacilityId(facility1.getId(),"name",facility1.getName());;
+            if (existFlag) {
                 return failed("设施名称已存在！", ObjEnvelop.class);
             }
         }
@@ -405,7 +406,6 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             }
         }
         facilityServerRelationService.deleteByFacilitieCode(facility.getCode());
-        facilityService.delete(facility);
     }
 
     /**
@@ -415,7 +415,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
      * @param facilityServerJson 设施服务编码
      * @return
      */
-    public List<FacilityServerRelation> createRelationByServerCode(Facility facility1, String facilityServerJson) {
+    public List<FacilityServerRelation> createRelationByServerCode(Facility facility1, String facilityServerJson) throws Exception{
         List<FacilityServerRelation> list = new ArrayList<>();
         if (StringUtils.isNotEmpty(facilityServerJson)) {
             //设施编码
