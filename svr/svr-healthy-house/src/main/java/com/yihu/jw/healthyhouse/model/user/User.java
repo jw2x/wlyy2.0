@@ -59,7 +59,7 @@ public class User extends UuidIdentityEntityWithOperator {
 
     @Column(name = "salt")
     private String salt; //加密种子
-    @Column(name = "facility_used_count")
+    @Column(name = "facility_used_count",columnDefinition="int default 1")
     private Integer facilityUsedCount;//设施使用次数
 
     @Column(name = "realname_authentication")

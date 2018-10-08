@@ -18,8 +18,10 @@ public interface UserDao extends PagingAndSortingRepository<User, String>, JpaSp
     User findByIdAndActivated(String id,String activated);
     User findById(String id);
 
-    @Query("from User u where u.loginCode=?1 and u.activated<>0 ")
+    User findByLoginCodeAndActivated(String loginCode,String activated);
+
     User findByLoginCode(String loginCode);
+
 
     @Query("from User u where u.name=?1 and u.activated=?2 ")
     User findByNameAAndActivated(String name,String activated);
@@ -33,12 +35,13 @@ public interface UserDao extends PagingAndSortingRepository<User, String>, JpaSp
     @Query("select sum (u.facilityUsedCount) from User u")
     Long sumFacilityUseCout();
 
-    Long countAllByActivated(Integer activated);
+    Long countAllByActivatedAndUserType(Integer activated,String userType);
 
     Long countAllByUserType(String userType);
 
-    Long countAllByCreateTimeBetween(Date start,Date end);
+    Long countAllByUserTypeAndCreateTimeBetween(String userType,Date start,Date end);
 
     User findByLoginCodeAndUserType(String loginCode,String userType);
+    User findByTelephoneAndUserType(String telephone,String userType);
 
 }

@@ -1,6 +1,9 @@
 package com.yihu.jw.healthyhouse.controller.facilities;
 
+import com.yihu.jw.healthyhouse.constant.SystemDictConstant;
+import com.yihu.jw.healthyhouse.model.dict.SystemDictEntry;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServer;
+import com.yihu.jw.healthyhouse.service.dict.SystemDictEntryService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerService;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -17,7 +20,9 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -31,9 +36,11 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @Autowired
     private FacilityServerService facilityServerService;
+    @Autowired
+    private SystemDictEntryService systemDictEntryService;
 
     @ApiOperation(value = "获取设施服务列表", responseContainer = "List")
-    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.PAGE )
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.PAGE)
     public PageEnvelop<FacilityServer> getFacilitiesServer(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
@@ -46,12 +53,12 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<FacilityServer> facilityServerList = facilityServerService.search(fields, filters, sorts, page, size);
-        int count = (int)facilityServerService.getCount(filters);
-        return success(facilityServerList,count, page, size);
+        int count = (int) facilityServerService.getCount(filters);
+        return success(facilityServerList, count, page, size);
     }
 
     @ApiOperation(value = "创建设施服务")
-    @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.CREATE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ObjEnvelop<FacilityServer> createFacilitiesServer(
             @ApiParam(name = "FacilityServer", value = "设施服务JSON结构")
             @RequestBody FacilityServer facilityServer) throws IOException {
@@ -134,7 +141,7 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
     }
 
     @ApiOperation(value = "获取设施服务列表", responseContainer = "List")
-    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.LIST_FACILITIESERVERS )
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.LIST_FACILITIESERVERS)
     public ListEnvelop<FacilityServer> getFacilitiesServer(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段", defaultValue = "")
             @RequestParam(value = "fields", required = false) String fields,
@@ -144,6 +151,25 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<FacilityServer> facilityServerList = facilityServerService.search(fields, filters, sorts);
         return success(facilityServerList);
+    }
+
+    @ApiOperation(value = "app按照分类获取-设施服务列表", responseContainer = "List")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.LIST_FACILITIESERVERS_BY_TYPE)
+    public ObjEnvelop<Map> getFacilitiesServerByType() throws Exception {
+        Map<String, List<FacilityServer>> map = new HashMap<>();
+        List<FacilityServer> facilityServerList;
+        //获取系统字典-设施服务类型
+        List<SystemDictEntry> systemDictEntryList = systemDictEntryService.getDictEntryCodeAndValueByDictId(SystemDictConstant.FACILITIE_SERVERS_TYPE_DICT_ID);
+        for (Object object : systemDictEntryList) {
+            Object[] obj=(Object[])object;
+            if(null!=obj[0]&&StringUtils.isNotEmpty(obj[0].toString()) ){
+                String filters = "type=" + obj[0].toString();
+                facilityServerList = facilityServerService.search("", filters, "");
+                map.put(obj[0].toString(), facilityServerList);
+            }
+
+        }
+        return success(map);
     }
 
 

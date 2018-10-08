@@ -77,6 +77,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop<FacilityUsedRecord> createFacilityUsedRecord(
             @ApiParam(name = "facilityUsedRecord", value = "用户使用导航记录JSON结构")
             @RequestBody FacilityUsedRecord facilityUsedRecord) throws IOException, ManageException {
+        facilityUsedRecord.setUserId(facilityUsedRecord.getCreateUser());
         facilityUsedRecord = facilityUsedRecordService.save(facilityUsedRecord);
         userService.updateFacilityUse(facilityUsedRecord.getCreateUser());
         return success(facilityUsedRecord);
@@ -128,7 +129,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
         FacilityUsedRecord facilityUsedRecord;
         if (nearbyFlag) {
             if (StringUtils.isNotEmpty(filters)) {
-                filters = "name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1;address?"  + filters + " g1";
+                filters =  "status=0;"+"name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1;address?"  + filters + " g1;";
+            }else{
+                filters =  "status=0;";
             }
             //获取所有设施，并根据设施编码及用户id查找使用次数
             List<Facility> facilityList = facilityService.search(filters);
@@ -140,6 +143,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
                 facilityUsedRecord.setFacilitieLatitudes(facility.getLatitude());
                 facilityUsedRecord.setFacilitieAddr(facility.getAddress());
                 facilityUsedRecord.setCreateUser(userId);
+                facilityUsedRecord.setUserId(userId);
                 facilityUsedRecord.setFacilitieId(facility.getId());
                 long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facility.getCode(), userId);
                 facilityUsedRecord.setNum((int) count);
@@ -179,6 +183,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop facilityUsedRecordDetail(
             @ApiParam(name = "id", value = "使用记录ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
+        if (id == null ){
+            throw new ManageException("使用记录ID为空！");
+        }
         Map<String, Object> usedRecordDetail = facilityUsedRecordService.getUsedRecordDetail(id);
         return success(usedRecordDetail);
     }

@@ -71,6 +71,7 @@ public class HealthyHouseMapping {
             public static final String GET_FACILITIESERVERS_BY_ID = "/getFacilitieServersById";
             public static final String GET_FACILITIESERVERS_BY_FIELD = "/getFacilitieServersByField";
             public static final String LIST_FACILITIESERVERS = "/list/listFacilitieServers";
+            public static final String LIST_FACILITIESERVERS_BY_TYPE = "/list/listFacilitieServersByType";
         }
 
         //意见反馈

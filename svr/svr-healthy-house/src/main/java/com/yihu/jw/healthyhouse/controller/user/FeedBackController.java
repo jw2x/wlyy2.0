@@ -53,8 +53,8 @@ public class FeedBackController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<FeedBack> feedBackList = feedBackService.search(fields, filters, sorts, page, size);
-        int count = (int)feedBackService.getCount(filters);
-        return success(feedBackList,count, page, size);
+        int count = (int) feedBackService.getCount(filters);
+        return success(feedBackList, count, page, size);
     }
 
     @ApiOperation(value = "创建/更新（id存在）意见反馈")
@@ -62,6 +62,7 @@ public class FeedBackController extends EnvelopRestEndpoint {
     public ObjEnvelop<FeedBack> createFeedBack(
             @ApiParam(name = "feedBack", value = "意见反馈JSON结构")
             @RequestBody FeedBack feedBack) throws IOException {
+        feedBack.setFlag(1);
         feedBack = feedBackService.save(feedBack);
         return success(feedBack);
     }
@@ -94,9 +95,6 @@ public class FeedBackController extends EnvelopRestEndpoint {
             feedBackOld.setFlag(2);
             feedBackOld.setReplyContent(feedBack.getReplyContent());
             feedBackOld.setUpdateUser(feedBack.getUpdateUser());
-        } else {
-            //根据id获取意见反馈，打开待反馈信息
-            feedBackOld.setFlag(1);
         }
         feedBackOld = feedBackService.save(feedBackOld);
         return success(feedBackOld);
@@ -134,7 +132,7 @@ public class FeedBackController extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序", defaultValue = "")
             @RequestParam(value = "sorts", required = false) String sorts) throws ManageException, ParseException {
         List<FeedBack> feedBackList = feedBackService.search(fields, filters, sorts);
-        feedBackService.exportUsersExcel(response,feedBackList);
+        feedBackService.exportUsersExcel(response, feedBackList);
     }
 
 }
