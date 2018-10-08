@@ -49,6 +49,7 @@ public class LoginController extends EnvelopRestEndpoint {
     public ResponseEntity<HashMap> captcha(
             @ApiParam(name = "clientId", value = "应用id", defaultValue = "EwC0iRSrcS", required = true) @RequestParam(required = true, name = "clientId") String clientId,
             @ApiParam(name = "msgType", value = "消息类型（login：登录验证，checkPhone：验证安全手机，resetPhone：重设安全手机", required = true) @RequestParam(required = true, name = "msgType") String msgType,
+            @ApiParam(name = "userType", value = "账号类型（patient：普通账号，superAdmin：炒鸡管理员", required = true) @RequestParam(required = true, name = "userType") String userType,
             @ApiParam(name = "username", value = "手机账号", required = true) @RequestParam(required = true, name = "username") String username) throws Exception {
         if (StringUtils.isEmpty(clientId)) {
             failed("clientId 为空！");
@@ -57,7 +58,7 @@ public class LoginController extends EnvelopRestEndpoint {
             failed("username 为空！");
         }
         //验证用户是否被冻结
-        User user = userService.findByCode(username);
+        User user = userService.findByTelephoneAndUserType(username,userType);
         if (HouseUserContant.activated_lock.equals(user)) {
             failed("该用户已被冻结，无法发送验证码!");
         }

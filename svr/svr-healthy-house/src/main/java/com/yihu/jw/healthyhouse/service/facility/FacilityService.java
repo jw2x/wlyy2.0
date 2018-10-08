@@ -76,15 +76,16 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
         style.setFont(font);
         ExcelUtils.addCellData(sheet,0,0,"序号",style);
         ExcelUtils.addCellData(sheet,1,0,"设施编码",style);
-        ExcelUtils.addCellData(sheet,2,0,"设施类型名称",style);
-        ExcelUtils.addCellData(sheet,3,0,"设施详细地址",style);
-        ExcelUtils.addCellData(sheet,4,0,"联系人",style);
-        ExcelUtils.addCellData(sheet,5,0,"联系方式",style);
-        ExcelUtils.addCellData(sheet,6,0,"所在省",style);
-        ExcelUtils.addCellData(sheet,7,0,"所在市",style);
-        ExcelUtils.addCellData(sheet,8,0,"所在区",style);
-        ExcelUtils.addCellData(sheet,9,0,"所在街道",style);
-        ExcelUtils.addCellData(sheet,10,0,"运营状态",style);
+        ExcelUtils.addCellData(sheet,2,0,"设施名称",style);
+        ExcelUtils.addCellData(sheet,3,0,"设施类型名称",style);
+        ExcelUtils.addCellData(sheet,4,0,"设施详细地址",style);
+        ExcelUtils.addCellData(sheet,5,0,"联系人",style);
+        ExcelUtils.addCellData(sheet,6,0,"联系方式",style);
+        ExcelUtils.addCellData(sheet,7,0,"所在省",style);
+        ExcelUtils.addCellData(sheet,8,0,"所在市",style);
+        ExcelUtils.addCellData(sheet,9,0,"所在区",style);
+        ExcelUtils.addCellData(sheet,10,0,"所在街道",style);
+        ExcelUtils.addCellData(sheet,11,0,"运营状态",style);
 
     }
 
