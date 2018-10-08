@@ -2,6 +2,7 @@ package com.yihu.jw.base.service.dict;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.dao.dict.DictIcd10Dao;
+import com.yihu.jw.base.enums.SystemDictEnum;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.yihu.jw.entity.base.dict.DictIcd10DO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -36,13 +38,13 @@ public class DictIcd10Service extends BaseJpaService<DictIcd10DO, DictIcd10Dao> 
      */
     public String queryAll(String saasId){
         JSONObject jsonObject = new JSONObject();
-        List<DictIcd10DO> list = new ArrayList<>();
+        List<Map<String,Object>> list = new ArrayList<>();
         if(StringUtils.isEmpty(saasId)){
            list = dictIcd10Dao.findCodeAndName();
         }else{
            list = dictIcd10Dao.findCodeAndNameBySaasId(saasId);
         }
-        jsonObject.put("icd10Dict",list);
+        jsonObject.put(SystemDictEnum.Icd10Dict.toString(),list);
         return jsonObject.toJSONString();
     }
 

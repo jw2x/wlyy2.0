@@ -1,9 +1,18 @@
 package com.yihu.jw.base.service.dict;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.dao.dict.DictDiseaseDao;
+import com.yihu.jw.base.dao.dict.DictJobTitleDao;
+import com.yihu.jw.base.enums.SystemDictEnum;
 import com.yihu.jw.entity.base.dict.DictDiseaseDO;
 import com.yihu.mysql.query.BaseJpaService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -19,4 +28,23 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DictDiseaseService extends BaseJpaService<DictDiseaseDO, DictDiseaseDao> {
+
+    @Autowired
+    private DictDiseaseDao dictDiseaseDao;
+    /**
+     * 查询某一租户下的病种字典信息，如果saadId为空表示当前用户角色为超级管理员，超级管理员可以看到所有数据
+     * @param saasId
+     * @return
+     */
+    public String queryAll(String saasId){
+        JSONObject jsonObject = new JSONObject();
+        List<Map<String,Object>> list = new ArrayList<>();
+        if(StringUtils.isEmpty(saasId)){
+            list = dictDiseaseDao.findCodeAndName();
+        }else{
+            list = dictDiseaseDao.findCodeAndNameBySaasId(saasId);
+        }
+        jsonObject.put(SystemDictEnum.DiseaseDict.toString(),list);
+        return jsonObject.toJSONString();
+    }
 }

@@ -1,8 +1,8 @@
 package com.yihu.jw.base.service.dict;
 
 import com.alibaba.fastjson.JSONObject;
-import com.yihu.jw.base.dao.dict.DictHospitalDeptDao;
 import com.yihu.jw.base.dao.dict.DictJobTitleDao;
+import com.yihu.jw.base.enums.SystemDictEnum;
 import com.yihu.jw.entity.base.dict.DictIcd10DO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +12,7 @@ import com.yihu.jw.entity.base.dict.DictJobTitleDO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -37,13 +38,13 @@ public class DictJobTitleService extends BaseJpaService<DictJobTitleDO, DictJobT
      */
     public String queryAll(String saasId){
         JSONObject jsonObject = new JSONObject();
-        List<DictIcd10DO> list = new ArrayList<>();
+        List<Map<String,Object>> list = new ArrayList<>();
         if(StringUtils.isEmpty(saasId)){
             list = dictJobTitleDao.findCodeAndName();
         }else{
             list = dictJobTitleDao.findCodeAndNameBySaasId(saasId);
         }
-        jsonObject.put("hosDeptDict",list);
+        jsonObject.put(SystemDictEnum.JobTitleDict.toString(),list);
         return jsonObject.toJSONString();
     }
 

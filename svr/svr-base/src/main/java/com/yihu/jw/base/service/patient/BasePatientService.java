@@ -1,7 +1,6 @@
 package com.yihu.jw.base.service.patient;
 
 import com.yihu.jw.base.dao.patient.BasePatientDao;
-import com.yihu.jw.base.dao.patient.SpecificFieldOnly;
 import com.yihu.jw.base.util.JavaBeanUtils;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
@@ -48,21 +47,7 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
             return resultMap;
         }
         resultMap = JavaBeanUtils.bean2Map(patientDOList.get(0));
-//        getByName(patientDOList.get(0).getName());
-        getSome(patientId);
         return resultMap;
     }
 
-    public Map<String,Object> getByName(String name){
-        Map<String,Object> map = new HashMap<>();
-        Collection<SpecificFieldOnly> specificFieldOnly = basePatientDao.findByName(name);
-        if(CollectionUtils.isEmpty(specificFieldOnly)){
-            return map;
-        }
-//        map = specificFieldOnly.
-        return map;
-    }
-    public void getSome(String id){
-         basePatientDao.findsome(id);
-    }
 }

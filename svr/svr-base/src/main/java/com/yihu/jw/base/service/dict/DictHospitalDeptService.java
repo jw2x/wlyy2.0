@@ -3,6 +3,7 @@ package com.yihu.jw.base.service.dict;
 import com.alibaba.fastjson.JSONObject;
 import com.netflix.discovery.converters.Auto;
 import com.yihu.jw.base.dao.dict.DictHospitalDeptDao;
+import com.yihu.jw.base.enums.SystemDictEnum;
 import com.yihu.jw.entity.base.dict.DictIcd10DO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import com.yihu.jw.entity.base.dict.DictHospitalDeptDO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -37,13 +39,13 @@ public class DictHospitalDeptService extends BaseJpaService<DictHospitalDeptDO, 
      */
     public String queryAll(String saasId){
         JSONObject jsonObject = new JSONObject();
-        List<DictIcd10DO> list = new ArrayList<>();
+        List<Map<String,Object>> list = new ArrayList<>();
         if(StringUtils.isEmpty(saasId)){
             list = dictHospitalDeptDao.findCodeAndName();
         }else{
             list = dictHospitalDeptDao.findCodeAndNameBySaasId(saasId);
         }
-        jsonObject.put("hosDeptDict",list);
+        jsonObject.put(SystemDictEnum.HospitalDeptDict.toString(),list);
         return jsonObject.toJSONString();
     }
 

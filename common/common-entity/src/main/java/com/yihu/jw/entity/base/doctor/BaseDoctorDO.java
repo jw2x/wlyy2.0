@@ -2,6 +2,8 @@ package com.yihu.jw.entity.base.doctor;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,6 +18,7 @@ import java.util.Date;
 */
 @Entity
 @Table(name = "base_doctor")
+@Where(clause = "del = 1")
 public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
 
     /**
