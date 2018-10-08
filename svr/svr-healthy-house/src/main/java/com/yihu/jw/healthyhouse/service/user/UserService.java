@@ -24,6 +24,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springside.modules.persistence.DynamicSpecifications;
@@ -33,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 /**
@@ -41,11 +43,26 @@ import java.util.regex.Pattern;
  */
 @Service
 public class UserService extends BaseJpaService<User, UserDao> {
+    private final String KEY_PREFIX = ":healthyHouse";
+    private final String KEY_SUFFIX = ":activated";
 
     @Autowired
     private UserDao userDao;
     @Autowired
     private FacilityUsedRecordService facilityUsedRecordService;
+    @Autowired
+    private  RedisTemplate redisTemplate;
+
+    /**
+     * 设置用户在线状态
+     * @param userId
+     * @param expire
+     */
+    public void setUserActivated ( String userId, int expire) {
+        String key =  KEY_PREFIX + userId + KEY_SUFFIX;
+        redisTemplate.opsForValue().set(key, userId);
+        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+    }
 
     public User findById(String id) {
         return userDao.findById(id);

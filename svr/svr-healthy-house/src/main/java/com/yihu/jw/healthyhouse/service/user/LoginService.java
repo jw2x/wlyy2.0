@@ -66,7 +66,7 @@ public class LoginService  extends BaseJpaService {
             user.setUserType(LoginInfo.USER_TYPE_PATIENT);
         }
 
-        if (HouseUserContant.activated_lock.equals(user)) {
+        if (HouseUserContant.activated_lock.equals(user.getActivated())) {
             throw new ManageException("该用户已被冻结!");
         }
         //已注册用户更改用户状态
@@ -274,7 +274,7 @@ public class LoginService  extends BaseJpaService {
         if (user == null) {
             throw new ManageException("该管理员账号不存在!");
         } else {
-            if (HouseUserContant.activated_lock.equals(user)) {
+            if (HouseUserContant.activated_lock.equals(user.getActivated())) {
                 throw new ManageException("该用户已被冻结!");
             }
             //已注册用户更改用户状态
@@ -308,7 +308,7 @@ public class LoginService  extends BaseJpaService {
             String message = "该管理员账号不存在！";
             throw new ManageException(message);
         } else {
-            if (HouseUserContant.activated_lock.equals(user)) {
+            if (HouseUserContant.activated_lock.equals(user.getActivated())) {
                 throw new ManageException("该用户已被冻结!");
             }
 

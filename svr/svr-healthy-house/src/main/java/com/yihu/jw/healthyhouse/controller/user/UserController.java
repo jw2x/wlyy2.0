@@ -277,5 +277,20 @@ public class UserController  extends EnvelopRestEndpoint {
     }
 
 
+    @PostMapping(value = "/heartbeat")
+    @ApiOperation(value = "用户在线-心跳接口", notes = "心跳接口")
+    public Envelop heartbeat(
+            @ApiParam(name = "userId", value = "用户ID", defaultValue = "")
+            @RequestParam(value = "userId") String userId) {
+
+        try {
+              userService.setUserActivated(userId, 60);
+            return success("心跳正常");
+        } catch (Exception e) {
+            return failed("心跳异常");
+        }
+
+    }
+
 
 }

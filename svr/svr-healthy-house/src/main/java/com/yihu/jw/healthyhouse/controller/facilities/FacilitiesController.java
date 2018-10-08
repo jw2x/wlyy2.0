@@ -302,7 +302,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             }
 
         } catch (Exception e) {
-            throw new ManageException("导入设施列表异常！", e);
+            return failed("导入异常");
         }
         return failed("导入失败");
     }
