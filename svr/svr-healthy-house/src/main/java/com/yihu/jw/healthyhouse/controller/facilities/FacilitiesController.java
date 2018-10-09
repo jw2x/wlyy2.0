@@ -234,6 +234,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             return failed("设施不存在！");
         }
         facility.setDeleteFlag("1");
+        //将设施状态改成关闭，在用户历史行程中做提示使用
+        facility.setStatus("1");
         facilityService.save(facility);
         return success("success");
     }

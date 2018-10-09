@@ -46,6 +46,8 @@ public class User extends UuidIdentityEntityWithOperator {
     private String activatedContent;       //账户冻结原因
     @Column(name = "province_code", nullable = false)
     private String provinceCode;    //省编码
+    @Column(name = "province_name", nullable = false)
+    private String provinceName;    //省名称
     @Column(name = "city_code", nullable = false)
     private String cityCode;        //市编码
     @Column(name = "city_name", nullable = false)
@@ -277,6 +279,9 @@ public class User extends UuidIdentityEntityWithOperator {
     @Transient
     public String getAddress() {
         String address = "";
+        if (this.getProvinceName() != null) {
+            address += this.getProvinceName();
+        }
         if (this.getCityName() != null) {
             address += this.getCityName();
         }
@@ -300,5 +305,13 @@ public class User extends UuidIdentityEntityWithOperator {
             genderValue = "女";
         }
         return genderValue;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
     }
 }

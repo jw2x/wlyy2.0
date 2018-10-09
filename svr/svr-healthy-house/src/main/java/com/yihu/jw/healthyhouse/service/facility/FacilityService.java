@@ -273,5 +273,9 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
         }
     }
 
+    public Facility findByCode(String code) {
+        return facilityDao.findByCode(code);
+    }
+
 
 }

@@ -129,9 +129,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
         FacilityUsedRecord facilityUsedRecord;
         if (nearbyFlag) {
             if (StringUtils.isNotEmpty(filters)) {
-                filters =  "deleteFlag=0;status=0;"+"name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1;address?"  + filters + " g1;";
-            }else{
-                filters =  "deleteFlag=0;status=0;";
+                filters = "deleteFlag=0;status=0;" + "name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1;address?" + filters + " g1;";
+            } else {
+                filters = "deleteFlag=0;status=0;";
             }
             //获取所有设施，并根据设施编码及用户id查找使用次数
             List<Facility> facilityList = facilityService.search(filters);
@@ -145,6 +145,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
                 facilityUsedRecord.setCreateUser(userId);
                 facilityUsedRecord.setUserId(userId);
                 facilityUsedRecord.setFacilitieId(facility.getId());
+                facilityUsedRecord.setFacilitieStatus(facility.getStatus());
                 long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facility.getCode(), userId);
                 facilityUsedRecord.setNum((int) count);
                 facilityUsedRecordList.add(facilityUsedRecord);
@@ -155,6 +156,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             for (FacilityUsedRecord facilityUsedRecord1 : facilityUsedRecordList) {
                 long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facilityUsedRecord1.getFacilitieCode(), userId);
                 facilityUsedRecord1.setNum((int) count);
+                //获取设施状态
+                Facility facility = facilityService.findByCode(facilityUsedRecord1.getFacilitieCode());
+                facilityUsedRecord1.setFacilitieStatus(facility.getStatus());
             }
         }
         return success(facilityUsedRecordList);
@@ -183,14 +187,14 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop facilityUsedRecordDetail(
             @ApiParam(name = "id", value = "使用记录ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
-        if (id == null ){
+        if (id == null) {
             throw new ManageException("使用记录ID为空！");
         }
         Map<String, Object> usedRecordDetail = facilityUsedRecordService.getUsedRecordDetail(id);
         return success(usedRecordDetail);
     }
 
-    @ApiOperation(value = "获取用户使用导航记录列表--分页（app）", responseContainer = "List")
+    @ApiOperation(value = "我的行程-获取用户使用导航记录列表--分页（app）", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.PAGE_FACILITY_USED_RECORD_BY_USERID)
     public PageEnvelop<FacilityUsedRecord> getFacilityUsedRecordsByUserId(
             @ApiParam(name = "userId", value = "必输参数：登录用户id", defaultValue = "")
@@ -217,6 +221,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             } else {
                 record.setNavigationServiceEvaluationFlag("已评价");
             }
+            //根据设施编码获取 设施状态
+            Facility facility = facilityService.findByCode(facilityCode);
+            record.setFacilitieStatus(facility.getStatus());
         }
         int count = (int) facilityUsedRecordService.getCount(filters);
         return success(facilityUsedRecordList, count, page, size);
