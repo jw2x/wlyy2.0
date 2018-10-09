@@ -20,6 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -95,15 +98,27 @@ public class ActivatedInterceptor  {
         HttpSession session = request.getSession();
         Object userId = session.getAttribute(LoginInfo.USER_ID);
         if (userId == null ){
-            return failed("用户未登录，请登录！",-10000);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Cache-Control", "no-store");
+            headers.set("Pragma", "no-cache");
+            return new ResponseEntity<>("用户未登录，请登录！", headers, HttpStatus.PAYMENT_REQUIRED);
         }
         User user = userService.findById(userId.toString());
         if (user == null ){
-            return failed("用户不存在，请重新登录！",-10000);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Cache-Control", "no-store");
+            headers.set("Pragma", "no-cache");
+            return new ResponseEntity<>("用户未登录，请登录！", headers, HttpStatus.PAYMENT_REQUIRED);
         }else if (HouseUserContant.activated_lock.equals(user.getActivated())){
-           return failed("用户已被冻结，请联系管理员！",-10000);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Cache-Control", "no-store");
+            headers.set("Pragma", "no-cache");
+            return new ResponseEntity<>("用户已被冻结，请联系管理员！", headers, HttpStatus.PAYMENT_REQUIRED);
         }else if (HouseUserContant.activated_offline.equals(user.getActivated())){
-            return failed("用户已离线，请重新登录！",-10000);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Cache-Control", "no-store");
+            headers.set("Pragma", "no-cache");
+            return new ResponseEntity<>("用户已离线，请重新登录！", headers, HttpStatus.PAYMENT_REQUIRED);
         }else {
             return  joinPoint.proceed();
         }

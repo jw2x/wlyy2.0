@@ -61,7 +61,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
     public void setUserActivated ( String userId, int expire) {
         String key =  KEY_PREFIX + userId + KEY_SUFFIX;
         redisTemplate.opsForValue().set(key, userId);
-//        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
     }
 
     public User findById(String id) {
