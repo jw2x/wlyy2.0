@@ -41,8 +41,8 @@ import java.util.Map;
  * @author HZY
  * @created 2018/10/9 9:19
  */
-//@Aspect
-//@Component
+@Aspect
+@Component
 public class ActivatedInterceptor  {
 
     private static final Logger logger = LoggerFactory.getLogger(ActivatedInterceptor.class);
