@@ -173,7 +173,7 @@ public class UserController extends EnvelopRestEndpoint {
 
         try {
             User user = userService.findByTelephoneAndUserType(newPhone, LoginInfo.USER_TYPE_PATIENT);
-            if (user == null) {
+            if (user != null) {
                 return failed("手机号:" + newPhone + "已被绑定，可更换新手机号或直接登录！");
             }
             //验证码
@@ -198,7 +198,7 @@ public class UserController extends EnvelopRestEndpoint {
 
         try {
             User user = userService.findByTelephoneAndUserType(newPhone, LoginInfo.USER_TYPE_SUPER_AdminManager);
-            if (user == null) {
+            if (user != null) {
                 return failed("手机号:" + newPhone + "已被绑定，可更换新手机号或直接登录！");
             }
             //验证码
