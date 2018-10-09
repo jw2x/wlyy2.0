@@ -7,6 +7,10 @@ security:
     enabled: false
 
 spring:
+  http:
+    multipart:
+      maxRequestSize: 1024MB  #配置最大上传为1G
+      maxFileSize: 1024MB  #配置最大上传为1G
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     max-active: 50
