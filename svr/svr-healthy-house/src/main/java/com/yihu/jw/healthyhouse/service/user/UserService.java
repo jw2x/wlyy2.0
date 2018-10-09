@@ -3,12 +3,9 @@ package com.yihu.jw.healthyhouse.service.user;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.constant.UserConstant;
-import com.yihu.jw.healthyhouse.dao.facility.FacilityDao;
 import com.yihu.jw.healthyhouse.dao.user.UserDao;
-import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
-import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
 import com.yihu.jw.util.common.IdCardUtil;
 import com.yihu.jw.util.date.DateUtil;
@@ -35,7 +32,6 @@ import javax.transaction.Transactional;
 import java.io.OutputStream;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
 
 /**
  * @author HZY
@@ -43,15 +39,18 @@ import java.util.regex.Pattern;
  */
 @Service
 public class UserService extends BaseJpaService<User, UserDao> {
-    private final String KEY_PREFIX = ":healthyHouse";
+    private final String KEY_PREFIX = "healthyHouse:";
     private final String KEY_SUFFIX = ":activated";
-
+    private final RedisTemplate redisTemplate;
     @Autowired
     private UserDao userDao;
     @Autowired
     private FacilityUsedRecordService facilityUsedRecordService;
-    @Autowired
-    private  RedisTemplate redisTemplate;
+
+    public UserService(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
 
     /**
      * 设置用户在线状态
@@ -73,7 +72,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
     public User findByLoginCodeAndUserType(String loginCode,String userType) {
-        return userDao.findByLoginCodeAndUserType(loginCode,userType);
+        return userDao.findByUserTypeAndTelephoneOrLoginCode(userType,loginCode,loginCode);
     }
 
     public User findByTelephoneAndUserType(String telephone,String userType) {
