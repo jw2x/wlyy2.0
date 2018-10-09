@@ -5,6 +5,8 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,12 +24,13 @@ import java.util.Map;
  * @created 2018/10/9 9:19
  */
 @Aspect
+@Component
 public class ActivatedInterceptor  {
 
     @Autowired
     private UserService userService;
 
-    @Before("execution(com.yihu.jw.healthyhouse.controller)")// 拦截被TestAnnotation注解的方法；如果你需要拦截指定package指定规则名称的方法，可以使用表达式execution(...)，具体百度一下资料一大堆
+    @Before("execution(* com.yihu.jw.healthyhouse.controller..*.*(..))")
     public void beforeTest(JoinPoint point) throws Throwable {
         System.out.println("beforeTest:" + point.getArgs());
     }
