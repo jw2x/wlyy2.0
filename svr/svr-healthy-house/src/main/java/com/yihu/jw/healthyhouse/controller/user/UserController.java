@@ -308,7 +308,7 @@ public class UserController extends EnvelopRestEndpoint {
             @RequestParam(value = "userId") String userId) {
 
         try {
-            userService.setUserActivated(userId, 10);
+            userService.setUserActivated(userId, 40);//客户端30s发送一次心跳，
             return success("心跳正常");
         } catch (Exception e) {
             return failed("心跳异常");

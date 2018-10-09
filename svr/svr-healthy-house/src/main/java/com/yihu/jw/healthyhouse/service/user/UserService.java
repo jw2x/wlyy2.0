@@ -30,6 +30,7 @@ import org.springside.modules.persistence.SearchFilter;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -60,7 +61,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
     public void setUserActivated ( String userId, int expire) {
         String key =  KEY_PREFIX + userId + KEY_SUFFIX;
         redisTemplate.opsForValue().set(key, userId);
-        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+//        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
     }
 
     public User findById(String id) {
@@ -457,6 +458,21 @@ public class UserService extends BaseJpaService<User, UserDao> {
         user1.setFacilityUsedCount(user1.getFacilityUsedCount()+1);
         userDao.save(user1);
     }
+
+    /**
+     * 更新用户在线状态
+     * @param ids
+     * @throws ManageException
+     */
+    @Transactional
+    public void updateUserOffLine(List<Serializable> ids) throws ManageException {
+        userDao.updateUserOnLine(ids);//更新在线
+        userDao.updateUserOffLine(ids);//更新离线
+    }
+
+
+
+
 
 
 
