@@ -41,8 +41,8 @@ import java.util.Map;
  * @author HZY
  * @created 2018/10/9 9:19
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class ActivatedInterceptor  {
 
     private static final Logger logger = LoggerFactory.getLogger(ActivatedInterceptor.class);
@@ -97,21 +97,24 @@ public class ActivatedInterceptor  {
         Object userId = session.getAttribute(LoginInfo.USER_ID);
         if (userId == null ){
             response.setStatus(402);
-            return failed("用户未登录，请登录！",-10000);
+            return  joinPoint.proceed();
+//            return failed("用户未登录，请登录！",-10000);
         }
         User user = userService.findById(userId.toString());
         if (user == null ){
             response.setStatus(402);
-            return failed("用户不存在，请重新登录！",-10000);
+            return  joinPoint.proceed();
+//            return failed("用户不存在，请重新登录！",-10000);
         }else if (HouseUserContant.activated_lock.equals(user.getActivated())){
             response.setStatus(402);
-           return failed("用户已被冻结，请联系管理员！",-10000);
+//           return failed("用户已被冻结，请联系管理员！",-10000);
         }else if (HouseUserContant.activated_offline.equals(user.getActivated())){
             response.setStatus(402);
-            return failed("用户已离线，请重新登录！",-10000);
+//            return failed("用户已离线，请重新登录！",-10000);
         }else {
-            return  joinPoint.proceed();
+//            return  joinPoint.proceed();
         }
+        return  joinPoint.proceed();
 
     }
 

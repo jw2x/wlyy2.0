@@ -6,8 +6,10 @@ import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.service.area.BaseCityService;
 import com.yihu.jw.healthyhouse.service.area.BaseTownService;
 import com.yihu.jw.healthyhouse.service.dict.SystemDictEntryService;
+import com.yihu.jw.healthyhouse.util.RestTemplateUtil;
 import com.yihu.jw.healthyhouse.util.facility.msg.FacilityMsg;
 import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.mysql.query.BaseJpaService;
 import jxl.write.Colour;
 import jxl.write.WritableCellFormat;
@@ -20,6 +22,7 @@ import org.hibernate.Session;
 import org.hibernate.transform.Transformers;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +53,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
     private BaseTownService baseTownService;
     @Autowired
     private SystemDictEntryService systemDictEntryService;
+
 
 
     public Facility findById(String id) {
@@ -101,6 +105,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
         try {
             String fileName = "健康小屋-设施列表";
             //设置下载
+            response.setCharacterEncoding("utf-8");
             response.setContentType("octets/stream");
             response.setHeader("Content-Disposition", "attachment; filename="
                     + new String(fileName.getBytes("gb2312"), "ISO8859-1") + ".xlsx");
@@ -127,7 +132,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
                 ExcelUtils.addCellData(sheet, 0, row, j + 1 + "");//序号
                 ExcelUtils.addCellData(sheet, 1, row, metaData.getCode());//设施编码
                 ExcelUtils.addCellData(sheet, 2, row, metaData.getName());//设施名称
-                ExcelUtils.addCellData(sheet, 3, row, metaData.getCategory().toString());//类型名称
+                ExcelUtils.addCellData(sheet, 3, row, metaData.getCategoryValue());//类型名称
                 ExcelUtils.addCellData(sheet, 4, row, metaData.getAddress());//信息地址
                 ExcelUtils.addCellData(sheet, 5, row, metaData.getUserName());//联系人
                 ExcelUtils.addCellData(sheet, 6, row, metaData.getUserTelephone());//联系电话
@@ -135,7 +140,7 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
                 ExcelUtils.addCellData(sheet, 8, row, metaData.getCityName());//市
                 ExcelUtils.addCellData(sheet, 9, row, metaData.getCountyName());//区县
                 ExcelUtils.addCellData(sheet, 10, row, metaData.getStreet());//街道
-                ExcelUtils.addCellData(sheet, 11, row, metaData.getStatus());//运营状态
+                ExcelUtils.addCellData(sheet, 11, row, metaData.getStatusName());//运营状态
 
             }
 
@@ -277,5 +282,65 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
         return facilityDao.findByCode(code);
     }
 
+
+
+    /**
+     * 批量导入设施的集合
+     *
+     * @param facilities 设施列表
+     */
+    public Map<String, Object> batchInsertDemo(List<Map<String,String> > facilities) throws ManageException {
+        Map<String, Object> result = new HashMap<>();
+        //批量存储的集合
+        int correctCount = 0;
+        List<Facility> corrects = new ArrayList<>();
+        List<Facility> errors = new ArrayList<>();
+
+        Facility facility = null;
+        //批量存储
+        for (Map<String,String> facilityMsg : facilities) {
+            facility = new Facility();
+            facility.setCode(genFacilityCode());
+            facility.setName(facilityMsg.get("street")+"_健康小屋");
+            facility.setCategory(1);
+            facility.setCategoryValue("健康小屋");
+            facility.setProvinceId("350000");
+            facility.setCityCode("350200");
+            facility.setCityName("厦门市");
+            facility.setCountyCode(baseTownService.getCodeByname(facilityMsg.get("county")));
+            facility.setCountyName(facilityMsg.get("county"));
+            facility.setStreet(facilityMsg.get("street"));
+            if (!facilityMsg.get("address").contains("厦门市")) {
+                facility.setAddress("厦门市" + facilityMsg.get("address"));
+            }else {
+                facility.setAddress(facilityMsg.get("address"));
+            }
+            facility.setStatus("0");
+
+
+
+            if (corrects.size() > 100) {
+                facilityDao.save(corrects);
+                correctCount += corrects.size();
+                corrects.clear();
+            }
+        }
+        if (!corrects.isEmpty()) {
+            facilityDao.save(corrects);
+            correctCount += corrects.size();
+        }
+
+        result.put("correctCount", correctCount);
+        result.put("errors", errors);
+        return result;
+    }
+
+    public Envelop getLatAndlon(String address) {
+        Map<String ,String> map = new HashMap<>();
+        String url = "http://api.map.baidu.com/geocoder/v2/?address="+ address + "&output=json&ak=465443b4e84fb6823359e5921915e8dc&callback=showLocation";
+        RestTemplateUtil restTemplateUtil = new RestTemplateUtil(url,null);
+        Envelop envelop = restTemplateUtil.exchange(url, HttpMethod.GET, Envelop.class,map);
+        return envelop;
+    }
 
 }

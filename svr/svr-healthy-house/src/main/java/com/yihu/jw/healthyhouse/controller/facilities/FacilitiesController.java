@@ -7,6 +7,7 @@ import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerRelationService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityService;
+import com.yihu.jw.healthyhouse.util.ImportDemoReader;
 import com.yihu.jw.healthyhouse.util.facility.FacilityMsgReader;
 import com.yihu.jw.healthyhouse.util.facility.msg.FacilityMsg;
 import com.yihu.jw.healthyhouse.util.poi.AExcelReader;
@@ -459,5 +460,29 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         return list;
     }
 
+
+    @PostMapping(value = "/demoImport")
+    @ApiOperation(value = "模拟导入设施")
+    public Envelop demoImport(
+            @ApiParam(name = "file", value = "文件", required = true)
+            @RequestPart(value = "file") MultipartFile file,
+            HttpServletRequest request) throws IOException, ManageException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            AExcelReader excelReader = new ImportDemoReader();
+            excelReader.read(file);
+            List<Map<String,String>> dataList = excelReader.getCorrectLs();
+            if (dataList.size() > 0) {
+                //TODO 导入
+                System.out.println(dataList);
+                return success("导入成功!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return failed("导入异常,请检查导入文件格式"+e.getMessage());
+        }
+        return failed("导入失败");
+    }
 
 }
