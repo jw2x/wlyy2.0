@@ -63,6 +63,18 @@ public class BaseErrorCode {
      */
     public static class Notice{
         public static final String FINDDICTBYCODE = "-105000";
+        /**
+         * 请输入50个字以内的公告标题
+         */
+        public static final String LIMIT_TITLE = "-105001";
+        /**
+         * 已经发布，请不要重复发布
+         */
+        public static final String HAD_RELEASE = "-105002";
+        /**
+         * 自动发布，不允许手动发布
+         */
+        public static final String AUTO_RELEASE = "-105003";
     }
 
     /**

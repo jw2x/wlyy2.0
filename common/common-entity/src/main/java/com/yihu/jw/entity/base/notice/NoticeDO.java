@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.base.notice;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
 import javax.persistence.Column;
@@ -14,6 +15,62 @@ import java.util.Date;
 @Entity
 @Table(name = "base_notice")
 public class NoticeDO extends UuidIdentityEntityWithOperator{
+
+    public enum Status{
+        wait("待发布",1),
+        released("已发布",2);
+        private String name;
+        private Integer value;
+
+        Status(String name, Integer value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public void setValue(Integer value) {
+            this.value = value;
+        }
+    }
+
+    public enum SendType{
+        manual_release("手动发布",1),
+        automatic_release("自动发布",2);
+        private String name;
+        private Integer value;
+
+        SendType(String name, Integer value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public void setValue(Integer value) {
+            this.value = value;
+        }
+    }
 
     private String title;//公告标题
     private Integer status;//状态（1待发布，2已发布）
@@ -50,6 +107,7 @@ public class NoticeDO extends UuidIdentityEntityWithOperator{
     }
 
     @Column(name = "send_time")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     public Date getSendTime() {
         return sendTime;
     }
@@ -74,5 +132,17 @@ public class NoticeDO extends UuidIdentityEntityWithOperator{
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    @Override
+    public String toString() {
+        return "NoticeDO{" +
+                "title='" + title + '\'' +
+                ", status=" + status +
+                ", sendTime=" + sendTime +
+                ", content='" + content + '\'' +
+                ", sendType=" + sendType +
+                ", del=" + del +
+                '}';
     }
 }
