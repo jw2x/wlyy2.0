@@ -195,6 +195,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
      * @return
      * @throws ManageException
      */
+    @Transactional
     public User saveOrUpdate(User user, String userCode) throws ManageException {
         User loginUser = userDao.findByLoginCode(userCode);
         if (user.getId() == null) {//保存
