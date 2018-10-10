@@ -2,6 +2,7 @@ package com.yihu.jw.base.listener;
 
 import com.yihu.jw.base.activemq.MessageManager;
 import com.yihu.jw.base.service.errorCode.ErrorCodeService;
+import com.yihu.jw.base.service.notice.NoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
@@ -18,6 +19,8 @@ public class ApplicationReadyListener implements ApplicationListener<Application
     private MessageManager messageManager;
     @Autowired
     private ErrorCodeService errorCodeService;
+    @Autowired
+    private NoticeService noticeService;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
@@ -25,6 +28,8 @@ public class ApplicationReadyListener implements ApplicationListener<Application
         messageManager.initConsumer();
         //初始化错误码
         errorCodeService.initErrorCode();
+        //初始化延迟队列
+        noticeService.initDelayNotice();
     }
 
 }
