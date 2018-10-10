@@ -156,6 +156,21 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 通知公告
+     */
+    public static class Notice extends Basic {
+        public static final String PREFIX  = "/notice";
+        public static final String RELEASE  = "/release";
+    }
+
+    /**
+     * 用户通知公告
+     */
+    public static class UserNotice extends Basic {
+        public static final String PREFIX  = "/userNotice";
+    }
+
+    /**
      * 角色权限
      */
     public static class RoleAuthority extends Basic {

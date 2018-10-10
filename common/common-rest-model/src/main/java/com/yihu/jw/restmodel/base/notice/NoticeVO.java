@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.base.notice;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,6 +19,7 @@ public class NoticeVO extends UuidIdentityVOWithOperator {
     @ApiModelProperty(value = "状态（1待发布，2已发布）", example = "1")
     private Integer status;
     @ApiModelProperty(value = "发布时间", example = "2019-01-01 12:20:59")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     private Date sendTime;
     @ApiModelProperty(value = "公告内容", example = "内容")
     private String content;
