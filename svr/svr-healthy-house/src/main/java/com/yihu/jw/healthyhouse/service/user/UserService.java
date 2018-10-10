@@ -30,6 +30,7 @@ import org.springside.modules.persistence.SearchFilter;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -397,14 +398,11 @@ public class UserService extends BaseJpaService<User, UserDao> {
         try {
             String fileName = "健康小屋-用户列表";
             //设置下载
+            response.setCharacterEncoding("utf-8");
             response.setContentType("octets/stream");
             response.setHeader("Content-Disposition", "attachment; filename="
                     + new String( fileName.getBytes("gb2312"), "ISO8859-1" )+".xlsx");
             OutputStream os = response.getOutputStream();
-            //获取导出数据集
-            JSONObject order = new JSONObject();
-            order.put("id","asc");
-
             //写excel
             Workbook workbook = new XSSFWorkbook();
             int k=0;
@@ -426,7 +424,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
                 ExcelUtils.addCellData(sheet,2,row, metaData.getLoginCode());//登录名
                 ExcelUtils.addCellData(sheet,3,row, metaData.getName());//名称
                 ExcelUtils.addCellData(sheet,4,row, metaData.getIdCardNo());//身份证
-                ExcelUtils.addCellData(sheet,5,row, metaData.getGender());//性别
+                ExcelUtils.addCellData(sheet,5,row, metaData.getGenderValue());//性别
                 ExcelUtils.addCellData(sheet,6,row, metaData.getTelephone());//电话
                 ExcelUtils.addCellData(sheet,7,row, metaData.getAddress());//地区
                 ExcelUtils.addCellData(sheet,8,row, metaData.getFacilityUsedCount().toString());//使用设施次数
@@ -457,6 +455,21 @@ public class UserService extends BaseJpaService<User, UserDao> {
         user1.setFacilityUsedCount(user1.getFacilityUsedCount()+1);
         userDao.save(user1);
     }
+
+    /**
+     * 更新用户在线状态
+     * @param ids
+     * @throws ManageException
+     */
+    @Transactional
+    public void updateUserOffLine(List<Serializable> ids) throws ManageException {
+        userDao.updateUserOnLine(ids);//更新在线
+        userDao.updateUserOffLine(ids);//更新离线
+    }
+
+
+
+
 
 
 

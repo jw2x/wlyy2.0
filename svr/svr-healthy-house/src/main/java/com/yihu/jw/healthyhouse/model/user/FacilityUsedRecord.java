@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * 用户导航记录
+ *
  * @author zdm
  * @version 1.0
  * @created 2018.09.21
@@ -64,6 +65,9 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
 
     //设施关联的服务名称
     private String facilityRelationServiceName;
+
+    //设施状态
+    private String facilitieStatus;
 
     //评价记录
     private String navigationServiceEvaluationFlag;
@@ -179,14 +183,16 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
     public void setFacilitieId(String facilitieId) {
         this.facilitieId = facilitieId;
     }
+
     @Transient
     public String getFacilityRelationServiceName() {
         return facilityRelationServiceName;
     }
 
     public void setFacilityRelationServiceName(String facilityRelationServiceName) {
-        this.facilityRelationServiceName =facilityRelationServiceName;
+        this.facilityRelationServiceName = facilityRelationServiceName;
     }
+
     @Transient
     public String getNavigationServiceEvaluationFlag() {
         return navigationServiceEvaluationFlag;
@@ -194,5 +200,14 @@ public class FacilityUsedRecord extends UuidIdentityEntityWithOperator {
 
     public void setNavigationServiceEvaluationFlag(String navigationServiceEvaluationFlag) {
         this.navigationServiceEvaluationFlag = navigationServiceEvaluationFlag;
+    }
+
+    @Transient
+    public String getFacilitieStatus() {
+        return facilitieStatus;
+    }
+
+    public void setFacilitieStatus(String facilitieStatus) {
+        this.facilitieStatus = facilitieStatus;
     }
 }

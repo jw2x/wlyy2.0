@@ -5,6 +5,7 @@ package com.yihu.jw.healthyhouse.constant;
  * @created 2018/9/19 9:10
  */
 public class LoginInfo {
+    public static final String USER_INFO = "userInfo";
     public static final String IS_LOGIN = "isLogin";
     public static final String LOGIN_NAME = "loginName";
     public static final String LOGIN_CODE = "loginCode";
