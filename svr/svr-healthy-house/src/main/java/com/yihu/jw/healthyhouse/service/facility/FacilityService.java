@@ -1,15 +1,19 @@
 package com.yihu.jw.healthyhouse.service.facility;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.dao.facility.FacilityDao;
+import com.yihu.jw.healthyhouse.dao.facility.FacilityServerRelationDao;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
+import com.yihu.jw.healthyhouse.model.facility.FacilityServer;
+import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
 import com.yihu.jw.healthyhouse.service.area.BaseCityService;
 import com.yihu.jw.healthyhouse.service.area.BaseTownService;
 import com.yihu.jw.healthyhouse.service.dict.SystemDictEntryService;
-import com.yihu.jw.healthyhouse.util.RestTemplateUtil;
 import com.yihu.jw.healthyhouse.util.facility.msg.FacilityMsg;
 import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
-import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.util.http.HTTPResponse;
+import com.yihu.jw.util.http.HttpClientKit;
 import com.yihu.mysql.query.BaseJpaService;
 import jxl.write.Colour;
 import jxl.write.WritableCellFormat;
@@ -19,20 +23,15 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.transform.Transformers;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 设施管理器.
@@ -53,6 +52,10 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
     private BaseTownService baseTownService;
     @Autowired
     private SystemDictEntryService systemDictEntryService;
+    @Autowired
+    private FacilityServerService facilityServerService;
+    @Autowired
+    private FacilityServerRelationDao facilityServerRelationDao;
 
 
 
@@ -110,10 +113,6 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             response.setHeader("Content-Disposition", "attachment; filename="
                     + new String(fileName.getBytes("gb2312"), "ISO8859-1") + ".xlsx");
             OutputStream os = response.getOutputStream();
-            //获取导出数据集
-            JSONObject order = new JSONObject();
-            order.put("id", "asc");
-
             //写excel
             Workbook workbook = new XSSFWorkbook();
             int k = 0;
@@ -285,11 +284,12 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
 
 
     /**
+     *  //TODO 临时方法
      * 批量导入设施的集合
      *
      * @param facilities 设施列表
      */
-    public Map<String, Object> batchInsertDemo(List<Map<String,String> > facilities) throws ManageException {
+    public Map<String, Object> batchInsertDemo(List<Map<String,String> > facilities) throws ManageException, IOException {
         Map<String, Object> result = new HashMap<>();
         //批量存储的集合
         int correctCount = 0;
@@ -316,8 +316,33 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
                 facility.setAddress(facilityMsg.get("address"));
             }
             facility.setStatus("0");
+            facility.setDeleteFlag("0");
+            getLatAndlon(facility);//获取经纬度
 
-
+            //已添加过的经纬度不再次导入
+            if (isHasFacility(facility.getLongitude(), facility.getLatitude())) {
+                errors.add(facility);
+            } else {
+                //获取设施服务
+                String servies = facilityMsg.get("service");
+                String[] serviceArr= servies.split("、");
+                List<FacilityServer> facilityServers = facilityServerService.findByNameIn(Arrays.asList(serviceArr));
+                if (facilities!=null ){
+                    List<FacilityServerRelation> relations = new ArrayList<>();
+                    for (FacilityServer facilityServer : facilityServers) {
+                        //遍历添加设施项目
+                        FacilityServerRelation relation = new FacilityServerRelation();
+                        relation.setFacilitieCode(facility.getCode());
+                        relation.setFacilitieName(facility.getName());
+                        relation.setServiceCode(facilityServer.getCode());
+                        relation.setServiceName(facilityServer.getName());
+                        relation.setServiceName(facilityServer.getName());
+                        relations.add(relation);
+                    }
+                    facilityServerRelationDao.save(relations);
+                }
+                corrects.add(facility);
+            }
 
             if (corrects.size() > 100) {
                 facilityDao.save(corrects);
@@ -335,12 +360,27 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
         return result;
     }
 
-    public Envelop getLatAndlon(String address) {
-        Map<String ,String> map = new HashMap<>();
-        String url = "http://api.map.baidu.com/geocoder/v2/?address="+ address + "&output=json&ak=465443b4e84fb6823359e5921915e8dc&callback=showLocation";
-        RestTemplateUtil restTemplateUtil = new RestTemplateUtil(url,null);
-        Envelop envelop = restTemplateUtil.exchange(url, HttpMethod.GET, Envelop.class,map);
-        return envelop;
+    /**
+     *  //TODO  临时方法
+     * 获取经纬度
+     * @param facility
+     * @throws IOException
+     */
+    public void getLatAndlon(Facility facility) throws IOException {
+
+        String url = "http://api.map.baidu.com/geocoder/v2/?address="+ facility.getAddress() + "&output=json&ak=465443b4e84fb6823359e5921915e8dc";
+        HTTPResponse httpResponse = HttpClientKit.get(url);
+        if (httpResponse.getStatusCode() == 200) {
+            String result = httpResponse.getBody();
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String,Object> map = objectMapper.readValue(result,Map.class);
+            Map result1 = (Map) map.get("result");
+            Map<String,Double> location = (Map<String, Double>) result1.get("location");
+            facility.setLatitude(location.get("lat"));
+            facility.setLongitude(location.get("lng"));
+            System.out.println(result);
+        }
+
     }
 
 }

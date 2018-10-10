@@ -21,7 +21,7 @@ import java.util.*;
  * Task - 定时检查集群状态，提高解析任务容错率
  * Created by progr1mmer on 2017/12/15.
  */
-//@Component
+@Component
 public class ActivatedUserUpdateTask {
 
     @Autowired
@@ -29,7 +29,7 @@ public class ActivatedUserUpdateTask {
     @Autowired
     private UserService userService;
 
-    @Scheduled(cron = "0/40 * * * * ?")
+    @Scheduled(cron = "0/30 * * * * ?")
     private void startTask() {
         List<String> keys = new ArrayList<>();
         String pattern = "healthyHouse:*:activated";
