@@ -85,6 +85,25 @@ public class BaseErrorCode {
     }
 
     /**
+     * 通知公告模块
+     */
+    public static class FileUpload{
+        /**
+         * 文件格式错误
+         */
+        public static final String FAIL_UPLOAD_FORMAT = "-107000";
+        /**
+         * 文件大小不超过{}M
+         */
+        public static final String FAIL_FILE_SIZE = "-107001";
+        /**
+         * 上传内容为空
+         */
+        public static final String FILE_NULL = "-107002";
+
+    }
+
+    /**
      * 微信模块
      */
     public static class Wechat{

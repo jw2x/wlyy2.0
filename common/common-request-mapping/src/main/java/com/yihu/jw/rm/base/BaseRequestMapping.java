@@ -171,6 +171,17 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 文件上传
+     */
+    public static class FileUpload extends Basic {
+        public static final String PREFIX  = "/fileUpload";
+        public static final String UPLOAD_STREAM_IMG  = "/upload_stream_img";
+        public static final String UPLOAD_STREAM  = "/upload_stream";
+        public static final String UPLOAD_STRING  = "/upload_string";
+        public static final String UPLOAD_STREAM_ATTACHMENT  = "/upload_stream_attachment";
+    }
+
+    /**
      * 角色权限
      */
     public static class RoleAuthority extends Basic {
