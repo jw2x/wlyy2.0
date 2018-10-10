@@ -3,12 +3,9 @@ package com.yihu.jw.healthyhouse.service.user;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.constant.UserConstant;
-import com.yihu.jw.healthyhouse.dao.facility.FacilityDao;
 import com.yihu.jw.healthyhouse.dao.user.UserDao;
-import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.healthyhouse.util.poi.ExcelUtils;
-import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
 import com.yihu.jw.util.common.IdCardUtil;
 import com.yihu.jw.util.date.DateUtil;
@@ -24,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springside.modules.persistence.DynamicSpecifications;
@@ -32,8 +30,9 @@ import org.springside.modules.persistence.SearchFilter;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.*;
-import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author HZY
@@ -41,11 +40,29 @@ import java.util.regex.Pattern;
  */
 @Service
 public class UserService extends BaseJpaService<User, UserDao> {
-
+    private final String KEY_PREFIX = "healthyHouse:";
+    private final String KEY_SUFFIX = ":activated";
+    private final RedisTemplate redisTemplate;
     @Autowired
     private UserDao userDao;
     @Autowired
     private FacilityUsedRecordService facilityUsedRecordService;
+
+    public UserService(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+
+    /**
+     * 设置用户在线状态
+     * @param userId
+     * @param expire
+     */
+    public void setUserActivated ( String userId, int expire) {
+        String key =  KEY_PREFIX + userId + KEY_SUFFIX;
+        redisTemplate.opsForValue().set(key, userId);
+        redisTemplate.expire(key, expire, TimeUnit.SECONDS);
+    }
 
     public User findById(String id) {
         return userDao.findById(id);
@@ -56,9 +73,12 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
     public User findByLoginCodeAndUserType(String loginCode,String userType) {
-        return userDao.findByLoginCodeAndUserType(loginCode,userType);
+        return userDao.findByUserTypeAndTelephoneOrLoginCode(userType,loginCode,loginCode);
     }
 
+    public User findByTelephoneAndUserType(String telephone,String userType) {
+        return userDao.findByTelephoneAndUserType(telephone,userType);
+    }
 
     /**
      * 分页获取用户列表
@@ -175,7 +195,8 @@ public class UserService extends BaseJpaService<User, UserDao> {
      * @return
      * @throws ManageException
      */
-    public Envelop saveOrUpdate(User user, String userCode) throws ManageException {
+    @Transactional
+    public User saveOrUpdate(User user, String userCode) throws ManageException {
         User loginUser = userDao.findByLoginCode(userCode);
         if (user.getId() == null) {//保存
             //判断登陆账号是否存在
@@ -190,20 +211,28 @@ public class UserService extends BaseJpaService<User, UserDao> {
             user.setCreateUser(userCode);
             user.setCreateTime(new Date());
             user.setActivated(1);
-            userDao.save(user);
-            return Envelop.getSuccess("保存成功");
+            user.setFacilityUsedCount(0);
+            user=userDao.save(user);
+            return user;
         } else {//修改
             if (loginUser != null) {
                 String userName = loginUser.getName();
                 user.setUpdateUserName(userName);
             }
             user.setUpdateUser(userCode);
-            userDao.save(user);
-            return Envelop.getSuccess("修改成功");
+            user=userDao.save(user);
+            return user;
         }
     }
 
 
+    /**
+     *  修改密码
+     * @param userId    用户ID
+     * @param oldPwd    原密码
+     * @param newPwd    新密码
+     * @throws ManageException
+     */
     @Transactional
     public void updatePwd(String userId, String oldPwd,String newPwd) throws ManageException {
         User user = findById(userId);
@@ -222,8 +251,51 @@ public class UserService extends BaseJpaService<User, UserDao> {
         userDao.save(user);
     }
 
+    /**
+     *  重设密码
+     * @param userId    用户ID
+     * @param newPwd    新密码
+     * @throws ManageException
+     */
+    @Transactional
+    public String resetPwd(String userId, String newPwd) throws ManageException {
+        User user = findById(userId);
+        if (user==null) {
+            throw new ManageException("该账号不存在");
+        }
+
+        String password = MD5.GetMD5Code(newPwd + user.getSalt());
+        user.setPassword(password);
+        userDao.save(user);
+        return newPwd;
+    }
+
+
+    /**
+     * 普通用户密保手机修改
+     * @param userId    普通用户id
+     * @param phone     手机号
+     * @throws ManageException
+     */
     @Transactional
     public void updateSecurePhone(String userId, String phone) throws ManageException {
+        User user = findById(userId);
+        if (user==null) {
+            throw new ManageException("该账号不存在");
+        }
+        user.setLoginCode(phone);
+        user.setTelephone(phone);
+        userDao.save(user);
+    }
+
+    /**
+     * 修改管理员密保手机
+     * @param userId    用户id
+     * @param phone     密保手机
+     * @throws ManageException
+     */
+    @Transactional
+    public void updateAdministorSecurePhone(String userId, String phone) throws ManageException {
         User user = findById(userId);
         if (user==null) {
             throw new ManageException("该账号不存在");
@@ -234,7 +306,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
     /**
-     * 获取 用户统计信息
+     * 获取 健康小屋用户统计信息
      *
      * @return
      */
@@ -245,9 +317,9 @@ public class UserService extends BaseJpaService<User, UserDao> {
         //今日新增数
         Date start = DateUtil.getDateStart();
         Date end = DateUtil.getDateEnd();
-        Long newCount = userDao.countAllByCreateTimeBetween(start, end);
+        Long newCount = userDao.countAllByUserTypeAndCreateTimeBetween(LoginInfo.USER_TYPE_PATIENT,start, end);
         //在线用户数
-        Long activeCount = userDao.countAllByActivated(HouseUserContant.activated_active);
+        Long activeCount = userDao.countAllByActivatedAndUserType(HouseUserContant.activated_active,LoginInfo.USER_TYPE_PATIENT);
         //用户设施使用总次数
         Long usePricilityCount = facilityUsedRecordService.countAll();
         result.put("totalCount",totalCount);
@@ -258,12 +330,13 @@ public class UserService extends BaseJpaService<User, UserDao> {
     }
 
     /**
-     *  用户身份证认证
+     *  用户实名认证
      * @param userId    用户ID
+     * @param name  用户姓名
      * @param idCardNo  身份证
      * @throws ManageException
      */
-    public void checkIdCardNo(String userId, String idCardNo) throws ManageException {
+    public void checkIdCardNo(String userId,String name, String idCardNo) throws ManageException {
         User user1 = findById(userId);
         if (user1==null) {
             throw new ManageException("该账号不存在");
@@ -273,10 +346,27 @@ public class UserService extends BaseJpaService<User, UserDao> {
         }
         // 更新身份证验证字段
         user1.setRealnameAuthentication(UserConstant.AUTHORIZED);
+        user1.setIdCardNo(idCardNo);
+        user1.setName(name);
         userDao.save(user1);
     }
 
-   
+    /**
+     *  验证管理员是否存在
+     * @param userCode   登录账号
+     * @throws ManageException
+     */
+    public boolean checkManageUser(String userCode) throws ManageException {
+        User user1 = findByLoginCodeAndUserType(userCode, LoginInfo.USER_TYPE_SUPER_AdminManager);
+        if (user1==null) {
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+
+
     //excel中添加固定内容
     private void addStaticCell(Sheet sheet){
         //设置样式
@@ -309,14 +399,11 @@ public class UserService extends BaseJpaService<User, UserDao> {
         try {
             String fileName = "健康小屋-用户列表";
             //设置下载
+            response.setCharacterEncoding("utf-8");
             response.setContentType("octets/stream");
             response.setHeader("Content-Disposition", "attachment; filename="
                     + new String( fileName.getBytes("gb2312"), "ISO8859-1" )+".xlsx");
             OutputStream os = response.getOutputStream();
-            //获取导出数据集
-            JSONObject order = new JSONObject();
-            order.put("id","asc");
-
             //写excel
             Workbook workbook = new XSSFWorkbook();
             int k=0;
@@ -338,7 +425,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
                 ExcelUtils.addCellData(sheet,2,row, metaData.getLoginCode());//登录名
                 ExcelUtils.addCellData(sheet,3,row, metaData.getName());//名称
                 ExcelUtils.addCellData(sheet,4,row, metaData.getIdCardNo());//身份证
-                ExcelUtils.addCellData(sheet,5,row, metaData.getGender());//性别
+                ExcelUtils.addCellData(sheet,5,row, metaData.getGenderValue());//性别
                 ExcelUtils.addCellData(sheet,6,row, metaData.getTelephone());//电话
                 ExcelUtils.addCellData(sheet,7,row, metaData.getAddress());//地区
                 ExcelUtils.addCellData(sheet,8,row, metaData.getFacilityUsedCount().toString());//使用设施次数
@@ -369,6 +456,21 @@ public class UserService extends BaseJpaService<User, UserDao> {
         user1.setFacilityUsedCount(user1.getFacilityUsedCount()+1);
         userDao.save(user1);
     }
+
+    /**
+     * 更新用户在线状态
+     * @param ids
+     * @throws ManageException
+     */
+    @Transactional
+    public void updateUserOffLine(List<Serializable> ids) throws ManageException {
+        userDao.updateUserOnLine(ids);//更新在线
+        userDao.updateUserOffLine(ids);//更新离线
+    }
+
+
+
+
 
 
 

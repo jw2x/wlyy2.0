@@ -58,7 +58,7 @@ public class FacilityUsedRecordService extends BaseJpaService<FacilityUsedRecord
     }
 
     public Long countAll() {
-        return facilityUsedRecordDao.countAllByUserIdIsNotNull();
+        return facilityUsedRecordDao.countAllByCreateUserIsNotNull();
     }
 
     //根据用户id及设施编码统计历史导航记录总数

@@ -18,11 +18,11 @@ public interface FacilityDao extends JpaRepository<Facility, String> {
 
     Facility findById(String id);
 
-    Facility findByLongitudeAndLatitude(double longitude, double latitude);
+    List<Facility> findByLongitudeAndLatitude(double longitude, double latitude);
 
     Facility findByCode(String code);
 
-    @Query("select f from Facility f where f.code in :code ")
+    @Query("select f from Facility f where f.deleteFlag=0 and f.status = 0 and f.code in (:code) ")
     List<Facility> findByCode(@Param("code") List<String> code);
 }
 

@@ -7,6 +7,10 @@ security:
     enabled: false
 
 spring:
+  http:
+    multipart:
+      maxRequestSize: 1024MB  #配置最大上传为1G
+      maxFileSize: 1024MB  #配置最大上传为1G
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     max-active: 50
@@ -80,7 +84,7 @@ fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 # 短信发送地址
 jw:
-  smsUrl: http://svr-base-hzy:10020/sms_gateway/send
+  smsUrl: http://svr-base:10020/sms_gateway/send
 
 ---
 spring:

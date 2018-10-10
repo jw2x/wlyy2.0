@@ -75,7 +75,7 @@ public class FastDFSController extends EnvelopRestEndpoint {
         fileResource.setCreateUser(creator);
         fileResource=  fileResourceService.save(fileResource);
         path = groupName.substring(1, groupName.length() - 1) + "/" + remoteFileName.substring(1, remoteFileName.length() - 1);
-        fileResource.setStoragePath( fastdfs_file_url + path);
+        fileResource.setStoragePath(path);
         return success(fileResource);
     }
 
@@ -107,14 +107,13 @@ public class FastDFSController extends EnvelopRestEndpoint {
         String path = groupName.substring(1, groupName.length() - 1) + ":" + remoteFileName.substring(1, remoteFileName.length() - 1);
         //路径存储到mysql数据库
         FileResource fileResource =new FileResource();
-        //TODO
-        fileResource.setObjectId("111");
+        fileResource.setObjectId(paramMap.get("object"));
         fileResource.setStoragePath(path);
         fileResource.setFileSize(String.valueOf(fileSize));
         fileResource.setFileName(fileName);
         fileResource=  fileResourceService.save(fileResource);
          path = groupName.substring(1, groupName.length() - 1) + "/" + remoteFileName.substring(1, remoteFileName.length() - 1);
-        fileResource.setStoragePath( fastdfs_file_url + path);
+        fileResource.setStoragePath( path);
         return success(fileResource);
     }
 

@@ -5,6 +5,7 @@ package com.yihu.jw.healthyhouse.constant;
  * @created 2018/9/19 9:10
  */
 public class LoginInfo {
+    public static final String USER_INFO = "userInfo";
     public static final String IS_LOGIN = "isLogin";
     public static final String LOGIN_NAME = "loginName";
     public static final String LOGIN_CODE = "loginCode";
@@ -16,10 +17,12 @@ public class LoginInfo {
     //用户创建
     public static final String SAVE_TYPE_IJK = "ijkLogin";  //i健康登录注册
     public static final String SAVE_TYPE_PHONE = "phoneLogin";//手机登录注册
+    public static final String SAVE_TYPE_IDCARDNO= "idCardNoLogin";  //身份证登录注册
+
 
     //用户类型
-    public static final String USER_TYPE_PATIENT = "Patient";//居民
-    public static final String USER_TYPE_AdminManager = "AdminManager";//超管
-    public static final String USER_TYPE_Server = "Server";//运营维护
+    public static final String USER_TYPE_PATIENT = "patient";//居民
+    public static final String USER_TYPE_SUPER_AdminManager = "superAdmin";//超管
+    public static final String USER_TYPE_Server = "admin";//运营维护
 
 }

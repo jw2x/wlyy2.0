@@ -18,6 +18,7 @@ public class BaseRequestMapping {
         public static final String UPDATE = "/update";
         public static final String PAGE = "/page";
         public static final String LIST = "/list";
+        public static final String FINDBYID = "/findById";
     }
 
     /**
@@ -55,7 +56,19 @@ public class BaseRequestMapping {
      */
     public static class Module extends Basic {
         public static final String PREFIX  = "/module";
+        public static final String STATUS  = "/status";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String FIND_ALL  = "/findAll";
+    }
 
+    /**
+     * 接口
+     */
+    public static class Interface extends Basic {
+        public static final String PREFIX  = "/interface";
+        public static final String STATUS  = "/status";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String FIND_ALL  = "/findAll";
     }
 
     /**
@@ -129,9 +142,10 @@ public class BaseRequestMapping {
     public static class Menu extends Basic {
         public static final String PREFIX  = "/menu";
         public static final String STATUS  = "/status";
-        public static final String ISNAMEEXIST  = "/isNameExist";
-        public static final String MOVEUP  = "/moveUp";
-        public static final String MOVEDOWN  = "/moveDown";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String MOVE_UP  = "/moveUp";
+        public static final String MOVE_DOWN  = "/moveDown";
+        public static final String FIND_ALL  = "/findAll";
     }
 
     /**
@@ -139,6 +153,32 @@ public class BaseRequestMapping {
      */
     public static class ErrorCode extends Basic {
         public static final String PREFIX  = "/error";
+    }
+
+    /**
+     * 通知公告
+     */
+    public static class Notice extends Basic {
+        public static final String PREFIX  = "/notice";
+        public static final String RELEASE  = "/release";
+    }
+
+    /**
+     * 用户通知公告
+     */
+    public static class UserNotice extends Basic {
+        public static final String PREFIX  = "/userNotice";
+    }
+
+    /**
+     * 文件上传
+     */
+    public static class FileUpload extends Basic {
+        public static final String PREFIX  = "/fileUpload";
+        public static final String UPLOAD_STREAM_IMG  = "/upload_stream_img";
+        public static final String UPLOAD_STREAM  = "/upload_stream";
+        public static final String UPLOAD_STRING  = "/upload_string";
+        public static final String UPLOAD_STREAM_ATTACHMENT  = "/upload_stream_attachment";
     }
 
     /**
@@ -155,7 +195,26 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/wechat";
         public static final String wechat_base ="/wechatBase";
         public static final String api_success ="success";
+
         public static final String getWechatInfos ="/getWechatInfos";
+        public static final String saveWxAndSaas ="/saveWxAndSaas";
+        public static final String updateWxAndSaas ="/updateWxAndSaas";
+        public static final String findWechatCombo ="/findWechatCombo";
+
+        public static final String findWechatImgGroup ="/findWechatImgGroup";
+        public static final String createImgGroup ="/createImgGroup";
+        public static final String updateImgGroup ="/updateImgGroup";
+        public static final String deleteImgGroup ="/deleteImgGroup";
+        public static final String saveImg ="/saveImg";
+        public static final String findImg ="/findImg";
+        public static final String saveImgGroup ="/saveImgGroup";
+
+        public static final String saveWxReplyScene ="/saveWxReplyScene";
+        public static final String findWxReplyScene ="/findWxReplyScene";
+        public static final String saveWxTemp ="/saveWxTemp";
+        public static final String saveWxTempConfig ="/saveWxTempConfig";
+        public static final String findWxTempConfigList ="/findWxTempConfigList";
+        public static final String findWxTemplateConfig ="/findWxTemplateConfig";
     }
 
     /**

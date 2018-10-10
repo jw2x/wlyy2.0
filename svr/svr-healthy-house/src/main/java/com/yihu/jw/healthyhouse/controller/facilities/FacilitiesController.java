@@ -7,6 +7,7 @@ import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerRelationService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityService;
+import com.yihu.jw.healthyhouse.util.ImportDemoReader;
 import com.yihu.jw.healthyhouse.util.facility.FacilityMsgReader;
 import com.yihu.jw.healthyhouse.util.facility.msg.FacilityMsg;
 import com.yihu.jw.healthyhouse.util.poi.AExcelReader;
@@ -65,8 +66,13 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @RequestParam(value = "size", required = false) Integer size,
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
+        if (StringUtils.isNotEmpty(filters)) {
+            filters = filters + "deleteFlag=0;";
+        } else {
+            filters = "deleteFlag=0;";
+        }
         List<Facility> facilityList = facilityService.search(fields, filters, sorts, page, size);
-        int count = (int)facilityService.getCount(filters);
+        int count = (int) facilityService.getCount(filters);
         return success(facilityList, count, page, size);
     }
 
@@ -77,7 +83,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "facility", value = "设施JSON结构")
             @RequestParam(value = "facility") String facility,
             @ApiParam(name = "facilityServerJson", value = "设施关联的服务字符串用,号隔开")
-            @RequestParam(value = "facilityServerJson") String facilityServerJson) throws IOException {
+            @RequestParam(value = "facilityServerJson") String facilityServerJson) throws Exception {
         Facility facility1 = toEntity(facility, Facility.class);
         List<Facility> facilityList = null;
         if (StringUtils.isEmpty(facility1.getCode())) {
@@ -105,6 +111,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facility1.getCategory().toString())) {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
+        facility1.setDeleteFlag("0");
         Facility facilityBack = facilityService.save(facility1);
         List<FacilityServerRelation> facilityServerRelationList = createRelationByServerCode(facility1, facilityServerJson);
         facilityBack.setFacilityServerRelation(facilityServerRelationList);
@@ -120,28 +127,30 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @ApiParam(name = "facilityServerJson", value = "设施关联的服务字符串用,号隔开")
             @RequestParam(value = "facilityServerJson") String facilityServerJson) throws Exception {
         Facility facility1 = toEntity(facility, Facility.class);
-        List<Facility> facilityList = null;
-        List<Facility> faList = facilityService.findByField("id", facility1.getId());
-        if (!(faList != null && faList.size() > 0)) {
+        Facility facility2 = facilityService.findById(facility1.getId());
+        if (null == facility2) {
             return failed("设施不存在！", ObjEnvelop.class);
         }
+        facility1.setCreateTime(facility2.getCreateTime());
         if (StringUtils.isNotEmpty(facility1.getId())) {
             //删除设施，设施关联关系，设施服务使用设施数
             deleteFacilityByCode(facility1);
         }
+
         if (StringUtils.isEmpty(facility1.getCode())) {
             return failed("设施编码不能为空！", ObjEnvelop.class);
         } else {
-            facilityList = facilityService.findByField("code", facility1.getCode());
-            if (null != facilityList && facilityList.size() > 0) {
+            boolean existFlag = facilityService.checkFacilityByFacilityId(facility1.getId(), "code", facility1.getCode());
+            if (existFlag) {
                 return failed("设施编码已存在！", ObjEnvelop.class);
             }
         }
         if (StringUtils.isEmpty(facility1.getName())) {
             return failed("设施名称不能为空！", ObjEnvelop.class);
         } else {
-            facilityList = facilityService.findByField("name", facility1.getName());
-            if (null != facilityList && facilityList.size() > 0) {
+            boolean existFlag = facilityService.checkFacilityByFacilityId(facility1.getId(), "name", facility1.getName());
+            ;
+            if (existFlag) {
                 return failed("设施名称已存在！", ObjEnvelop.class);
             }
         }
@@ -154,6 +163,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facility1.getCategory().toString())) {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
+        facility1.setDeleteFlag("0");
         Facility facilityBack = facilityService.save(facility1);
         List<FacilityServerRelation> facilityServerRelationList = createRelationByServerCode(facility1, facilityServerJson);
         facilityBack.setFacilityServerRelation(facilityServerRelationList);
@@ -210,6 +220,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isEmpty(facility.getCategory().toString())) {
             return failed("设施类别不正确，请参考系统字典：设施类别！", ObjEnvelop.class);
         }
+        facility.setDeleteFlag("0");
         facility = facilityService.save(facility);
         return success(facility);
     }
@@ -223,7 +234,10 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (null == facility) {
             return failed("设施不存在！");
         }
-        deleteFacilityByCode(facility);
+        facility.setDeleteFlag("1");
+        //将设施状态改成关闭，在用户历史行程中做提示使用
+        facility.setStatus("1");
+        facilityService.save(facility);
         return success("success");
     }
 
@@ -232,7 +246,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     public ObjEnvelop<Long> countFacilities(
             @ApiParam(name = "totalCountFlag", value = "设施总数:true;今日新增设施:false", defaultValue = "true")
             @RequestParam(value = "totalCountFlag") boolean totalCountFlag) throws Exception {
-        String filters = "";
+        String filters = "deleteFlag=0;";
         long count;
         //设施总数:true
         if (totalCountFlag) {
@@ -241,7 +255,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             //今日新增设施:false
             String todayStart = DateUtil.getStringDateShort() + " " + "00:00:00";
             String todayEnd = DateUtil.getStringDateShort() + " " + "23:59:59";
-            filters = "createTime>=" + todayStart + ";createTime<=" + todayEnd;
+            filters = filters + "createTime>=" + todayStart + ";createTime<=" + todayEnd;
             count = facilityService.getCount(filters);
         }
         return success("success", count);
@@ -287,11 +301,10 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
     @PostMapping(value = "/batchImport")
     @ApiOperation(value = "设施列表导入（经纬度重复的不导入）")
-    public ObjEnvelop importData(
+    public Envelop importData(
             @ApiParam(name = "file", value = "文件", required = true)
             @RequestPart(value = "file") MultipartFile file,
-            HttpServletRequest request,
-            HttpServletResponse response) throws IOException, ManageException {
+            HttpServletRequest request) throws IOException, ManageException {
         try {
             request.setCharacterEncoding("UTF-8");
             AExcelReader excelReader = new FacilityMsgReader();
@@ -299,13 +312,14 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             List<FacilityMsg> dataList = excelReader.getCorrectLs();
             if (dataList.size() > 0) {
                 Map<String, Object> result = facilityService.batchInsertFacility(dataList);
-                return ObjEnvelop.getSuccess("导入成功!", result);
+                return success("导入成功!", result);
             }
 
         } catch (Exception e) {
-            throw new ManageException("导入设施列表异常！", e);
+            e.printStackTrace();
+            return failed("导入异常,请检查导入文件格式"+e.getMessage());
         }
-        return ObjEnvelop.getError("导入失败");
+        return failed("导入失败");
     }
 
     @ApiOperation(value = "获取设施列表--不分页(app)", responseContainer = "List")
@@ -328,16 +342,25 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         if (StringUtils.isNotEmpty(facilityServerCodes)) {
             String[] faServerCodes = facilityServerCodes.split(",");
             List<String> facilityCodeList = facilityService.getFacilityCodeByServerCode(faServerCodes);
-            facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
+            if (null != facilityCodeList && facilityCodeList.size() > 0) {
+                facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
+            }
         } else if (StringUtils.isNotEmpty(facilityServerType)) {
             //设施编码为空，设施服务类型不为空，按设施服务类型获取设施
             List<String> facilityCodeList = facilityService.getFacilityCodeByServerType(facilityServerType);
-            facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
+            if (null != facilityCodeList && facilityCodeList.size() > 0) {
+                facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
+            }
         } else if (StringUtils.isNotEmpty(facilityCategory)) {
             //设施编码为空，设施服务类型为空，按照设施分类获取按设施服务类型获取设施
-            filters = "category=" + facilityCategory;
+            filters = "deleteFlag=0;category=" + facilityCategory + ";status=0;";
             facilityList = facilityService.search(fields, filters, sorts);
         } else {
+            if (StringUtils.isEmpty(filters)) {
+                filters = "deleteFlag=0;status=0;";
+            } else {
+                filters = filters + ";status=0;deleteFlag=0;";
+            }
             facilityList = facilityService.search(fields, filters, sorts);
         }
         return success(facilityList);
@@ -351,15 +374,15 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         //今日使用设施数
         long countUsedFacilitieToday = facilityServerRelationService.countDistinctByFacilitieCodeAndCreateTimeBetween();
         map.put("countUsedFacilitieToday", countUsedFacilitieToday);
-        long countAllFacilitie = facilityService.getCount("");
+        long countAllFacilitie = facilityService.getCount("deleteFlag=0;");
         map.put("countAllFacilitie", countAllFacilitie);
         //今日新增设施:false
         String todayStart = DateUtil.getStringDateShort() + " " + "00:00:00";
         String todayEnd = DateUtil.getStringDateShort() + " " + "23:59:59";
-        String filters = "createTime>=" + todayStart + ";createTime<=" + todayEnd;
+        String filters = "deleteFlag=0;createTime>=" + todayStart + ";createTime<=" + todayEnd;
         long countCreatedFacilitieToday = facilityService.getCount(filters);
         map.put("countCreatedFacilitieToday", countCreatedFacilitieToday);
-        return ObjEnvelop.getSuccess("获取成功", map);
+        return success("获取成功", map);
     }
 
 
@@ -397,7 +420,6 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             }
         }
         facilityServerRelationService.deleteByFacilitieCode(facility.getCode());
-        facilityService.delete(facility);
     }
 
     /**
@@ -407,7 +429,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
      * @param facilityServerJson 设施服务编码
      * @return
      */
-    public List<FacilityServerRelation> createRelationByServerCode(Facility facility1, String facilityServerJson) {
+    public List<FacilityServerRelation> createRelationByServerCode(Facility facility1, String facilityServerJson) throws Exception {
         List<FacilityServerRelation> list = new ArrayList<>();
         if (StringUtils.isNotEmpty(facilityServerJson)) {
             //设施编码
@@ -438,5 +460,30 @@ public class FacilitiesController extends EnvelopRestEndpoint {
         return list;
     }
 
+
+    @PostMapping(value = "/demoImport")
+    @ApiOperation(value = "导入设施列表临时接口")
+    public Envelop demoImport(
+            @ApiParam(name = "file", value = "文件", required = true)
+            @RequestPart(value = "file") MultipartFile file,
+            HttpServletRequest request) throws IOException, ManageException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            AExcelReader excelReader = new ImportDemoReader();
+            excelReader.read(file);
+            List<Map<String,String>> dataList = excelReader.getCorrectLs();
+            if (dataList.size() > 0) {
+                //TODO 导入
+                facilityService.batchInsertDemo(dataList);
+                System.out.println(dataList);
+                return success("导入成功!");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return failed("导入异常,请检查导入文件格式"+e.getMessage());
+        }
+        return failed("导入失败");
+    }
 
 }

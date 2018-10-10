@@ -46,6 +46,8 @@ public class User extends UuidIdentityEntityWithOperator {
     private String activatedContent;       //账户冻结原因
     @Column(name = "province_code", nullable = false)
     private String provinceCode;    //省编码
+    @Column(name = "province_name", nullable = false)
+    private String provinceName;    //省名称
     @Column(name = "city_code", nullable = false)
     private String cityCode;        //市编码
     @Column(name = "city_name", nullable = false)
@@ -59,7 +61,7 @@ public class User extends UuidIdentityEntityWithOperator {
 
     @Column(name = "salt")
     private String salt; //加密种子
-    @Column(name = "facility_used_count")
+    @Column(name = "facility_used_count",columnDefinition="int default 1")
     private Integer facilityUsedCount;//设施使用次数
 
     @Column(name = "realname_authentication")
@@ -69,6 +71,10 @@ public class User extends UuidIdentityEntityWithOperator {
     @Column(name = "ijk_authentication")
     private String ijkAuthentication;//i健康认证
 
+    @Column(name = "organization_code")
+    private String organizationCode;//机构编码
+    @Column(name = "organization_name")
+    private String organizationName;//机构名称
 
     public String getLoginCode() {
         return loginCode;
@@ -254,9 +260,28 @@ public class User extends UuidIdentityEntityWithOperator {
         this.ijkAuthentication = ijkAuthentication;
     }
 
+    public String getOrganizationCode() {
+        return organizationCode;
+    }
+
+    public void setOrganizationCode(String organizationCode) {
+        this.organizationCode = organizationCode;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
     @Transient
     public String getAddress() {
         String address = "";
+        if (this.getProvinceName() != null) {
+            address += this.getProvinceName();
+        }
         if (this.getCityName() != null) {
             address += this.getCityName();
         }
@@ -280,5 +305,13 @@ public class User extends UuidIdentityEntityWithOperator {
             genderValue = "女";
         }
         return genderValue;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
     }
 }

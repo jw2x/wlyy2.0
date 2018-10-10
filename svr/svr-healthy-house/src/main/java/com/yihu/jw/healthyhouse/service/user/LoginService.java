@@ -1,13 +1,14 @@
 package com.yihu.jw.healthyhouse.service.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yihu.jw.entity.base.sms.SmsGatewayDO;
+import com.sun.org.apache.bcel.internal.generic.I2F;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.healthyhouse.cache.WlyyRedisVerifyCodeService;
 import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.constant.UserConstant;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
+import com.yihu.jw.util.common.IdCardUtil;
 import com.yihu.jw.util.security.MD5;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,6 +64,11 @@ public class LoginService  extends BaseJpaService {
             // 更新身份证验证字段
             user.setPhoneAuthentication(UserConstant.AUTHORIZED);
             user.setPassword(LoginInfo.DEFAULT_PASSWORD);
+            user.setUserType(LoginInfo.USER_TYPE_PATIENT);
+        }
+
+        if (HouseUserContant.activated_lock.equals(user.getActivated())) {
+            throw new ManageException("该用户已被冻结!");
         }
         //已注册用户更改用户状态
         user.setActivated(HouseUserContant.activated_active);
@@ -73,7 +78,7 @@ public class LoginService  extends BaseJpaService {
         request.getSession().setAttribute(LoginInfo.LOGIN_CODE, user.getLoginCode());
         request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
         user.setLastLoginTime(new Date());
-        userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
+        user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
         return user;
     }
 
@@ -101,6 +106,8 @@ public class LoginService  extends BaseJpaService {
                 user.setGender((String) data.get("gender"));
                 user.setIdCardNo((String) data.get("idcard"));
                 user.setTelephone((String) data.get("mobile"));
+                user.setUserType(LoginInfo.USER_TYPE_PATIENT);
+                user.setIjkAuthentication(UserConstant.AUTHORIZED);
 
             } else {
                 String message = "账号不存在";
@@ -117,7 +124,7 @@ public class LoginService  extends BaseJpaService {
         request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
         user.setActivated(HouseUserContant.activated_active);
         user.setLastLoginTime(new Date());
-        userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
+        user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
         return user;
     }
 
@@ -177,7 +184,7 @@ public class LoginService  extends BaseJpaService {
         request.getSession().removeAttribute(LoginInfo.LOGIN_NAME);
         request.getSession().removeAttribute(LoginInfo.USER_ID);
         user.setActivated(HouseUserContant.activated_offline);
-        userService.saveOrUpdate(user, "systemLogin");
+        user= userService.saveOrUpdate(user, "systemLogin");
         return user;
     }
 
@@ -264,10 +271,13 @@ public class LoginService  extends BaseJpaService {
     @Transactional(noRollbackForClassName = "ManageException")
     public User managerPhoneLogin(HttpServletRequest request, String loginCode) throws ManageException {
         //判断管理员用户信息是否存在
-        User user = userService.findByLoginCodeAndUserType(loginCode, LoginInfo.USER_TYPE_AdminManager);
+        User user = userService.findByTelephoneAndUserType(loginCode, LoginInfo.USER_TYPE_SUPER_AdminManager);
         if (user == null) {
             throw new ManageException("该管理员账号不存在!");
         } else {
+            if (HouseUserContant.activated_lock.equals(user.getActivated())) {
+                throw new ManageException("该用户已被冻结!");
+            }
             //已注册用户更改用户状态
             user.setActivated(HouseUserContant.activated_active);
             request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
@@ -276,7 +286,7 @@ public class LoginService  extends BaseJpaService {
             request.getSession().setAttribute(LoginInfo.LOGIN_CODE, user.getLoginCode());
             request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
             user.setLastLoginTime(new Date());
-            userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
+            user=  userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_PHONE);
         }
         return user;
     }
@@ -294,11 +304,15 @@ public class LoginService  extends BaseJpaService {
     @Transactional(noRollbackForClassName = "ManageException")
     public User managerLogin(HttpServletRequest request, String clientId, String loginCode, String password) throws ManageException {
         //判断登陆信息是否正确
-        User user = userService.findByCode(loginCode);
+        User user = userService.findByLoginCodeAndUserType(loginCode, LoginInfo.USER_TYPE_SUPER_AdminManager);
         if (user == null) {
             String message = "该管理员账号不存在！";
             throw new ManageException(message);
         } else {
+            if (HouseUserContant.activated_lock.equals(user.getActivated())) {
+                throw new ManageException("该用户已被冻结!");
+            }
+
             if (!user.getPassword().equals(MD5.GetMD5Code(password + user.getSalt()))) {
                 String message = "密码错误";
                 throw new ManageException(message);
@@ -309,9 +323,73 @@ public class LoginService  extends BaseJpaService {
             request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
             user.setActivated(HouseUserContant.activated_active);
             user.setLastLoginTime(new Date());
-            userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
+            user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
             return user;
         }
+    }
+
+
+    /**
+     *  //TODO 体验版本方法，后续可能删除
+     * 身份证登录
+     *
+     * @param loginCode
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    @Transactional(noRollbackForClassName = "ManageException")
+    public User idCardlogin(HttpServletRequest request, String loginCode, String password) throws ManageException {
+        //判断登陆信息是否正确
+        User user = userService.findByCode(loginCode);
+        if (user == null) {
+            String message = "账号不存在";
+            throw new ManageException(message);
+        }
+        if (!user.getPassword().equals(MD5.GetMD5Code(password + user.getSalt()))) {
+            String message = "密码错误";
+            throw new ManageException(message);
+        }
+        request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
+        request.getSession().setAttribute(LoginInfo.TOKEN, ""); //TODO token是否添加
+        request.getSession().setAttribute(LoginInfo.LOGIN_NAME, user.getName());
+        request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
+        user.setActivated(HouseUserContant.activated_active);
+        user.setLastLoginTime(new Date());
+        user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IDCARDNO);
+        return user;
+    }
+
+
+    @Transactional(noRollbackForClassName = "ManageException")
+    public User idCardRegister(HttpServletRequest request, String name, String idCardNo) throws ManageException {
+        if(!IdCardUtil.cardCodeVerifySimple(idCardNo)){
+            throw new ManageException("身份证号格式有误");
+        }
+
+        User user = userService.findByLoginCodeAndUserType(idCardNo,LoginInfo.USER_TYPE_PATIENT);
+        if (user==null) {
+            //新增账号
+            user = new User();
+            String password = idCardNo.substring(idCardNo.length()-6,idCardNo.length());
+            user.setPassword(password);
+            user.setLoginCode(idCardNo);
+            user.setName(name);
+            user.setIdCardNo(idCardNo);
+            user.setUserType(LoginInfo.USER_TYPE_PATIENT);
+        }
+
+        // 更新身份证验证字段
+        user.setRealnameAuthentication(UserConstant.AUTHORIZED);
+        user.setName(name);
+        request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
+        request.getSession().setAttribute(LoginInfo.TOKEN, ""); //TODO token是否添加
+        request.getSession().setAttribute(LoginInfo.LOGIN_NAME, user.getName());
+        request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
+        user.setActivated(HouseUserContant.activated_active);
+        user.setLastLoginTime(new Date());
+        user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IDCARDNO);
+        return user;
     }
 
 

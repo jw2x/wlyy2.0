@@ -67,7 +67,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.search(fields, filters, sorts, page, size);
-        int count = (int)facilityUsedRecordService.getCount(filters);
+        int count = (int) facilityUsedRecordService.getCount(filters);
         return success(facilityUsedRecordList, count, page, size);
     }
 
@@ -77,6 +77,7 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop<FacilityUsedRecord> createFacilityUsedRecord(
             @ApiParam(name = "facilityUsedRecord", value = "用户使用导航记录JSON结构")
             @RequestBody FacilityUsedRecord facilityUsedRecord) throws IOException, ManageException {
+        facilityUsedRecord.setUserId(facilityUsedRecord.getCreateUser());
         facilityUsedRecord = facilityUsedRecordService.save(facilityUsedRecord);
         userService.updateFacilityUse(facilityUsedRecord.getCreateUser());
         return success(facilityUsedRecord);
@@ -128,7 +129,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
         FacilityUsedRecord facilityUsedRecord;
         if (nearbyFlag) {
             if (StringUtils.isNotEmpty(filters)) {
-                filters = "name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1";
+                filters = "deleteFlag=0;status=0;" + "name?" + filters + " g1;cityName?" + filters + " g1;countyName?" + filters + " g1;street?" + filters + " g1;address?" + filters + " g1;";
+            } else {
+                filters = "deleteFlag=0;status=0;";
             }
             //获取所有设施，并根据设施编码及用户id查找使用次数
             List<Facility> facilityList = facilityService.search(filters);
@@ -140,7 +143,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
                 facilityUsedRecord.setFacilitieLatitudes(facility.getLatitude());
                 facilityUsedRecord.setFacilitieAddr(facility.getAddress());
                 facilityUsedRecord.setCreateUser(userId);
+                facilityUsedRecord.setUserId(userId);
                 facilityUsedRecord.setFacilitieId(facility.getId());
+                facilityUsedRecord.setFacilitieStatus(facility.getStatus());
                 long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facility.getCode(), userId);
                 facilityUsedRecord.setNum((int) count);
                 facilityUsedRecordList.add(facilityUsedRecord);
@@ -151,6 +156,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             for (FacilityUsedRecord facilityUsedRecord1 : facilityUsedRecordList) {
                 long count = facilityUsedRecordService.countByFacilitieCodeAndUserId(facilityUsedRecord1.getFacilitieCode(), userId);
                 facilityUsedRecord1.setNum((int) count);
+                //获取设施状态
+                Facility facility = facilityService.findByCode(facilityUsedRecord1.getFacilitieCode());
+                facilityUsedRecord1.setFacilitieStatus(facility.getStatus());
             }
         }
         return success(facilityUsedRecordList);
@@ -179,11 +187,14 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
     public ObjEnvelop facilityUsedRecordDetail(
             @ApiParam(name = "id", value = "使用记录ID", defaultValue = "")
             @RequestParam(value = "id") String id) throws Exception {
+        if (id == null) {
+            throw new ManageException("使用记录ID为空！");
+        }
         Map<String, Object> usedRecordDetail = facilityUsedRecordService.getUsedRecordDetail(id);
         return success(usedRecordDetail);
     }
 
-    @ApiOperation(value = "获取用户使用导航记录列表--分页（app）", responseContainer = "List")
+    @ApiOperation(value = "我的行程-获取用户使用导航记录列表--分页（app）", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilityUsedRecord.PAGE_FACILITY_USED_RECORD_BY_USERID)
     public PageEnvelop<FacilityUsedRecord> getFacilityUsedRecordsByUserId(
             @ApiParam(name = "userId", value = "必输参数：登录用户id", defaultValue = "")
@@ -195,13 +206,13 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             @ApiParam(name = "page", value = "页码", defaultValue = "1")
             @RequestParam(value = "page", required = false) Integer page) throws Exception {
         String filters = "createUser=" + userId;
+        sorts = "-createTime";
         List<FacilityUsedRecord> facilityUsedRecordList = facilityUsedRecordService.search("", filters, sorts, page, size);
         for (FacilityUsedRecord record : facilityUsedRecordList) {
             //根据设施编码获取关联服务的名称
             String facilityCode = record.getFacilitieCode();
             List<FacilityServerRelation> facilityServerRelations = facilityServerRelationService.findByField("facilitieCode", facilityCode);
-            List<String> services = facilityServerRelations.stream().map(FacilityServerRelation::getServiceName).collect(Collectors.toList());
-            String servicesValue = Joiner.on("、").join(services);
+            String servicesValue = facilityServerRelations.stream().map(FacilityServerRelation::getServiceName).collect(Collectors.joining("、"));
             record.setFacilityRelationServiceName(servicesValue);
             //根据记录获取评价记录
             NavigationServiceEvaluation comment = navigationServiceEvaluationService.findByUseRecordId(record.getId());
@@ -210,8 +221,11 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             } else {
                 record.setNavigationServiceEvaluationFlag("已评价");
             }
+            //根据设施编码获取 设施状态
+            Facility facility = facilityService.findByCode(facilityCode);
+            record.setFacilitieStatus(facility.getStatus());
         }
-        int count = (int)facilityUsedRecordService.getCount(filters);
+        int count = (int) facilityUsedRecordService.getCount(filters);
         return success(facilityUsedRecordList, count, page, size);
     }
 
