@@ -24,7 +24,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = BaseRequestMapping.Function.PREFIX)
-@Api(value = "功能管理", description = "功能管理服务接口", tags = {"wlyy基础服务 - 功能管理服务接口"})
+@Api(value = "功能（接口）管理", description = "功能（接口）管理服务接口", tags = {"wlyy基础服务 - 功能（接口）管理服务接口"})
 public class FunctionEndpoint extends EnvelopRestEndpoint {
 
     @Autowired

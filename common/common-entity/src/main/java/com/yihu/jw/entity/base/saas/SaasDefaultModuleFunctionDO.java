@@ -15,18 +15,18 @@ import javax.persistence.Table;
 public class SaasDefaultModuleFunctionDO extends IntegerIdentityEntity {
 
     //Saas类型
-    private SaasDO.Type saasType;
+    private Integer saasType;
     //模块ID
     private String moduleId;
     //功能ID
     private String functionId;
 
     @Column(name = "saas_type", nullable = false)
-    public SaasDO.Type getSaasType() {
+    public Integer getSaasType() {
         return saasType;
     }
 
-    public void setSaasType(SaasDO.Type saasType) {
+    public void setSaasType(Integer saasType) {
         this.saasType = saasType;
     }
 

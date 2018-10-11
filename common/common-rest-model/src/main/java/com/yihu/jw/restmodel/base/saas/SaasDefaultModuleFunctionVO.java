@@ -12,18 +12,18 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "SaasDefaultModuleFunctionVO", description = "Saas默认模块功能")
 public class SaasDefaultModuleFunctionVO extends IntegerIdentityVO {
 
-    @ApiModelProperty(value = "Saas类型", example = "familyDoctor")
-    private SaasDO.Type saasType;
+    @ApiModelProperty(value = "Saas类型编码（从1开始自增）", example = "1")
+    private Integer saasType;
     @ApiModelProperty(value = "模块ID", example = "402303ee656498890234sf9ad2wa00sa")
     private String moduleId;
     @ApiModelProperty(value = "功能ID", example = "402303ee656498890sd24s9ad2wa00sd")
     private String functionId;
 
-    public SaasDO.Type getSaasType() {
+    public Integer getSaasType() {
         return saasType;
     }
 
-    public void setSaasType(SaasDO.Type saasType) {
+    public void setSaasType(Integer saasType) {
         this.saasType = saasType;
     }
 

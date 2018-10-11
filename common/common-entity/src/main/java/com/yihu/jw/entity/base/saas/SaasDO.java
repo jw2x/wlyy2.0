@@ -26,21 +26,12 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 		delete
     }
 
-	public enum Type {
-	    //家医
-        familyDoctor,
-        //等级医院
-        gradeHospital,
-        //混合型
-        hybrid
-    }
-
     private String orgCode; //机构编码
 	private String name; //系统名称
 	private Status status; //状态  0待审核 1审核通过 2审核不通过 3已删除
 	private String remark; //备注
 	private String logo; //远程fastDFS文件地址
-    private Type type; //类型
+    private Integer type; //类型
 	private String manager; //管理员 - 关联user表id字段
 	private String email; //管理员邮箱
 	private String mobile; //管理员手机号码
@@ -91,11 +82,11 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	}
 
 	@Column(name = "type", nullable = false)
-	public Type getType() {
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 

@@ -1,8 +1,10 @@
 package com.yihu.jw.base.service.saas;
 
 import com.yihu.jw.base.dao.saas.SaasDefaultModuleFunctionDao;
+import com.yihu.jw.base.dao.saas.SaasTypeDictDao;
 import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
 import com.yihu.mysql.query.BaseJpaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,5 +13,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SaasDefaultModuleFunctionService extends BaseJpaService<SaasDefaultModuleFunctionDO, SaasDefaultModuleFunctionDao> {
+    @Autowired
+    private SaasDefaultModuleFunctionDao saasDefaultModuleFunctionDao;
 
+    public void deleteBySaasType(Integer saasType) {
+        saasDefaultModuleFunctionDao.deleteBySaasType(saasType);
+    }
 }

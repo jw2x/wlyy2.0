@@ -1,6 +1,7 @@
 package com.yihu.jw.restmodel.base.saas;
 
 
+import com.yihu.jw.entity.base.saas.SaasBusinessCardDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.restmodel.IntegerIdentityVO;
 import io.swagger.annotations.ApiModel;
@@ -22,7 +23,7 @@ public class SaasBusinessCardVO extends IntegerIdentityVO {
     private String field;
     //类型
     @ApiModelProperty(value = "名片类型", example = "doctor")
-    private SaasDO.Type type;
+    private SaasBusinessCardDO.Type type;
 
     public String getSaasId() {
         return saasId;
@@ -40,11 +41,11 @@ public class SaasBusinessCardVO extends IntegerIdentityVO {
         this.field = field;
     }
 
-    public SaasDO.Type getType() {
+    public SaasBusinessCardDO.Type getType() {
         return type;
     }
 
-    public void setType(SaasDO.Type type) {
+    public void setType(SaasBusinessCardDO.Type type) {
         this.type = type;
     }
 }

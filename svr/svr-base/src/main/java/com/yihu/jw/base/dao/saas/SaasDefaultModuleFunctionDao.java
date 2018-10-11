@@ -13,5 +13,7 @@ import java.util.List;
  */
 public interface SaasDefaultModuleFunctionDao extends PagingAndSortingRepository<SaasDefaultModuleFunctionDO, Integer>, JpaSpecificationExecutor<SaasDefaultModuleFunctionDO> {
 
-    List<SaasDefaultModuleFunctionDO> findBySaasType(SaasDO.Type type);
+    List<SaasDefaultModuleFunctionDO> findBySaasType(Integer saasType);
+
+    void deleteBySaasType(Integer saasType);
 }
