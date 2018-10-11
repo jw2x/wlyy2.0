@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 /**
  * Dao - 模块
  * Created by chenweida on 2017/5/19.
@@ -18,4 +20,6 @@ public interface ModuleDao extends PagingAndSortingRepository<ModuleDO, String>,
 
     @Query("select count(*) from ModuleDO a where a.name = ?1 ")
     int isExistName(String name);
+
+    List<ModuleDO> findByParentId(String parentId);
 }
