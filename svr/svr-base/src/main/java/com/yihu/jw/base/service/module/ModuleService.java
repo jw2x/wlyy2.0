@@ -24,12 +24,16 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
      * @param moduleDO
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public ModuleDO addModule(ModuleDO moduleDO){
         if(StringUtils.isBlank(moduleDO.getParentId())){
             moduleDO.setParentId(CommonContant.DEFAULT_PARENTID);
         }
         moduleDao.save(moduleDO);
         //若新增某必选业务模块，则需为所有已创建的租户和租户类型添加此业务模块
+        if (ModuleDO.Must.must.getValue().equals(moduleDO.getIsMust())){
+
+        }
 
         return moduleDO;
     }
