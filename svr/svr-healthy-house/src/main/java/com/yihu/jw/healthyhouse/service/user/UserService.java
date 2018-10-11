@@ -464,7 +464,9 @@ public class UserService extends BaseJpaService<User, UserDao> {
      */
     @Transactional
     public void updateUserOffLine(List<Serializable> ids) throws ManageException {
-        userDao.updateUserOnLine(ids);//更新在线
+        if (ids!=null) {
+            userDao.updateUserOnLine(ids);//更新在线
+        }
         userDao.updateUserOffLine(ids);//更新离线
     }
 
