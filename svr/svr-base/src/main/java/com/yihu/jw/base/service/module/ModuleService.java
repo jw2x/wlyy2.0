@@ -50,7 +50,17 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
             moduleDO.setParentId(CommonContant.DEFAULT_PARENTID);
         }
         moduleDO.setDel(1);
+        moduleDO.setIsEnd(1);
         moduleDao.save(moduleDO);
+        //父节点设置非根节点
+        if(!CommonContant.DEFAULT_PARENTID.equals(moduleDO.getParentId())){
+            ModuleDO parentModule = moduleDao.findOne(moduleDO.getParentId());
+            if(ModuleDO.End.no.getValue().equals(parentModule.getIsEnd())){
+                parentModule.setIsEnd(ModuleDO.End.have.getValue());
+                moduleDao.save(parentModule);
+            }
+        }
+
         //若新增某必选业务模块，则需为所有已创建的租户和租户类型添加此业务模块
         addSubModule(moduleDO);
 
