@@ -24,6 +24,10 @@ public class MenuDO extends UuidIdentityEntityWithOperator {
 	 */
 	private String url;
 	/**
+	 * 菜单图标
+	 */
+	private String icon;
+	/**
 	 * 请求方式
 	 */
 	private String method;
@@ -105,6 +109,15 @@ public class MenuDO extends UuidIdentityEntityWithOperator {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	@Column(name = "icon")
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
 	}
 
 	@Column(name = "method")
