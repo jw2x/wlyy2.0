@@ -10,105 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Entity - 模块
- * Created by progr1mmer on 2018/8/14.
+ * Entity - 租户类型模块
+ * Created by yeshijie on 2018/10/11.
  */
 @Entity
-@Table(name = "base_module")
-public class ModuleDO extends UuidIdentityEntityWithOperator {
+@Table(name = "base_saas_type_module")
+public class SaasTypeModuleDO extends UuidIdentityEntityWithOperator {
 
-
-	public enum Status {
-		unAvailable("不可用", 0),
-		available("可用", 1);
-		private String name;
-		private Integer value;
-
-		Status(String name, Integer value) {
-			this.name = name;
-			this.value = value;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Integer getValue() {
-			return value;
-		}
-
-		public void setValue(Integer value) {
-			this.value = value;
-		}
-	}
-
-	public enum Type {
-		common("通用", 0),
-		doctor("医生端", 1),
-		patient("居民端", 2);
-		private String name;
-		private Integer value;
-
-		Type(String name, Integer value) {
-			this.name = name;
-			this.value = value;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Integer getValue() {
-			return value;
-		}
-
-		public void setValue(Integer value) {
-			this.value = value;
-		}
-	}
-
-	public enum Must {
-		nonMust("非必选", 0),
-		must("必选", 1);
-		private String name;
-		private Integer value;
-
-		Must(String name, Integer value) {
-			this.name = name;
-			this.value = value;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public Integer getValue() {
-			return value;
-		}
-
-		public void setValue(Integer value) {
-			this.value = value;
-		}
-	}
-
+	//租户类型id
+	private String saasTypeId;
 	//模块名称
 	private String name;
 	//模块连接
 	private String url;
-	//父id
-	private String parentId;
+	//模块id
+	private String moduleId;
+	//父模块id
+	private String parentModuleId;
 	//状态
 	private Integer status;
 	//类型
@@ -122,11 +40,20 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
 	//逻辑删除标志1正常，0删除
 	private Integer del ;
 	//子集
-	private List<ModuleDO> children = new ArrayList<>();
+	private List<SaasTypeModuleDO> children = new ArrayList<>();
 
 	// Constructors
 
-    @Column(name = "name")
+	@Column(name = "saas_type_id")
+	public String getSaasTypeId() {
+		return saasTypeId;
+	}
+
+	public void setSaasTypeId(String saasTypeId) {
+		this.saasTypeId = saasTypeId;
+	}
+
+	@Column(name = "name")
     public String getName() {
         return this.name;
     }
@@ -135,13 +62,22 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
         this.name = name;
     }
 
-	@Column(name = "parent_id")
-	public String getParentId() {
-		return parentId;
+	@Column(name = "module_id")
+	public String getModuleId() {
+		return moduleId;
 	}
 
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
+	public void setModuleId(String moduleId) {
+		this.moduleId = moduleId;
+	}
+
+	@Column(name = "parent_module_id")
+	public String getParentModuleId() {
+		return parentModuleId;
+	}
+
+	public void setParentModuleId(String parentModuleId) {
+		this.parentModuleId = parentModuleId;
 	}
 
     @Column(name = "status")
@@ -208,11 +144,11 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
 	}
 
 	@Transient
-	public List<ModuleDO> getChildren() {
+	public List<SaasTypeModuleDO> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<ModuleDO> children) {
+	public void setChildren(List<SaasTypeModuleDO> children) {
 		this.children = children;
 	}
 }
