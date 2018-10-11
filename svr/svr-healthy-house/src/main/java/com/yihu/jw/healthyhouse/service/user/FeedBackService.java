@@ -11,6 +11,7 @@ import jxl.write.Colour;
 import jxl.write.WritableCellFormat;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.hibernate.SQLQuery;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -116,6 +118,21 @@ public class FeedBackService extends BaseJpaService<FeedBack, FeedBackDao> {
         } catch (Exception e) {
             throw new ManageException("导出用户反馈列表异常",e);
         }
+    }
+
+
+    /**
+     * 统计
+     *
+     * @param userId
+     * @return
+     */
+    public boolean getAppFeedBackByUserIdAndReadFlag(String userId) {
+        String sql = "select count(1) from feedback  f where  f.create_user=:userId and f.read_flag=0";
+        SQLQuery sqlQuery = currentSession().createSQLQuery(sql);
+        sqlQuery.setParameter("userId", userId);
+        BigInteger count = (BigInteger) sqlQuery.uniqueResult();
+        return count.compareTo(new BigInteger("0")) > 0;
     }
 
 }
