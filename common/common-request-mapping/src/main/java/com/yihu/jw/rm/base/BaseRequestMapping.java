@@ -52,6 +52,13 @@ public class BaseRequestMapping {
     }
 
     /**
+     * SAAS类型
+     */
+    public static class SaasTypeDict extends Basic {
+        public static final String PREFIX  = "/saas_type_dict";
+    }
+
+    /**
      * 模块
      */
     public static class Module extends Basic {
