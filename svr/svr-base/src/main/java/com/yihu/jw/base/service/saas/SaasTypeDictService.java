@@ -94,4 +94,8 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
         BigInteger count = (BigInteger) sqlQuery.uniqueResult();
         return count.compareTo(new BigInteger("0")) > 0;
     }
+
+    public SaasTypeDictDO findById(String id){
+        return saasTypeDictDao.findById(id);
+    }
 }
