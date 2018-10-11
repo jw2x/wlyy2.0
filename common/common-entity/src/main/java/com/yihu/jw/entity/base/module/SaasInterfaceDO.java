@@ -25,7 +25,7 @@ public class SaasInterfaceDO extends UuidIdentityEntity {
     private Integer protocolType;//协议类型（2restful,1webservice）
     private Integer openLevel;//开发程度（1公开，2私有）
     private Integer checkLevel;//审计程度（1审计，2不审计）
-    private Integer status;//状态（1生效中，0已失效）
+    private Integer status;//状态（1启用中，0已暂停）
     private String remark;//接口说明
     private String url;//https请求地址
 
