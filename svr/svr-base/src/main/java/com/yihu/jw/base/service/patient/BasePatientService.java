@@ -5,14 +5,12 @@ import com.yihu.jw.base.util.JavaBeanUtils;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.patient.BasePatientDO;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -50,4 +48,26 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
         return resultMap;
     }
 
+    /**
+     * 获取用户基础信息，参数为空查全部
+     * @param idcard
+     * @param name
+     * @param page
+     * @param size
+     * @param sorts
+     * @return
+     */
+    public List<Map<String,Object>> queryPatientBaseInfo(String idcard,String name,int page,int size,String sorts)throws Exception{
+        List<Map<String,Object>> result = new ArrayList<>();
+        if(!StringUtils.isEmpty(idcard)){
+            result = basePatientDao.findByIdcard("%"+idcard+"%",creatPage(page,size,sorts));
+            return result;
+        }
+        if(!StringUtils.isEmpty(name)){
+            result = basePatientDao.findByName(idcard,creatPage(page,size,sorts));
+            return result;
+        }
+        result = basePatientDao.findBaseInfo(creatPage(page,size,sorts));
+        return result;
+    }
 }

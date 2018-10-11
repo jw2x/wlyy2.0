@@ -145,6 +145,8 @@ CREATE TABLE `base_patient` (
   `town_name` varchar(50) DEFAULT NULL COMMENT '区县名称',
   `street_code` varchar(50) DEFAULT NULL COMMENT '街道代码',
   `street_name` varchar(50) DEFAULT NULL COMMENT '街道名称',
+  `committee_code` varchar(50) DEFAULT NULL COMMENT '居委会代码',
+  `committee_name` varchar(50) DEFAULT NULL COMMENT '居委会名称',
   `disease` varchar(100) DEFAULT NULL COMMENT '疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病',
   `disease_condition` varchar(100) DEFAULT NULL COMMENT '病情：0绿标，1黄标，2红标，3重点关注,',
   `points` varchar(100) DEFAULT NULL COMMENT '总积分',
@@ -739,3 +741,15 @@ create table `base_message_type`
   primary key (id)
 )
   ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息类型字典';
+
+
+-- 业务模块角色表
+drop table IF EXISTS `base_role_module`;
+create table `base_role_module`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
+  `role_id` varchar(100) DEFAULT NULL COMMENT '角色id',
+  `module_id` varchar(50) not null COMMENT '业务模块id',
+  primary key (id)
+)
+  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块角色表';

@@ -8,6 +8,7 @@ import com.yihu.jw.entity.base.dict.DictIcd10DO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.dict.DictHealthProblemDO;
 
@@ -37,16 +38,16 @@ public class DictHealthProblemService extends BaseJpaService<DictHealthProblemDO
      * @param saasId
      * @return
      */
-    public String queryAll(String saasId){
+    public JSONObject queryAll(String saasId, Pageable pageable){
         JSONObject jsonObject = new JSONObject();
         List<Map<String,Object>> list = new ArrayList<>();
         if(StringUtils.isEmpty(saasId)){
-            list = dictJobTitleDao.findCodeAndName();
+            list = dictJobTitleDao.findCodeAndName(pageable);
         }else{
-            list = dictJobTitleDao.findCodeAndNameBySaasId(saasId);
+            list = dictJobTitleDao.findCodeAndNameBySaasId(saasId,pageable);
         }
         jsonObject.put(SystemDictEnum.HealthProblemDict.toString(),list);
-        return jsonObject.toJSONString();
+        return jsonObject;
     }
 
 }

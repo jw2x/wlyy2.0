@@ -115,6 +115,17 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     private String streetName;
 
     /**
+     * 居委会代码
+     */
+    private String committeeCode;
+
+    /**
+     * 居委会名称
+     */
+    private String committeeName;
+
+
+    /**
 	 * 疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病
 	 */
 	private String disease;
@@ -364,7 +375,23 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
         this.streetName = streetName;
     }
 
-	@Column(name = "disease")
+    public String getCommitteeCode() {
+        return committeeCode;
+    }
+
+    public void setCommitteeCode(String committeeCode) {
+        this.committeeCode = committeeCode;
+    }
+
+    public String getCommitteeName() {
+        return committeeName;
+    }
+
+    public void setCommitteeName(String committeeName) {
+        this.committeeName = committeeName;
+    }
+
+    @Column(name = "disease")
     public String getDisease() {
         return disease;
     }

@@ -1,13 +1,30 @@
 package com.yihu.jw.base.service.system;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.discovery.converters.Auto;
+import com.yihu.jw.base.enums.SystemDictEnum;
 import com.yihu.jw.base.service.dict.*;
+import com.yihu.jw.base.util.ConstantUtils;
+import com.yihu.jw.entity.base.dict.*;
 import com.yihu.jw.entity.base.system.SystemDictDO;
 import com.yihu.jw.base.dao.system.SystemDictDao;
+import com.yihu.jw.entity.base.system.SystemDictEntryDO;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.Order;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Service - 系统字典
@@ -34,14 +51,108 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
     @Autowired
     private DictMedicineService dictMedicineService;
 
+    @Autowired
+    private SystemDictEntryService systemDictEntryService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Override
+    public long getCount(String filters) throws ParseException {
+        return super.getCount(filters);
+    }
+
     /**
      * 获取系统所有相关字典，
      * @param userId
      * @return
      */
-    public String getAllDistList(String userId){
+    public JSONArray getAllDistList(String userId){
+        JSONArray jsonArray = new JSONArray();
+        return jsonArray;
+    }
+    /**
+     * 根据字典类型获取系统所有相关字典，
+     * @param userId
+     * @return
+     */
+    public JSONArray getDistListByType(String type, String userId, String sorts, int page, int size) throws Exception {
+        if (StringUtils.isEmpty(type) || StringUtils.isEmpty(userId)) {
+            return null;
+        }
+
+        JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
-//        dictIcd10Service.queryAll();
-        return null;
+        if (SystemDictEnum.Icd10Dict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictIcd10Service.queryAll(userId, creatPage(page,size,sorts));
+        } else if (SystemDictEnum.HospitalDeptDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictHospitalDeptService.queryAll("", creatPage(page,size,sorts));
+
+        } else if (SystemDictEnum.JobTitleDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictJobTitleService.queryAll("", creatPage(page,size,sorts));
+
+        } else if (SystemDictEnum.HealthProblemDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictHealthProblemService.queryAll("", creatPage(page,size,sorts));
+
+        } else if (SystemDictEnum.MedicineDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictMedicineService.queryAll("", creatPage(page,size,sorts));
+
+        } else if (SystemDictEnum.DiseaseDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictDiseaseService.queryAll("", creatPage(page,size,sorts));
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
+    }
+
+    /**
+     * 新增字典，包括字典项值
+     * "obj": {
+     "      dict:
+                {
+                code": "SYSTEM_SETTING",
+     "          name": "系统设置",
+     "          pyCode": "XTSZ",
+     "          saasId": "string",
+     "          type": "basic"
+            }
+            valueArr:[
+                {
+                dictCode:"SYSTEM_SETTING",
+                code:"SYSTEM_SETTING_0",
+                pyCode:"",
+                value:"",
+                sort:"",
+                remark:"",
+                 },{
+                ....
+                  }
+            ]
+     }
+     *
+     */
+    public String createSystemDict(String jsonData) throws Exception{
+        if(StringUtils.isEmpty(jsonData)){
+            return "none params(jsonData)";
+        }
+        JSONObject jsonParam = JSONObject.parseObject(jsonData);
+        if(null == jsonParam.get("dict")){
+            return "no dict element in " + jsonData;
+        }
+        JSONObject dictJson = (JSONObject)jsonParam.get("dict");
+        SystemDictDO systemDictDO = objectMapper.readValue(dictJson.toString(),SystemDictDO.class);
+
+        if(StringUtils.isEmpty(systemDictDO.getCode()) || StringUtils.isEmpty(systemDictDO.getName())){
+            return "code or name of dict is required";
+        }
+
+        List<SystemDictEntryDO> systemDictEntryDOList = new ArrayList<>();
+        JSONArray dictValueArr = jsonParam.getJSONArray("valueArr");
+        dictValueArr.forEach((oneObj)->systemDictEntryDOList.add((SystemDictEntryDO)oneObj));
+
+        save(systemDictDO);
+
+        systemDictEntryService.batchInsert(systemDictEntryDOList);
+
+        return ConstantUtils.SUCCESS;
     }
 }

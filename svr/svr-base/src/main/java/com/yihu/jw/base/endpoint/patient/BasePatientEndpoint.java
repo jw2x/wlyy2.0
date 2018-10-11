@@ -110,4 +110,21 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
         return success(basePatients, BasePatientVO.class);
     }
 
+    @PostMapping(value = BaseRequestMapping.BasePatient.getBaseInfo)
+    @ApiOperation(value = "获取列表")
+    public ListEnvelop queryPatientBaseInfo(
+            @ApiParam(name = "idcard", value = "居民身份证")
+            @RequestParam(value = "idcard", required = false) String idcard,
+            @ApiParam(name = "name", value = "居民姓名")
+            @RequestParam(value = "name", required = false) String name,
+            @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
+            @RequestParam(value = "page") int page,
+            @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
+            @RequestParam(value = "size") int size,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
+            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+
+        List<Map<String,Object>> basePatients = basePatientService.queryPatientBaseInfo(idcard, name, page,size,sorts);
+        return success(basePatients);
+    }
 }

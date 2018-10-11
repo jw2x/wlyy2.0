@@ -8,6 +8,7 @@ import com.yihu.jw.entity.base.dict.DictDiseaseDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,15 +37,15 @@ public class DictDiseaseService extends BaseJpaService<DictDiseaseDO, DictDiseas
      * @param saasId
      * @return
      */
-    public String queryAll(String saasId){
+    public JSONObject queryAll(String saasId, Pageable pageable){
         JSONObject jsonObject = new JSONObject();
         List<Map<String,Object>> list = new ArrayList<>();
         if(StringUtils.isEmpty(saasId)){
-            list = dictDiseaseDao.findCodeAndName();
+            list = dictDiseaseDao.findCodeAndName(pageable);
         }else{
-            list = dictDiseaseDao.findCodeAndNameBySaasId(saasId);
+            list = dictDiseaseDao.findCodeAndNameBySaasId(saasId,pageable);
         }
         jsonObject.put(SystemDictEnum.DiseaseDict.toString(),list);
-        return jsonObject.toJSONString();
+        return jsonObject;
     }
 }

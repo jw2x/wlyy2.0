@@ -1,6 +1,8 @@
 package com.yihu.jw.base.endpoint.system;
 
+import com.alibaba.fastjson.JSONArray;
 import com.yihu.jw.base.service.system.SystemDictService;
+import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.entity.base.system.SystemDictDO;
 import com.yihu.jw.restmodel.base.system.SystemDictVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -12,6 +14,7 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -91,5 +94,35 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<SystemDictDO> systemDictDOS = systemDictService.search(fields, filters, sorts);
         return success(systemDictDOS, SystemDictVO.class);
+    }
+
+    @GetMapping(value = BaseRequestMapping.SystemDict.ALL)
+    @ApiOperation(value = "新增系统字典")
+    public Envelop createSystemDict (
+            @ApiParam(name = "jsonData", value = "json数据，系统字典及其值")
+            @RequestParam(value = "jsonData", required = true) String jsonData) throws Exception {
+         String message = systemDictService.createSystemDict(jsonData);
+         if(StringUtils.equalsIgnoreCase(message,ConstantUtils.SUCCESS)){
+             return success(message);
+        }
+        return failed(message);
+    }
+
+    @PostMapping(value = BaseRequestMapping.SystemDict.QUERY_BY_TYPE)
+    @ApiOperation(value = "根据字典类型获取字典")
+    public ListEnvelop queryDictByType(
+            @ApiParam(name = "userId", value = "用户id")
+            @RequestParam(value = "userId", required = true) String userId,
+            @ApiParam(name = "type", value = "字典类型")
+            @RequestParam(value = "type", required = true) String type,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
+            @RequestParam(value = "page") int page,
+            @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
+            @RequestParam(value = "size") int size
+    ) throws Exception {
+        JSONArray list = systemDictService.getDistListByType(type,userId,sorts,page,size);
+        return success(list);
     }
 }
