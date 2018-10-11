@@ -31,7 +31,7 @@ public class SaasInterfaceVO extends UuidIdentityVO {
     private Integer openLevel;
     @ApiModelProperty(value = "审计程度（1审计，2不审计）", example = "1")
     private Integer checkLevel;
-    @ApiModelProperty(value = "状态（1生效中，0已失效）", example = "1")
+    @ApiModelProperty(value = "状态（1启用，0暂停）", example = "1")
     private Integer status;
     @ApiModelProperty(value = "接口说明", example = "明")
     private String remark;

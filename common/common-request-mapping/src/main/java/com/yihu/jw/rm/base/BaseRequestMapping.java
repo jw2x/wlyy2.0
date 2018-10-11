@@ -79,6 +79,16 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 租户接口
+     */
+    public static class SaasInterface extends Basic {
+        public static final String PREFIX  = "/saasInterface";
+        public static final String STATUS  = "/status";
+        public static final String IS_NAME_EXIST  = "/isNameExist";
+        public static final String FIND_ALL  = "/findAll";
+    }
+
+    /**
      * 功能
      */
     public static class Function extends Basic {
