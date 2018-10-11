@@ -462,7 +462,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
 
 
     @PostMapping(value = "/demoImport")
-    @ApiOperation(value = "模拟导入设施")
+    @ApiOperation(value = "导入设施列表临时接口")
     public Envelop demoImport(
             @ApiParam(name = "file", value = "文件", required = true)
             @RequestPart(value = "file") MultipartFile file,
@@ -474,6 +474,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             List<Map<String,String>> dataList = excelReader.getCorrectLs();
             if (dataList.size() > 0) {
                 //TODO 导入
+                facilityService.batchInsertDemo(dataList);
                 System.out.println(dataList);
                 return success("导入成功!");
             }

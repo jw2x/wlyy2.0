@@ -195,6 +195,7 @@ public class UserService extends BaseJpaService<User, UserDao> {
      * @return
      * @throws ManageException
      */
+    @Transactional
     public User saveOrUpdate(User user, String userCode) throws ManageException {
         User loginUser = userDao.findByLoginCode(userCode);
         if (user.getId() == null) {//保存
@@ -463,7 +464,9 @@ public class UserService extends BaseJpaService<User, UserDao> {
      */
     @Transactional
     public void updateUserOffLine(List<Serializable> ids) throws ManageException {
-        userDao.updateUserOnLine(ids);//更新在线
+        if (ids!=null) {
+            userDao.updateUserOnLine(ids);//更新在线
+        }
         userDao.updateUserOffLine(ids);//更新离线
     }
 

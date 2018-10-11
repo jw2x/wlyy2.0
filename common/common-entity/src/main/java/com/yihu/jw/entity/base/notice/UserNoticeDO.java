@@ -14,6 +14,34 @@ import javax.persistence.Table;
 @Table(name = "base_user_notice")
 public class UserNoticeDO extends UuidIdentityEntity{
 
+    public enum Read{
+        unRead("未读",0),
+        read("已读",1);
+        private String name;
+        private Integer value;
+
+        Read(String name, Integer value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public void setValue(Integer value) {
+            this.value = value;
+        }
+    }
+
     private String noticeId;//公告id
     private String userId;//用户id
     private Integer isRead;//是否已读（1已读，0未读）

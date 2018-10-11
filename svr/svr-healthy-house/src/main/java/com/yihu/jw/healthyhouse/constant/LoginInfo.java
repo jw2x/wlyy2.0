@@ -17,6 +17,8 @@ public class LoginInfo {
     //用户创建
     public static final String SAVE_TYPE_IJK = "ijkLogin";  //i健康登录注册
     public static final String SAVE_TYPE_PHONE = "phoneLogin";//手机登录注册
+    public static final String SAVE_TYPE_IDCARDNO= "idCardNoLogin";  //身份证登录注册
+
 
     //用户类型
     public static final String USER_TYPE_PATIENT = "patient";//居民

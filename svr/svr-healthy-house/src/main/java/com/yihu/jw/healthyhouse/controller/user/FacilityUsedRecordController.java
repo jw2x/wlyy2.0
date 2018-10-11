@@ -229,7 +229,9 @@ public class FacilityUsedRecordController extends EnvelopRestEndpoint {
             }
             //根据设施编码获取 设施状态
             Facility facility = facilityService.findByCode(facilityCode);
-            record.setFacilitieStatus(facility.getStatus());
+            if (facility!=null) {
+                record.setFacilitieStatus(facility.getStatus());
+            }
         }
         int count = (int) facilityUsedRecordService.getCount(filters);
         return success(facilityUsedRecordList, count, page, size);

@@ -37,13 +37,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  用户在线状态验证拦截器
+ * 用户在线状态验证拦截器
+ *
  * @author HZY
  * @created 2018/10/9 9:19
  */
-//@Aspect
-//@Component
-public class ActivatedInterceptor  {
+@Aspect
+@Component
+public class ActivatedInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger(ActivatedInterceptor.class);
 
@@ -87,34 +88,45 @@ public class ActivatedInterceptor  {
 
 
     @Around("execution(* com.yihu.jw.healthyhouse.controller..*.*(..))")
-    public Object activatedAround(ProceedingJoinPoint  joinPoint) throws Throwable{
+    public Object activatedAround(ProceedingJoinPoint joinPoint) throws Throwable {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
         HttpServletResponse response = sra.getResponse();
+        String requestUri = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        if (requestUri.indexOf("/login") != -1
+                || requestUri.indexOf("/register") != -1
+                || requestUri.indexOf("/loginout") != -1
+                || requestUri.indexOf("/getRandomImageCode") != -1
+                || requestUri.indexOf("/checkRandomImageCode") != -1
+                || requestUri.indexOf("/captcha") != -1
+                || requestUri.indexOf("swagger") != -1
+                || requestUri.indexOf(contextPath + "/v2/api-docs") != -1) {
 
-        HttpSession session = request.getSession();
-        Object userId = session.getAttribute(LoginInfo.USER_ID);
-        if (userId == null ){
+            return joinPoint.proceed();
+        }
+
+        String userId = request.getHeader("userId");
+        System.out.println(userId);
+        if (userId == null) {
             response.setStatus(402);
-            return  joinPoint.proceed();
+            return joinPoint.proceed();
 //            return failed("用户未登录，请登录！",-10000);
         }
-        User user = userService.findById(userId.toString());
-        if (user == null ){
+        User user = userService.findById(userId);
+        if (user == null) {
             response.setStatus(402);
-            return  joinPoint.proceed();
+            return joinPoint.proceed();
 //            return failed("用户不存在，请重新登录！",-10000);
-        }else if (HouseUserContant.activated_lock.equals(user.getActivated())){
-            response.setStatus(402);
+        } else if (HouseUserContant.activated_lock.equals(user.getActivated())) {
+            response.setStatus(103);
 //           return failed("用户已被冻结，请联系管理员！",-10000);
-        }else if (HouseUserContant.activated_offline.equals(user.getActivated())){
+        } else if (HouseUserContant.activated_offline.equals(user.getActivated())) {
             response.setStatus(402);
 //            return failed("用户已离线，请重新登录！",-10000);
-        }else {
-//            return  joinPoint.proceed();
         }
-        return  joinPoint.proceed();
+        return joinPoint.proceed();
 
     }
 
@@ -144,13 +156,13 @@ public class ActivatedInterceptor  {
     }
 
 
-
-    protected Envelop failed (String message, int status) {
+    protected Envelop failed(String message, int status) {
         Envelop envelop = new Envelop();
         envelop.setMessage(message);
         envelop.setStatus(status);
         return envelop;
     }
+
 
 
 

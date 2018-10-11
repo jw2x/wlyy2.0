@@ -8,6 +8,7 @@ import com.yihu.jw.healthyhouse.constant.LoginInfo;
 import com.yihu.jw.healthyhouse.constant.UserConstant;
 import com.yihu.jw.healthyhouse.model.user.User;
 import com.yihu.jw.restmodel.wlyy.HouseUserContant;
+import com.yihu.jw.util.common.IdCardUtil;
 import com.yihu.jw.util.security.MD5;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -325,6 +326,70 @@ public class LoginService  extends BaseJpaService {
             user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IJK);
             return user;
         }
+    }
+
+
+    /**
+     *  //TODO 体验版本方法，后续可能删除
+     * 身份证登录
+     *
+     * @param loginCode
+     * @param password
+     * @return
+     * @throws Exception
+     */
+    @Transactional(noRollbackForClassName = "ManageException")
+    public User idCardlogin(HttpServletRequest request, String loginCode, String password) throws ManageException {
+        //判断登陆信息是否正确
+        User user = userService.findByCode(loginCode);
+        if (user == null) {
+            String message = "账号不存在";
+            throw new ManageException(message);
+        }
+        if (!user.getPassword().equals(MD5.GetMD5Code(password + user.getSalt()))) {
+            String message = "密码错误";
+            throw new ManageException(message);
+        }
+        request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
+        request.getSession().setAttribute(LoginInfo.TOKEN, ""); //TODO token是否添加
+        request.getSession().setAttribute(LoginInfo.LOGIN_NAME, user.getName());
+        request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
+        user.setActivated(HouseUserContant.activated_active);
+        user.setLastLoginTime(new Date());
+        user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IDCARDNO);
+        return user;
+    }
+
+
+    @Transactional(noRollbackForClassName = "ManageException")
+    public User idCardRegister(HttpServletRequest request, String name, String idCardNo) throws ManageException {
+        if(!IdCardUtil.cardCodeVerifySimple(idCardNo)){
+            throw new ManageException("身份证号格式有误");
+        }
+
+        User user = userService.findByLoginCodeAndUserType(idCardNo,LoginInfo.USER_TYPE_PATIENT);
+        if (user==null) {
+            //新增账号
+            user = new User();
+            String password = idCardNo.substring(idCardNo.length()-6,idCardNo.length());
+            user.setPassword(password);
+            user.setLoginCode(idCardNo);
+            user.setName(name);
+            user.setIdCardNo(idCardNo);
+            user.setUserType(LoginInfo.USER_TYPE_PATIENT);
+        }
+
+        // 更新身份证验证字段
+        user.setRealnameAuthentication(UserConstant.AUTHORIZED);
+        user.setName(name);
+        request.getSession().setAttribute(LoginInfo.IS_LOGIN, true);
+        request.getSession().setAttribute(LoginInfo.TOKEN, ""); //TODO token是否添加
+        request.getSession().setAttribute(LoginInfo.LOGIN_NAME, user.getName());
+        request.getSession().setAttribute(LoginInfo.USER_ID, user.getId());
+        user.setActivated(HouseUserContant.activated_active);
+        user.setLastLoginTime(new Date());
+        user= userService.saveOrUpdate(user, LoginInfo.SAVE_TYPE_IDCARDNO);
+        return user;
     }
 
 

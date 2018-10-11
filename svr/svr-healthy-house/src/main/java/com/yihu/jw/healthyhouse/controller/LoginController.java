@@ -127,6 +127,41 @@ public class LoginController extends EnvelopRestEndpoint {
         }
     }
 
+    @PostMapping("/idCard/register")
+    @ApiOperation(value = "【普通用户】-身份证认证注册")
+    public Envelop idCardNoRegister(
+            HttpServletRequest request,
+            @ApiParam(name = "name", value = "用户姓名", required = true) @RequestParam(required = true, name = "name") String name,
+            @ApiParam(name = "idCardNo", value = "身份证号码", required = true) @RequestParam(required = true, name = "idCardNo") String idCardNo) {
+        try {
+            loginService.idCardRegister(request,name, idCardNo);
+        } catch (ManageException e) {
+            return failed(e.getMessage());
+        }
+        return success("用户认证完成！");
+    }
+
+    @PostMapping("/idCard/login")
+    @ApiOperation(value = "【普通用户】-身份证登录")
+    public Envelop idCardLogin(
+            HttpServletRequest request,
+            @ApiParam(name = "username", value = "账号", required = true) @RequestParam(required = true, name = "username") String username,
+            @ApiParam(name = "password", value = "密码", required = true) @RequestParam(required = true, name = "password") String password) {
+        User user = null;
+        try {
+            user = loginService.idCardlogin(request, username, password);
+        } catch (ManageException e) {
+            failed(e.getMessage());
+        }
+        if (user != null) {
+            return success("登录成功", user);
+        } else {
+            return failed("登录失败");
+        }
+    }
+
+
+
     @PostMapping("/loginout")
     @ApiOperation(value = "登出")
     public Envelop loginout(

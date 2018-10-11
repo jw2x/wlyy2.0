@@ -63,6 +63,18 @@ public class BaseErrorCode {
      */
     public static class Notice{
         public static final String FINDDICTBYCODE = "-105000";
+        /**
+         * 请输入50个字以内的公告标题
+         */
+        public static final String LIMIT_TITLE = "-105001";
+        /**
+         * 已经发布，请不要重复发布
+         */
+        public static final String HAD_RELEASE = "-105002";
+        /**
+         * 自动发布，不允许手动发布
+         */
+        public static final String AUTO_RELEASE = "-105003";
     }
 
     /**
@@ -70,6 +82,25 @@ public class BaseErrorCode {
      */
     public static class Interface{
         public static final String FINDDICTBYCODE = "-106000";
+    }
+
+    /**
+     * 通知公告模块
+     */
+    public static class FileUpload{
+        /**
+         * 文件格式错误
+         */
+        public static final String FAIL_UPLOAD_FORMAT = "-107000";
+        /**
+         * 文件大小不超过{}M
+         */
+        public static final String FAIL_FILE_SIZE = "-107001";
+        /**
+         * 上传内容为空
+         */
+        public static final String FILE_NULL = "-107002";
+
     }
 
     /**
