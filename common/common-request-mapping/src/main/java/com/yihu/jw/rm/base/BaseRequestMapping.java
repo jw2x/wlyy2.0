@@ -171,6 +171,17 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 文件上传
+     */
+    public static class FileUpload extends Basic {
+        public static final String PREFIX  = "/fileUpload";
+        public static final String UPLOAD_STREAM_IMG  = "/upload_stream_img";
+        public static final String UPLOAD_STREAM  = "/upload_stream";
+        public static final String UPLOAD_STRING  = "/upload_string";
+        public static final String UPLOAD_STREAM_ATTACHMENT  = "/upload_stream_attachment";
+    }
+
+    /**
      * 角色权限
      */
     public static class RoleAuthority extends Basic {
@@ -184,7 +195,26 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/wechat";
         public static final String wechat_base ="/wechatBase";
         public static final String api_success ="success";
+
         public static final String getWechatInfos ="/getWechatInfos";
+        public static final String saveWxAndSaas ="/saveWxAndSaas";
+        public static final String updateWxAndSaas ="/updateWxAndSaas";
+        public static final String findWechatCombo ="/findWechatCombo";
+
+        public static final String findWechatImgGroup ="/findWechatImgGroup";
+        public static final String createImgGroup ="/createImgGroup";
+        public static final String updateImgGroup ="/updateImgGroup";
+        public static final String deleteImgGroup ="/deleteImgGroup";
+        public static final String saveImg ="/saveImg";
+        public static final String findImg ="/findImg";
+        public static final String saveImgGroup ="/saveImgGroup";
+
+        public static final String saveWxReplyScene ="/saveWxReplyScene";
+        public static final String findWxReplyScene ="/findWxReplyScene";
+        public static final String saveWxTemp ="/saveWxTemp";
+        public static final String saveWxTempConfig ="/saveWxTempConfig";
+        public static final String findWxTempConfigList ="/findWxTempConfigList";
+        public static final String findWxTemplateConfig ="/findWxTemplateConfig";
     }
 
     /**
