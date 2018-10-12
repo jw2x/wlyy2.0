@@ -1,9 +1,14 @@
 package com.yihu.jw.base.dao.org;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.yihu.jw.entity.base.org.BaseOrgDO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -18,4 +23,25 @@ import com.yihu.jw.entity.base.org.BaseOrgDO;
  * @since 1.
  */
 public interface BaseOrgDao extends PagingAndSortingRepository<BaseOrgDO, String>, JpaSpecificationExecutor<BaseOrgDO>  {
+
+    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where code like ?1")
+    List<Map<String,Object>> findByCode(String code,Pageable pageable);
+
+    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where code like ?1 and del = ?2")
+    List<Map<String,Object>> findByCodeAndDel(String code, String del,Pageable pageable);
+
+    @Query("select id as id,idcard as idcard,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where name like ?1")
+    List<Map<String,Object>> findByName(String name,Pageable pageable);
+
+    @Query("select id as id,idcard as idcard,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where name like ?1 and del = ?2")
+    List<Map<String,Object>> findByNameAndDel(String name, String del,Pageable pageable);
+
+    @Query("select id as id,idcard as idcard,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO")
+    List<Map<String,Object>> findBaseInfo(Pageable pageable);
+
+    @Query("select id as id,idcard as idcard,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where del = ?1")
+    List<Map<String,Object>> findBaseInfoByDel(String del, Pageable pageable);
+
+    @Query("select new BaseOrgDO(provinceCode,provinceName,cityCode,cityName,townCode,streetCode,streetName,code,name) from BaseOrgDO")
+    List<BaseOrgDO> findOrgByArea();
 }

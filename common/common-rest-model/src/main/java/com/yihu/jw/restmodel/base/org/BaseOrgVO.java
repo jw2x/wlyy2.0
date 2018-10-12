@@ -22,6 +22,13 @@ import java.util.Date;
 public class BaseOrgVO extends UuidIdentityVOWithOperator {
 
     /**
+     * 机构代码
+     */
+    @ApiModelProperty(value = "机构代码", example = "DGREFVDVD")
+    private String code;
+
+
+    /**
 	 * saas化配置
 	 */
 	@ApiModelProperty(value = "saas化配置", example = "402803ee656498890165649ad2da1112")
@@ -135,6 +142,13 @@ public class BaseOrgVO extends UuidIdentityVOWithOperator {
 	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
 
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getSaasid() {
         return saasid;

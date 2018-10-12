@@ -375,6 +375,7 @@ public class BaseRequestMapping {
      */
     public static class BaseOrg extends Basic {
         public static final String PREFIX  = "/baseOrg";
+        public static final String baseInfoList  = "/baseInfoList";
     }
 
 

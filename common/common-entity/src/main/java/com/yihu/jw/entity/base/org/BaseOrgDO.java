@@ -23,19 +23,49 @@ public class BaseOrgDO extends UuidIdentityEntityWithOperator {
 	private String saasid;
 
     /**
-	 * 省份标识
-	 */
-	private String provinceCode;
+     * 机构代码
+     */
+    private String code;
 
     /**
-	 * 城市标识
-	 */
-	private String cityCode;
+     * 省代码
+     */
+    private String provinceCode;
 
     /**
-	 * 区县标识
-	 */
-	private String townCode;
+     * 省名称
+     */
+    private String provinceName;
+
+    /**
+     * 市代码
+     */
+    private String cityCode;
+
+    /**
+     * 市名称
+     */
+    private String cityName;
+
+    /**
+     * 区县代码
+     */
+    private String townCode;
+
+    /**
+     * 区县名称
+     */
+    private String townName;
+
+    /**
+     * 街道代码
+     */
+    private String streetCode;
+
+    /**
+     * 街道名称
+     */
+    private String streetName;
 
     /**
 	 * 机构名称
@@ -113,7 +143,28 @@ public class BaseOrgDO extends UuidIdentityEntityWithOperator {
 	private String del;
 
 
-	@Column(name = "saasid")
+	public BaseOrgDO(String provinceCode,String provinceName,String cityCode,String cityName,String townCode,String townName,String streetCode,String streetName,String code,String name ){
+	    this.provinceCode = provinceCode;
+	    this.provinceName = provinceName;
+	    this.cityCode = cityCode;
+	    this.cityName = cityName;
+	    this.townCode = townCode;
+	    this.streetCode = streetCode;
+	    this.streetName = streetName;
+	    this.code = code;
+	    this.name = name;
+    }
+
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    @Column(name = "saasid")
     public String getSaasid() {
         return saasid;
     }
@@ -145,7 +196,47 @@ public class BaseOrgDO extends UuidIdentityEntityWithOperator {
         this.townCode = townCode;
     }
 
-	@Column(name = "name")
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getTownName() {
+        return townName;
+    }
+
+    public void setTownName(String townName) {
+        this.townName = townName;
+    }
+
+    public String getStreetCode() {
+        return streetCode;
+    }
+
+    public void setStreetCode(String streetCode) {
+        this.streetCode = streetCode;
+    }
+
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+
+    @Column(name = "name")
     public String getName() {
         return name;
     }
