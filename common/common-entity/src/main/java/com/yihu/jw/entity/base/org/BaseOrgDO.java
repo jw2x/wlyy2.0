@@ -143,14 +143,13 @@ public class BaseOrgDO extends UuidIdentityEntityWithOperator {
 	private String del;
 
 
-	public BaseOrgDO(String provinceCode,String provinceName,String cityCode,String cityName,String townCode,String townName,String streetCode,String streetName,String code,String name ){
+	public BaseOrgDO(String provinceCode,String provinceName,String cityCode,String cityName,String townCode,String townName,String code,String name ){
 	    this.provinceCode = provinceCode;
 	    this.provinceName = provinceName;
 	    this.cityCode = cityCode;
 	    this.cityName = cityName;
 	    this.townCode = townCode;
-	    this.streetCode = streetCode;
-	    this.streetName = streetName;
+	    this.townName = townName;
 	    this.code = code;
 	    this.name = name;
     }

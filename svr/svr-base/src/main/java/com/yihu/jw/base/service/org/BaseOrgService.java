@@ -13,6 +13,7 @@ import com.yihu.jw.entity.base.org.BaseOrgDO;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +43,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
      * @return
      */
     public List<Map<String,Object>> queryOrgBaseInfoList(String orgCode,String orgName,String orgStatus,int page,int size,String sorts){
+        getOrgByArea();
         List<Map<String,Object>> result = new ArrayList<>();
         if(StringUtils.endsWithIgnoreCase("1",orgStatus)){
             if(!StringUtils.isEmpty(orgCode) ){
@@ -76,39 +78,49 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         JSONArray townArray = new JSONArray();
         JSONArray orgArray = new JSONArray();
 
+        JSONObject proJson = new JSONObject();
+        JSONObject cityJson = new JSONObject();
+        JSONObject townJson = new JSONObject();
+        JSONObject orgJson = new JSONObject();
+
         List<BaseOrgDO> list = baseOrgDao.findOrgByArea();
-        list.forEach(baseOrgDO -> {
-            JSONObject proJson = new JSONObject();
+        for(BaseOrgDO baseOrgDO : list){
+          /*  if(!proJson.containsKey(baseOrgDO.getProvinceCode())){
+                provinceArray.add(proJson);
+            }
+            if(!cityJson.containsKey(baseOrgDO.getCityCode())){
+                proJson.put("city",cityJson);
+                cityArray.add(cityJson);
+                cityJson.put("town", townJson);
+            }
+            if(!townJson.containsKey(baseOrgDO.getTownCode())){
+                townArray.add(townJson);
+            }
+            if(!orgJson.containsKey(baseOrgDO.getCode())){
+                townJson.put("org",orgJson);
+                orgArray.add(orgJson);
+            }*/
             proJson.put("provinceCode",baseOrgDO.getProvinceCode());
             proJson.put("provinceName",baseOrgDO.getProvinceName());
 
-            JSONObject cityJson = new JSONObject();
-            cityJson.put("provinceCode",baseOrgDO.getProvinceCode());
-            cityJson.put("provinceName",baseOrgDO.getProvinceName());
+            cityJson.put("cityCode",baseOrgDO.getCityCode());
+            cityJson.put("cityName",baseOrgDO.getCityName());
 
-            JSONObject townJson = new JSONObject();
-            townJson.put("provinceCode",baseOrgDO.getProvinceCode());
-            townJson.put("provinceName",baseOrgDO.getProvinceName());
+            townJson.put("townCode",baseOrgDO.getTownCode());
+            townJson.put("townName",baseOrgDO.getTownName());
 
-            JSONObject orgJson = new JSONObject();
-            orgJson.put("provinceCode",baseOrgDO.getProvinceCode());
-            orgJson.put("provinceName",baseOrgDO.getProvinceName());
+            orgJson.put("orgCode",baseOrgDO.getCode());
+            orgJson.put("orgName",baseOrgDO.getName());
 
             provinceArray.add(proJson);
             cityArray.add(cityJson);
             townArray.add(townJson);
             orgArray.add(orgJson);
 
-            JSONObject cityJsonAyy = new JSONObject();
-            cityJsonAyy.put("city",cityArray);
-            provinceArray.add(cityJsonAyy);
-            JSONObject townJsonAyy = new JSONObject();
-            townJsonAyy.put("town", townArray);
-            cityArray.add(townJsonAyy);
-            JSONObject orgJsonAyy = new JSONObject();
-            orgJsonAyy.put("org",orgArray);
-            townArray.add(orgJsonAyy);
-        });
+            proJson.put("city",cityJson);
+            cityJson.put("town", townJson);
+            townJson.put("org",orgJson);
+        }
         result.put("province",provinceArray);
         return result;
     }
