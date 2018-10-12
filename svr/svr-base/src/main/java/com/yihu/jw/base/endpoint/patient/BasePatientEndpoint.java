@@ -111,7 +111,7 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
     }
 
     @PostMapping(value = BaseRequestMapping.BasePatient.getBaseInfo)
-    @ApiOperation(value = "获取列表")
+    @ApiOperation(value = "获取居民基础信息列表")
     public ListEnvelop queryPatientBaseInfo(
             @ApiParam(name = "idcard", value = "居民身份证")
             @RequestParam(value = "idcard", required = false) String idcard,
