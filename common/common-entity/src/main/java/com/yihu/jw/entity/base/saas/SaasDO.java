@@ -29,8 +29,6 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 		//已删除
 		delete
     }
-
-    private String orgCode; //机构编码
 	private String name; //系统名称
 	private Status status; //状态  0待审核 1审核通过 2审核不通过 3已删除
 	private String remark; //备注
@@ -43,22 +41,14 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	private String businessLicense; //营业执照url
 	private String systemName; //系统名称
 	private String areaNumber; //行政区划代码
-
-    List<BaseOrgDO> orgList;
-    List<SaasModuleDO> saasModuleList;
     //审核不通过的原因
     private String auditFailedReason;
     //管理员姓名
     private String managerName;
-
-	@Column(name = "org_code", nullable = false)
-	public String getOrgCode() {
-		return orgCode;
-	}
-
-	public void setOrgCode(String orgCode) {
-		this.orgCode = orgCode;
-	}
+    //机构
+    List<BaseOrgDO> orgList;
+    //业务模块
+    List<SaasModuleDO> saasModuleList;
 
 	@Column(name = "name", nullable = false, length = 200)
 	public String getName() {
@@ -103,29 +93,6 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
 	public void setType(Integer type) {
 		this.type = type;
-	}
-
-	@Column(name = "manager", length = 50)
-	public String getManager() {
-		return manager;
-	}
-
-	public void setManager(String manager) {
-		this.manager = manager;
-	}
-
-	@Column(name = "email")
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	@Column(name = "mobile")
-	public String getMobile() {
-		return mobile;
 	}
 
     @Column(name = "organization_code")
@@ -181,9 +148,6 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
     public void setSaasModuleList(List<SaasModuleDO> saasModuleList) {
         this.saasModuleList = saasModuleList;
     }
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
 
     @Column(name = "audit_failed_reason")
     public String getAuditFailedReason() {
@@ -201,5 +165,32 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public void setManagerName(String managerName) {
         this.managerName = managerName;
+    }
+
+    @Column(name = "manager")
+    public String getManager() {
+        return manager;
+    }
+
+    public void setManager(String manager) {
+        this.manager = manager;
+    }
+
+    @Column(name = "email")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Column(name = "mobile")
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }
