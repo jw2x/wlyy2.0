@@ -141,7 +141,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(value = "status") SaasDO.Status status,
             @ApiParam(name = "auditFailedReason", value = "审核不通过的原因（非必填）")
-            @RequestParam(value = "auditFailedReason") String auditFailedReason) throws Exception {
+            @RequestParam(value = "auditFailedReason",required = false) String auditFailedReason) throws Exception {
         SaasDO saasDO = saasService.retrieve(id);
         if (null == saasDO) {
             return failed("无相关SAAS配置", Envelop.class);
