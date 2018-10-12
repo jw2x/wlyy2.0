@@ -17,6 +17,8 @@ public class MenuVO extends UuidIdentityVOWithOperator {
     private String name;
     @ApiModelProperty(value = "请求路径", example = "/usr/var")
     private String url;
+    @ApiModelProperty(value = "菜单图标", example = "icon")
+    private String icon;
 //    @ApiModelProperty(value = "请求方式", example = "get,post")
 //    private String method;
     @ApiModelProperty(value = "排序", example = "1")
@@ -44,6 +46,14 @@ public class MenuVO extends UuidIdentityVOWithOperator {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public Integer getSort() {

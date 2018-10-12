@@ -1,17 +1,14 @@
 package com.yihu.jw.base.service.module;
 
-import com.yihu.jw.base.dao.module.InterfaceDao;
-import com.yihu.jw.base.dao.module.InterfaceErrorCodeDao;
-import com.yihu.jw.base.dao.module.InterfaceParamDao;
-import com.yihu.jw.entity.base.module.InterfaceDO;
-import com.yihu.jw.entity.base.module.InterfaceErrorCodeDO;
-import com.yihu.jw.entity.base.module.InterfaceParamDO;
+import com.yihu.jw.base.dao.module.*;
+import com.yihu.jw.entity.base.module.*;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +25,14 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
     private InterfaceParamDao interfaceParamDao;
     @Autowired
     private InterfaceErrorCodeDao interfaceErrorCodeDao;
+    @Autowired
+    private SaasInterfaceDao saasInterfaceDao;
+    @Autowired
+    private SaasModuleDao saasModuleDao;
+    @Autowired
+    private SaasInterfaceParamDao saasInterfaceParamDao;
+    @Autowired
+    private SaasInterfaceErrorCodeDao saasInterfaceErrorCodeDao;
 
     /**
      * 返回接口
@@ -60,9 +65,18 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
     @Transactional(rollbackFor = Exception.class)
     public InterfaceDO addInterface(InterfaceDO interfaceDO){
 
+        boolean isNew = true;
         if(StringUtils.isNotBlank(interfaceDO.getId())){
             interfaceParamDao.deleteByInterfaceId(interfaceDO.getId());
             interfaceErrorCodeDao.deleteByInterfaceId(interfaceDO.getId());
+            isNew = false;
+            InterfaceDO oldInterfaceDO = interfaceDao.findOne(interfaceDO.getId());
+
+            //判断是否修改了状态
+            if(!oldInterfaceDO.getStatus().equals(interfaceDO.getStatus())){
+                //修改租户的接口状态
+                saasInterfaceDao.updateStatusByInterfaceId(interfaceDO.getId(),interfaceDO.getStatus());
+            }
         }
 
         List<InterfaceParamDO> entryParams = interfaceDO.getEntryParams();
@@ -82,6 +96,78 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
         interfaceParamDao.save(outParams);
         interfaceErrorCodeDao.save(errorCodes);
 
+        //为租户新增接口
+        if (isNew){
+            List<SaasModuleDO> saasModuleDOList = saasModuleDao.findByModuleId(interfaceDO.getModuleId());
+            saasModuleDOList.forEach(saasModuleDO -> {
+
+                SaasInterfaceDO saasInterfaceDO = new SaasInterfaceDO();
+                saasInterfaceDO.setInterfaceId(interfaceDO.getId());
+                saasInterfaceDO.setUrl(interfaceDO.getUrl());
+                saasInterfaceDO.setStatus(interfaceDO.getStatus());
+                saasInterfaceDO.setCheckLevel(interfaceDO.getCheckLevel());
+                saasInterfaceDO.setMethodName(interfaceDO.getMethodName());
+                saasInterfaceDO.setModuleId(interfaceDO.getModuleId());
+                saasInterfaceDO.setName(interfaceDO.getName());
+                saasInterfaceDO.setModuleName(interfaceDO.getModuleName());
+                saasInterfaceDO.setOpenLevel(interfaceDO.getOpenLevel());
+                saasInterfaceDO.setProtocolType(interfaceDO.getProtocolType());
+                saasInterfaceDO.setRemark(interfaceDO.getRemark());
+                saasInterfaceDO.setSaasId(saasModuleDO.getSaasId());
+
+                List<SaasInterfaceParamDO> saasEntryParams = new ArrayList<>(16);
+                List<SaasInterfaceParamDO> saasOutParams = new ArrayList<>(16);
+                List<SaasInterfaceErrorCodeDO> saasErrorCodes = new ArrayList<>(16);
+                saasInterfaceDao.save(saasInterfaceDO);
+                entryParams.forEach(interfaceParamDO -> {
+                    SaasInterfaceParamDO saasInterfaceParamDO = new SaasInterfaceParamDO();
+                    saasInterfaceParamDO.setSaasId(saasInterfaceDO.getSaasId());
+                    saasInterfaceParamDO.setDel(interfaceParamDO.getDel());
+                    saasInterfaceParamDO.setName(interfaceParamDO.getName());
+                    saasInterfaceParamDO.setDataType(interfaceParamDO.getDataType());
+                    saasInterfaceParamDO.setDescription(interfaceParamDO.getDescription());
+                    saasInterfaceParamDO.setExample(interfaceParamDO.getExample());
+                    saasInterfaceParamDO.setIsRequire(interfaceParamDO.getIsRequire());
+                    saasInterfaceParamDO.setMaxLength(interfaceParamDO.getMaxLength());
+                    saasInterfaceParamDO.setParamType(interfaceParamDO.getParamType());
+                    saasInterfaceParamDO.setSaasInterfaceId(saasInterfaceDO.getId());
+                    saasInterfaceParamDO.setSort(interfaceParamDO.getSort());
+                    saasInterfaceParamDO.setType(interfaceParamDO.getType());
+                    saasEntryParams.add(saasInterfaceParamDO);
+                });
+                outParams.forEach(interfaceParamDO -> {
+                    SaasInterfaceParamDO saasInterfaceParamDO = new SaasInterfaceParamDO();
+                    saasInterfaceParamDO.setSaasId(saasInterfaceDO.getSaasId());
+                    saasInterfaceParamDO.setDel(interfaceParamDO.getDel());
+                    saasInterfaceParamDO.setName(interfaceParamDO.getName());
+                    saasInterfaceParamDO.setDataType(interfaceParamDO.getDataType());
+                    saasInterfaceParamDO.setDescription(interfaceParamDO.getDescription());
+                    saasInterfaceParamDO.setExample(interfaceParamDO.getExample());
+                    saasInterfaceParamDO.setIsRequire(interfaceParamDO.getIsRequire());
+                    saasInterfaceParamDO.setMaxLength(interfaceParamDO.getMaxLength());
+                    saasInterfaceParamDO.setParamType(interfaceParamDO.getParamType());
+                    saasInterfaceParamDO.setSaasInterfaceId(saasInterfaceDO.getId());
+                    saasInterfaceParamDO.setSort(interfaceParamDO.getSort());
+                    saasInterfaceParamDO.setType(interfaceParamDO.getType());
+                    saasOutParams.add(saasInterfaceParamDO);
+                });
+                errorCodes.forEach(interfaceErrorCodeDO -> {
+                    SaasInterfaceErrorCodeDO saasInterfaceErrorCodeDO = new SaasInterfaceErrorCodeDO();
+                    saasInterfaceErrorCodeDO.setSort(interfaceErrorCodeDO.getSort());
+                    saasInterfaceErrorCodeDO.setDel(interfaceErrorCodeDO.getDel());
+                    saasInterfaceErrorCodeDO.setSaasInterfaceId(saasInterfaceDO.getId());
+                    saasInterfaceErrorCodeDO.setDescription(interfaceErrorCodeDO.getDescription());
+                    saasInterfaceErrorCodeDO.setName(interfaceErrorCodeDO.getName());
+                    saasInterfaceErrorCodeDO.setSaasId(saasInterfaceDO.getSaasId());
+                    saasInterfaceErrorCodeDO.setSolution(interfaceErrorCodeDO.getSolution());
+                    saasErrorCodes.add(saasInterfaceErrorCodeDO);
+                });
+                saasInterfaceParamDao.save(saasEntryParams);
+                saasInterfaceParamDao.save(saasOutParams);
+                saasInterfaceErrorCodeDao.save(saasErrorCodes);
+            });
+        }
+
         return interfaceDO;
     }
 
@@ -93,5 +179,7 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
     @Transactional(rollbackFor = Exception.class)
     public void updateStatus(String id,Integer status){
         interfaceDao.updateStatus(id,status);
+        //修改租户的接口状态
+        saasInterfaceDao.updateStatusByInterfaceId(id,status);
     }
 }
