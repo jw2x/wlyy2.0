@@ -2,10 +2,14 @@ package com.yihu.jw.entity.base.saas;// default package
 
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import com.yihu.jw.entity.base.module.SaasModuleDO;
+import com.yihu.jw.entity.base.org.BaseOrgDO;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.List;
 
 /**
  * Entity - SAAS
@@ -35,6 +39,13 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	private String manager; //管理员 - 关联user表id字段
 	private String email; //管理员邮箱
 	private String mobile; //管理员手机号码
+	private String organizationCode; //组织机构代码
+	private String businessLicense; //营业执照url
+	private String systemName; //系统名称
+	private String areaNumber; //行政区划代码
+
+    List<BaseOrgDO> orgList;
+    List<SaasModuleDO> saasModuleList;
 
 	@Column(name = "org_code", nullable = false)
 	public String getOrgCode() {
@@ -116,4 +127,58 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
+
+    @Column(name = "organization_code")
+    public String getOrganizationCode() {
+        return organizationCode;
+    }
+
+    public void setOrganizationCode(String organizationCode) {
+        this.organizationCode = organizationCode;
+    }
+
+    @Column(name = "business_license")
+    public String getBusinessLicense() {
+        return businessLicense;
+    }
+
+    public void setBusinessLicense(String businessLicense) {
+        this.businessLicense = businessLicense;
+    }
+
+    @Column(name = "system_name")
+    public String getSystemName() {
+        return systemName;
+    }
+
+    public void setSystemName(String systemName) {
+        this.systemName = systemName;
+    }
+
+    @Column(name = "area_number")
+    public String getAreaNumber() {
+        return areaNumber;
+    }
+
+    public void setAreaNumber(String areaNumber) {
+        this.areaNumber = areaNumber;
+    }
+
+    @Transient
+    public List<BaseOrgDO> getOrgList() {
+        return orgList;
+    }
+
+    public void setOrgList(List<BaseOrgDO> orgList) {
+        this.orgList = orgList;
+    }
+
+    @Transient
+    public List<SaasModuleDO> getSaasModuleList() {
+        return saasModuleList;
+    }
+
+    public void setSaasModuleList(List<SaasModuleDO> saasModuleList) {
+        this.saasModuleList = saasModuleList;
+    }
 }
