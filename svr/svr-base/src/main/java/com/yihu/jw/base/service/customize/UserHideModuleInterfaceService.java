@@ -1,7 +1,7 @@
 package com.yihu.jw.base.service.customize;
 
-import com.yihu.jw.base.dao.customize.UserHideModuleFunctionDao;
-import com.yihu.jw.entity.base.customize.UserHideModuleFunctionDO;
+import com.yihu.jw.base.dao.customize.UserHideModuleInterfaceDao;
+import com.yihu.jw.entity.base.customize.UserHideModuleInterfaceDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.stereotype.Service;
 
@@ -11,5 +11,5 @@ import org.springframework.stereotype.Service;
  * @date Created on 2018/9/14.
  */
 @Service
-public class UserHideModuleFunctionService extends BaseJpaService<UserHideModuleFunctionDO, UserHideModuleFunctionDao> {
+public class UserHideModuleInterfaceService extends BaseJpaService<UserHideModuleInterfaceDO, UserHideModuleInterfaceDao> {
 }

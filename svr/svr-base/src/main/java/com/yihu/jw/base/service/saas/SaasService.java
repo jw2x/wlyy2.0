@@ -2,14 +2,10 @@ package com.yihu.jw.base.service.saas;
 
 import com.yihu.jw.base.dao.role.RoleDao;
 import com.yihu.jw.base.dao.saas.SaasDao;
-import com.yihu.jw.base.dao.saas.SaasDefaultModuleFunctionDao;
-import com.yihu.jw.base.dao.saas.SaasModuleFunctionDao;
 import com.yihu.jw.base.dao.user.UserDao;
 import com.yihu.jw.base.dao.user.UserRoleDao;
 import com.yihu.jw.entity.base.role.RoleDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
-import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
-import com.yihu.jw.entity.base.saas.SaasModuleFunctionDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
 import com.yihu.mysql.query.BaseJpaService;
@@ -18,9 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Service - SAAS
@@ -33,10 +26,10 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     private SaasDao saasDao;
     @Autowired
     private UserDao userDao;
-    @Autowired
-    private SaasDefaultModuleFunctionDao saasDefaultModuleFunctionDao;
-    @Autowired
-    private SaasModuleFunctionDao roleModuleFunctionDao;
+//    @Autowired
+//    private SaasDefaultModuleFunctionDao saasDefaultModuleFunctionDao;
+//    @Autowired
+//    private SaasModuleFunctionDao roleModuleFunctionDao;
     @Autowired
     private RoleDao roleDao;
     @Autowired
@@ -69,21 +62,21 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         userRoleDO.setUserId(user.getId());
         userRoleDO.setRoleId(roleDO.getId());
         //初始化租户默认模块
-        List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = saasDefaultModuleFunctionDao.findBySaasType(saas.getType());
-        List<SaasModuleFunctionDO> roleModuleFunctionDOS = new ArrayList<>();
-        saasDefaultModuleDOS.forEach(item -> {
-            SaasModuleFunctionDO saasModuleFunctionDO = new SaasModuleFunctionDO();
-            saasModuleFunctionDO.setSaasId(saasId);
-            saasModuleFunctionDO.setModuleId(item.getModuleId());
-            saasModuleFunctionDO.setFunctionId(item.getFunctionId());
-            roleModuleFunctionDOS.add(saasModuleFunctionDO);
-        });
+//        List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = saasDefaultModuleFunctionDao.findBySaasType(saas.getType());
+//        List<SaasModuleFunctionDO> roleModuleFunctionDOS = new ArrayList<>();
+//        saasDefaultModuleDOS.forEach(item -> {
+//            SaasModuleFunctionDO saasModuleFunctionDO = new SaasModuleFunctionDO();
+//            saasModuleFunctionDO.setSaasId(saasId);
+//            saasModuleFunctionDO.setModuleId(item.getModuleId());
+//            saasModuleFunctionDO.setFunctionId(item.getFunctionId());
+//            roleModuleFunctionDOS.add(saasModuleFunctionDO);
+//        });
         //保存数据
         saas = saasDao.save(saas);
         roleDao.save(roleDO);
         userDao.save(user);
         userRoleDao.save(userRoleDO);
-        roleModuleFunctionDao.save(roleModuleFunctionDOS);
+//        roleModuleFunctionDao.save(roleModuleFunctionDOS);
         return saas;
     }
 

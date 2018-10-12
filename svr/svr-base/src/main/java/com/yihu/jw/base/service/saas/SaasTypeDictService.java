@@ -1,17 +1,11 @@
 package com.yihu.jw.base.service.saas;
 
-import com.yihu.jw.base.dao.function.FunctionDao;
 import com.yihu.jw.base.dao.role.RoleDao;
 import com.yihu.jw.base.dao.saas.SaasTypeDictDao;
-import com.yihu.jw.base.dao.saas.SaasDefaultModuleFunctionDao;
-import com.yihu.jw.base.dao.saas.SaasModuleFunctionDao;
 import com.yihu.jw.base.dao.user.UserDao;
 import com.yihu.jw.base.dao.user.UserRoleDao;
-import com.yihu.jw.entity.base.function.FunctionDO;
 import com.yihu.jw.entity.base.role.RoleDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
-import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
-import com.yihu.jw.entity.base.saas.SaasModuleFunctionDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
 import com.yihu.mysql.query.BaseJpaService;
@@ -35,10 +29,10 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
 
     @Autowired
     private SaasTypeDictDao saasTypeDictDao;
-    @Autowired
-    private FunctionDao functionDao;
-    @Autowired
-    private SaasDefaultModuleFunctionDao saasDefaultModuleFunctionDao;
+//    @Autowired
+//    private FunctionDao functionDao;
+//    @Autowired
+//    private SaasDefaultModuleFunctionDao saasDefaultModuleFunctionDao;
 
 
     public SaasTypeDictDO save(SaasTypeDictDO saasTypeDictDO, String saasTypeDefaultModuleIds) {
@@ -54,19 +48,19 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
         }
         //根据moduleId获取模块关联的接口id
         String[] ids = saasTypeDefaultModuleIds.split(",");
-        List<FunctionDO> functionDOList = functionDao.findFunctionDOSByModuleIdExists(ids);
-        //初始化租户默认模块
-        List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = new ArrayList<>();
-        functionDOList.forEach(item -> {
-            SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO = new SaasDefaultModuleFunctionDO();
-            saasDefaultModuleFunctionDO.setSaasType(code);
-            saasDefaultModuleFunctionDO.setModuleId(item.getModuleId());
-            saasDefaultModuleFunctionDO.setFunctionId(item.getId());
-            saasDefaultModuleDOS.add(saasDefaultModuleFunctionDO);
-        });
+//        List<FunctionDO> functionDOList = functionDao.findFunctionDOSByModuleIdExists(ids);
+//        //初始化租户默认模块
+//        List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = new ArrayList<>();
+//        functionDOList.forEach(item -> {
+//            SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO = new SaasDefaultModuleFunctionDO();
+//            saasDefaultModuleFunctionDO.setSaasType(code);
+//            saasDefaultModuleFunctionDO.setModuleId(item.getModuleId());
+//            saasDefaultModuleFunctionDO.setFunctionId(item.getId());
+//            saasDefaultModuleDOS.add(saasDefaultModuleFunctionDO);
+//        });
         //保存数据
         saasTypeDictDO = saasTypeDictDao.save(saasTypeDictDO);
-        saasDefaultModuleFunctionDao.save(saasDefaultModuleDOS);
+//        saasDefaultModuleFunctionDao.save(saasDefaultModuleDOS);
         return saasTypeDictDO;
     }
 
