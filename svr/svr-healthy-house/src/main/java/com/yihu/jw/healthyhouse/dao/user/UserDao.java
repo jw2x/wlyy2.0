@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author HZY
@@ -41,7 +43,18 @@ public interface UserDao extends PagingAndSortingRepository<User, String>, JpaSp
 
     Long countAllByUserTypeAndCreateTimeBetween(String userType,Date start,Date end);
 
-    User findByLoginCodeAndUserType(String loginCode,String userType);
+    @Query("from User u where u.userType=?1 and (u.telephone=?2 or u.loginCode=?3 ) ")
+    User findByUserTypeAndTelephoneOrLoginCode(String userType,String telephone,String loginCode);
     User findByTelephoneAndUserType(String telephone,String userType);
+
+    @Transactional
+    @Modifying
+    @Query("update User u set u.activated = 2 where u.activated = 1 and u.id not in ?1")
+    void updateUserOffLine(List<Serializable> ids);
+
+    @Transactional
+    @Modifying
+    @Query("update User u set u.activated = 1 where u.activated = 2 and u.id in ?1")
+    void updateUserOnLine(List<Serializable> ids);
 
 }

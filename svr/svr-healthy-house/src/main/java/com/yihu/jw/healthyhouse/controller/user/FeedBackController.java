@@ -63,6 +63,7 @@ public class FeedBackController extends EnvelopRestEndpoint {
             @ApiParam(name = "feedBack", value = "意见反馈JSON结构")
             @RequestBody FeedBack feedBack) throws IOException {
         feedBack.setFlag(1);
+        feedBack.setReadFlag(1);
         feedBack = feedBackService.save(feedBack);
         return success(feedBack);
     }
@@ -93,8 +94,10 @@ public class FeedBackController extends EnvelopRestEndpoint {
         if (StringUtils.isNotEmpty(feedBackJson)) {
             FeedBack feedBack = toEntity(feedBackJson, FeedBack.class);
             feedBackOld.setFlag(2);
+            feedBackOld.setReadFlag(0);
             feedBackOld.setReplyContent(feedBack.getReplyContent());
             feedBackOld.setUpdateUser(feedBack.getUpdateUser());
+            feedBackOld.setUpdateUserName(feedBack.getUpdateUserName());
         }
         feedBackOld = feedBackService.save(feedBackOld);
         return success(feedBackOld);
@@ -133,6 +136,28 @@ public class FeedBackController extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts) throws ManageException, ParseException {
         List<FeedBack> feedBackList = feedBackService.search(fields, filters, sorts);
         feedBackService.exportUsersExcel(response, feedBackList);
+    }
+
+    @ApiOperation(value = "app端-获取意见反馈")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FeedBack.GET_APP_FEEDBACK_BY_ID)
+    public ObjEnvelop<FeedBack> getAppFeedBack(
+            @ApiParam(name = "id", value = "意见反馈ID", defaultValue = "")
+            @RequestParam(value = "id") String id) throws Exception {
+        FeedBack feedBack = feedBackService.findById(id);
+        if (feedBack == null) {
+            return failed("意见反馈不存在！", ObjEnvelop.class);
+        }
+        feedBack.setReadFlag(1);
+        return success(feedBack);
+    }
+
+    @ApiOperation(value = "app端-根据用户id获取未读的意见反馈")
+    @GetMapping(value = HealthyHouseMapping.HealthyHouse.FeedBack.GET_APP_FEEDBACK_BY_USER_ID_AND_READFLAG)
+    public ObjEnvelop<Boolean> getAppFeedBackByUserIdAndReadFlag(
+            @ApiParam(name = "userId", value = "登录用户ID", defaultValue = "")
+            @RequestParam(value = "userId") String userId) throws Exception {
+        Boolean readFlag = feedBackService.getAppFeedBackByUserIdAndReadFlag(userId);
+        return success(readFlag);
     }
 
 }

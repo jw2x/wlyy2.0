@@ -42,10 +42,14 @@ zuul:
       serviceId: svr-iot
     svr-base:
       path: /base/**
-      serviceId: svr-base-lyx
+      serviceId: svr-base
     svr-authentication:
       path: /auth/**
-      serviceId: svr-authentication-lyx
+      serviceId: svr-authentication
+    svr-healthy-house:
+      path: /healthyHouse/**
+      serviceId: svr-healthy-house
+
 
 ---
 spring:

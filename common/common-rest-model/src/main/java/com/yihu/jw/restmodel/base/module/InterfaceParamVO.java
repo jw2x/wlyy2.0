@@ -2,24 +2,36 @@ package com.yihu.jw.restmodel.base.module;
 
 import com.yihu.jw.restmodel.UuidIdentityVO;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author yeshijie on 2018/9/28.
  */
 @ApiModel(value = "InterfaceParamVO", description = "接口入参出参")
 public class InterfaceParamVO extends UuidIdentityVO {
-    
-    private String interfaceId;//接口id
-    private String name;//参数名
-    private Integer paramType;//参数类型
-    private Integer dataType;//数据类型
-    private Integer isRequire;//是否必填(1是，0否)
-    private Integer maxLength;//最大长度
-    private String description;//描述
-    private String example;//示例
-    private Integer type;//类型（1入参，2出参）
-    private Integer sort;//排序
-    private Integer del;//删除标志
+
+    @ApiModelProperty(value = "接口id", example = "接口id")
+    private String interfaceId;
+    @ApiModelProperty(value = "参数名", example = "user")
+    private String name;
+    @ApiModelProperty(value = "参数类型", example = "HEADER")
+    private Integer paramType;
+    @ApiModelProperty(value = "数据类型", example = "VERCHAR")
+    private Integer dataType;
+    @ApiModelProperty(value = "是否必填(1是，0否)", example = "1")
+    private Integer isRequire;
+    @ApiModelProperty(value = "最大长度", example = "1")
+    private Integer maxLength;
+    @ApiModelProperty(value = "描述", example = "")
+    private String description;
+    @ApiModelProperty(value = "示例", example = "")
+    private String example;
+    @ApiModelProperty(value = "类型（1入参，2出参）", example = "1")
+    private Integer type;
+    @ApiModelProperty(value = "排序", example = "1")
+    private Integer sort;
+    @ApiModelProperty(value = "删除标志", example = "1")
+    private Integer del;
 
     public String getInterfaceId() {
         return interfaceId;

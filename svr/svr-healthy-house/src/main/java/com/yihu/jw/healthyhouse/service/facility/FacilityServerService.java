@@ -31,5 +31,24 @@ public class FacilityServerService extends BaseJpaService<FacilityServer, Facili
         return  facilityServerDao.findById(id);
     }
 
+    public List<FacilityServer> findByNameIn (List<String> names) {
+       return facilityServerDao.findByNameIn(names);
+    }
+
+    /**
+     * 设施服务编码生成
+     *
+     * @return
+     */
+    public String genFacilityServerCode() {
+        String code = "HFHS" + randomString(5);
+        FacilityServer facility = facilityServerDao.findByCode(code);
+        while (facility != null) {
+            code = "HFHS" + randomString(5);
+            facility = facilityServerDao.findByCode(code);
+        }
+        return code;
+    }
+
 
 }

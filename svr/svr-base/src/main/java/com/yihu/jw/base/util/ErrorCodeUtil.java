@@ -21,6 +21,6 @@ public class ErrorCodeUtil {
      * @return
      */
     public String getErrorMsg(String errorCode){
-        return redisTemplate.opsForValue().get(BaseErrorCode.PREFIX+errorCode);
+        return redisTemplate.opsForValue().get(BaseErrorCode.PREFIX + errorCode);
     }
 }

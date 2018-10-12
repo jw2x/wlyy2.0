@@ -75,6 +75,62 @@ public class ModuleDO extends UuidIdentityEntityWithOperator {
 		}
 	}
 
+	public enum Must {
+		nonMust("非必选", 0),
+		must("必选", 1);
+		private String name;
+		private Integer value;
+
+		Must(String name, Integer value) {
+			this.name = name;
+			this.value = value;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+
+		public void setValue(Integer value) {
+			this.value = value;
+		}
+	}
+
+    public enum End {
+        have("有子节点", 0),
+        no("没有子节点", 1);
+        private String name;
+        private Integer value;
+
+        End(String name, Integer value) {
+            this.name = name;
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public Integer getValue() {
+            return value;
+        }
+
+        public void setValue(Integer value) {
+            this.value = value;
+        }
+    }
+
 	//模块名称
 	private String name;
 	//模块连接

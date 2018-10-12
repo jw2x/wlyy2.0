@@ -48,6 +48,9 @@ public class FeedBack extends UuidIdentityEntityWithOperator {
     //上传附件地址(多张图片地址，用逗号隔开)
     @Column(name = "pig_path", nullable = false)
     private String  pigPath;
+    //是否已读
+    @Column(name = "read_flag", nullable = false)
+    private Integer  readFlag;
 
     //反馈类型，1建议、2投诉、3报修、4其他
     private String  feedTypeValue;
@@ -158,5 +161,13 @@ public class FeedBack extends UuidIdentityEntityWithOperator {
 
     public void setEnclosureFlagValue(String enclosureFlagValue) {
         this.enclosureFlagValue = enclosureFlagValue;
+    }
+
+    public Integer getReadFlag() {
+        return readFlag;
+    }
+
+    public void setReadFlag(Integer readFlag) {
+        this.readFlag = readFlag;
     }
 }

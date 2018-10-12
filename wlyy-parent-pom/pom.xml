@@ -97,6 +97,7 @@
         <version.fastdfs>1.25</version.fastdfs>
         <version.poi>3.17</version.poi>
         <version.jxl>2.6.10</version.jxl>
+        <version.okhttp>3.4.1</version.okhttp>
         <!-- Version end -->
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -297,6 +298,11 @@
                 <groupId>net.sourceforge.jexcelapi</groupId>
                 <artifactId>jxl</artifactId>
                 <version>${version.jxl}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${version.okhttp}</version>
             </dependency>
             <!--   poi xml导入导出工具 end -->
 

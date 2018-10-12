@@ -2,6 +2,7 @@ package com.yihu.jw.restmodel.base.module;
 
 import com.yihu.jw.restmodel.UuidIdentityVO;
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * @author yeshijie on 2018/9/28.
@@ -9,12 +10,18 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(value = "InterfaceErrorCodeVO", description = "接口错误说明")
 public class InterfaceErrorCodeVO extends UuidIdentityVO {
 
-    private String interfaceId;//接口id
-    private String name;//错误码名称
-    private String description;//错误码描述
-    private String solution;//解决方案
-    private Integer sort;//排序
-    private Integer del;//删除标志
+    @ApiModelProperty(value = "接口id", example = "接口id")
+    private String interfaceId;
+    @ApiModelProperty(value = "错误码名称", example = "错误码名称")
+    private String name;
+    @ApiModelProperty(value = "错误码描述", example = "错误码描述")
+    private String description;
+    @ApiModelProperty(value = "解决方案", example = "解决方案")
+    private String solution;
+    @ApiModelProperty(value = "排序", example = "1")
+    private Integer sort;
+    @ApiModelProperty(value = "删除标志", example = "1")
+    private Integer del;
 
     public String getInterfaceId() {
         return interfaceId;

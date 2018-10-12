@@ -85,6 +85,8 @@ public class HealthyHouseMapping {
             public static final String GET_FEEDBACKS_BY_FIELD = "/getFeedBacksByField";
             public static final String UPDATE_FEEDBACKS_BY_ID = "/updateFeedBacksById";
             public static final String EXPORT_EXCEL = "/exportExcel/feedBacks";
+            public static final String GET_APP_FEEDBACK_BY_ID = "/getAppFeedBackById";
+            public static final String GET_APP_FEEDBACK_BY_USER_ID_AND_READFLAG = "/getAppFeedBackByUserIdAndReadFlag";
         }
 
         //用户使用导航记录
