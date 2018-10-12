@@ -1,6 +1,6 @@
 spring:
   application:
-    name: svr-base
+    name: svr-base-dm
   cloud:
     config:
       failFast: true

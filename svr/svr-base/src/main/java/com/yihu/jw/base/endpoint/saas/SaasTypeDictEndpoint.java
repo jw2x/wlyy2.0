@@ -1,9 +1,5 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.contant.CommonContant;
-import com.yihu.jw.base.service.module.ModuleService;
-import com.yihu.jw.base.service.saas.SaasDefaultModuleFunctionService;
-import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.entity.base.module.ModuleDO;
@@ -14,6 +10,9 @@ import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.restmodel.base.module.ModuleVO;
 import com.yihu.jw.restmodel.base.saas.SaasDefaultModuleFunctionVO;
 import com.yihu.jw.restmodel.base.saas.SaasTypeDictVO;
+import com.yihu.jw.restmodel.web.ListEnvelop;
+import com.yihu.jw.restmodel.web.ObjEnvelop;
+import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.base.saas.SaasVO;
 import com.yihu.jw.restmodel.web.*;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
@@ -45,6 +44,8 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     private SaasDefaultModuleFunctionService saasDefaultModuleFunctionService;
     @Autowired
     private ModuleService moduleService;
+//    @Autowired
+//    private SaasDefaultModuleFunctionService saasDefaultModuleFunctionService;
 
     @PostMapping(value = BaseRequestMapping.SaasTypeDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
@@ -79,7 +80,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             return failed("租户类型名称重复！", ObjEnvelop.class);
         }
         //删除关联的模块
-        saasDefaultModuleFunctionService.deleteBySaasType(saasTypeDictDO.getCode());
+//        saasDefaultModuleFunctionService.deleteBySaasType(saasTypeDictDO.getCode());
         saasTypeDictDO = saasTypeDictService.save(saasTypeDictDO, saasTypeDefaultModuleIds);
         return success("更新成功！", saasTypeDictDO, SaasTypeDictVO.class);
     }

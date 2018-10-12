@@ -4,15 +4,10 @@ import com.yihu.jw.base.dao.function.FunctionDao;
 import com.yihu.jw.base.dao.module.ModuleDao;
 import com.yihu.jw.base.dao.role.RoleDao;
 import com.yihu.jw.base.dao.saas.SaasTypeDictDao;
-import com.yihu.jw.base.dao.saas.SaasDefaultModuleFunctionDao;
-import com.yihu.jw.base.dao.saas.SaasModuleFunctionDao;
 import com.yihu.jw.base.dao.user.UserDao;
 import com.yihu.jw.base.dao.user.UserRoleDao;
-import com.yihu.jw.entity.base.function.FunctionDO;
 import com.yihu.jw.entity.base.role.RoleDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
-import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
-import com.yihu.jw.entity.base.saas.SaasModuleFunctionDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
 import com.yihu.mysql.query.BaseJpaService;
@@ -42,7 +37,7 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
 
     public SaasTypeDictDO save(SaasTypeDictDO saasTypeDictDO, String saasTypeDefaultModuleIds) {
         //初始化租户信息
-        Integer code;
+        Integer code ;
         if (StringUtils.isEmpty(saasTypeDictDO.getId())) {
             //新增
             code = getNextSaasTypeDictCode();
