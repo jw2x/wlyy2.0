@@ -1,19 +1,19 @@
 package com.yihu.jw.base.endpoint.saas;
 
+import com.yihu.jw.base.contant.CommonContant;
+import com.yihu.jw.base.dao.module.SaasTypeModuleDao;
+import com.yihu.jw.base.service.module.ModuleService;
+import com.yihu.jw.base.service.module.SaasTypeModuleService;
 import com.yihu.jw.base.service.saas.SaasTypeDictService;
-import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.entity.base.module.ModuleDO;
-import com.yihu.jw.entity.base.saas.SaasDO;
-import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
+import com.yihu.jw.entity.base.module.SaasTypeModuleDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
-import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.restmodel.base.module.ModuleVO;
-import com.yihu.jw.restmodel.base.saas.SaasDefaultModuleFunctionVO;
+import com.yihu.jw.restmodel.base.module.SaasTypeModuleVO;
 import com.yihu.jw.restmodel.base.saas.SaasTypeDictVO;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
-import com.yihu.jw.restmodel.base.saas.SaasVO;
 import com.yihu.jw.restmodel.web.*;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.restmodel.web.status.EnvelopStatus;
@@ -41,11 +41,9 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private SaasTypeDictService saasTypeDictService;
     @Autowired
-    private SaasDefaultModuleFunctionService saasDefaultModuleFunctionService;
-    @Autowired
     private ModuleService moduleService;
-//    @Autowired
-//    private SaasDefaultModuleFunctionService saasDefaultModuleFunctionService;
+    @Autowired
+    private SaasTypeModuleService saasTypeModuleService;
 
     @PostMapping(value = BaseRequestMapping.SaasTypeDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
@@ -80,7 +78,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             return failed("租户类型名称重复！", ObjEnvelop.class);
         }
         //删除关联的模块
-//        saasDefaultModuleFunctionService.deleteBySaasType(saasTypeDictDO.getCode());
+        saasTypeModuleService.deleteBySaasTypeId(saasTypeDictDO.getId());
         saasTypeDictDO = saasTypeDictService.save(saasTypeDictDO, saasTypeDefaultModuleIds);
         return success("更新成功！", saasTypeDictDO, SaasTypeDictVO.class);
     }
@@ -125,52 +123,87 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     }
 
     @GetMapping(value = BaseRequestMapping.SaasTypeDict.FINDBYID)
-    @ApiOperation(value = "根据id获取单个租户类型")
+    @ApiOperation(value = "根据id获取单个租户类型+(右边树：已关联的模块)")
     public MixEnvelop<SaasTypeDictDO, List<ModuleVO>> findById(
             @ApiParam(name = "saasTypeDictId", value = "租户类型id")
             @RequestParam(value = "saasTypeDictId", required = true) String saasTypeDictId) throws Exception {
-        MixEnvelop envelop=new MixEnvelop();
+        MixEnvelop envelop = new MixEnvelop();
         //获取租户类型
         SaasTypeDictDO saasTypeDictDO = saasTypeDictService.findById(saasTypeDictId);
         envelop.setObj(saasTypeDictDO);
-        if(null!=saasTypeDictDO){
+        if (null != saasTypeDictDO) {
             //根据租户类型获取关联的模块（右边树）
-            List<SaasDefaultModuleFunctionDO> saasDefaultModuleFunctionDOList = saasDefaultModuleFunctionService.findByField("saasType", saasTypeDictDO.getCode());
-            Set<String> moduleIdSet=new HashSet<>();
-            for(SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO:saasDefaultModuleFunctionDOList){
-                moduleIdSet.add(saasDefaultModuleFunctionDO.getModuleId());
-            }
-            //获取生效中的模块
-            String filters = "status=1";
-            List<ModuleDO> modules = moduleService.search(null, filters, null);
-            List<ModuleVO> moduleVOs = convertToModels(modules,new ArrayList<>(modules.size()),ModuleVO.class);
-            moduleVOs = moduleVOs.stream()
-                    .filter(module -> {
-                        if(CommonContant.IS_MUST.equals(module.getIsMust())){
-                            //是否选中（0-表示未选，1-表示已选)
-                            module.setIsCheck(1);
-                        }else {
-                            module.setIsCheck(0);
-                        }
-                        if(moduleIdSet.contains(module.getId())){
-                            //是否选中（0-表示未选，1-表示已选)
-                            module.setIsCheck(1);
-                        }
-                        return true;
-                    }).collect(Collectors.toList());
-            Map<String,List<ModuleVO>> map = moduleVOs.stream().collect(Collectors.groupingBy(ModuleVO::getParentId));
-            moduleVOs.forEach(module->{
-                List<ModuleVO> tmp = map.get(module.getId());
+            String fis = "status=1;saasTypeId=" + saasTypeDictId;
+            List<SaasTypeModuleDO> saasTypeModuleDOList = saasTypeModuleService.search(fis);
+            //获取租户类型关联的生效中的模块
+            List<SaasTypeModuleVO> saasTypeModuleVOS = convertToModels(saasTypeModuleDOList, new ArrayList<>(saasTypeModuleDOList.size()), SaasTypeModuleVO.class);
+            Map<String, List<SaasTypeModuleVO>> map = saasTypeModuleVOS.stream().collect(Collectors.groupingBy(SaasTypeModuleVO::getParentModuleId));
+            saasTypeModuleVOS.forEach(module -> {
+                List<SaasTypeModuleVO> tmp = map.get(module.getModuleId());
                 module.setChildren(tmp);
             });
-            moduleVOs = moduleVOs.stream()
-                    .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentId()))
+            saasTypeModuleVOS = saasTypeModuleVOS.stream()
+                    .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentModuleId()))
                     .collect(Collectors.toList());
-            envelop.setDetailModelList(moduleVOs);
+            envelop.setDetailModelList(saasTypeModuleVOS);
         }
         envelop.setStatus(EnvelopStatus.success.code);
         envelop.setMessage("success");
         return envelop;
+    }
+
+    @GetMapping(value = BaseRequestMapping.SaasTypeDict.FIND_ALL_EXIST_CHECKED)
+    @ApiOperation(value = "获取租户类型-模块列表（左边树：全部模块，已关联和必选为选中状态）")
+    public ListEnvelop<ModuleVO> findAllExistChecked(
+            @ApiParam(name = "saasTypeDictId", value = "租户类型id")
+            @RequestParam(value = "saasTypeDictId", required = false) String saasTypeDictId) throws Exception {
+        //根据租户类型获取关联的模块
+        String fis = "status=1;saasTypeId=" + saasTypeDictId;
+        List<SaasTypeModuleDO> saasTypeModuleDOList = saasTypeModuleService.search(fis);
+        Set<String> moduleIdSet = new HashSet<>();
+        for (SaasTypeModuleDO saasTypeModuleDO : saasTypeModuleDOList) {
+            moduleIdSet.add(saasTypeModuleDO.getModuleId());
+        }
+        //获取生效中的模块
+        String filters = "status=1";
+        List<ModuleDO> modules = moduleService.search(filters);
+        List<ModuleVO> moduleVOs = convertToModels(modules, new ArrayList<>(modules.size()), ModuleVO.class);
+        moduleVOs = moduleVOs.stream()
+                .filter(module -> {
+                    if (CommonContant.IS_MUST.equals(module.getIsMust())) {
+                        //是否选中（0-表示未选，1-表示已选)
+                        module.setIsCheck(1);
+                    } else {
+                        module.setIsCheck(0);
+                    }
+                    if (moduleIdSet.contains(module.getId())) {
+                        //是否选中（0-表示未选，1-表示已选)
+                        module.setIsCheck(1);
+                    }
+                    return true;
+                }).collect(Collectors.toList());
+        Map<String, List<ModuleVO>> map = moduleVOs.stream().collect(Collectors.groupingBy(ModuleVO::getParentId));
+        moduleVOs.forEach(module -> {
+            List<ModuleVO> tmp = map.get(module.getId());
+            module.setChildren(tmp);
+        });
+        moduleVOs = moduleVOs.stream()
+                .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentId()))
+                .collect(Collectors.toList());
+        return success(moduleVOs);
+    }
+
+    @PostMapping(value = BaseRequestMapping.SaasTypeDict.STATUS)
+    @ApiOperation(value = "生效/失效")
+    public Envelop status(
+            @ApiParam(name = "id", value = "id", required = true)
+            @RequestParam(value = "id") String id,
+            @ApiParam(name = "status", value = " 失效-invalid,生效- effective", required = true)
+            @RequestParam(value = "status") SaasTypeDictDO.Status status) {
+        SaasTypeDictDO saasTypeDictDO = saasTypeDictService.findById(id);
+        saasTypeDictDO.setStatus(status);
+        saasTypeDictService.save(saasTypeDictDO);
+        return success("修改成功");
     }
 
 

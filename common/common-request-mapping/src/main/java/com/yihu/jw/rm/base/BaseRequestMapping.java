@@ -56,6 +56,8 @@ public class BaseRequestMapping {
      */
     public static class SaasTypeDict extends Basic {
         public static final String PREFIX  = "/saas_type_dict";
+        public static final String STATUS  = "/status";
+        public static final String FIND_ALL_EXIST_CHECKED  = "/findAllExistChecked";
     }
 
     /**
@@ -66,7 +68,7 @@ public class BaseRequestMapping {
         public static final String STATUS  = "/status";
         public static final String IS_NAME_EXIST  = "/isNameExist";
         public static final String FIND_ALL  = "/findAll";
-        public static final String FIND_ALL_EXIST_CHECKED  = "/findAllExistChecked";
+
     }
 
     /**

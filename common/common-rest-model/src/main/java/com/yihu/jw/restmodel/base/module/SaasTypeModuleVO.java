@@ -37,7 +37,7 @@ public class SaasTypeModuleVO extends UuidIdentityVOWithOperator {
 	@ApiModelProperty(value = "逻辑删除标志1正常，0删除", example = "1")
 	private Integer del ;
 	@ApiModelProperty(value = "是否选中（0-表示未选，1-表示已选)", example = "1")
-	private Integer isCheck ;
+	private Integer isCheck =1;
 	@ApiModelProperty(value = "子集", example = "子集")
 	private List<SaasTypeModuleVO> children = new ArrayList<>();
 
