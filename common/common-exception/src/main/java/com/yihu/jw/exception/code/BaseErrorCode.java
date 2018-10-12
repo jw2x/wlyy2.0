@@ -33,7 +33,20 @@ public class BaseErrorCode {
      * 租户模块
      */
     public static class Saas{
+
         public static final String SAAS = "-101000";
+        /**
+         * 管理员手机号已存在
+         */
+        public static final String MOBILE_IS_EXIST = "-101001";
+        /**
+         * 管理员邮箱已存在
+         */
+        public static final String EMAIL_IS_EXIST = "-101002";
+        /**
+         * 该名称已被占用
+         */
+        public static final String NAME_IS_EXIST = "-101003";
     }
 
     /**

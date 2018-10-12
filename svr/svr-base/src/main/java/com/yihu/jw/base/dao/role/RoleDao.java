@@ -10,4 +10,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  */
 public interface RoleDao extends PagingAndSortingRepository<RoleDO, String>, JpaSpecificationExecutor<RoleDO> {
 
+    RoleDO findByCode(String code);
 }

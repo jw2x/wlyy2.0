@@ -35,6 +35,11 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     @Autowired
     private UserRoleDao userRoleDao;
 
+    /**
+     * 默认租户管理员角色code
+     */
+    private final String roleCode = "saasAdmin";
+
     @Transactional
     public SaasDO save(SaasDO saas, UserDO user) {
         //初始化租户信息
@@ -43,18 +48,16 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         saas.setId(saasId);
         saas.setManager(userId);
         //初始化角色
-        RoleDO roleDO = new RoleDO();
-        roleDO.setName(saas.getName() + "管理员");
-        roleDO.setRemark("Saas初始化分配");
-        roleDO.setSystem(false);
+        RoleDO roleDO = roleDao.findByCode(roleCode);
         //初始化租户管理员
         user.setId(userId);
         user.setEnabled(true);
         user.setLocked(false);
         user.setSalt(randomString(5));
         String password = user.getPassword();
+        //密码默认手机号后6位
         if (StringUtils.isEmpty(password)) {
-            password = user.getIdcard().substring(0, 5);
+            password = user.getMobile().substring(0, 6);
         }
         user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
         //初始化管理员角色
@@ -72,8 +75,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
 //            roleModuleFunctionDOS.add(saasModuleFunctionDO);
 //        });
         //保存数据
+        saas.setStatus(SaasDO.Status.auditWait);
         saas = saasDao.save(saas);
-        roleDao.save(roleDO);
         userDao.save(user);
         userRoleDao.save(userRoleDO);
 //        roleModuleFunctionDao.save(roleModuleFunctionDOS);
