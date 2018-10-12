@@ -47,8 +47,9 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
     private String auditFailedReason;
     //管理员姓名
     private String managerName;
-
+    //机构
     List<BaseOrgDO> orgList;
+    //业务模块
     List<SaasModuleDO> saasModuleList;
 
 	@Column(name = "org_code", nullable = false)
