@@ -3,14 +3,18 @@ package com.yihu.jw.restmodel.base.saas;// default package
 
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
+import com.yihu.jw.restmodel.base.module.SaasModuleVO;
+import com.yihu.jw.restmodel.base.org.BaseOrgVO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.List;
 
 /**
  * VO - SAAS
  * Created by progr1mmer on 2018/8/14.
  */
-@ApiModel(value = "SaasVO", description = "SAAS")
+@ApiModel(value = "SaasVO", description = "租户")
 public class SaasVO extends UuidIdentityVOWithOperator {
 
 	@ApiModelProperty(value = "机构编码", example = "495323X")
@@ -31,6 +35,31 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	private String email;
 	@ApiModelProperty(value = "管理员手机号码", example = "18888888888")
 	private String mobile;
+	@ApiModelProperty(value = "组织机构代码", example = "46542")
+	private String organizationCode;
+	@ApiModelProperty(value = "营业执照url", example = "../img/")
+	private String businessLicense;
+	@ApiModelProperty(value = "系统名称", example = "i健康")
+	private String systemName;
+	@ApiModelProperty(value = "行政区划代码", example = "361000")
+	private String areaNumber;
+
+	@ApiModelProperty(value = "机构", example = "机构")
+	List<BaseOrgVO> orgList;
+	@ApiModelProperty(value = "业务模块", example = "业务模块")
+	List<SaasModuleVO> saasModuleList;
+    @ApiModelProperty(value = "管理员 - 关联user表id字段", example = "402303ee656498890165649ad2wa00sd")
+    private String manager;
+    @ApiModelProperty(value = "管理员邮箱", example = "admin@jkzl.com")
+    private String email;
+    @ApiModelProperty(value = "管理员手机号码", example = "18888888888")
+    private String mobile;
+    @ApiModelProperty(value = "审核不通过的原因", example = "信息不准确")
+    private String auditFailedReason;
+    @ApiModelProperty(value = "租户类型名称", example = "家医型")
+    private String typeName;
+    @ApiModelProperty(value = "管理员姓名", example = "张三")
+    private String managerName;
 
 	public String getOrgCode() {
 		return orgCode;
@@ -103,4 +132,79 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
 	}
+
+	public String getOrganizationCode() {
+		return organizationCode;
+	}
+
+	public void setOrganizationCode(String organizationCode) {
+		this.organizationCode = organizationCode;
+	}
+
+	public String getBusinessLicense() {
+		return businessLicense;
+	}
+
+	public void setBusinessLicense(String businessLicense) {
+		this.businessLicense = businessLicense;
+	}
+
+	public String getSystemName() {
+		return systemName;
+	}
+
+	public void setSystemName(String systemName) {
+		this.systemName = systemName;
+	}
+
+	public String getAreaNumber() {
+		return areaNumber;
+	}
+
+	public void setAreaNumber(String areaNumber) {
+		this.areaNumber = areaNumber;
+	}
+
+	public List<BaseOrgVO> getOrgList() {
+		return orgList;
+	}
+
+	public void setOrgList(List<BaseOrgVO> orgList) {
+		this.orgList = orgList;
+	}
+
+	public List<SaasModuleVO> getSaasModuleList() {
+		return saasModuleList;
+	}
+
+	public void setSaasModuleList(List<SaasModuleVO> saasModuleVOList) {
+		this.saasModuleList = saasModuleList;
+	}
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAuditFailedReason() {
+        return auditFailedReason;
+    }
+
+    public void setAuditFailedReason(String auditFailedReason) {
+        this.auditFailedReason = auditFailedReason;
+    }
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
 }

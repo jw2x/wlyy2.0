@@ -1,9 +1,11 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.user.UserService;
-import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.base.service.saas.SaasService;
+import com.yihu.jw.base.service.user.UserService;
+import com.yihu.jw.base.util.ErrorCodeUtil;
+import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.user.UserDO;
+import com.yihu.jw.exception.code.BaseErrorCode;
 import com.yihu.jw.restmodel.base.saas.SaasVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -32,17 +34,26 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     private SaasService saasService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ErrorCodeUtil errorCodeUtil;
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
     public Envelop create (
-            @ApiParam(name = "saas", value = "Json数据", required = true)
-            @RequestParam(value = "saas") SaasDO saasDO,
-            @ApiParam(name = "user", value = "Json数据", required = true)
-            @RequestParam(value = "user") UserDO userDO) throws Exception {
-        if (userService.search("username=" + userDO.getUsername()).size() > 0) {
-            return failed("管理员用户名已存在", Envelop.class);
+            @ApiParam(name = "saasDO", value = "Json数据", required = true)
+            @RequestParam(value = "saasDO") SaasDO saasDO,
+            @ApiParam(name = "userDO", value = "Json数据", required = true)
+            @RequestParam(value = "userDO") UserDO userDO) throws Exception {
+        if (saasService.search("name=" + userDO.getName()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
+        if (userService.search("mobile=" + userDO.getMobile()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+        }
+        if (userService.search("username=" + userDO.getEmail()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+        }
+        userDO.setUsername(userDO.getEmail());
         saasService.save(saasDO, userDO);
         return success("创建成功");
     }
@@ -63,7 +74,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestBody String jsonData) throws Exception {
         SaasDO saasDO = toEntity(jsonData, SaasDO.class);
         if (null == saasDO.getId()) {
-            return failed("ID不能为空", Envelop.class);
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), Envelop.class);
         }
         saasDO = saasService.save(saasDO);
         return success(saasDO);
