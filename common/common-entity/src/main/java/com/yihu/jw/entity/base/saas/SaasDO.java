@@ -46,6 +46,13 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     List<BaseOrgDO> orgList;
     List<SaasModuleDO> saasModuleList;
+    private String manager; //管理员 - 关联user表id字段
+    private String email; //管理员邮箱
+    private String mobile; //管理员手机号码
+    //审核不通过的原因
+    private String auditFailedReason;
+    //管理员姓名
+    private String managerName;
 
 	@Column(name = "org_code", nullable = false)
 	public String getOrgCode() {
@@ -180,5 +187,26 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public void setSaasModuleList(List<SaasModuleDO> saasModuleList) {
         this.saasModuleList = saasModuleList;
+    }
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    @Column(name = "audit_failed_reason")
+    public String getAuditFailedReason() {
+        return auditFailedReason;
+    }
+
+    public void setAuditFailedReason(String auditFailedReason) {
+        this.auditFailedReason = auditFailedReason;
+    }
+
+    @Column(name = "manager_name")
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
     }
 }
