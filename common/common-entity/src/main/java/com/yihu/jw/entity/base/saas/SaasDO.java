@@ -36,9 +36,6 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	private String remark; //备注
 	private String logo; //远程fastDFS文件地址
     private Integer type; //类型
-	private String manager; //管理员 - 关联user表id字段
-	private String email; //管理员邮箱
-	private String mobile; //管理员手机号码
 	private String organizationCode; //组织机构代码
 	private String businessLicense; //营业执照url
 	private String systemName; //系统名称
@@ -187,9 +184,6 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public void setSaasModuleList(List<SaasModuleDO> saasModuleList) {
         this.saasModuleList = saasModuleList;
-    }
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
     }
 
     @Column(name = "audit_failed_reason")
