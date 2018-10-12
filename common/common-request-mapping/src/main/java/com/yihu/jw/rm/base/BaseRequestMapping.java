@@ -232,6 +232,10 @@ public class BaseRequestMapping {
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
+
+        public static final String getusersummary ="/getusersummary";
+        public static final String getusercumulate ="/getusercumulate";
+
     }
 
     /**

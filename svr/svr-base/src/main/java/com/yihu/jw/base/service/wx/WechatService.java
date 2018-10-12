@@ -5,7 +5,6 @@ import com.yihu.jw.entity.base.wx.*;
 import com.yihu.jw.restmodel.base.wx.*;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
-import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +42,8 @@ public class WechatService {
     private WxTemplateDao wxTemplateDao;
     @Autowired
     private WxTemplateConfigDao wxTemplateConfigDao;
+    @Autowired
+    private WxAccessTokenService wxAccessTokenService;
 
     //====================微信与租户管理=======================
 
@@ -455,5 +456,28 @@ public class WechatService {
     }
     //===================模板消息end=======================================
 
+    //===================微信统计==========================================
+
+    public Envelop getusersummary(String wechatId,String beginDate,String endDate){
+        String url ="https://api.weixin.qq.com/datacube/getusersummary?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
+        String param = "{ \n" +
+                "    \"begin_date\": \""+beginDate+"\", \n" +
+                "    \"end_date\": \""+endDate+"\"\n" +
+                "}";
+        String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, param);
+        return Envelop.getSuccess(result);
+    }
+
+    public Envelop getusercumulate(String wechatId,String beginDate,String endDate){
+        String url ="https://api.weixin.qq.com/datacube/getusercumulate?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
+        String param = "{ \n" +
+                "    \"begin_date\": \""+beginDate+"\", \n" +
+                "    \"end_date\": \""+endDate+"\"\n" +
+                "}";
+        String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, param);
+        return Envelop.getSuccess(result);
+    }
+
+    //===================微信统计end=======================================
 
 }
