@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Created by Trick on 2018/9/26.
+ * Created by Trick on 2018/9/26..
  */
 @RestController
 @RequestMapping(BaseRequestMapping.WeChat.wechat_base)
@@ -232,4 +232,29 @@ public class WechatController extends EnvelopRestEndpoint {
 
     }
     //===================模板消息end==========================================
+
+    //===================微信粉丝统计==========================================
+    @GetMapping(value = BaseRequestMapping.WeChat.getusersummary)
+    @ApiOperation(value = "获取用户增减数据", notes = "获取用户增减数据")
+    public Envelop getusersummary(@ApiParam(name = "wechatId", value = "微信id")
+                                  @RequestParam(value = "wechatId", required = true)String wechatId,
+                                  @ApiParam(name = "beginDate", value = "开始时间，例如：2014-12-02")
+                                  @RequestParam(value = "beginDate", required = true)String beginDate,
+                                  @ApiParam(name = "endDate", value = "结束时间，例如：2014-12-07")
+                                  @RequestParam(value = "endDate", required = true)String endDate) {
+        return wechatService.getusersummary(wechatId,beginDate,endDate);
+    }
+
+    @GetMapping(value = BaseRequestMapping.WeChat.getusercumulate)
+    @ApiOperation(value = "获取累计用户数据", notes = "获取累计用户数据")
+    public Envelop getusercumulate(@ApiParam(name = "wechatId", value = "微信id")
+                                   @RequestParam(value = "wechatId", required = true)String wechatId,
+                                   @ApiParam(name = "beginDate", value = "开始时间，例如：2014-12-02")
+                                   @RequestParam(value = "beginDate", required = true)String beginDate,
+                                   @ApiParam(name = "endDate", value = "结束时间，例如：2014-12-07")
+                                   @RequestParam(value = "endDate", required = true)String endDate) {
+        return wechatService.getusercumulate(wechatId,beginDate,endDate);
+    }
+
+    //===================微信粉丝统计end==========================================
 }
