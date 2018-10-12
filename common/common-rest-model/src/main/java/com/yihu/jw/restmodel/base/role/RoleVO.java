@@ -17,6 +17,10 @@ public class RoleVO extends UuidIdentityVOWithOperator {
 	private String remark;
 	@ApiModelProperty(value = "是否系统管理员", example = "1")
 	private Boolean system;
+	@ApiModelProperty(value = "角色代码", example = "1")
+	private String code;
+	@ApiModelProperty(value = "1.系统管理员，2.saas管理员，3.机构管理员", example = "1")
+	private String type;
 
 	public String getName() {
 		return this.name;
@@ -40,5 +44,21 @@ public class RoleVO extends UuidIdentityVOWithOperator {
 
 	public void setSystem(Boolean system) {
 		this.system = system;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 }
