@@ -199,7 +199,7 @@ public class SpecialistHospitalServiceItemService extends EnvelopRestEndpoint {
             List<String> type = new ArrayList<>();
             for (int j = 0;j<hospitalServiceItemDOS1.size();j++){
                 SpecialistServiceItemDO specialistServiceItemDO = hospitalServiceItemDOS1.get(j).getSpecialistServiceItemDO();
-                if (itemType.get(i).equals(specialistServiceItemDO.getItemType())){
+                if (itemType.get(i).equals(specialistServiceItemDO.getItemType())&& !type.contains(specialistServiceItemDO.getDiseaseItem())){
             type.add(specialistServiceItemDO.getDiseaseItem());
                 }
             }

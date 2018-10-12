@@ -178,10 +178,10 @@ public class CreditsDetailService extends BaseJpaService<CreditsDetailDO,Creditt
                         " cd.patient_id ) cd1 ON cd1.patient_id = ba.patient_id " +
                         " WHERE " + buffer +
                         " ORDER BY" +
-                        " ba.create_time DESC " +
-                        "LIMIT "+(page-1)*size+","+size +")ba1" +
+                        " ba.create_time DESC )ba1" +
                         " ORDER BY " +
-                        " ba1.total DESC";
+                        " ba1.total DESC"+
+                        " LIMIT "+(page-1)*size+","+size ;
         List<AccountDO> accountDOS = jdbcTemplate.query(sql,new BeanPropertyRowMapper(AccountDO.class));
         String sqlCount = "SELECT count(1) AS total"+
                 " FROM " +
