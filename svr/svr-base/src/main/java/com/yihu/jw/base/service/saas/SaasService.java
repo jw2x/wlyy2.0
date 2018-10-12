@@ -1,9 +1,11 @@
 package com.yihu.jw.base.service.saas;
 
+import com.yihu.jw.base.dao.org.BaseOrgDao;
 import com.yihu.jw.base.dao.role.RoleDao;
 import com.yihu.jw.base.dao.saas.SaasDao;
 import com.yihu.jw.base.dao.user.UserDao;
 import com.yihu.jw.base.dao.user.UserRoleDao;
+import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.entity.base.role.RoleDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.user.UserDO;
@@ -14,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * Service - SAAS
@@ -34,6 +38,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     private RoleDao roleDao;
     @Autowired
     private UserRoleDao userRoleDao;
+    @Autowired
+    private BaseOrgDao baseOrgDao;
 
     /**
      * 默认租户管理员角色code
@@ -64,19 +70,14 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         UserRoleDO userRoleDO = new UserRoleDO();
         userRoleDO.setUserId(user.getId());
         userRoleDO.setRoleId(roleDO.getId());
-        //初始化租户默认模块
-//        List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = saasDefaultModuleFunctionDao.findBySaasType(saas.getType());
-//        List<SaasModuleFunctionDO> roleModuleFunctionDOS = new ArrayList<>();
-//        saasDefaultModuleDOS.forEach(item -> {
-//            SaasModuleFunctionDO saasModuleFunctionDO = new SaasModuleFunctionDO();
-//            saasModuleFunctionDO.setSaasId(saasId);
-//            saasModuleFunctionDO.setModuleId(item.getModuleId());
-//            saasModuleFunctionDO.setFunctionId(item.getFunctionId());
-//            roleModuleFunctionDOS.add(saasModuleFunctionDO);
-//        });
+        List<BaseOrgDO> orgDOList = saas.getOrgList();
+        orgDOList.forEach(org->{
+            org.setSaasid(saasId);
+        });
         //保存数据
         saas.setStatus(SaasDO.Status.auditWait);
         saas = saasDao.save(saas);
+        baseOrgDao.save(orgDOList);
         userDao.save(user);
         userRoleDao.save(userRoleDO);
 //        roleModuleFunctionDao.save(roleModuleFunctionDOS);
