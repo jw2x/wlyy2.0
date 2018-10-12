@@ -29,6 +29,18 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	private String logo;
 	@ApiModelProperty(value = "类型（租户类型编码，从1开始自增）", example = "1")
     private Integer type;
+	@ApiModelProperty(value = "管理员 - 关联user表id字段", example = "402303ee656498890165649ad2wa00sd")
+	private String manager;
+	@ApiModelProperty(value = "管理员邮箱", example = "admin@jkzl.com")
+	private String email;
+	@ApiModelProperty(value = "管理员手机号码", example = "18888888888")
+	private String mobile;
+	@ApiModelProperty(value = "审核不通过的原因", example = "信息不准确")
+	private String auditFailedReason;
+	@ApiModelProperty(value = "租户类型名称", example = "家医型")
+	private String typeName;
+	@ApiModelProperty(value = "管理员姓名", example = "张三")
+	private String managerName;
 	@ApiModelProperty(value = "组织机构代码", example = "46542")
 	private String organizationCode;
 	@ApiModelProperty(value = "营业执照url", example = "../img/")
@@ -42,18 +54,7 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	List<BaseOrgVO> orgList;
 	@ApiModelProperty(value = "业务模块", example = "业务模块")
 	List<SaasModuleVO> saasModuleList;
-    @ApiModelProperty(value = "管理员 - 关联user表id字段", example = "402303ee656498890165649ad2wa00sd")
-    private String manager;
-    @ApiModelProperty(value = "管理员邮箱", example = "admin@jkzl.com")
-    private String email;
-    @ApiModelProperty(value = "管理员手机号码", example = "18888888888")
-    private String mobile;
-    @ApiModelProperty(value = "审核不通过的原因", example = "信息不准确")
-    private String auditFailedReason;
-    @ApiModelProperty(value = "租户类型名称", example = "家医型")
-    private String typeName;
-    @ApiModelProperty(value = "管理员姓名", example = "张三")
-    private String managerName;
+
 
 	public String getOrgCode() {
 		return orgCode;
@@ -123,6 +124,9 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 		return mobile;
 	}
 
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
 
 	public String getOrganizationCode() {
 		return organizationCode;
@@ -171,9 +175,6 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	public void setSaasModuleList(List<SaasModuleVO> saasModuleVOList) {
 		this.saasModuleList = saasModuleList;
 	}
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
 
     public String getAuditFailedReason() {
         return auditFailedReason;
