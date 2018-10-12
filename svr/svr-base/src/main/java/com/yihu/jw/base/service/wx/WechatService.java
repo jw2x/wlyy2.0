@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Created by trick on 2017/5/20 0020.
+ * Created by trick on 2017/5/20 0020
  */
 @Service
 @Transactional
