@@ -103,5 +103,8 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
     public SaasTypeDictDO findById(String id) {
         return saasTypeDictDao.findById(id);
     }
+    public SaasTypeDictDO findByCode(Integer code) {
+        return saasTypeDictDao.findByCode(code);
+    }
 
 }
