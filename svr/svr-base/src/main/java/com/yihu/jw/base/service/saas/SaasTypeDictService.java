@@ -1,6 +1,7 @@
 package com.yihu.jw.base.service.saas;
 
 import com.yihu.jw.base.dao.function.FunctionDao;
+import com.yihu.jw.base.dao.module.ModuleDao;
 import com.yihu.jw.base.dao.role.RoleDao;
 import com.yihu.jw.base.dao.saas.SaasTypeDictDao;
 import com.yihu.jw.base.dao.saas.SaasDefaultModuleFunctionDao;
@@ -36,9 +37,7 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
     @Autowired
     private SaasTypeDictDao saasTypeDictDao;
     @Autowired
-    private FunctionDao functionDao;
-    @Autowired
-    private SaasDefaultModuleFunctionDao saasDefaultModuleFunctionDao;
+    private ModuleDao moduleDao;
 
 
     public SaasTypeDictDO save(SaasTypeDictDO saasTypeDictDO, String saasTypeDefaultModuleIds) {
@@ -52,34 +51,34 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
             //编辑
             code = saasTypeDictDO.getCode();
         }
-        //根据moduleId获取模块关联的接口id（业务模块不包含接口也可被租户类型关联）
-        String[] ids = saasTypeDefaultModuleIds.split(",");
-        SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO;
-        List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = new ArrayList<>();
-        for (String id : ids) {
-            List<FunctionDO> functionDOList = functionDao.findFunctionDOSByModuleId(id);
-            //模块关联接口
-            if (null != functionDOList && functionDOList.size() > 0) {
-                functionDOList.forEach(item -> {
-                    SaasDefaultModuleFunctionDO saDeModuleFunctionDO = new SaasDefaultModuleFunctionDO();
-                    saDeModuleFunctionDO.setSaasType(code);
-                    saDeModuleFunctionDO.setModuleId(id);
-                    saDeModuleFunctionDO.setFunctionId(item.getId());
-                    saasDefaultModuleDOS.add(saDeModuleFunctionDO);
-                });
-            } else {
-                //模块未关联接口
-                saasDefaultModuleFunctionDO = new SaasDefaultModuleFunctionDO();
-                saasDefaultModuleFunctionDO.setSaasType(code);
-                saasDefaultModuleFunctionDO.setModuleId(id);
-                saasDefaultModuleDOS.add(saasDefaultModuleFunctionDO);
-            }
-            //初始化租户默认模块
-            saasDefaultModuleFunctionDao.save(saasDefaultModuleDOS);
-        }
+        //根据moduleId获取模块
+//        String[] ids = saasTypeDefaultModuleIds.split(",");
+//        SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO;
+//        List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = new ArrayList<>();
+//        for (String id : ids) {
+//            List<FunctionDO> functionDOList = functionDao.findFunctionDOSByModuleId(id);
+//            //模块关联接口
+//            if (null != functionDOList && functionDOList.size() > 0) {
+//                functionDOList.forEach(item -> {
+//                    SaasDefaultModuleFunctionDO saDeModuleFunctionDO = new SaasDefaultModuleFunctionDO();
+//                    saDeModuleFunctionDO.setSaasType(code);
+//                    saDeModuleFunctionDO.setModuleId(id);
+//                    saDeModuleFunctionDO.setFunctionId(item.getId());
+//                    saasDefaultModuleDOS.add(saDeModuleFunctionDO);
+//                });
+//            } else {
+//                //模块未关联接口
+//                saasDefaultModuleFunctionDO = new SaasDefaultModuleFunctionDO();
+//                saasDefaultModuleFunctionDO.setSaasType(code);
+//                saasDefaultModuleFunctionDO.setModuleId(id);
+//                saasDefaultModuleDOS.add(saasDefaultModuleFunctionDO);
+//            }
+//            //初始化租户默认模块
+//            saasDefaultModuleFunctionDao.save(saasDefaultModuleDOS);
+//        }
         //保存数据
-        saasTypeDictDO = saasTypeDictDao.save(saasTypeDictDO);
-        return saasTypeDictDO;
+//        saasTypeDictDO = saasTypeDictDao.save(saasTypeDictDO);
+        return new SaasTypeDictDO();
     }
 
     /**
