@@ -15,6 +15,10 @@ import javax.persistence.Table;
 public class RoleDO extends UuidIdentityEntityWithOperator {
 
 	/**
+	 * 角色代码
+	 */
+	private String code;
+	/**
 	 * 角色名称
 	 */
 	private String name;
@@ -26,6 +30,14 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 	 * 是否系统管理员
 	 */
 	private Boolean system;
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	@Column(name = "name", length = 50)
 	public String getName() {
