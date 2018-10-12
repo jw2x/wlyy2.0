@@ -1,4 +1,4 @@
-package com.yihu.jw.entity.base.peopel_num;
+package com.yihu.jw.entity.base.population;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
@@ -11,12 +11,12 @@ import java.util.Date;
 /**
 * 基础人口基数信息实体
 *
-* @author Administrator on  2018年09月05日
+* @author litaohong on  2018年09月26日
 *
 */
 @Entity
-@Table(name = "base_people_num")
-public class BasePeopleNumDO extends UuidIdentityEntityWithOperator {
+@Table(name = "base_population")
+public class BasePopulationDO extends UuidIdentityEntityWithOperator {
 
     /**
 	 * saas化的id
@@ -46,7 +46,7 @@ public class BasePeopleNumDO extends UuidIdentityEntityWithOperator {
     /**
 	 * 人口数
 	 */
-	private Integer num;
+	private Integer populationNum;
 
     /**
 	 * 类别 0是省，1是市，2是区，3是机构
@@ -59,34 +59,34 @@ public class BasePeopleNumDO extends UuidIdentityEntityWithOperator {
 	private Integer year;
 
     /**
-	 * 高血压发病数
+	 * 高血压发病数,HBP为医学简称
 	 */
-	private Integer gxyNum;
+	private Integer hbpNum;
 
     /**
-	 * 糖尿病发病数
+	 * 糖尿病发病数,DM为医学简称
 	 */
-	private Integer tnbNum;
+	private Integer dmNum;
 
     /**
 	 * 65岁以上老年人口数
 	 */
-	private Integer sixFiveNum;
+	private Integer olderThan65Num;
 
     /**
 	 * 高血压任务数
 	 */
-	private Integer gxyTaskNum;
+	private Integer hbpTaskNum;
 
     /**
 	 * 糖尿病任务数
 	 */
-	private Integer tnbTaskNum;
+	private Integer dmTaskNum;
 
     /**
 	 * 65岁以上老年人口任务数
 	 */
-	private Integer sixFiveTaskNum;
+	private Integer olderThan65TaskNum;
 
     /**
 	 * 户籍人口任务数
@@ -140,12 +140,12 @@ public class BasePeopleNumDO extends UuidIdentityEntityWithOperator {
         this.name = name;
     }
 
-	@Column(name = "num")
-    public Integer getNum() {
-        return num;
+	@Column(name = "population_num")
+    public Integer getPopulationNum() {
+        return populationNum;
     }
-    public void setNum(Integer num) {
-        this.num = num;
+    public void setPopulationNum(Integer populationNum) {
+        this.populationNum = populationNum;
     }
 
 	@Column(name = "type")
@@ -164,52 +164,52 @@ public class BasePeopleNumDO extends UuidIdentityEntityWithOperator {
         this.year = year;
     }
 
-	@Column(name = "gxy_num")
-    public Integer getGxyNum() {
-        return gxyNum;
+	@Column(name = "hbp_num")
+    public Integer getHbpNum() {
+        return hbpNum;
     }
-    public void setGxyNum(Integer gxyNum) {
-        this.gxyNum = gxyNum;
-    }
-
-	@Column(name = "tnb_num")
-    public Integer getTnbNum() {
-        return tnbNum;
-    }
-    public void setTnbNum(Integer tnbNum) {
-        this.tnbNum = tnbNum;
+    public void setHbpNum(Integer hbpNum) {
+        this.hbpNum = hbpNum;
     }
 
-	@Column(name = "six_five_num")
-    public Integer getSixFiveNum() {
-        return sixFiveNum;
+	@Column(name = "dm_num")
+    public Integer getDmNum() {
+        return dmNum;
     }
-    public void setSixFiveNum(Integer sixFiveNum) {
-        this.sixFiveNum = sixFiveNum;
-    }
-
-	@Column(name = "gxy_task_num")
-    public Integer getGxyTaskNum() {
-        return gxyTaskNum;
-    }
-    public void setGxyTaskNum(Integer gxyTaskNum) {
-        this.gxyTaskNum = gxyTaskNum;
+    public void setDmNum(Integer dmNum) {
+        this.dmNum = dmNum;
     }
 
-	@Column(name = "tnb_task_num")
-    public Integer getTnbTaskNum() {
-        return tnbTaskNum;
+	@Column(name = "older_than_65_num")
+    public Integer getOlderThan65Num() {
+        return olderThan65Num;
     }
-    public void setTnbTaskNum(Integer tnbTaskNum) {
-        this.tnbTaskNum = tnbTaskNum;
+    public void setOlderThan65Num(Integer olderThan65Num) {
+        this.olderThan65Num = olderThan65Num;
     }
 
-	@Column(name = "six_five_task_num")
-    public Integer getSixFiveTaskNum() {
-        return sixFiveTaskNum;
+	@Column(name = "hbp_task_num")
+    public Integer getHbpTaskNum() {
+        return hbpTaskNum;
     }
-    public void setSixFiveTaskNum(Integer sixFiveTaskNum) {
-        this.sixFiveTaskNum = sixFiveTaskNum;
+    public void setHbpTaskNum(Integer hbpTaskNum) {
+        this.hbpTaskNum = hbpTaskNum;
+    }
+
+	@Column(name = "dm_task_num")
+    public Integer getDmTaskNum() {
+        return dmTaskNum;
+    }
+    public void setDmTaskNum(Integer dmTaskNum) {
+        this.dmTaskNum = dmTaskNum;
+    }
+
+	@Column(name = "older_than_65_task_num")
+    public Integer getOlderThan65TaskNum() {
+        return olderThan65TaskNum;
+    }
+    public void setOlderThan65TaskNum(Integer olderThan65TaskNum) {
+        this.olderThan65TaskNum = olderThan65TaskNum;
     }
 
 	@Column(name = "task_num")

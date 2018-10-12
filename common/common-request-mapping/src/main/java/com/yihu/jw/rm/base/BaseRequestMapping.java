@@ -118,6 +118,8 @@ public class BaseRequestMapping {
      */
     public static class SystemDict extends Basic {
         public static final String PREFIX  = "/system_dict";
+        public static final String ALL  = "/query_all";
+        public static final String QUERY_BY_TYPE  = "/query_by_type";
     }
 
     /**
@@ -373,6 +375,7 @@ public class BaseRequestMapping {
      */
     public static class BaseOrg extends Basic {
         public static final String PREFIX  = "/baseOrg";
+        public static final String baseInfoList  = "/baseInfoList";
     }
 
 
@@ -382,13 +385,14 @@ public class BaseRequestMapping {
     public static class BasePatient extends Basic {
         public static final String PREFIX  = "/basePatient";
         public static final String getPatientById  = "/getPatientById";
+        public static final String getBaseInfo  = "/getBaseInfo";
     }
 
     /**
      * 基础人口基数
      */
-    public static class BasePeopleNum extends Basic {
-        public static final String PREFIX  = "/basePeopleNum";
+    public static class BasePopulation extends Basic {
+        public static final String PREFIX  = "/basePopulation";
     }
 
 

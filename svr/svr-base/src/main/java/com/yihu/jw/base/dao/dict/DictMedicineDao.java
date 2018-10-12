@@ -1,8 +1,14 @@
 package com.yihu.jw.base.dao.dict;
 
 import com.yihu.jw.entity.base.dict.DictMedicineDO;
+import feign.Param;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -18,4 +24,10 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @since 1.
  */
 public interface DictMedicineDao extends PagingAndSortingRepository<DictMedicineDO, Integer>, JpaSpecificationExecutor<DictMedicineDO>  {
+
+    @Query("select code as code,name as name from DictMedicineDO where saasId = :saasId")
+    List<Map<String,Object>> findCodeAndNameBySaasId(@Param("saasId") String saasId, Pageable pageable);
+
+    @Query("select code as code,name as name from DictMedicineDO")
+    List<Map<String,Object>> findCodeAndName(Pageable pageable);
 }

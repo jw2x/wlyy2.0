@@ -145,6 +145,8 @@ CREATE TABLE `base_patient` (
   `town_name` varchar(50) DEFAULT NULL COMMENT '区县名称',
   `street_code` varchar(50) DEFAULT NULL COMMENT '街道代码',
   `street_name` varchar(50) DEFAULT NULL COMMENT '街道名称',
+  `committee_code` varchar(50) DEFAULT NULL COMMENT '居委会代码',
+  `committee_name` varchar(50) DEFAULT NULL COMMENT '居委会名称',
   `disease` varchar(100) DEFAULT NULL COMMENT '疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病',
   `disease_condition` varchar(100) DEFAULT NULL COMMENT '病情：0绿标，1黄标，2红标，3重点关注,',
   `points` varchar(100) DEFAULT NULL COMMENT '总积分',
@@ -216,23 +218,23 @@ CREATE TABLE `base_team_member` (
 
 
 -- 基础人口信息
-drop table IF EXISTS `base_people_num`;
-CREATE TABLE `base_people_num` (
+drop table IF EXISTS `base_population`;
+CREATE TABLE `base_population` (
   `id` varchar(50) NOT NULL DEFAULT '' COMMENT '主键(uuid)，基础人口信息uuid',
   `saas_id`  varchar(100) NOT NULL COMMENT 'saas化的id',
   `province_code` varchar(50) DEFAULT NULL COMMENT '所属省代码',
   `city_code` varchar(50) DEFAULT NULL COMMENT '所属市代码',
   `district_code` varchar(50) DEFAULT NULL COMMENT '所属区代码',
   `name` varchar(200) DEFAULT NULL COMMENT '所属具体名称',
-  `num` int(10) DEFAULT NULL COMMENT '人口数',
+  `population_num` int(10) DEFAULT NULL COMMENT '人口数',
   `type` varchar(2) DEFAULT NULL COMMENT '类别 0是省，1是市，2是区，3是机构',
   `year` int(10) DEFAULT NULL COMMENT '每年的人口数',
-  `gxy_num` int(10) DEFAULT  '0' COMMENT '高血压发病数',
-  `tnb_num` int(10) DEFAULT  '0' COMMENT '糖尿病发病数',
-  `six_five_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口数',
-  `gxy_task_num` int(10) DEFAULT  '0' COMMENT '高血压任务数',
-  `tnb_task_num` int(10) DEFAULT  '0' COMMENT '糖尿病任务数',
-  `six_five_task_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口任务数',
+  `HBP_num` int(10) DEFAULT  '0' COMMENT '高血压发病数,HBP为医学简称',
+  `DM_num` int(10) DEFAULT  '0' COMMENT '糖尿病发病数,DM为医学简称',
+  `older_than_65_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口数',
+  `HBP_task_num` int(10) DEFAULT  '0' COMMENT '高血压任务数',
+  `DM_task_num` int(10) DEFAULT  '0' COMMENT '糖尿病任务数',
+  `older_than_65_task_num` int(10) DEFAULT  '0' COMMENT '65岁以上老年人口任务数',
   `task_num` int(10) DEFAULT  '0' COMMENT '户籍人口任务数',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
@@ -739,3 +741,15 @@ create table `base_message_type`
   primary key (id)
 )
   ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='消息类型字典';
+
+
+-- 业务模块角色表
+drop table IF EXISTS `base_role_module`;
+create table `base_role_module`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
+  `role_id` varchar(100) DEFAULT NULL COMMENT '角色id',
+  `module_id` varchar(50) not null COMMENT '业务模块id',
+  primary key (id)
+)
+  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块角色表';
