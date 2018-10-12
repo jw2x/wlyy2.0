@@ -23,10 +23,6 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 	 */
 	private String name;
 	/**
-	 * 角色代码
-     */
-	private String code;
-	/**
 	 * 1.系统管理员，2.saas管理员，3.机构管理员
      */
 	private String type;
@@ -38,14 +34,6 @@ public class RoleDO extends UuidIdentityEntityWithOperator {
 	 * 是否系统管理员
 	 */
 	private Boolean system;
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
 
 	@Column(name = "name", length = 50)
 	public String getName() {
