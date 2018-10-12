@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import javax.transaction.Transactional;
+
 /**
  * Entity - 租户类型模块
  * Created by yeshijie on 2018/10/11.
@@ -18,4 +20,9 @@ public interface SaasTypeModuleDao extends PagingAndSortingRepository<SaasTypeMo
     @Modifying
     @Query("delete from SaasTypeModuleDO p where p.moduleId=?1 ")
     void deleteByModuleId(String moduleId);
+
+    @Modifying
+    @Transactional
+    @Query("delete from SaasTypeModuleDO p where p.saasTypeId=?1 ")
+    void deleteBySaasTypeId(String saasTypeId);
 }
