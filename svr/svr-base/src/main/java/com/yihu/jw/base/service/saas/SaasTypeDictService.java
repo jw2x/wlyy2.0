@@ -43,7 +43,7 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
 
     public SaasTypeDictDO save(SaasTypeDictDO saasTypeDictDO, String saasTypeDefaultModuleIds) {
         //初始化租户信息
-        Integer code ;
+        Integer code;
         if (StringUtils.isEmpty(saasTypeDictDO.getId())) {
             //新增
             code = getNextSaasTypeDictCode();
@@ -52,21 +52,33 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
             //编辑
             code = saasTypeDictDO.getCode();
         }
-        //根据moduleId获取模块关联的接口id
+        //根据moduleId获取模块关联的接口id（业务模块不包含接口也可被租户类型关联）
         String[] ids = saasTypeDefaultModuleIds.split(",");
-        List<FunctionDO> functionDOList = functionDao.findFunctionDOSByModuleIdExists(ids);
-        //初始化租户默认模块
+        SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO;
         List<SaasDefaultModuleFunctionDO> saasDefaultModuleDOS = new ArrayList<>();
-        functionDOList.forEach(item -> {
-            SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO = new SaasDefaultModuleFunctionDO();
-            saasDefaultModuleFunctionDO.setSaasType(code);
-            saasDefaultModuleFunctionDO.setModuleId(item.getModuleId());
-            saasDefaultModuleFunctionDO.setFunctionId(item.getId());
-            saasDefaultModuleDOS.add(saasDefaultModuleFunctionDO);
-        });
+        for (String id : ids) {
+            List<FunctionDO> functionDOList = functionDao.findFunctionDOSByModuleId(id);
+            //模块关联接口
+            if (null != functionDOList && functionDOList.size() > 0) {
+                functionDOList.forEach(item -> {
+                    SaasDefaultModuleFunctionDO saDeModuleFunctionDO = new SaasDefaultModuleFunctionDO();
+                    saDeModuleFunctionDO.setSaasType(code);
+                    saDeModuleFunctionDO.setModuleId(id);
+                    saDeModuleFunctionDO.setFunctionId(item.getId());
+                    saasDefaultModuleDOS.add(saDeModuleFunctionDO);
+                });
+            } else {
+                //模块未关联接口
+                saasDefaultModuleFunctionDO = new SaasDefaultModuleFunctionDO();
+                saasDefaultModuleFunctionDO.setSaasType(code);
+                saasDefaultModuleFunctionDO.setModuleId(id);
+                saasDefaultModuleDOS.add(saasDefaultModuleFunctionDO);
+            }
+            //初始化租户默认模块
+            saasDefaultModuleFunctionDao.save(saasDefaultModuleDOS);
+        }
         //保存数据
         saasTypeDictDO = saasTypeDictDao.save(saasTypeDictDO);
-        saasDefaultModuleFunctionDao.save(saasDefaultModuleDOS);
         return saasTypeDictDO;
     }
 
@@ -95,7 +107,7 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
         return count.compareTo(new BigInteger("0")) > 0;
     }
 
-    public SaasTypeDictDO findById(String id){
+    public SaasTypeDictDO findById(String id) {
         return saasTypeDictDao.findById(id);
     }
 }

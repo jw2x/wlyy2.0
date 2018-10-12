@@ -17,5 +17,7 @@ public interface FunctionDao extends PagingAndSortingRepository<FunctionDO, Stri
     @Query("select f from FunctionDO  f where f.moduleId in (:moduleId)")
     List<FunctionDO> findFunctionDOSByModuleIdExists(@Param("moduleId") String[] moduleId);
 
+    List<FunctionDO> findFunctionDOSByModuleId(String moduleId);
+
 
 }

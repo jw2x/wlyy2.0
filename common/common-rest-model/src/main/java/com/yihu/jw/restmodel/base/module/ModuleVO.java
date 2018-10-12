@@ -30,6 +30,8 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
     private Integer isEnd ;
     @ApiModelProperty(value = "节点信息（0-表示非必选，1-表示必选)", example = "1")
     private Integer isMust ;
+    @ApiModelProperty(value = "是否选中（0-表示未选，1-表示已选)", example = "1")
+    private Integer isCheck ;
     @ApiModelProperty(value = "子集")
     private List<ModuleVO> children = new ArrayList<>();
 
@@ -103,5 +105,13 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
 
     public void setChildren(List<ModuleVO> children) {
         this.children = children;
+    }
+
+    public Integer getIsCheck() {
+        return isCheck;
+    }
+
+    public void setIsCheck(Integer isCheck) {
+        this.isCheck = isCheck;
     }
 }

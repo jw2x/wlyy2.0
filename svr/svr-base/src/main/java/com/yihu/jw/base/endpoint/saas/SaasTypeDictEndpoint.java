@@ -1,19 +1,23 @@
 package com.yihu.jw.base.endpoint.saas;
 
+import com.yihu.jw.base.contant.CommonContant;
+import com.yihu.jw.base.service.module.ModuleService;
 import com.yihu.jw.base.service.saas.SaasDefaultModuleFunctionService;
 import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
+import com.yihu.jw.entity.base.module.ModuleDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
+import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
 import com.yihu.jw.entity.base.user.UserDO;
+import com.yihu.jw.restmodel.base.module.ModuleVO;
+import com.yihu.jw.restmodel.base.saas.SaasDefaultModuleFunctionVO;
 import com.yihu.jw.restmodel.base.saas.SaasTypeDictVO;
 import com.yihu.jw.restmodel.base.saas.SaasVO;
-import com.yihu.jw.restmodel.web.Envelop;
-import com.yihu.jw.restmodel.web.ListEnvelop;
-import com.yihu.jw.restmodel.web.ObjEnvelop;
-import com.yihu.jw.restmodel.web.PageEnvelop;
+import com.yihu.jw.restmodel.web.*;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
+import com.yihu.jw.restmodel.web.status.EnvelopStatus;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Endpoint - SaasTypeDict
@@ -38,6 +43,8 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     private SaasTypeDictService saasTypeDictService;
     @Autowired
     private SaasDefaultModuleFunctionService saasDefaultModuleFunctionService;
+    @Autowired
+    private ModuleService moduleService;
 
     @PostMapping(value = BaseRequestMapping.SaasTypeDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
@@ -57,7 +64,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     }
 
 
-    @PostMapping(value = BaseRequestMapping.Saas.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasTypeDict.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<SaasTypeDictVO> update(
             @ApiParam(name = "saasTypeDictJson", value = "saas类型Json数据")
@@ -68,7 +75,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
         if (null == saasTypeDictDO.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);
         }
-        if (saasTypeDictService.isSaasTypeDictExistByNameAndId(saasTypeDictDO.getId(),saasTypeDictDO.getName())) {
+        if (saasTypeDictService.isSaasTypeDictExistByNameAndId(saasTypeDictDO.getId(), saasTypeDictDO.getName())) {
             return failed("租户类型名称重复！", ObjEnvelop.class);
         }
         //删除关联的模块
@@ -77,7 +84,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
         return success("更新成功！", saasTypeDictDO, SaasTypeDictVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.Saas.PAGE)
+    @GetMapping(value = BaseRequestMapping.SaasTypeDict.PAGE)
     @ApiOperation(value = "获取分页")
     public PageEnvelop<SaasTypeDictVO> page(
             @ApiParam(name = "name", value = "租户类型名称")
@@ -103,7 +110,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
         return success(saasTypeDictDOS, count, page, size, SaasTypeDictVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.Saas.LIST)
+    @GetMapping(value = BaseRequestMapping.SaasTypeDict.LIST)
     @ApiOperation(value = "获取列表")
     public ListEnvelop<SaasTypeDictVO> list(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
@@ -114,6 +121,55 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<SaasTypeDictDO> saasTypeDictDOS = saasTypeDictService.search(fields, filters, sorts);
         return success(saasTypeDictDOS, SaasTypeDictVO.class);
+    }
+
+    @GetMapping(value = BaseRequestMapping.SaasTypeDict.FINDBYID)
+    @ApiOperation(value = "根据id获取单个租户类型")
+    public MixEnvelop<SaasTypeDictDO, List<ModuleVO>> findById(
+            @ApiParam(name = "saasTypeDictId", value = "租户类型id")
+            @RequestParam(value = "saasTypeDictId", required = true) String saasTypeDictId) throws Exception {
+        MixEnvelop envelop=new MixEnvelop();
+        //获取租户类型
+        SaasTypeDictDO saasTypeDictDO = saasTypeDictService.findById(saasTypeDictId);
+        envelop.setObj(saasTypeDictDO);
+        if(null!=saasTypeDictDO){
+            //根据租户类型获取关联的模块（右边树）
+            List<SaasDefaultModuleFunctionDO> saasDefaultModuleFunctionDOList = saasDefaultModuleFunctionService.findByField("saasType", saasTypeDictDO.getCode());
+            Set<String> moduleIdSet=new HashSet<>();
+            for(SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO:saasDefaultModuleFunctionDOList){
+                moduleIdSet.add(saasDefaultModuleFunctionDO.getModuleId());
+            }
+            //获取生效中的模块
+            String filters = "status=1";
+            List<ModuleDO> modules = moduleService.search(null, filters, null);
+            List<ModuleVO> moduleVOs = convertToModels(modules,new ArrayList<>(modules.size()),ModuleVO.class);
+            moduleVOs = moduleVOs.stream()
+                    .filter(module -> {
+                        if(CommonContant.IS_MUST.equals(module.getIsMust())){
+                            //是否选中（0-表示未选，1-表示已选)
+                            module.setIsCheck(1);
+                        }else {
+                            module.setIsCheck(0);
+                        }
+                        if(moduleIdSet.contains(module.getId())){
+                            //是否选中（0-表示未选，1-表示已选)
+                            module.setIsCheck(1);
+                        }
+                        return true;
+                    }).collect(Collectors.toList());
+            Map<String,List<ModuleVO>> map = moduleVOs.stream().collect(Collectors.groupingBy(ModuleVO::getParentId));
+            moduleVOs.forEach(module->{
+                List<ModuleVO> tmp = map.get(module.getId());
+                module.setChildren(tmp);
+            });
+            moduleVOs = moduleVOs.stream()
+                    .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentId()))
+                    .collect(Collectors.toList());
+            envelop.setDetailModelList(moduleVOs);
+        }
+        envelop.setStatus(EnvelopStatus.success.code);
+        envelop.setMessage("success");
+        return envelop;
     }
 
 

@@ -66,6 +66,7 @@ public class BaseRequestMapping {
         public static final String STATUS  = "/status";
         public static final String IS_NAME_EXIST  = "/isNameExist";
         public static final String FIND_ALL  = "/findAll";
+        public static final String FIND_ALL_EXIST_CHECKED  = "/findAllExistChecked";
     }
 
     /**

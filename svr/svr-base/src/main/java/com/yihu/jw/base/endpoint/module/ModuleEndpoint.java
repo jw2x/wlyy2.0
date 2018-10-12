@@ -2,8 +2,10 @@ package com.yihu.jw.base.endpoint.module;
 
 import com.yihu.jw.base.contant.CommonContant;
 import com.yihu.jw.base.service.module.ModuleService;
+import com.yihu.jw.base.service.saas.SaasDefaultModuleFunctionService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
 import com.yihu.jw.entity.base.module.ModuleDO;
+import com.yihu.jw.entity.base.saas.SaasDefaultModuleFunctionDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
 import com.yihu.jw.restmodel.base.module.ModuleVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -20,9 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +38,8 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
     private ModuleService moduleService;
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
+    @Autowired
+    private SaasDefaultModuleFunctionService saasDefaultModuleFunctionService;
 
     @PostMapping(value = BaseRequestMapping.Module.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
@@ -149,6 +151,46 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
                 .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentId()))
                 .collect(Collectors.toList());
 
+        return success(moduleVOs);
+    }
+
+    @GetMapping(value = BaseRequestMapping.Module.FIND_ALL_EXIST_CHECKED)
+    @ApiOperation(value = "获取已关联租户类型模块列表")
+    public ListEnvelop<ModuleVO> findAllExistChecked (
+            @ApiParam(name = "saasTypeDictId", value = "租户类型id")
+            @RequestParam(value = "saasTypeDictId", required = false) String saasTypeDictId) throws Exception {
+        //根据租户类型获取关联的模块
+        List<SaasDefaultModuleFunctionDO> saasDefaultModuleFunctionDOList = saasDefaultModuleFunctionService.findByField("saasType", saasTypeDictId);
+        Set<String> moduleIdSet=new HashSet<>();
+        for(SaasDefaultModuleFunctionDO saasDefaultModuleFunctionDO:saasDefaultModuleFunctionDOList){
+            moduleIdSet.add(saasDefaultModuleFunctionDO.getModuleId());
+        }
+        //获取生效中的模块
+        String filters = "status=1";
+        List<ModuleDO> modules = moduleService.search(null, filters, null);
+        List<ModuleVO> moduleVOs = convertToModels(modules,new ArrayList<>(modules.size()),ModuleVO.class);
+        moduleVOs = moduleVOs.stream()
+                .filter(module -> {
+                    if(CommonContant.IS_MUST.equals(module.getIsMust())){
+                        //是否选中（0-表示未选，1-表示已选)
+                        module.setIsCheck(1);
+                    }else {
+                        module.setIsCheck(0);
+                    }
+                    if(moduleIdSet.contains(module.getId())){
+                        //是否选中（0-表示未选，1-表示已选)
+                        module.setIsCheck(1);
+                    }
+                    return true;
+                }).collect(Collectors.toList());
+        Map<String,List<ModuleVO>> map = moduleVOs.stream().collect(Collectors.groupingBy(ModuleVO::getParentId));
+        moduleVOs.forEach(module->{
+            List<ModuleVO> tmp = map.get(module.getId());
+            module.setChildren(tmp);
+        });
+        moduleVOs = moduleVOs.stream()
+                .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentId()))
+                .collect(Collectors.toList());
         return success(moduleVOs);
     }
 
