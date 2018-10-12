@@ -120,35 +120,11 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
                 List<SaasInterfaceErrorCodeDO> saasErrorCodes = new ArrayList<>(16);
                 saasInterfaceDao.save(saasInterfaceDO);
                 entryParams.forEach(interfaceParamDO -> {
-                    SaasInterfaceParamDO saasInterfaceParamDO = new SaasInterfaceParamDO();
-                    saasInterfaceParamDO.setSaasId(saasInterfaceDO.getSaasId());
-                    saasInterfaceParamDO.setDel(interfaceParamDO.getDel());
-                    saasInterfaceParamDO.setName(interfaceParamDO.getName());
-                    saasInterfaceParamDO.setDataType(interfaceParamDO.getDataType());
-                    saasInterfaceParamDO.setDescription(interfaceParamDO.getDescription());
-                    saasInterfaceParamDO.setExample(interfaceParamDO.getExample());
-                    saasInterfaceParamDO.setIsRequire(interfaceParamDO.getIsRequire());
-                    saasInterfaceParamDO.setMaxLength(interfaceParamDO.getMaxLength());
-                    saasInterfaceParamDO.setParamType(interfaceParamDO.getParamType());
-                    saasInterfaceParamDO.setSaasInterfaceId(saasInterfaceDO.getId());
-                    saasInterfaceParamDO.setSort(interfaceParamDO.getSort());
-                    saasInterfaceParamDO.setType(interfaceParamDO.getType());
+                    SaasInterfaceParamDO saasInterfaceParamDO = addSaasInterfaceParamDO(saasInterfaceDO,interfaceParamDO);
                     saasEntryParams.add(saasInterfaceParamDO);
                 });
                 outParams.forEach(interfaceParamDO -> {
-                    SaasInterfaceParamDO saasInterfaceParamDO = new SaasInterfaceParamDO();
-                    saasInterfaceParamDO.setSaasId(saasInterfaceDO.getSaasId());
-                    saasInterfaceParamDO.setDel(interfaceParamDO.getDel());
-                    saasInterfaceParamDO.setName(interfaceParamDO.getName());
-                    saasInterfaceParamDO.setDataType(interfaceParamDO.getDataType());
-                    saasInterfaceParamDO.setDescription(interfaceParamDO.getDescription());
-                    saasInterfaceParamDO.setExample(interfaceParamDO.getExample());
-                    saasInterfaceParamDO.setIsRequire(interfaceParamDO.getIsRequire());
-                    saasInterfaceParamDO.setMaxLength(interfaceParamDO.getMaxLength());
-                    saasInterfaceParamDO.setParamType(interfaceParamDO.getParamType());
-                    saasInterfaceParamDO.setSaasInterfaceId(saasInterfaceDO.getId());
-                    saasInterfaceParamDO.setSort(interfaceParamDO.getSort());
-                    saasInterfaceParamDO.setType(interfaceParamDO.getType());
+                    SaasInterfaceParamDO saasInterfaceParamDO = addSaasInterfaceParamDO(saasInterfaceDO,interfaceParamDO);
                     saasOutParams.add(saasInterfaceParamDO);
                 });
                 errorCodes.forEach(interfaceErrorCodeDO -> {
@@ -169,6 +145,29 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
         }
 
         return interfaceDO;
+    }
+
+    /**
+     * 新增租户接口参数
+     * @param saasInterfaceDO
+     * @param interfaceParamDO
+     * @return
+     */
+    private SaasInterfaceParamDO addSaasInterfaceParamDO(SaasInterfaceDO saasInterfaceDO,InterfaceParamDO interfaceParamDO){
+        SaasInterfaceParamDO saasInterfaceParamDO = new SaasInterfaceParamDO();
+        saasInterfaceParamDO.setSaasId(saasInterfaceDO.getSaasId());
+        saasInterfaceParamDO.setDel(interfaceParamDO.getDel());
+        saasInterfaceParamDO.setName(interfaceParamDO.getName());
+        saasInterfaceParamDO.setDataType(interfaceParamDO.getDataType());
+        saasInterfaceParamDO.setDescription(interfaceParamDO.getDescription());
+        saasInterfaceParamDO.setExample(interfaceParamDO.getExample());
+        saasInterfaceParamDO.setIsRequire(interfaceParamDO.getIsRequire());
+        saasInterfaceParamDO.setMaxLength(interfaceParamDO.getMaxLength());
+        saasInterfaceParamDO.setParamType(interfaceParamDO.getParamType());
+        saasInterfaceParamDO.setSaasInterfaceId(saasInterfaceDO.getId());
+        saasInterfaceParamDO.setSort(interfaceParamDO.getSort());
+        saasInterfaceParamDO.setType(interfaceParamDO.getType());
+        return saasInterfaceParamDO;
     }
 
     /**

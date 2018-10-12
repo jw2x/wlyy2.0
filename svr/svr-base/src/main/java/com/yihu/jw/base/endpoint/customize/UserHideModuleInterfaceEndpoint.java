@@ -1,8 +1,8 @@
 package com.yihu.jw.base.endpoint.customize;
 
-import com.yihu.jw.base.service.customize.UserHideModuleFunctionService;
-import com.yihu.jw.entity.base.customize.UserHideModuleFunctionDO;
-import com.yihu.jw.restmodel.base.customize.UserHideModuleFunctionVO;
+import com.yihu.jw.base.service.customize.UserHideModuleInterfaceService;
+import com.yihu.jw.entity.base.customize.UserHideModuleInterfaceDO;
+import com.yihu.jw.restmodel.base.customize.UserHideModuleInterfaceVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -25,19 +25,19 @@ import java.util.List;
 @RestController
 @RequestMapping(value = BaseRequestMapping.UserHideModuleFunction.PREFIX)
 @Api(value = "用户取消订阅的模块或功能（用户自定义）", description = "用户取消订阅的模块或功能（用户自定义）服务接口", tags = {"wlyy基础服务 - 用户取消订阅的模块或功能（用户自定义）服务接口"})
-public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
+public class UserHideModuleInterfaceEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
-    private UserHideModuleFunctionService userHideModuleFunctionService;
+    private UserHideModuleInterfaceService userHideModuleFunctionService;
 
     @PostMapping(value = BaseRequestMapping.UserHideModuleFunction.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<UserHideModuleFunctionVO> create (
+    public ObjEnvelop<UserHideModuleInterfaceVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        UserHideModuleFunctionDO userHideModuleFunctionDO = toEntity(jsonData, UserHideModuleFunctionDO.class);
+        UserHideModuleInterfaceDO userHideModuleFunctionDO = toEntity(jsonData, UserHideModuleInterfaceDO.class);
         userHideModuleFunctionDO = userHideModuleFunctionService.save(userHideModuleFunctionDO);
-        return success(userHideModuleFunctionDO, UserHideModuleFunctionVO.class);
+        return success(userHideModuleFunctionDO, UserHideModuleInterfaceVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.UserHideModuleFunction.DELETE)
@@ -54,7 +54,7 @@ public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
     public Envelop update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        UserHideModuleFunctionDO userHideModuleFunctionDO = toEntity(jsonData, UserHideModuleFunctionDO.class);
+        UserHideModuleInterfaceDO userHideModuleFunctionDO = toEntity(jsonData, UserHideModuleInterfaceDO.class);
         if (null == userHideModuleFunctionDO.getId()) {
             return failed("ID不能为空", Envelop.class);
         }
@@ -64,7 +64,7 @@ public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.UserHideModuleFunction.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<UserHideModuleFunctionVO> page (
+    public PageEnvelop<UserHideModuleInterfaceVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -75,22 +75,22 @@ public class UserHideModuleFunctionEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<UserHideModuleFunctionDO> userHideModuleFunctionDOS = userHideModuleFunctionService.search(fields, filters, sorts, page, size);
+        List<UserHideModuleInterfaceDO> userHideModuleFunctionDOS = userHideModuleFunctionService.search(fields, filters, sorts, page, size);
         int count = (int)userHideModuleFunctionService.getCount(filters);
-        return success(userHideModuleFunctionDOS, count, page, size, UserHideModuleFunctionVO.class);
+        return success(userHideModuleFunctionDOS, count, page, size, UserHideModuleInterfaceVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.UserHideModuleFunction.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<UserHideModuleFunctionVO> list (
+    public ListEnvelop<UserHideModuleInterfaceVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<UserHideModuleFunctionDO> userHideModuleFunctionDOS = userHideModuleFunctionService.search(fields, filters, sorts);
-        return success(userHideModuleFunctionDOS, UserHideModuleFunctionVO.class);
+        List<UserHideModuleInterfaceDO> userHideModuleFunctionDOS = userHideModuleFunctionService.search(fields, filters, sorts);
+        return success(userHideModuleFunctionDOS, UserHideModuleInterfaceVO.class);
     }
 
 }

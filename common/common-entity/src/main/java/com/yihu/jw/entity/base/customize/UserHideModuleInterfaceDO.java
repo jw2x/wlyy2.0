@@ -1,34 +1,34 @@
-package com.yihu.jw.restmodel.base.customize;
+package com.yihu.jw.entity.base.customize;
 
-import com.yihu.jw.restmodel.IntegerIdentityVO;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
- * VO - 用户取消订阅的模块或功能
+ * Entity - 用户取消订阅的模块或功能
  * @author progr1mmer
- * @date Created on 2018/9/11.
+ * @date Created on 2018/8/14.
  */
-@ApiModel(value = "UserHideModuleFunctionVO", description = "用户取消订阅的模块或者功能")
-public class UserHideModuleFunctionVO extends IntegerIdentityVO {
+@Entity
+@Table(name = "base_user_hide_module_interface")
+public class UserHideModuleInterfaceDO extends IntegerIdentityEntity {
 
     /**
-     * 用户ID
+     * 对象ID
      */
-    @ApiModelProperty(value = "用户ID", example = "402303ee65634dfs0234sf9a324a0023")
     private String objId;
     /**
      * 模块ID
      */
-    @ApiModelProperty(value = "模块ID", example = "402303ee65634dfs0234sf9a324a0024")
     private Integer moduleId;
     /**
      * 功能ID（该字段为空则直接隐藏上级模块）
      */
-    @ApiModelProperty(value = "功能ID", example = "402303ee65634dfs0234sf9a324a0025")
     private Integer functionId;
 
+    @Column(name = "user_id", nullable = false, length = 50)
     public String getObjId() {
         return objId;
     }
@@ -37,6 +37,7 @@ public class UserHideModuleFunctionVO extends IntegerIdentityVO {
         this.objId = objId;
     }
 
+    @Column(name = "module_id", nullable = false)
     public Integer getModuleId() {
         return moduleId;
     }
@@ -45,6 +46,7 @@ public class UserHideModuleFunctionVO extends IntegerIdentityVO {
         this.moduleId = moduleId;
     }
 
+    @Column(name = "function_id")
     public Integer getFunctionId() {
         return functionId;
     }
