@@ -35,6 +35,49 @@ public class UserService extends BaseJpaService<UserDO, UserDao> {
         return userDao.save(userDO);
     }
 
+
+    /**
+     * 根据用户手机号查找（手机号为登录账号）
+     * @param mobile
+     * @return
+     */
+    public UserDO findByMobile(String mobile) {
+        return userDao.findByMobile(mobile);
+    }
+
+    /**
+     * 根据id查找用户
+     * @param id
+     * @return
+     */
+    public UserDO findById(String id) {
+        return userDao.findById(id);
+    }
+
+    /**
+     * 判断手机号是否存在
+     * @param mobile
+     * @return
+     */
+    public Boolean existMobile(String mobile){
+        if(StringUtils.isEmpty(mobile)) {
+            return null;
+        }
+        return userDao.existsByMobile(mobile);
+    }
+
+    /**
+     * 判断手机号是否存在
+     * @param username
+     * @return
+     */
+    public Boolean existUserName(String username){
+        if(StringUtils.isEmpty(username)) {
+            return null;
+        }
+        return userDao.existsByUsername(username);
+    }
+
     /**
      * 用户管理，获取用户基本信息列表
      * @param name 模糊查询
@@ -46,4 +89,6 @@ public class UserService extends BaseJpaService<UserDO, UserDao> {
         List<Map<String,Object>> result = new ArrayList<>();
         return result;
     }
+
+
 }

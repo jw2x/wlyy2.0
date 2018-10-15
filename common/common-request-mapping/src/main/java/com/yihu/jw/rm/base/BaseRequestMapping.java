@@ -135,6 +135,7 @@ public class BaseRequestMapping {
     public static class User extends Basic {
         public static final String PREFIX  = "/user";
         public static final String CHECK_USERNAME = "/check_username";
+        public static final String CHECK_MOBILE = "/check_mobile";
     }
 
     /**
@@ -376,6 +377,7 @@ public class BaseRequestMapping {
     public static class BaseOrg extends Basic {
         public static final String PREFIX  = "/baseOrg";
         public static final String baseInfoList  = "/baseInfoList";
+        public static final String check_code  = "/check_code";
     }
 
 

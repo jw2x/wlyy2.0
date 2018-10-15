@@ -56,6 +56,14 @@ public class UserDO extends UuidIdentityEntityWithOperator {
     //登陆失败次数
     private Integer loginFailureCount;
 
+    public UserDO(){}
+
+    public UserDO(String username,String password,String mobile){
+        this.username = username;
+        this.password = password;
+        this.mobile = mobile;
+    }
+
     @Column(name = "username", nullable = false)
     public String getUsername() {
         return username;

@@ -71,12 +71,12 @@ public class WechatService {
             sql += " AND w.public_type = " + publicType + " " ;
         }
         if (status!=null) {
-            sql += " AND w.`status` = " + status + "";
+            sql += " AND w.`status` = " + status + " ";
         }
         if (StringUtils.isNotBlank(saasName)) {
             sql += " AND bs.`name` like '%" + saasName + "%'";
         }
-        sql += "LIMIT " + (page - 1) * size + "," + size + "";
+        sql += " LIMIT " + (page - 1) * size + "," + size + "";
         List<WxWechatVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxWechatVO.class));
 
         if(list!=null&&list.size()>0){
