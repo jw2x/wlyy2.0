@@ -197,6 +197,17 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         return basePopulation;
     }
 
+    @PostMapping(value = BaseRequestMapping.BasePopulation.FINDBYID)
+    @ApiOperation(value = "根据基数统计id获取信息")
+    public ObjEnvelop<BasePopulationVO> audit(
+            @ApiParam(name = "id", value = "id", required = true)
+            @RequestParam(value = "id") String id) throws Exception {
+        BasePopulationDO basePopulationDO = basePopulationService.findById(id);
+        if (null == basePopulationDO) {
+            return failed("无相关基数统计信息", ObjEnvelop.class);
+        }
+        return success(basePopulationDO,BasePopulationVO.class);
+    }
 
 
 
