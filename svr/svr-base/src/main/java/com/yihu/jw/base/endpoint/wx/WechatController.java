@@ -256,9 +256,9 @@ public class WechatController extends EnvelopRestEndpoint {
     }
 
     //===================微信粉丝统计end==========================================
-    @GetMapping(value = "header")
-    @ApiOperation(value = "测试header", notes = "测试header")
-    public String getHeader(){
-        return getUID();
-    }
+//    @GetMapping(value = "header")
+//    @ApiOperation(value = "测试header", notes = "测试header")
+//    public String getHeader(){
+//        return getUID();
+//    }
 }
