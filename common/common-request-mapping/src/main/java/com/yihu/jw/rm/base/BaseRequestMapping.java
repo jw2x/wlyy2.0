@@ -395,6 +395,7 @@ public class BaseRequestMapping {
      */
     public static class BasePopulation extends Basic {
         public static final String PREFIX  = "/basePopulation";
+        public static final String CHECK_POPULATION_IS_EXIST  = "/checkBasePopulationIsExist";
     }
 
     /**

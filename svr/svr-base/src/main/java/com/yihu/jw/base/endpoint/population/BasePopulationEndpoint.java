@@ -65,6 +65,10 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         } else {
             return failed("租户id不能为空！", ObjEnvelop.class);
         }
+        Boolean bo = checkNameAndYear(basePopulation.getSaasId(), basePopulation.getYear());
+        if (!bo) {
+            return failed("已添加" + basePopulation.getYear() + basePopulation.getSaasName() + "的基础人口信息，请直接修改即可！", ObjEnvelop.class);
+        }
         basePopulation = basePopulationService.save(basePopulation);
         return success(basePopulation, BasePopulationVO.class);
     }
@@ -92,6 +96,10 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             basePopulation = updateBasePopulation(basePopulation);
         } else {
             return failed("租户id不能为空！", ObjEnvelop.class);
+        }
+        Boolean bo = checkNameAndYear(basePopulation.getSaasId(), basePopulation.getYear());
+        if (!bo) {
+            return failed("已添加" + basePopulation.getYear() + basePopulation.getSaasName() + "的基础人口信息，请直接修改即可！", ObjEnvelop.class);
         }
         basePopulation = basePopulationService.save(basePopulation);
         return success(basePopulation, BasePopulationVO.class);
@@ -155,41 +163,44 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
      */
     public BasePopulationDO updateBasePopulation(BasePopulationDO basePopulation) throws Exception {
         SaasDO saasDO = saasService.findById(basePopulation.getSaasId());
-        basePopulation.setSaasCreateTime(saasDO.getCreateTime());
-        String areaCode = saasDO.getAreaNumber();
-        String filters = "province?" + areaCode + " g1;city?" + areaCode + " g1;code?" + areaCode + " g1;";
-        List<BaseTownDO> baseTowns = baseTownService.search(filters);
-        BaseTownDO baseTownDO = (null != baseTowns && baseTowns.size() > 0 ? baseTowns.get(0) : null);
-        if (null != baseTownDO) {
-            if (baseTownDO.getCode().equals(areaCode)) {
-                basePopulation.setProvinceCode(baseTownDO.getProvince());
-                basePopulation.setProvinceName(baseProvinceService.getNameByCode(baseTownDO.getProvince()));
-                //市编码
-                basePopulation.setCityCode(baseTownDO.getCity());
-                basePopulation.setCityName(baseCityService.getNameByCode(baseTownDO.getCity()));
-                //区县编码
-                basePopulation.setDistrictCode(areaCode);
-                basePopulation.setDistrictName(baseTownDO.getName());
-            } else if (baseTownDO.getCity().equals(areaCode)) {
-                basePopulation.setProvinceCode(baseTownDO.getProvince());
-                basePopulation.setProvinceName(baseProvinceService.getNameByCode(baseTownDO.getProvince()));
-                //市编码
-                basePopulation.setCityCode(areaCode);
-                basePopulation.setCityName(baseCityService.getNameByCode(areaCode));
-                //区县编码
-                basePopulation.setDistrictCode("");
-                basePopulation.setDistrictName("");
+        if (null != saasDO) {
+            basePopulation.setSaasCreateTime(saasDO.getCreateTime());
+            basePopulation.setSaasName(saasDO.getName());
+            String areaCode = saasDO.getAreaNumber();
+            String filters = "province?" + areaCode + " g1;city?" + areaCode + " g1;code?" + areaCode + " g1;";
+            List<BaseTownDO> baseTowns = baseTownService.search(filters);
+            BaseTownDO baseTownDO = (null != baseTowns && baseTowns.size() > 0 ? baseTowns.get(0) : null);
+            if (null != baseTownDO) {
+                if (baseTownDO.getCode().equals(areaCode)) {
+                    basePopulation.setProvinceCode(baseTownDO.getProvince());
+                    basePopulation.setProvinceName(baseProvinceService.getNameByCode(baseTownDO.getProvince()));
+                    //市编码
+                    basePopulation.setCityCode(baseTownDO.getCity());
+                    basePopulation.setCityName(baseCityService.getNameByCode(baseTownDO.getCity()));
+                    //区县编码
+                    basePopulation.setDistrictCode(areaCode);
+                    basePopulation.setDistrictName(baseTownDO.getName());
+                } else if (baseTownDO.getCity().equals(areaCode)) {
+                    basePopulation.setProvinceCode(baseTownDO.getProvince());
+                    basePopulation.setProvinceName(baseProvinceService.getNameByCode(baseTownDO.getProvince()));
+                    //市编码
+                    basePopulation.setCityCode(areaCode);
+                    basePopulation.setCityName(baseCityService.getNameByCode(areaCode));
+                    //区县编码
+                    basePopulation.setDistrictCode("");
+                    basePopulation.setDistrictName("");
 
-            } else if (baseTownDO.getProvince().equals(areaCode)) {
-                //省编码
-                basePopulation.setProvinceCode(areaCode);
-                basePopulation.setProvinceName(baseProvinceService.getNameByCode(areaCode));
-                //市编码
-                basePopulation.setCityCode("");
-                basePopulation.setCityName("");
-                //区县编码
-                basePopulation.setDistrictCode("");
-                basePopulation.setDistrictName("");
+                } else if (baseTownDO.getProvince().equals(areaCode)) {
+                    //省编码
+                    basePopulation.setProvinceCode(areaCode);
+                    basePopulation.setProvinceName(baseProvinceService.getNameByCode(areaCode));
+                    //市编码
+                    basePopulation.setCityCode("");
+                    basePopulation.setCityName("");
+                    //区县编码
+                    basePopulation.setDistrictCode("");
+                    basePopulation.setDistrictName("");
+                }
             }
         }
         //更新慢病总人数
@@ -206,9 +217,41 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         if (null == basePopulationDO) {
             return failed("无相关基数统计信息", ObjEnvelop.class);
         }
-        return success(basePopulationDO,BasePopulationVO.class);
+        return success(basePopulationDO, BasePopulationVO.class);
     }
 
+    @GetMapping(value = BaseRequestMapping.BasePopulation.CHECK_POPULATION_IS_EXIST)
+    @ApiOperation(value = "根据租户id和年份，判断基数统计是否已经存在")
+    public ObjEnvelop<Boolean> checkPopulationIsExist(
+            @ApiParam(name = "saasId", value = "租户id", required = true)
+            @RequestParam(value = "saasId") String saasId,
+            @ApiParam(name = "year", value = "年份", required = true)
+            @RequestParam(value = "year") String year) throws Exception {
+        Boolean bo = checkNameAndYear(saasId, year);
+        return success(bo);
+
+    }
+
+    /**
+     * 验证名称+年份数据是否已存在
+     *
+     * @param saasId
+     * @param year
+     * @return
+     * @throws Exception
+     */
+    public Boolean checkNameAndYear(String saasId, String year) throws Exception {
+        StringBuffer s = new StringBuffer();
+        if (StringUtils.isNotBlank(saasId)) {
+            s.append("saasId=" + saasId + ";");
+        }
+        if (StringUtils.isNotBlank(year)) {
+            s.append("year=" + year);
+        }
+        String filters = s.toString();
+        List<BasePopulationDO> basePopulationDOList = basePopulationService.search(filters);
+        return (null != basePopulationDOList && basePopulationDOList.size() > 0) ? true : false;
+    }
 
 
 }
