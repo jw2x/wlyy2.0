@@ -20,9 +20,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -42,6 +46,10 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     private SaasTypeDictService saasTypeDictService;
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
+    @Autowired
+    JavaMailSender jms;
+    @Value("${spring.mail.username}")
+    private String username;
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
@@ -141,8 +149,9 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(value = "status") SaasDO.Status status,
             @ApiParam(name = "auditFailedReason", value = "审核不通过的原因（非必填）")
-            @RequestParam(value = "auditFailedReason",required = false) String auditFailedReason) throws Exception {
+            @RequestParam(value = "auditFailedReason",required = false) String auditFailedReason, HttpServletRequest request) throws Exception {
         SaasDO saasDO = saasService.retrieve(id);
+
         if (null == saasDO) {
             return failed("无相关SAAS配置", Envelop.class);
         }
@@ -150,6 +159,22 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         saasDO.setAuditFailedReason(auditFailedReason);
         saasService.save(saasDO);
         return success("操作成功");
+    }
+
+    @GetMapping("/sendEmail")
+    @ApiOperation(value = "邮件发送")
+    public void send() throws Exception{
+        //建立邮件消息
+        SimpleMailMessage mainMessage = new SimpleMailMessage();
+        //发送者
+        mainMessage.setFrom(username);
+        //接收者
+        mainMessage.setTo("763558454@qq.com");
+        //发送的标题
+        mainMessage.setSubject("嗨喽");
+        //发送的内容
+        mainMessage.setText("hello world");
+        jms.send(mainMessage);
     }
 
 }

@@ -395,6 +395,13 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/basePopulation";
     }
 
+    /**
+     * 年份
+     */
+    public static class BaseYear extends Basic {
+        public static final String PREFIX  = "/baseYear";
+    }
+
 
     /**
      * 省份字典
