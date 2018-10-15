@@ -24,11 +24,11 @@ public class BaseYearService extends BaseJpaService<BaseYearDO, BaseYearDao> {
     public boolean save(int year) {
         BaseYearDO baseYearDo;
         List<BaseYearDO> baseYearDOList=new ArrayList<>();
-        for( int i=year;i<1990;i--){
+        for( int i=year;i>1989;i--){
             baseYearDo=new BaseYearDO();
             String uuid=getCode();
             baseYearDo.setId(uuid);
-            baseYearDo.setYear(year+"年");
+            baseYearDo.setYear(i+"年");
             baseYearDOList.add(baseYearDo);
         }
         baseYearDao.save(baseYearDOList);

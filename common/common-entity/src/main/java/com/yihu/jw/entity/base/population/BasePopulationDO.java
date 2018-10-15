@@ -23,12 +23,18 @@ public class BasePopulationDO extends UuidIdentityEntityWithOperator {
     //租户名称
     @Column(name = "saas_name")
     private String  saasName;
+    //租户创建时间
+    @Column(name = "saas_create_time")
+    private Date  saasCreateTime;
     //所属省代码
     @Column(name = "province_code")
     private String  provinceCode;
     //省份名称
     @Column(name = "province_name")
     private String  provinceName;
+    //城市编码
+    @Column(name = "city_code")
+    private String  cityCode;
     //城市名称
     @Column(name = "city_name")
     private String  cityName;
@@ -65,6 +71,9 @@ public class BasePopulationDO extends UuidIdentityEntityWithOperator {
     //任务数
     @Column(name = "task_num")
     private Integer  taskNum;
+    //慢病人数
+    @Column(name = "ncd_num")
+    private Integer ncdNum;
 
     public String getSaasId() {
         return saasId;
@@ -192,5 +201,29 @@ public class BasePopulationDO extends UuidIdentityEntityWithOperator {
 
     public void setTaskNum(Integer taskNum) {
         this.taskNum = taskNum;
+    }
+
+    public Integer getNcdNum() {
+        return ncdNum;
+    }
+
+    public void setNcdNum(Integer ncdNum) {
+        this.ncdNum = ncdNum;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public Date getSaasCreateTime() {
+        return saasCreateTime;
+    }
+
+    public void setSaasCreateTime(Date saasCreateTime) {
+        this.saasCreateTime = saasCreateTime;
     }
 }

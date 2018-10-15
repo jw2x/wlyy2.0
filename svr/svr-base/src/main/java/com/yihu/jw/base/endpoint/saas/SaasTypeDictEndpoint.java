@@ -95,7 +95,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "size") int size) throws Exception {
         StringBuffer s = new StringBuffer();
         if (StringUtils.isNotEmpty(name)) {
-            s.append("name?" + name + "g1;");
+            s.append("name?" + name + " g1;");
         }
         if (null != status) {
             s.append("status=" + status);
