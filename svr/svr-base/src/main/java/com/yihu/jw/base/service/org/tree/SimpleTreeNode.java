@@ -29,10 +29,10 @@ public class SimpleTreeNode {
     private List<SimpleTreeNode> allChildren = new ArrayList<>();
 
     public SimpleTreeNode(TreeNode obj){
-        this.nodeId = obj.getNodeId();
-        this.nodeName = obj.getNodeName();
-        this.parentNodeId = obj.getNodeParentId();
-        this.orderNum = obj.getOrderNum();
+        this.nodeId = obj.extractNodeId();
+        this.nodeName = obj.extractNodeName();
+        this.parentNodeId = obj.extractNodeParentId();
+        this.orderNum = obj.extractOrderNum();
     }
     public void addChild(SimpleTreeNode treeNode){
         this.children.add(treeNode);

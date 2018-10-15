@@ -1,6 +1,8 @@
 package com.yihu.jw.base.endpoint.org;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.service.org.BaseOrgService;
+import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.restmodel.base.org.BaseOrgVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -13,6 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,12 +43,16 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.BaseOrg.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<BaseOrgVO> create(
+    public Envelop create(
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        BaseOrgDO baseOrg = toEntity(jsonData, BaseOrgDO.class);
-        baseOrg = baseOrgService.save(baseOrg);
-        return success(baseOrg, BaseOrgVO.class);
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
+        BaseOrgDO baseOrg = toEntity(jsonObject.getJSONObject("org").toJSONString(), BaseOrgDO.class);
+        String  msg = baseOrgService.createOrUpdateOrg(baseOrg,jsonObject.getJSONObject("admin"));
+        if(StringUtils.endsWithIgnoreCase(msg, ConstantUtils.SUCCESS)){
+            return success(msg);
+        }
+        return failed(msg);
     }
 
     @PostMapping(value = BaseRequestMapping.BaseOrg.DELETE)
@@ -121,4 +128,15 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
         return success(list);
     }
 
+    @GetMapping(value = BaseRequestMapping.BaseOrg.check_code)
+    @ApiOperation(value = "检查代码是否可用(message=1代表可用，message=0代表不可用)")
+    public Envelop checkCode (
+            @ApiParam(name = "code", value = "机构代码", required = true)
+            @RequestParam(value = "code", required = false) String code) throws Exception {
+        if (baseOrgService.existCode(code)) {
+            return success("1");
+        } else {
+            return success("0");
+        }
+    }
 }

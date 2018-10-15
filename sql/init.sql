@@ -752,4 +752,16 @@ create table `base_role_module`
   `module_id` varchar(50) not null COMMENT '业务模块id',
   primary key (id)
 )
-  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块角色表';
+  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块角色';
+
+-- 机构区域树形结构表
+drop table IF EXISTS `org_tree`;
+create table `org_tree`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长',
+  `parent_code` varchar(50) not null COMMENT '父级行政区域code',
+  `code` varchar(100) DEFAULT NULL COMMENT '行政区域code',
+  `name` varchar(50) not null COMMENT '行政区域名称',
+  primary key (id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构区域树形结构';
