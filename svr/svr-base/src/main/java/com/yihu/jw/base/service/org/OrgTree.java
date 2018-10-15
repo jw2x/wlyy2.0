@@ -1,49 +1,47 @@
 package com.yihu.jw.base.service.org;
 
 import com.yihu.jw.base.service.org.tree.TreeNode;
+import com.yihu.jw.entity.IntegerIdentityEntity;
 
-public class OrgTree implements TreeNode {
-    private Integer id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "org_tree")
+public class OrgTree extends IntegerIdentityEntity implements TreeNode {
     private String code;
     private String parentCode;
     private String name;
-    private Integer orderNum;
+
     public OrgTree(){}
-    public OrgTree(String code, String parentCode, String name, Integer orderNum){
+    public OrgTree(String code, String parentCode, String name){
         this.code = code;
         this.parentCode = parentCode;
         this.name = name;
-        this.orderNum = orderNum;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     @Override
-    public String getNodeId() {
+    public String extractNodeId() {
         return this.code;
     }
 
     @Override
-    public String getNodeName() {
+    public String extractNodeName() {
         return this.name;
     }
 
     @Override
-    public String getNodeParentId() {
+    public String extractNodeParentId() {
         return this.parentCode;
     }
 
     @Override
-    public Integer getOrderNum() {
-        return this.orderNum;
+    public Integer extractOrderNum() {
+        return null;
     }
 
+    @Column(name = "code", nullable = false)
     public String getCode() {
         return code;
     }
@@ -52,6 +50,7 @@ public class OrgTree implements TreeNode {
         this.code = code;
     }
 
+    @Column(name = "parent_code", nullable = false)
     public String getParentCode() {
         return parentCode;
     }
@@ -60,16 +59,13 @@ public class OrgTree implements TreeNode {
         this.parentCode = parentCode;
     }
 
+    @Column(name = "name", nullable = false)
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setOrderNum(Integer orderNum) {
-        this.orderNum = orderNum;
     }
 
 }

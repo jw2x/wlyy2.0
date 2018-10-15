@@ -1,8 +1,8 @@
 package com.yihu.jw.base.service.org.tree;
 
 public interface TreeNode {
-    String getNodeId();
-    String getNodeName();
-    String getNodeParentId();
-    Integer getOrderNum();
+    String extractNodeId();
+    String extractNodeName();
+    String extractNodeParentId();
+    Integer extractOrderNum();
 }

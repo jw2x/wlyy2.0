@@ -84,21 +84,21 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         if (SystemDictEnum.Icd10Dict == SystemDictEnum.valueOf(type)) {
-            jsonObject = dictIcd10Service.queryAll(userId, creatPage(page,size,sorts));
+            jsonObject = dictIcd10Service.queryAll(userId, createPage(page,size,sorts));
         } else if (SystemDictEnum.HospitalDeptDict == SystemDictEnum.valueOf(type)) {
-            jsonObject = dictHospitalDeptService.queryAll("", creatPage(page,size,sorts));
+            jsonObject = dictHospitalDeptService.queryAll("", createPage(page,size,sorts));
 
         } else if (SystemDictEnum.JobTitleDict == SystemDictEnum.valueOf(type)) {
-            jsonObject = dictJobTitleService.queryAll("", creatPage(page,size,sorts));
+            jsonObject = dictJobTitleService.queryAll("", createPage(page,size,sorts));
 
         } else if (SystemDictEnum.HealthProblemDict == SystemDictEnum.valueOf(type)) {
-            jsonObject = dictHealthProblemService.queryAll("", creatPage(page,size,sorts));
+            jsonObject = dictHealthProblemService.queryAll("", createPage(page,size,sorts));
 
         } else if (SystemDictEnum.MedicineDict == SystemDictEnum.valueOf(type)) {
-            jsonObject = dictMedicineService.queryAll("", creatPage(page,size,sorts));
+            jsonObject = dictMedicineService.queryAll("", createPage(page,size,sorts));
 
         } else if (SystemDictEnum.DiseaseDict == SystemDictEnum.valueOf(type)) {
-            jsonObject = dictDiseaseService.queryAll("", creatPage(page,size,sorts));
+            jsonObject = dictDiseaseService.queryAll("", createPage(page,size,sorts));
         }
         jsonArray.add(jsonObject);
         return jsonArray;
