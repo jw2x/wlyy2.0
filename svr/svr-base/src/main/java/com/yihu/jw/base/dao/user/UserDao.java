@@ -13,4 +13,12 @@ import java.util.List;
 public interface UserDao extends PagingAndSortingRepository<UserDO, String>, JpaSpecificationExecutor<UserDO> {
 
     List<UserDO> findByEnabled(boolean enabled);
+
+    UserDO findByMobile(String mobile);
+
+    UserDO findById(String id);
+
+    boolean existsByMobile(String mobile);
+
+    boolean existsByUsername(String username);
 }
