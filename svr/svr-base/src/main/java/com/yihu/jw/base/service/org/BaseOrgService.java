@@ -3,8 +3,14 @@ package com.yihu.jw.base.service.org;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.google.gson.JsonObject;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
+import com.yihu.jw.base.dao.org.OrgTreeDao;
+import com.yihu.jw.base.service.org.tree.SimpleTree;
+import com.yihu.jw.base.service.org.tree.SimpleTreeNode;
+import com.yihu.jw.base.service.org.tree.Tree;
+import com.yihu.jw.base.service.org.tree.TreeNode;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +18,7 @@ import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -35,6 +38,11 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     @Autowired
     private BaseOrgDao baseOrgDao;
 
+    @Autowired
+    private OrgTreeDao orgTreeDao;
+
+
+
     /**
      * 机构基础信息列表
      * @param orgCode
@@ -43,7 +51,6 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
      * @return
      */
     public List<Map<String,Object>> queryOrgBaseInfoList(String orgCode,String orgName,String orgStatus,int page,int size,String sorts){
-        getOrgByArea();
         List<Map<String,Object>> result = new ArrayList<>();
         if(StringUtils.endsWithIgnoreCase("1",orgStatus)){
             if(!StringUtils.isEmpty(orgCode) ){
@@ -70,58 +77,17 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
      * 构建机构区域树形结构
      * @return
      */
-    public JSONObject getOrgByArea(){
-        JSONObject result = new JSONObject();
+    public String getOrgAreaTree(){
 
-        JSONArray provinceArray = new JSONArray();
-        JSONArray cityArray = new JSONArray();
-        JSONArray townArray = new JSONArray();
-        JSONArray orgArray = new JSONArray();
+        List<TreeNode> treeNodes = new ArrayList<>();
+        treeNodes.addAll(orgTreeDao.findAll());
+        SimpleTree tree = new SimpleTree(treeNodes);
+        List<SimpleTreeNode> treeNode = tree.getRoot();
+        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
+        filter.getExcludes().add("parent");
+        filter.getExcludes().add("allChildren");
 
-        JSONObject proJson = new JSONObject();
-        JSONObject cityJson = new JSONObject();
-        JSONObject townJson = new JSONObject();
-        JSONObject orgJson = new JSONObject();
-
-        List<BaseOrgDO> list = baseOrgDao.findOrgByArea();
-        for(BaseOrgDO baseOrgDO : list){
-          /*  if(!proJson.containsKey(baseOrgDO.getProvinceCode())){
-                provinceArray.add(proJson);
-            }
-            if(!cityJson.containsKey(baseOrgDO.getCityCode())){
-                proJson.put("city",cityJson);
-                cityArray.add(cityJson);
-                cityJson.put("town", townJson);
-            }
-            if(!townJson.containsKey(baseOrgDO.getTownCode())){
-                townArray.add(townJson);
-            }
-            if(!orgJson.containsKey(baseOrgDO.getCode())){
-                townJson.put("org",orgJson);
-                orgArray.add(orgJson);
-            }*/
-            proJson.put("provinceCode",baseOrgDO.getProvinceCode());
-            proJson.put("provinceName",baseOrgDO.getProvinceName());
-
-            cityJson.put("cityCode",baseOrgDO.getCityCode());
-            cityJson.put("cityName",baseOrgDO.getCityName());
-
-            townJson.put("townCode",baseOrgDO.getTownCode());
-            townJson.put("townName",baseOrgDO.getTownName());
-
-            orgJson.put("orgCode",baseOrgDO.getCode());
-            orgJson.put("orgName",baseOrgDO.getName());
-
-            provinceArray.add(proJson);
-            cityArray.add(cityJson);
-            townArray.add(townJson);
-            orgArray.add(orgJson);
-
-            proJson.put("city",cityJson);
-            cityJson.put("town", townJson);
-            townJson.put("org",orgJson);
-        }
-        result.put("province",provinceArray);
-        return result;
+        return JSONObject.toJSONString(treeNode, filter);
     }
+
 }
