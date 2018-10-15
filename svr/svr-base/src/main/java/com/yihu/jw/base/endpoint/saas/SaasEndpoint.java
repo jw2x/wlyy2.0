@@ -53,7 +53,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public Envelop create (
+    public Envelop create(
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
             @RequestParam(value = "saasDO") SaasDO saasDO,
             @ApiParam(name = "userDO", value = "Json数据", required = true)
@@ -83,7 +83,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public Envelop update (
+    public Envelop update(
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SaasDO saasDO = toEntity(jsonData, SaasDO.class);
@@ -96,7 +96,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.Saas.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SaasVO> page (
+    public PageEnvelop<SaasVO> page(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -108,13 +108,13 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         List<SaasDO> saasDOS = saasService.search(fields, filters, sorts, page, size);
-        int count = (int)saasService.getCount(filters);
+        int count = (int) saasService.getCount(filters);
         return success(saasDOS, count, page, size, SaasVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SaasVO> list (
+    public ListEnvelop<SaasVO> list(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -149,7 +149,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(value = "status") SaasDO.Status status,
             @ApiParam(name = "auditFailedReason", value = "审核不通过的原因（非必填）")
-            @RequestParam(value = "auditFailedReason",required = false) String auditFailedReason, HttpServletRequest request) throws Exception {
+            @RequestParam(value = "auditFailedReason", required = false) String auditFailedReason, HttpServletRequest request) throws Exception {
         SaasDO saasDO = saasService.retrieve(id);
 
         if (null == saasDO) {
@@ -163,7 +163,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping("/sendEmail")
     @ApiOperation(value = "邮件发送")
-    public void send() throws Exception{
+    public void send() throws Exception {
         //建立邮件消息
         SimpleMailMessage mainMessage = new SimpleMailMessage();
         //发送者
@@ -171,9 +171,22 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         //接收者
         mainMessage.setTo("763558454@qq.com");
         //发送的标题
-        mainMessage.setSubject("嗨喽");
+        mainMessage.setSubject("租户审核");
         //发送的内容
-        mainMessage.setText("hello world");
+        String content =  "您好！\n"+ "感谢您注册健康之路城市i健康。\n";
+        if (true) {
+            content = content + "您提交的是租户注册信息已审核通过，登录账号、密码如下所示：\n";
+            content = content + "账号：test"+"\n";
+            content = content + "密码：123456"+"\n";
+            content = content + "点击以下链接进入健康之路城市i健康综合管理平台："+ "http://www.baidu.com \n";
+            content = content + "如果以上链接无法点击，请将上面的地址复制到你的浏览器(如IE)的地址栏进入健康之路城市i健康综合管理平台\n";
+        }else {
+            content = content + "您提交的是租户注册信息审核未通过，审核未通过原因如下：\n";
+            content = content + "营业执照图片模糊，不清晰。\n";
+            content = content + "请点击以下链接修改注册信息并重新提交审核："+ "http://www.baidu.com \n";
+            content = content + "如果以上链接无法点击，请将上面的地址复制到你的浏览器(如IE)的地址栏进入租户注册信息修改。\n";
+        }
+        mainMessage.setText(content);
         jms.send(mainMessage);
     }
 
