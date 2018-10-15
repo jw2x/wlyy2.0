@@ -199,18 +199,6 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
     private Date openidTime;
 
     /**
-	 * 居委会代码
-	 */
-	@ApiModelProperty(value = "居委会代码", example = "")
-    private String sickVillage;
-
-    /**
-	 * 
-	 */
-	@ApiModelProperty(value = "", example = "")
-    private String sickVillageName;
-
-    /**
 	 * 绑定电子社保卡主体（共济为操作人code）
 	 */
 	@ApiModelProperty(value = "绑定电子社保卡主体（共济为操作人code）", example = "")
@@ -473,20 +461,6 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
     }
     public void setOpenidTime(Date openidTime) {
         this.openidTime = openidTime;
-    }
-
-    public String getSickVillage() {
-        return sickVillage;
-    }
-    public void setSickVillage(String sickVillage) {
-        this.sickVillage = sickVillage;
-    }
-
-    public String getSickVillageName() {
-        return sickVillageName;
-    }
-    public void setSickVillageName(String sickVillageName) {
-        this.sickVillageName = sickVillageName;
     }
 
     public String getPrincipalCode() {

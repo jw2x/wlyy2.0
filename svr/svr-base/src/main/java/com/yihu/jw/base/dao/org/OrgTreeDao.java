@@ -28,7 +28,6 @@ public interface OrgTreeDao extends PagingAndSortingRepository<OrgTree, Integer>
     @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where code like ?1")
     List<Map<String,Object>> findByCode(String code, Pageable pageable);
 
-    @Override
-    List<OrgTree> findAll();
 
+    List<OrgTree> findByLevel(Integer level);
 }

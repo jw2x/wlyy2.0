@@ -54,6 +54,12 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
 	private String jobTitleName;
 
     /**
+     * 医生所在机构部门标识
+     */
+    private String deptCode;
+
+
+    /**
 	 * 作废标识，1正常，0作废
 	 */
 	private String del;
@@ -138,6 +144,11 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
         this.createTime = createTime;
     }
 
+    public String getDeptCode() {
+        return deptCode;
+    }
 
-
+    public void setDeptCode(String deptCode) {
+        this.deptCode = deptCode;
+    }
 }

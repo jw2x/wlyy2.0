@@ -13,6 +13,8 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
     private String code;
     private String parentCode;
     private String name;
+    //当前树节点所在层级，例如省在第一级,用0表示
+    private Integer level;
 
     public OrgTree(){}
     public OrgTree(String code, String parentCode, String name){
@@ -68,4 +70,12 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
         this.name = name;
     }
 
+    @Column(name = "name", nullable = false)
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
 }

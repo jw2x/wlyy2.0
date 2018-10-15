@@ -155,8 +155,6 @@ CREATE TABLE `base_patient` (
   `patient_status` varchar(100) DEFAULT NULL COMMENT '用户状态：1正常，0禁用，-1恶意注册，2审核中',
   `mobile_remarks` varchar(200) DEFAULT NULL COMMENT '联系方式备注【基卫】',
   `openid_time` datetime DEFAULT NULL COMMENT '第一次添加open的时间',
-  `sick_village` varchar(50) DEFAULT NULL COMMENT '居委会代码',
-  `sick_village_name` varchar(100) DEFAULT NULL,
   `principal_code` varchar(50) DEFAULT NULL COMMENT '绑定电子社保卡主体（共济为操作人code）',
   `sicard_status` varchar(100) DEFAULT NULL COMMENT '是否绑定电子社保卡 （0否 1是）',
   `sicard_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '电子社保卡绑定时间',
@@ -762,6 +760,7 @@ create table `org_tree`
   `parent_code` varchar(50) not null COMMENT '父级行政区域code',
   `code` varchar(100) DEFAULT NULL COMMENT '行政区域code',
   `name` varchar(50) not null COMMENT '行政区域名称',
+  `level` varchar(50) not null COMMENT '节点所在层级（即有几个父亲）',
   primary key (id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构区域树形结构';

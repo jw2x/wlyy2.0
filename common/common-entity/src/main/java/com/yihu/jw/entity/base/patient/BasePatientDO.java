@@ -167,16 +167,6 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
 	private Date openidTime;
 
     /**
-	 * 居委会代码
-	 */
-	private String sickVillage;
-
-    /**
-	 *
-	 */
-	private String sickVillageName;
-
-    /**
 	 * 绑定电子社保卡主体（共济为操作人code）
 	 */
 	private String principalCode;
@@ -453,22 +443,6 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     }
     public void setOpenidTime(Date openidTime) {
         this.openidTime = openidTime;
-    }
-
-	@Column(name = "sick_village")
-    public String getSickVillage() {
-        return sickVillage;
-    }
-    public void setSickVillage(String sickVillage) {
-        this.sickVillage = sickVillage;
-    }
-
-	@Column(name = "sick_village_name")
-    public String getSickVillageName() {
-        return sickVillageName;
-    }
-    public void setSickVillageName(String sickVillageName) {
-        this.sickVillageName = sickVillageName;
     }
 
 	@Column(name = "principal_code")
