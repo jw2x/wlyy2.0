@@ -68,19 +68,19 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         List<Map<String,Object>> result = new ArrayList<>();
         if(StringUtils.endsWithIgnoreCase("1",orgStatus)){
             if(!StringUtils.isEmpty(orgCode) ){
-                result = baseOrgDao.findByCodeAndDel(orgCode,orgStatus,creatPage(page,size,sorts));
+                result = baseOrgDao.findByCodeAndDel(orgCode,orgStatus,createPage(page,size,sorts));
             }else if(!StringUtils.isEmpty(orgCode)){
-                result = baseOrgDao.findByNameAndDel(orgName,orgStatus,creatPage(page,size,sorts));
+                result = baseOrgDao.findByNameAndDel(orgName,orgStatus,createPage(page,size,sorts));
             }else{
-                result = baseOrgDao.findBaseInfoByDel(orgStatus,creatPage(page,size,sorts));
+                result = baseOrgDao.findBaseInfoByDel(orgStatus,createPage(page,size,sorts));
             }
         }else{
             if(!StringUtils.isEmpty(orgCode) ){
-                result = baseOrgDao.findByCode(orgCode,creatPage(page,size,sorts));
+                result = baseOrgDao.findByCode(orgCode,createPage(page,size,sorts));
             }else if(!StringUtils.isEmpty(orgCode)){
-                result = baseOrgDao.findByName(orgName,creatPage(page,size,sorts));
+                result = baseOrgDao.findByName(orgName,createPage(page,size,sorts));
             }else{
-                result = baseOrgDao.findBaseInfo(creatPage(page,size,sorts));
+                result = baseOrgDao.findBaseInfo(createPage(page,size,sorts));
             }
         }
         return result;

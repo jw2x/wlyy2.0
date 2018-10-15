@@ -60,14 +60,14 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
     public List<Map<String,Object>> queryPatientBaseInfo(String idcard,String name,int page,int size,String sorts)throws Exception{
         List<Map<String,Object>> result = new ArrayList<>();
         if(!StringUtils.isEmpty(idcard)){
-            result = basePatientDao.findByIdcard("%"+idcard+"%",creatPage(page,size,sorts));
+            result = basePatientDao.findByIdcard("%"+idcard+"%",createPage(page,size,sorts));
             return result;
         }
         if(!StringUtils.isEmpty(name)){
-            result = basePatientDao.findByName(idcard,creatPage(page,size,sorts));
+            result = basePatientDao.findByName(idcard,createPage(page,size,sorts));
             return result;
         }
-        result = basePatientDao.findBaseInfo(creatPage(page,size,sorts));
+        result = basePatientDao.findBaseInfo(createPage(page,size,sorts));
         return result;
     }
 }

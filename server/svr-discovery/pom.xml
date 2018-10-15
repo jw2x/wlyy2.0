@@ -13,7 +13,7 @@
     <groupId>com.yihu.jw</groupId>
     <artifactId>svr-discovery</artifactId>
     <version>${parent.version}</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <!-- 支持Tomcat启动 -->
