@@ -138,6 +138,18 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
     private String streetName;
 
     /**
+     * 居委会代码
+     */
+    @ApiModelProperty(value = "居委会代码", example = "参考居委会代码")
+    private String committeeCode;
+
+    /**
+     * 居委会名称
+     */
+    @ApiModelProperty(value = "居委会名称", example = "某某居委会")
+    private String committeeName;
+
+    /**
 	 * 疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病
 	 */
 	@ApiModelProperty(value = "疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病", example = "0")
@@ -389,6 +401,22 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
 
     public void setStreetName(String streetName) {
         this.streetName = streetName;
+    }
+
+    public String getCommitteeCode() {
+        return committeeCode;
+    }
+
+    public void setCommitteeCode(String committeeCode) {
+        this.committeeCode = committeeCode;
+    }
+
+    public String getCommitteeName() {
+        return committeeName;
+    }
+
+    public void setCommitteeName(String committeeName) {
+        this.committeeName = committeeName;
     }
 
     public String getDisease() {

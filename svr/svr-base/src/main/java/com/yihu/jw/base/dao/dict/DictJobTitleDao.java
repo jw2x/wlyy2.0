@@ -1,9 +1,16 @@
 package com.yihu.jw.base.dao.dict;
 
+import com.yihu.jw.entity.base.dict.DictIcd10DO;
+import feign.Param;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.yihu.jw.entity.base.dict.DictJobTitleDO;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -18,4 +25,10 @@ import com.yihu.jw.entity.base.dict.DictJobTitleDO;
  * @since 1.
  */
 public interface DictJobTitleDao extends PagingAndSortingRepository<DictJobTitleDO, Integer>, JpaSpecificationExecutor<DictJobTitleDO>  {
+
+    @Query("select code as code,name as name from DictJobTitleDO where saasId = :saasId")
+    List<Map<String,Object>> findCodeAndNameBySaasId(@Param("saasId") String saasId, Pageable pageable);
+
+    @Query("select code as code,name as name from DictJobTitleDO")
+    List<Map<String,Object>> findCodeAndName(Pageable pageable);
 }

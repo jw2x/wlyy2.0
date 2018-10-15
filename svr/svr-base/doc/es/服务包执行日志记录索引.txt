@@ -55,7 +55,7 @@ POST http://172.19.103.68:9200/base_service_package_log/base_service_package_log
 }
 
 字段说明：
-"id": uuid
+"id": code
 "createTime": 时间
 "saasId": saasid
 "sevicePackageId": 服务包id

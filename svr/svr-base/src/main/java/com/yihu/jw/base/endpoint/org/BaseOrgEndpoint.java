@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 
@@ -98,6 +99,26 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<BaseOrgDO> baseOrgs = baseOrgService.search(fields, filters, sorts);
         return success(baseOrgs, BaseOrgVO.class);
+    }
+
+
+    @PostMapping(value = BaseRequestMapping.BaseOrg.baseInfoList)
+    @ApiOperation(value = "获取机构基础信息列表")
+    public ListEnvelop queryBaseOrgInfolist(
+            @ApiParam(name = "orgCode", value = "返回的字段，为空返回全部字段")
+            @RequestParam(value = "orgCode", required = false) String orgCode,
+            @ApiParam(name = "orgName", value = "过滤器，为空检索所有条件")
+            @RequestParam(value = "orgName", required = false) String orgName,
+            @ApiParam(name = "orgStatus", value = "排序，规则参见说明文档")
+            @RequestParam(value = "orgStatus", required = false) String orgStatus,
+            @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "0")
+            @RequestParam(value = "page") int page,
+            @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
+            @RequestParam(value = "size") int size,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
+            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        List<Map<String, Object>> list = baseOrgService.queryOrgBaseInfoList(orgCode, orgName, orgStatus,page,size,sorts);
+        return success(list);
     }
 
 }

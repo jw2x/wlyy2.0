@@ -15,13 +15,13 @@ import javax.persistence.Table;
 public class RoleDO extends UuidIdentityEntityWithOperator {
 
 	/**
+	 * 角色代码
+	 */
+	private String code;
+	/**
 	 * 角色名称
 	 */
 	private String name;
-	/**
-	 * 角色代码
-     */
-	private String code;
 	/**
 	 * 1.系统管理员，2.saas管理员，3.机构管理员
      */

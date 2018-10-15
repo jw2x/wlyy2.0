@@ -31,8 +31,6 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 		//已删除
 		delete
     }
-
-    private String orgCode; //机构编码
 	private String name; //系统名称
 	private Status status; // 状态（0-待审核 1-审核通过(启用) 2-审核不通过 3-已暂停）
 	private String remark; //备注
@@ -53,15 +51,6 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
     List<BaseOrgDO> orgList;
     //业务模块
     List<SaasModuleDO> saasModuleList;
-
-	@Column(name = "org_code", nullable = false)
-	public String getOrgCode() {
-		return orgCode;
-	}
-
-	public void setOrgCode(String orgCode) {
-		this.orgCode = orgCode;
-	}
 
 	@Column(name = "name", nullable = false, length = 200)
 	public String getName() {
