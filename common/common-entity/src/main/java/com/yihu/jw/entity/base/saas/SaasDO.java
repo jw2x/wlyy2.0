@@ -26,13 +26,15 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
         auditPassed,
 		//审核不通过
         auditNotPassed,
+        //已暂停
+        stoped,
 		//已删除
 		delete
     }
 
     private String orgCode; //机构编码
 	private String name; //系统名称
-	private Status status; //状态  0待审核 1审核通过 2审核不通过 3已删除
+	private Status status; // 状态（0-待审核 1-审核通过(启用) 2-审核不通过 3-已暂停）
 	private String remark; //备注
 	private String logo; //远程fastDFS文件地址
     private Integer type; //类型

@@ -3,6 +3,7 @@ package com.yihu.jw.base.service.saas;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
 import com.yihu.jw.base.dao.role.RoleDao;
 import com.yihu.jw.base.dao.saas.SaasDao;
+import com.yihu.jw.base.dao.system.SystemDictDao;
 import com.yihu.jw.base.dao.user.UserDao;
 import com.yihu.jw.base.dao.user.UserRoleDao;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
@@ -40,6 +41,9 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     private UserRoleDao userRoleDao;
     @Autowired
     private BaseOrgDao baseOrgDao;
+    @Autowired
+    private SystemDictDao systemDictDao;
+
 
     /**
      * 默认租户管理员角色code
@@ -74,6 +78,12 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         orgDOList.forEach(org->{
             org.setSaasid(saasId);
         });
+
+        //字典配置（由于需要支持租户对字典的crud，目前考虑直接复制一套字典给租户单独使用）
+
+
+
+
         //保存数据
         saas.setStatus(SaasDO.Status.auditWait);
         saas = saasDao.save(saas);
@@ -82,6 +92,14 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         userRoleDao.save(userRoleDO);
 //        roleModuleFunctionDao.save(roleModuleFunctionDOS);
         return saas;
+    }
+
+    /**
+     * 系统配置
+     * @param saasDO
+     */
+    public void saveSystemConfig(SaasDO saasDO){
+
     }
 
     @Transactional
