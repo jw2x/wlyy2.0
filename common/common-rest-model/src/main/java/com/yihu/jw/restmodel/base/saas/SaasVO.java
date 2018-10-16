@@ -56,6 +56,8 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	List<BaseOrgVO> orgList;
 	@ApiModelProperty(value = "业务模块", example = "业务模块")
 	List<SaasModuleVO> saasModuleList;
+	@ApiModelProperty(value = "主题风格", example = "主题风格")
+	List<SaasThemeVO> saasThemeList;
 
 
 	public String getOrgCode() {
@@ -208,5 +210,13 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 
 	public void setThemeColor(String themeColor) {
 		this.themeColor = themeColor;
+	}
+
+	public List<SaasThemeVO> getSaasThemeList() {
+		return saasThemeList;
+	}
+
+	public void setSaasThemeList(List<SaasThemeVO> saasThemeList) {
+		this.saasThemeList = saasThemeList;
 	}
 }

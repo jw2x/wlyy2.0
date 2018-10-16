@@ -5,6 +5,7 @@ import com.yihu.jw.base.util.ErrorCodeUtil;
 import com.yihu.jw.entity.base.dict.ErrorCodeDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
 import com.yihu.jw.restmodel.base.dict.ErrorCodeVO;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
@@ -31,7 +32,7 @@ public class ErrorCodeEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
 
-    @PostMapping(value = BaseRequestMapping.Menu.CREATE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.ErrorCode.CREATE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<ErrorCodeVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
@@ -44,7 +45,14 @@ public class ErrorCodeEndpoint extends EnvelopRestEndpoint {
         return success(errorCodeDO, ErrorCodeVO.class);
     }
 
-    @PostMapping(value = BaseRequestMapping.Menu.UPDATE)
+    @PostMapping(value = BaseRequestMapping.ErrorCode.INIT_WITHOUT_CONDITION,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "初始化")
+    public Envelop initWithoutCondition () throws Exception {
+        errorCodeService.initWithoutCondition();
+        return success("初始化成功");
+    }
+
+    @PostMapping(value = BaseRequestMapping.ErrorCode.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<ErrorCodeVO> update (
             @ApiParam(name = "id", value = "id")
@@ -59,7 +67,7 @@ public class ErrorCodeEndpoint extends EnvelopRestEndpoint {
         return success(errorCodeDO, ErrorCodeVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.Menu.PAGE)
+    @GetMapping(value = BaseRequestMapping.ErrorCode.PAGE)
     @ApiOperation(value = "获取分页")
     public PageEnvelop<ErrorCodeVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
@@ -77,7 +85,7 @@ public class ErrorCodeEndpoint extends EnvelopRestEndpoint {
         return success(errorCodeDOS, count, page, size, ErrorCodeVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.Menu.LIST)
+    @GetMapping(value = BaseRequestMapping.ErrorCode.LIST)
     @ApiOperation(value = "获取列表")
     public ListEnvelop<ErrorCodeVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
