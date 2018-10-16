@@ -25,7 +25,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -61,7 +60,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         userDO.setMobile(saasDO.getMobile());
         userDO.setName(saasDO.getManagerName());
         userDO.setUsername(userDO.getEmail());
-        if (saasService.search("name=" + userDO.getName()).size() > 0) {
+        if (saasService.search("name=" + saasDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
         if (userService.search("mobile=" + userDO.getMobile()).size() > 0) {

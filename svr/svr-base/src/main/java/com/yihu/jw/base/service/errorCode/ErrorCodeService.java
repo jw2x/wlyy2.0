@@ -35,6 +35,16 @@ public class ErrorCodeService extends BaseJpaService<ErrorCodeDO, ErrorCodeDao> 
     }
 
     /**
+     * 初始化错误码（无条件）
+     */
+    public void initWithoutCondition(){
+        Iterable<ErrorCodeDO> list = errorCodeDao.findAll();
+        list.forEach(code->{
+            redisTemplate.opsForValue().set(BaseErrorCode.PREFIX + code.getErrorCode(),code.getErrorMsg());
+        });
+    }
+
+    /**
      * 新增
      * @param errorCodeDO
      */
