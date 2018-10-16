@@ -116,8 +116,19 @@ public class WechatCoreController extends EnvelopRestEndpoint {
      */
     private boolean validate(String signature, String timestamp, String nonce) throws NoSuchAlgorithmException {
 
+        logger.info("validate:");
+        logger.info("signature:"+signature);
+        logger.info("timestamp:"+timestamp);
+        logger.info("nonce:"+nonce);
+
         //查询平台所有微信token
         List<WxWechatDO> wxs =  wechatCoreService.findAll();
+
+        try{
+            logger.info("validate:wxs.size:"+wxs.size());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         if(wxs!=null&&wxs.size()>0){
 
@@ -137,6 +148,8 @@ public class WechatCoreController extends EnvelopRestEndpoint {
                 String decodeStr = "";
                 byte[] bytes = md.digest(content.getBytes());
                 decodeStr = byteToStr(bytes);
+
+                logger.info("decodeStr:"+decodeStr);
                 //验证
                 if (StringUtils.isNotEmpty(decodeStr) && decodeStr.equals(signature.toUpperCase())) {
                     return true;

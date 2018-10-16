@@ -122,7 +122,7 @@ public class WechatService {
                 " bs.id AS saasid" +
                 " FROM " +
                 " wx_wechat_saas s " +
-                " JOIN base_saas bs ON s.saas_id = s.saas_id " +
+                " JOIN base_saas bs ON bs.id = s.saas_id " +
                 " WHERE " +
                 " s.wechat_id = '"+id+"'";
         List<WxSaasVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxSaasVO.class));
@@ -130,13 +130,12 @@ public class WechatService {
     }
 
     public Envelop saveWxAndSaas(WxWechatDO wxWechatDO, List<WxWechatSaasDO> wxWechatSaasDOs){
-        String uuid = UUID.randomUUID().toString();
-        wxWechatDO.setId(uuid);
-        wechatDao.save(wxWechatDO);
+
+        WxWechatDO wechat = wechatDao.save(wxWechatDO);
 
         if(wxWechatSaasDOs!=null&&wxWechatSaasDOs.size()>0){
             for(WxWechatSaasDO wxs:wxWechatSaasDOs){
-                wxs.setWechatId(uuid);
+                wxs.setWechatId(wechat.getId());
             }
             wxWechatSaasDao.save(wxWechatSaasDOs);
         }
@@ -183,21 +182,33 @@ public class WechatService {
         return MixEnvelop.getSuccessList(BaseRequestMapping.WeChat.api_success,list);
     }
 
-    public MixEnvelop findWechatImgGroup(String wechatId,Integer page,Integer size){
+    public MixEnvelop findWechatImgGroup(String wechatId,String scene,Integer page,Integer size){
 
         String totalSql ="SELECT COUNT(1) AS total from wx_graphic_scene g WHERE g.wechat_id ='"+wechatId+"'";
+
+        if(StringUtils.isNotBlank(scene)){
+            totalSql+=" AND g.scene ='"+scene+"' ";
+        }
+
         List<Map<String, Object>> rstotal = jdbcTemplate.queryForList(totalSql);
         Long count = 0L;
         if (rstotal != null && rstotal.size() > 0) {
             count = (Long) rstotal.get(0).get("total");
         }
+
         String sql = "SELECT " +
                 " g.id,g.wechat_id AS wechatId,g.scene " +
                 " FROM " +
                 " wx_graphic_scene g " +
                 " WHERE " +
-                " g.wechat_id = '"+wechatId+"' " +
-                " LIMIT  " + (page - 1) * size + "," + size + "";
+                " g.wechat_id = '"+wechatId+"' ";
+
+        if(StringUtils.isNotBlank(scene)){
+            sql+= " AND g.scene='"+scene+"'" ;
+        }
+
+        sql+= " LIMIT  " + (page - 1) * size + "," + size + "";
+
         List<WxGraphicSceneVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxGraphicSceneVO.class));
 
         return MixEnvelop.getSuccessListWithPage(BaseRequestMapping.WeChat.api_success, list, page, size, count);
