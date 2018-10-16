@@ -2,6 +2,7 @@ package com.yihu.jw.entity.base.saas;
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -19,11 +20,14 @@ public class SaasTypeDictDO extends UuidIdentityEntityWithOperator{
         effective
     }
     //Saas类型编码
+    @Column(name = "code")
     private Integer code;
     //Saas类型名称
+    @Column(name = "name")
     private String name;
 
     //状态（1生效中，0已失效）
+    @Column(name = "status")
     private Status status;
 
     public Integer getCode() {
