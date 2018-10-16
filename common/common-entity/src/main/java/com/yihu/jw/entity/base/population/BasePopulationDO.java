@@ -5,6 +5,7 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 
@@ -225,5 +226,20 @@ public class BasePopulationDO extends UuidIdentityEntityWithOperator {
 
     public void setSaasCreateTime(Date saasCreateTime) {
         this.saasCreateTime = saasCreateTime;
+    }
+
+    @Transient
+    public String getAddress() {
+        String address = "";
+        if (this.getProvinceName() != null) {
+            address += this.getProvinceName();
+        }
+        if (this.getCityName() != null) {
+            address += this.getCityName();
+        }
+        if (this.getDistrictName()!= null) {
+            address += this.getDistrictName();
+        }
+        return address;
     }
 }

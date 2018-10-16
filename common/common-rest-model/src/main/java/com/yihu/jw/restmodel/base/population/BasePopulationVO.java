@@ -80,6 +80,8 @@ public class BasePopulationVO extends UuidIdentityVOWithOperator {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
     @ApiModelProperty(value = "租户创建时间", example = "yyyy-MM-dd HH:mm:ss")
     private Date  saasCreateTime;
+    @ApiModelProperty(value = "行政区划", example = "省+市+区")
+    private String address;
 
     public String getSaasId() {
         return saasId;
@@ -231,5 +233,13 @@ public class BasePopulationVO extends UuidIdentityVOWithOperator {
 
     public void setSaasCreateTime(Date saasCreateTime) {
         this.saasCreateTime = saasCreateTime;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
