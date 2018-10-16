@@ -19,9 +19,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -41,6 +45,10 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     private SaasTypeDictService saasTypeDictService;
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
+    @Autowired
+    JavaMailSender jms;
+    @Value("${spring.mail.username}")
+    private String username;
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建-基本信息")
@@ -173,6 +181,35 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         saasDO.setAuditFailedReason(auditFailedReason);
         saasService.save(saasDO);
         return success("操作成功");
+    }
+
+    @GetMapping("/sendEmail")
+    @ApiOperation(value = "邮件发送")
+    public void send() throws Exception {
+        //建立邮件消息
+        SimpleMailMessage mainMessage = new SimpleMailMessage();
+        //发送者
+        mainMessage.setFrom(username);
+        //接收者
+        mainMessage.setTo("763558454@qq.com");
+        //发送的标题
+        mainMessage.setSubject("租户审核");
+        //发送的内容
+        String content =  "您好！\n"+ "感谢您注册健康之路城市i健康。\n";
+        if (true) {
+            content = content + "您提交的是租户注册信息已审核通过，登录账号、密码如下所示：\n";
+            content = content + "账号：test"+"\n";
+            content = content + "密码：123456"+"\n";
+            content = content + "点击以下链接进入健康之路城市i健康综合管理平台："+ "http://www.baidu.com \n";
+            content = content + "如果以上链接无法点击，请将上面的地址复制到你的浏览器(如IE)的地址栏进入健康之路城市i健康综合管理平台\n";
+        }else {
+            content = content + "您提交的是租户注册信息审核未通过，审核未通过原因如下：\n";
+            content = content + "营业执照图片模糊，不清晰。\n";
+            content = content + "请点击以下链接修改注册信息并重新提交审核："+ "http://www.baidu.com \n";
+            content = content + "如果以上链接无法点击，请将上面的地址复制到你的浏览器(如IE)的地址栏进入租户注册信息修改。\n";
+        }
+        mainMessage.setText(content);
+        jms.send(mainMessage);
     }
 
 }

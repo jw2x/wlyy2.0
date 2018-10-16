@@ -289,4 +289,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         }
     }
 
+    public SaasDO findById(String id){
+        return saasDao.findById(id);
+    }
+
 }

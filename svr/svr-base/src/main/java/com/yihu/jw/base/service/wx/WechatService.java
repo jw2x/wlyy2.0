@@ -5,8 +5,10 @@ import com.yihu.jw.entity.base.wx.*;
 import com.yihu.jw.restmodel.base.wx.*;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -155,6 +157,19 @@ public class WechatService {
             wxWechatSaasDao.save(wxWechatSaasDOs);
         }
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
+    }
+
+    public WxWechatDO findWxWechatSingle(String wechatId){
+        WxWechatDO wxWechatDO = wechatDao.findOne(wechatId);
+        return wxWechatDO;
+    }
+
+    public Boolean findWxWechatExist(String name){
+        List<WxWechatDO> list = wechatDao.findByName(name);
+        if(list!=null&&list.size()>0){
+            return true;
+        }
+        return false;
     }
 
 

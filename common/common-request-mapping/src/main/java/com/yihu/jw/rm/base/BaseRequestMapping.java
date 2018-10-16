@@ -224,6 +224,8 @@ public class BaseRequestMapping {
         public static final String getWechatInfos ="/getWechatInfos";
         public static final String saveWxAndSaas ="/saveWxAndSaas";
         public static final String updateWxAndSaas ="/updateWxAndSaas";
+        public static final String findWxWechatSingle ="/findWxWechatSingle";
+        public static final String findWxWechatExist ="/findWxWechatExist";
         public static final String findWechatCombo ="/findWechatCombo";
 
         public static final String findWechatImgGroup ="/findWechatImgGroup";
@@ -237,6 +239,7 @@ public class BaseRequestMapping {
         public static final String saveWxReplyScene ="/saveWxReplyScene";
         public static final String findWxReplyScene ="/findWxReplyScene";
         public static final String saveWxTemp ="/saveWxTemp";
+        public static final String findWxtemp ="/findWxtemp";
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
@@ -397,6 +400,14 @@ public class BaseRequestMapping {
      */
     public static class BasePopulation extends Basic {
         public static final String PREFIX  = "/basePopulation";
+        public static final String CHECK_POPULATION_IS_EXIST  = "/checkBasePopulationIsExist";
+    }
+
+    /**
+     * 年份
+     */
+    public static class BaseYear extends Basic {
+        public static final String PREFIX  = "/baseYear";
     }
 
 
