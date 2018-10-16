@@ -69,7 +69,7 @@ public class WechatController extends EnvelopRestEndpoint {
         return wechatService.updateWxAndSaas(wxWechat,list);
     }
 
-    @PostMapping(value = BaseRequestMapping.WeChat.findWxWechatSingle)
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxWechatSingle)
     @ApiOperation(value = "查询单条微信信息", notes = "查询单条微信信息")
     public ObjEnvelop<WxWechatSingleVO> findWxWechatSingle(String wechatId) {
         WxWechatDO wxWechatDO  = wechatService.findWxWechatSingle(wechatId);
@@ -79,7 +79,7 @@ public class WechatController extends EnvelopRestEndpoint {
         return success("success", wxWechatSingleVO);
     }
 
-    @PostMapping(value = BaseRequestMapping.WeChat.findWxWechatExist)
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxWechatExist)
     @ApiOperation(value = "判断微信名称是否存在", notes = "判断微信名称是否存在")
     public Envelop findWxWechatExist(String name) {
        return success("success", wechatService.findWxWechatExist(name));
