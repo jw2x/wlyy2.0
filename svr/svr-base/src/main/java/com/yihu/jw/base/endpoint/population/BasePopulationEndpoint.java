@@ -1,5 +1,7 @@
 package com.yihu.jw.base.endpoint.population;
 
+import com.yihu.jw.base.endpoint.common.excel.AExcelReader;
+import com.yihu.jw.base.endpoint.common.populationBatchImport.*;
 import com.yihu.jw.base.service.area.BaseCityService;
 import com.yihu.jw.base.service.area.BaseProvinceService;
 import com.yihu.jw.base.service.area.BaseTownService;
@@ -8,6 +10,7 @@ import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.entity.base.area.BaseTownDO;
 import com.yihu.jw.entity.base.population.BasePopulationDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.restmodel.base.population.BasePopulationVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -21,19 +24,22 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * 基础人口基数信息控制器
  *
  * @version <pre>
- *                                                       Author	Version		Date		Changes
- *                                                       litaohong 	1.0  		2018年09月26日 	update
+ *           Author	Version		Date		Changes
+ *           litaohong 	1.0  		2018年09月26日 	update
  *
- *                                                       </pre>
+ *           </pre>
  * @since 1.
  */
 @RestController
@@ -51,6 +57,7 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
     private BaseProvinceService baseProvinceService;
     @Autowired
     private BaseCityService baseCityService;
+    static final String parentFile = "population";
 
 
     @PostMapping(value = BaseRequestMapping.BasePopulation.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -252,6 +259,104 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         List<BasePopulationDO> basePopulationDOList = basePopulationService.search(filters);
         return (null != basePopulationDOList && basePopulationDOList.size() > 0) ? true : false;
     }
+
+    @PostMapping(value = BaseRequestMapping.BasePopulation.POPULATION_BATCH_IMPORT)
+    @Transactional(rollbackFor = Exception.class)
+    @ApiOperation(value = "基础人口信息列表导入")
+    public Envelop importData(
+            @ApiParam(name = "file", value = "文件", required = true)
+            @RequestPart(value = "file") MultipartFile file,
+            HttpServletRequest request) throws IOException, ManageException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            AExcelReader excelReader = new PopulationMsgReader();
+            excelReader.read(file);
+            //验证未通过
+            List<PopulationMsg> errorLs = excelReader.getErrorLs();
+            List<PopulationMsg> correctLs = excelReader.getCorrectLs();
+            //获取所有租户+年份的基础人口信息
+            Set<String> populationNameAndYear =new HashSet<String>( basePopulationService.getFacilityCodeByServerType());
+            PopulationMsg model;
+            List saveLs = new ArrayList<>();
+            if (correctLs.size() > 0) {
+                for (int i = 0; i < correctLs.size(); i++) {
+                    model = correctLs.get(i);
+                    Map<Boolean,PopulationMsg> map=validate(model,populationNameAndYear);
+                    if (null==map.get(true)) {
+                        errorLs.add(model);
+                    } else {
+                        saveLs.add(model);
+                    }
+                }
+                Map<String, Object> result = basePopulationService.batchInsertPopulation(saveLs);
+                result.put("errorLs",errorLs);
+                return success("导入成功!", result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return failed("导入异常,请检查导入文件格式"+e.getMessage());
+        }
+        return failed("导入失败");
+    }
+
+    private Map<Boolean,PopulationMsg> validate(PopulationMsg model, Set<String> populationNameAndYear) throws Exception{
+        Map<Boolean,PopulationMsg> msgMap =new HashMap<>();
+        Boolean rs = true;
+        //验证租户是否存在
+        SaasDO saasDO = saasService.findByName(model.getSaasName());
+        String nameAndYear=model.getSaasName()+model.getYear();
+        //验证租户+年份的人口基数是否存在
+        if (populationNameAndYear.contains(nameAndYear)) {
+            model.addErrorMsg("saasName", "已添加"+model.getYear()+model.getSaasName()+"的基础人口信息，请直接修改即可！");
+            rs = false;
+        }
+        if (null==saasDO) {
+            model.addErrorMsg("saasName", "租户不存在，请核对！");
+            rs = false;
+        }else {
+            model.setSaasId(saasDO.getId());
+            model.setSaasCreateTime(saasDO.getCreateTime());
+            String areaCode = saasDO.getAreaNumber();
+            String filters = "province?" + areaCode + " g1;city?" + areaCode + " g1;code?" + areaCode + " g1;";
+            List<BaseTownDO> baseTowns = baseTownService.search(filters);
+            BaseTownDO baseTownDO = (null != baseTowns && baseTowns.size() > 0 ? baseTowns.get(0) : null);
+            if (null != baseTownDO) {
+                if (baseTownDO.getCode().equals(areaCode)) {
+                    model.setProvinceCode(baseTownDO.getProvince());
+                    model.setProvinceName(baseProvinceService.getNameByCode(baseTownDO.getProvince()));
+                    //市编码
+                    model.setCityCode(baseTownDO.getCity());
+                    model.setCityName(baseCityService.getNameByCode(baseTownDO.getCity()));
+                    //区县编码
+                    model.setDistrictCode(areaCode);
+                    model.setDistrictName(baseTownDO.getName());
+                } else if (baseTownDO.getCity().equals(areaCode)) {
+                    model.setProvinceCode(baseTownDO.getProvince());
+                    model.setProvinceName(baseProvinceService.getNameByCode(baseTownDO.getProvince()));
+                    //市编码
+                    model.setCityCode(areaCode);
+                    model.setCityName(baseCityService.getNameByCode(areaCode));
+                    //区县编码
+                    model.setDistrictCode("");
+                    model.setDistrictName("");
+                } else if (baseTownDO.getProvince().equals(areaCode)) {
+                    //省编码
+                    model.setProvinceCode(areaCode);
+                    model.setProvinceName(baseProvinceService.getNameByCode(areaCode));
+                    //市编码
+                    model.setCityCode("");
+                    model.setCityName("");
+                    //区县编码
+                    model.setDistrictCode("");
+                    model.setDistrictName("");
+                }
+            }
+        }
+        msgMap.put(rs,model);
+        return msgMap;
+    }
+
+
 
 
 }
