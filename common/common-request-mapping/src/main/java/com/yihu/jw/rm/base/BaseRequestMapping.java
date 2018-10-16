@@ -26,6 +26,8 @@ public class BaseRequestMapping {
      */
     public static class Saas extends Basic {
         public static final String PREFIX  = "/saas";
+        public static final String SYSTEM_CONFIGURATION  = "/system_configuration";
+        public static final String THEME_STYLE  = "/theme_style";
         public static final String AUDIT  = "/audit";
     }
 
@@ -222,6 +224,8 @@ public class BaseRequestMapping {
         public static final String getWechatInfos ="/getWechatInfos";
         public static final String saveWxAndSaas ="/saveWxAndSaas";
         public static final String updateWxAndSaas ="/updateWxAndSaas";
+        public static final String findWxWechatSingle ="/findWxWechatSingle";
+        public static final String findWxWechatExist ="/findWxWechatExist";
         public static final String findWechatCombo ="/findWechatCombo";
 
         public static final String findWechatImgGroup ="/findWechatImgGroup";
@@ -235,6 +239,7 @@ public class BaseRequestMapping {
         public static final String saveWxReplyScene ="/saveWxReplyScene";
         public static final String findWxReplyScene ="/findWxReplyScene";
         public static final String saveWxTemp ="/saveWxTemp";
+        public static final String findWxtemp ="/findWxtemp";
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";

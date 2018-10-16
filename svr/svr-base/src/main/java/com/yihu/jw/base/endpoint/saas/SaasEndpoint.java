@@ -1,11 +1,10 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.saas.SaasService;
+import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
 import com.yihu.jw.entity.base.saas.SaasDO;
-import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
@@ -52,8 +51,8 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     private String username;
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建")
-    public Envelop create(
+    @ApiOperation(value = "创建-基本信息")
+    public Envelop create (
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
             @RequestParam(value = "saasDO") SaasDO saasDO,
             @ApiParam(name = "userDO", value = "Json数据", required = true)
@@ -72,6 +71,27 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("创建成功");
     }
 
+    @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建-系统配置")
+    public Envelop createSystemConfig (
+            @ApiParam(name = "saasDO", value = "Json数据", required = true)
+            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
+
+        saasService.saveSystemConfig(saasDO);
+        return success("创建成功");
+    }
+
+    @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建-主题风格")
+    public Envelop createThemeConfig (
+            @ApiParam(name = "saasDO", value = "Json数据", required = true)
+            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
+
+        saasService.createThemeConfig(saasDO);
+        return success("创建成功");
+    }
+
+
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
@@ -83,7 +103,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public Envelop update(
+    public Envelop update (
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SaasDO saasDO = toEntity(jsonData, SaasDO.class);
@@ -96,7 +116,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.Saas.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SaasVO> page(
+    public PageEnvelop<SaasVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -108,13 +128,13 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         List<SaasDO> saasDOS = saasService.search(fields, filters, sorts, page, size);
-        int count = (int) saasService.getCount(filters);
+        int count = (int)saasService.getCount(filters);
         return success(saasDOS, count, page, size, SaasVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SaasVO> list(
+    public ListEnvelop<SaasVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -149,9 +169,8 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(value = "status") SaasDO.Status status,
             @ApiParam(name = "auditFailedReason", value = "审核不通过的原因（非必填）")
-            @RequestParam(value = "auditFailedReason", required = false) String auditFailedReason, HttpServletRequest request) throws Exception {
+            @RequestParam(value = "auditFailedReason",required = false) String auditFailedReason) throws Exception {
         SaasDO saasDO = saasService.retrieve(id);
-
         if (null == saasDO) {
             return failed("无相关SAAS配置", Envelop.class);
         }

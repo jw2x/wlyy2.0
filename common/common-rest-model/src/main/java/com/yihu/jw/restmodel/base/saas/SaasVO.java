@@ -49,6 +49,8 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	private String systemName;
 	@ApiModelProperty(value = "行政区划代码", example = "361000")
 	private String areaNumber;
+	@ApiModelProperty(value = "主题色", example = "主题色")
+	private String themeColor;
 
 	@ApiModelProperty(value = "机构", example = "机构")
 	List<BaseOrgVO> orgList;
@@ -199,4 +201,12 @@ public class SaasVO extends UuidIdentityVOWithOperator {
     public void setManagerName(String managerName) {
         this.managerName = managerName;
     }
+
+	public String getThemeColor() {
+		return themeColor;
+	}
+
+	public void setThemeColor(String themeColor) {
+		this.themeColor = themeColor;
+	}
 }
