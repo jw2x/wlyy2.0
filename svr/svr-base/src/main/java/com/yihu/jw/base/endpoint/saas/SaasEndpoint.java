@@ -73,6 +73,16 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("创建成功");
     }
 
+    @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建-主题风格")
+    public Envelop createThemeConfig (
+            @ApiParam(name = "saasDO", value = "Json数据", required = true)
+            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
+
+        saasService.createThemeConfig(saasDO);
+        return success("创建成功");
+    }
+
 
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
     @ApiOperation(value = "删除")

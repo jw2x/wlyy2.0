@@ -43,6 +43,7 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	private String businessLicense; //营业执照url
 	private String systemName; //系统名称
 	private String areaNumber; //行政区划代码
+	private String themeColor; //主题色
     //审核不通过的原因
     private String auditFailedReason;
     //管理员姓名
@@ -194,5 +195,14 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    @Column(name = "theme_color")
+    public String getThemeColor() {
+        return themeColor;
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
     }
 }
