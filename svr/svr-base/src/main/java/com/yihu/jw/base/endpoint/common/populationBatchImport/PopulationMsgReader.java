@@ -1,8 +1,9 @@
 package com.yihu.jw.base.endpoint.common.populationBatchImport;
 
 
-import com.yihu.jw.util.excel.AExcelReader;
-import jxl.Workbook;
+import com.yihu.jw.base.endpoint.common.excel.AExcelReader;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.*;
 
@@ -18,7 +19,7 @@ public class PopulationMsgReader extends AExcelReader {
     @Override
     public void read(Workbook rwb) throws Exception {
         try {
-            jxl.Sheet[] sheets = rwb.getSheets();
+            Iterator<Sheet> sheets = rwb.sheetIterator();
             int j = 0, rows;
             PopulationMsg populationMsg;
             getRepeat().put("saasName", new HashSet<>());
@@ -28,11 +29,12 @@ public class PopulationMsgReader extends AExcelReader {
             getRepeat().put("dmNum", new HashSet<>());
             getRepeat().put("hbpNum", new HashSet<>());
             getRepeat().put("taskNum", new HashSet<>());
-            for (jxl.Sheet sheet : sheets) {
-                if ((rows = sheet.getRows()) == 0) {
+            while (sheets.hasNext()){
+                Sheet sheet = sheets.next();
+                if ((rows = sheet.getLastRowNum()) == 0) {
                     continue;
                 }
-                for (int i = 1; i < rows; i++, j++) {
+                for (int i = 1; i <= rows; i++) {
                     populationMsg = new PopulationMsg();
                     populationMsg.setSaasName(replaceBlank(getCellCont(sheet, i, 0)));
                     populationMsg.setYear(replaceBlank(getCellCont(sheet, i, 1)));
@@ -48,16 +50,15 @@ public class PopulationMsgReader extends AExcelReader {
                         correctLs.add(populationMsg);
                     }
                 }
+                j++;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("模板不正确，请下载新的模板，并按照示例正确填写后上传！");
+            throw e;
         } finally {
             if (rwb != null) {
                 rwb.close();
             }
         }
     }
-
-
 }

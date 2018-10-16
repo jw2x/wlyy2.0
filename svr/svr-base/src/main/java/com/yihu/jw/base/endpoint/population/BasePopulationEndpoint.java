@@ -1,7 +1,6 @@
 package com.yihu.jw.base.endpoint.population;
 
-import com.yihu.jw.base.endpoint.common.excel.ObjectFileRW;
-import com.yihu.jw.base.endpoint.common.excel.TemPath;
+import com.yihu.jw.base.endpoint.common.excel.AExcelReader;
 import com.yihu.jw.base.endpoint.common.populationBatchImport.*;
 import com.yihu.jw.base.service.area.BaseCityService;
 import com.yihu.jw.base.service.area.BaseProvinceService;
@@ -19,7 +18,6 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
-import com.yihu.jw.util.excel.AExcelReader;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -31,10 +29,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.*;
 
 /**
@@ -275,7 +270,7 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         try {
             request.setCharacterEncoding("UTF-8");
             AExcelReader excelReader = new PopulationMsgReader();
-            excelReader.read(file.getInputStream());
+            excelReader.read(file);
             //验证未通过
             List<PopulationMsg> errorLs = excelReader.getErrorLs();
             List<PopulationMsg> correctLs = excelReader.getCorrectLs();
