@@ -45,10 +45,14 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建-基本信息")
     public Envelop create (
-            @ApiParam(name = "saasDO", value = "Json数据", required = true)
-            @RequestParam(value = "saasDO") SaasDO saasDO,
-            @ApiParam(name = "userDO", value = "Json数据", required = true)
-            @RequestParam(value = "userDO") UserDO userDO) throws Exception {
+            @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
+            @RequestParam String jsonSaas) throws Exception {
+        SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
+        UserDO userDO = new UserDO();
+        userDO.setEmail(saasDO.getEmail());
+        userDO.setMobile(saasDO.getMobile());
+        userDO.setName(saasDO.getManagerName());
+        userDO.setUsername(userDO.getEmail());
         if (saasService.search("name=" + userDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
@@ -58,7 +62,6 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         if (userService.search("username=" + userDO.getEmail()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
         }
-        userDO.setUsername(userDO.getEmail());
         saasService.save(saasDO, userDO);
         return success("创建成功");
     }

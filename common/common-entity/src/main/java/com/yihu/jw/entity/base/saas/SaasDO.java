@@ -52,6 +52,8 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
     List<BaseOrgDO> orgList;
     //业务模块
     List<SaasModuleDO> saasModuleList;
+    //主题风格
+    List<SaasThemeDO> saasThemeList;
 
 	@Column(name = "name", nullable = false, length = 200)
 	public String getName() {
@@ -204,5 +206,14 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public void setThemeColor(String themeColor) {
         this.themeColor = themeColor;
+    }
+
+    @Transient
+    public List<SaasThemeDO> getSaasThemeList() {
+        return saasThemeList;
+    }
+
+    public void setSaasThemeList(List<SaasThemeDO> saasThemeList) {
+        this.saasThemeList = saasThemeList;
     }
 }
