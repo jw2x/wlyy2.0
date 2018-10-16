@@ -401,6 +401,9 @@ public class BaseRequestMapping {
     public static class BasePopulation extends Basic {
         public static final String PREFIX  = "/basePopulation";
         public static final String CHECK_POPULATION_IS_EXIST  = "/checkBasePopulationIsExist";
+        public static final String POPULATION_BATCH_IMPORT  = "/basePopulationBatchImport";
+        public static final String POPULATION_BATCH_ERROR_DOENLOAD  = "/basePopulationBatchErrorDownLoad";
+
     }
 
     /**
