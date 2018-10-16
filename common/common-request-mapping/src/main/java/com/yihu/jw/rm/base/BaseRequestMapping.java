@@ -32,6 +32,18 @@ public class BaseRequestMapping {
     }
 
     /**
+     * 注册saas
+     */
+    public static class RegisterSaas extends Basic {
+        public static final String PREFIX  = "/open/saas";
+        public static final String REGISTER  = "/register";
+        public static final String SEND_EMAIL  = "/sendEmail";
+        public static final String NAME_IS_EXIST  = "/nameIsExist";
+        public static final String SAAS_TYPE_DICT  = "/saasTypeDict";
+
+    }
+
+    /**
      * SAAS默认模块
      */
     public static class SaasDefaultModuleFunction extends Basic {
@@ -178,6 +190,7 @@ public class BaseRequestMapping {
      */
     public static class ErrorCode extends Basic {
         public static final String PREFIX  = "/error";
+        public static final String INIT_WITHOUT_CONDITION  = "/initWithoutCondition";
     }
 
     /**
@@ -199,7 +212,7 @@ public class BaseRequestMapping {
      * 文件上传
      */
     public static class FileUpload extends Basic {
-        public static final String PREFIX  = "/fileUpload";
+        public static final String PREFIX  = "/open/fileUpload";
         public static final String UPLOAD_STREAM_IMG  = "/upload_stream_img";
         public static final String UPLOAD_STREAM  = "/upload_stream";
         public static final String UPLOAD_STRING  = "/upload_string";

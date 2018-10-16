@@ -16,6 +16,8 @@ import com.yihu.jw.entity.base.module.SaasModuleDO;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.entity.base.role.RoleDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
+import com.yihu.jw.entity.base.saas.SaasThemeDO;
+import com.yihu.jw.entity.base.saas.SaasThemeExtendDO;
 import com.yihu.jw.entity.base.system.SystemDictEntryDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
@@ -82,17 +84,11 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
      */
     private final String roleCode = "saasAdmin";
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public SaasDO save(SaasDO saas, UserDO user) {
-        //初始化租户信息
-        String saasId = getCode();
-        String userId = getCode();
-        saas.setId(saasId);
-        saas.setManager(userId);
         //初始化角色
         RoleDO roleDO = roleDao.findByCode(roleCode);
         //初始化租户管理员
-        user.setId(userId);
         user.setEnabled(true);
         user.setLocked(false);
         user.setSalt(randomString(5));
@@ -104,12 +100,21 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
         //初始化管理员角色
         UserRoleDO userRoleDO = new UserRoleDO();
-        userRoleDO.setUserId(user.getId());
         userRoleDO.setRoleId(roleDO.getId());
         List<BaseOrgDO> orgDOList = saas.getOrgList();
-        orgDOList.forEach(org->{
-            org.setSaasid(saasId);
-        });
+        userDao.save(user);
+        userRoleDO.setUserId(user.getId());
+        userRoleDao.save(userRoleDO);
+        saas.setManager(user.getId());
+        saas.setStatus(SaasDO.Status.auditWait);
+        saas = saasDao.save(saas);
+        String saasId = saas.getId();
+
+        if(orgDOList!=null&&orgDOList.size()>0){
+            orgDOList.forEach(org->{
+                org.setSaasid(saasId);
+            });
+        }
 
         //字典配置（由于需要支持租户对字典的crud，目前考虑直接复制一套字典给租户单独使用）
 //        List<SystemDictDO> systemDictDOList = systemDictDao.findBySaasId(defaultSaasId);
@@ -216,8 +221,6 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         });
 
         //保存数据
-        saas.setStatus(SaasDO.Status.auditWait);
-        saas = saasDao.save(saas);
 //        systemDictDao.save(dictDOList);
         systemDictEntryDao.save(dictEntryDOList);
         dictMedicineDao.save(medicineDOList);
@@ -227,9 +230,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         dictDiseaseDao.save(diseaseDOList);
         dictHospitalDeptDao.save(hospitalDeptDOList);
         baseOrgDao.save(orgDOList);
-        userDao.save(user);
-        userRoleDao.save(userRoleDO);
-//        roleModuleFunctionDao.save(roleModuleFunctionDOS);
+
         return saas;
     }
 
@@ -237,7 +238,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
      * 系统配置
      * @param saasDO
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveSystemConfig(SaasDO saasDO){
 
         SaasDO oldSaas = saasDao.findById(saasDO.getId());
@@ -256,8 +257,27 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
      * 主题风格
      * @param saasDO
      */
+    @Transactional(rollbackFor = Exception.class)
     public void createThemeConfig(SaasDO saasDO){
+        SaasDO oldSaas = saasDao.findById(saasDO.getId());
+        oldSaas.setThemeColor(saasDO.getThemeColor());
+        List<SaasThemeDO> themeDOList = saasDO.getSaasThemeList();
+        List<SaasThemeExtendDO> themeExtendDOList = new ArrayList<>(16);
+        themeDOList.forEach(saasThemeDO -> {
+            String themeId = getCode();
+            saasThemeDO.setSaasId(saasDO.getId());
+            saasThemeDO.setId(themeId);
+            if(saasThemeDO.getThemeExtendList()!=null&&saasThemeDO.getThemeExtendList().size()>0){
+                saasThemeDO.getThemeExtendList().forEach(saasThemeExtendDO -> {
+                    saasThemeExtendDO.setThemeId(themeId);
+                    themeExtendDOList.add(saasThemeExtendDO);
+                });
+            }
+        });
 
+        saasDao.save(oldSaas);
+        saasThemeDao.save(themeDOList);
+        saasThemeExtendDao.save(themeExtendDOList);
     }
 
     @Transactional

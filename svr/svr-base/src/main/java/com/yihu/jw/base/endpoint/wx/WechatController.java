@@ -99,11 +99,13 @@ public class WechatController extends EnvelopRestEndpoint {
     @ApiOperation(value = "获取图文素材分组", notes = "获取图文素材分组")
     public MixEnvelop<WxGraphicSceneVO,WxGraphicSceneVO> findWechatImgGroup(@ApiParam(name = "wechatId", value = "微信ID")
                                                                             @RequestParam(value = "wechatId", required = true)String wechatId,
+                                                                            @ApiParam(name = "scene", value = "分组名称（场景值）")
+                                                                            @RequestParam(value = "scene", required = false)String scene,
                                                                             @ApiParam(name = "page", value = "第几页")
                                                                             @RequestParam(value = "page", required = false)Integer page,
                                                                             @ApiParam(name = "size", value = "每页条数")
                                                                             @RequestParam(value = "size", required = false)Integer size) {
-        return wechatService.findWechatImgGroup(wechatId,page,size);
+        return wechatService.findWechatImgGroup(wechatId,scene,page,size);
     }
 
     @PostMapping(value = BaseRequestMapping.WeChat.createImgGroup)
