@@ -18,6 +18,8 @@ public class SystemDictEntryDO extends UuidIdentityEntity {
 	private String dictCode;
 	//编码
 	private String code;
+	//租户id
+	private String saasId;
 	//拼音码
 	private String pyCode;
 	//值
@@ -34,6 +36,15 @@ public class SystemDictEntryDO extends UuidIdentityEntity {
 
 	public void setDictCode(String dictCode) {
 		this.dictCode = dictCode;
+	}
+
+	@Column(name = "saasId")
+	public String getSaasId() {
+		return saasId;
+	}
+
+	public void setSaasId(String saasId) {
+		this.saasId = saasId;
 	}
 
 	@Column(name = "code", nullable = false, length = 50)

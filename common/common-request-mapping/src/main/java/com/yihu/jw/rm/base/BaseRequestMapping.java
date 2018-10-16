@@ -26,6 +26,8 @@ public class BaseRequestMapping {
      */
     public static class Saas extends Basic {
         public static final String PREFIX  = "/saas";
+        public static final String SYSTEM_CONFIGURATION  = "/system_configuration";
+        public static final String THEME_STYLE  = "/theme_style";
         public static final String AUDIT  = "/audit";
     }
 

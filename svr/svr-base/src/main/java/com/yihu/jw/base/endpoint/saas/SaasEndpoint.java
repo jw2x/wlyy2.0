@@ -1,11 +1,10 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.saas.SaasService;
+import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
 import com.yihu.jw.entity.base.saas.SaasDO;
-import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
@@ -44,7 +43,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     private ErrorCodeUtil errorCodeUtil;
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建")
+    @ApiOperation(value = "创建-基本信息")
     public Envelop create (
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
             @RequestParam(value = "saasDO") SaasDO saasDO,
@@ -63,6 +62,27 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         saasService.save(saasDO, userDO);
         return success("创建成功");
     }
+
+    @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建-系统配置")
+    public Envelop createSystemConfig (
+            @ApiParam(name = "saasDO", value = "Json数据", required = true)
+            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
+
+        saasService.saveSystemConfig(saasDO);
+        return success("创建成功");
+    }
+
+    @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建-主题风格")
+    public Envelop createThemeConfig (
+            @ApiParam(name = "saasDO", value = "Json数据", required = true)
+            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
+
+        saasService.createThemeConfig(saasDO);
+        return success("创建成功");
+    }
+
 
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
     @ApiOperation(value = "删除")

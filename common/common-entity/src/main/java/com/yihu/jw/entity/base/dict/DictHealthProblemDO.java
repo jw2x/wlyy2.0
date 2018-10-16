@@ -38,11 +38,6 @@ public class DictHealthProblemDO extends IntegerIdentityEntity {
     private String chronicFlag;
 
     /**
-     * 是否传染病 1-是，0-否
-     */
-    private String infectiousFlag;
-
-    /**
 	 * 描述
 	 */
 	private String description;

@@ -22,6 +22,11 @@ public class DictMedicineDO extends IntegerIdentityEntity {
 	private String code;
 
     /**
+     * saasId
+     */
+    private String saasId;
+
+    /**
 	 * 药品中文名
 	 */
 	private String name;
@@ -80,7 +85,16 @@ public class DictMedicineDO extends IntegerIdentityEntity {
         this.code = code;
     }
 
-	@Column(name = "name")
+    @Column(name = "saas_id")
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
+
+    @Column(name = "name")
     public String getName() {
         return name;
     }
