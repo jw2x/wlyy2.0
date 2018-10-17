@@ -44,7 +44,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private SaasTypeModuleService saasTypeModuleService;
 
-    @PostMapping(value = BaseRequestMapping.SaasTypeDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasTypeDict.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<SaasTypeDictVO> create(
             @ApiParam(name = "saasTypeDictJson", value = "saas类型Json数据")
@@ -53,6 +53,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "saasTypeDefaultModuleIds", required = true) String saasTypeDefaultModuleIds) throws Exception {
         SaasTypeDictDO saasTypeDictDO = toEntity(saasTypeDictJson, SaasTypeDictDO.class);
         //名称重复判断
+
         List<SaasTypeDictDO> saasTypeDictDOList = saasTypeDictService.findByField("name", saasTypeDictDO.getName());
         if (null != saasTypeDictDOList && saasTypeDictDOList.size() > 0) {
             return failed("租户类型名称重复！", ObjEnvelop.class);
@@ -62,7 +63,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     }
 
 
-    @PostMapping(value = BaseRequestMapping.SaasTypeDict.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasTypeDict.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<SaasTypeDictVO> update(
             @ApiParam(name = "saasTypeDictJson", value = "saas类型Json数据")
