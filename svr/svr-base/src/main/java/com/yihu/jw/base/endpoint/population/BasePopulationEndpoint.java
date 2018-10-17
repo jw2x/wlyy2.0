@@ -209,6 +209,8 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
                 }
             }
         }
+        basePopulation.setDmNum(null == basePopulation.getDmNum() ? 0 : basePopulation.getDmNum());
+        basePopulation.setHbpNum(null == basePopulation.getHbpNum() ? 0 : basePopulation.getHbpNum());
         //更新慢病总人数
         basePopulation.setNcdNum(basePopulation.getHbpNum() + basePopulation.getDmNum());
         return basePopulation;

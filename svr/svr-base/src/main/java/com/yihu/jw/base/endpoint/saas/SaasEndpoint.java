@@ -23,6 +23,7 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.util.StringUtils;
@@ -183,51 +184,59 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         }
         saasDO.setStatus(status);
         saasDO.setAuditFailedReason(auditFailedReason);
-        saasDO= send(saasDO);
-        return success("审核完成",saasDO);
+        return send(saasDO);
     }
 
     @GetMapping("/sendEmail")
     @ApiOperation(value = "邮件发送")
-    public SaasDO send(SaasDO saasDO) throws Exception {
-        SaasDO.Status status = saasDO.getStatus();
-        //用户信息初始化
-        UserDO userDO = new UserDO();
-        userDO.setEmail(saasDO.getEmail());
-        userDO.setMobile(saasDO.getMobile());
-        userDO.setName(saasDO.getManagerName());
-        userDO.setUsername(userDO.getEmail());
-         String  password = userDO.getMobile().substring(0, 6);
-        BaseEmailTemplateConfigDO baseEmailTemplateConfigDO = baseEmailTemplateConfigService.findByCode(status.toString());
-        //建立邮件消息
-        SimpleMailMessage mainMessage = new SimpleMailMessage();
-        //发送者
-        mainMessage.setFrom(username);
-        //接收者
-        mainMessage.setTo("763558454@qq.com");
-//        mainMessage.setTo(saasDO.getEmail());
-        //发送的标题
-        mainMessage.setSubject(baseEmailTemplateConfigDO.getTemplateName());
-        //发送的内容
-        StringBuffer content = new StringBuffer();
-        content.append(baseEmailTemplateConfigDO.getFirst() + "\n").append(baseEmailTemplateConfigDO.getKeyword1() + "\n");
-        content.append(baseEmailTemplateConfigDO.getKeyword2() + "\n");
-        if (status.equals(SaasDO.Status.auditPassed)) {
-            //账号
-            content.append(baseEmailTemplateConfigDO.getKeyword3()+userDO.getMobile() + "\n");
-            //密码
-            content.append(baseEmailTemplateConfigDO.getKeyword4()+password + "\n");
-        } else if (status.equals(SaasDO.Status.auditNotPassed)) {
-            //审核未通过的原因
-            content.append(saasDO.getAuditFailedReason() + "\n");
+    public ObjEnvelop<SaasDO> send(SaasDO saasDO) {
+
+        try {
+            SaasDO.Status status = saasDO.getStatus();
+            //用户信息初始化
+            UserDO userDO = new UserDO();
+            userDO.setEmail(saasDO.getEmail());
+            userDO.setMobile(saasDO.getMobile());
+            userDO.setName(saasDO.getManagerName());
+            userDO.setUsername(userDO.getEmail());
+            String password = userDO.getMobile().substring(0, 6);
+            BaseEmailTemplateConfigDO baseEmailTemplateConfigDO = baseEmailTemplateConfigService.findByCode(status.name());
+            if (null == baseEmailTemplateConfigDO) {
+                failed(status.name() + "邮件模板不存在！");
+            }
+            //建立邮件消息
+            SimpleMailMessage mainMessage = new SimpleMailMessage();
+            //发送者
+            mainMessage.setFrom(username);
+            //接收者
+//            mainMessage.setTo("763558454@qq.com");
+            mainMessage.setTo(saasDO.getEmail());
+            //发送的标题
+            mainMessage.setSubject(baseEmailTemplateConfigDO.getTemplateName());
+            //发送的内容
+            StringBuffer content = new StringBuffer();
+            content.append(baseEmailTemplateConfigDO.getFirst() + "\n").append(baseEmailTemplateConfigDO.getKeyword1() + "\n");
+            content.append(baseEmailTemplateConfigDO.getKeyword2() + "\n");
+            if (status.equals(SaasDO.Status.auditPassed)) {
+                //账号
+                content.append(baseEmailTemplateConfigDO.getKeyword3() + userDO.getMobile() + "\n");
+                //密码
+                content.append(baseEmailTemplateConfigDO.getKeyword4() + password + "\n");
+            } else if (status.equals(SaasDO.Status.auditNotPassed)) {
+                //审核未通过的原因
+                content.append(saasDO.getAuditFailedReason() + "\n");
+            }
+            content.append(baseEmailTemplateConfigDO.getKeyword5() + baseEmailTemplateConfigDO.getUrl() + "\n");
+            content.append(baseEmailTemplateConfigDO.getRemark());
+            mainMessage.setText(content.toString());
+            jms.send(mainMessage);
+            //发送成功后，初始化租户信息
+            saasDO = saasService.saasAudit(saasDO, userDO);
+        } catch (MailException e) {
+            e.printStackTrace();
+            return success("审核完成", saasDO);
         }
-        content.append(baseEmailTemplateConfigDO.getKeyword5() + baseEmailTemplateConfigDO.getUrl() + "\n");
-        content.append(baseEmailTemplateConfigDO.getRemark());
-        mainMessage.setText(content.toString());
-        jms.send(mainMessage);
-        //发送成功后，初始化租户信息
-//        saasDO = saasService.saasAudit(saasDO, userDO);
-        return saasDO;
+        return success("审核完成", saasDO);
     }
 
 }
