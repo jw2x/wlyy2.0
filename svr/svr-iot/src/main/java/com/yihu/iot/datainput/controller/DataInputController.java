@@ -44,7 +44,7 @@ public class DataInputController {
         try {
             str = dataInputService.inputBodySignsData(jsonData);
             if (!str.equals("success")) {
-                return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_fail, str);
+                return MixEnvelop.getError(str);
             }
         } catch (ApiException e) {
             return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
