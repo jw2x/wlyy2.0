@@ -26,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -57,31 +56,27 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建-基本信息")
-    public Envelop create(
+    public Envelop create (
             @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
             @RequestParam String jsonSaas) throws Exception {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
-        UserDO userDO = new UserDO();
-        userDO.setEmail(saasDO.getEmail());
-        userDO.setMobile(saasDO.getMobile());
-        userDO.setName(saasDO.getManagerName());
-        userDO.setUsername(userDO.getEmail());
         if (saasService.search("name=" + saasDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
-        if (userService.search("mobile=" + userDO.getMobile()).size() > 0) {
+        if (userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
         }
-        if (userService.search("username=" + userDO.getEmail()).size() > 0) {
+        if (userService.search("username=" + saasDO.getEmail()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
         }
-        saasService.save(saasDO, userDO);
-        return success("创建成功");
+        saasService.create(saasDO);
+        saasDO.setStatus(SaasDO.Status.auditPassed);
+        return send(saasDO);
     }
 
     @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建-系统配置")
-    public Envelop createSystemConfig(
+    public Envelop createSystemConfig (
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
             @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
 
@@ -91,7 +86,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建-主题风格")
-    public Envelop createThemeConfig(
+    public Envelop createThemeConfig (
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
             @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
 
@@ -109,22 +104,46 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
+    @PostMapping(value = BaseRequestMapping.Saas.STATUS)
+    @ApiOperation(value = "修改状态")
+    public Envelop status(
+            @ApiParam(name = "id", value = "saas类型Json数据")
+            @RequestParam(value = "id", required = true) String id,
+            @ApiParam(name = "status", value = "status")
+            @RequestParam(value = "status", required = true) SaasDO.Status status) throws Exception {
+        saasService.updateStatus(id, status);
+        return success("修改成功");
+    }
+
     @PostMapping(value = BaseRequestMapping.Saas.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public Envelop update(
-            @ApiParam(name = "json", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+    public Envelop update (
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam String jsonData) throws Exception {
         SaasDO saasDO = toEntity(jsonData, SaasDO.class);
         if (null == saasDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), Envelop.class);
         }
-        saasDO = saasService.save(saasDO);
-        return success(saasDO);
+
+        SaasDO oldSaas = saasService.findById(saasDO.getId());
+        UserDO userDO = userService.findById(oldSaas.getManager());
+
+        if (!oldSaas.getName().equals(saasDO.getName())&&saasService.search("name=" + saasDO.getName()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
+        }
+        if (!userDO.getMobile().equals(saasDO.getMobile())&&userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+        }
+        if (!userDO.getEmail().equals(saasDO.getEmail())&&userService.search("username=" + saasDO.getEmail()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+        }
+        saasService.updateSaas(saasDO,oldSaas,userDO);
+        return success("修改成功");
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SaasVO> page(
+    public PageEnvelop<SaasVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -136,13 +155,13 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         List<SaasDO> saasDOS = saasService.search(fields, filters, sorts, page, size);
-        int count = (int) saasService.getCount(filters);
+        int count = (int)saasService.getCount(filters);
         return success(saasDOS, count, page, size, SaasVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SaasVO> list(
+    public ListEnvelop<SaasVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")

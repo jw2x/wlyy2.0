@@ -15,13 +15,21 @@ import java.util.Date;
 @Table(name = "wx_graphic_message")
 public class WxGraphicMessageDO extends UuidIdentityEntityWithOperator implements java.io.Serializable {
 
-    private String code;
+    private String wechatId;//微信id
     private String title;//标题
     private String description;//描述
     private String url;//图文消息url值
     private String picUrl;//图片地址
-    private String remark;//备注
     private Integer status;  //状态 -1删除 0 冻结 1可用
+
+    @Column(name = "wechat_id", length = 50)
+    public String getWechatId() {
+        return wechatId;
+    }
+
+    public void setWechatId(String wechatId) {
+        this.wechatId = wechatId;
+    }
 
     @Column(name = "title", length = 200)
     public String getTitle() {
@@ -59,21 +67,7 @@ public class WxGraphicMessageDO extends UuidIdentityEntityWithOperator implement
         this.picUrl = picUrl;
     }
 
-
-    @Column(name = "remark", length = 1000)
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-
-    @Column(name = "remark", length = 1000)
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
+    @Column(name = "status", length = 2000)
     public Integer getStatus() {
         return status;
     }
@@ -82,12 +76,4 @@ public class WxGraphicMessageDO extends UuidIdentityEntityWithOperator implement
         this.status = status;
     }
 
-    @Column(name = "code", length = 50)
-    public String getCode() {
-        return code;
-    }
-    @Column(name = "code", length = 50)
-    public void setCode(String code) {
-        this.code = code;
-    }
 }

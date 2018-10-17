@@ -19,6 +19,7 @@ public class BaseRequestMapping {
         public static final String PAGE = "/page";
         public static final String LIST = "/list";
         public static final String FINDBYID = "/findById";
+        public static final String STATUS = "/status";
     }
 
     /**
@@ -243,10 +244,12 @@ public class BaseRequestMapping {
 
         public static final String findWechatImgGroup ="/findWechatImgGroup";
         public static final String createImgGroup ="/createImgGroup";
+        public static final String findImgGroupExist ="/findImgGroupExist";
         public static final String updateImgGroup ="/updateImgGroup";
         public static final String deleteImgGroup ="/deleteImgGroup";
         public static final String saveImg ="/saveImg";
         public static final String findImg ="/findImg";
+        public static final String findGraphicMessageSingle ="/findGraphicMessageSingle";
         public static final String saveImgGroup ="/saveImgGroup";
 
         public static final String saveWxReplyScene ="/saveWxReplyScene";
@@ -396,6 +399,7 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/baseOrg";
         public static final String baseInfoList  = "/baseInfoList";
         public static final String check_code  = "/check_code";
+        public static final String getOrgAreaTree  = "/getOrgAreaTree";
     }
 
 

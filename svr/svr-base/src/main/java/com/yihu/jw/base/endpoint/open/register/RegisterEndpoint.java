@@ -1,12 +1,13 @@
 package com.yihu.jw.base.endpoint.open.register;
 
+import com.yihu.jw.base.dao.saas.BaseEmailTemplateConfigDao;
 import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
+import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
-import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
 import com.yihu.jw.restmodel.base.saas.SaasTypeDictVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -49,6 +50,8 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
     private StringRedisTemplate redisTemplate;
     @Autowired
     private SaasTypeDictService saasTypeDictService;
+    @Autowired
+    private BaseEmailTemplateConfigDao emailTemplateConfigDao;
 
     /**
      * 验证码redis前缀
@@ -63,13 +66,8 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "captcha", value = "验证码", required = true)
             @RequestParam String captcha) throws Exception {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
-        UserDO userDO = new UserDO();
-        userDO.setEmail(saasDO.getEmail());
-        userDO.setMobile(saasDO.getMobile());
-        userDO.setName(saasDO.getManagerName());
-        userDO.setUsername(userDO.getEmail());
 
-        String redisKey = redisPrefix + userDO.getEmail();
+        String redisKey = redisPrefix + saasDO.getEmail();
         String verificationCode = redisTemplate.opsForValue().get(redisKey);
         if(!captcha.equals(verificationCode)){
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.CAPTCHA_IS_ERROR), Envelop.class);
@@ -77,16 +75,16 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
         if (saasService.search("name=" + saasDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
-        if (userService.search("mobile=" + userDO.getMobile()).size() > 0) {
+        if (userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
         }
-        if (userService.search("username=" + userDO.getEmail()).size() > 0) {
+        if (userService.search("username=" + saasDO.getEmail()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
         }
-        saasService.save(saasDO, userDO);
+        saasService.create(saasDO);
         //注册成功后 吧key删除
         redisTemplate.delete(redisKey);
-        return success("注册成功");
+        return success("注册申请成功");
     }
 
     @GetMapping(value = BaseRequestMapping.RegisterSaas.SAAS_TYPE_DICT)
@@ -118,12 +116,26 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
         //接收者
         mainMessage.setTo(email);
         //发送的标题
-        mainMessage.setSubject("租户注册-验证码");
-        //发送的内容
-        StringBuilder content =  new StringBuilder("您好！\n感谢您注册健康之路城市i健康。\n");
+        //查找发送模板
+        BaseEmailTemplateConfigDO emailTemplateConfigDO = emailTemplateConfigDao.findByTemplateName("租户注册-验证码");
+        StringBuilder content = null;
         String captcha = String.valueOf(Math.random()).substring(2, 8);
-        content.append("您的验证码是：").append(captcha);
-        content.append("。 (验证码10分钟内有效)");
+        if(emailTemplateConfigDO == null){
+            //发送的内容
+            content =  new StringBuilder("您好！\n感谢您注册健康之路城市i健康。\n");
+            content.append("您的验证码是：").append(captcha);
+            content.append("。 (验证码10分钟内有效)");
+        }else {
+            //发送的内容
+            content =  new StringBuilder(emailTemplateConfigDO.getFirst());
+            content.append("\n").append(emailTemplateConfigDO.getKeyword1()).append("\n")
+                    .append(emailTemplateConfigDO.getKeyword2()).append(captcha)
+                    .append(emailTemplateConfigDO.getKeyword3()).append("\n")
+                    .append(emailTemplateConfigDO.getKeyword5()).append(emailTemplateConfigDO.getUrl())
+                    .append("\n").append("\n").append(emailTemplateConfigDO.getRemark());
+        }
+        mainMessage.setSubject("租户注册-验证码");
+
         mainMessage.setText(content.toString());
         jms.send(mainMessage);
         redisTemplate.opsForValue().set(redisPrefix + email, captcha, 10, TimeUnit.MINUTES);
