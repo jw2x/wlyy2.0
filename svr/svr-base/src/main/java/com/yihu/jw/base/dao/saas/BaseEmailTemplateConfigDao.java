@@ -12,4 +12,5 @@ public interface BaseEmailTemplateConfigDao extends PagingAndSortingRepository<B
     BaseEmailTemplateConfigDO findById(String id);
 
     BaseEmailTemplateConfigDO findByTemplateName(String templateName);
+    BaseEmailTemplateConfigDO findByCode(String code);
 }

@@ -16,6 +16,8 @@ public class BaseEmailTemplateConfigDO extends UuidIdentityEntityWithOperator {
     private String templateName; // T '自定义模板名称
     @Column(name = "first")
     private String first; //
+    @Column(name = "code")
+    private String code; //
     @Column(name = "url")
     private String url; // 转链接
     @Column(name = "remark")
@@ -131,5 +133,13 @@ public class BaseEmailTemplateConfigDO extends UuidIdentityEntityWithOperator {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

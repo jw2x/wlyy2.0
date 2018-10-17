@@ -63,12 +63,12 @@ public class BasePopulationService extends BaseJpaService<BasePopulationDO, Base
             basePopulationDO.setRegisPopulationNum(populationMsg.getRegisPopulationNum());
             basePopulationDO.setPopulationNum(populationMsg.getPopulationNum());
             //糖尿病人数
-            basePopulationDO.setDmNum(populationMsg.getDmNum());
+            basePopulationDO.setDmNum(null == populationMsg.getDmNum() ? 0 : populationMsg.getDmNum());
             //高血压人数
-            basePopulationDO.setHbpNum(populationMsg.getHbpNum());
+            basePopulationDO.setHbpNum(null == populationMsg.getHbpNum() ? 0 : populationMsg.getHbpNum());
             basePopulationDO.setTaskNum(populationMsg.getTaskNum());
             //慢病人数
-            basePopulationDO.setNcdNum(populationMsg.getHbpNum() + populationMsg.getDmNum());
+            basePopulationDO.setNcdNum(basePopulationDO.getHbpNum() + basePopulationDO.getDmNum());
             corrects.add(basePopulationDO);
             if (corrects.size() > 100) {
                 basePopulationDao.save(corrects);

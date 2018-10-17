@@ -60,12 +60,11 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
     static final String parentFile = "population";
 
 
-    @PostMapping(value = BaseRequestMapping.BasePopulation.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BasePopulation.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<BasePopulationVO> create(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
-        BasePopulationDO basePopulation = toEntity(jsonData, BasePopulationDO.class);
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam(value = "jsonData") String jsonData) throws Exception {BasePopulationDO basePopulation = toEntity(jsonData, BasePopulationDO.class);
         //根据saasid获取所属机构的行政区划
         if (StringUtils.isNotBlank(basePopulation.getSaasId())) {
             basePopulation = updateBasePopulation(basePopulation);
@@ -73,7 +72,7 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             return failed("租户id不能为空！", ObjEnvelop.class);
         }
         Boolean bo = checkNameAndYear(basePopulation.getSaasId(), basePopulation.getYear());
-        if (!bo) {
+        if (bo) {
             return failed("已添加" + basePopulation.getYear() + basePopulation.getSaasName() + "的基础人口信息，请直接修改即可！", ObjEnvelop.class);
         }
         basePopulation = basePopulationService.save(basePopulation);
@@ -89,11 +88,11 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.BasePopulation.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BasePopulation.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<BasePopulationVO> update(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam(value = "jsonData") String jsonData) throws Exception {
         BasePopulationDO basePopulation = toEntity(jsonData, BasePopulationDO.class);
         if (null == basePopulation.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);
@@ -105,7 +104,7 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             return failed("租户id不能为空！", ObjEnvelop.class);
         }
         Boolean bo = checkNameAndYear(basePopulation.getSaasId(), basePopulation.getYear());
-        if (!bo) {
+        if (bo) {
             return failed("已添加" + basePopulation.getYear() + basePopulation.getSaasName() + "的基础人口信息，请直接修改即可！", ObjEnvelop.class);
         }
         basePopulation = basePopulationService.save(basePopulation);
@@ -132,13 +131,13 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             s.append("saasName?" + saasName + " g1;");
         }
         if (StringUtils.isNotBlank(provinceCode)) {
-            s.append("provinceCode=" + provinceCode);
+            s.append("provinceCode=" + provinceCode + ";");
         }
         if (StringUtils.isNotBlank(cityCode)) {
-            s.append("cityCode=" + cityCode);
+            s.append("cityCode=" + cityCode + ";");
         }
         if (StringUtils.isNotBlank(year)) {
-            s.append("year=" + year);
+            s.append("year=" + year + ";");
         }
         //时间（最近时间排最前）>租户创建时间（最新创建租户排最前）
         String sorts = "-createTime,-saasCreateTime";
@@ -210,6 +209,8 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
                 }
             }
         }
+        basePopulation.setDmNum(null == basePopulation.getDmNum() ? 0 : basePopulation.getDmNum());
+        basePopulation.setHbpNum(null == basePopulation.getHbpNum() ? 0 : basePopulation.getHbpNum());
         //更新慢病总人数
         basePopulation.setNcdNum(basePopulation.getHbpNum() + basePopulation.getDmNum());
         return basePopulation;
@@ -274,46 +275,53 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             //验证未通过
             List<PopulationMsg> errorLs = excelReader.getErrorLs();
             List<PopulationMsg> correctLs = excelReader.getCorrectLs();
+            if(errorLs.size()>0){
+                return failed("格式有误，导入失败！");
+            }
             //获取所有租户+年份的基础人口信息
-            Set<String> populationNameAndYear =new HashSet<String>( basePopulationService.getFacilityCodeByServerType());
+            Set<String> populationNameAndYear = new HashSet<String>(basePopulationService.getFacilityCodeByServerType());
             PopulationMsg model;
             List saveLs = new ArrayList<>();
             if (correctLs.size() > 0) {
                 for (int i = 0; i < correctLs.size(); i++) {
                     model = correctLs.get(i);
-                    Map<Boolean,PopulationMsg> map=validate(model,populationNameAndYear);
-                    if (null==map.get(true)) {
-                        errorLs.add(model);
+                    Map<Boolean, PopulationMsg> map = validate(model, populationNameAndYear);
+                    if (null == map.get(true)) {
+//                        errorLs.add(model);
+                        return failed("格式有误，导入失败！");
                     } else {
                         saveLs.add(model);
                     }
                 }
+//                if(errorLs.size()>0){
+//                    return failed("格式有误，导入失败！");
+//                }
                 Map<String, Object> result = basePopulationService.batchInsertPopulation(saveLs);
-                result.put("errorLs",errorLs);
+                result.put("errorLs", errorLs);
                 return success("导入成功!", result);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return failed("导入异常,请检查导入文件格式"+e.getMessage());
+            return failed("导入异常,请检查导入文件格式" + e.getMessage());
         }
         return failed("导入失败");
     }
 
-    private Map<Boolean,PopulationMsg> validate(PopulationMsg model, Set<String> populationNameAndYear) throws Exception{
-        Map<Boolean,PopulationMsg> msgMap =new HashMap<>();
+    private Map<Boolean, PopulationMsg> validate(PopulationMsg model, Set<String> populationNameAndYear) throws Exception {
+        Map<Boolean, PopulationMsg> msgMap = new HashMap<>();
         Boolean rs = true;
         //验证租户是否存在
         SaasDO saasDO = saasService.findByName(model.getSaasName());
-        String nameAndYear=model.getSaasName()+model.getYear();
+        String nameAndYear = model.getSaasName() + model.getYear();
         //验证租户+年份的人口基数是否存在
         if (populationNameAndYear.contains(nameAndYear)) {
-            model.addErrorMsg("saasName", "已添加"+model.getYear()+model.getSaasName()+"的基础人口信息，请直接修改即可！");
+            model.addErrorMsg("saasName", "已添加" + model.getYear() + model.getSaasName() + "的基础人口信息，请直接修改即可！");
             rs = false;
         }
-        if (null==saasDO) {
+        if (null == saasDO) {
             model.addErrorMsg("saasName", "租户不存在，请核对！");
             rs = false;
-        }else {
+        } else {
             model.setSaasId(saasDO.getId());
             model.setSaasCreateTime(saasDO.getCreateTime());
             String areaCode = saasDO.getAreaNumber();
@@ -352,11 +360,9 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
                 }
             }
         }
-        msgMap.put(rs,model);
+        msgMap.put(rs, model);
         return msgMap;
     }
-
-
 
 
 }

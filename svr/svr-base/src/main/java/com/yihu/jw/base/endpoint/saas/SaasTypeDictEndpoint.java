@@ -44,7 +44,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private SaasTypeModuleService saasTypeModuleService;
 
-    @PostMapping(value = BaseRequestMapping.SaasTypeDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasTypeDict.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<SaasTypeDictVO> create(
             @ApiParam(name = "saasTypeDictJson", value = "saas类型Json数据")
@@ -53,6 +53,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "saasTypeDefaultModuleIds", required = true) String saasTypeDefaultModuleIds) throws Exception {
         SaasTypeDictDO saasTypeDictDO = toEntity(saasTypeDictJson, SaasTypeDictDO.class);
         //名称重复判断
+
         List<SaasTypeDictDO> saasTypeDictDOList = saasTypeDictService.findByField("name", saasTypeDictDO.getName());
         if (null != saasTypeDictDOList && saasTypeDictDOList.size() > 0) {
             return failed("租户类型名称重复！", ObjEnvelop.class);
@@ -62,7 +63,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
     }
 
 
-    @PostMapping(value = BaseRequestMapping.SaasTypeDict.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasTypeDict.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<SaasTypeDictVO> update(
             @ApiParam(name = "saasTypeDictJson", value = "saas类型Json数据")
@@ -157,11 +158,14 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "saasTypeDictId", value = "租户类型id")
             @RequestParam(value = "saasTypeDictId", required = false) String saasTypeDictId) throws Exception {
         //根据租户类型获取关联的模块
-        String fis = "status=1;saasTypeId=" + saasTypeDictId;
-        List<SaasTypeModuleDO> saasTypeModuleDOList = saasTypeModuleService.search(fis);
+        List<SaasTypeModuleDO> saasTypeModuleDOList = new ArrayList<>();
         Set<String> moduleIdSet = new HashSet<>();
-        for (SaasTypeModuleDO saasTypeModuleDO : saasTypeModuleDOList) {
-            moduleIdSet.add(saasTypeModuleDO.getModuleId());
+        if(StringUtils.isNotBlank(saasTypeDictId)){
+            String fis = "status=1;saasTypeId=" + saasTypeDictId;
+            saasTypeModuleDOList = saasTypeModuleService.search(fis);
+            for (SaasTypeModuleDO saasTypeModuleDO : saasTypeModuleDOList) {
+                moduleIdSet.add(saasTypeModuleDO.getModuleId());
+            }
         }
         //获取生效中的模块
         String filters = "status=1";
@@ -169,7 +173,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
         List<ModuleVO> moduleVOs = convertToModels(modules, new ArrayList<>(modules.size()), ModuleVO.class);
         moduleVOs = moduleVOs.stream()
                 .filter(module -> {
-                    if (CommonContant.IS_MUST.equals(module.getIsMust())) {
+                    if (CommonContant.IS_MUST.equals(String.valueOf(module.getIsMust()))) {
                         //是否选中（0-表示未选，1-表示已选)
                         module.setIsCheck(1);
                     } else {
