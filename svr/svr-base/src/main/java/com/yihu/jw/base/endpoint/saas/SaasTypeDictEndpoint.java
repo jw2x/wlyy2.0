@@ -170,7 +170,7 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
         List<ModuleVO> moduleVOs = convertToModels(modules, new ArrayList<>(modules.size()), ModuleVO.class);
         moduleVOs = moduleVOs.stream()
                 .filter(module -> {
-                    if (CommonContant.IS_MUST.equals(module.getIsMust())) {
+                    if (CommonContant.IS_MUST.equals(String.valueOf(module.getIsMust()))) {
                         //是否选中（0-表示未选，1-表示已选)
                         module.setIsCheck(1);
                     } else {
