@@ -82,7 +82,7 @@ public class WechatController extends EnvelopRestEndpoint {
     @GetMapping(value = BaseRequestMapping.WeChat.findWxWechatExist)
     @ApiOperation(value = "判断微信名称是否存在", notes = "判断微信名称是否存在")
     public Envelop findWxWechatExist(String name) {
-       return success("success", wechatService.findWxWechatExist(name));
+       return success(BaseRequestMapping.WeChat.api_success, wechatService.findWxWechatExist(name));
     }
 
 
@@ -116,6 +116,15 @@ public class WechatController extends EnvelopRestEndpoint {
         return wechatService.createImgGroup(wxWechatScene);
     }
 
+    @GetMapping(value = BaseRequestMapping.WeChat.findImgGroupExist)
+    @ApiOperation(value = "验证图文素材分组是否存在", notes = "验证图文素材分组是否存在")
+    public Envelop findImgGroupExist(@ApiParam(name = "wechatId", value = "微信id")
+                                     @RequestParam(value = "wechatId", required = true)String wechatId,
+                                     @ApiParam(name = "scene", value = "场景值")
+                                     @RequestParam(value = "scene", required = true)String scene) {
+        return success(BaseRequestMapping.WeChat.api_success,wechatService.findImgGroupExist(wechatId,scene));
+    }
+
     @PostMapping(value = BaseRequestMapping.WeChat.updateImgGroup)
     @ApiOperation(value = "修改图文素材分组", notes = "修改图文素材分组")
     public Envelop updateImgGroup(@ApiParam(name = "id", value = "id")
@@ -134,8 +143,8 @@ public class WechatController extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.WeChat.saveImg)
     @ApiOperation(value = "保存图文素材", notes = "保存图文素材")
-    public Envelop saveImg(@ApiParam(name = "id", value = "id")
-                           @RequestParam(value = "id", required = true)String wxGraphicMessageJson)throws Exception {
+    public Envelop saveImg(@ApiParam(name = "wxGraphicMessageJson", value = "保存图文素材")
+                           @RequestParam(value = "wxGraphicMessageJson", required = true)String wxGraphicMessageJson)throws Exception {
         WxGraphicMessageDO WxGraphicMessage = toEntity(wxGraphicMessageJson, WxGraphicMessageDO.class);
         return wechatService.saveImg(WxGraphicMessage);
     }
@@ -153,6 +162,13 @@ public class WechatController extends EnvelopRestEndpoint {
                                                                      @ApiParam(name = "size", value = "每页几条")
                                                                      @RequestParam(value = "size", required = true)Integer size) {
         return wechatService.findImg(wechatId, title, scene, page, size);
+    }
+
+    @GetMapping(value = BaseRequestMapping.WeChat.findGraphicMessageSingle)
+    @ApiOperation(value = "获取图文素材(单条)", notes = "获取图文素材(单条)")
+    public ObjEnvelop<WxGraphicMessageVO> findGraphicMessageSingle(@ApiParam(name = "id", value = "图文id")
+                                                       @RequestParam(value = "id", required = true)String id) {
+        return success(wechatService.findGraphicMessageSingle(id),WxGraphicMessageVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.WeChat.saveImgGroup)

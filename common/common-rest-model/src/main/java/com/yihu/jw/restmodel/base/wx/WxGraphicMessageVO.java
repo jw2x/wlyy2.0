@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class WxGraphicMessageVO {
     private String id;
-    private String saasId;
+    private String wechatId;//微信id
     private String title;//标题
     private String description;//描述
     private String url;//图文消息url值
@@ -18,7 +18,6 @@ public class WxGraphicMessageVO {
     private String updateUser;//修改人
     private String updateUserName;//修改人名称
     private Date updateTime;//修改时间
-    private String remark;//备注
     private Integer status;  //状态 -1删除 0 冻结 1可用
 
     public String getId() {
@@ -109,12 +108,12 @@ public class WxGraphicMessageVO {
         this.updateTime = updateTime;
     }
 
-    public String getRemark() {
-        return remark;
+    public String getWechatId() {
+        return wechatId;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setWechatId(String wechatId) {
+        this.wechatId = wechatId;
     }
 
     public Integer getStatus() {
@@ -123,13 +122,5 @@ public class WxGraphicMessageVO {
 
     public void setStatus(Integer status) {
         this.status = status;
-    }
-
-    public String getSaasId() {
-        return saasId;
-    }
-
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
     }
 }
