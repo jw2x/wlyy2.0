@@ -3,6 +3,7 @@ package com.yihu.jw.base.endpoint.org;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.service.org.BaseOrgService;
 import com.yihu.jw.base.util.ConstantUtils;
+import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.restmodel.base.org.BaseOrgVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
-import com.yihu.jw.entity.base.org.BaseOrgDO;
 
 /**
  * 机构信息控制器
@@ -106,6 +105,18 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         List<BaseOrgDO> baseOrgs = baseOrgService.search(fields, filters, sorts);
         return success(baseOrgs, BaseOrgVO.class);
+    }
+
+    @GetMapping(value = BaseRequestMapping.BaseOrg.getOrgAreaTree)
+    @ApiOperation(value = "获取机构树")
+    public Envelop getOrgAreaTree (
+            @ApiParam(name = "saasId", value = "saasId")
+            @RequestParam(value = "saasId", required = false) String saasId) throws Exception {
+       if(StringUtils.isEmpty(saasId)){
+           return success(baseOrgService.getOrgAreaTree());
+       }else {
+           return success(baseOrgService.getOrgAreaTree(saasId));
+       }
     }
 
 

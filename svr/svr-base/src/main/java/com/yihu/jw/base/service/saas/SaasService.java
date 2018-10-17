@@ -253,6 +253,12 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         saasModuleDao.save(saasModuleDOList);
     }
 
+    public void updateStatus(String id,SaasDO.Status status){
+        SaasDO saasDO = findById(id);
+        saasDO.setStatus(status);
+        saasDao.save(saasDO);
+    }
+
     /**
      * 主题风格
      * @param saasDO
