@@ -8,7 +8,6 @@ import com.yihu.jw.base.util.ErrorCodeUtil;
 import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
-import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
 import com.yihu.jw.restmodel.base.saas.SaasTypeDictVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -67,13 +66,8 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "captcha", value = "验证码", required = true)
             @RequestParam String captcha) throws Exception {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
-        UserDO userDO = new UserDO();
-        userDO.setEmail(saasDO.getEmail());
-        userDO.setMobile(saasDO.getMobile());
-        userDO.setName(saasDO.getManagerName());
-        userDO.setUsername(userDO.getEmail());
 
-        String redisKey = redisPrefix + userDO.getEmail();
+        String redisKey = redisPrefix + saasDO.getEmail();
         String verificationCode = redisTemplate.opsForValue().get(redisKey);
         if(!captcha.equals(verificationCode)){
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.CAPTCHA_IS_ERROR), Envelop.class);
@@ -81,16 +75,16 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
         if (saasService.search("name=" + saasDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
-        if (userService.search("mobile=" + userDO.getMobile()).size() > 0) {
+        if (userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
         }
-        if (userService.search("username=" + userDO.getEmail()).size() > 0) {
+        if (userService.search("username=" + saasDO.getEmail()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
         }
-        saasService.save(saasDO, userDO);
+        saasService.create(saasDO);
         //注册成功后 吧key删除
         redisTemplate.delete(redisKey);
-        return success("注册成功");
+        return success("注册申请成功");
     }
 
     @GetMapping(value = BaseRequestMapping.RegisterSaas.SAAS_TYPE_DICT)

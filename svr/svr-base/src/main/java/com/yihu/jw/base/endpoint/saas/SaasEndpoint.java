@@ -26,7 +26,6 @@ import org.springframework.http.MediaType;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,22 +60,18 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
             @RequestParam String jsonSaas) throws Exception {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
-        UserDO userDO = new UserDO();
-        userDO.setEmail(saasDO.getEmail());
-        userDO.setMobile(saasDO.getMobile());
-        userDO.setName(saasDO.getManagerName());
-        userDO.setUsername(userDO.getEmail());
         if (saasService.search("name=" + saasDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
-        if (userService.search("mobile=" + userDO.getMobile()).size() > 0) {
+        if (userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
         }
-        if (userService.search("username=" + userDO.getEmail()).size() > 0) {
+        if (userService.search("username=" + saasDO.getEmail()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
         }
-        saasService.save(saasDO, userDO);
-        return success("创建成功");
+        saasService.create(saasDO);
+        saasDO.setStatus(SaasDO.Status.auditPassed);
+        return send(saasDO);
     }
 
     @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -129,8 +124,21 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         if (null == saasDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), Envelop.class);
         }
-        saasDO = saasService.save(saasDO);
-        return success(saasDO);
+
+        SaasDO oldSaas = saasService.findById(saasDO.getId());
+        UserDO userDO = userService.findById(oldSaas.getManager());
+
+        if (!oldSaas.getName().equals(saasDO.getName())&&saasService.search("name=" + saasDO.getName()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
+        }
+        if (!userDO.getMobile().equals(saasDO.getMobile())&&userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+        }
+        if (!userDO.getEmail().equals(saasDO.getEmail())&&userService.search("username=" + saasDO.getEmail()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+        }
+        saasService.updateSaas(saasDO,oldSaas,userDO);
+        return success("修改成功");
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.PAGE)
