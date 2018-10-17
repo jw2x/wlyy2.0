@@ -3,7 +3,7 @@ package com.yihu.jw.base.service.org;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
-import com.yihu.jw.base.dao.org.OrgTreeDao;
+//import com.yihu.jw.base.dao.org.OrgTreeDao;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
 import com.yihu.jw.base.service.org.tree.SimpleTreeNode;
 import com.yihu.jw.base.service.org.tree.TreeNode;
@@ -39,7 +39,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     private BaseOrgDao baseOrgDao;
 
     @Autowired
-    private OrgTreeDao orgTreeDao;
+    private OrgTreeService orgTreeService;
 
     @Autowired
     private UserService userService;
@@ -57,6 +57,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
      * @return
      */
     public List<Map<String,Object>> queryOrgBaseInfoList(String orgCode,String orgName,String orgStatus,int page,int size,String sorts){
+        getOrgAreaTree();
         List<Map<String,Object>> result = new ArrayList<>();
         if(StringUtils.endsWithIgnoreCase("1",orgStatus)){
             if(!StringUtils.isEmpty(orgCode) ){
@@ -94,6 +95,9 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         if(StringUtils.isEmpty(baseOrgDO.getId())){
             baseOrgDao.save(baseOrgDO);
 
+            //添加机构和区域的树形结构关系
+//            orgTreeService.addOrgTreeNode(baseOrgDO);
+
             //新增用户（管理员）
             userDO = new UserDO();
             userDO.setUsername(adminName);
@@ -106,12 +110,25 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             userRoleDO.setUserId("");
             userRoleService.save(userRoleDO);
         }else{
-            String id = orgAdminJson.getString("id");
-            if(StringUtils.isEmpty(id)){
+            String adminId = orgAdminJson.getString("adminId");
+            if(StringUtils.isEmpty(adminId)){
                 return "paramter id for admin is null when update";
             }
+            BaseOrgDO oldBaseOrgDO = baseOrgDao.findOne(baseOrgDO.getId());
+            if(null == oldBaseOrgDO){
+                return "no exist this org";
+            }
             baseOrgDao.save(baseOrgDO);
-            userDO = userService.findById(id);
+          /*  if(!baseOrgDO.getTownCode().equalsIgnoreCase(oldBaseOrgDO.getTownCode())){
+                orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.town.getLevelValue());
+            }
+            if(!baseOrgDO.getCityCode().equalsIgnoreCase(oldBaseOrgDO.getCityCode())){
+                orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.city.getLevelValue());
+            }
+            if(!baseOrgDO.getProvinceCode().equalsIgnoreCase(oldBaseOrgDO.getProvinceCode())){
+                orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.province.getLevelValue());
+            }*/
+            userDO = userService.findById(adminId);
             //没有修改就不保存
             if(StringUtils.endsWithIgnoreCase(adminName,userDO.getUsername()) && StringUtils.endsWithIgnoreCase(mobile,userDO.getMobile())){
                 return ConstantUtils.SUCCESS;
@@ -143,7 +160,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     public String getOrgAreaTree(){
 
         List<TreeNode> treeNodes = new ArrayList<>();
-        treeNodes.addAll(orgTreeDao.findByLevel(4));
+        treeNodes.addAll(orgTreeService.findListByLevel(OrgTree.Level.org.getLevelValue()));
         SimpleTree tree = new SimpleTree(treeNodes);
         List<SimpleTreeNode> treeNode = tree.getRoot();
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
@@ -152,5 +169,6 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
 
         return JSONObject.toJSONString(treeNode, filter);
     }
+
 
 }

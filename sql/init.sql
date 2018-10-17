@@ -183,7 +183,8 @@ CREATE TABLE `base_patient` (
 drop table IF EXISTS `base_team`;
 CREATE TABLE `base_team` (
   `id` varchar(50) NOT NULL   COMMENT '主键，团队uuid标识',
-  `org_id` varchar(50) DEFAULT NULL COMMENT '机构id',
+  `org_code` varchar(50) DEFAULT NULL COMMENT '机构代码',
+  `org_name` varchar(30) DEFAULT NULL COMMENT '机构名称',
   `name` varchar(50) DEFAULT NULL COMMENT '团队名称',
   `leader_id` varchar(50) NOT NULL COMMENT '领导医生标识',
   `team_num` varchar(50) NOT NULL COMMENT '团队人数',
@@ -764,3 +765,15 @@ create table `org_tree`
   primary key (id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构区域树形结构';
+
+-- 居民医保卡电子卡等信息
+drop table IF EXISTS `patient_medicare_card`;
+create table `patient_medicare_card`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长',
+  `code` varchar(50) not null COMMENT '卡标识',
+  `type` varchar(1) DEFAULT NULL COMMENT '卡类型，1-医保卡，2-电子健康卡',
+  `patient_code` varchar(50) not null COMMENT '居民标识',
+  primary key (id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='居民医保关联卡';

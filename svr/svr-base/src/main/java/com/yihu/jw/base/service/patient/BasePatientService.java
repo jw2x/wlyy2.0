@@ -1,7 +1,12 @@
 package com.yihu.jw.base.service.patient;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.base.dao.patient.BasePatientDao;
+import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
+import com.yihu.jw.entity.base.patient.PatientMedicareCardDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.patient.BasePatientDO;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -29,6 +35,12 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
 
     @Autowired
     private BasePatientDao basePatientDao;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Autowired
+    private PatientMedicardCardService patientMedicardCardService;
 
     /**
      * 居民id
@@ -64,10 +76,36 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
             return result;
         }
         if(!StringUtils.isEmpty(name)){
-            result = basePatientDao.findByName(idcard,createPage(page,size,sorts));
+            result = basePatientDao.findByName("%"+name+"%",createPage(page,size,sorts));
             return result;
         }
         result = basePatientDao.findBaseInfo(createPage(page,size,sorts));
         return result;
+    }
+
+    /**
+     * 新增居民
+     * @param jsonData
+     * @return
+     */
+    public String createPatient(String jsonData) throws Exception {
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
+        JSONObject patient = jsonObject.getJSONObject("patient");
+        JSONArray patientMedicareCards = jsonObject.getJSONArray("medicareCard");
+        if(null == patient || CollectionUtils.isEmpty(patientMedicareCards)){
+            return ConstantUtils.FAIL;
+        }
+        BasePatientDO basePatientDO = objectMapper.readValue(patient.toJSONString(),BasePatientDO.class);
+        List<PatientMedicareCardDO> list = new ArrayList<>();
+        patientMedicareCards.forEach((card)->{
+            try {
+                list.add(objectMapper.readValue(card.toString(),PatientMedicareCardDO.class));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        this.save(basePatientDO);
+        patientMedicardCardService.batchInsert(list);
+        return ConstantUtils.SUCCESS;
     }
 }

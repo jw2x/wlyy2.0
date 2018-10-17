@@ -109,7 +109,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      * @throws Exception
      */
     @PostMapping(value = BaseRequestMapping.BaseDoctor.DOCINFO)
-    @ApiOperation(value = "获取单个医生执业信息列表")
+    @ApiOperation(value = "获取单个医生及其执业信息")
     public Envelop doctorHosplist(
             @ApiParam(name = "orgId", value = "医院id")
             @RequestParam(value = "orgId", required = true) String orgId,
@@ -128,7 +128,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = BaseRequestMapping.BaseDoctor.DOCINFO)
+  /*  @PostMapping(value = BaseRequestMapping.BaseDoctor.docFullInfo)
     @ApiOperation(value = "获取列表")
     public Envelop getDoctorFullInfolist(
             @ApiParam(name = "name", value = "医生姓名")
@@ -150,17 +150,17 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     }
 
 
-    /**
+    *//**
      * 获取医生 所属机构/部门/职称/职务 树形结构数据
      * @return
      * @throws Exception
-     */
+     *//*
     @PostMapping(value = BaseRequestMapping.BaseDoctor.docOrgTreeInfo)
     @ApiOperation(value = "获取医生所属机构树形结构数据")
     public Envelop getDoctorOrgTree() throws Exception {
         String data = baseDoctorService.getOrgTree();
         return success(data);
-    }
+    }*/
 
 
 }

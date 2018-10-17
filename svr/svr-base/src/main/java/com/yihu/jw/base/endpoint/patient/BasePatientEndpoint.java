@@ -1,6 +1,7 @@
 package com.yihu.jw.base.endpoint.patient;
 
 import com.yihu.jw.base.service.patient.BasePatientService;
+import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.restmodel.base.patient.BasePatientVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -11,6 +12,7 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -40,12 +42,14 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.BasePatient.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
-    public ObjEnvelop<BasePatientVO> create(
+    public Envelop create(
             @ApiParam(name = "json_data", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
-        BasePatientDO basePatient = toEntity(jsonData, BasePatientDO.class);
-        basePatient = basePatientService.save(basePatient);
-        return success(basePatient, BasePatientVO.class);
+       String msg = basePatientService.createPatient(jsonData);
+       if(!StringUtils.equalsIgnoreCase(ConstantUtils.SUCCESS,msg)){
+           return success(msg);
+       }
+        return failed(msg);
     }
 
     @PostMapping(value = BaseRequestMapping.BasePatient.DELETE)

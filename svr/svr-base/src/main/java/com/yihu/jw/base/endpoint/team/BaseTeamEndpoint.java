@@ -1,6 +1,7 @@
 package com.yihu.jw.base.endpoint.team;
 
 import com.yihu.jw.base.service.team.BaseTeamService;
+import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.entity.base.team.BaseTeamDO;
 import com.yihu.jw.restmodel.base.team.BaseTeamVO;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -12,6 +13,7 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -40,12 +42,14 @@ private BaseTeamService baseTeamService;
 
 @PostMapping(value = BaseRequestMapping.BaseTeam.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @ApiOperation(value = "创建")
-public ObjEnvelop<BaseTeamVO> create (
+public Envelop create (
     @ApiParam(name = "json_data", value = "Json数据", required = true)
     @RequestBody String jsonData) throws Exception {
-    BaseTeamDO baseTeam = toEntity(jsonData, BaseTeamDO.class);
-    baseTeam = baseTeamService.save(baseTeam);
-    return success(baseTeam, BaseTeamVO.class);
+    String msg = baseTeamService.createTeam(jsonData);
+    if(StringUtils.equalsIgnoreCase(ConstantUtils.SUCCESS,msg)){
+        return success(msg);
+    }
+    return failed(msg);
     }
 
     @PostMapping(value = BaseRequestMapping.BaseTeam.DELETE)

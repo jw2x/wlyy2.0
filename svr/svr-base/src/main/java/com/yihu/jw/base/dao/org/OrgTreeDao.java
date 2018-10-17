@@ -25,9 +25,15 @@ import java.util.Map;
  */
 public interface OrgTreeDao extends PagingAndSortingRepository<OrgTree, Integer>, JpaSpecificationExecutor<OrgTree>  {
 
-    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where code like ?1")
-    List<Map<String,Object>> findByCode(String code, Pageable pageable);
-
-
     List<OrgTree> findByLevel(Integer level);
+
+    List<OrgTree> findByLevelLessThanEqual(Integer level);
+
+    OrgTree findByCodeAndLevel(String code,Integer level);
+
+    OrgTree findByCodeAndParentCode(String code,String parentCode);
+
+    OrgTree findByCode(String code);
+
+    boolean existsByCode(String code);
 }

@@ -32,7 +32,7 @@ public class SimpleTreeNode {
         this.nodeId = obj.extractNodeId();
         this.nodeName = obj.extractNodeName();
         this.parentNodeId = obj.extractNodeParentId();
-        this.orderNum = obj.extractOrderNum();
+//        this.level = obj.extractOrderNum();
     }
     public void addChild(SimpleTreeNode treeNode){
         this.children.add(treeNode);

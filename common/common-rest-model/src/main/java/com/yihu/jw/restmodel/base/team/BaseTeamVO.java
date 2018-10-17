@@ -22,10 +22,16 @@ import java.util.Date;
 public class BaseTeamVO extends UuidIdentityVOWithOperator {
 
     /**
-	 * 机构id
+	 * 机构代码
 	 */
-	@ApiModelProperty(value = "机构id", example = "")
-    private String orgId;
+	@ApiModelProperty(value = "机构代码", example = "")
+    private String orgCode;
+
+    /**
+     * 机构名称
+     */
+    @ApiModelProperty(value = "机构名称", example = "")
+    private String orgName;
 
     /**
 	 * 团队名称
@@ -57,12 +63,20 @@ public class BaseTeamVO extends UuidIdentityVOWithOperator {
 	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
 
-
-    public String getOrgId() {
-        return orgId;
+    public String getOrgCode() {
+        return orgCode;
     }
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
+
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     public String getName() {
