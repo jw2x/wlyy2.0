@@ -310,6 +310,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         user.setEnabled(true);
         user.setLocked(false);
         user.setSalt(randomString(5));
+        user.setName(user.getEmail());
         String password = user.getPassword();
         //密码默认手机号后6位
         if (StringUtils.isEmpty(password)) {

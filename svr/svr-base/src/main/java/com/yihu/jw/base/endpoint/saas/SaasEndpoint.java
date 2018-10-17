@@ -184,22 +184,24 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         }
         saasDO.setStatus(status);
         saasDO.setAuditFailedReason(auditFailedReason);
+        //用户信息初始化
+        UserDO userDO = new UserDO();
+        userDO.setEmail(saasDO.getEmail());
+        userDO.setMobile(saasDO.getMobile());
+        userDO.setName(saasDO.getManagerName());
+        userDO.setUsername(userDO.getEmail());
+        //初始化租户信息
+        saasService.save(saasDO);
+        saasDO = saasService.saasAudit(saasDO, userDO);
         return send(saasDO);
     }
 
     @GetMapping("/sendEmail")
     @ApiOperation(value = "邮件发送")
     public ObjEnvelop<SaasDO> send(SaasDO saasDO) {
-
         try {
             SaasDO.Status status = saasDO.getStatus();
-            //用户信息初始化
-            UserDO userDO = new UserDO();
-            userDO.setEmail(saasDO.getEmail());
-            userDO.setMobile(saasDO.getMobile());
-            userDO.setName(saasDO.getManagerName());
-            userDO.setUsername(userDO.getEmail());
-            String password = userDO.getMobile().substring(0, 6);
+            String password = saasDO.getMobile().substring(0, 6);
             BaseEmailTemplateConfigDO baseEmailTemplateConfigDO = baseEmailTemplateConfigService.findByCode(status.name());
             if (null == baseEmailTemplateConfigDO) {
                 failed(status.name() + "邮件模板不存在！");
@@ -219,7 +221,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             content.append(baseEmailTemplateConfigDO.getKeyword2() + "\n");
             if (status.equals(SaasDO.Status.auditPassed)) {
                 //账号
-                content.append(baseEmailTemplateConfigDO.getKeyword3() + userDO.getMobile() + "\n");
+                content.append(baseEmailTemplateConfigDO.getKeyword3() + saasDO.getMobile() + "\n");
                 //密码
                 content.append(baseEmailTemplateConfigDO.getKeyword4() + password + "\n");
             } else if (status.equals(SaasDO.Status.auditNotPassed)) {
@@ -230,11 +232,9 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             content.append(baseEmailTemplateConfigDO.getRemark());
             mainMessage.setText(content.toString());
             jms.send(mainMessage);
-            //发送成功后，初始化租户信息
-            saasDO = saasService.saasAudit(saasDO, userDO);
         } catch (MailException e) {
             e.printStackTrace();
-            return success("审核完成", saasDO);
+            return failed("邮件发送失败！"+e.getMessage(),ObjEnvelop.class);
         }
         return success("审核完成", saasDO);
     }

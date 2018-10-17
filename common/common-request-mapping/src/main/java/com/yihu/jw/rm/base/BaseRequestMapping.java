@@ -416,6 +416,7 @@ public class BaseRequestMapping {
         public static final String CHECK_POPULATION_IS_EXIST  = "/checkBasePopulationIsExist";
         public static final String POPULATION_BATCH_IMPORT  = "/basePopulationBatchImport";
         public static final String POPULATION_BATCH_ERROR_DOENLOAD  = "/basePopulationBatchErrorDownLoad";
+        public static final String POPULATION_BODY_BATCH_IMPORT  = "/basePopulationBodyBatchImport";
 
     }
 

@@ -5,12 +5,13 @@ import com.yihu.jw.base.endpoint.common.populationBatchImport.PopulationMsg;
 import com.yihu.jw.entity.base.population.BasePopulationDO;
 import com.yihu.jw.exception.business.ManageException;
 import com.yihu.mysql.query.BaseJpaService;
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +91,16 @@ public class BasePopulationService extends BaseJpaService<BasePopulationDO, Base
         String hql = "SELECT concat(p.saas_name,p.year)  FROM  base_population p ";
         Query query = s.createSQLQuery(hql);
         return query.list();
+    }
+
+    public Boolean checkPopulationName(String id,String saasId, String year) {
+        String hql = "SELECT count(1)  FROM  base_population p WHERE p.saas_id=:saasId AND  p.year=:year AND  p.id != :id";
+        SQLQuery sqlQuery = currentSession().createSQLQuery(hql);
+        sqlQuery.setParameter("id", id);
+        sqlQuery.setParameter("saasId", saasId);
+        sqlQuery.setParameter("year", year);
+        BigInteger count = (BigInteger) sqlQuery.uniqueResult();
+        return count.compareTo(new BigInteger("0")) > 0;
     }
 
 }
