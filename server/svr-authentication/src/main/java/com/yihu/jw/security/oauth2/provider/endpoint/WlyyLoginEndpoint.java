@@ -118,10 +118,10 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         if (StringUtils.isEmpty(parameters.get("captcha"))) {
             parameters.put("grant_type", "password");
             //解密密码
-//            if (parameters.get("password") != null) {
-//                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
-//                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
-//            }
+            if (parameters.get("password") != null) {
+                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
+                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
+            }
         } else {
             parameters.put("grant_type", "captcha");
         }

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by Trick on 2018/9/7.
  */
@@ -31,8 +33,9 @@ public class WeChatQrcodeController extends EnvelopRestEndpoint {
     public Envelop getQrcode(@ApiParam(name = "wxId", value = "微信id")
                              @RequestParam(value = "wxId", required = true)String wxId,
                              @ApiParam(name = "scene", value = "场景值")
-                             @RequestParam(value = "scene", required = true)String scene) throws Exception{
-        return success(weChatQrcodeService.getQrcode(wxId,scene));
+                             @RequestParam(value = "scene", required = true)String scene,
+                             HttpServletRequest request) throws Exception{
+        return success(weChatQrcodeService.getQrcode(request,wxId,scene));
     }
 
 }
