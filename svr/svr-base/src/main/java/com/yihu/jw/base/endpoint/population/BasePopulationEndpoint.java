@@ -60,12 +60,11 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
     static final String parentFile = "population";
 
 
-    @PostMapping(value = BaseRequestMapping.BasePopulation.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BasePopulation.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<BasePopulationVO> create(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
-        BasePopulationDO basePopulation = toEntity(jsonData, BasePopulationDO.class);
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam(value = "jsonData") String jsonData) throws Exception {BasePopulationDO basePopulation = toEntity(jsonData, BasePopulationDO.class);
         //根据saasid获取所属机构的行政区划
         if (StringUtils.isNotBlank(basePopulation.getSaasId())) {
             basePopulation = updateBasePopulation(basePopulation);
@@ -73,7 +72,7 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             return failed("租户id不能为空！", ObjEnvelop.class);
         }
         Boolean bo = checkNameAndYear(basePopulation.getSaasId(), basePopulation.getYear());
-        if (!bo) {
+        if (bo) {
             return failed("已添加" + basePopulation.getYear() + basePopulation.getSaasName() + "的基础人口信息，请直接修改即可！", ObjEnvelop.class);
         }
         basePopulation = basePopulationService.save(basePopulation);
@@ -89,11 +88,11 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.BasePopulation.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BasePopulation.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<BasePopulationVO> update(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam(value = "jsonData") String jsonData) throws Exception {
         BasePopulationDO basePopulation = toEntity(jsonData, BasePopulationDO.class);
         if (null == basePopulation.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);
@@ -105,7 +104,7 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             return failed("租户id不能为空！", ObjEnvelop.class);
         }
         Boolean bo = checkNameAndYear(basePopulation.getSaasId(), basePopulation.getYear());
-        if (!bo) {
+        if (bo) {
             return failed("已添加" + basePopulation.getYear() + basePopulation.getSaasName() + "的基础人口信息，请直接修改即可！", ObjEnvelop.class);
         }
         basePopulation = basePopulationService.save(basePopulation);
@@ -274,6 +273,9 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             //验证未通过
             List<PopulationMsg> errorLs = excelReader.getErrorLs();
             List<PopulationMsg> correctLs = excelReader.getCorrectLs();
+            if(errorLs.size()>0){
+                return failed("格式有误，导入失败！");
+            }
             //获取所有租户+年份的基础人口信息
             Set<String> populationNameAndYear = new HashSet<String>(basePopulationService.getFacilityCodeByServerType());
             PopulationMsg model;
@@ -283,11 +285,15 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
                     model = correctLs.get(i);
                     Map<Boolean, PopulationMsg> map = validate(model, populationNameAndYear);
                     if (null == map.get(true)) {
-                        errorLs.add(model);
+//                        errorLs.add(model);
+                        return failed("格式有误，导入失败！");
                     } else {
                         saveLs.add(model);
                     }
                 }
+//                if(errorLs.size()>0){
+//                    return failed("格式有误，导入失败！");
+//                }
                 Map<String, Object> result = basePopulationService.batchInsertPopulation(saveLs);
                 result.put("errorLs", errorLs);
                 return success("导入成功!", result);

@@ -296,4 +296,144 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         return saasDao.findByName(name);
     }
 
+    /**
+     *审核通过后，初始化租户信息
+     * @param saas
+     * @param user
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public SaasDO saasAudit(SaasDO saas, UserDO user) {
+        //初始化角色
+        RoleDO roleDO = roleDao.findByCode(roleCode);
+        //初始化租户管理员
+        user.setEnabled(true);
+        user.setLocked(false);
+        user.setSalt(randomString(5));
+        String password = user.getPassword();
+        //密码默认手机号后6位
+        if (StringUtils.isEmpty(password)) {
+            password = user.getMobile().substring(0, 6);
+        }
+        user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
+        //初始化管理员角色
+        UserRoleDO userRoleDO = new UserRoleDO();
+        userRoleDO.setRoleId(roleDO.getId());
+        List<BaseOrgDO> orgDOList = saas.getOrgList();
+        userDao.save(user);
+        userRoleDO.setUserId(user.getId());
+        userRoleDao.save(userRoleDO);
+        saas.setManager(user.getId());
+        saas = saasDao.save(saas);
+        String saasId = saas.getId();
+        if (orgDOList != null && orgDOList.size() > 0) {
+            orgDOList.forEach(org -> {
+                org.setSaasid(saasId);
+            });
+        }
+        //系统字典项
+        List<SystemDictEntryDO> systemDictEntryDOList = systemDictEntryDao.findBySaasId(defaultSaasId);
+        List<SystemDictEntryDO> dictEntryDOList = new ArrayList<>(systemDictEntryDOList.size());
+        systemDictEntryDOList.forEach(dict->{
+            SystemDictEntryDO systemDictEntryDO = new SystemDictEntryDO();
+            systemDictEntryDO.setCode(dict.getCode());
+            systemDictEntryDO.setSort(dict.getSort());
+            systemDictEntryDO.setSaasId(saasId);
+            systemDictEntryDO.setPyCode(dict.getPyCode());
+            systemDictEntryDO.setDictCode(dict.getDictCode());
+            systemDictEntryDO.setRemark(dict.getRemark());
+            systemDictEntryDO.setValue(dict.getValue());
+            dictEntryDOList.add(systemDictEntryDO);
+        });
+        //药品字典
+        List<DictMedicineDO> dictMedicineDOList = dictMedicineDao.findBySaasId(defaultSaasId);
+        List<DictMedicineDO> medicineDOList = new ArrayList<>(dictMedicineDOList.size());
+        dictMedicineDOList.forEach(dict->{
+            DictMedicineDO dictMedicineDO = new DictMedicineDO();
+            dictMedicineDO.setCode(dict.getCode());
+            dictMedicineDO.setDosageForm(dict.getDosageForm());
+            dictMedicineDO.setIndication(dict.getIndication());
+            dictMedicineDO.setName(dict.getName());
+            dictMedicineDO.setPackingSpecification(dict.getPackingSpecification());
+            dictMedicineDO.setSequence(dict.getSequence());
+            dictMedicineDO.setSpecification(dict.getSpecification());
+            dictMedicineDO.setSpellCode(dict.getSpellCode());
+            dictMedicineDO.setSubjectCode(dict.getSubjectCode());
+            dictMedicineDO.setWbzxCode(dict.getWbzxCode());
+            dictMedicineDO.setSaasId(saasId);
+            dictMedicineDO.setStorageConditions(dict.getStorageConditions());
+            medicineDOList.add(dictMedicineDO);
+        });
+        //职称字典
+        List<DictJobTitleDO> dictJobTitleDOList = dictJobTitleDao.findBySaasId(defaultSaasId);
+        List<DictJobTitleDO> jobTitleDOList = new ArrayList<>(dictJobTitleDOList.size());
+        dictJobTitleDOList.forEach(dict->{
+            DictJobTitleDO jobTitleDO = new DictJobTitleDO();
+            jobTitleDO.setSaasId(saasId);
+            jobTitleDO.setName(dict.getName());
+            jobTitleDO.setCode(dict.getCode());
+            jobTitleDO.setCreateTime(new Date());
+            jobTitleDOList.add(jobTitleDO);
+        });
+        //icd10字典
+        List<DictIcd10DO> dictIcd10DOList = dictIcd10Dao.findBySaasId(defaultSaasId);
+        List<DictIcd10DO> icd10DOList = new ArrayList<>(dictIcd10DOList.size());
+        dictIcd10DOList.forEach(dict->{
+            DictIcd10DO icd10DO = new DictIcd10DO();
+            icd10DO.setSaasId(saasId);
+            icd10DO.setName(dict.getName());
+            icd10DO.setCode(dict.getCode());
+            icd10DO.setCreateTime(new Date());
+            icd10DO.setDescription(dict.getDescription());
+            icd10DOList.add(icd10DO);
+        });
+        //健康问题字典
+        List<DictHealthProblemDO> dictHealthProblemDOList = dictHealthProblemDao.findBySaasId(defaultSaasId);
+        List<DictHealthProblemDO> healthProblemDOList = new ArrayList<>(dictHealthProblemDOList.size());
+        dictHealthProblemDOList.forEach(dict->{
+            DictHealthProblemDO healthProblemDO = new DictHealthProblemDO();
+            healthProblemDO.setSaasId(saasId);
+            healthProblemDO.setName(dict.getName());
+            healthProblemDO.setCode(dict.getCode());
+            healthProblemDO.setCreateTime(new Date());
+            healthProblemDO.setDescription(dict.getDescription());
+            healthProblemDO.setChronicFlag(dict.getChronicFlag());
+            healthProblemDOList.add(healthProblemDO);
+        });
+        //病种字典
+        List<DictDiseaseDO> dictDiseaseDOList = dictDiseaseDao.findBySaasId(defaultSaasId);
+        List<DictDiseaseDO> diseaseDOList = new ArrayList<>(dictDiseaseDOList.size());
+        dictDiseaseDOList.forEach(dict->{
+            DictDiseaseDO diseaseDO = new DictDiseaseDO();
+            diseaseDO.setSaasId(saasId);
+            diseaseDO.setName(dict.getName());
+            diseaseDO.setCode(dict.getCode());
+            diseaseDO.setCreateTime(new Date());
+            diseaseDOList.add(diseaseDO);
+        });
+        //科室字典
+        List<DictHospitalDeptDO> dictHospitalDeptDOList = dictHospitalDeptDao.findBySaasId(defaultSaasId);
+        List<DictHospitalDeptDO> hospitalDeptDOList = new ArrayList<>(dictHospitalDeptDOList.size());
+        dictHospitalDeptDOList.forEach(dict->{
+            DictHospitalDeptDO deptDO = new DictHospitalDeptDO();
+            deptDO.setSaasId(saasId);
+            deptDO.setName(dict.getName());
+            deptDO.setCode(dict.getCode());
+            deptDO.setCreateTime(new Date());
+            hospitalDeptDOList.add(deptDO);
+        });
+
+        //保存数据
+//        systemDictDao.save(dictDOList);
+        systemDictEntryDao.save(dictEntryDOList);
+        dictMedicineDao.save(medicineDOList);
+        dictJobTitleDao.save(jobTitleDOList);
+        dictIcd10Dao.save(icd10DOList);
+        dictHealthProblemDao.save(healthProblemDOList);
+        dictDiseaseDao.save(diseaseDOList);
+        dictHospitalDeptDao.save(hospitalDeptDOList);
+        baseOrgDao.save(orgDOList);
+        return saas;
+    }
+
 }

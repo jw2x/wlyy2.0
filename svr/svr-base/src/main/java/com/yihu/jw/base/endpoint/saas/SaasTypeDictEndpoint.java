@@ -158,11 +158,14 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "saasTypeDictId", value = "租户类型id")
             @RequestParam(value = "saasTypeDictId", required = false) String saasTypeDictId) throws Exception {
         //根据租户类型获取关联的模块
-        String fis = "status=1;saasTypeId=" + saasTypeDictId;
-        List<SaasTypeModuleDO> saasTypeModuleDOList = saasTypeModuleService.search(fis);
+        List<SaasTypeModuleDO> saasTypeModuleDOList = new ArrayList<>();
         Set<String> moduleIdSet = new HashSet<>();
-        for (SaasTypeModuleDO saasTypeModuleDO : saasTypeModuleDOList) {
-            moduleIdSet.add(saasTypeModuleDO.getModuleId());
+        if(StringUtils.isNotBlank(saasTypeDictId)){
+            String fis = "status=1;saasTypeId=" + saasTypeDictId;
+            saasTypeModuleDOList = saasTypeModuleService.search(fis);
+            for (SaasTypeModuleDO saasTypeModuleDO : saasTypeModuleDOList) {
+                moduleIdSet.add(saasTypeModuleDO.getModuleId());
+            }
         }
         //获取生效中的模块
         String filters = "status=1";

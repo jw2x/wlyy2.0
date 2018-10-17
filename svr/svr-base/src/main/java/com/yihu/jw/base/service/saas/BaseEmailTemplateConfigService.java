@@ -19,5 +19,8 @@ public class BaseEmailTemplateConfigService extends BaseJpaService<BaseEmailTemp
     public BaseEmailTemplateConfigDO findById(String id) {
         return baseEmailTemplateConfigDao.findById(id);
     }
+    public BaseEmailTemplateConfigDO findByCode(String code) {
+        return baseEmailTemplateConfigDao.findByCode(code);
+    }
 
 }

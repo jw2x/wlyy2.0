@@ -1,9 +1,11 @@
 package com.yihu.jw.base.endpoint.saas;
 
+import com.yihu.jw.base.service.saas.BaseEmailTemplateConfigService;
 import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
+import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
 import com.yihu.jw.entity.base.user.UserDO;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,13 +48,15 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
     @Autowired
+    private BaseEmailTemplateConfigService baseEmailTemplateConfigService;
+    @Autowired
     JavaMailSender jms;
     @Value("${spring.mail.username}")
     private String username;
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建-基本信息")
-    public Envelop create (
+    public Envelop create(
             @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
             @RequestParam String jsonSaas) throws Exception {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
@@ -75,7 +80,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建-系统配置")
-    public Envelop createSystemConfig (
+    public Envelop createSystemConfig(
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
             @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
 
@@ -85,7 +90,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建-主题风格")
-    public Envelop createThemeConfig (
+    public Envelop createThemeConfig(
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
             @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
 
@@ -105,7 +110,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public Envelop update (
+    public Envelop update(
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestBody String jsonData) throws Exception {
         SaasDO saasDO = toEntity(jsonData, SaasDO.class);
@@ -118,7 +123,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.Saas.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SaasVO> page (
+    public PageEnvelop<SaasVO> page(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -130,13 +135,13 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         List<SaasDO> saasDOS = saasService.search(fields, filters, sorts, page, size);
-        int count = (int)saasService.getCount(filters);
+        int count = (int) saasService.getCount(filters);
         return success(saasDOS, count, page, size, SaasVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SaasVO> list (
+    public ListEnvelop<SaasVO> list(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -165,50 +170,64 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.AUDIT)
     @ApiOperation(value = "审核")
-    public Envelop audit(
+    public ObjEnvelop<SaasDO> audit(
             @ApiParam(name = "id", value = "SaasId", required = true)
             @RequestParam(value = "id") String id,
             @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(value = "status") SaasDO.Status status,
             @ApiParam(name = "auditFailedReason", value = "审核不通过的原因（非必填）")
-            @RequestParam(value = "auditFailedReason",required = false) String auditFailedReason) throws Exception {
+            @RequestParam(value = "auditFailedReason", required = false) String auditFailedReason) throws Exception {
         SaasDO saasDO = saasService.retrieve(id);
         if (null == saasDO) {
-            return failed("无相关SAAS配置", Envelop.class);
+            return failed("无相关SAAS配置", ObjEnvelop.class);
         }
         saasDO.setStatus(status);
         saasDO.setAuditFailedReason(auditFailedReason);
-        saasService.save(saasDO);
-        return success("操作成功");
+        saasDO= send(saasDO);
+        return success("审核完成",saasDO);
     }
 
     @GetMapping("/sendEmail")
     @ApiOperation(value = "邮件发送")
-    public void send() throws Exception {
+    public SaasDO send(SaasDO saasDO) throws Exception {
+        SaasDO.Status status = saasDO.getStatus();
+        //用户信息初始化
+        UserDO userDO = new UserDO();
+        userDO.setEmail(saasDO.getEmail());
+        userDO.setMobile(saasDO.getMobile());
+        userDO.setName(saasDO.getManagerName());
+        userDO.setUsername(userDO.getEmail());
+         String  password = userDO.getMobile().substring(0, 6);
+        BaseEmailTemplateConfigDO baseEmailTemplateConfigDO = baseEmailTemplateConfigService.findByCode(status.toString());
         //建立邮件消息
         SimpleMailMessage mainMessage = new SimpleMailMessage();
         //发送者
         mainMessage.setFrom(username);
         //接收者
         mainMessage.setTo("763558454@qq.com");
+//        mainMessage.setTo(saasDO.getEmail());
         //发送的标题
-        mainMessage.setSubject("租户审核");
+        mainMessage.setSubject(baseEmailTemplateConfigDO.getTemplateName());
         //发送的内容
-        String content =  "您好！\n"+ "感谢您注册健康之路城市i健康。\n";
-        if (true) {
-            content = content + "您提交的是租户注册信息已审核通过，登录账号、密码如下所示：\n";
-            content = content + "账号：test"+"\n";
-            content = content + "密码：123456"+"\n";
-            content = content + "点击以下链接进入健康之路城市i健康综合管理平台："+ "http://www.baidu.com \n";
-            content = content + "如果以上链接无法点击，请将上面的地址复制到你的浏览器(如IE)的地址栏进入健康之路城市i健康综合管理平台\n";
-        }else {
-            content = content + "您提交的是租户注册信息审核未通过，审核未通过原因如下：\n";
-            content = content + "营业执照图片模糊，不清晰。\n";
-            content = content + "请点击以下链接修改注册信息并重新提交审核："+ "http://www.baidu.com \n";
-            content = content + "如果以上链接无法点击，请将上面的地址复制到你的浏览器(如IE)的地址栏进入租户注册信息修改。\n";
+        StringBuffer content = new StringBuffer();
+        content.append(baseEmailTemplateConfigDO.getFirst() + "\n").append(baseEmailTemplateConfigDO.getKeyword1() + "\n");
+        content.append(baseEmailTemplateConfigDO.getKeyword2() + "\n");
+        if (status.equals(SaasDO.Status.auditPassed)) {
+            //账号
+            content.append(baseEmailTemplateConfigDO.getKeyword3()+userDO.getMobile() + "\n");
+            //密码
+            content.append(baseEmailTemplateConfigDO.getKeyword4()+password + "\n");
+        } else if (status.equals(SaasDO.Status.auditNotPassed)) {
+            //审核未通过的原因
+            content.append(saasDO.getAuditFailedReason() + "\n");
         }
-        mainMessage.setText(content);
+        content.append(baseEmailTemplateConfigDO.getKeyword5() + baseEmailTemplateConfigDO.getUrl() + "\n");
+        content.append(baseEmailTemplateConfigDO.getRemark());
+        mainMessage.setText(content.toString());
         jms.send(mainMessage);
+        //发送成功后，初始化租户信息
+//        saasDO = saasService.saasAudit(saasDO, userDO);
+        return saasDO;
     }
 
 }
