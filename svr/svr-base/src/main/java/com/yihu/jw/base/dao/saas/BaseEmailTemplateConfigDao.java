@@ -10,4 +10,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface BaseEmailTemplateConfigDao extends PagingAndSortingRepository<BaseEmailTemplateConfigDO, String> {
 
     BaseEmailTemplateConfigDO findById(String id);
+
+    BaseEmailTemplateConfigDO findByTemplateName(String templateName);
 }

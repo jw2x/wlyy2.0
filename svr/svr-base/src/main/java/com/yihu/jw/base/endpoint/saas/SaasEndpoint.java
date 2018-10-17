@@ -93,7 +93,6 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("创建成功");
     }
 
-
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
@@ -103,11 +102,22 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
+    @PostMapping(value = BaseRequestMapping.Saas.STATUS)
+    @ApiOperation(value = "修改状态")
+    public Envelop status(
+            @ApiParam(name = "id", value = "saas类型Json数据")
+            @RequestParam(value = "id", required = true) String id,
+            @ApiParam(name = "status", value = "status")
+            @RequestParam(value = "status", required = true) SaasDO.Status status) throws Exception {
+        saasService.updateStatus(id, status);
+        return success("修改成功");
+    }
+
     @PostMapping(value = BaseRequestMapping.Saas.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public Envelop update (
-            @ApiParam(name = "json", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam String jsonData) throws Exception {
         SaasDO saasDO = toEntity(jsonData, SaasDO.class);
         if (null == saasDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), Envelop.class);

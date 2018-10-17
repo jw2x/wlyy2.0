@@ -19,6 +19,7 @@ public class BaseRequestMapping {
         public static final String PAGE = "/page";
         public static final String LIST = "/list";
         public static final String FINDBYID = "/findById";
+        public static final String STATUS = "/status";
     }
 
     /**
@@ -396,6 +397,7 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/baseOrg";
         public static final String baseInfoList  = "/baseInfoList";
         public static final String check_code  = "/check_code";
+        public static final String getOrgAreaTree  = "/getOrgAreaTree";
     }
 
 
