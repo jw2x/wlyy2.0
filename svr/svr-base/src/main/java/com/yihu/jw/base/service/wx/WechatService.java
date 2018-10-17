@@ -177,7 +177,10 @@ public class WechatService {
     //====================图文素材管理============================
 
     public MixEnvelop findWechatCombo(){
-        String sql ="SELECT t.id,t.`name`,t.app_origin_id AS appOriginId from wx_wechat t";
+        String sql ="SELECT t.id,t.`name`," +
+                "t.app_origin_id AS appOriginId," +
+                "t.public_type AS publicType " +
+                "from wx_wechat t";
         List<WxComboVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxComboVO.class));
         return MixEnvelop.getSuccessList(BaseRequestMapping.WeChat.api_success,list);
     }
@@ -187,7 +190,7 @@ public class WechatService {
         String totalSql ="SELECT COUNT(1) AS total from wx_graphic_scene g WHERE g.wechat_id ='"+wechatId+"'";
 
         if(StringUtils.isNotBlank(scene)){
-            totalSql+=" AND g.scene ='"+scene+"' ";
+            totalSql+=" AND g.scene like'%"+scene+"%' ";
         }
 
         List<Map<String, Object>> rstotal = jdbcTemplate.queryForList(totalSql);
@@ -204,7 +207,7 @@ public class WechatService {
                 " g.wechat_id = '"+wechatId+"' ";
 
         if(StringUtils.isNotBlank(scene)){
-            sql+= " AND g.scene='"+scene+"'" ;
+            sql+= " AND g.scene like'%"+scene+"%'" ;
         }
 
         sql+= " LIMIT  " + (page - 1) * size + "," + size + "";
@@ -217,6 +220,14 @@ public class WechatService {
     public Envelop createImgGroup(WxGraphicSceneDO wxGraphicSceneDO){
         wxGraphicSceneDao.save(wxGraphicSceneDO);
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
+    }
+
+    public Boolean findImgGroupExist(String wechatId,String scene){
+        List<WxGraphicSceneDO> list = wxGraphicSceneDao.findByWechatIdAndScene(wechatId,scene);
+        if(list!=null&&list.size()>0){
+            return true;
+        }
+        return false;
     }
 
     public Envelop updateImgGroup(String id,String scene){
@@ -260,12 +271,12 @@ public class WechatService {
                 }
         sqlTotal+= " WHERE " +
                 " m.wechat_id = '"+wechatId+"' " +
-                " m.status =1" ;
+                " AND m.status =1" ;
                 if(StringUtils.isNotBlank(title)){
                     sqlTotal += " AND m.title LIKE '%"+title+"%' " ;
                 }
                 if(StringUtils.isNotBlank(scene)){
-                    sqlTotal+= "AND g.scene = '"+scene+"'";
+                    sqlTotal+= " AND g.scene = '"+scene+"'";
                 }
         List<Map<String, Object>> rstotal = jdbcTemplate.queryForList(sqlTotal);
         Long count = 0L;
@@ -276,12 +287,10 @@ public class WechatService {
         String sql = "SELECT " +
                 " m.id, " +
                 " m.wechat_id AS wechatId, " +
-                " m.`code` AS code, " +
                 " m.title, " +
                 " m.description, " +
                 " m.url, " +
                 " m.pic_url AS picUrl, " +
-                " m.remark, " +
                 " m.`status` " +
                 " FROM " +
                 " wx_graphic_message m ";
@@ -289,16 +298,20 @@ public class WechatService {
             sql+= " JOIN wx_graphic_scene_group g ON g.graphic_id = m.id ";
         }
         sql+=" WHERE m.wechat_id = '"+wechatId+"' " +
-                " m.status =1" ;
+                " AND m.status =1" ;
         if(StringUtils.isNotBlank(title)){
             sql += " AND m.title LIKE '%"+title+"%' " ;
         }
         if(StringUtils.isNotBlank(scene)){
-            sql+= "AND g.scene = '"+scene+"'";
+            sql+= " AND g.scene = '"+scene+"'";
         }
         sql+=" LIMIT  " + (page - 1) * size + "," + size + "";
         List<WxGraphicMessageVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxGraphicMessageVO.class));
         return MixEnvelop.getSuccessListWithPage(BaseRequestMapping.WeChat.api_success, list, page, size, count);
+    }
+
+    public WxGraphicMessageDO findGraphicMessageSingle(String id){
+        return wxGraphicMessageDao.findOne(id);
     }
 
     public Envelop saveImgGroup(List<WxGraphicSceneGroupDO> groups){

@@ -6,12 +6,15 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by Administrator on 2018/10/9.
  */
 public class WxComboVO {
+
     @ApiModelProperty(value = "微信id")
     private String id;
     @ApiModelProperty(value = "微信公众号")
     private String name;
     @ApiModelProperty(value = "原始id")
     private String appOriginId;
+    @ApiModelProperty(value="公众号类型")
+    private String publicType;
 
     public String getId() {
         return id;
@@ -35,5 +38,13 @@ public class WxComboVO {
 
     public void setAppOriginId(String appOriginId) {
         this.appOriginId = appOriginId;
+    }
+
+    public String getPublicType() {
+        return publicType;
+    }
+
+    public void setPublicType(String publicType) {
+        this.publicType = publicType;
     }
 }

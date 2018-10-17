@@ -244,10 +244,12 @@ public class BaseRequestMapping {
 
         public static final String findWechatImgGroup ="/findWechatImgGroup";
         public static final String createImgGroup ="/createImgGroup";
+        public static final String findImgGroupExist ="/findImgGroupExist";
         public static final String updateImgGroup ="/updateImgGroup";
         public static final String deleteImgGroup ="/deleteImgGroup";
         public static final String saveImg ="/saveImg";
         public static final String findImg ="/findImg";
+        public static final String findGraphicMessageSingle ="/findGraphicMessageSingle";
         public static final String saveImgGroup ="/saveImgGroup";
 
         public static final String saveWxReplyScene ="/saveWxReplyScene";
