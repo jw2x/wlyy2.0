@@ -47,6 +47,14 @@ public class BaseErrorCode {
          * 该名称已被占用
          */
         public static final String NAME_IS_EXIST = "-101003";
+        /**
+         * 验证码错误
+         */
+        public static final String CAPTCHA_IS_ERROR = "-101004";
+        /**
+         * 该租户已注册过，请直接
+         */
+        public static final String NAME_IS_EXIST2 = "-101005";
     }
 
     /**

@@ -38,41 +38,39 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
     @Autowired
     private SaasTypeModuleDao saasTypeModuleDao;
 
-
+    @Transactional
     public SaasTypeDictDO save(SaasTypeDictDO saasTypeDictDO, String saasTypeModuleIds) {
-        String saasTypeId;
         if (StringUtils.isEmpty(saasTypeDictDO.getId())) {
             //新增
             saasTypeDictDO.setCode(getNextSaasTypeDictCode());
-            saasTypeId = getCode();
-        } else {
-            //编辑
-            saasTypeId = saasTypeDictDO.getId();
         }
+        //保存数据
+        saasTypeDictDO = saasTypeDictDao.save(saasTypeDictDO);
+        String saasTypeId = saasTypeDictDO.getId();
         //根据moduleId获取模块
         String[] ids = saasTypeModuleIds.split(",");
         SaasTypeModuleDO saasTypeModuleDO;
         List<SaasTypeModuleDO> saasDefaultModuleDOS = new ArrayList<>();
         for (String id : ids) {
-            ModuleDO moduleDO = moduleDao.findOne(id);
-            saasTypeModuleDO = new SaasTypeModuleDO();
-            saasTypeModuleDO.setModuleId(id);
-            saasTypeModuleDO.setName(moduleDO.getName());
-            saasTypeModuleDO.setParentModuleId(moduleDO.getParentId());
-            saasTypeModuleDO.setType(moduleDO.getType());
-            saasTypeModuleDO.setStatus(moduleDO.getStatus());
-            saasTypeModuleDO.setIsEnd(moduleDO.getIsEnd());
-            saasTypeModuleDO.setIsMust(moduleDO.getIsMust());
-            saasTypeModuleDO.setUrl(moduleDO.getUrl());
-            saasTypeModuleDO.setRemark(moduleDO.getRemark());
-            saasTypeModuleDO.setSaasTypeId(saasTypeId);
-            saasDefaultModuleDOS.add(saasTypeModuleDO);
+            if(!StringUtils.isEmpty(id)){
+                ModuleDO moduleDO = moduleDao.findOne(id);
+                saasTypeModuleDO = new SaasTypeModuleDO();
+                saasTypeModuleDO.setModuleId(id);
+                saasTypeModuleDO.setName(moduleDO.getName());
+                saasTypeModuleDO.setParentModuleId(moduleDO.getParentId());
+                saasTypeModuleDO.setType(moduleDO.getType());
+                saasTypeModuleDO.setStatus(moduleDO.getStatus());
+                saasTypeModuleDO.setIsEnd(moduleDO.getIsEnd());
+                saasTypeModuleDO.setIsMust(moduleDO.getIsMust());
+                saasTypeModuleDO.setUrl(moduleDO.getUrl());
+                saasTypeModuleDO.setRemark(moduleDO.getRemark());
+                saasTypeModuleDO.setSaasTypeId(saasTypeId);
+                saasDefaultModuleDOS.add(saasTypeModuleDO);
+            }
         }
         //初始化租户默认模块
         saasTypeModuleDao.save(saasDefaultModuleDOS);
-        //保存数据
-        SaasTypeDictDO saasTypeDictDO1 = saasTypeDictDao.save(saasTypeDictDO);
-        return saasTypeDictDO1;
+        return saasTypeDictDO;
     }
 
     /**
@@ -103,6 +101,7 @@ public class SaasTypeDictService extends BaseJpaService<SaasTypeDictDO, SaasType
     public SaasTypeDictDO findById(String id) {
         return saasTypeDictDao.findById(id);
     }
+
     public SaasTypeDictDO findByCode(Integer code) {
         return saasTypeDictDao.findByCode(code);
     }

@@ -26,4 +26,6 @@ public interface WechatDao extends PagingAndSortingRepository<WxWechatDO, String
 
     @Query("from WxWechatDO w where w.appOriginId = ?1 and w.status!=-1")
     WxWechatDO findByAppOriginId(String appOriginId);
+
+    List<WxWechatDO> findByName(String name);
 }

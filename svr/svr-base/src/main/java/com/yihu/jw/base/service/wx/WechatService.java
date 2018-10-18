@@ -5,8 +5,10 @@ import com.yihu.jw.entity.base.wx.*;
 import com.yihu.jw.restmodel.base.wx.*;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
+import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -71,12 +73,12 @@ public class WechatService {
             sql += " AND w.public_type = " + publicType + " " ;
         }
         if (status!=null) {
-            sql += " AND w.`status` = " + status + "";
+            sql += " AND w.`status` = " + status + " ";
         }
         if (StringUtils.isNotBlank(saasName)) {
             sql += " AND bs.`name` like '%" + saasName + "%'";
         }
-        sql += "LIMIT " + (page - 1) * size + "," + size + "";
+        sql += " LIMIT " + (page - 1) * size + "," + size + "";
         List<WxWechatVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxWechatVO.class));
 
         if(list!=null&&list.size()>0){
@@ -120,7 +122,7 @@ public class WechatService {
                 " bs.id AS saasid" +
                 " FROM " +
                 " wx_wechat_saas s " +
-                " JOIN base_saas bs ON s.saas_id = s.saas_id " +
+                " JOIN base_saas bs ON bs.id = s.saas_id " +
                 " WHERE " +
                 " s.wechat_id = '"+id+"'";
         List<WxSaasVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxSaasVO.class));
@@ -128,13 +130,12 @@ public class WechatService {
     }
 
     public Envelop saveWxAndSaas(WxWechatDO wxWechatDO, List<WxWechatSaasDO> wxWechatSaasDOs){
-        String uuid = UUID.randomUUID().toString();
-        wxWechatDO.setId(uuid);
-        wechatDao.save(wxWechatDO);
+
+        WxWechatDO wechat = wechatDao.save(wxWechatDO);
 
         if(wxWechatSaasDOs!=null&&wxWechatSaasDOs.size()>0){
             for(WxWechatSaasDO wxs:wxWechatSaasDOs){
-                wxs.setWechatId(uuid);
+                wxs.setWechatId(wechat.getId());
             }
             wxWechatSaasDao.save(wxWechatSaasDOs);
         }
@@ -157,32 +158,60 @@ public class WechatService {
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
     }
 
+    public WxWechatDO findWxWechatSingle(String wechatId){
+        WxWechatDO wxWechatDO = wechatDao.findOne(wechatId);
+        return wxWechatDO;
+    }
+
+    public Boolean findWxWechatExist(String name){
+        List<WxWechatDO> list = wechatDao.findByName(name);
+        if(list!=null&&list.size()>0){
+            return true;
+        }
+        return false;
+    }
+
 
     //====================微信与租户管理end=======================
 
     //====================图文素材管理============================
 
     public MixEnvelop findWechatCombo(){
-        String sql ="SELECT t.id,t.`name`,t.app_origin_id AS appOriginId from wx_wechat t";
+        String sql ="SELECT t.id,t.`name`," +
+                "t.app_origin_id AS appOriginId," +
+                "t.public_type AS publicType " +
+                "from wx_wechat t";
         List<WxComboVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxComboVO.class));
         return MixEnvelop.getSuccessList(BaseRequestMapping.WeChat.api_success,list);
     }
 
-    public MixEnvelop findWechatImgGroup(String wechatId,Integer page,Integer size){
+    public MixEnvelop findWechatImgGroup(String wechatId,String scene,Integer page,Integer size){
 
         String totalSql ="SELECT COUNT(1) AS total from wx_graphic_scene g WHERE g.wechat_id ='"+wechatId+"'";
+
+        if(StringUtils.isNotBlank(scene)){
+            totalSql+=" AND g.scene like'%"+scene+"%' ";
+        }
+
         List<Map<String, Object>> rstotal = jdbcTemplate.queryForList(totalSql);
         Long count = 0L;
         if (rstotal != null && rstotal.size() > 0) {
             count = (Long) rstotal.get(0).get("total");
         }
+
         String sql = "SELECT " +
                 " g.id,g.wechat_id AS wechatId,g.scene " +
                 " FROM " +
                 " wx_graphic_scene g " +
                 " WHERE " +
-                " g.wechat_id = '"+wechatId+"' " +
-                " LIMIT  " + (page - 1) * size + "," + size + "";
+                " g.wechat_id = '"+wechatId+"' ";
+
+        if(StringUtils.isNotBlank(scene)){
+            sql+= " AND g.scene like'%"+scene+"%'" ;
+        }
+
+        sql+= " LIMIT  " + (page - 1) * size + "," + size + "";
+
         List<WxGraphicSceneVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxGraphicSceneVO.class));
 
         return MixEnvelop.getSuccessListWithPage(BaseRequestMapping.WeChat.api_success, list, page, size, count);
@@ -191,6 +220,14 @@ public class WechatService {
     public Envelop createImgGroup(WxGraphicSceneDO wxGraphicSceneDO){
         wxGraphicSceneDao.save(wxGraphicSceneDO);
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
+    }
+
+    public Boolean findImgGroupExist(String wechatId,String scene){
+        List<WxGraphicSceneDO> list = wxGraphicSceneDao.findByWechatIdAndScene(wechatId,scene);
+        if(list!=null&&list.size()>0){
+            return true;
+        }
+        return false;
     }
 
     public Envelop updateImgGroup(String id,String scene){
@@ -234,12 +271,12 @@ public class WechatService {
                 }
         sqlTotal+= " WHERE " +
                 " m.wechat_id = '"+wechatId+"' " +
-                " m.status =1" ;
+                " AND m.status =1" ;
                 if(StringUtils.isNotBlank(title)){
                     sqlTotal += " AND m.title LIKE '%"+title+"%' " ;
                 }
                 if(StringUtils.isNotBlank(scene)){
-                    sqlTotal+= "AND g.scene = '"+scene+"'";
+                    sqlTotal+= " AND g.scene = '"+scene+"'";
                 }
         List<Map<String, Object>> rstotal = jdbcTemplate.queryForList(sqlTotal);
         Long count = 0L;
@@ -250,12 +287,10 @@ public class WechatService {
         String sql = "SELECT " +
                 " m.id, " +
                 " m.wechat_id AS wechatId, " +
-                " m.`code` AS code, " +
                 " m.title, " +
                 " m.description, " +
                 " m.url, " +
                 " m.pic_url AS picUrl, " +
-                " m.remark, " +
                 " m.`status` " +
                 " FROM " +
                 " wx_graphic_message m ";
@@ -263,16 +298,20 @@ public class WechatService {
             sql+= " JOIN wx_graphic_scene_group g ON g.graphic_id = m.id ";
         }
         sql+=" WHERE m.wechat_id = '"+wechatId+"' " +
-                " m.status =1" ;
+                " AND m.status =1" ;
         if(StringUtils.isNotBlank(title)){
             sql += " AND m.title LIKE '%"+title+"%' " ;
         }
         if(StringUtils.isNotBlank(scene)){
-            sql+= "AND g.scene = '"+scene+"'";
+            sql+= " AND g.scene = '"+scene+"' ORDER BY g.scene ASC ";
         }
         sql+=" LIMIT  " + (page - 1) * size + "," + size + "";
         List<WxGraphicMessageVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxGraphicMessageVO.class));
         return MixEnvelop.getSuccessListWithPage(BaseRequestMapping.WeChat.api_success, list, page, size, count);
+    }
+
+    public WxGraphicMessageDO findGraphicMessageSingle(String id){
+        return wxGraphicMessageDao.findOne(id);
     }
 
     public Envelop saveImgGroup(List<WxGraphicSceneGroupDO> groups){
@@ -281,6 +320,12 @@ public class WechatService {
             wxGraphicSceneGroupDao.delete(gs);
         }
         wxGraphicSceneGroupDao.save(groups);
+        return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
+    }
+
+    public Envelop deleteImgGroupRelation(String wechatId,String scene,String imgId){
+        WxGraphicSceneGroupDO wxGraphicSceneGroupDO = wxGraphicSceneGroupDao.findByWechatIdAndSceneAndGraphicId(wechatId,scene,imgId);
+        wxGraphicSceneGroupDao.delete(wxGraphicSceneGroupDO);
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
     }
 

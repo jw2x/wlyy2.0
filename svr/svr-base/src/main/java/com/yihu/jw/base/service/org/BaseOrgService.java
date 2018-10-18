@@ -1,18 +1,26 @@
 package com.yihu.jw.base.service.org;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.google.gson.JsonObject;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
-//import com.yihu.jw.base.dao.org.OrgTreeDao;
+import com.yihu.jw.base.dao.org.OrgTreeDao;
+import com.yihu.jw.base.dao.user.UserDao;
+import com.yihu.jw.base.dao.user.UserRoleDao;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
 import com.yihu.jw.base.service.org.tree.SimpleTreeNode;
+import com.yihu.jw.base.service.org.tree.Tree;
 import com.yihu.jw.base.service.org.tree.TreeNode;
 import com.yihu.jw.base.service.user.UserRoleService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
+import com.yihu.utils.security.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
@@ -39,14 +47,15 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     private BaseOrgDao baseOrgDao;
 
     @Autowired
-    private OrgTreeService orgTreeService;
+    private OrgTreeDao orgTreeDao;
 
     @Autowired
     private UserService userService;
 
     @Autowired
     private UserRoleService userRoleService;
-
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
 
     /**
@@ -57,23 +66,22 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
      * @return
      */
     public List<Map<String,Object>> queryOrgBaseInfoList(String orgCode,String orgName,String orgStatus,int page,int size,String sorts){
-        getOrgAreaTree();
         List<Map<String,Object>> result = new ArrayList<>();
         if(StringUtils.endsWithIgnoreCase("1",orgStatus)){
             if(!StringUtils.isEmpty(orgCode) ){
-                result = baseOrgDao.findByCodeAndDel(orgCode,orgStatus,createPage(page,size,sorts));
+                result = baseOrgDao.findByCodeAndDel(orgCode,orgStatus,creatPage(page,size,sorts));
             }else if(!StringUtils.isEmpty(orgCode)){
-                result = baseOrgDao.findByNameAndDel(orgName,orgStatus,createPage(page,size,sorts));
+                result = baseOrgDao.findByNameAndDel(orgName,orgStatus,creatPage(page,size,sorts));
             }else{
-                result = baseOrgDao.findBaseInfoByDel(orgStatus,createPage(page,size,sorts));
+                result = baseOrgDao.findBaseInfoByDel(orgStatus,creatPage(page,size,sorts));
             }
         }else{
             if(!StringUtils.isEmpty(orgCode) ){
-                result = baseOrgDao.findByCode(orgCode,createPage(page,size,sorts));
+                result = baseOrgDao.findByCode(orgCode,creatPage(page,size,sorts));
             }else if(!StringUtils.isEmpty(orgCode)){
-                result = baseOrgDao.findByName(orgName,createPage(page,size,sorts));
+                result = baseOrgDao.findByName(orgName,creatPage(page,size,sorts));
             }else{
-                result = baseOrgDao.findBaseInfo(createPage(page,size,sorts));
+                result = baseOrgDao.findBaseInfo(creatPage(page,size,sorts));
             }
         }
         return result;
@@ -95,9 +103,6 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         if(StringUtils.isEmpty(baseOrgDO.getId())){
             baseOrgDao.save(baseOrgDO);
 
-            //添加机构和区域的树形结构关系
-//            orgTreeService.addOrgTreeNode(baseOrgDO);
-
             //新增用户（管理员）
             userDO = new UserDO();
             userDO.setUsername(adminName);
@@ -110,7 +115,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             userRoleDO.setUserId("");
             userRoleService.save(userRoleDO);
         }else{
-            String adminId = orgAdminJson.getString("adminId");
+            String adminId = orgAdminJson.getString("id");
             if(StringUtils.isEmpty(adminId)){
                 return "paramter id for admin is null when update";
             }
@@ -160,7 +165,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     public String getOrgAreaTree(){
 
         List<TreeNode> treeNodes = new ArrayList<>();
-        treeNodes.addAll(orgTreeService.findListByLevel(OrgTree.Level.org.getLevelValue()));
+        treeNodes.addAll(orgTreeDao.findAll());
         SimpleTree tree = new SimpleTree(treeNodes);
         List<SimpleTreeNode> treeNode = tree.getRoot();
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
@@ -170,5 +175,20 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         return JSONObject.toJSONString(treeNode, filter);
     }
 
+    public String getOrgAreaTree(String saasId){
+        StringBuffer sql = new StringBuffer("SELECT t.* from base_org b,org_tree t ")
+                .append("WHERE b.saasid='").append(saasId).append("' AND ")
+                .append("(b.`code`= t.`code` or b.city_code=t.`code` or b.province_code = t.`code` or b.town_code=t.`code`)");
+
+        List<TreeNode> treeNodes = new ArrayList<>();
+        treeNodes.addAll(jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper(OrgTree.class)));
+        SimpleTree tree = new SimpleTree(treeNodes);
+        List<SimpleTreeNode> treeNode = tree.getRoot();
+        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
+        filter.getExcludes().add("parent");
+        filter.getExcludes().add("allChildren");
+
+        return JSONObject.toJSONString(treeNode, filter);
+    }
 
 }

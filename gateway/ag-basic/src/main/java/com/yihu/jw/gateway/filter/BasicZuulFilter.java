@@ -61,7 +61,7 @@ public class BasicZuulFilter extends ZuulFilter {
         String url = request.getRequestURI();
         //内部微服务有不需要认证的地址请在URL上追加/open/来进行过滤，如/api/v1.0/open/**，不要在此继续追加！！！
         if (url.contains("/auth/")//验证服务
-                || url.contains("/wechat/")//微信
+                || url.contains("/wechat")//微信
                 || url.contains("/open/")) {//开发接口
             return true;
         }

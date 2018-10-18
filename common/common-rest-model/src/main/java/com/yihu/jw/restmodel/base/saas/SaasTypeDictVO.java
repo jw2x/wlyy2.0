@@ -13,7 +13,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class SaasTypeDictVO extends UuidIdentityVOWithOperator {
 
     @ApiModelProperty(value = "Saas类型编码", example = "familyDoctor")
-    private String code;
+    private Integer code;
 
     @ApiModelProperty(value = "Saas类型名称", example = "家医型")
     private String name;
@@ -21,11 +21,11 @@ public class SaasTypeDictVO extends UuidIdentityVOWithOperator {
     @ApiModelProperty(value = "状态（effective-生效中，invalid-已失效）", example = "effective")
     private SaasTypeDictDO.Status status;
 
-    public String getCode() {
+    public Integer getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(Integer code) {
         this.code = code;
     }
 

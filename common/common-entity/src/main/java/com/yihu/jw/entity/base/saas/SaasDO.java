@@ -26,11 +26,13 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
         auditPassed,
 		//审核不通过
         auditNotPassed,
+        //已暂停
+        stoped,
 		//已删除
 		delete
     }
 	private String name; //系统名称
-	private Status status; //状态  0待审核 1审核通过 2审核不通过 3已删除
+	private Status status; // 状态（0-待审核 1-审核通过(启用) 2-审核不通过 3-已暂停）
 	private String remark; //备注
 	private String logo; //远程fastDFS文件地址
     private Integer type; //类型
@@ -41,6 +43,7 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	private String businessLicense; //营业执照url
 	private String systemName; //系统名称
 	private String areaNumber; //行政区划代码
+	private String themeColor; //主题色
     //审核不通过的原因
     private String auditFailedReason;
     //管理员姓名
@@ -49,6 +52,8 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
     List<BaseOrgDO> orgList;
     //业务模块
     List<SaasModuleDO> saasModuleList;
+    //主题风格
+    List<SaasThemeDO> saasThemeList;
 
 	@Column(name = "name", nullable = false, length = 200)
 	public String getName() {
@@ -192,5 +197,23 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    @Column(name = "theme_color")
+    public String getThemeColor() {
+        return themeColor;
+    }
+
+    public void setThemeColor(String themeColor) {
+        this.themeColor = themeColor;
+    }
+
+    @Transient
+    public List<SaasThemeDO> getSaasThemeList() {
+        return saasThemeList;
+    }
+
+    public void setSaasThemeList(List<SaasThemeDO> saasThemeList) {
+        this.saasThemeList = saasThemeList;
     }
 }

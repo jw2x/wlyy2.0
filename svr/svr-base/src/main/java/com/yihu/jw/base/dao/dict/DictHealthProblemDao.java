@@ -31,4 +31,6 @@ public interface DictHealthProblemDao extends PagingAndSortingRepository<DictHea
 
     @Query("select code as code,name as name from DictHealthProblemDO")
     List<Map<String,Object>> findCodeAndName();
+
+    List<DictHealthProblemDO> findBySaasId(String saasId);
 }

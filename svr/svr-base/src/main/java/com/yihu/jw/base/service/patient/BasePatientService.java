@@ -1,12 +1,7 @@
 package com.yihu.jw.base.service.patient;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.base.dao.patient.BasePatientDao;
-import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
-import com.yihu.jw.entity.base.patient.PatientMedicareCardDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.patient.BasePatientDO;
 import org.springframework.util.CollectionUtils;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -35,12 +29,6 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
 
     @Autowired
     private BasePatientDao basePatientDao;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private PatientMedicardCardService patientMedicardCardService;
 
     /**
      * 居民id

@@ -1,11 +1,11 @@
 package com.yihu.jw.base.dao.org;
 
+import com.yihu.jw.entity.base.org.BaseOrgDO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
-
-import com.yihu.jw.entity.base.org.BaseOrgDO;
 
 import java.util.List;
 import java.util.Map;
@@ -46,4 +46,8 @@ public interface BaseOrgDao extends PagingAndSortingRepository<BaseOrgDO, String
     List<BaseOrgDO> findOrgByArea();
 
     boolean existsByCode(String code);
+
+    @Modifying
+    @Query("delete from BaseOrgDO p where p.saasid=?1 ")
+    void deleteBySaasId(String saasId);
 }

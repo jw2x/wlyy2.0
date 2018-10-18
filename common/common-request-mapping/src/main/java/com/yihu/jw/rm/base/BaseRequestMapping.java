@@ -19,6 +19,7 @@ public class BaseRequestMapping {
         public static final String PAGE = "/page";
         public static final String LIST = "/list";
         public static final String FINDBYID = "/findById";
+        public static final String STATUS = "/status";
     }
 
     /**
@@ -26,7 +27,21 @@ public class BaseRequestMapping {
      */
     public static class Saas extends Basic {
         public static final String PREFIX  = "/saas";
+        public static final String SYSTEM_CONFIGURATION  = "/system_configuration";
+        public static final String THEME_STYLE  = "/theme_style";
         public static final String AUDIT  = "/audit";
+    }
+
+    /**
+     * 注册saas
+     */
+    public static class RegisterSaas extends Basic {
+        public static final String PREFIX  = "/open/saas";
+        public static final String REGISTER  = "/register";
+        public static final String SEND_EMAIL  = "/sendEmail";
+        public static final String NAME_IS_EXIST  = "/nameIsExist";
+        public static final String SAAS_TYPE_DICT  = "/saasTypeDict";
+
     }
 
     /**
@@ -176,6 +191,7 @@ public class BaseRequestMapping {
      */
     public static class ErrorCode extends Basic {
         public static final String PREFIX  = "/error";
+        public static final String INIT_WITHOUT_CONDITION  = "/initWithoutCondition";
     }
 
     /**
@@ -197,7 +213,7 @@ public class BaseRequestMapping {
      * 文件上传
      */
     public static class FileUpload extends Basic {
-        public static final String PREFIX  = "/fileUpload";
+        public static final String PREFIX  = "/open/fileUpload";
         public static final String UPLOAD_STREAM_IMG  = "/upload_stream_img";
         public static final String UPLOAD_STREAM  = "/upload_stream";
         public static final String UPLOAD_STRING  = "/upload_string";
@@ -222,19 +238,25 @@ public class BaseRequestMapping {
         public static final String getWechatInfos ="/getWechatInfos";
         public static final String saveWxAndSaas ="/saveWxAndSaas";
         public static final String updateWxAndSaas ="/updateWxAndSaas";
+        public static final String findWxWechatSingle ="/findWxWechatSingle";
+        public static final String findWxWechatExist ="/findWxWechatExist";
         public static final String findWechatCombo ="/findWechatCombo";
 
         public static final String findWechatImgGroup ="/findWechatImgGroup";
         public static final String createImgGroup ="/createImgGroup";
+        public static final String findImgGroupExist ="/findImgGroupExist";
         public static final String updateImgGroup ="/updateImgGroup";
         public static final String deleteImgGroup ="/deleteImgGroup";
         public static final String saveImg ="/saveImg";
         public static final String findImg ="/findImg";
+        public static final String findGraphicMessageSingle ="/findGraphicMessageSingle";
         public static final String saveImgGroup ="/saveImgGroup";
+        public static final String deleteImgGroupRelation ="/deleteImgGroupRelation";
 
         public static final String saveWxReplyScene ="/saveWxReplyScene";
         public static final String findWxReplyScene ="/findWxReplyScene";
         public static final String saveWxTemp ="/saveWxTemp";
+        public static final String findWxtemp ="/findWxtemp";
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
@@ -380,6 +402,7 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/baseOrg";
         public static final String baseInfoList  = "/baseInfoList";
         public static final String check_code  = "/check_code";
+        public static final String getOrgAreaTree  = "/getOrgAreaTree";
     }
 
 
@@ -397,6 +420,18 @@ public class BaseRequestMapping {
      */
     public static class BasePopulation extends Basic {
         public static final String PREFIX  = "/basePopulation";
+        public static final String CHECK_POPULATION_IS_EXIST  = "/checkBasePopulationIsExist";
+        public static final String POPULATION_BATCH_IMPORT  = "/basePopulationBatchImport";
+        public static final String POPULATION_BATCH_ERROR_DOENLOAD  = "/basePopulationBatchErrorDownLoad";
+        public static final String POPULATION_BODY_BATCH_IMPORT  = "/basePopulationBodyBatchImport";
+
+    }
+
+    /**
+     * 年份
+     */
+    public static class BaseYear extends Basic {
+        public static final String PREFIX  = "/baseYear";
     }
 
 

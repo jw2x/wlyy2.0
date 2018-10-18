@@ -3,8 +3,7 @@ package com.yihu.jw.base.endpoint.wx;
 import com.alibaba.fastjson.JSONArray;
 import com.yihu.jw.base.service.wx.WechatService;
 import com.yihu.jw.entity.base.wx.*;
-import com.yihu.jw.restmodel.base.wx.WxReplySceneVO;
-import com.yihu.jw.restmodel.base.wx.WxTemplateConfigVO;
+import com.yihu.jw.restmodel.base.wx.*;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -33,18 +32,18 @@ public class WechatController extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.WeChat.getWechatInfos)
     @ApiOperation(value = "获取微信基本信息列表", notes = "获取微信基本信息列表")
-    public MixEnvelop getWxWechatList(@ApiParam(name = "name", value = "微信名称")
-                                      @RequestParam(value = "name", required = false) String name,
-                                      @ApiParam(name = "saasName", value = "租户名称")
-                                      @RequestParam(value = "saasName", required = false) String saasName,
-                                      @ApiParam(name = "status", value = "状态")
-                                      @RequestParam(value = "status", required = false) Integer status,
-                                      @ApiParam(name = "publicType", value = "微信类型")
-                                      @RequestParam(value = "publicType", required = false) Integer publicType,
-                                      @ApiParam(name = "page", value = "页码")
-                                      @RequestParam(value = "page", required = true) Integer page,
-                                      @ApiParam(name = "size", value = "每页大小")
-                                      @RequestParam(value = "size", required = true) Integer size) {
+    public MixEnvelop<WxWechatVO,WxWechatVO> getWxWechatList(@ApiParam(name = "name", value = "微信名称")
+                                                             @RequestParam(value = "name", required = false) String name,
+                                                             @ApiParam(name = "saasName", value = "租户名称")
+                                                             @RequestParam(value = "saasName", required = false) String saasName,
+                                                             @ApiParam(name = "status", value = "状态")
+                                                             @RequestParam(value = "status", required = false) Integer status,
+                                                             @ApiParam(name = "publicType", value = "微信类型")
+                                                             @RequestParam(value = "publicType", required = false) Integer publicType,
+                                                             @ApiParam(name = "page", value = "页码")
+                                                             @RequestParam(value = "page", required = true) Integer page,
+                                                             @ApiParam(name = "size", value = "每页大小")
+                                                             @RequestParam(value = "size", required = true) Integer size) {
         return wechatService.getWxWechatList(name, saasName, status, publicType, page, size);
     }
 
@@ -70,9 +69,26 @@ public class WechatController extends EnvelopRestEndpoint {
         return wechatService.updateWxAndSaas(wxWechat,list);
     }
 
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxWechatSingle)
+    @ApiOperation(value = "查询单条微信信息", notes = "查询单条微信信息")
+    public ObjEnvelop<WxWechatSingleVO> findWxWechatSingle(String wechatId) {
+        WxWechatDO wxWechatDO  = wechatService.findWxWechatSingle(wechatId);
+        WxWechatSingleVO wxWechatSingleVO = convertToModel(wxWechatDO,WxWechatSingleVO.class);
+        List<WxSaasVO> list = wechatService.getWxSaasVOs(wechatId);
+        wxWechatSingleVO.setSaas(list);
+        return success("success", wxWechatSingleVO);
+    }
+
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxWechatExist)
+    @ApiOperation(value = "判断微信名称是否存在", notes = "判断微信名称是否存在")
+    public Envelop findWxWechatExist(String name) {
+       return success(BaseRequestMapping.WeChat.api_success, wechatService.findWxWechatExist(name));
+    }
+
+
     @GetMapping(value = BaseRequestMapping.WeChat.findWechatCombo)
     @ApiOperation(value = "微信信息下拉框", notes = "微信信息下拉框")
-    public MixEnvelop findWechatCombo() {
+    public MixEnvelop<WxComboVO,WxComboVO> findWechatCombo() {
         return wechatService.findWechatCombo();
     }
 
@@ -81,13 +97,15 @@ public class WechatController extends EnvelopRestEndpoint {
     //====================图文素材管理============================
     @GetMapping(value = BaseRequestMapping.WeChat.findWechatImgGroup)
     @ApiOperation(value = "获取图文素材分组", notes = "获取图文素材分组")
-    public MixEnvelop findWechatImgGroup(@ApiParam(name = "wechatId", value = "微信ID")
-                                         @RequestParam(value = "wechatId", required = true)String wechatId,
-                                         @ApiParam(name = "page", value = "第几页")
-                                         @RequestParam(value = "page", required = false)Integer page,
-                                         @ApiParam(name = "size", value = "每页条数")
-                                         @RequestParam(value = "size", required = false)Integer size) {
-        return wechatService.findWechatImgGroup(wechatId,page,size);
+    public MixEnvelop<WxGraphicSceneVO,WxGraphicSceneVO> findWechatImgGroup(@ApiParam(name = "wechatId", value = "微信ID")
+                                                                            @RequestParam(value = "wechatId", required = true)String wechatId,
+                                                                            @ApiParam(name = "scene", value = "分组名称（场景值）")
+                                                                            @RequestParam(value = "scene", required = false)String scene,
+                                                                            @ApiParam(name = "page", value = "第几页")
+                                                                            @RequestParam(value = "page", required = false)Integer page,
+                                                                            @ApiParam(name = "size", value = "每页条数")
+                                                                            @RequestParam(value = "size", required = false)Integer size) {
+        return wechatService.findWechatImgGroup(wechatId,scene,page,size);
     }
 
     @PostMapping(value = BaseRequestMapping.WeChat.createImgGroup)
@@ -96,6 +114,15 @@ public class WechatController extends EnvelopRestEndpoint {
                                   @RequestParam(value = "wxGraphicSceneJson", required = true)String wxGraphicSceneJson)throws Exception {
         WxGraphicSceneDO wxWechatScene = toEntity(wxGraphicSceneJson, WxGraphicSceneDO.class);
         return wechatService.createImgGroup(wxWechatScene);
+    }
+
+    @GetMapping(value = BaseRequestMapping.WeChat.findImgGroupExist)
+    @ApiOperation(value = "验证图文素材分组是否存在", notes = "验证图文素材分组是否存在")
+    public Envelop findImgGroupExist(@ApiParam(name = "wechatId", value = "微信id")
+                                     @RequestParam(value = "wechatId", required = true)String wechatId,
+                                     @ApiParam(name = "scene", value = "场景值")
+                                     @RequestParam(value = "scene", required = true)String scene) {
+        return success(BaseRequestMapping.WeChat.api_success,wechatService.findImgGroupExist(wechatId,scene));
     }
 
     @PostMapping(value = BaseRequestMapping.WeChat.updateImgGroup)
@@ -116,36 +143,54 @@ public class WechatController extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.WeChat.saveImg)
     @ApiOperation(value = "保存图文素材", notes = "保存图文素材")
-    public Envelop saveImg(@ApiParam(name = "id", value = "id")
-                           @RequestParam(value = "id", required = true)String wxGraphicMessageJson)throws Exception {
+    public Envelop saveImg(@ApiParam(name = "wxGraphicMessageJson", value = "保存图文素材")
+                           @RequestParam(value = "wxGraphicMessageJson", required = true)String wxGraphicMessageJson)throws Exception {
         WxGraphicMessageDO WxGraphicMessage = toEntity(wxGraphicMessageJson, WxGraphicMessageDO.class);
         return wechatService.saveImg(WxGraphicMessage);
     }
 
     @GetMapping(value = BaseRequestMapping.WeChat.findImg)
     @ApiOperation(value = "获取图文素材", notes = "获取图文素材")
-    public MixEnvelop findImg(@ApiParam(name = "wechatId", value = "微信id")
-                              @RequestParam(value = "wechatId", required = true)String wechatId,
-                              @ApiParam(name = "title", value = "素材标题")
-                              @RequestParam(value = "title", required = false)String title,
-                              @ApiParam(name = "scene", value = "场景值")
-                              @RequestParam(value = "scene", required = false)String scene,
-                              @ApiParam(name = "page", value = "第几页")
-                              @RequestParam(value = "page", required = true)Integer page,
-                              @ApiParam(name = "size", value = "每页几条")
-                              @RequestParam(value = "size", required = true)Integer size) {
+    public MixEnvelop<WxGraphicMessageVO,WxGraphicMessageVO> findImg(@ApiParam(name = "wechatId", value = "微信id")
+                                                                     @RequestParam(value = "wechatId", required = true)String wechatId,
+                                                                     @ApiParam(name = "title", value = "素材标题")
+                                                                     @RequestParam(value = "title", required = false)String title,
+                                                                     @ApiParam(name = "scene", value = "场景值")
+                                                                     @RequestParam(value = "scene", required = false)String scene,
+                                                                     @ApiParam(name = "page", value = "第几页")
+                                                                     @RequestParam(value = "page", required = true)Integer page,
+                                                                     @ApiParam(name = "size", value = "每页几条")
+                                                                     @RequestParam(value = "size", required = true)Integer size) {
         return wechatService.findImg(wechatId, title, scene, page, size);
+    }
+
+    @GetMapping(value = BaseRequestMapping.WeChat.findGraphicMessageSingle)
+    @ApiOperation(value = "获取图文素材(单条)", notes = "获取图文素材(单条)")
+    public ObjEnvelop<WxGraphicMessageVO> findGraphicMessageSingle(@ApiParam(name = "id", value = "图文id")
+                                                       @RequestParam(value = "id", required = true)String id) {
+        return success(wechatService.findGraphicMessageSingle(id),WxGraphicMessageVO.class);
     }
 
     @PostMapping(value = BaseRequestMapping.WeChat.saveImgGroup)
     @ApiOperation(value = "分组图文素材", notes = "分组图文素材")
-    public Envelop saveImgGroup(@ApiParam(name = "groups", value = "微信id")
+    public Envelop saveImgGroup(@ApiParam(name = "groups", value = "图文消息关系json")
                                 @RequestParam(value = "groups", required = true)String groups) {
         List<WxGraphicSceneGroupDO> list = (List<WxGraphicSceneGroupDO>) JSONArray.parseArray(groups, WxGraphicSceneGroupDO.class);
         return wechatService.saveImgGroup(list);
     }
 
-    @PostMapping(value = BaseRequestMapping.WeChat.saveWxReplyScene)
+    @PostMapping(value = BaseRequestMapping.WeChat.deleteImgGroupRelation)
+    @ApiOperation(value = "分组图文素材", notes = "分组图文素材")
+    public Envelop deleteImgGroupRelation(@ApiParam(name = "wechatId", value = "微信id")
+                                          @RequestParam(value = "wechatId", required = true)String wechatId,
+                                          @ApiParam(name = "scene", value = "图文分组名称（场景值）")
+                                          @RequestParam(value = "scene", required = true)String scene,
+                                          @ApiParam(name = "imgId", value = "图文id")
+                                          @RequestParam(value = "imgId", required = true)String imgId) {
+        return wechatService.deleteImgGroupRelation(wechatId,scene,imgId);
+    }
+
+        @PostMapping(value = BaseRequestMapping.WeChat.saveWxReplyScene)
     @ApiOperation(value = "事件配置场景", notes = "事件配置场景")
     public Envelop saveWxReplyScene(@ApiParam(name = "wxReplySceneJson", value = "事件配置json")
                                     @RequestParam(value = "wxReplySceneJson", required = true)String wxReplySceneJson) throws Exception{
@@ -157,17 +202,17 @@ public class WechatController extends EnvelopRestEndpoint {
     @GetMapping(value = BaseRequestMapping.WeChat.findWxReplyScene)
     @ApiOperation(value = "获取消息配置场景", notes = "获取消息配置场景")
     public MixEnvelop<WxReplySceneVO,WxReplySceneVO> findWxReplyScene(@ApiParam(name = "wechatId", value = "微信id")
-                                       @RequestParam(value = "wechatId", required = true)String wechatId,
-                                                       @ApiParam(name = "msgType", value = "消息类型")
-                                       @RequestParam(value = "msgType", required = false)String msgType,
-                                                       @ApiParam(name = "event", value = "事件类型")
-                                       @RequestParam(value = "event", required = false)String event,
-                                                       @ApiParam(name = "content", value = "回复内容")
-                                       @RequestParam(value = "content", required = false)String content,
-                                                       @ApiParam(name = "page", value = "页数")
-                                       @RequestParam(value = "page", required = true)Integer page,
-                                                       @ApiParam(name = "size", value = "每页大小")
-                                       @RequestParam(value = "size", required = true)Integer size) {
+                                                                      @RequestParam(value = "wechatId", required = true)String wechatId,
+                                                                      @ApiParam(name = "msgType", value = "消息类型")
+                                                                      @RequestParam(value = "msgType", required = false)String msgType,
+                                                                      @ApiParam(name = "event", value = "事件类型")
+                                                                      @RequestParam(value = "event", required = false)String event,
+                                                                      @ApiParam(name = "content", value = "回复内容")
+                                                                      @RequestParam(value = "content", required = false)String content,
+                                                                      @ApiParam(name = "page", value = "页数")
+                                                                      @RequestParam(value = "page", required = true)Integer page,
+                                                                      @ApiParam(name = "size", value = "每页大小")
+                                                                      @RequestParam(value = "size", required = true)Integer size) {
         return wechatService.findWxReplyScene(wechatId, msgType, event, content, page, size);
     }
     //====================图文素材管理end============================
@@ -182,20 +227,20 @@ public class WechatController extends EnvelopRestEndpoint {
         return wechatService.saveWxTemp(wxTemplate);
     }
 
-    @GetMapping(value = BaseRequestMapping.WeChat.saveWxTemp)
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxtemp)
     @ApiOperation(value = "获取微信模板消息基础信息（列表）", notes = "获取微信模板消息基础信息（列表）")
-    public MixEnvelop findWxtemp(@ApiParam(name = "wechatId", value = "微信id")
-                                 @RequestParam(value = "wechatId", required = true)String wechatId,
-                                 @ApiParam(name = "status", value = "状态")
-                                 @RequestParam(value = "status", required = true)Integer status,
-                                 @ApiParam(name = "name", value = "微信模板名称")
-                                 @RequestParam(value = "name", required = true)String name,
-                                 @ApiParam(name = "key", value = "模板id或标题模糊匹配")
-                                 @RequestParam(value = "key", required = true)String key,
-                                 @ApiParam(name = "page", value = "页码")
-                                 @RequestParam(value = "page", required = true)Integer page,
-                                 @ApiParam(name = "size", value = "分页大小")
-                                 @RequestParam(value = "size", required = true)Integer size) {
+    public MixEnvelop<WxTemplateVO,WxTemplateVO> findWxtemp(@ApiParam(name = "wechatId", value = "微信id")
+                                                            @RequestParam(value = "wechatId", required = true)String wechatId,
+                                                            @ApiParam(name = "status", value = "状态")
+                                                            @RequestParam(value = "status", required = true)Integer status,
+                                                            @ApiParam(name = "name", value = "微信模板名称")
+                                                            @RequestParam(value = "name", required = true)String name,
+                                                            @ApiParam(name = "key", value = "模板id或标题模糊匹配")
+                                                            @RequestParam(value = "key", required = true)String key,
+                                                            @ApiParam(name = "page", value = "页码")
+                                                            @RequestParam(value = "page", required = true)Integer page,
+                                                            @ApiParam(name = "size", value = "分页大小")
+                                                            @RequestParam(value = "size", required = true)Integer size) {
         return wechatService.findWxtemp(wechatId, status, name, key, page, size);
     }
 
@@ -210,24 +255,24 @@ public class WechatController extends EnvelopRestEndpoint {
     @GetMapping(value = BaseRequestMapping.WeChat.findWxTempConfigList)
     @ApiOperation(value = "获取微信模板列表", notes = "获取微信模板列表")
     public MixEnvelop<WxTemplateConfigVO,WxTemplateConfigVO> findWxTempConfigList(@ApiParam(name = "wechatId", value = "微信id")
-                                           @RequestParam(value = "wechatId", required = true)String wechatId,
-                                           @ApiParam(name = "scene", value = "微信场景值")
-                                           @RequestParam(value = "scene", required = true)String scene,
-                                           @ApiParam(name = "page", value = "第几页")
-                                           @RequestParam(value = "page", required = true)Integer page,
-                                           @ApiParam(name = "size", value = "分页大小")
-                                           @RequestParam(value = "size", required = true)Integer size) {
+                                                                                  @RequestParam(value = "wechatId", required = true)String wechatId,
+                                                                                  @ApiParam(name = "scene", value = "微信场景值")
+                                                                                  @RequestParam(value = "scene", required = true)String scene,
+                                                                                  @ApiParam(name = "page", value = "第几页")
+                                                                                  @RequestParam(value = "page", required = true)Integer page,
+                                                                                  @ApiParam(name = "size", value = "分页大小")
+                                                                                  @RequestParam(value = "size", required = true)Integer size) {
         return wechatService.findWxTempConfigList(wechatId, scene, page, size);
     }
 
     @GetMapping(value = BaseRequestMapping.WeChat.findWxTemplateConfig)
     @ApiOperation(value = "获取微信模板列表(单条)", notes = "获取微信模板列表(单条)")
     public ObjEnvelop<WxTemplateConfigVO>  findWxTemplateConfig(@ApiParam(name = "wechatId", value = "微信id")
-                                                   @RequestParam(value = "wechatId", required = true)String wechatId,
-                                                                          @ApiParam(name = "name", value = "模板名称")
-                                                   @RequestParam(value = "name", required = true)String name,
-                                                                          @ApiParam(name = "scene", value = "场景值")
-                                                   @RequestParam(value = "scene", required = true)String scene) {
+                                                                @RequestParam(value = "wechatId", required = true)String wechatId,
+                                                                @ApiParam(name = "name", value = "模板名称")
+                                                                @RequestParam(value = "name", required = true)String name,
+                                                                @ApiParam(name = "scene", value = "场景值")
+                                                                @RequestParam(value = "scene", required = true)String scene) {
         return success(wechatService.findWxTemplateConfig(wechatId,name,scene), WxTemplateConfigVO.class);
 
     }
@@ -257,4 +302,9 @@ public class WechatController extends EnvelopRestEndpoint {
     }
 
     //===================微信粉丝统计end==========================================
+//    @GetMapping(value = "header")
+//    @ApiOperation(value = "测试header", notes = "测试header")
+//    public String getHeader(){
+//        return getUID();
+//    }
 }

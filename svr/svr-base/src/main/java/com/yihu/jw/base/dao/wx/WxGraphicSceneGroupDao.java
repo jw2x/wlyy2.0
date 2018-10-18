@@ -12,4 +12,6 @@ import java.util.List;
 public interface WxGraphicSceneGroupDao extends PagingAndSortingRepository<WxGraphicSceneGroupDO, String>, JpaSpecificationExecutor<WxGraphicSceneGroupDO> {
 
     List<WxGraphicSceneGroupDO> findByWechatIdAndScene(String wechatId, String scene);
+
+    WxGraphicSceneGroupDO findByWechatIdAndSceneAndGraphicId(String wechatId, String scene,String graphicId);
 }

@@ -1,11 +1,12 @@
 package com.yihu.jw.base.endpoint.saas;
 
-import com.yihu.jw.base.service.saas.SaasTypeDictService;
+import com.yihu.jw.base.service.saas.BaseEmailTemplateConfigService;
 import com.yihu.jw.base.service.saas.SaasService;
+import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
+import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
-import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
@@ -20,7 +21,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,27 +47,53 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     private SaasTypeDictService saasTypeDictService;
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
+    @Autowired
+    private BaseEmailTemplateConfigService baseEmailTemplateConfigService;
+    @Autowired
+    JavaMailSender jms;
+    @Value("${spring.mail.username}")
+    private String username;
 
     @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建")
+    @ApiOperation(value = "创建-基本信息")
     public Envelop create (
-            @ApiParam(name = "saasDO", value = "Json数据", required = true)
-            @RequestParam(value = "saasDO") SaasDO saasDO,
-            @ApiParam(name = "userDO", value = "Json数据", required = true)
-            @RequestParam(value = "userDO") UserDO userDO) throws Exception {
-        if (saasService.search("name=" + userDO.getName()).size() > 0) {
+            @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
+            @RequestParam String jsonSaas) throws Exception {
+        SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
+        if (saasService.search("name=" + saasDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
-        if (userService.search("mobile=" + userDO.getMobile()).size() > 0) {
+        if (userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
         }
-        if (userService.search("username=" + userDO.getEmail()).size() > 0) {
+        if (userService.search("username=" + saasDO.getEmail()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
         }
-        userDO.setUsername(userDO.getEmail());
-        saasService.save(saasDO, userDO);
+        saasService.create(saasDO);
+        saasDO.setStatus(SaasDO.Status.auditPassed);
+        return send(saasDO);
+    }
+
+    @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建-系统配置")
+    public Envelop createSystemConfig (
+            @ApiParam(name = "saasDO", value = "Json数据", required = true)
+            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
+
+        saasService.saveSystemConfig(saasDO);
         return success("创建成功");
     }
+
+    @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "创建-主题风格")
+    public Envelop createThemeConfig (
+            @ApiParam(name = "saasDO", value = "Json数据", required = true)
+            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
+
+        saasService.createThemeConfig(saasDO);
+        return success("创建成功");
+    }
+
 
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
     @ApiOperation(value = "删除")
@@ -73,17 +104,41 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
+    @PostMapping(value = BaseRequestMapping.Saas.STATUS)
+    @ApiOperation(value = "修改状态")
+    public Envelop status(
+            @ApiParam(name = "id", value = "saas类型Json数据")
+            @RequestParam(value = "id", required = true) String id,
+            @ApiParam(name = "status", value = "status")
+            @RequestParam(value = "status", required = true) SaasDO.Status status) throws Exception {
+        saasService.updateStatus(id, status);
+        return success("修改成功");
+    }
+
     @PostMapping(value = BaseRequestMapping.Saas.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public Envelop update (
-            @ApiParam(name = "json", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam String jsonData) throws Exception {
         SaasDO saasDO = toEntity(jsonData, SaasDO.class);
         if (null == saasDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), Envelop.class);
         }
-        saasDO = saasService.save(saasDO);
-        return success(saasDO);
+
+        SaasDO oldSaas = saasService.findById(saasDO.getId());
+        UserDO userDO = userService.findById(oldSaas.getManager());
+
+        if (!oldSaas.getName().equals(saasDO.getName())&&saasService.search("name=" + saasDO.getName()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
+        }
+        if (!userDO.getMobile().equals(saasDO.getMobile())&&userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+        }
+        if (!userDO.getEmail().equals(saasDO.getEmail())&&userService.search("username=" + saasDO.getEmail()).size() > 0) {
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+        }
+        saasService.updateSaas(saasDO,oldSaas,userDO);
+        return success("修改成功");
     }
 
     @GetMapping(value = BaseRequestMapping.Saas.PAGE)
@@ -135,21 +190,72 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.Saas.AUDIT)
     @ApiOperation(value = "审核")
-    public Envelop audit(
+    public ObjEnvelop<SaasDO> audit(
             @ApiParam(name = "id", value = "SaasId", required = true)
             @RequestParam(value = "id") String id,
             @ApiParam(name = "status", value = "状态", required = true)
             @RequestParam(value = "status") SaasDO.Status status,
             @ApiParam(name = "auditFailedReason", value = "审核不通过的原因（非必填）")
-            @RequestParam(value = "auditFailedReason",required = false) String auditFailedReason) throws Exception {
+            @RequestParam(value = "auditFailedReason", required = false) String auditFailedReason) throws Exception {
         SaasDO saasDO = saasService.retrieve(id);
         if (null == saasDO) {
-            return failed("无相关SAAS配置", Envelop.class);
+            return failed("无相关SAAS配置", ObjEnvelop.class);
         }
         saasDO.setStatus(status);
         saasDO.setAuditFailedReason(auditFailedReason);
+        //用户信息初始化
+        UserDO userDO = new UserDO();
+        userDO.setEmail(saasDO.getEmail());
+        userDO.setMobile(saasDO.getMobile());
+        userDO.setName(saasDO.getManagerName());
+        userDO.setUsername(userDO.getEmail());
+        //初始化租户信息
         saasService.save(saasDO);
-        return success("操作成功");
+        saasDO = saasService.saasAudit(saasDO, userDO);
+        return send(saasDO);
+    }
+
+    @GetMapping("/sendEmail")
+    @ApiOperation(value = "邮件发送")
+    public ObjEnvelop<SaasDO> send(SaasDO saasDO) {
+        try {
+            SaasDO.Status status = saasDO.getStatus();
+            String password = saasDO.getMobile().substring(0, 6);
+            BaseEmailTemplateConfigDO baseEmailTemplateConfigDO = baseEmailTemplateConfigService.findByCode(status.name());
+            if (null == baseEmailTemplateConfigDO) {
+                failed(status.name() + "邮件模板不存在！");
+            }
+            //建立邮件消息
+            SimpleMailMessage mainMessage = new SimpleMailMessage();
+            //发送者
+            mainMessage.setFrom(username);
+            //接收者
+//            mainMessage.setTo("763558454@qq.com");
+            mainMessage.setTo(saasDO.getEmail());
+            //发送的标题
+            mainMessage.setSubject(baseEmailTemplateConfigDO.getTemplateName());
+            //发送的内容
+            StringBuffer content = new StringBuffer();
+            content.append(baseEmailTemplateConfigDO.getFirst() + "\n").append(baseEmailTemplateConfigDO.getKeyword1() + "\n");
+            content.append(baseEmailTemplateConfigDO.getKeyword2() + "\n");
+            if (status.equals(SaasDO.Status.auditPassed)) {
+                //账号
+                content.append(baseEmailTemplateConfigDO.getKeyword3() + saasDO.getMobile() + "\n");
+                //密码
+                content.append(baseEmailTemplateConfigDO.getKeyword4() + password + "\n");
+            } else if (status.equals(SaasDO.Status.auditNotPassed)) {
+                //审核未通过的原因
+                content.append(saasDO.getAuditFailedReason() + "\n");
+            }
+            content.append(baseEmailTemplateConfigDO.getKeyword5() + baseEmailTemplateConfigDO.getUrl() + "\n");
+            content.append(baseEmailTemplateConfigDO.getRemark());
+            mainMessage.setText(content.toString());
+            jms.send(mainMessage);
+        } catch (MailException e) {
+            e.printStackTrace();
+            return failed("邮件发送失败！"+e.getMessage(),ObjEnvelop.class);
+        }
+        return success("审核完成", saasDO);
     }
 
 }

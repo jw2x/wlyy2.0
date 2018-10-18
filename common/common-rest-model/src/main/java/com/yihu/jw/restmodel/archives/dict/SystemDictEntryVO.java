@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.List;
-
 /**
  * Created by wq on 2016/2/19.
  */
@@ -16,6 +14,8 @@ public class SystemDictEntryVO {
     private long dictId;
     @ApiModelProperty("系统字典元编码")
     private String code;
+    @ApiModelProperty("saasId")
+    private String saasId;
     @ApiModelProperty("系统字典元值")
     private String value;
     @ApiModelProperty("系统字典元排序")
@@ -31,6 +31,14 @@ public class SystemDictEntryVO {
 
     public void setDictId(long dictId) {
         this.dictId = dictId;
+    }
+
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 
     public String getCode() {
