@@ -30,11 +30,11 @@
 //    private String del;//1：有效；0：删除',
 //
 //
-//    public String getSaasId() {
+//    public String getOrgCode() {
 //        return saasId;
 //    }
 //
-//    public void setSaasId(String saasId) {
+//    public void setOrgCode(String saasId) {
 //        this.saasId = saasId;
 //    }
 //

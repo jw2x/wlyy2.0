@@ -22,11 +22,11 @@
 //    @ApiModelProperty(value = "功能ID", example = "402303ee656498890sd24s9ad2wa00sd")
 //    private String functionId;
 //
-//    public String getSaasId() {
+//    public String getOrgCode() {
 //        return saasId;
 //    }
 //
-//    public void setSaasId(String saasId) {
+//    public void setOrgCode(String saasId) {
 //        this.saasId = saasId;
 //    }
 //

@@ -21,7 +21,8 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
         city(1),
         town(2),
         org(3),
-        dept(4);
+        dept(4),
+        role(4);
 
         private int levelValue;
 

@@ -320,7 +320,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         List<DictHospitalDeptDO> hospitalDeptDOList = new ArrayList<>(dictHospitalDeptDOList.size());
         dictHospitalDeptDOList.forEach(dict->{
             DictHospitalDeptDO deptDO = new DictHospitalDeptDO();
-            deptDO.setSaasId(saasId);
+            deptDO.setOrgCode(saasId);
             deptDO.setName(dict.getName());
             deptDO.setCode(dict.getCode());
             deptDO.setCreateTime(new Date());

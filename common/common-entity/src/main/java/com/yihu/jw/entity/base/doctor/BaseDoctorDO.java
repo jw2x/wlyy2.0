@@ -39,7 +39,7 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
     /**
 	 * 性别（1男，2女） 用国家标准字典
 	 */
-	private String sex;
+	private Integer sex;
 
     /**
 	 * 医生专长
@@ -125,7 +125,7 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
     /**
 	 * 是否是名医，1是，0否
 	 */
-	private String isFamous;
+	private Integer isFamous;
 
     /**
 	 * 是否提示设置密码  1 提示过 0未提示
@@ -183,10 +183,10 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
     }
 
 	@Column(name = "sex")
-    public String getSex() {
+    public Integer getSex() {
         return sex;
     }
-    public void setSex(String sex) {
+    public void setSex(Integer sex) {
         this.sex = sex;
     }
 
@@ -319,10 +319,10 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
     }
 
 	@Column(name = "is_famous")
-    public String getIsFamous() {
+    public Integer getIsFamous() {
         return isFamous;
     }
-    public void setIsFamous(String isFamous) {
+    public void setIsFamous(Integer isFamous) {
         this.isFamous = isFamous;
     }
 

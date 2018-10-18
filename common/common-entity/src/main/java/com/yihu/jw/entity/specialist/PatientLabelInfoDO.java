@@ -28,11 +28,11 @@
 //    private String teamCode;//团队code',
 //
 //
-//    public String getSaasId() {
+//    public String getOrgCode() {
 //        return saasId;
 //    }
 //
-//    public void setSaasId(String saasId) {
+//    public void setOrgCode(String saasId) {
 //        this.saasId = saasId;
 //    }
 //

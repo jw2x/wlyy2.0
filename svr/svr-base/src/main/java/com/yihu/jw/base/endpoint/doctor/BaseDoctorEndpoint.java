@@ -129,16 +129,16 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      * @throws Exception
      */
     @PostMapping(value = BaseRequestMapping.BaseDoctor.docFullInfo)
-    @ApiOperation(value = "获取列表")
+    @ApiOperation(value = "获取医生基础信息列表")
     public Envelop getDoctorFullInfolist(
             @ApiParam(name = "name", value = "医生姓名")
-            @RequestParam(value = "orgId", required = true) String name,
+            @RequestParam(value = "name", required = false) String name,
             @ApiParam(name = "idcard", value = "医生身份证号")
-            @RequestParam(value = "orgId", required = true) String idcard,
+            @RequestParam(value = "idcard", required = false) String idcard,
             @ApiParam(name = "orgCode", value = "医院代码")
-            @RequestParam(value = "orgCode", required = true) String orgCode,
+            @RequestParam(value = "orgCode", required = false) String orgCode,
             @ApiParam(name = "doctorStatus", value = "医生是否生效")
-            @RequestParam(value = "doctorId", required = true) String doctorStatus,
+            @RequestParam(value = "doctorStatus", required = false) String doctorStatus,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")

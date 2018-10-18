@@ -138,6 +138,43 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
     private String streetName;
 
     /**
+     * 居住省代码
+     */
+    @ApiModelProperty(value = "居住省名称", example = "参考省代码")
+    private String liveProvinceCode;
+
+
+    /**
+     * 居住省名称
+     */
+    @ApiModelProperty(value = "居住省名称", example = "参考省名称")
+    private String liveProvinceName;
+
+    /**
+     * 居住市代码
+     */
+    @ApiModelProperty(value = "居住市代码", example = "参考市代码")
+    private String liveCityCode;
+
+    /**
+     * 居住市名称
+     */
+    @ApiModelProperty(value = "居住市名称", example = "参考市名称")
+    private String liveCityName;
+
+    /**
+     * 居住区县代码
+     */
+    @ApiModelProperty(value = "居住区县代码", example = "参考区县代码")
+    private String liveTownCode;
+
+    /**
+     * 居住区县名称
+     */
+    @ApiModelProperty(value = "居住区县名称", example = "参考区县名称")
+    private String liveTownName;
+
+    /**
      * 居委会代码
      */
     @ApiModelProperty(value = "居委会代码", example = "参考居委会代码")
@@ -252,6 +289,12 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
 	 */
 	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
     private String del;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value = "备注", example = "某某备注")
+    private String remark;
 
 
     public String getSaasId() {
@@ -526,5 +569,59 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
         this.del = del;
     }
 
+    public String getRemark() {
+        return remark;
+    }
 
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getLiveProvinceCode() {
+        return liveProvinceCode;
+    }
+
+    public void setLiveProvinceCode(String liveProvinceCode) {
+        this.liveProvinceCode = liveProvinceCode;
+    }
+
+    public String getLiveProvinceName() {
+        return liveProvinceName;
+    }
+
+    public void setLiveProvinceName(String liveProvinceName) {
+        this.liveProvinceName = liveProvinceName;
+    }
+
+    public String getLiveCityCode() {
+        return liveCityCode;
+    }
+
+    public void setLiveCityCode(String liveCityCode) {
+        this.liveCityCode = liveCityCode;
+    }
+
+    public String getLiveCityName() {
+        return liveCityName;
+    }
+
+    public void setLiveCityName(String liveCityName) {
+        this.liveCityName = liveCityName;
+    }
+
+    public String getLiveTownCode() {
+        return liveTownCode;
+    }
+
+    public void setLiveTownCode(String liveTownCode) {
+        this.liveTownCode = liveTownCode;
+    }
+
+    public String getLiveTownName() {
+        return liveTownName;
+    }
+
+    public void setLiveTownName(String liveTownName) {
+        this.liveTownName = liveTownName;
+    }
 }

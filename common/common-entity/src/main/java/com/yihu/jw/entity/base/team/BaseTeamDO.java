@@ -35,7 +35,7 @@ public class BaseTeamDO extends UuidIdentityEntityWithOperator {
     /**
      * 领导医生标识
      */
-    private String leaderId;
+    private String leaderCode;
 
     /**
      * 团队人数
@@ -78,13 +78,13 @@ public class BaseTeamDO extends UuidIdentityEntityWithOperator {
         this.name = name;
     }
 
-    @Column(name = "leader_id")
-    public String getLeaderId() {
-        return leaderId;
+    @Column(name = "leader_code")
+    public String getLeaderCode() {
+        return leaderCode;
     }
 
-    public void setLeaderId(String leaderId) {
-        this.leaderId = leaderId;
+    public void setLeaderCode(String leaderId) {
+        this.leaderCode = leaderCode;
     }
 
     @Column(name = "team_num")

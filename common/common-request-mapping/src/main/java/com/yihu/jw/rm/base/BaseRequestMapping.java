@@ -494,6 +494,7 @@ public class BaseRequestMapping {
      */
     public static class DictHospitalDept extends Basic {
         public static final String PREFIX  = "/dictHospitalDept";
+        public static final String queryDeptByOrg  = "/queryDeptByOrg";
     }
 
 

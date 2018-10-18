@@ -40,10 +40,10 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private BasePatientService basePatientService;
 
-    @PostMapping(value = BaseRequestMapping.BasePatient.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BasePatient.CREATE)
     @ApiOperation(value = "创建")
     public Envelop create(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
        String msg = basePatientService.createPatient(jsonData);
        if(!StringUtils.equalsIgnoreCase(ConstantUtils.SUCCESS,msg)){
@@ -61,17 +61,16 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.BasePatient.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BasePatient.UPDATE)
     @ApiOperation(value = "更新")
-    public ObjEnvelop<BasePatientVO> update(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+    public Envelop update(
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
-        BasePatientDO basePatient = toEntity(jsonData, BasePatientDO.class);
-        if (null == basePatient.getId()) {
-            return failed("ID不能为空", ObjEnvelop.class);
+        String msg = basePatientService.updatePatient(jsonData);
+        if(!StringUtils.equalsIgnoreCase(ConstantUtils.SUCCESS,msg)){
+            return failed(msg);
         }
-        basePatient = basePatientService.save(basePatient);
-        return success(basePatient, BasePatientVO.class);
+        return success(msg);
     }
 
     @PostMapping(value = BaseRequestMapping.BasePatient.getPatientById)
@@ -79,8 +78,8 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
     public Envelop getPatientById(
             @ApiParam(name = "id", value = "居民id")
             @RequestParam(value = "id", required = true) String id) throws Exception {
-        Map<String,Object> basePatients = basePatientService.getPatientInfo(id);
-        return success(basePatients.toString());
+        String result = basePatientService.getPatientInfo(id);
+        return success(result);
     }
 
     @GetMapping(value = BaseRequestMapping.BasePatient.PAGE)
@@ -117,10 +116,8 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.BasePatient.getBaseInfo)
     @ApiOperation(value = "获取居民基础信息列表")
     public ListEnvelop queryPatientBaseInfo(
-            @ApiParam(name = "idcard", value = "居民身份证")
-            @RequestParam(value = "idcard", required = false) String idcard,
-            @ApiParam(name = "name", value = "居民姓名")
-            @RequestParam(value = "name", required = false) String name,
+            @ApiParam(name = "nameOrIdcard", value = "居民姓名或身份证")
+            @RequestParam(value = "nameOrIdcard", required = false) String nameOrIdcard,
             @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
@@ -128,7 +125,7 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
 
-        List<Map<String,Object>> basePatients = basePatientService.queryPatientBaseInfo(idcard, name, page,size,sorts);
+        List<Map<String,Object>> basePatients = basePatientService.queryPatientBaseInfo(nameOrIdcard, page,size,sorts);
         return success(basePatients);
     }
 }

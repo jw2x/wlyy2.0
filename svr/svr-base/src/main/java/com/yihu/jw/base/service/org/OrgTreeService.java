@@ -145,12 +145,11 @@ public class OrgTreeService extends BaseJpaService<OrgTree, OrgTreeDao> {
      * @param level
      * @return
      */
-    List<OrgTree> findListByLevel(Integer level){
+    public List<OrgTree> findListByLevel(Integer level){
         List<OrgTree> result = new ArrayList<>();
         if(null == level){
             return result;
         }
-        return orgTreeDao.findByLevel(level);
-//        return orgTreeDao.findByLevelLessThanEqual(level);
+        return orgTreeDao.findByLevelLessThanEqual(level);
     }
 }

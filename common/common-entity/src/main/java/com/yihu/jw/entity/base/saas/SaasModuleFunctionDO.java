@@ -22,11 +22,11 @@
 //    private String functionId;
 //
 //    @Column(name = "saas_id", nullable = false, length = 50)
-//    public String getSaasId() {
+//    public String getOrgCode() {
 //        return saasId;
 //    }
 //
-//    public void setSaasId(String saasId) {
+//    public void setOrgCode(String saasId) {
 //        this.saasId = saasId;
 //    }
 //

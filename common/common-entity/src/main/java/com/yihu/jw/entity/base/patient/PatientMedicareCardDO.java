@@ -46,6 +46,11 @@ public class PatientMedicareCardDO extends IntegerIdentityEntity {
 	private String type;
 
     /**
+     * 医疗保险号
+     */
+	private String medicareNumber;
+
+    /**
 	 * 居民标识
 	 */
 	private String patientCode;
@@ -66,6 +71,15 @@ public class PatientMedicareCardDO extends IntegerIdentityEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Column(name = "medicare_number")
+    public String getMedicareNumber() {
+        return medicareNumber;
+    }
+
+    public void setMedicareNumber(String medicareNumber) {
+        this.medicareNumber = medicareNumber;
     }
 
     @Column(name = "patient_code")

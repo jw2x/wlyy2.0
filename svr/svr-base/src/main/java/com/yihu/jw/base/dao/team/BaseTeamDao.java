@@ -22,6 +22,7 @@ import java.util.Map;
  * @since 1.
  */
 public interface BaseTeamDao extends PagingAndSortingRepository<BaseTeamDO, String>, JpaSpecificationExecutor<BaseTeamDO>  {
-    /*@Query("select orgCode as code,OrgName as name from BaseTeamDO")
-    List<Map<String,Object>> getTeamOrgList();*/
-}
+    @Query("select orgCode as code,orgName as name from BaseTeamDO")
+    List<Map<String,Object>> getTeamOrgList();
+
+ }

@@ -105,4 +105,16 @@ public Envelop create (
                   return success(baseTeams, BaseTeamVO.class);
          }
 
+
+       /*  @GetMapping(value = BaseRequestMapping.BaseTeam.LIST)
+         @ApiOperation(value = "查看团队成员列表")
+         public Envelop getTeamMemberList (
+             @ApiParam(name = "orgCode", value = "返回的字段，为空返回全部字段")
+             @RequestParam(value = "orgCode", required = true) String orgCode,
+             @ApiParam(name = "teamCode", value = "过滤器，为空检索所有条件")
+             @RequestParam(value = "teamCode", required = true) String teamCode) throws Exception {
+             List<BaseTeamDO> baseTeams = baseTeamService.getTeamMemberList(orgCode, teamCode);
+                  return success(baseTeams, BaseTeamVO.class);
+         }*/
+
  }

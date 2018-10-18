@@ -22,6 +22,8 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
 import com.yihu.utils.security.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import org.springframework.util.StringUtils;
@@ -47,7 +49,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     private BaseOrgDao baseOrgDao;
 
     @Autowired
-    private OrgTreeDao orgTreeDao;
+    private OrgTreeService orgTreeService;
 
     @Autowired
     private UserService userService;
@@ -69,19 +71,19 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         List<Map<String,Object>> result = new ArrayList<>();
         if(StringUtils.endsWithIgnoreCase("1",orgStatus)){
             if(!StringUtils.isEmpty(orgCode) ){
-                result = baseOrgDao.findByCodeAndDel(orgCode,orgStatus,creatPage(page,size,sorts));
+                result = baseOrgDao.findByCodeAndDel(orgCode,orgStatus,createPage(page,size,sorts));
             }else if(!StringUtils.isEmpty(orgCode)){
-                result = baseOrgDao.findByNameAndDel(orgName,orgStatus,creatPage(page,size,sorts));
+                result = baseOrgDao.findByNameAndDel(orgName,orgStatus,createPage(page,size,sorts));
             }else{
-                result = baseOrgDao.findBaseInfoByDel(orgStatus,creatPage(page,size,sorts));
+                result = baseOrgDao.findBaseInfoByDel(orgStatus,createPage(page,size,sorts));
             }
         }else{
             if(!StringUtils.isEmpty(orgCode) ){
-                result = baseOrgDao.findByCode(orgCode,creatPage(page,size,sorts));
+                result = baseOrgDao.findByCode(orgCode,createPage(page,size,sorts));
             }else if(!StringUtils.isEmpty(orgCode)){
-                result = baseOrgDao.findByName(orgName,creatPage(page,size,sorts));
+                result = baseOrgDao.findByName(orgName,createPage(page,size,sorts));
             }else{
-                result = baseOrgDao.findBaseInfo(creatPage(page,size,sorts));
+                result = baseOrgDao.findBaseInfo(createPage(page,size,sorts));
             }
         }
         return result;
@@ -124,7 +126,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
                 return "no exist this org";
             }
             baseOrgDao.save(baseOrgDO);
-          /*  if(!baseOrgDO.getTownCode().equalsIgnoreCase(oldBaseOrgDO.getTownCode())){
+            if(!baseOrgDO.getTownCode().equalsIgnoreCase(oldBaseOrgDO.getTownCode())){
                 orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.town.getLevelValue());
             }
             if(!baseOrgDO.getCityCode().equalsIgnoreCase(oldBaseOrgDO.getCityCode())){
@@ -132,7 +134,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             }
             if(!baseOrgDO.getProvinceCode().equalsIgnoreCase(oldBaseOrgDO.getProvinceCode())){
                 orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.province.getLevelValue());
-            }*/
+            }
             userDO = userService.findById(adminId);
             //没有修改就不保存
             if(StringUtils.endsWithIgnoreCase(adminName,userDO.getUsername()) && StringUtils.endsWithIgnoreCase(mobile,userDO.getMobile())){
@@ -165,7 +167,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     public String getOrgAreaTree(){
 
         List<TreeNode> treeNodes = new ArrayList<>();
-        treeNodes.addAll(orgTreeDao.findAll());
+        treeNodes.addAll(orgTreeService.findListByLevel(OrgTree.Level.org.getLevelValue()));
         SimpleTree tree = new SimpleTree(treeNodes);
         List<SimpleTreeNode> treeNode = tree.getRoot();
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
@@ -191,4 +193,16 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         return JSONObject.toJSONString(treeNode, filter);
     }
 
+    /**
+     * 查找某一saasId下的所有机构code
+     * @param saasId
+     * @return
+     */
+    public List findOrgCodeBySaasId(String saasId){
+        List result = new ArrayList();
+        if(StringUtils.isEmpty(saasId)){
+            return result;
+        }
+        return baseOrgDao.findOrgCodeBySaasId(saasId);
+    }
 }

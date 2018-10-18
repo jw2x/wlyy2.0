@@ -23,10 +23,10 @@ import java.util.Date;
 public class DictHospitalDeptVO extends IntegerIdentityVO{
 
     /**
-	 * saas配置id，null标识公共字典
+	 * 机构code，每个机构的科室不完全一样
 	 */
-	@ApiModelProperty(value = "saas配置id，null标识公共字典", example = "402803ee656498890165649ad2da1112")
-    private String saasId;
+	@ApiModelProperty(value = "机构code", example = "402803ee656498890165649ad2da1112")
+    private String orgCode;
 
     /**
 	 * 科室标识
@@ -48,11 +48,11 @@ public class DictHospitalDeptVO extends IntegerIdentityVO{
     private Date createTime;
 
 
-    public String getSaasId() {
-        return saasId;
+    public String getOrgCode() {
+        return orgCode;
     }
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 
     public String getCode() {
