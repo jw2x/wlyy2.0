@@ -71,7 +71,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         }
         saasService.create(saasDO);
 
-        return success("创建成功");
+        return success("创建成功",saasDO);
     }
 
     @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION)
@@ -81,7 +81,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
 
         saasService.saveSystemConfig(saasDO);
-        return success("创建成功");
+        return success("创建成功",saasDO);
     }
 
     @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE)
