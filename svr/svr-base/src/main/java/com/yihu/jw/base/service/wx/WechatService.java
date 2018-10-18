@@ -303,7 +303,7 @@ public class WechatService {
             sql += " AND m.title LIKE '%"+title+"%' " ;
         }
         if(StringUtils.isNotBlank(scene)){
-            sql+= " AND g.scene = '"+scene+"'";
+            sql+= " AND g.scene = '"+scene+"' ORDER BY g.scene ASC ";
         }
         sql+=" LIMIT  " + (page - 1) * size + "," + size + "";
         List<WxGraphicMessageVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxGraphicMessageVO.class));
@@ -320,6 +320,12 @@ public class WechatService {
             wxGraphicSceneGroupDao.delete(gs);
         }
         wxGraphicSceneGroupDao.save(groups);
+        return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
+    }
+
+    public Envelop deleteImgGroupRelation(String wechatId,String scene,String imgId){
+        WxGraphicSceneGroupDO wxGraphicSceneGroupDO = wxGraphicSceneGroupDao.findByWechatIdAndSceneAndGraphicId(wechatId,scene,imgId);
+        wxGraphicSceneGroupDao.delete(wxGraphicSceneGroupDO);
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
     }
 

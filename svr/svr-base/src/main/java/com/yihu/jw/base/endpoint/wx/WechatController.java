@@ -173,13 +173,24 @@ public class WechatController extends EnvelopRestEndpoint {
 
     @PostMapping(value = BaseRequestMapping.WeChat.saveImgGroup)
     @ApiOperation(value = "分组图文素材", notes = "分组图文素材")
-    public Envelop saveImgGroup(@ApiParam(name = "groups", value = "微信id")
+    public Envelop saveImgGroup(@ApiParam(name = "groups", value = "图文消息关系json")
                                 @RequestParam(value = "groups", required = true)String groups) {
         List<WxGraphicSceneGroupDO> list = (List<WxGraphicSceneGroupDO>) JSONArray.parseArray(groups, WxGraphicSceneGroupDO.class);
         return wechatService.saveImgGroup(list);
     }
 
-    @PostMapping(value = BaseRequestMapping.WeChat.saveWxReplyScene)
+    @PostMapping(value = BaseRequestMapping.WeChat.deleteImgGroupRelation)
+    @ApiOperation(value = "分组图文素材", notes = "分组图文素材")
+    public Envelop deleteImgGroupRelation(@ApiParam(name = "wechatId", value = "微信id")
+                                          @RequestParam(value = "wechatId", required = true)String wechatId,
+                                          @ApiParam(name = "scene", value = "图文分组名称（场景值）")
+                                          @RequestParam(value = "scene", required = true)String scene,
+                                          @ApiParam(name = "imgId", value = "图文id")
+                                          @RequestParam(value = "imgId", required = true)String imgId) {
+        return wechatService.deleteImgGroupRelation(wechatId,scene,imgId);
+    }
+
+        @PostMapping(value = BaseRequestMapping.WeChat.saveWxReplyScene)
     @ApiOperation(value = "事件配置场景", notes = "事件配置场景")
     public Envelop saveWxReplyScene(@ApiParam(name = "wxReplySceneJson", value = "事件配置json")
                                     @RequestParam(value = "wxReplySceneJson", required = true)String wxReplySceneJson) throws Exception{
