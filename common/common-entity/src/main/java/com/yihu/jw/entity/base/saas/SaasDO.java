@@ -35,7 +35,7 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	private Status status; // 状态（0-待审核 1-审核通过(启用) 2-审核不通过 3-已暂停）
 	private String remark; //备注
 	private String logo; //远程fastDFS文件地址
-    private Integer type; //类型
+    private String type; //类型
 	private String manager; //管理员 - 关联user表id字段
 	private String email; //管理员邮箱
 	private String mobile; //管理员手机号码
@@ -96,11 +96,11 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	}
 
 	@Column(name = "type", nullable = false)
-	public Integer getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 

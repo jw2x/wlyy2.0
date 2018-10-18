@@ -15,6 +15,7 @@ import com.yihu.jw.entity.base.dict.*;
 import com.yihu.jw.entity.base.module.SaasModuleDO;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.entity.base.role.RoleDO;
+import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasThemeDO;
 import com.yihu.jw.entity.base.saas.SaasThemeExtendDO;
@@ -25,6 +26,9 @@ import com.yihu.mysql.query.BaseJpaService;
 import com.yihu.utils.security.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -78,6 +82,13 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     private SaasThemeExtendDao saasThemeExtendDao;
     @Value("${configDefault.saasId}")
     private String defaultSaasId;
+    @Autowired
+    private BaseEmailTemplateConfigService baseEmailTemplateConfigService;
+    @Value("${spring.mail.username}")
+    private String username;
+    @Autowired
+    JavaMailSender jms;
+
 
     /**
      * 默认租户管理员角色code
@@ -91,7 +102,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
      */
     @Transactional(rollbackFor = Exception.class)
     public SaasDO create(SaasDO saas){
-        saas.setStatus(SaasDO.Status.auditWait);
+        final SaasDO.Status staus = saas.getStatus();
+        saas.setStatus(SaasDO.Status.auditPassed);
         saas = saasDao.save(saas);
         List<BaseOrgDO> orgDOList = saas.getOrgList();
         if(orgDOList!=null&&orgDOList.size()>0){
@@ -127,7 +139,61 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
             });
         }
         baseOrgDao.save(orgDOList);
+
+        //用户信息初始化
+        UserDO userDO = new UserDO();
+        userDO.setEmail(saas.getEmail());
+        userDO.setMobile(saas.getMobile());
+        userDO.setName(saas.getManagerName());
+        userDO.setUsername(userDO.getEmail());
+
+        saasAudit(saas, userDO);
+        send(saas);
+        saas.setStatus(staus);
+        saasDao.save(saas);
         return saas;
+    }
+
+    /**
+     * 发送邮件
+     * @param saasDO
+     */
+    public void send(SaasDO saasDO) {
+        try {
+            SaasDO.Status status = saasDO.getStatus();
+            String password = saasDO.getMobile().substring(0, 6);
+            BaseEmailTemplateConfigDO baseEmailTemplateConfigDO = baseEmailTemplateConfigService.findByCode(status.name());
+            if (null == baseEmailTemplateConfigDO) {
+                return;
+            }
+            //建立邮件消息
+            SimpleMailMessage mainMessage = new SimpleMailMessage();
+            //发送者
+            mainMessage.setFrom(username);
+            //接收者
+            mainMessage.setTo(saasDO.getEmail());
+            //发送的标题
+            mainMessage.setSubject(baseEmailTemplateConfigDO.getTemplateName());
+            //发送的内容
+            StringBuffer content = new StringBuffer();
+            content.append(baseEmailTemplateConfigDO.getFirst() + "\n").append(baseEmailTemplateConfigDO.getKeyword1() + "\n");
+            content.append(baseEmailTemplateConfigDO.getKeyword2() + "\n");
+            if (status.equals(SaasDO.Status.auditPassed)) {
+                //账号
+                content.append(baseEmailTemplateConfigDO.getKeyword3() + saasDO.getMobile() + "\n");
+                //密码
+                content.append(baseEmailTemplateConfigDO.getKeyword4() + password + "\n");
+            } else if (status.equals(SaasDO.Status.auditNotPassed)) {
+                //审核未通过的原因
+                content.append(saasDO.getAuditFailedReason() + "\n");
+            }
+            content.append(baseEmailTemplateConfigDO.getKeyword5() + baseEmailTemplateConfigDO.getUrl() + "\n");
+            content.append(baseEmailTemplateConfigDO.getRemark());
+            mainMessage.setText(content.toString());
+            jms.send(mainMessage);
+        } catch (MailException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

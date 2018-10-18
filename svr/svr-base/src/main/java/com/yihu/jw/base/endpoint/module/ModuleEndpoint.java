@@ -17,10 +17,11 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +38,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
 
-    @PostMapping(value = BaseRequestMapping.Module.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Module.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<ModuleVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
@@ -79,7 +80,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.Module.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Module.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<ModuleVO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)

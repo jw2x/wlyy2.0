@@ -1,10 +1,10 @@
 package com.yihu.jw.entity.base.org;
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 
 /**
@@ -142,8 +142,10 @@ public class BaseOrgDO extends UuidIdentityEntityWithOperator {
 	 */
 	private String del;
 
+    public BaseOrgDO() {
+    }
 
-	public BaseOrgDO(String provinceCode,String provinceName,String cityCode,String cityName,String townCode,String townName,String code,String name ){
+    public BaseOrgDO(String provinceCode, String provinceName, String cityCode, String cityName, String townCode, String townName, String code, String name ){
 	    this.provinceCode = provinceCode;
 	    this.provinceName = provinceName;
 	    this.cityCode = cityCode;

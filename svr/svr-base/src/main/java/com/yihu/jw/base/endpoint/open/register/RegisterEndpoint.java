@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
@@ -60,7 +59,7 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
      */
     private final String redisPrefix = "verificationCode:";
 
-    @PostMapping(value = BaseRequestMapping.RegisterSaas.REGISTER, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.RegisterSaas.REGISTER)
     @ApiOperation(value = "注册租户")
     public Envelop create (
             @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
