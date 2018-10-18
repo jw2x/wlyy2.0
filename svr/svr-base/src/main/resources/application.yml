@@ -32,6 +32,15 @@ spring:
       max-wait: -1  # 连接池最大阻塞等待时间（使用负值表示没有限制）
       max-idle: 20  # 连接池中的最大空闲连接
       min-idle: 5  # 连接池中的最小空闲连接
+  mail:
+    default-encoding: UTF-8
+#端口
+    port: 25
+#协议
+    protocol: smtp
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
 es:
   index:
     servicePackLog: base_service_package_log
@@ -80,19 +89,12 @@ spring:
 #  zipkin:
 #    base-url: http://localhost:9411 #日志追踪的地址
   mail:
-    default-encoding: UTF-8
     host: smtp.163.com
 #发送者的邮箱密码
     password: xmijk181016jkzl
-#端口
-    port: 25
-#协议
-    protocol: smtp
 #发送者的邮箱账号
     username: i_jiankang@163.com
-    properties.mail.smtp.auth: true
-    properties.mail.smtp.starttls.enable: true
-    properties.mail.smtp.starttls.required: true
+
 fastDFS:
   fastdfs_file_url: http://172.19.103.54:80/
 # 短信发送地址
@@ -120,6 +122,12 @@ spring:
   redis:
     host: 172.19.103.88 # Redis server host.
     port: 6379 # Redis server port.
+  mail:
+    host: smtp.163.com
+#发送者的邮箱密码
+    password: xmijk181016jkzl
+#发送者的邮箱账号
+    username: i_jiankang@163.com
 #    password: jkzl_ehr
 #  zipkin:
 #    base-url: http://localhost:9411 #日志追踪的地址
@@ -148,6 +156,12 @@ spring:
   redis:
     host: 172.19.103.88 # Redis server host.
     port: 6379 # Redis server port.
+  mail:
+    host: smtp.163.com
+#发送者的邮箱密码
+    password: xmijk181016jkzl
+#发送者的邮箱账号
+    username: i_jiankang@163.com
 #    password: jkzl_ehr
 #  zipkin:
 #    base-url: http://localhost:9411 #日志追踪的地址
