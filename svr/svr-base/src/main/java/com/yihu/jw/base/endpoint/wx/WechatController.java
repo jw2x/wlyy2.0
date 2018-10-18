@@ -190,13 +190,28 @@ public class WechatController extends EnvelopRestEndpoint {
         return wechatService.deleteImgGroupRelation(wechatId,scene,imgId);
     }
 
-        @PostMapping(value = BaseRequestMapping.WeChat.saveWxReplyScene)
+    @PostMapping(value = BaseRequestMapping.WeChat.saveWxReplyScene)
     @ApiOperation(value = "事件配置场景", notes = "事件配置场景")
     public Envelop saveWxReplyScene(@ApiParam(name = "wxReplySceneJson", value = "事件配置json")
                                     @RequestParam(value = "wxReplySceneJson", required = true)String wxReplySceneJson) throws Exception{
         WxReplySceneDO wxReplyScene = toEntity(wxReplySceneJson, WxReplySceneDO.class);
         return wechatService.saveWxReplyScene(wxReplyScene);
 
+    }
+
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxReplySceneExist)
+    @ApiOperation(value = "验证事件配置是否存在", notes = "验证事件配置是否存在")
+    public Envelop findWxReplySceneExist(@ApiParam(name = "wechatId", value = "微信id")
+                                         @RequestParam(value = "wechatId", required = true)String wechatId,
+                                         @ApiParam(name = "msgType", value = "消息类型")
+                                         @RequestParam(value = "msgType", required = true)String msgType,
+                                         @ApiParam(name = "event", value = "event")
+                                         @RequestParam(value = "event", required = true)String event,
+                                         @ApiParam(name = "content", value = "消息文本")
+                                         @RequestParam(value = "content", required = false)String content,
+                                         @ApiParam(name = "scene", value = "场景值（图文分组）")
+                                         @RequestParam(value = "scene", required = true)String scene) {
+        return success(BaseRequestMapping.WeChat.api_success,wechatService.findWxReplySceneExist(wechatId,msgType,event,content,scene));
     }
 
     @GetMapping(value = BaseRequestMapping.WeChat.findWxReplyScene)

@@ -7,6 +7,7 @@ import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -334,6 +335,45 @@ public class WechatService {
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
     }
 
+    public Map<String,Object> findWxReplySceneExist(String wechatId,String msgType,String event,String content,String scene){
+        Map<String,Object> map = new HashedMap();
+
+        if("text".equals(msgType)){
+            List<WxReplySceneDO> wxReplySceneDOs =wxReplySceneDao.findByWechatIdAndMsgTypeAndContentAndStatus(wechatId,msgType,content,1);
+            if(wxReplySceneDOs!=null&&wxReplySceneDOs.size()>0){
+                map.put("status",-1);
+                map.put("mes","文本回复已经存在！");
+            }else{
+                map.put("status",1);
+                map.put("mes","事件验证成功！");
+            }
+        }else{
+            //关注事件类型只能有一条事件配置
+            if("subscribe".equals(event)){
+                List<WxReplySceneDO> wxReplySceneDOs =wxReplySceneDao.findByWechatIdAndMsgTypeAndEventAndStatus(wechatId,msgType,event,1);
+                if(wxReplySceneDOs!=null&&wxReplySceneDOs.size()>0){
+                    map.put("status",-2);
+                    map.put("mes","关注事件已经配置！");
+                }else{
+                    map.put("status",1);
+                    map.put("mes","事件验证成功！");
+                }
+            }else{
+                //点击事件，扫码事件
+                List<WxReplySceneDO> wxReplySceneDOs =wxReplySceneDao.findByWechatIdAndMsgTypeAndEventAndSceneAndStatus(wechatId,msgType,event,scene,1);
+                if(wxReplySceneDOs!=null&&wxReplySceneDOs.size()>0){
+                    map.put("status",-3);
+                    map.put("mes","事件图文分组已经配置！");
+                }else{
+                    map.put("status",1);
+                    map.put("mes","事件验证成功！");
+                }
+            }
+        }
+
+        return map;
+    }
+
     public MixEnvelop findWxReplyScene(String wechatId,String msgType,String event,String content,Integer page,Integer size){
         String totalSql = "SELECT " +
                 " COUNT(1) AS total " +
@@ -357,6 +397,7 @@ public class WechatService {
         }
 
         String sql = "SELECT " +
+                " s.id," +
                 " s.wechat_id AS wechatId," +
                 " s.scene, " +
                 " s.`status`, " +
