@@ -44,7 +44,7 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建")
     public Envelop create(
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
        String msg = basePatientService.createPatient(jsonData);
        if(!StringUtils.equalsIgnoreCase(ConstantUtils.SUCCESS,msg)){
            return success(msg);
@@ -65,7 +65,7 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "更新")
     public ObjEnvelop<BasePatientVO> update(
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         BasePatientDO basePatient = toEntity(jsonData, BasePatientDO.class);
         if (null == basePatient.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);

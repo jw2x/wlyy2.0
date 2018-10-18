@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.base.dao.doctor.BaseDoctorDao;
 //import com.yihu.jw.base.dao.org.OrgTreeDao;
+import com.yihu.jw.base.dao.org.OrgTreeDao;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
 import com.yihu.jw.base.service.org.tree.SimpleTreeNode;
 import com.yihu.jw.base.service.org.tree.TreeNode;
@@ -47,8 +48,8 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-/*    @Autowired
-    private OrgTreeDao orgTreeDao;*/
+    @Autowired
+    private OrgTreeDao orgTreeDao;
 
 
     /**
@@ -91,7 +92,7 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
      * @param docStatus
      * @return
      */
-    /*public List<Map<String,Object>> getDoctorFullInfo(String name,String idcard,String orgCode,String docStatus){
+    public List<Map<String,Object>> getDoctorFullInfo(String name,String idcard,String orgCode,String docStatus){
         List<Map<String,Object>> result = new ArrayList<>();
         StringBuilder sql = new StringBuilder();
         sql.append("select doc.id,doc.name,doc.idcard,case doc.sex when 1 then '男' when 2 then '女' else '未知' end as sex,doc.del as status,hos.hosp_name,hos.dept_name,hos.role_name,hos.job_title_name from base_doctor doc,base_doctor_hospital hos where doc.id = hos.doctor_code and hos.del = 1");
@@ -123,10 +124,10 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
     }
 
 
-    *//**
+    /**
      * 构建机构区域树形结构
      * @return
-     *//*
+     */
     public String getOrgTree(){
 
         List<TreeNode> treeNodes = new ArrayList<>();
@@ -138,5 +139,5 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
         filter.getExcludes().add("allChildren");
 
         return JSONObject.toJSONString(treeNode, filter);
-    }*/
+    }
 }

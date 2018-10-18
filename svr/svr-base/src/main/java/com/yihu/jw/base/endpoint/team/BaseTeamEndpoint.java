@@ -44,7 +44,7 @@ private BaseTeamService baseTeamService;
 @ApiOperation(value = "创建")
 public Envelop create (
     @ApiParam(name = "json_data", value = "Json数据", required = true)
-    @RequestBody String jsonData) throws Exception {
+    @RequestParam String jsonData) throws Exception {
     String msg = baseTeamService.createTeam(jsonData);
     if(StringUtils.equalsIgnoreCase(ConstantUtils.SUCCESS,msg)){
         return success(msg);
@@ -65,7 +65,7 @@ public Envelop create (
     @ApiOperation(value = "更新")
     public ObjEnvelop<BaseTeamVO> update (
         @ApiParam(name = "json_data", value = "Json数据", required = true)
-        @RequestBody String jsonData) throws Exception {
+        @RequestParam String jsonData) throws Exception {
         BaseTeamDO baseTeam = toEntity(jsonData, BaseTeamDO.class);
         if (null == baseTeam.getId()) {
         return failed("ID不能为空", ObjEnvelop.class);

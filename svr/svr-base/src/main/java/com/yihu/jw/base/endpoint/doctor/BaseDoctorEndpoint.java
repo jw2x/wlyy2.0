@@ -42,7 +42,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建")
     public ObjEnvelop<BaseDoctorVO> create(
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         BaseDoctorDO baseDoctor = toEntity(jsonData, BaseDoctorDO.class);
         baseDoctor = baseDoctorService.save(baseDoctor);
         return success(baseDoctor, BaseDoctorVO.class);
@@ -61,7 +61,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "更新")
     public ObjEnvelop<BaseDoctorVO> update(
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         BaseDoctorDO baseDoctor = toEntity(jsonData, BaseDoctorDO.class);
         if (null == baseDoctor.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);
@@ -119,7 +119,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
         return success(map.toString());
     }
 
- /**
+    /*
      * 医生信息（基本信息 + 医院执业信息）列表
      * @param name
      * @param idcard
@@ -128,7 +128,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      * @return
      * @throws Exception
      */
-  /*  @PostMapping(value = BaseRequestMapping.BaseDoctor.docFullInfo)
+    @PostMapping(value = BaseRequestMapping.BaseDoctor.docFullInfo)
     @ApiOperation(value = "获取列表")
     public Envelop getDoctorFullInfolist(
             @ApiParam(name = "name", value = "医生姓名")
@@ -150,17 +150,17 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     }
 
 
-    *//**
+    /**
      * 获取医生 所属机构/部门/职称/职务 树形结构数据
      * @return
      * @throws Exception
-     *//*
+     */
     @PostMapping(value = BaseRequestMapping.BaseDoctor.docOrgTreeInfo)
     @ApiOperation(value = "获取医生所属机构树形结构数据")
     public Envelop getDoctorOrgTree() throws Exception {
         String data = baseDoctorService.getOrgTree();
         return success(data);
-    }*/
+    }
 
 
 }
