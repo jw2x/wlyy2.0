@@ -251,6 +251,7 @@ public class BaseRequestMapping {
         public static final String findImg ="/findImg";
         public static final String findGraphicMessageSingle ="/findGraphicMessageSingle";
         public static final String saveImgGroup ="/saveImgGroup";
+        public static final String deleteImgGroupRelation ="/deleteImgGroupRelation";
 
         public static final String saveWxReplyScene ="/saveWxReplyScene";
         public static final String findWxReplyScene ="/findWxReplyScene";
