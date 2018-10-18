@@ -90,7 +90,7 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
         this.name = name;
     }
 
- @Column(name = "level",nullable = false)
+    @Column(name = "level",nullable = false)
     public Integer getLevel() {
         return level;
     }

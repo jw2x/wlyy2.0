@@ -131,17 +131,12 @@ spring:
 #    password: jkzl_ehr
 #  zipkin:
 #    base-url: http://localhost:9411 #日志追踪的地址
-  mail:
+#  mail:
     default-encoding: UTF-8
-    host: smtp.163.com
-#发送者的邮箱密码
-    password: xmijk181016jkzl
 #端口
     port: 25
 #协议
     protocol: smtp
-#发送者的邮箱账号
-    username: i_jiankang@163.com
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
     properties.mail.smtp.starttls.required: true
@@ -172,24 +167,20 @@ spring:
     port: 6379 # Redis server port.
   mail:
     host: smtp.163.com
-#发送者的邮箱密码
-    password: xmijk181016jkzl
 #发送者的邮箱账号
     username: i_jiankang@163.com
+#发送者的邮箱密码
+    password: xmijk181016jkzl
 #    password: jkzl_ehr
 #  zipkin:
 #    base-url: http://localhost:9411 #日志追踪的地址
-  mail:
+#  mail:
     default-encoding: UTF-8
-    host: smtp.163.com
-#发送者的邮箱密码
-    password: xmijk181016jkzl
 #端口
     port: 25
 #协议
     protocol: smtp
-#发送者的邮箱账号
-    username: i_jiankang@163.com
+
     properties.mail.smtp.auth: true
     properties.mail.smtp.starttls.enable: true
     properties.mail.smtp.starttls.required: true
