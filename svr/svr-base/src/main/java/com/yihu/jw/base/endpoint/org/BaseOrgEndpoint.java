@@ -44,7 +44,7 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建")
     public Envelop create(
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(jsonData);
         BaseOrgDO baseOrg = toEntity(jsonObject.getJSONObject("org").toJSONString(), BaseOrgDO.class);
         String  msg = baseOrgService.createOrUpdateOrg(baseOrg,jsonObject.getJSONObject("admin"));
@@ -67,7 +67,7 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "更新")
     public ObjEnvelop<BaseOrgVO> update(
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         BaseOrgDO baseOrg = toEntity(jsonData, BaseOrgDO.class);
         if (null == baseOrg.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);

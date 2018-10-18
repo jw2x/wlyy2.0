@@ -31,19 +31,19 @@ public class BaseDoctorHospitalVO extends IntegerIdentityVO{
     /**
 	 * 医院名称
 	 */
-	@ApiModelProperty(value = "医院名称", example = "")
+	@ApiModelProperty(value = "医院名称", example = "厦门市中医院")
     private String hospName;
 
     /**
 	 * 医生角色标识
 	 */
-	@ApiModelProperty(value = "医生角色标识", example = "")
+	@ApiModelProperty(value = "医生角色标识", example = "专科医生")
     private String roleCode;
 
     /**
 	 * 医院角色名称
 	 */
-	@ApiModelProperty(value = "医院角色名称", example = "")
+	@ApiModelProperty(value = "医生角色名称", example = "")
     private String roleName;
 
     /**
@@ -55,8 +55,20 @@ public class BaseDoctorHospitalVO extends IntegerIdentityVO{
     /**
 	 * 职称名称
 	 */
-	@ApiModelProperty(value = "职称名称", example = "")
+	@ApiModelProperty(value = "职称名称", example = "副主任医师")
     private String jobTitleName;
+
+    /**
+     * 部门标识
+     */
+    @ApiModelProperty(value = "部门标识", example = "")
+    private String deptCode;
+
+    /**
+     * 部门名称
+     */
+    @ApiModelProperty(value = "部门名称", example = "骨科专业")
+    private String deptName;
 
     /**
 	 * 作废标识，1正常，0作废

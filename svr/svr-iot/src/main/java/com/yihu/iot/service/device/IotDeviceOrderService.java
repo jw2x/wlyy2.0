@@ -104,7 +104,7 @@ public class IotDeviceOrderService extends BaseJpaService<IotDeviceOrderDO,IotDe
 //            planDO.setPurchaseNum(purchase.getPurchaseNum());
 //            planDO.setOrderNo(orderNo);
 //            planDO.setOrderId(orderId);
-//            planDO.setSaasId(getCode());
+//            planDO.setOrgCode(getCode());
 //            planDO.setStatus(IotDeviceQualityInspectionPlanDO.QualityPlanStatus.create.getValue());
 //            planDO.setDeviceName(purchase.getDeviceName());
 //            planDO.setPurchaseId(purchase.getId());

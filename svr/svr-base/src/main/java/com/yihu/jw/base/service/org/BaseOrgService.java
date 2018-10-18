@@ -1,28 +1,34 @@
 package com.yihu.jw.base.service.org;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.google.gson.JsonObject;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
 import com.yihu.jw.base.dao.org.OrgTreeDao;
+import com.yihu.jw.base.dao.user.UserDao;
+import com.yihu.jw.base.dao.user.UserRoleDao;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
 import com.yihu.jw.base.service.org.tree.SimpleTreeNode;
+import com.yihu.jw.base.service.org.tree.Tree;
 import com.yihu.jw.base.service.org.tree.TreeNode;
 import com.yihu.jw.base.service.user.UserRoleService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ConstantUtils;
-import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
+import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
+import com.yihu.utils.security.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import com.yihu.jw.entity.base.org.BaseOrgDO;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -43,7 +49,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     private BaseOrgDao baseOrgDao;
 
     @Autowired
-    private OrgTreeDao orgTreeDao;
+    private OrgTreeService orgTreeService;
 
     @Autowired
     private UserService userService;
@@ -111,12 +117,25 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             userRoleDO.setUserId("");
             userRoleService.save(userRoleDO);
         }else{
-            String id = orgAdminJson.getString("id");
-            if(StringUtils.isEmpty(id)){
+            String adminId = orgAdminJson.getString("id");
+            if(StringUtils.isEmpty(adminId)){
                 return "paramter id for admin is null when update";
             }
+            BaseOrgDO oldBaseOrgDO = baseOrgDao.findOne(baseOrgDO.getId());
+            if(null == oldBaseOrgDO){
+                return "no exist this org";
+            }
             baseOrgDao.save(baseOrgDO);
-            userDO = userService.findById(id);
+            if(!baseOrgDO.getTownCode().equalsIgnoreCase(oldBaseOrgDO.getTownCode())){
+                orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.town.getLevelValue());
+            }
+            if(!baseOrgDO.getCityCode().equalsIgnoreCase(oldBaseOrgDO.getCityCode())){
+                orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.city.getLevelValue());
+            }
+            if(!baseOrgDO.getProvinceCode().equalsIgnoreCase(oldBaseOrgDO.getProvinceCode())){
+                orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.province.getLevelValue());
+            }
+            userDO = userService.findById(adminId);
             //没有修改就不保存
             if(StringUtils.endsWithIgnoreCase(adminName,userDO.getUsername()) && StringUtils.endsWithIgnoreCase(mobile,userDO.getMobile())){
                 return ConstantUtils.SUCCESS;
@@ -148,7 +167,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     public String getOrgAreaTree(){
 
         List<TreeNode> treeNodes = new ArrayList<>();
-        treeNodes.addAll(orgTreeDao.findAll());
+        treeNodes.addAll(orgTreeService.findListByLevel(OrgTree.Level.org.getLevelValue()));
         SimpleTree tree = new SimpleTree(treeNodes);
         List<SimpleTreeNode> treeNode = tree.getRoot();
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
@@ -174,4 +193,16 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         return JSONObject.toJSONString(treeNode, filter);
     }
 
+    /**
+     * 查找某一saasId下的所有机构code
+     * @param saasId
+     * @return
+     */
+    public List findOrgCodeBySaasId(String saasId){
+        List result = new ArrayList();
+        if(StringUtils.isEmpty(saasId)){
+            return result;
+        }
+        return baseOrgDao.findOrgCodeBySaasId(saasId);
+    }
 }

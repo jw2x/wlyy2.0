@@ -31,7 +31,7 @@
 //        if (StringUtils.isEmpty(baseLoginAccountDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseMenu.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(baseLoginAccountDO.getSaasId())) {
+//        if (StringUtils.isEmpty(baseLoginAccountDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseMenu.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        return this.baseLoginAccountDao.save(baseLoginAccountDO);

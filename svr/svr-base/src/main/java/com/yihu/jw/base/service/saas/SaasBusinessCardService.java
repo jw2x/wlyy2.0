@@ -37,7 +37,7 @@ public class SaasBusinessCardService extends BaseJpaService<SaasBusinessCardDO, 
      */
     public Map<String, Object> generateBusinessCard(SaasBusinessCardDO.Type type, String saasId, String sourceId, String orgId) throws Exception {
         List<SaasBusinessCardDO> saasBusinessCardDO = search("type=" + type  + ";saasId=" + saasId);
-        Map<String, Object> card = new HashMap<>();
+        /*Map<String, Object> card = new HashMap<>();
         if (type == SaasBusinessCardDO.Type.doctor) {
             //模拟加载医生数据
             Map<String, Object> source = doctorService.getDoctorInfo(orgId, sourceId);
@@ -49,7 +49,8 @@ public class SaasBusinessCardService extends BaseJpaService<SaasBusinessCardDO, 
             saasBusinessCardDO.forEach(item -> card.put(item.getField(), source.get(item.getField())));
             return card;
         }
-        return card;
+        return card;*/
+        return null;
     }
 
 }

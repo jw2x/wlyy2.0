@@ -13,13 +13,35 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
     private String code;
     private String parentCode;
     private String name;
+    //当前树节点所在层级，例如省在第一级,用0表示
+    private Integer level;
 
+    public enum Level{
+        province(0),
+        city(1),
+        town(2),
+        org(3),
+        dept(4),
+        role(4);
+
+        private int levelValue;
+
+         Level(int levelValue){
+            this.levelValue = levelValue;
+        }
+
+        public int getLevelValue() {
+            return levelValue;
+        }
+    }
     public OrgTree(){}
-    public OrgTree(String code, String parentCode, String name){
+    public OrgTree(String code, String parentCode, String name,Integer level){
         this.code = code;
         this.parentCode = parentCode;
         this.name = name;
+        this.level = level;
     }
+
 
     @Override
     public String extractNodeId() {
@@ -66,6 +88,15 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+ @Column(name = "level",nullable = false)
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
 }

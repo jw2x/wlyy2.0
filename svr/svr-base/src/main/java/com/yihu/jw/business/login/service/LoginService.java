@@ -62,7 +62,7 @@
 //        //保存账户基础信息
 //        BaseEmployDO employeeDO = new BaseEmployDO();
 //        employeeDO.setId(UUID.randomUUID().toString().replaceAll("-", ""));
-//        employeeDO.setSaasId(saasId);
+//        employeeDO.setOrgCode(saasId);
 //        employeeDO.setName(name);
 //        employeeDO.setPyCode(ConvertToSpellUtils.changeToInitialPinYin(name));
 //        employeeDO.setIdcard(idcard);

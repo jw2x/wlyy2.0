@@ -377,6 +377,8 @@ public class BaseRequestMapping {
     public static class BaseDoctor extends Basic {
         public static final String PREFIX  = "/baseDoctor";
         public static final String DOCINFO  = "/docInfo";
+        public static final String docFullInfo  = "/docFullInfo";
+        public static final String docOrgTreeInfo  = "/docOrgTreeInfo";
     }
 
 
@@ -495,6 +497,7 @@ public class BaseRequestMapping {
      */
     public static class DictHospitalDept extends Basic {
         public static final String PREFIX  = "/dictHospitalDept";
+        public static final String queryDeptByOrg  = "/queryDeptByOrg";
     }
 
 

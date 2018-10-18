@@ -106,7 +106,7 @@
 //        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 //        sms.setDeadline(s.parse(vc.getCreateTimeString()));
 //        sms.setStatus(1);
-//        sms.setSaasId(saasId);
+//        sms.setOrgCode(saasId);
 //        //5、 调用发送信息的接口
 ////        String result = httpClientUtil.post(smsHttpVo.getUrl(), buildSmsParams(sms.getContent(), mobile), "GBK");
 ////        JSONObject json = toJson(result);

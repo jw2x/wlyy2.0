@@ -3,7 +3,12 @@ package com.yihu.jw.base.util;
 
 
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -18,6 +23,24 @@ import java.util.*;
  * @project jw2.0
  */
 public class JavaBeanUtils {
+
+    private static JavaBeanUtils javaBeanUtils = null;
+
+    private JavaBeanUtils(){}
+
+    public static JavaBeanUtils getInstance(){
+        if (javaBeanUtils == null) {
+            synchronized (JavaBeanUtils.class) {
+                if (javaBeanUtils == null) {
+                    javaBeanUtils = new JavaBeanUtils();
+                }
+            }
+        }
+        return javaBeanUtils;
+    }
+
+    @Autowired
+    private ObjectMapper objectMapper;
     /**
      * 将一个 Map 对象转化为一个 JavaBean
      *
@@ -36,7 +59,7 @@ public class JavaBeanUtils {
      *             如果调用属性的 setter 方法失败
      */
     @SuppressWarnings("unchecked")
-    public static Object map2Bean(Class type, Map map)
+    public  Object map2Bean(Class type, Map map)
             throws IntrospectionException, IllegalAccessException,
             InstantiationException, InvocationTargetException {
         Object obj = type.newInstance(); // 创建 JavaBean 对象
@@ -58,7 +81,7 @@ public class JavaBeanUtils {
      *             如果调用属性的 setter 方法失败
      */
     @SuppressWarnings("unchecked")
-    public static Map bean2Map(Object bean) throws IntrospectionException,
+    public  Map bean2Map(Object bean) throws IntrospectionException,
             IllegalAccessException, InvocationTargetException {
         Class type = bean.getClass();
         Map returnMap = new HashMap();
@@ -94,7 +117,7 @@ public class JavaBeanUtils {
      * @time:2014年9月3日上午10:37:32
      */
     @SuppressWarnings("unchecked")
-    public static List<Map> beans2Maps(List<Object> beans)
+    public  List<Map> beans2Maps(List<Object> beans)
             throws IllegalAccessException, InvocationTargetException,
             IntrospectionException {
         List<Map> maps = new ArrayList<Map>();
@@ -119,7 +142,7 @@ public class JavaBeanUtils {
      * @time:2014年9月3日上午10:40:00
      */
     @SuppressWarnings("unchecked")
-    public static List<Object> mapstoBeans(Class type, List<Map> maps)
+    public  List<Object> mapstoBeans(Class type, List<Map> maps)
             throws IntrospectionException, IllegalAccessException,
             InstantiationException, InvocationTargetException {
         List<Object> beans = new ArrayList<Object>();
@@ -142,7 +165,7 @@ public class JavaBeanUtils {
      * @throws InvocationTargetException
      * @time:2014年9月3日上午11:47:45
      */
-    public static Object copyProperties(Object toBean, Object fromBean)
+    public  Object copyProperties(Object toBean, Object fromBean)
             throws IllegalAccessException, InvocationTargetException {
         if (fromBean == null) {
             return null;
@@ -164,7 +187,7 @@ public class JavaBeanUtils {
      * @throws ClassNotFoundException
      * @time:2014年9月3日下午12:05:23
      */
-    public static Object copyProperties(Class toClassBean, Object fromBean)
+    public  Object copyProperties(Class toClassBean, Object fromBean)
             throws IllegalAccessException, InvocationTargetException,
             InstantiationException, ClassNotFoundException {
         if (fromBean == null) {
@@ -190,7 +213,7 @@ public class JavaBeanUtils {
      * @throws ClassNotFoundException
      * @time:2014年9月3日下午12:33:24
      */
-    public static List copyProperties(Class toClassBean, List beans)
+    public List copyProperties(Class toClassBean, List beans)
             throws IllegalAccessException, InvocationTargetException,
             InstantiationException, ClassNotFoundException {
         List list = new ArrayList();
@@ -199,5 +222,38 @@ public class JavaBeanUtils {
             list.add(copyProperties(toClassBean, object));
         }
         return list;
+    }
+
+
+    /**
+     * map转为json
+     * @return
+     */
+    public String mapJson(Map<String, Object> map) throws Exception {
+        if (CollectionUtils.isEmpty(map)) {
+            return "paramter is null";
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = JSONObject.parseObject(objectMapper.writeValueAsString(map));
+        return jsonArray.toJSONString();
+    }
+
+
+    /**
+     * map转为json
+     * @return
+     */
+    public String mapListJson(List<Map<String, Object>> mapList) throws Exception {
+        if (CollectionUtils.isEmpty(mapList)) {
+            return "paramter is null";
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
+        JSONArray jsonArray = new JSONArray();
+        for(Map<String, Object> map : mapList){
+            JSONObject jsonObject = JSONObject.parseObject(objectMapper.writeValueAsString(map));
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray.toJSONString();
     }
 }
