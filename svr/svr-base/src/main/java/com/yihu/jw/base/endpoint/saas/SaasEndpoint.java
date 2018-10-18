@@ -29,6 +29,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Endpoint - SAAS
@@ -71,6 +72,15 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         }
         saasService.create(saasDO);
         saasDO.setStatus(SaasDO.Status.auditPassed);
+        //用户信息初始化
+        UserDO userDO = new UserDO();
+        userDO.setEmail(saasDO.getEmail());
+        userDO.setMobile(saasDO.getMobile());
+        userDO.setName(saasDO.getManagerName());
+        userDO.setUsername(userDO.getEmail());
+        //初始化租户信息
+        saasService.save(saasDO);
+        saasDO = saasService.saasAudit(saasDO, userDO);
         return send(saasDO);
     }
 
@@ -94,6 +104,16 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("创建成功");
     }
 
+    @PostMapping(value = BaseRequestMapping.Saas.RESET_SECRET)
+    @ApiOperation(value = "重置密钥")
+    public Envelop resetSecret(
+            @ApiParam(name = "id", value = "saasId", required = true)
+            @RequestParam(value = "id") String id) {
+        SaasDO oldSaas = saasService.findById(id);
+        oldSaas.setAppSecret(UUID.randomUUID().toString().replaceAll("-", ""));
+        saasService.save(oldSaas);
+        return success("重置成功");
+    }
 
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
     @ApiOperation(value = "删除")

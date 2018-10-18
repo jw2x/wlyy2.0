@@ -10,6 +10,7 @@ import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
 import com.yihu.jw.restmodel.base.saas.SaasTypeDictVO;
+import com.yihu.jw.restmodel.base.saas.SaasVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
@@ -17,6 +18,7 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -72,16 +74,33 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
         if(!captcha.equals(verificationCode)){
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.CAPTCHA_IS_ERROR), Envelop.class);
         }
-        if (saasService.search("name=" + saasDO.getName()).size() > 0) {
-            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
+        if(StringUtils.isBlank(saasDO.getId())){
+            //新增
+            if (saasService.search("name=" + saasDO.getName()).size() > 0) {
+                return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
+            }
+            if (userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
+                return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+            }
+            if (userService.search("username=" + saasDO.getEmail()).size() > 0) {
+                return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+            }
+
+            saasService.create(saasDO);
+        }else {
+            //修改
+            SaasDO oldSaas = saasService.findById(saasDO.getId());
+            if (!oldSaas.getName().equals(saasDO.getName())&&saasService.search("name=" + saasDO.getName()).size() > 0) {
+                return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
+            }
+            if (!oldSaas.getMobile().equals(saasDO.getMobile())&&userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
+                return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+            }
+            if (!oldSaas.getEmail().equals(saasDO.getEmail())&&userService.search("username=" + saasDO.getEmail()).size() > 0) {
+                return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+            }
+            saasService.create(saasDO,oldSaas);
         }
-        if (userService.search("mobile=" + saasDO.getMobile()).size() > 0) {
-            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
-        }
-        if (userService.search("username=" + saasDO.getEmail()).size() > 0) {
-            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
-        }
-        saasService.create(saasDO);
         //注册成功后 吧key删除
         redisTemplate.delete(redisKey);
         return success("注册申请成功");
@@ -92,6 +111,18 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
     public ListEnvelop<SaasTypeDictVO> list() throws Exception {
         List<SaasTypeDictDO> saasTypeDictDOS = saasTypeDictService.search(null, "status="+SaasTypeDictDO.Status.effective, null);
         return success(saasTypeDictDOS, SaasTypeDictVO.class);
+    }
+
+    @PostMapping(value = BaseRequestMapping.RegisterSaas.FIND_BY_ID)
+    @ApiOperation(value = "查找（审核不通过的）租户")
+    public Envelop findById(
+            @ApiParam(name = "id", value = "租户id", required = true)
+            @RequestParam String id) throws Exception{
+        SaasDO saasDO = saasService.findById(id);
+        if(SaasDO.Status.auditNotPassed.equals(saasDO.getStatus())){
+            return success(saasDO,SaasVO.class);
+        }
+        return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.IS_NOT_AUDITNOTPASSED), Envelop.class);
     }
 
     @PostMapping(value = BaseRequestMapping.RegisterSaas.NAME_IS_EXIST)
@@ -129,10 +160,10 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
             //发送的内容
             content =  new StringBuilder(emailTemplateConfigDO.getFirst());
             content.append("\n").append(emailTemplateConfigDO.getKeyword1()).append("\n")
-                    .append(emailTemplateConfigDO.getKeyword2()).append(captcha)
-                    .append(emailTemplateConfigDO.getKeyword3()).append("\n")
-                    .append(emailTemplateConfigDO.getKeyword5()).append(emailTemplateConfigDO.getUrl())
-                    .append("\n").append("\n").append(emailTemplateConfigDO.getRemark());
+                .append(emailTemplateConfigDO.getKeyword2()).append(captcha)
+                .append(emailTemplateConfigDO.getKeyword3()).append("\n")
+                .append(emailTemplateConfigDO.getKeyword5()).append(emailTemplateConfigDO.getUrl())
+                .append("\n").append("\n").append(emailTemplateConfigDO.getRemark());
         }
         mainMessage.setSubject("租户注册-验证码");
 

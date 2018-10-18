@@ -55,6 +55,10 @@ public class BaseErrorCode {
          * 该租户已注册过，请直接
          */
         public static final String NAME_IS_EXIST2 = "-101005";
+        /**
+         * 只有审核未通过才可以查看
+         */
+        public static final String IS_NOT_AUDITNOTPASSED = "-101006";
     }
 
     /**

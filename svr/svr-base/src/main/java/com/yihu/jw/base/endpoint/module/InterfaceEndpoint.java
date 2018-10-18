@@ -38,7 +38,7 @@ public class InterfaceEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建")
     public ObjEnvelop<InterfaceVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         InterfaceDO interfaceDO = toEntity(jsonData, InterfaceDO.class);
 
         interfaceDO = interfaceService.addInterface(interfaceDO);
@@ -79,7 +79,7 @@ public class InterfaceEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "更新")
     public ObjEnvelop<InterfaceVO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         InterfaceDO interfaceDO = toEntity(jsonData, InterfaceDO.class);
         if (null == interfaceDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), ObjEnvelop.class);

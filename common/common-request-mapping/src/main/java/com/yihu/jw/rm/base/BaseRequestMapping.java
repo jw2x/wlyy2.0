@@ -29,6 +29,7 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/saas";
         public static final String SYSTEM_CONFIGURATION  = "/system_configuration";
         public static final String THEME_STYLE  = "/theme_style";
+        public static final String RESET_SECRET  = "/reset_secret";
         public static final String AUDIT  = "/audit";
     }
 
@@ -40,6 +41,7 @@ public class BaseRequestMapping {
         public static final String REGISTER  = "/register";
         public static final String SEND_EMAIL  = "/sendEmail";
         public static final String NAME_IS_EXIST  = "/nameIsExist";
+        public static final String FIND_BY_ID  = "/findById";
         public static final String SAAS_TYPE_DICT  = "/saasTypeDict";
 
     }

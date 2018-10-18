@@ -97,11 +97,56 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         if(orgDOList!=null&&orgDOList.size()>0){
             String saasId = saas.getId();
             orgDOList.forEach(org->{
+                BaseOrgDO orgDO = baseOrgDao.findByCodeAndSaasId(org.getCode(),defaultSaasId);
                 org.setSaasid(saasId);
+                org.setName(orgDO.getName());
+                org.setCreateTime(new Date());
+                org.setAddress(orgDO.getAddress());
+                org.setAlias(orgDO.getAlias());
+                org.setBrief(orgDO.getBrief());
+                org.setCityCode(orgDO.getCityCode());
+                org.setCityName(orgDO.getCityName());
+                org.setDel(orgDO.getDel());
+                org.setIntro(orgDO.getIntro());
+                org.setLatitude(orgDO.getLatitude());
+                org.setLegalperson(orgDO.getLegalperson());
+                org.setLongitude(orgDO.getLongitude());
+                org.setName(orgDO.getName());
+                org.setOrgAdmin(orgDO.getOrgAdmin());
+                org.setOrgUrl(orgDO.getOrgUrl());
+                org.setPhoto(orgDO.getPhoto());
+                org.setProvinceCode(orgDO.getProvinceCode());
+                org.setProvinceName(orgDO.getProvinceName());
+                org.setQrcode(orgDO.getQrcode());
+                org.setSpell(orgDO.getSpell());
+                org.setStreetCode(orgDO.getStreetCode());
+                org.setStreetName(orgDO.getStreetName());
+                org.setTownCode(orgDO.getTownCode());
+                org.setTownName(orgDO.getTownName());
+                org.setType(orgDO.getType());
             });
         }
         baseOrgDao.save(orgDOList);
         return saas;
+    }
+
+    /**
+     * 注册修改
+     * @param saas
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public SaasDO create(SaasDO saas,SaasDO oldSaas){
+        oldSaas.setStatus(SaasDO.Status.auditWait);
+        oldSaas.setEmail(saas.getEmail());
+        oldSaas.setMobile(saas.getMobile());
+        oldSaas.setManagerName(saas.getManagerName());
+        oldSaas.setName(saas.getName());
+        oldSaas.setOrganizationCode(saas.getOrganizationCode());
+        oldSaas.setBusinessLicense(saas.getBusinessLicense());
+        oldSaas.setType(saas.getType());
+        saasDao.save(oldSaas);
+        return oldSaas;
     }
 
     /**
@@ -127,7 +172,33 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         List<BaseOrgDO> orgDOList = saas.getOrgList();
         if(orgDOList!=null&&orgDOList.size()>0){
             orgDOList.forEach(org->{
+                BaseOrgDO orgDO = baseOrgDao.findByCodeAndSaasId(org.getCode(),defaultSaasId);
                 org.setSaasid(saasId);
+                org.setName(orgDO.getName());
+                org.setCreateTime(new Date());
+                org.setAddress(orgDO.getAddress());
+                org.setAlias(orgDO.getAlias());
+                org.setBrief(orgDO.getBrief());
+                org.setCityCode(orgDO.getCityCode());
+                org.setCityName(orgDO.getCityName());
+                org.setDel(orgDO.getDel());
+                org.setIntro(orgDO.getIntro());
+                org.setLatitude(orgDO.getLatitude());
+                org.setLegalperson(orgDO.getLegalperson());
+                org.setLongitude(orgDO.getLongitude());
+                org.setName(orgDO.getName());
+                org.setOrgAdmin(orgDO.getOrgAdmin());
+                org.setOrgUrl(orgDO.getOrgUrl());
+                org.setPhoto(orgDO.getPhoto());
+                org.setProvinceCode(orgDO.getProvinceCode());
+                org.setProvinceName(orgDO.getProvinceName());
+                org.setQrcode(orgDO.getQrcode());
+                org.setSpell(orgDO.getSpell());
+                org.setStreetCode(orgDO.getStreetCode());
+                org.setStreetName(orgDO.getStreetName());
+                org.setTownCode(orgDO.getTownCode());
+                org.setTownName(orgDO.getTownName());
+                org.setType(orgDO.getType());
             });
         }
         baseOrgDao.save(orgDOList);
@@ -135,7 +206,6 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         userDao.save(userDO);
         return oldSaas;
     }
-
 
     /**
      * 系统配置
@@ -233,6 +303,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         userRoleDO.setUserId(user.getId());
         userRoleDao.save(userRoleDO);
         saas.setManager(user.getId());
+        saas.setAppId(getCode());
+        saas.setAppSecret(getCode());
         saas = saasDao.save(saas);
         String saasId = saas.getId();
         //系统字典项

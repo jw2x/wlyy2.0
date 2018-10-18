@@ -51,6 +51,10 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	private String areaNumber;
 	@ApiModelProperty(value = "主题色", example = "主题色")
 	private String themeColor;
+	@ApiModelProperty(value = "对外开放接口的appid", example = "对外开放接口的appid")
+	private String appId;
+	@ApiModelProperty(value = "对外开放接口的appSecret", example = "对外开放接口的appid")
+	private String appSecret;
 
 	@ApiModelProperty(value = "机构", example = "机构")
 	List<BaseOrgVO> orgList;
@@ -218,5 +222,21 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 
 	public void setSaasThemeList(List<SaasThemeVO> saasThemeList) {
 		this.saasThemeList = saasThemeList;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getAppSecret() {
+		return appSecret;
+	}
+
+	public void setAppSecret(String appSecret) {
+		this.appSecret = appSecret;
 	}
 }

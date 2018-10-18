@@ -45,6 +45,9 @@ public interface BaseOrgDao extends PagingAndSortingRepository<BaseOrgDO, String
     @Query("select new BaseOrgDO(provinceCode,provinceName,cityCode,cityName,townCode,townName,code,name) from BaseOrgDO")
     List<BaseOrgDO> findOrgByArea();
 
+    @Query(value="select b.* from base_org b where b.code= ?1 and b.saasid= ?2 limit 1",nativeQuery = true)
+    BaseOrgDO findByCodeAndSaasId(String code,String saasId);
+
     boolean existsByCode(String code);
 
     @Modifying

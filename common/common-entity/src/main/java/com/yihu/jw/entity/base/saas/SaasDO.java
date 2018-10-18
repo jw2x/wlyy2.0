@@ -48,6 +48,10 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
     private String auditFailedReason;
     //管理员姓名
     private String managerName;
+    //对外开放接口的appid
+    private String appId;
+    //对外开放接口的appSecret
+    private String appSecret;
     //机构
     List<BaseOrgDO> orgList;
     //业务模块
@@ -215,5 +219,23 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public void setSaasThemeList(List<SaasThemeDO> saasThemeList) {
         this.saasThemeList = saasThemeList;
+    }
+
+    @Column(name = "app_id")
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    @Column(name = "app_secret")
+    public String getAppSecret() {
+        return appSecret;
+    }
+
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 }
