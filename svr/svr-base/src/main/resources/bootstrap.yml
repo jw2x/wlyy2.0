@@ -1,6 +1,6 @@
 spring:
   application:
-    name: svr-base-lith
+    name: svr-base
   cloud:
     config:
       failFast: true
