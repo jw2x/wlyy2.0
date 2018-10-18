@@ -28,7 +28,7 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	@ApiModelProperty(value = "远程fastDFS文件地址", example = "group1:M00/97/E9/wKgyJltp1i-AHHf6AAAvRXBaR18423.zip")
 	private String logo;
 	@ApiModelProperty(value = "类型（租户类型编码，从1开始自增）", example = "1")
-    private Integer type;
+    private String type;
 	@ApiModelProperty(value = "管理员 - 关联user表id字段", example = "402303ee656498890165649ad2wa00sd")
 	private String manager;
 	@ApiModelProperty(value = "管理员邮箱", example = "admin@jkzl.com")
@@ -51,6 +51,10 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 	private String areaNumber;
 	@ApiModelProperty(value = "主题色", example = "主题色")
 	private String themeColor;
+	@ApiModelProperty(value = "对外开放接口的appid", example = "对外开放接口的appid")
+	private String appId;
+	@ApiModelProperty(value = "对外开放接口的appSecret", example = "对外开放接口的appid")
+	private String appSecret;
 
 	@ApiModelProperty(value = "机构", example = "机构")
 	List<BaseOrgVO> orgList;
@@ -100,11 +104,11 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 		this.logo = logo;
 	}
 
-	public Integer getType() {
+	public String getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 
@@ -218,5 +222,21 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 
 	public void setSaasThemeList(List<SaasThemeVO> saasThemeList) {
 		this.saasThemeList = saasThemeList;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getAppSecret() {
+		return appSecret;
+	}
+
+	public void setAppSecret(String appSecret) {
+		this.appSecret = appSecret;
 	}
 }

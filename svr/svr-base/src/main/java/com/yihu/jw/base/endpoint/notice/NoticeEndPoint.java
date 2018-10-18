@@ -38,7 +38,7 @@ public class NoticeEndPoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建")
     public ObjEnvelop<NoticeVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         NoticeDO noticeDO = toEntity(jsonData, NoticeDO.class);
         if(StringUtils.isBlank(noticeDO.getTitle())||noticeDO.getTitle().length()>50){
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Notice.LIMIT_TITLE), ObjEnvelop.class);
@@ -77,7 +77,7 @@ public class NoticeEndPoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "更新")
     public ObjEnvelop<NoticeVO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         NoticeDO noticeDO = toEntity(jsonData, NoticeDO.class);
         if (null == noticeDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), ObjEnvelop.class);
