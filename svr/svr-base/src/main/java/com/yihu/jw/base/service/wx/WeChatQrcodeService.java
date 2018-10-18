@@ -48,15 +48,17 @@ public class WeChatQrcodeService {
                 connection.connect();
                 inputStream = connection.getInputStream();
 
-                String pathFile = request.getSession().getServletContext().getRealPath("/")
-                        + File.separator + "qrcode" + File.separator + wechatId+"_"+scene+".png";
+//                String pathFile = request.getSession().getServletContext().getRealPath("/")
+//                        + File.separator + "qrcode" + File.separator + wechatId+"_"+scene+".png";
+                String path = WeChatQrcodeService.class.getResource("/").getPath().replace("/WEB-INF/classes/", "")
+                        + File.separator + "qrcode" ;
+                File dir = new File(path);
 
-                File file = new File(pathFile);
-
-                if(!file.exists()){
-                    file.mkdir();
+                if(!dir.exists()){
+                    dir.mkdir();
                 }
-
+                path+= File.separator + wechatId+"_"+scene+".png";
+                File file = new File(path);
                 // 保存文件
                 FileOutputStream outputStream = new FileOutputStream(file);
 
@@ -71,8 +73,10 @@ public class WeChatQrcodeService {
 
                 ObjectNode objectNode = fastDFSHelper.upload(input,"png","");
 
-                if(file.exists()){
-                    file.delete();
+                File del = new File(path);
+
+                if(del.exists()&&del.isFile()){
+                    del.delete();
                 }
 
                 if (outputStream != null) {
