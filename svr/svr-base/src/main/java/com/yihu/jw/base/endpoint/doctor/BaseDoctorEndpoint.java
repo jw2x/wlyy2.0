@@ -1,6 +1,8 @@
 package com.yihu.jw.base.endpoint.doctor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.service.doctor.BaseDoctorService;
+import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.restmodel.base.doctor.BaseDoctorVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -39,13 +41,17 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     private BaseDoctorService baseDoctorService;
 
     @PostMapping(value = BaseRequestMapping.BaseDoctor.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建")
-    public ObjEnvelop<BaseDoctorVO> create(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+    @ApiOperation(value = "新增医生")
+    public Envelop create(
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
-        BaseDoctorDO baseDoctor = toEntity(jsonData, BaseDoctorDO.class);
-        baseDoctor = baseDoctorService.save(baseDoctor);
-        return success(baseDoctor, BaseDoctorVO.class);
+        JSONObject jsonObject = null;
+        String str = baseDoctorService.createDoctor(jsonData);
+        jsonObject = JSONObject.parseObject(str);
+        if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+            return failed(jsonObject.getString("msg"));
+        }
+        return success(jsonObject.getString("msg"));
     }
 
     @PostMapping(value = BaseRequestMapping.BaseDoctor.DELETE)
@@ -60,7 +66,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.BaseDoctor.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<BaseDoctorVO> update(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         BaseDoctorDO baseDoctor = toEntity(jsonData, BaseDoctorDO.class);
         if (null == baseDoctor.getId()) {
@@ -150,17 +156,17 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     }
 
 
-    /**
+   /* *//**
      * 获取医生 所属机构/部门/职称/职务 树形结构数据
      * @return
      * @throws Exception
-     */
+     *//*
     @PostMapping(value = BaseRequestMapping.BaseDoctor.docOrgTreeInfo)
     @ApiOperation(value = "获取医生所属机构树形结构数据")
     public Envelop getDoctorOrgTree() throws Exception {
         String data = baseDoctorService.getOrgTree();
         return success(data);
     }
-
+*/
 
 }

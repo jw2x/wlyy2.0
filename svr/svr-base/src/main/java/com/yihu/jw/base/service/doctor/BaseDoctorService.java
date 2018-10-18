@@ -4,8 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.base.dao.doctor.BaseDoctorDao;
-//import com.yihu.jw.base.dao.org.OrgTreeDao;
-import com.yihu.jw.base.dao.org.OrgTreeDao;
 import com.yihu.jw.base.service.org.OrgTree;
 import com.yihu.jw.base.service.org.OrgTreeService;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
@@ -14,14 +12,18 @@ import com.yihu.jw.base.service.org.tree.TreeNode;
 import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
 import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
+import com.yihu.jw.entity.base.patient.BasePatientDO;
+import com.yihu.jw.entity.base.patient.PatientMedicareCardDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.doctor.BaseDoctorDO;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +56,8 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
     @Autowired
     private OrgTreeService orgTreeService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     /**
@@ -132,31 +136,45 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
      * @param jsonData
      * @return
      */
+    @Transactional(rollbackFor = Exception.class)
     public String createDoctor(String jsonData){
         JSONObject result = new JSONObject();
         if(StringUtils.isEmpty(jsonData)){
             result.put("msg","jsonData is null");
-            result.put("responst", ConstantUtils.FAIL);
+            result.put("response", ConstantUtils.FAIL);
             return result.toJSONString();
         }
-
-        return null;
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
+        JSONObject doctor = jsonObject.getJSONObject("doctor");
+        JSONObject hospital = jsonObject.getJSONObject("hospital");
+        if(null == doctor || null == hospital){
+            result.put("msg","parameter doctor or hospital of jsonData is null");
+            result.put("response", ConstantUtils.FAIL);
+            return result.toJSONString();
+        }
+        BaseDoctorDO baseDoctorDO = null;
+        BaseDoctorHospitalDO baseDoctorHospitalDO = null;
+        try {
+            baseDoctorDO = objectMapper.readValue(doctor.toJSONString(),BaseDoctorDO.class);
+        } catch (IOException e) {
+           result.put("msg","convert doctor jsonObject to BaseDoctorDO failed," + e.getCause());
+           result.put("response",ConstantUtils.FAIL);
+           return result.toJSONString();
+        }
+        this.save(baseDoctorDO);
+        try {
+            baseDoctorHospitalDO = objectMapper.readValue(hospital.toJSONString(),BaseDoctorHospitalDO.class);
+            baseDoctorHospitalDO.setDoctorCode(baseDoctorDO.getId());
+        } catch (IOException e) {
+            result.put("msg","convert hospital jsonObject to baseDoctorHospitalDO failed," + e.getCause());
+            result.put("response",ConstantUtils.FAIL);
+        }
+        baseDoctorHospitalService.save(baseDoctorHospitalDO);
+        result.put("response",ConstantUtils.SUCCESS);
+        result.put("msg",baseDoctorDO);
+        return result.toJSONString();
     }
 
-    /**
-     * 构建机构区域树形结构
-     * @return
-     */
-    public String getOrgTree(){
-        List<TreeNode> treeNodes = new ArrayList<>();
-        treeNodes.addAll(orgTreeService.findListByLevel(OrgTree.Level.org.getLevelValue()));
-        SimpleTree tree = new SimpleTree(treeNodes);
-        List<SimpleTreeNode> treeNode = tree.getRoot();
-        SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-        filter.getExcludes().add("parent");
-        filter.getExcludes().add("allChildren");
-        return JSONObject.toJSONString(treeNode, filter);
-    }
 
     /**
      * 构建区域树形结构（）

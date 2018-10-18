@@ -1,6 +1,7 @@
 package com.yihu.jw.base.service.dict;
 
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.netflix.discovery.converters.Auto;
 import com.yihu.jw.base.dao.dict.DictHospitalDeptDao;
@@ -57,6 +58,26 @@ public class DictHospitalDeptService extends BaseJpaService<DictHospitalDeptDO, 
         }
         jsonObject.put(SystemDictEnum.HospitalDeptDict.toString(),list);
         return jsonObject;
+    }
+
+    /**
+     * 获取租户的所有机构科室
+     * @param saasId
+     * @return
+     */
+    public List<DictHospitalDeptDO> findBySaasId(String saasId){
+        List<DictHospitalDeptDO>  list = new ArrayList<>();
+        if(StringUtils.isEmpty(saasId)){
+            list = (List<DictHospitalDeptDO>)dictHospitalDeptDao.findAll();
+            return list;
+        }
+        List orgCodeList = baseOrgService.findOrgCodeBySaasId(saasId);
+        try {
+            list = dictHospitalDeptDao.findByOrgCodeIn(objectMapper.writeValueAsString(orgCodeList));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     /**

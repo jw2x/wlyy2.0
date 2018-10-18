@@ -11,6 +11,7 @@ import com.yihu.jw.base.dao.system.SystemDictDao;
 import com.yihu.jw.base.dao.system.SystemDictEntryDao;
 import com.yihu.jw.base.dao.user.UserDao;
 import com.yihu.jw.base.dao.user.UserRoleDao;
+import com.yihu.jw.base.service.dict.DictHospitalDeptService;
 import com.yihu.jw.entity.base.dict.*;
 import com.yihu.jw.entity.base.module.SaasModuleDO;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
@@ -73,7 +74,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     @Autowired
     private DictDiseaseDao dictDiseaseDao;
     @Autowired
-    private DictHospitalDeptDao dictHospitalDeptDao;
+    private DictHospitalDeptService dictHospitalDeptService;
     @Autowired
     private SaasModuleDao saasModuleDao;
     @Autowired
@@ -454,7 +455,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
             diseaseDOList.add(diseaseDO);
         });
         //科室字典
-        List<DictHospitalDeptDO> dictHospitalDeptDOList = dictHospitalDeptDao.findBySaasId(defaultSaasId);
+        List<DictHospitalDeptDO> dictHospitalDeptDOList = dictHospitalDeptService.findBySaasId(defaultSaasId);
         List<DictHospitalDeptDO> hospitalDeptDOList = new ArrayList<>(dictHospitalDeptDOList.size());
         dictHospitalDeptDOList.forEach(dict->{
             DictHospitalDeptDO deptDO = new DictHospitalDeptDO();
@@ -473,7 +474,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         dictIcd10Dao.save(icd10DOList);
         dictHealthProblemDao.save(healthProblemDOList);
         dictDiseaseDao.save(diseaseDOList);
-        dictHospitalDeptDao.save(hospitalDeptDOList);
+        dictHospitalDeptService.batchInsert(hospitalDeptDOList);
         return saas;
     }
 

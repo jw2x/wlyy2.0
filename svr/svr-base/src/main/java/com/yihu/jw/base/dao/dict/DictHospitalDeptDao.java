@@ -32,4 +32,6 @@ public interface DictHospitalDeptDao extends PagingAndSortingRepository<DictHosp
     List<Map<String,Object>> findCodeAndName(Pageable pageable);
 
     List<DictHospitalDeptDO> findByOrgCode(String orgCode);
+
+    List<DictHospitalDeptDO> findByOrgCodeIn(String orgCode);
 }

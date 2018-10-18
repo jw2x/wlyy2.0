@@ -173,6 +173,9 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getExcludes().add("parent");
         filter.getExcludes().add("allChildren");
+        filter.getExcludes().add("parentNodeId");
+        filter.getExcludes().add("orderNum");
+        filter.getExcludes().add("level");
 
         return JSONObject.toJSONString(treeNode, filter);
     }
@@ -189,6 +192,9 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getExcludes().add("parent");
         filter.getExcludes().add("allChildren");
+        filter.getExcludes().add("parentNodeId");
+        filter.getExcludes().add("orderNum");
+        filter.getExcludes().add("level");
 
         return JSONObject.toJSONString(treeNode, filter);
     }
