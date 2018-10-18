@@ -1,6 +1,8 @@
 package com.yihu.iot.datainput.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.iot.datainput.service.DataInputService;
+import com.yihu.iot.datainput.util.ConstantUtils;
 import com.yihu.jw.exception.ApiException;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.rm.iot.DataRequestMapping;
@@ -40,31 +42,33 @@ public class DataInputController {
     public MixEnvelop uploadData(
             @ApiParam(name = "json_data", value = "", defaultValue = "")
             @RequestBody String jsonData) throws IOException  {
-        String str = "";
+        JSONObject result = null;
         try {
-            str = dataInputService.inputBodySignsData(jsonData);
-            if (!str.equals("success")) {
-                return MixEnvelop.getError(str);
+          String str = dataInputService.inputBodySignsData(jsonData);
+            result = JSONObject.parseObject(str);
+            if (StringUtils.endsWithIgnoreCase(ConstantUtils.FAIL,result.getString("response"))) {
+                return MixEnvelop.getError(result.getString("msg"));
             }
         } catch (ApiException e) {
             return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
         }
-        return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
+        return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_success, result);
     }
 
     @PostMapping(value = DataRequestMapping.DataInput.api_weRunData_input, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "微信运动数据上传", notes = "微信运动数据上传入库")
     public MixEnvelop uploadWeRunData(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData) {
-        String str = "";
+        JSONObject result = null;
         try {
-            str = dataInputService.inputWeRunData(jsonData);
-            if (!StringUtils.endsWithIgnoreCase("success",str)) {
-                return MixEnvelop.getError(DataRequestMapping.DataInput.message_fail, 0);
+            String str = dataInputService.inputWeRunData(jsonData);
+            result = JSONObject.parseObject(str);
+            if (StringUtils.endsWithIgnoreCase(ConstantUtils.FAIL,result.getString("response"))) {
+                return MixEnvelop.getError(result.getString("msg"));
             }
         } catch (ApiException e) {
             return MixEnvelop.getError(e.getMessage(), e.getErrorCode());
         }
-        return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_success, str);
+        return MixEnvelop.getSuccess(DataRequestMapping.DataInput.message_success, result.getString("msg"));
     }
 
 }

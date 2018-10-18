@@ -25,4 +25,10 @@ public class ConstantUtils {
     public static String figureLabelIndex = "figure_label_index";
     //居民标签es类型
     public static String figureLabelType = "figure_label_type";
+
+
+    //数据返回结果标识
+    public static final String SUCCESS = "success";
+
+    public static final String FAIL = "fail";
 }
