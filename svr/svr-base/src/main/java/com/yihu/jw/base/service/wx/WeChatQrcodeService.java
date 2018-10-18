@@ -46,14 +46,16 @@ public class WeChatQrcodeService {
                         + URLEncoder.encode(json.get("ticket").toString(), "UTF-8"));
                 HttpURLConnection connection = (HttpURLConnection) urlGet.openConnection();
                 connection.connect();
+                //下载图片到内存
                 inputStream = connection.getInputStream();
-
-//                String pathFile = request.getSession().getServletContext().getRealPath("/")
-//                        + File.separator + "qrcode" + File.separator + wechatId+"_"+scene+".png";
+                //======start===
+                //fastDFS方法问题，直接将inputStream文件流上传文件服务器存数据缺失，
+                // 故将文件输出本地，在上传文件服务器，之后删除本地文件
                 String path = WeChatQrcodeService.class.getResource("/").getPath().replace("/WEB-INF/classes/", "")
                         + File.separator + "qrcode" ;
-                File dir = new File(path);
 
+                //判断目录是否存在，创建目录
+                File dir = new File(path);
                 if(!dir.exists()){
                     dir.mkdir();
                 }
@@ -71,13 +73,8 @@ public class WeChatQrcodeService {
 
                 InputStream input = new FileInputStream(file);
 
+                //=======end=========
                 ObjectNode objectNode = fastDFSHelper.upload(input,"png","");
-
-                File del = new File(path);
-
-                if(del.exists()&&del.isFile()){
-                    del.delete();
-                }
 
                 if (outputStream != null) {
                     outputStream.close();
@@ -85,6 +82,11 @@ public class WeChatQrcodeService {
 
                 if (inputStream != null) {
                     inputStream.close();
+                }
+
+                //流关闭，删除文件
+                if(file.exists()&&file.isFile()){
+                    file.delete();
                 }
                 return objectNode.get("fileId").toString().replaceAll("\"", "");
             }
