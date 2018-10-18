@@ -262,7 +262,7 @@ public class WechatCoreService {
             for(WxReplySceneDO scene:scenes){
                 if(StringUtils.isNotBlank(scene.getContent())
                         &&content.equals(scene.getContent())
-                        &&StringUtils.isNotBlank(scene.getScene())){
+                        &&StringUtils.isNotBlank(scene.getContent())){
                     //根据场景值，动态生成图文消息回复文斌
                     return getGraphicXMl(scene.getScene(),scene.getWechatId(),message);
                 }

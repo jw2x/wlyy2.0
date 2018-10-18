@@ -61,13 +61,13 @@ public class BasePopulationService extends BaseJpaService<BasePopulationDO, Base
             basePopulationDO.setCityName(populationMsg.getCityName());
             basePopulationDO.setDistrictCode(populationMsg.getDistrictCode());
             basePopulationDO.setDistrictName(populationMsg.getDistrictName());
-            basePopulationDO.setRegisPopulationNum(populationMsg.getRegisPopulationNum());
-            basePopulationDO.setPopulationNum(populationMsg.getPopulationNum());
+            basePopulationDO.setRegisPopulationNum(null == populationMsg.getRegisPopulationNum() ? 0 : populationMsg.getRegisPopulationNum());
+            basePopulationDO.setPopulationNum(null == populationMsg.getPopulationNum() ? 0 : populationMsg.getPopulationNum());
             //糖尿病人数
             basePopulationDO.setDmNum(null == populationMsg.getDmNum() ? 0 : populationMsg.getDmNum());
             //高血压人数
             basePopulationDO.setHbpNum(null == populationMsg.getHbpNum() ? 0 : populationMsg.getHbpNum());
-            basePopulationDO.setTaskNum(populationMsg.getTaskNum());
+            basePopulationDO.setTaskNum(null == populationMsg.getTaskNum() ? 0 : populationMsg.getTaskNum());
             //慢病人数
             basePopulationDO.setNcdNum(basePopulationDO.getHbpNum() + basePopulationDO.getDmNum());
             corrects.add(basePopulationDO);

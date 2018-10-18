@@ -6,6 +6,9 @@ import io.swagger.annotations.ApiModelProperty;
  * Created by Administrator on 2018/10/9.
  */
 public class WxReplySceneVO {
+
+    @ApiModelProperty(value = "id")
+    private String id;
     @ApiModelProperty(value = "微信id(唯一)")
     private String wechatId;//微信id(唯一)
     @ApiModelProperty(value = "原始ID（唯一）")
@@ -20,6 +23,14 @@ public class WxReplySceneVO {
     private String content;//居民回复内容，消息字段
     @ApiModelProperty(value = "状态(-1删除 0 冻结 1可用")
     private Integer status;//状态(-1删除 0 冻结 1可用
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getWechatId() {
         return wechatId;

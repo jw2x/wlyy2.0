@@ -44,7 +44,7 @@
 <script>
     var table;
     var userCode = window.localStorage.getItem("userCode");
-    var saasId = window.localStorage.getItem("saasId");
+    var orgCode = window.localStorage.getItem("orgCode");
     var serverCode = $("#myModal-add-info").attr("data-code");
     var user_codes = [];//记录当前版本已有的用户
     getUserCodes();
@@ -70,7 +70,7 @@
                         "dataSrc": "detailModelList",
                         "data": function (d) {
                             d.userCode = userCode;
-                            d.saasId = saasId;
+                            d.orgCode = orgCode;
                             d.name =$("#userName").val();
                             d.mobile=$("#mobile").val();
                         }

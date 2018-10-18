@@ -1,12 +1,14 @@
 package com.yihu.jw.base.endpoint.common.populationBatchImport;
 
 
+import com.yihu.jw.util.date.DateUtil;
 import com.yihu.jw.util.excel.ExcelUtil;
 import com.yihu.jw.util.excel.Validation;
 import com.yihu.jw.util.excel.annotation.Location;
 import com.yihu.jw.util.excel.annotation.Row;
 import com.yihu.jw.util.excel.annotation.Title;
 import com.yihu.jw.util.excel.annotation.ValidRepeat;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Column;
 import java.util.Date;
@@ -62,7 +64,7 @@ public class PopulationMsg extends ExcelUtil implements Validation {
     private String  districtName;
     //慢病人数
     private Integer ncdNum;
-
+    int yearNow = DateUtil.getNowYear();
 
     @Override
     public int validate(Map<String, Set> repeatMap) {
@@ -70,6 +72,13 @@ public class PopulationMsg extends ExcelUtil implements Validation {
         if(!repeatMap.get("saasName").add(saasName+year)){
             rs = 0;
             addErrorMsg("saasName", "已添加"+year+saasName+"的基础人口信息，请直接修改即可");
+        }
+        if(StringUtils.isBlank(year)){
+            rs = 0;
+            addErrorMsg("year", "年份不能为空！");
+        }else if(year.compareTo(String.valueOf(yearNow))>0){
+            rs = 0;
+            addErrorMsg("year", "年份不能大于当前年份！");
         }
         if(populationNum<0){
             rs = 0;

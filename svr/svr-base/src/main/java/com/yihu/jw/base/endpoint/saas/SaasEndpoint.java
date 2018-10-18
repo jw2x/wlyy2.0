@@ -22,13 +22,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Endpoint - SAAS
@@ -54,7 +54,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     @Value("${spring.mail.username}")
     private String username;
 
-    @PostMapping(value = BaseRequestMapping.Saas.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Saas.CREATE)
     @ApiOperation(value = "创建-基本信息")
     public Envelop create (
             @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
@@ -70,21 +70,21 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
         }
         saasService.create(saasDO);
-        saasDO.setStatus(SaasDO.Status.auditPassed);
-        return send(saasDO);
+
+        return success("创建成功",saasDO);
     }
 
-    @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION)
     @ApiOperation(value = "创建-系统配置")
     public Envelop createSystemConfig (
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
             @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
 
         saasService.saveSystemConfig(saasDO);
-        return success("创建成功");
+        return success("创建成功",saasDO);
     }
 
-    @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE)
     @ApiOperation(value = "创建-主题风格")
     public Envelop createThemeConfig (
             @ApiParam(name = "saasDO", value = "Json数据", required = true)
@@ -94,6 +94,17 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("创建成功");
     }
 
+    @PostMapping(value = BaseRequestMapping.Saas.RESET_SECRET)
+    @ApiOperation(value = "重置密钥")
+    public Envelop resetSecret(
+            @ApiParam(name = "id", value = "saasId", required = true)
+            @RequestParam(value = "id") String id) {
+        SaasDO oldSaas = saasService.findById(id);
+        oldSaas.setAppSecret(UUID.randomUUID().toString().replaceAll("-", ""));
+        oldSaas.setAppId(UUID.randomUUID().toString().replaceAll("-", ""));
+        saasService.save(oldSaas);
+        return success("重置成功",oldSaas);
+    }
 
     @PostMapping(value = BaseRequestMapping.Saas.DELETE)
     @ApiOperation(value = "删除")
@@ -115,7 +126,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success("修改成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.Saas.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Saas.UPDATE)
     @ApiOperation(value = "更新")
     public Envelop update (
             @ApiParam(name = "jsonData", value = "Json数据", required = true)
@@ -183,7 +194,7 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         }
         SaasVO saasVO = convertToModel(saasDO, SaasVO.class);
         //根据租户类型编码，获取租户类型名称
-        SaasTypeDictDO saasTypeDictDO = saasTypeDictService.findByCode(saasVO.getType());
+        SaasTypeDictDO saasTypeDictDO = saasTypeDictService.findById(saasVO.getType());
         saasVO.setTypeName(null == saasTypeDictDO ? "" : saasTypeDictDO.getName());
         return success(saasVO);
     }

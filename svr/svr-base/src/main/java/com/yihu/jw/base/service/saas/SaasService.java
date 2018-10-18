@@ -15,6 +15,7 @@ import com.yihu.jw.entity.base.dict.*;
 import com.yihu.jw.entity.base.module.SaasModuleDO;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.entity.base.role.RoleDO;
+import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasThemeDO;
 import com.yihu.jw.entity.base.saas.SaasThemeExtendDO;
@@ -25,6 +26,9 @@ import com.yihu.mysql.query.BaseJpaService;
 import com.yihu.utils.security.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -78,6 +82,13 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     private SaasThemeExtendDao saasThemeExtendDao;
     @Value("${configDefault.saasId}")
     private String defaultSaasId;
+    @Autowired
+    private BaseEmailTemplateConfigService baseEmailTemplateConfigService;
+    @Value("${spring.mail.username}")
+    private String username;
+    @Autowired
+    JavaMailSender jms;
+
 
     /**
      * 默认租户管理员角色code
@@ -91,17 +102,117 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
      */
     @Transactional(rollbackFor = Exception.class)
     public SaasDO create(SaasDO saas){
-        saas.setStatus(SaasDO.Status.auditWait);
+        final SaasDO.Status staus = saas.getStatus();
+        saas.setStatus(SaasDO.Status.auditPassed);
         saas = saasDao.save(saas);
         List<BaseOrgDO> orgDOList = saas.getOrgList();
         if(orgDOList!=null&&orgDOList.size()>0){
             String saasId = saas.getId();
             orgDOList.forEach(org->{
+                BaseOrgDO orgDO = baseOrgDao.findByCodeAndSaasId(org.getCode(),defaultSaasId);
                 org.setSaasid(saasId);
+                org.setName(orgDO.getName());
+                org.setCreateTime(new Date());
+                org.setAddress(orgDO.getAddress());
+                org.setAlias(orgDO.getAlias());
+                org.setBrief(orgDO.getBrief());
+                org.setCityCode(orgDO.getCityCode());
+                org.setCityName(orgDO.getCityName());
+                org.setDel(orgDO.getDel());
+                org.setIntro(orgDO.getIntro());
+                org.setLatitude(orgDO.getLatitude());
+                org.setLegalperson(orgDO.getLegalperson());
+                org.setLongitude(orgDO.getLongitude());
+                org.setName(orgDO.getName());
+                org.setOrgAdmin(orgDO.getOrgAdmin());
+                org.setOrgUrl(orgDO.getOrgUrl());
+                org.setPhoto(orgDO.getPhoto());
+                org.setProvinceCode(orgDO.getProvinceCode());
+                org.setProvinceName(orgDO.getProvinceName());
+                org.setQrcode(orgDO.getQrcode());
+                org.setSpell(orgDO.getSpell());
+                org.setStreetCode(orgDO.getStreetCode());
+                org.setStreetName(orgDO.getStreetName());
+                org.setTownCode(orgDO.getTownCode());
+                org.setTownName(orgDO.getTownName());
+                org.setType(orgDO.getType());
             });
         }
         baseOrgDao.save(orgDOList);
+
+        //用户信息初始化
+        UserDO userDO = new UserDO();
+        userDO.setEmail(saas.getEmail());
+        userDO.setMobile(saas.getMobile());
+        userDO.setName(saas.getManagerName());
+        userDO.setUsername(userDO.getEmail());
+
+        saasAudit(saas, userDO);
+        send(saas);
+        saas.setStatus(staus);
+        saasDao.save(saas);
         return saas;
+    }
+
+    /**
+     * 发送邮件
+     * @param saasDO
+     */
+    public void send(SaasDO saasDO) {
+        try {
+            SaasDO.Status status = saasDO.getStatus();
+            String password = saasDO.getMobile().substring(0, 6);
+            BaseEmailTemplateConfigDO baseEmailTemplateConfigDO = baseEmailTemplateConfigService.findByCode(status.name());
+            if (null == baseEmailTemplateConfigDO) {
+                return;
+            }
+            //建立邮件消息
+            SimpleMailMessage mainMessage = new SimpleMailMessage();
+            //发送者
+            mainMessage.setFrom(username);
+            //接收者
+            mainMessage.setTo(saasDO.getEmail());
+            //发送的标题
+            mainMessage.setSubject(baseEmailTemplateConfigDO.getTemplateName());
+            //发送的内容
+            StringBuffer content = new StringBuffer();
+            content.append(baseEmailTemplateConfigDO.getFirst() + "\n").append(baseEmailTemplateConfigDO.getKeyword1() + "\n");
+            content.append(baseEmailTemplateConfigDO.getKeyword2() + "\n");
+            if (status.equals(SaasDO.Status.auditPassed)) {
+                //账号
+                content.append(baseEmailTemplateConfigDO.getKeyword3() + saasDO.getMobile() + "\n");
+                //密码
+                content.append(baseEmailTemplateConfigDO.getKeyword4() + password + "\n");
+            } else if (status.equals(SaasDO.Status.auditNotPassed)) {
+                //审核未通过的原因
+                content.append(saasDO.getAuditFailedReason() + "\n");
+            }
+            content.append(baseEmailTemplateConfigDO.getKeyword5() + baseEmailTemplateConfigDO.getUrl() + "\n");
+            content.append(baseEmailTemplateConfigDO.getRemark());
+            mainMessage.setText(content.toString());
+            jms.send(mainMessage);
+        } catch (MailException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 注册修改
+     * @param saas
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public SaasDO create(SaasDO saas,SaasDO oldSaas){
+        oldSaas.setStatus(SaasDO.Status.auditWait);
+        oldSaas.setEmail(saas.getEmail());
+        oldSaas.setMobile(saas.getMobile());
+        oldSaas.setManagerName(saas.getManagerName());
+        oldSaas.setName(saas.getName());
+        oldSaas.setOrganizationCode(saas.getOrganizationCode());
+        oldSaas.setBusinessLicense(saas.getBusinessLicense());
+        oldSaas.setType(saas.getType());
+        saasDao.save(oldSaas);
+        return oldSaas;
     }
 
     /**
@@ -127,7 +238,33 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         List<BaseOrgDO> orgDOList = saas.getOrgList();
         if(orgDOList!=null&&orgDOList.size()>0){
             orgDOList.forEach(org->{
+                BaseOrgDO orgDO = baseOrgDao.findByCodeAndSaasId(org.getCode(),defaultSaasId);
                 org.setSaasid(saasId);
+                org.setName(orgDO.getName());
+                org.setCreateTime(new Date());
+                org.setAddress(orgDO.getAddress());
+                org.setAlias(orgDO.getAlias());
+                org.setBrief(orgDO.getBrief());
+                org.setCityCode(orgDO.getCityCode());
+                org.setCityName(orgDO.getCityName());
+                org.setDel(orgDO.getDel());
+                org.setIntro(orgDO.getIntro());
+                org.setLatitude(orgDO.getLatitude());
+                org.setLegalperson(orgDO.getLegalperson());
+                org.setLongitude(orgDO.getLongitude());
+                org.setName(orgDO.getName());
+                org.setOrgAdmin(orgDO.getOrgAdmin());
+                org.setOrgUrl(orgDO.getOrgUrl());
+                org.setPhoto(orgDO.getPhoto());
+                org.setProvinceCode(orgDO.getProvinceCode());
+                org.setProvinceName(orgDO.getProvinceName());
+                org.setQrcode(orgDO.getQrcode());
+                org.setSpell(orgDO.getSpell());
+                org.setStreetCode(orgDO.getStreetCode());
+                org.setStreetName(orgDO.getStreetName());
+                org.setTownCode(orgDO.getTownCode());
+                org.setTownName(orgDO.getTownName());
+                org.setType(orgDO.getType());
             });
         }
         baseOrgDao.save(orgDOList);
@@ -135,7 +272,6 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         userDao.save(userDO);
         return oldSaas;
     }
-
 
     /**
      * 系统配置
@@ -233,6 +369,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         userRoleDO.setUserId(user.getId());
         userRoleDao.save(userRoleDO);
         saas.setManager(user.getId());
+        saas.setAppId(getCode());
+        saas.setAppSecret(getCode());
         saas = saasDao.save(saas);
         String saasId = saas.getId();
         //系统字典项

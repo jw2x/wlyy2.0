@@ -38,7 +38,7 @@ public class SaasInterfaceEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "创建")
     public ObjEnvelop<SaasInterfaceVO> create (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         SaasInterfaceDO interfaceDO = toEntity(jsonData, SaasInterfaceDO.class);
 
         interfaceDO = interfaceService.addInterface(interfaceDO);
@@ -79,7 +79,7 @@ public class SaasInterfaceEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "更新")
     public ObjEnvelop<SaasInterfaceVO> update (
             @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         SaasInterfaceDO interfaceDO = toEntity(jsonData, SaasInterfaceDO.class);
         if (null == interfaceDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), ObjEnvelop.class);
