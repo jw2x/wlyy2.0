@@ -1,6 +1,7 @@
 package com.yihu.jw.base.service.saas;
 
 import com.yihu.jw.base.dao.dict.*;
+import com.yihu.jw.base.dao.module.ModuleDao;
 import com.yihu.jw.base.dao.module.SaasModuleDao;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
 import com.yihu.jw.base.dao.role.RoleDao;
@@ -12,6 +13,7 @@ import com.yihu.jw.base.dao.system.SystemDictEntryDao;
 import com.yihu.jw.base.dao.user.UserDao;
 import com.yihu.jw.base.dao.user.UserRoleDao;
 import com.yihu.jw.entity.base.dict.*;
+import com.yihu.jw.entity.base.module.ModuleDO;
 import com.yihu.jw.entity.base.module.SaasModuleDO;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.entity.base.role.RoleDO;
@@ -76,6 +78,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     private DictHospitalDeptDao dictHospitalDeptDao;
     @Autowired
     private SaasModuleDao saasModuleDao;
+    @Autowired
+    private ModuleDao moduleDao;
     @Autowired
     private SaasThemeDao saasThemeDao;
     @Autowired
@@ -278,18 +282,31 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
      * @param saasDO
      */
     @Transactional(rollbackFor = Exception.class)
-    public void saveSystemConfig(SaasDO saasDO){
+    public SaasDO saveSystemConfig(SaasDO saasDO){
 
         SaasDO oldSaas = saasDao.findById(saasDO.getId());
         oldSaas.setSystemName(saasDO.getSystemName());
         oldSaas.setLogo(saasDO.getLogo());
         oldSaas.setAreaNumber(saasDO.getAreaNumber());
         List<SaasModuleDO> saasModuleDOList = saasDO.getSaasModuleList();
+        saasModuleDao.deleteBySaasId(saasDO.getId());
         saasModuleDOList.forEach(saasModuleDO -> {
+            ModuleDO moduleDO = moduleDao.findOne(saasModuleDO.getModuleId());
             saasModuleDO.setSaasId(saasDO.getId());
+            saasModuleDO.setDel(moduleDO.getDel());
+            saasModuleDO.setCreateTime(new Date());
+            saasModuleDO.setIsEnd(moduleDO.getIsEnd());
+            saasModuleDO.setIsMust(moduleDO.getIsMust());
+            saasModuleDO.setName(moduleDO.getName());
+            saasModuleDO.setParentModuleId(moduleDO.getParentId());
+            saasModuleDO.setRemark(moduleDO.getRemark());
+            saasModuleDO.setStatus(moduleDO.getStatus());
+            saasModuleDO.setType(moduleDO.getType());
+            saasModuleDO.setUrl(moduleDO.getUrl());
         });
         saasDao.save(oldSaas);
         saasModuleDao.save(saasModuleDOList);
+        return oldSaas;
     }
 
     public void updateStatus(String id,SaasDO.Status status){

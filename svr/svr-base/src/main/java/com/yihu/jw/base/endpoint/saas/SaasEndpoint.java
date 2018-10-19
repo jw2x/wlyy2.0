@@ -5,6 +5,7 @@ import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
+import com.yihu.jw.base.util.ValidateUtil;
 import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
@@ -60,6 +61,12 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
             @RequestParam String jsonSaas) throws Exception {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
+        if(!ValidateUtil.isValidMobileNo(saasDO.getMobile())){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+        }
+        if(!ValidateUtil.isValidEmail(saasDO.getEmail())){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+        }
         if (saasService.search("name=" + saasDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
