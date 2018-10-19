@@ -1,6 +1,8 @@
 package com.yihu.iot.datainput.util;
 
+import com.yihu.jw.util.date.DateUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.utils.DateUtils;
 import org.bouncycastle.jcajce.provider.symmetric.DES;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.DigestUtils;
@@ -15,19 +17,21 @@ import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
+import java.util.Date;
 
 public class RowKeyUtils {
 
     private static EncryptUtil encryptUtil = EncryptUtil.getInstance();
 
 
-    public static String makeRowKey(String accessToken,String deviceSn,String extCode,long measureTime) throws Exception {
+    public static String  makeRowKey(String accessToken,String deviceSn,String extCode,long measureTime) throws Exception {
         StringBuilder sb = new StringBuilder();
         sb.append(accessToken+",");
         sb.append(deviceSn+",");
         sb.append(extCode+",");
         sb.append(measureTime);
-        return encryptUtil.encode(sb.toString());
+        return Base64Utils.encodeToString(sb.toString().getBytes()).toString();
+
     }
 
     /**
@@ -97,4 +101,5 @@ public class RowKeyUtils {
             return new String(pasByte, "UTF-8");
         }
     }
+
 }
