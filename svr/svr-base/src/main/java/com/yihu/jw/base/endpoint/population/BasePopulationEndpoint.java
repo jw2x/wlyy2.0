@@ -120,12 +120,15 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "provinceCode", required = false) String provinceCode,
             @ApiParam(name = "cityCode", value = "城市编码")
             @RequestParam(value = "cityCode", required = false) String cityCode,
+            @ApiParam(name = "createUser", value = "当前用户id-必填")
+            @RequestParam(value = "createUser", required = true) String createUser,
             @ApiParam(name = "year", value = "时间")
             @RequestParam(value = "year", required = false) String year,
             @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
+       SaasDO saasDO= saasService.findByCreateUser(createUser);
         StringBuffer s = new StringBuffer();
         if (StringUtils.isNotBlank(saasName)) {
             s.append("saasName?" + saasName + " g1;");
@@ -138,6 +141,10 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         }
         if (StringUtils.isNotBlank(year)) {
             s.append("year=" + year + ";");
+        }
+        //一个用户对应一个租户，若没有关联的租户，则为超管，查询所有租户
+        if (null != saasDO) {
+            s.append("saasId=" + saasDO.getId() + ";");
         }
         //时间（最近时间排最前）>租户创建时间（最新创建租户排最前）
         String sorts = "-createTime,-saasCreateTime";
@@ -154,8 +161,15 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "createUser", value = "当前用户id-必填")
+            @RequestParam(value = "createUser", required = true) String createUser,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        SaasDO saasDO = saasService.findByCreateUser(createUser);
+        //一个用户对应一个租户，若没有关联的租户，则为超管，查询所有租户
+        if (null != saasDO) {
+            filters = filters + "saasId=" + saasDO.getId() + ";";
+        }
         List<BasePopulationDO> basePopulations = basePopulationService.search(fields, filters, sorts);
         return success(basePopulations, BasePopulationVO.class);
     }

@@ -21,4 +21,6 @@ public interface UserDao extends PagingAndSortingRepository<UserDO, String>, Jpa
     boolean existsByMobile(String mobile);
 
     boolean existsByUsername(String username);
+
+    UserDO findByUsername(String username);
 }

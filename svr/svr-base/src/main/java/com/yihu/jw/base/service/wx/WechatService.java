@@ -331,6 +331,13 @@ public class WechatService {
     }
 
     public Envelop saveWxReplyScene(WxReplySceneDO wxReplySceneDO){
+
+        if(StringUtils.isNotBlank(wxReplySceneDO.getDefaultReply())){
+           List<WxReplySceneDO> list = wxReplySceneDao.findByWechatIdAndDefaultReply(wxReplySceneDO.getWechatId(),wxReplySceneDO.getDefaultReply());
+            if(list!=null&&list.size()>0){
+                wxReplySceneDao.delete(list);
+            }
+        }
         wxReplySceneDao.save(wxReplySceneDO);
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
     }
@@ -374,13 +381,14 @@ public class WechatService {
         return map;
     }
 
-    public MixEnvelop findWxReplyScene(String wechatId,String msgType,String event,String content,Integer page,Integer size){
+    public MixEnvelop findWxReplyScene(String wechatId,String msgType,String event,String content,Integer status,Integer page,Integer size){
         String totalSql = "SELECT " +
                 " COUNT(1) AS total " +
                 " FROM " +
                 " wx_reply_scene s " +
                 " WHERE " +
-                " s.wechat_id = '"+wechatId+"'";
+                " s.wechat_id = '"+wechatId+"' " +
+                " AND s.default_Reply is null ";
         if(StringUtils.isNotBlank(msgType)){
             totalSql += " AND s.msg_type ='"+msgType+"'";
         }
@@ -389,6 +397,9 @@ public class WechatService {
         }
         if(StringUtils.isNotBlank(content)){
             totalSql += " AND s.content like '%"+content+"%'";
+        }
+        if(status!=null){
+            totalSql += " AND s.status = "+status;
         }
         List<Map<String, Object>> rstotal = jdbcTemplate.queryForList(totalSql);
         Long count = 0L;
@@ -409,7 +420,8 @@ public class WechatService {
                 " FROM " +
                 " wx_reply_scene s " +
                 " WHERE " +
-                " s.wechat_id = '"+wechatId+"'";
+                " s.wechat_id = '"+wechatId+"'" +
+                " AND s.default_Reply is null ";
         if(StringUtils.isNotBlank(msgType)){
             sql += " AND s.msg_type ='"+msgType+"'";
         }
@@ -418,6 +430,9 @@ public class WechatService {
         }
         if(StringUtils.isNotBlank(content)){
             sql += " AND s.content like '%"+content+"%'";
+        }
+        if(status!=null){
+            sql += " AND s.status = "+status;
         }
         sql+=" LIMIT  " + (page - 1) * size + "," + size + "";
 
