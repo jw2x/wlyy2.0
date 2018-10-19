@@ -136,6 +136,7 @@ public class BaseRequestMapping {
     public static class SystemDict extends Basic {
         public static final String PREFIX  = "/system_dict";
         public static final String ALL  = "/query_all";
+        public static final String QUERY_BY_SAASID = "/queryBySaasId";
         public static final String QUERY_BY_TYPE  = "/query_by_type";
     }
 
