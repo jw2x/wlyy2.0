@@ -1,5 +1,6 @@
 package com.yihu.jw.entity.base.area;
 
+import com.yihu.jw.entity.IntegerIdentityEntity;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 */
 @Entity
 @Table(name = "base_committee")
-public class BaseCommitteeDO extends UuidIdentityEntityWithOperator {
+public class BaseCommitteeDO extends IntegerIdentityEntity {
 
     /**
 	 * 省标识

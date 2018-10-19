@@ -7,7 +7,6 @@ import com.yihu.jw.entity.base.system.SystemDictDO;
 import com.yihu.jw.restmodel.base.system.SystemDictVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
-import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
@@ -16,7 +15,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,19 +27,9 @@ import java.util.List;
 @RequestMapping(value = BaseRequestMapping.SystemDict.PREFIX)
 @Api(value = "系统字典", description = "系统字典服务接口", tags = {"wlyy基础服务 - 系统字典服务接口"})
 public class SystemDictEndpoint extends EnvelopRestEndpoint {
-    
+
     @Autowired
     private SystemDictService systemDictService;
-
-    @PostMapping(value = BaseRequestMapping.SystemDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建")
-    public ObjEnvelop<SystemDictVO> create (
-            @ApiParam(name = "json", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
-        SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
-        systemDictDO = systemDictService.save(systemDictDO);
-        return success(systemDictDO, SystemDictVO.class);
-    }
 
     @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
     @ApiOperation(value = "删除")
@@ -52,11 +40,11 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SystemDict.UPDATE)
     @ApiOperation(value = "更新")
-    public Envelop update (
+    public Envelop update(
             @ApiParam(name = "json", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @RequestParam String jsonData) throws Exception {
         SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
         if (null == systemDictDO.getCode()) {
             return failed("ID不能为空", Envelop.class);
@@ -67,7 +55,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.SystemDict.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SystemDictVO> page (
+    public PageEnvelop<SystemDictVO> page(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -79,13 +67,13 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         List<SystemDictDO> systemDictDOS = systemDictService.search(fields, filters, sorts, page, size);
-        int count = (int)systemDictService.getCount(filters);
+        int count = (int) systemDictService.getCount(filters);
         return success(systemDictDOS, count, page, size, SystemDictVO.class);
     }
 
     @GetMapping(value = BaseRequestMapping.SystemDict.LIST)
     @ApiOperation(value = "获取列表")
-    public ListEnvelop<SystemDictVO> list (
+    public ListEnvelop<SystemDictVO> list(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -96,14 +84,14 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
         return success(systemDictDOS, SystemDictVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.ALL)
+    @PostMapping(value = BaseRequestMapping.SystemDict.CREATE)
     @ApiOperation(value = "新增系统字典")
-    public Envelop createSystemDict (
+    public Envelop createSystemDict(
             @ApiParam(name = "jsonData", value = "json数据，系统字典及其值")
             @RequestParam(value = "jsonData", required = true) String jsonData) throws Exception {
-         String message = systemDictService.createSystemDict(jsonData);
-         if(StringUtils.equalsIgnoreCase(message,ConstantUtils.SUCCESS)){
-             return success(message);
+        String message = systemDictService.createSystemDict(jsonData);
+        if (StringUtils.equalsIgnoreCase(message, ConstantUtils.SUCCESS)) {
+            return success(message);
         }
         return failed(message);
     }
@@ -140,7 +128,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size
     ) throws Exception {
-        JSONArray list = systemDictService.getDistListByType(type,userId,sorts,page,size);
+        JSONArray list = systemDictService.getDistListByType(type, userId, sorts, page, size);
         return success(list);
     }
 }
