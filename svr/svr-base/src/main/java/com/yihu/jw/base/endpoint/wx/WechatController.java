@@ -224,11 +224,13 @@ public class WechatController extends EnvelopRestEndpoint {
                                                                       @RequestParam(value = "event", required = false)String event,
                                                                       @ApiParam(name = "content", value = "回复内容")
                                                                       @RequestParam(value = "content", required = false)String content,
+                                                                      @ApiParam(name = "status", value = "删除状态")
+                                                                      @RequestParam(value = "status", required = true)Integer status,
                                                                       @ApiParam(name = "page", value = "页数")
                                                                       @RequestParam(value = "page", required = true)Integer page,
                                                                       @ApiParam(name = "size", value = "每页大小")
                                                                       @RequestParam(value = "size", required = true)Integer size) {
-        return wechatService.findWxReplyScene(wechatId, msgType, event, content, page, size);
+        return wechatService.findWxReplyScene(wechatId, msgType, event, content,status, page, size);
     }
     //====================图文素材管理end============================
 
