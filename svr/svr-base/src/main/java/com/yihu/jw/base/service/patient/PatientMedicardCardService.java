@@ -28,6 +28,11 @@ public class PatientMedicardCardService extends BaseJpaService<PatientMedicareCa
     @Autowired
     private PatientMedicareCardDao patientMedicareCardDao;
 
+    /**
+     * 根据居民标识获取居民医疗相关卡列表
+     * @param patientCode
+     * @return
+     */
     public List<PatientMedicareCardDO> findPatientCardByCode(String patientCode){
         List<PatientMedicareCardDO> result = new ArrayList<>();
         if(StringUtils.isEmpty(patientCode)){
@@ -35,5 +40,7 @@ public class PatientMedicardCardService extends BaseJpaService<PatientMedicareCa
         }
         return patientMedicareCardDao.findByPatientCode(patientCode);
     }
+
+
 
 }

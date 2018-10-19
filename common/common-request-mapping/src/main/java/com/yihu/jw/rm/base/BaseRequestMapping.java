@@ -460,6 +460,13 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/baseStreet";
     }
 
+    /**
+     * 居委会字典
+     */
+    public static class BaseCommittee extends Basic {
+        public static final String PREFIX  = "/baseCommittee";
+    }
+
 
     /**
      * 团队成员
