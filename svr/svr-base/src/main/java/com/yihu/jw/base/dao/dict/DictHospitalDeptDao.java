@@ -25,11 +25,13 @@ import java.util.Map;
  */
 public interface DictHospitalDeptDao extends PagingAndSortingRepository<DictHospitalDeptDO, Integer>, JpaSpecificationExecutor<DictHospitalDeptDO>  {
 
-    @Query("select code as code,name as name from DictHospitalDeptDO where saasId = :saasId")
-    List<Map<String,Object>> findCodeAndNameBySaasId(@Param("saasId") String saasId, Pageable pageable);
+    @Query("select code as code,name as name from DictHospitalDeptDO where orgCode in ?1")
+    List<Map<String,Object>> findByOrgCodeIn( String orgCode, Pageable pageable);
 
     @Query("select code as code,name as name from DictHospitalDeptDO")
     List<Map<String,Object>> findCodeAndName(Pageable pageable);
 
-    List<DictHospitalDeptDO> findBySaasId(String saasId);
+    List<DictHospitalDeptDO> findByOrgCode(String orgCode);
+
+    List<DictHospitalDeptDO> findByOrgCodeIn(String orgCode);
 }

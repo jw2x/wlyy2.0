@@ -44,7 +44,7 @@
 //        if (StringUtils.isEmpty(employeeDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(employeeDO.getSaasId())) {
+//        if (StringUtils.isEmpty(employeeDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        return this.employDao.save(employeeDO);
@@ -61,7 +61,7 @@
 //        if (StringUtils.isEmpty(employeeDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(employeeDO.getSaasId())) {
+//        if (StringUtils.isEmpty(employeeDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        return this.employDao.save(employeeDO);
@@ -144,7 +144,7 @@
 //        if (StringUtils.isEmpty(employDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(employDO.getSaasId())) {
+//        if (StringUtils.isEmpty(employDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseEmploy.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        employDO.setStatus(-1);

@@ -1,6 +1,8 @@
 package com.yihu.jw.base.endpoint.doctor;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.service.doctor.BaseDoctorService;
+import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.restmodel.base.doctor.BaseDoctorVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -39,13 +41,17 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     private BaseDoctorService baseDoctorService;
 
     @PostMapping(value = BaseRequestMapping.BaseDoctor.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    @ApiOperation(value = "创建")
-    public ObjEnvelop<BaseDoctorVO> create(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
-        BaseDoctorDO baseDoctor = toEntity(jsonData, BaseDoctorDO.class);
-        baseDoctor = baseDoctorService.save(baseDoctor);
-        return success(baseDoctor, BaseDoctorVO.class);
+    @ApiOperation(value = "新增医生")
+    public Envelop create(
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam String jsonData) throws Exception {
+        JSONObject jsonObject = null;
+        String str = baseDoctorService.createDoctor(jsonData);
+        jsonObject = JSONObject.parseObject(str);
+        if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+            return failed(jsonObject.getString("msg"));
+        }
+        return success(jsonObject.getString("msg"));
     }
 
     @PostMapping(value = BaseRequestMapping.BaseDoctor.DELETE)
@@ -60,8 +66,8 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.BaseDoctor.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<BaseDoctorVO> update(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam String jsonData) throws Exception {
         BaseDoctorDO baseDoctor = toEntity(jsonData, BaseDoctorDO.class);
         if (null == baseDoctor.getId()) {
             return failed("ID不能为空", ObjEnvelop.class);
@@ -102,14 +108,14 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     }
 
     /**
-     * 医生信息（基本信息 + 医院执业信息）
+     * 单个医生信息（基本信息 + 医院执业信息）
      * @param orgId
      * @param doctorId
      * @return
      * @throws Exception
      */
     @PostMapping(value = BaseRequestMapping.BaseDoctor.DOCINFO)
-    @ApiOperation(value = "获取列表")
+    @ApiOperation(value = "获取单个医生及其执业信息")
     public Envelop doctorHosplist(
             @ApiParam(name = "orgId", value = "医院id")
             @RequestParam(value = "orgId", required = true) String orgId,
@@ -119,6 +125,48 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
         return success(map.toString());
     }
 
+    /*
+     * 医生信息（基本信息 + 医院执业信息）列表
+     * @param name
+     * @param idcard
+     * @param orgCode
+     * @param doctorStatus
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = BaseRequestMapping.BaseDoctor.docFullInfo)
+    @ApiOperation(value = "获取医生基础信息列表")
+    public Envelop getDoctorFullInfolist(
+            @ApiParam(name = "name", value = "医生姓名")
+            @RequestParam(value = "name", required = false) String name,
+            @ApiParam(name = "idcard", value = "医生身份证号")
+            @RequestParam(value = "idcard", required = false) String idcard,
+            @ApiParam(name = "orgCode", value = "医院代码")
+            @RequestParam(value = "orgCode", required = false) String orgCode,
+            @ApiParam(name = "doctorStatus", value = "医生是否生效")
+            @RequestParam(value = "doctorStatus", required = false) String doctorStatus,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
+            @RequestParam(value = "page") int page,
+            @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
+            @RequestParam(value = "size") int size) throws Exception {
+        List<Map<String,Object>> map = baseDoctorService.getDoctorFullInfo(name, idcard,orgCode,doctorStatus);
+        return success(map.toString());
+    }
 
+
+   /* *//**
+     * 获取医生 所属机构/部门/职称/职务 树形结构数据
+     * @return
+     * @throws Exception
+     *//*
+    @PostMapping(value = BaseRequestMapping.BaseDoctor.docOrgTreeInfo)
+    @ApiOperation(value = "获取医生所属机构树形结构数据")
+    public Envelop getDoctorOrgTree() throws Exception {
+        String data = baseDoctorService.getOrgTree();
+        return success(data);
+    }
+*/
 
 }

@@ -218,11 +218,27 @@ public class DataInputService {
      * @return
      */
     public String inputBodySignsData(String json) throws IOException {
+        JSONObject result = new JSONObject();
+        result.put("upload_time",DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
+        if(StringUtils.isEmpty(json)){
+            result.put("response",ConstantUtils.FAIL);
+            result.put("msg","parameter json is null");
+            return result.toString();
+        }
         String fileName = "";
         String fileAbsPath = "";
         String rowkey = "";
         //提取json某些项值
-        DataBodySignsDO dataBodySignsDO = JSONObject.parseObject(json,DataBodySignsDO.class);
+        DataBodySignsDO dataBodySignsDO = null;
+        try {
+            dataBodySignsDO  = JSONObject.parseObject(json,DataBodySignsDO.class);
+        }catch (Exception e){
+            logger.error("json parse error,invalid json string");
+            result.put("msg","json parse error,invalid json string");
+            result.put("response",ConstantUtils.FAIL);
+            return result.toString();
+        }
+
         JSONObject jsonObject = JSONObject.parseObject(json);
         String accessToken= dataBodySignsDO.getAccess_token();
         String dataSource = dataBodySignsDO.getData_source();
@@ -238,7 +254,9 @@ public class DataInputService {
 
         JSONArray jsonArray = jsonObject.getJSONArray("data");
         if(null == jsonArray || jsonArray.size() == 0){
-            return "json no data";
+            result.put("response",ConstantUtils.FAIL);
+            result.put("msg","parameter 'data' of json no exist");
+            return result.toString();
         }
 
         List<String> rowkeyList = new ArrayList<>();
@@ -258,7 +276,10 @@ public class DataInputService {
                 data.put("rid",rowkey);//hbase的rowkey
                 rowkeyList.add(rowkey);
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("make rowkey error");
+                result.put("msg","make rowkey error");
+                result.put("response",ConstantUtils.FAIL);
+                return result.toString();
             }
             //组装B列
             Map<String, Map<String, String>> family = new HashMap<>();
@@ -276,11 +297,25 @@ public class DataInputService {
             family.put(ConstantUtils.familyB,columnsB);
             familyList.add(family);
         }
-        DataBodySignsDO bodySignsDO = JSONObject.parseObject(jsonObject.toJSONString(),DataBodySignsDO.class);
-        JSONArray saveArray = new JSONArray();
-        saveArray.add(bodySignsDO);
+        List<String> saveList = new ArrayList<>();
+        saveList.add(jsonObject.toJSONString());
         //将数据存入es
-        elasticSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, saveArray.toJSONString());
+        boolean success = false;
+        try {
+            success = elasticSearchHelper.save(ConstantUtils.esIndex, ConstantUtils.esType, saveList);
+        }catch (Exception e){
+            logger.error("upload signBodyData to elasticsearch failed," + e.getMessage());
+            result.put("msg","upload signBodyData to elasticsearch failed," + e.getMessage());
+        }
+        if(success){
+            dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "4", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 0);
+            JSONArray rids = new JSONArray();
+            rids.addAll(rowkeyList);
+            result.put("rid",rids);
+            result.put("response",ConstantUtils.SUCCESS);
+        }else{
+            result.put("response",ConstantUtils.FAIL);
+        }
 
         /*try {
             boolean tableExists = hBaseAdmin.isTableExists(ConstantUtils.tableName);
@@ -295,13 +330,7 @@ public class DataInputService {
             return "fail";
         }*/
         //保存日志
-        dataProcessLogService.saveLog(fileName, fileAbsPath, dataSource, "", DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss), "1", "4", "com.yihu.iot.datainput.service.DataInputService.uploadData", DataOperationTypeEnum.upload1.getName(), 0);
 
-        JSONObject result = new JSONObject();
-        JSONArray rids = new JSONArray();
-        rids.addAll(rowkeyList);
-        result.put("rid",rids);
-        result.put("upload_time",DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         return result.toJSONString();
     }
 
@@ -313,23 +342,38 @@ public class DataInputService {
      * @return
      */
     public String inputWeRunData(String json){
+        JSONObject result = new JSONObject();
+        result.put("upload_time",DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
+        if(StringUtils.isEmpty(json)){
+            result.put("response",ConstantUtils.FAIL);
+            result.put("msg","parameter json is null");
+            return result.toString();
+        }
         WeRunDataDO weRunData = JSONObject.parseObject(json,WeRunDataDO.class);
         boolean bool = false;
         //用户code不能为空
         if(StringUtils.isEmpty(weRunData.getUsercode())){
-            return "invalid usercode";
+            result.put("response",ConstantUtils.FAIL);
+            result.put("msg","invalid usercode");
+            return result.toString();
         }
         //步数数据不能为空
         if(CollectionUtils.isEmpty(weRunData.getStepInfoList())){
-            return "invalid stepinfolist";
+            result.put("response",ConstantUtils.FAIL);
+            result.put("msg","invalid stepinfolist");
+            return result.toString();
         }
         try{
             bool = elasticSearchHelper.save(ConstantUtils.weRunDataIndex,ConstantUtils.weRunDataType,json);
         }catch (Exception e){
-            logger.error("upload weRunData to elasticsearch failed," + e.getMessage());
-            return e.getMessage();
+            logger.error("upload weRunData to elasticsearch failed");
+            result.put("msg","upload weRunData to elasticsearch failed");
         }
-       return String.valueOf(bool);
+        if(bool){
+                result.put("response",ConstantUtils.SUCCESS);
+            }else{
+                result.put("response",ConstantUtils.FAIL);
+        }
+       return result.toString();
     }
-
 }

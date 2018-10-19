@@ -67,8 +67,8 @@
             success: function (data) {
                 //保存用户信息到缓存中
                 setUserCode(data.obj.code);
-                if(data.obj.saasId!=undefined){
-                    setSaasId(data.obj.saasId)
+                if(data.obj.orgCode!=undefined){
+                    setSaasId(data.obj.orgCode)
                 }
                 window.location.href = server+'/index/index.html';
             },

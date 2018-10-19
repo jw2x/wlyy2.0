@@ -211,6 +211,9 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         }
         basePopulation.setDmNum(null == basePopulation.getDmNum() ? 0 : basePopulation.getDmNum());
         basePopulation.setHbpNum(null == basePopulation.getHbpNum() ? 0 : basePopulation.getHbpNum());
+        basePopulation.setPopulationNum(null == basePopulation.getPopulationNum() ? 0 : basePopulation.getPopulationNum());
+        basePopulation.setRegisPopulationNum(null == basePopulation.getRegisPopulationNum() ? 0 : basePopulation.getRegisPopulationNum());
+        basePopulation.setTaskNum(null == basePopulation.getTaskNum() ? 0 : basePopulation.getTaskNum());
         //更新慢病总人数
         basePopulation.setNcdNum(basePopulation.getHbpNum() + basePopulation.getDmNum());
         return basePopulation;
@@ -261,7 +264,7 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
         return (null != basePopulationDOList && basePopulationDOList.size() > 0) ? true : false;
     }
 
-    @PostMapping(value = BaseRequestMapping.BasePopulation.POPULATION_BATCH_IMPORT)
+    @PostMapping(value = BaseRequestMapping.BasePopulation.POPULATION_BODY_BATCH_IMPORT)
     @Transactional(rollbackFor = Exception.class)
     @ApiOperation(value = "基础人口信息列表导入")
     public Envelop importData(
@@ -275,8 +278,12 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
             //验证未通过
             List<PopulationMsg> errorLs = excelReader.getErrorLs();
             List<PopulationMsg> correctLs = excelReader.getCorrectLs();
-            if(errorLs.size()>0){
-                return failed("格式有误，导入失败！");
+            if (errorLs.size() > 0) {
+               /* StringBuffer str = new StringBuffer();
+                errorLs.forEach(item -> {
+                    str.append(item.getAllErrorMsg(item.getExcelSeq()));
+                });*/
+                return failed("未通过数据验证(年份+租户名称不能重复；统计数不能小于0)，导入失败！" /*+ str.toString()*/);
             }
             //获取所有租户+年份的基础人口信息
             Set<String> populationNameAndYear = new HashSet<String>(basePopulationService.getFacilityCodeByServerType());
@@ -287,8 +294,8 @@ public class BasePopulationEndpoint extends EnvelopRestEndpoint {
                     model = correctLs.get(i);
                     Map<Boolean, PopulationMsg> map = validate(model, populationNameAndYear);
                     if (null == map.get(true)) {
-//                        errorLs.add(model);
-                        return failed("格式有误，导入失败！");
+                        /*PopulationMsg populationMsg=map.get(false);*/
+                        return failed("未通过数据验证(年份+租户名称不能重复；统计数不能小于0)，导入失败！"/*+populationMsg.getAllErrorMsg(populationMsg.getExcelSeq())*/);
                     } else {
                         saveLs.add(model);
                     }

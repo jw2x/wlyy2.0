@@ -195,6 +195,9 @@ public class DataSearchService {
      */
     public List<DataBodySignsVO> getDataToBean(String jsonData) throws IOException {
         List<DataBodySignsVO> result = new ArrayList<>();
+        if(StringUtils.isEmpty(jsonData)){
+            return result;
+        }
         logger.info("load data from elasticsearch start:" + org.apache.http.client.utils.DateUtils.formatDate(new Date(), DateUtil.yyyy_MM_dd_HH_mm_ss));
         SearchSourceBuilder query = elasticSearchQueryGenerator.getQueryBuilder("data",jsonData);
         SearchResult esResult = elasticSearchHelper.search(ConstantUtils.esIndex,ConstantUtils.esType,query.toString());

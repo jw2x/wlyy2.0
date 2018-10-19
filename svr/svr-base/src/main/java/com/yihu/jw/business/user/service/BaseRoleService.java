@@ -32,7 +32,7 @@
 //        if (StringUtils.isEmpty(baseRoleDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(baseRoleDO.getSaasId())) {
+//        if (StringUtils.isEmpty(baseRoleDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        if (StringUtils.isEmpty(baseRoleDO.getName())) {
@@ -51,7 +51,7 @@
 //        if (StringUtils.isEmpty(baseRoleDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(baseRoleDO.getSaasId())) {
+//        if (StringUtils.isEmpty(baseRoleDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        return this.baseRoleDao.save(baseRoleDO);
@@ -135,7 +135,7 @@
 //        if (StringUtils.isEmpty(baseRoleDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(baseRoleDO.getSaasId())) {
+//        if (StringUtils.isEmpty(baseRoleDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseRole.message_fail_saasid_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        baseRoleDO.setStatus(-1);

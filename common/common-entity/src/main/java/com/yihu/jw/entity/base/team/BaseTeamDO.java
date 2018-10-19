@@ -18,9 +18,14 @@ import java.util.Date;
 public class BaseTeamDO extends UuidIdentityEntityWithOperator {
 
     /**
-     * 机构id
+     * 机构代码
      */
-    private String orgId;
+    private String orgCode;
+
+    /**
+     * 机构名称
+     */
+    private String orgName;
 
     /**
      * 团队名称
@@ -30,7 +35,7 @@ public class BaseTeamDO extends UuidIdentityEntityWithOperator {
     /**
      * 领导医生标识
      */
-    private String leaderId;
+    private String leaderCode;
 
     /**
      * 团队人数
@@ -47,14 +52,21 @@ public class BaseTeamDO extends UuidIdentityEntityWithOperator {
      */
     private String del;
 
-
-    @Column(name = "org_id")
-    public String getOrgId() {
-        return orgId;
+    public String getOrgCode() {
+        return orgCode;
     }
 
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
+    @Column(name = "org_code")
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
+    }
+    @Column(name = "org_name")
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     @Column(name = "name")
@@ -66,13 +78,13 @@ public class BaseTeamDO extends UuidIdentityEntityWithOperator {
         this.name = name;
     }
 
-    @Column(name = "leader_id")
-    public String getLeaderId() {
-        return leaderId;
+    @Column(name = "leader_code")
+    public String getLeaderCode() {
+        return leaderCode;
     }
 
-    public void setLeaderId(String leaderId) {
-        this.leaderId = leaderId;
+    public void setLeaderCode(String leaderId) {
+        this.leaderCode = leaderCode;
     }
 
     @Column(name = "team_num")

@@ -74,7 +74,7 @@
 //    public Envelop getMenuListBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
 //        try{
 //            BaseMenuDO baseMenuDO = toEntity(jsonData,BaseMenuDO.class);
-//            return Envelop.getSuccess(BaseUserRequestMapping.BaseMenu.message_success_find,baseMenuService.findAllBySaasId(baseMenuDO.getSaasId()));
+//            return Envelop.getSuccess(BaseUserRequestMapping.BaseMenu.message_success_find,baseMenuService.findAllBySaasId(baseMenuDO.getOrgCode()));
 //        } catch (ApiException e){
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());
 //        }
@@ -85,7 +85,7 @@
 //    public Envelop deleteMenusBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
 //        try{
 //            BaseMenuDO baseMenuDO = toEntity(jsonData,BaseMenuDO.class);
-//            baseMenuService.deleteBaseMenusBySaasId(baseMenuDO.getSaasId());
+//            baseMenuService.deleteBaseMenusBySaasId(baseMenuDO.getOrgCode());
 //            return Envelop.getSuccess(BaseUserRequestMapping.BaseMenu.message_success_delete);
 //        } catch (ApiException e){
 //            return Envelop.getError(e.getMessage(), e.getErrorCode());

@@ -43,6 +43,7 @@ public class PopulationMsgReader extends AExcelReader {
                     populationMsg.setDmNum(null == getCellCont(sheet, i, 4) ? 0 : Integer.valueOf(getCellCont(sheet, i, 4).trim()));
                     populationMsg.setHbpNum(null == getCellCont(sheet, i, 5) ? 0 : Integer.valueOf(getCellCont(sheet, i, 5).trim()));
                     populationMsg.setTaskNum(null == getCellCont(sheet, i, 6) ? 0 : Integer.valueOf(getCellCont(sheet, i, 6).trim()));
+                    populationMsg.setExcelSeq(i);
                     int rs = populationMsg.validate(repeat);
                     if (rs == 0) {
                         errorLs.add(populationMsg);

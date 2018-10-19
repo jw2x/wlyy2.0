@@ -19,9 +19,9 @@ import java.util.Date;
 public class DictHospitalDeptDO extends IntegerIdentityEntity {
 
     /**
-	 * saas配置id，null标识公共字典
+	 * 机构code，每个机构的科室不完全一样
 	 */
-	private String saasId;
+	private String orgCode;
 
     /**
 	 * 科室标识
@@ -40,12 +40,12 @@ public class DictHospitalDeptDO extends IntegerIdentityEntity {
 	private Date createTime;
 
 
-	@Column(name = "saas_id")
-    public String getSaasId() {
-        return saasId;
+	@Column(name = "org_code")
+    public String getOrgCode() {
+        return orgCode;
     }
-    public void setSaasId(String saasId) {
-        this.saasId = saasId;
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 
 	@Column(name = "code")

@@ -155,8 +155,6 @@ CREATE TABLE `base_patient` (
   `patient_status` varchar(100) DEFAULT NULL COMMENT '用户状态：1正常，0禁用，-1恶意注册，2审核中',
   `mobile_remarks` varchar(200) DEFAULT NULL COMMENT '联系方式备注【基卫】',
   `openid_time` datetime DEFAULT NULL COMMENT '第一次添加open的时间',
-  `sick_village` varchar(50) DEFAULT NULL COMMENT '居委会代码',
-  `sick_village_name` varchar(100) DEFAULT NULL,
   `principal_code` varchar(50) DEFAULT NULL COMMENT '绑定电子社保卡主体（共济为操作人code）',
   `sicard_status` varchar(100) DEFAULT NULL COMMENT '是否绑定电子社保卡 （0否 1是）',
   `sicard_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '电子社保卡绑定时间',
@@ -185,7 +183,8 @@ CREATE TABLE `base_patient` (
 drop table IF EXISTS `base_team`;
 CREATE TABLE `base_team` (
   `id` varchar(50) NOT NULL   COMMENT '主键，团队uuid标识',
-  `org_id` varchar(50) DEFAULT NULL COMMENT '机构id',
+  `org_code` varchar(50) DEFAULT NULL COMMENT '机构代码',
+  `org_name` varchar(30) DEFAULT NULL COMMENT '机构名称',
   `name` varchar(50) DEFAULT NULL COMMENT '团队名称',
   `leader_id` varchar(50) NOT NULL COMMENT '领导医生标识',
   `team_num` varchar(50) NOT NULL COMMENT '团队人数',
@@ -762,6 +761,19 @@ create table `org_tree`
   `parent_code` varchar(50) not null COMMENT '父级行政区域code',
   `code` varchar(100) DEFAULT NULL COMMENT '行政区域code',
   `name` varchar(50) not null COMMENT '行政区域名称',
+  `level` varchar(50) not null COMMENT '节点所在层级（即有几个父亲）',
   primary key (id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构区域树形结构';
+
+-- 居民医保卡电子卡等信息
+drop table IF EXISTS `patient_medicare_card`;
+create table `patient_medicare_card`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长',
+  `code` varchar(50) not null COMMENT '卡标识',
+  `type` varchar(1) DEFAULT NULL COMMENT '卡类型，1-医保卡，2-电子健康卡',
+  `patient_code` varchar(50) not null COMMENT '居民标识',
+  primary key (id)
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='居民医保关联卡';
