@@ -25,6 +25,8 @@ public class MenuVO extends UuidIdentityVOWithOperator {
     private Integer sort;
     @ApiModelProperty(value = "父级ID", example = "父级ID")
     private String parentId;
+    @ApiModelProperty(value = "父级名称", example = "父级名称")
+    private String parentName;
     @ApiModelProperty(value = "状态", example = "1生效，0失效")
     private Integer status;
     @ApiModelProperty(value = "备注", example = "说明")
@@ -104,5 +106,13 @@ public class MenuVO extends UuidIdentityVOWithOperator {
 
     public void setChildren(List<MenuVO> children) {
         this.children = children;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 }

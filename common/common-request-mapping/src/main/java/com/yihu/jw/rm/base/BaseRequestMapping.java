@@ -86,6 +86,7 @@ public class BaseRequestMapping {
         public static final String STATUS  = "/status";
         public static final String IS_NAME_EXIST  = "/isNameExist";
         public static final String FIND_ALL  = "/findAll";
+        public static final String GET_TREE  = "/getTree";
 
     }
 
@@ -188,6 +189,7 @@ public class BaseRequestMapping {
         public static final String IS_NAME_EXIST  = "/isNameExist";
         public static final String MOVE_UP  = "/moveUp";
         public static final String MOVE_DOWN  = "/moveDown";
+        public static final String GET_TREE  = "/getTree";
         public static final String FIND_ALL  = "/findAll";
     }
 
