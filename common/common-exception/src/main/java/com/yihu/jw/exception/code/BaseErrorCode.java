@@ -59,6 +59,14 @@ public class BaseErrorCode {
          * 只有审核未通过才可以查看
          */
         public static final String IS_NOT_AUDITNOTPASSED = "-101006";
+        /**
+         * 邮箱地址格式错误
+         */
+        public static final String EMAIL_IS_NOT_FORMAT = "-101007";
+        /**
+         * 手机号码格式错误
+         */
+        public static final String PHONE_IS_NOT_FORMAT = "-101008";
     }
 
     /**
