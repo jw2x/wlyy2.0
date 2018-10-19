@@ -19,6 +19,7 @@ public class BaseRequestMapping {
         public static final String PAGE = "/page";
         public static final String LIST = "/list";
         public static final String FINDBYID = "/findById";
+        public static final String FIND_MODULE_BY_SAASID = "/findModuleBySaasId";
         public static final String STATUS = "/status";
     }
 
@@ -145,6 +146,7 @@ public class BaseRequestMapping {
      */
     public static class SystemDictEntry extends Basic {
         public static final String PREFIX  = "/system_dict_entry";
+        public static final String PAGE_SAASID  = "/pageSaasId";
     }
 
     /**

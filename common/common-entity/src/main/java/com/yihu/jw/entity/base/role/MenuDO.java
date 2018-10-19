@@ -134,7 +134,7 @@ public class MenuDO extends UuidIdentityEntityWithOperator {
 		this.method = method;
 	}
 
-	@Column(name = "show")
+	@Column(name = "is_show")
 	public Integer getShow() {
 		return show;
 	}

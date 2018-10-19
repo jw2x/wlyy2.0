@@ -110,7 +110,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size
     ) throws Exception {
-        JSONArray list = systemDictService.getDistListByType(type,saasId,sorts,page,size);
+        JSONArray list = systemDictService.getDistListBySaasId(type,saasId,sorts,page,size);
         return success(list);
     }
 

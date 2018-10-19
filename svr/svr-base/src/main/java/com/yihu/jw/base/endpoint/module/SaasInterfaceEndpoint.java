@@ -37,7 +37,7 @@ public class SaasInterfaceEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.SaasInterface.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<SaasInterfaceVO> create (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         SaasInterfaceDO interfaceDO = toEntity(jsonData, SaasInterfaceDO.class);
 
@@ -78,7 +78,7 @@ public class SaasInterfaceEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.SaasInterface.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<SaasInterfaceVO> update (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         SaasInterfaceDO interfaceDO = toEntity(jsonData, SaasInterfaceDO.class);
         if (null == interfaceDO.getId()) {

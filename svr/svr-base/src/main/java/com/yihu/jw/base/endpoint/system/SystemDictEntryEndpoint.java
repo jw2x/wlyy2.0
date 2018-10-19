@@ -62,6 +62,27 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
         return success(systemDictEntryDO, SystemDictEntryVO.class);
     }
 
+    @GetMapping(value = BaseRequestMapping.SystemDictEntry.PAGE_SAASID)
+    @ApiOperation(value = "获取分页")
+    public PageEnvelop<SystemDictEntryVO> pageSaasId (
+            @ApiParam(name = "saasId", value = "true")
+            @RequestParam(value = "saasId", required = true) String saasId,
+            @ApiParam(name = "dictCode", value = "字典code")
+            @RequestParam(value = "dictCode", required = true) String dictCode,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
+            @RequestParam(value = "page") int page,
+            @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
+            @RequestParam(value = "size") int size) throws Exception {
+        StringBuilder filters = new StringBuilder();
+        filters.append("saasId=").append(saasId).append(";")
+                .append("dictCode=").append(dictCode).append(";");
+        List<SystemDictEntryDO> systemDictEntryDOS = systemDictEntryService.search(null, filters.toString(), sorts, page, size);
+        int count = (int)systemDictEntryService.getCount(filters.toString());
+        return success(systemDictEntryDOS, count, page, size, SystemDictEntryVO.class);
+    }
+
     @GetMapping(value = BaseRequestMapping.SystemDict.PAGE)
     @ApiOperation(value = "获取分页")
     public PageEnvelop<SystemDictEntryVO> page (
