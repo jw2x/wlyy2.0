@@ -138,6 +138,7 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
         }
         // 保存修改的居民信息
         this.save(basePatientDO);
+
         // 一条一条修改居民相关的卡的信息
         for (Object obj: patientMedicareCards){
             PatientMedicareCardDO card = objectMapper.readValue(obj.toString(),PatientMedicareCardDO.class);

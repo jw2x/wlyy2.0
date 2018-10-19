@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Order;
 import java.text.ParseException;
@@ -130,6 +131,7 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
      }
      *
      */
+    @Transactional(rollbackFor = Exception.class)
     public String createSystemDict(String jsonData) throws Exception{
         if(StringUtils.isEmpty(jsonData)){
             return "none params(jsonData)";
