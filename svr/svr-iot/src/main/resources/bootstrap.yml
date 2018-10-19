@@ -1,6 +1,6 @@
 spring:
   application:
-    name: svr-iot-lith
+    name: svr-iot
   cloud:
     config:
       failFast: true
