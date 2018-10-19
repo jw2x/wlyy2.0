@@ -33,7 +33,7 @@
 //        if (StringUtils.isEmpty(baseMenuDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseMenu.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(baseMenuDO.getSaasId())) {
+//        if (StringUtils.isEmpty(baseMenuDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseMenu.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        return this.baseMenuDao.save(baseMenuDO);
@@ -49,7 +49,7 @@
 //        if (StringUtils.isEmpty(baseMenuDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseMenu.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(baseMenuDO.getSaasId())) {
+//        if (StringUtils.isEmpty(baseMenuDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseMenu.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        return this.baseMenuDao.save(baseMenuDO);
@@ -96,7 +96,7 @@
 //        if (StringUtils.isEmpty(baseMenuDO.getId())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseMenu.message_fail_id_is_null, ExceptionCode.common_error_params_code);
 //        }
-//        if (StringUtils.isEmpty(baseMenuDO.getSaasId())) {
+//        if (StringUtils.isEmpty(baseMenuDO.getOrgCode())) {
 //            throw new ApiException(BaseUserRequestMapping.BaseMenu.message_fail_saasId_is_null, ExceptionCode.common_error_params_code);
 //        }
 //        baseMenuDO.setStatus(-1);

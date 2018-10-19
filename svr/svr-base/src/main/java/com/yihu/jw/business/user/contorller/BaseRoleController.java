@@ -78,7 +78,7 @@
 ////    public Envelop getOneRoleBySaasIdAndName(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
 ////        try{
 ////            BaseRoleDO baseRoleDO = toEntity(jsonData,BaseRoleDO.class);
-////            return Envelop.getSuccess(BaseUserRequestMapping.BaseRole.message_success_find,baseRoleService.findBySaasIdAndName(baseRoleDO.getName(),baseRoleDO.getSaasId()));
+////            return Envelop.getSuccess(BaseUserRequestMapping.BaseRole.message_success_find,baseRoleService.findBySaasIdAndName(baseRoleDO.getName(),baseRoleDO.getOrgCode()));
 ////        } catch (ApiException e){
 ////            return Envelop.getError(e.getMessage(), e.getErrorCode());
 ////        }
@@ -89,7 +89,7 @@
 ////    public Envelop getRoleListBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
 ////        try{
 ////            BaseRoleDO baseRoleDO = toEntity(jsonData,BaseRoleDO.class);
-////            return Envelop.getSuccessList(BaseUserRequestMapping.BaseRole.message_success_find,baseRoleService.findAllBySaasId(baseRoleDO.getSaasId()));
+////            return Envelop.getSuccessList(BaseUserRequestMapping.BaseRole.message_success_find,baseRoleService.findAllBySaasId(baseRoleDO.getOrgCode()));
 ////        } catch (ApiException e){
 ////            return Envelop.getError(e.getMessage(), e.getErrorCode());
 ////        }
@@ -143,7 +143,7 @@
 ////    public Envelop deleteRolesBySaasId(@ApiParam(name = "json_data", value = "", defaultValue = "") @RequestBody String jsonData){
 ////        try{
 ////            BaseRoleDO baseRoleDO = toEntity(jsonData,BaseRoleDO.class);
-////            baseRoleService.deleteBaseRolesBySaasId(baseRoleDO.getSaasId());
+////            baseRoleService.deleteBaseRolesBySaasId(baseRoleDO.getOrgCode());
 ////            return Envelop.getSuccess(BaseUserRequestMapping.BaseRole.message_success_delete);
 ////        } catch (ApiException e){
 ////            return Envelop.getError(e.getMessage(), e.getErrorCode());

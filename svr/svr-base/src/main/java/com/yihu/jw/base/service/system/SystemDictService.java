@@ -3,27 +3,20 @@ package com.yihu.jw.base.service.system;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.discovery.converters.Auto;
+import com.yihu.jw.base.dao.system.SystemDictDao;
 import com.yihu.jw.base.enums.SystemDictEnum;
 import com.yihu.jw.base.service.dict.*;
 import com.yihu.jw.base.util.ConstantUtils;
-import com.yihu.jw.entity.base.dict.*;
 import com.yihu.jw.entity.base.system.SystemDictDO;
-import com.yihu.jw.base.dao.system.SystemDictDao;
 import com.yihu.jw.entity.base.system.SystemDictEntryDO;
-import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.Order;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -60,6 +53,35 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
     @Override
     public long getCount(String filters) throws ParseException {
         return super.getCount(filters);
+    }
+
+    /**
+     * 根据字典类型获取系统所有相关字典，
+     * @param saasId
+     * @return
+     */
+    public JSONArray getDistListBySaasId(String type, String saasId, String sorts, int page, int size) throws Exception {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        if (SystemDictEnum.Icd10Dict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictIcd10Service.queryAll(saasId, createPage(page,size,sorts));
+        } else if (SystemDictEnum.HospitalDeptDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictHospitalDeptService.queryAll(saasId, createPage(page,size,sorts));
+
+        } else if (SystemDictEnum.JobTitleDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictJobTitleService.queryAll(saasId, createPage(page,size,sorts));
+
+        } else if (SystemDictEnum.HealthProblemDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictHealthProblemService.queryAll(saasId, createPage(page,size,sorts));
+
+        } else if (SystemDictEnum.MedicineDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictMedicineService.queryAll(saasId, createPage(page,size,sorts));
+
+        } else if (SystemDictEnum.DiseaseDict == SystemDictEnum.valueOf(type)) {
+            jsonObject = dictDiseaseService.queryAll(saasId, createPage(page,size,sorts));
+        }
+        jsonArray.add(jsonObject);
+        return jsonArray;
     }
 
     /**
@@ -130,6 +152,7 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
      }
      *
      */
+    @Transactional(rollbackFor = Exception.class)
     public String createSystemDict(String jsonData) throws Exception{
         if(StringUtils.isEmpty(jsonData)){
             return "none params(jsonData)";

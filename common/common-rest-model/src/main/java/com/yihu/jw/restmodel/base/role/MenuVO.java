@@ -29,6 +29,8 @@ public class MenuVO extends UuidIdentityVOWithOperator {
     private Integer status;
     @ApiModelProperty(value = "备注", example = "说明")
     private String remark;
+    @ApiModelProperty(value = "是否展示（1是，2否）", example = "1")
+    private Integer show;
     @ApiModelProperty(value = "子集")
     private List<MenuVO> children = new ArrayList<>();
 
@@ -86,6 +88,14 @@ public class MenuVO extends UuidIdentityVOWithOperator {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Integer getShow() {
+        return show;
+    }
+
+    public void setShow(Integer show) {
+        this.show = show;
     }
 
     public List<MenuVO> getChildren() {

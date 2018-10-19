@@ -1,5 +1,6 @@
 package com.yihu.jw.restmodel.base.area;
 
+import com.yihu.jw.entity.IntegerIdentityEntity;
 import com.yihu.jw.restmodel.UuidIdentityVOWithOperator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -18,7 +19,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @since 1.
  */
 @ApiModel(value = "BaseCommitteeVO", description = "居委会")
-public class BaseCommitteeVO extends UuidIdentityVOWithOperator {
+public class BaseCommitteeVO extends IntegerIdentityEntity {
 
     /**
 	 * 省标识

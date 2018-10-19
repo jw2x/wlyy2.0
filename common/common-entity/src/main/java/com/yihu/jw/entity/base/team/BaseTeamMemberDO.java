@@ -20,17 +20,17 @@ public class BaseTeamMemberDO extends UuidIdentityEntityWithOperator {
     /**
 	* 团队ID
 	*/
-    private String teamId;
+    private String teamCode;
 
     /**
 	* 机构标识
 	*/
-    private String orgId;
+    private String orgCode;
 
     /**
 	* 医生标识，多个医生以逗号分开
 	*/
-    private String doctorId;
+    private String doctorCode;
 
     /**
 	* 作废标识，1正常，0作废
@@ -39,27 +39,27 @@ public class BaseTeamMemberDO extends UuidIdentityEntityWithOperator {
 
 
 	@Column(name = "team_id")
-    public String getTeamId() {
-        return teamId;
+    public String getTeamCode() {
+        return teamCode;
     }
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
+    public void setTeamCode(String teamCode) {
+        this.teamCode = teamCode;
     }
 
-	@Column(name = "org_id")
-    public String getOrgId() {
-        return orgId;
+	@Column(name = "org_code")
+    public String getOrgCode() {
+        return orgCode;
     }
-    public void setOrgId(String orgId) {
-        this.orgId = orgId;
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 
 	@Column(name = "doctor_id")
-    public String getDoctorId() {
-        return doctorId;
+    public String getDoctorCode() {
+        return doctorCode;
     }
-    public void setDoctorId(String doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctorCode(String doctorCode) {
+        this.doctorCode = doctorCode;
     }
 
 	@Column(name = "del")

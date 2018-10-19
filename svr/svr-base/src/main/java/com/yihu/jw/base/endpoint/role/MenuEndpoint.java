@@ -17,7 +17,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -39,11 +38,11 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
 
-    @PostMapping(value = BaseRequestMapping.Menu.CREATE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Menu.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<MenuVO> create (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam String jsonData) throws Exception {
         MenuDO menuDO = toEntity(jsonData, MenuDO.class);
         int count = menuService.isExistName(menuDO.getName());
         if(count>0){
@@ -90,11 +89,11 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
         return success(menuService.isExistName(name));
     }
 
-    @PostMapping(value = BaseRequestMapping.Menu.UPDATE,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Menu.UPDATE)
     @ApiOperation(value = "更新")
     public Envelop update (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam String jsonData) throws Exception {
         MenuDO menuDO = toEntity(jsonData, MenuDO.class);
         if (null == menuDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), Envelop.class);

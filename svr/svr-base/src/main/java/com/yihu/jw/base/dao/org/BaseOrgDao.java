@@ -53,4 +53,7 @@ public interface BaseOrgDao extends PagingAndSortingRepository<BaseOrgDO, String
     @Modifying
     @Query("delete from BaseOrgDO p where p.saasid=?1 ")
     void deleteBySaasId(String saasId);
+
+    @Query("select id from BaseOrgDO where saasid = ?1")
+    List findOrgCodeBySaasId(String saasId);
 }

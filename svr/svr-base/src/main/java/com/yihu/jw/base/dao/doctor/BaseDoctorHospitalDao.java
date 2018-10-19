@@ -18,4 +18,5 @@ import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
  * @since 1.
  */
 public interface BaseDoctorHospitalDao extends PagingAndSortingRepository<BaseDoctorHospitalDO, Integer>, JpaSpecificationExecutor<BaseDoctorHospitalDO>  {
+
 }

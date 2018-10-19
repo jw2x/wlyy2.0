@@ -100,4 +100,12 @@ public class DictHospitalDeptEndpoint extends EnvelopRestEndpoint {
         return success(dictHospitalDepts, DictHospitalDeptVO.class);
     }
 
+    @GetMapping(value = BaseRequestMapping.DictHospitalDept.queryDeptByOrg)
+    @ApiOperation(value = "根据机构获取科室")
+    public ListEnvelop<DictHospitalDeptVO> queryDeptByOrg(
+            @ApiParam(name = "orgCode", value = "机构标识")
+            @RequestParam(value = "orgCode", required = true) String orgCode) throws Exception {
+        List<DictHospitalDeptDO> dictHospitalDepts = dictHospitalDeptService.findDeptByOrgCode(orgCode);
+        return success(dictHospitalDepts, DictHospitalDeptVO.class);
+    }
 }

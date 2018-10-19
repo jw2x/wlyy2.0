@@ -5,6 +5,7 @@ import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
+import com.yihu.jw.base.util.ValidateUtil;
 import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
@@ -67,6 +68,13 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "captcha", value = "验证码", required = true)
             @RequestParam String captcha) throws Exception {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
+
+        if(!ValidateUtil.isValidMobileNo(saasDO.getMobile())){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+        }
+        if(!ValidateUtil.isValidEmail(saasDO.getEmail())){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+        }
 
         String redisKey = redisPrefix + saasDO.getEmail();
         String verificationCode = redisTemplate.opsForValue().get(redisKey);

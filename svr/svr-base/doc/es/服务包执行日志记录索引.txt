@@ -15,7 +15,7 @@ POST http://172.19.103.68:9200/base_service_package_log/base_service_package_log
                 "type": "string",
                 "index": "not_analyzed"
             },
-			"saasId": {
+			"orgCode": {
 				"type": "string",
 				"index": "not_analyzed"
 			},"sevicePackageId": {
@@ -57,7 +57,7 @@ POST http://172.19.103.68:9200/base_service_package_log/base_service_package_log
 字段说明：
 "id": code
 "createTime": 时间
-"saasId": saasid
+"orgCode": saasid
 "sevicePackageId": 服务包id
 "sevicePackageDetailId": 服务包明细id
 "userCode": 医生或者患者code
