@@ -25,5 +25,7 @@ public interface WxReplySceneDao extends PagingAndSortingRepository<WxReplyScene
     //点击事件，扫码事件，是否存在相同场景值
     List<WxReplySceneDO> findByWechatIdAndMsgTypeAndEventAndSceneAndStatus(String wechatId,String msgType,String event,String scene,Integer status);
 
+    List<WxReplySceneDO> findByWechatIdAndDefaultReply(String wechatId,String defaultReply);
 
+    List<WxReplySceneDO> findByAppOriginIdAndAndDefaultReply(String appOriginId,String defaultReply);
 }

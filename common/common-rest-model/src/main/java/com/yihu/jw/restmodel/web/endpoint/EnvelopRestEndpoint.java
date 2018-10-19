@@ -1,11 +1,16 @@
 package com.yihu.jw.restmodel.web.endpoint;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.jw.entity.base.doctor.BaseDoctorDO;
 import com.yihu.jw.restmodel.web.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -331,5 +336,21 @@ public abstract class EnvelopRestEndpoint {
         }
 
         return links.toString();
+    }
+
+    public String getUID() {
+        try {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+            String userAgent = request.getHeader("userAgent");
+            if (StringUtils.isEmpty(userAgent)) {
+                userAgent = request.getHeader("User-Agent");
+            }
+            JSONObject json = JSON.parseObject(userAgent);
+            return json.getString("uid");
+
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
