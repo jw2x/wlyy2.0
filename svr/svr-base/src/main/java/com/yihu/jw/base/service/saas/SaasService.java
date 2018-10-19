@@ -336,6 +336,9 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     public SaasDO findById(String id){
         return saasDao.findById(id);
     }
+    public SaasDO findByCreateUser(String createUser){
+        return saasDao.findByCreateUser(createUser);
+    }
 
     public SaasDO findByName(String name){
         return saasDao.findByName(name);
@@ -351,24 +354,38 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     public SaasDO saasAudit(SaasDO saas, UserDO user) {
         //初始化角色
         RoleDO roleDO = roleDao.findByCode(roleCode);
-        //初始化租户管理员
-        user.setEnabled(true);
-        user.setLocked(false);
-        user.setSalt(randomString(5));
-        user.setName(user.getEmail());
-        String password = user.getPassword();
-        //密码默认手机号后6位
-        if (StringUtils.isEmpty(password)) {
-            password = user.getMobile().substring(0, 6);
+        //判断该用户是否已经存在
+       UserDO userDO= userDao.findByUsername(saas.getEmail());
+        if (null == userDO) {
+            //初始化租户管理员
+            user.setEnabled(true);
+            user.setLocked(false);
+            user.setSalt(randomString(5));
+            //姓名
+            user.setName(user.getEmail());
+            //账号
+            user.setUsername(user.getEmail());
+            String password = user.getPassword();
+            //密码默认手机号后6位
+            if (StringUtils.isEmpty(password)) {
+                password = user.getMobile().substring(0, 6);
+            }
+            user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
+            user.setSaasId(saas.getId());
+            user = userDao.save(user);
+        } else {
+            userDO.setSaasId(saas.getId());
+            user = userDao.save(userDO);
         }
-        user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
+
         //初始化管理员角色
         UserRoleDO userRoleDO = new UserRoleDO();
         userRoleDO.setRoleId(roleDO.getId());
-        userDao.save(user);
+
         userRoleDO.setUserId(user.getId());
         userRoleDao.save(userRoleDO);
         saas.setManager(user.getId());
+        saas.setManagerName(user.getName());
         saas.setAppId(getCode());
         saas.setAppSecret(getCode());
         saas = saasDao.save(saas);

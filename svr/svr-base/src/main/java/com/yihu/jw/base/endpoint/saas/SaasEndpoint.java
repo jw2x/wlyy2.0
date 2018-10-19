@@ -241,7 +241,6 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             //发送者
             mainMessage.setFrom(username);
             //接收者
-//            mainMessage.setTo("763558454@qq.com");
             mainMessage.setTo(saasDO.getEmail());
             //发送的标题
             mainMessage.setSubject(baseEmailTemplateConfigDO.getTemplateName());

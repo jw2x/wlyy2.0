@@ -56,6 +56,9 @@ public class UserVO extends UuidIdentityVOWithOperator {
     //登陆失败次数
     @ApiModelProperty(value = "登陆失败次数", example = "0")
     private Integer loginFailureCount;
+    //saas化的id
+    @ApiModelProperty(value = "saadid", example = "25f9e794323b453885f5181f1b620009")
+    private String  saasId;
 
     public String getUsername() {
         return username;
@@ -169,5 +172,13 @@ public class UserVO extends UuidIdentityVOWithOperator {
 
     public void setLoginFailureCount(Integer loginFailureCount) {
         this.loginFailureCount = loginFailureCount;
+    }
+
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 }

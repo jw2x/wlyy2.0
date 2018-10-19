@@ -55,6 +55,8 @@ public class UserDO extends UuidIdentityEntityWithOperator {
     private Date loginDate;
     //登陆失败次数
     private Integer loginFailureCount;
+    //saas化的id
+    private String  saasId;
 
     public UserDO(){}
 
@@ -188,5 +190,13 @@ public class UserDO extends UuidIdentityEntityWithOperator {
 
     public void setLoginFailureCount(Integer loginFailureCount) {
         this.loginFailureCount = loginFailureCount;
+    }
+    @Column(name = "saas_id",nullable = false)
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
     }
 }
