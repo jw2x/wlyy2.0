@@ -138,15 +138,19 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
         }
         // 保存修改的居民信息
         this.save(basePatientDO);
-
-        // 一条一条修改居民相关的卡的信息
-        for (Object obj: patientMedicareCards){
-            PatientMedicareCardDO card = objectMapper.readValue(obj.toString(),PatientMedicareCardDO.class);
+        Set<Object> cardIdList = patientMedicardCardService.findIdListByPatientCode(basePatientDO.getId());
+        // 有些卡可能是新增或修改的，一条一条修改居民相关的卡的信息
+        for (Object obj : patientMedicareCards) {
+            PatientMedicareCardDO card = objectMapper.readValue(obj.toString(), PatientMedicareCardDO.class);
             card.setPatientCode(basePatientDO.getId());
-            if(StringUtils.isEmpty(basePatientDO.getId())){
-                return ConstantUtils.FAIL;
+            if(cardIdList.contains(card.getId())){
+                cardIdList.remove(card.getId());
             }
             patientMedicardCardService.save(card);
+        }
+        // 有些卡可能是删除的
+        if(cardIdList.size() > 0){
+            patientMedicardCardService.delete(cardIdList.toArray());
         }
         return ConstantUtils.SUCCESS;
     }
