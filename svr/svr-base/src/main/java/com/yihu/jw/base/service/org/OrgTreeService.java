@@ -9,11 +9,13 @@ import com.yihu.jw.base.service.org.tree.TreeNode;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -151,5 +153,19 @@ public class OrgTreeService extends BaseJpaService<OrgTree, OrgTreeDao> {
             return result;
         }
         return orgTreeDao.findByLevelLessThanEqual(level);
+    }
+
+    /**
+     * 根据区下面的机构列表
+     *
+     * @param townCode
+     * @return
+     */
+    public List<Map<String, Object>> findOrgListByParentCode(String townCode) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        if (StringUtils.isEmpty(townCode)) {
+            return result;
+        }
+        return orgTreeDao.findOrgListByParentCode(townCode);
     }
 }

@@ -37,11 +37,31 @@ CREATE TABLE `base_org` (
   KEY `idx_id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构信息（医院）';
 
+-- 机构Saas关联表
+drop table IF EXISTS `base_org_saas`;
+CREATE TABLE `base_org_saas` (
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT 'id，自增长',
+  `saasid` varchar(50) NOT NULL COMMENT 'saas化配置',
+  `org_code` varchar(50) NOT NULL COMMENT '机构标识',
+  PRIMARY KEY (`id`),
+  KEY `idx_id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构与Saas关联信息';
+
+-- 机构管理员关联表
+drop table IF EXISTS `base_org_user`;
+CREATE TABLE `base_org_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT 'id，自增长',
+  `org_code` varchar(50) NOT NULL COMMENT '机构标识，base_org里的code',
+  `user_account` varchar(50) NOT NULL COMMENT '用户账号，base_user表里的username',
+  PRIMARY KEY (`id`),
+  KEY `idx_id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='机构与机构管理员关联信息';
+
 -- 医生信息表
 drop table IF EXISTS `base_doctor`;
 CREATE TABLE `base_doctor` (
   `id` varchar(50) NOT NULL COMMENT 'uuid,uuid唯一标识',
-  `org_id` varchar(100) DEFAULT NULL COMMENT '机构id',
+  `org_code` varchar(100) DEFAULT NULL COMMENT '机构id',
   `password` varchar(50) NOT NULL COMMENT '密码',
   `salt` varchar(50) DEFAULT NULL,
   `name` varchar(50) DEFAULT NULL COMMENT '姓名',
@@ -61,7 +81,7 @@ CREATE TABLE `base_doctor` (
   `town_name` varchar(50) DEFAULT NULL COMMENT '区县名称',
   `street_code` varchar(50) DEFAULT NULL COMMENT '街道代码',
   `street_name` varchar(50) DEFAULT NULL COMMENT '街道名称',
-  `iscertified` varchar(1) NOT NULL DEFAULT '0' COMMENT '资格是否认证通过，1是，0否',
+  `iscertified` varchar(1) DEFAULT NULL DEFAULT '0' COMMENT '资格是否认证通过，1是，0否',
   `is_famous` varchar(1) NOT NULL DEFAULT '0' COMMENT '是否是名医，1是，0否',
   `is_password_prompt` char(1) DEFAULT NULL COMMENT '是否提示设置密码  1 提示过 0未提示',
   `spell` varchar(10) DEFAULT NULL COMMENT '名称拼音首字母',
@@ -98,23 +118,23 @@ CREATE TABLE `base_doctor_role_dict` (
 
 -- 医生角色关联表
 drop table IF EXISTS `base_doctor_role`;
-/*CREATE TABLE `base_doctor_role` (
+CREATE TABLE `base_doctor_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，关联表',
+  `doctor_code` varchar(50) NOT NULL COMMENT '医生code',
   `role_code` varchar(50) NOT NULL COMMENT '医生角色id',
-  `doctor_id` varchar(50) NOT NULL COMMENT '医生code',
   `del` varchar(1) DEFAULT '1' COMMENT '作废标识，1正常，0作废',
   `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生角色关联信息';
-*/
+
 -- 医生执业表（一个医生可在多个医院供职，角色等）
 drop table IF EXISTS `base_doctor_hospital`;
 CREATE TABLE `base_doctor_hospital` (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
   `hosp_code` varchar(50) NOT NULL COMMENT '医院标识',
   `hosp_name` varchar(50) NOT NULL COMMENT '医院名称',
-  `role_code` varchar(50) NOT NULL COMMENT '医生角色标识',
-  `role_name` varchar(50) NOT NULL COMMENT '医院角色名称',
+  `doctor_duty_code` varchar(50) NOT NULL COMMENT '医生职务标识',
+  `doctor_duty_name` varchar(50) NOT NULL COMMENT '医院职务名称',
   `job_title_code` varchar(50) NOT NULL COMMENT '职称代码',
   `job_title_name` varchar(50) NOT NULL COMMENT '职称名称',
   `del` varchar(1) DEFAULT '1' COMMENT '作废标识，1正常，0作废',
@@ -145,8 +165,16 @@ CREATE TABLE `base_patient` (
   `town_name` varchar(50) DEFAULT NULL COMMENT '区县名称',
   `street_code` varchar(50) DEFAULT NULL COMMENT '街道代码',
   `street_name` varchar(50) DEFAULT NULL COMMENT '街道名称',
-  `committee_code` varchar(50) DEFAULT NULL COMMENT '居委会代码',
-  `committee_name` varchar(50) DEFAULT NULL COMMENT '居委会名称',
+  `live_province_code` varchar(50) DEFAULT NULL COMMENT '居住省代码',
+  `live_province_name` varchar(50) DEFAULT NULL COMMENT '居住省名称',
+  `live_city_code` varchar(50) DEFAULT NULL COMMENT '居住市代码',
+  `live_city_name` varchar(50) DEFAULT NULL COMMENT '居住市名称',
+  `live_town_code` varchar(50) DEFAULT NULL COMMENT '居住区县代码',
+  `live_town_name` varchar(50) DEFAULT NULL COMMENT '居住区县名称',
+  `live_street_code` varchar(50) DEFAULT NULL COMMENT '居住街道代码',
+  `live_street_name` varchar(50) DEFAULT NULL COMMENT '居住街道名称',
+  `committee_code` varchar(50) DEFAULT NULL COMMENT '居住居委会代码',
+  `committee_name` varchar(50) DEFAULT NULL COMMENT '居住居委会名称',
   `disease` varchar(100) DEFAULT NULL COMMENT '疾病类型，0健康，1高血压，2糖尿病，3高血压+糖尿病',
   `disease_condition` varchar(100) DEFAULT NULL COMMENT '病情：0绿标，1黄标，2红标，3重点关注,',
   `points` varchar(100) DEFAULT NULL COMMENT '总积分',
@@ -305,18 +333,30 @@ CREATE TABLE `base_committee` (
 -- 行政区划数据  5个表 ---end----
 
 
--- 职称表
+-- 医生职称字典表
 drop table IF EXISTS `dict_job_title`;
 create table `dict_job_title`(
 `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
 `saas_id` varchar(100) DEFAULT NULL COMMENT 'saas配置id，null标识公共字典',
 `code` varchar(50) default NULL COMMENT '职称标识',
-`name` varchar(20) default NULL COMMENT '职称名',
+`name` varchar(20) default NULL COMMENT '职称名(主任医师/副主任医师)',
 `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
  KEY `idx_job_title_code` (`code`),
 primary key (id)
 )
 ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='职称字典';
+
+-- 医生职务字典表
+drop table IF EXISTS `dict_doctor_duty`;
+create table `dict_doctor_duty`(
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
+  `code` varchar(50) default NULL COMMENT '职务标识',
+  `name` varchar(20) default NULL COMMENT '职务名称（院长/科室主任等等）',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  KEY `idx_job_title_code` (`code`),
+  primary key (id)
+)
+  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生职务字典';
 
 -- 机构药品分发
 drop table IF EXISTS `dict_medicine_distribute_org`;

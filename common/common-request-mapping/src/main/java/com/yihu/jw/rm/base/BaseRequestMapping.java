@@ -377,6 +377,8 @@ public class BaseRequestMapping {
     public static class BaseDoctor extends Basic {
         public static final String PREFIX  = "/baseDoctor";
         public static final String DOCINFO  = "/docInfo";
+        public static final String getOrgListByTown  = "/getOrgListByTown";
+        public static final String enableOrDis  = "/enableOrDis";
         public static final String docFullInfo  = "/docFullInfo";
         public static final String docOrgTreeInfo  = "/docOrgTreeInfo";
     }
@@ -397,6 +399,13 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/baseDoctorRoleDict";
     }
 
+ /**
+     * 医生角色关联关系
+     */
+    public static class BaseDoctorRole extends Basic {
+        public static final String PREFIX  = "/baseDoctorRole";
+    }
+
 
     /**
      * 机构信息
@@ -406,6 +415,7 @@ public class BaseRequestMapping {
         public static final String baseInfoList  = "/baseInfoList";
         public static final String check_code  = "/check_code";
         public static final String getOrgAreaTree  = "/getOrgAreaTree";
+        public static final String queryOneById  = "/queryOneById";
     }
 
 
@@ -517,10 +527,18 @@ public class BaseRequestMapping {
 
 
     /**
-     * 职称字典
+     * 医生职称字典
      */
     public static class DictJobTitle extends Basic {
         public static final String PREFIX  = "/dictJobTitle";
+    }
+
+
+    /**
+     * 医生职务字典
+     */
+    public static class DictDoctorDuty extends Basic {
+        public static final String PREFIX  = "/dictDoctorDuty";
     }
 
 

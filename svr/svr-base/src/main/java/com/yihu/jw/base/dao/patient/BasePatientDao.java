@@ -20,13 +20,13 @@ public interface BasePatientDao extends PagingAndSortingRepository<BasePatientDO
     BasePatientDO findByIdAndDel(String id,String del);
 
 
-    @Query("select id as id,idcard as idcard,name as name,case sex when 1 then '男' when 2 then '女' else '未知' end as sex,phone as phone,concat(liveProvinceName,liveCityName,liveTownName,liveStreetName,committeeName) as committeeName,concat(provinceName,cityName,townName,streetName) as address from BasePatientDO where idcard like ?1")
+    @Query("select id as id,idcard as idcard,name as name,case sex when 1 then '男' when 2 then '女' else '未知' end as sex,phone as phone,committeeName as committeeName,concat(provinceName,cityName,townName,streetName) as address from BasePatientDO where idcard like ?1")
     List<Map<String,Object>> findByIdcard(String idcard, Pageable pageable);
 
-    @Query("select id as id,idcard as idcard,name as name,case sex when 1 then '男' when 2 then '女' else '未知' end as sex,phone as phone,concat(liveProvinceName,liveCityName,liveTownName,liveStreetName,committeeName) as committeeName,concat(provinceName,cityName,townName,streetName) as address from BasePatientDO where name like ?1")
+    @Query("select id as id,idcard as idcard,name as name,case sex when 1 then '男' when 2 then '女' else '未知' end as sex,phone as phone,committeeName as committeeName,concat(provinceName,cityName,townName,streetName) as address from BasePatientDO where name like ?1")
     List<Map<String,Object>> findByName(String name, Pageable pageable);
 
-    @Query("select id as id,idcard as idcard,name as name,case sex when 1 then '男' when 2 then '女' else '未知' end as sex,phone as phone,concat(liveProvinceName,liveCityName,liveTownName,liveStreetName,committeeName) as committeeName,concat(provinceName,cityName,townName,streetName) as address from BasePatientDO")
+    @Query("select id as id,idcard as idcard,name as name,case sex when 1 then '男' when 2 then '女' else '未知' end as sex,phone as phone,committeeName as committeeName,concat(provinceName,cityName,townName,streetName) as address from BasePatientDO")
     List<Map<String,Object>> findBaseInfo(Pageable pageable);
 
 }

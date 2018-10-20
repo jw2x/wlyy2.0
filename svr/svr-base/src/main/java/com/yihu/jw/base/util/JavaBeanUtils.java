@@ -34,13 +34,15 @@ public class JavaBeanUtils {
                 if (javaBeanUtils == null) {
                     javaBeanUtils = new JavaBeanUtils();
                 }
+                if (objectMapper == null) {
+                    objectMapper = new ObjectMapper();
+                }
             }
         }
         return javaBeanUtils;
     }
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private static ObjectMapper objectMapper = null;
     /**
      * 将一个 Map 对象转化为一个 JavaBean
      *
@@ -245,11 +247,10 @@ public class JavaBeanUtils {
      * @return
      */
     public String mapListJson(List<Map<String, Object>> mapList) throws Exception {
-        if (CollectionUtils.isEmpty(mapList)) {
-            return "paramter is null";
-        }
-        List<Map<String, Object>> result = new ArrayList<>();
         JSONArray jsonArray = new JSONArray();
+        if (CollectionUtils.isEmpty(mapList)) {
+            return jsonArray.toJSONString();
+        }
         for(Map<String, Object> map : mapList){
             JSONObject jsonObject = JSONObject.parseObject(objectMapper.writeValueAsString(map));
             jsonArray.add(jsonObject);

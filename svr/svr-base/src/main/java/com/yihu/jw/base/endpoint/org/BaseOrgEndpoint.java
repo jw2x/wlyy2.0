@@ -40,10 +40,10 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private BaseOrgService baseOrgService;
 
-    @PostMapping(value = BaseRequestMapping.BaseOrg.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BaseOrg.CREATE )
     @ApiOperation(value = "创建")
     public Envelop create(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(jsonData);
         BaseOrgDO baseOrg = toEntity(jsonObject.getJSONObject("org").toJSONString(), BaseOrgDO.class);
@@ -63,17 +63,18 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.BaseOrg.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BaseOrg.UPDATE )
     @ApiOperation(value = "更新")
-    public ObjEnvelop<BaseOrgVO> update(
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+    public Envelop update(
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
-        BaseOrgDO baseOrg = toEntity(jsonData, BaseOrgDO.class);
-        if (null == baseOrg.getId()) {
-            return failed("ID不能为空", ObjEnvelop.class);
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
+        BaseOrgDO baseOrg = toEntity(jsonObject.getJSONObject("org").toJSONString(), BaseOrgDO.class);
+        String  msg = baseOrgService.createOrUpdateOrg(baseOrg,jsonObject.getJSONObject("admin"));
+        if(StringUtils.endsWithIgnoreCase(msg, ConstantUtils.SUCCESS)){
+            return success(msg);
         }
-        baseOrg = baseOrgService.save(baseOrg);
-        return success(baseOrg, BaseOrgVO.class);
+        return failed(msg);
     }
 
     @GetMapping(value = BaseRequestMapping.BaseOrg.PAGE)
@@ -118,25 +119,27 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
            return success(baseOrgService.getOrgAreaTree(saasId));
        }
     }
+    @GetMapping(value = BaseRequestMapping.BaseOrg.queryOneById)
+    @ApiOperation(value = "根据机构id查询机构")
+    public Envelop queryOne (
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = true) String id) throws Exception {
+      return success(baseOrgService.queryOneById(id));
+    }
 
 
     @PostMapping(value = BaseRequestMapping.BaseOrg.baseInfoList)
     @ApiOperation(value = "获取机构基础信息列表")
-    public ListEnvelop queryBaseOrgInfolist(
-            @ApiParam(name = "orgCode", value = "返回的字段，为空返回全部字段")
-            @RequestParam(value = "orgCode", required = false) String orgCode,
-            @ApiParam(name = "orgName", value = "过滤器，为空检索所有条件")
-            @RequestParam(value = "orgName", required = false) String orgName,
-            @ApiParam(name = "orgStatus", value = "排序，规则参见说明文档")
+    public Envelop queryBaseOrgInfolist(
+            @ApiParam(name = "orgCode", value = "机构名称或机构代码")
+            @RequestParam(value = "orgCode", required = false) String codeOrName,
+            @ApiParam(name = "orgStatus", value = "机构状态")
             @RequestParam(value = "orgStatus", required = false) String orgStatus,
-            @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "0")
+            @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
-            @RequestParam(value = "size") int size,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
-            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<Map<String, Object>> list = baseOrgService.queryOrgBaseInfoList(orgCode, orgName, orgStatus,page,size,sorts);
-        return success(list);
+            @RequestParam(value = "size") int size) throws Exception {
+        return success(baseOrgService.queryOrgBaseInfoList(codeOrName, orgStatus,page,size));
     }
 
     @GetMapping(value = BaseRequestMapping.BaseOrg.check_code)

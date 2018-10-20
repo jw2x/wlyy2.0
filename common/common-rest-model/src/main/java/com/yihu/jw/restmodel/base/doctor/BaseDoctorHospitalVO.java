@@ -35,18 +35,6 @@ public class BaseDoctorHospitalVO extends IntegerIdentityVO{
     private String hospName;
 
     /**
-	 * 医生角色标识
-	 */
-	@ApiModelProperty(value = "医生角色标识", example = "专科医生")
-    private String roleCode;
-
-    /**
-	 * 医院角色名称
-	 */
-	@ApiModelProperty(value = "医生角色名称", example = "")
-    private String roleName;
-
-    /**
 	 * 职称代码
 	 */
 	@ApiModelProperty(value = "职称代码", example = "")
@@ -96,20 +84,6 @@ public class BaseDoctorHospitalVO extends IntegerIdentityVO{
     }
     public void setHospName(String hospName) {
         this.hospName = hospName;
-    }
-
-    public String getRoleCode() {
-        return roleCode;
-    }
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
     }
 
     public String getJobTitleCode() {
