@@ -30,6 +30,7 @@ public class WxTemplateConfigDO extends UuidIdentityEntityWithOperator implement
     private String keyword7;//项目
     private String appid;//跳转小程序的appid
     private String pagepath;//跳转小程序路径
+    private Integer status;//状态 1：正常 -1：删除
 
     @Column(name = "wechat_id")
     public String getWechatId() {
@@ -184,5 +185,14 @@ public class WxTemplateConfigDO extends UuidIdentityEntityWithOperator implement
 
     public void setPagepath(String pagepath) {
         this.pagepath = pagepath;
+    }
+
+    @Column(name = "status")
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
