@@ -2,6 +2,7 @@ package com.yihu.jw.base.endpoint.wx;
 
 import com.alibaba.fastjson.JSONArray;
 import com.yihu.jw.base.service.wx.WechatService;
+import com.yihu.jw.base.service.wx.WxTemplateService;
 import com.yihu.jw.entity.base.wx.*;
 import com.yihu.jw.restmodel.base.wx.*;
 import com.yihu.jw.restmodel.web.Envelop;
@@ -9,10 +10,12 @@ import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +30,8 @@ public class WechatController extends EnvelopRestEndpoint {
 
     @Autowired
     private WechatService wechatService;
+    @Autowired
+    private WxTemplateService wxTemplateService;
 
     //====================微信与租户管理=======================
 
@@ -199,6 +204,13 @@ public class WechatController extends EnvelopRestEndpoint {
 
     }
 
+    @PostMapping(value = BaseRequestMapping.WeChat.findDefaultReply)
+    @ApiOperation(value = "获取默认事件配置", notes = "获取默认事件配置")
+    public ObjEnvelop<WxReplySceneVO> findDefaultReply(@ApiParam(name = "wechatId", value = "事件配置json")
+                                                       @RequestParam(value = "wechatId", required = true)String wechatId) {
+        return success(wechatService.findDefaultReply(wechatId),WxReplySceneVO.class);
+    }
+
     @GetMapping(value = BaseRequestMapping.WeChat.findWxReplySceneExist)
     @ApiOperation(value = "验证事件配置是否存在", notes = "验证事件配置是否存在")
     public Envelop findWxReplySceneExist(@ApiParam(name = "wechatId", value = "微信id")
@@ -292,6 +304,13 @@ public class WechatController extends EnvelopRestEndpoint {
                                                                 @RequestParam(value = "scene", required = true)String scene) {
         return success(wechatService.findWxTemplateConfig(wechatId,name,scene), WxTemplateConfigVO.class);
 
+    }
+
+    @PostMapping(value = BaseRequestMapping.WeChat.getAllTemp)
+    @ApiOperation(value = "获取所有微信模板", notes = "获取所有微信模板")
+    public String  getAllTemp(@ApiParam(name = "wechatId", value = "微信id")
+                              @RequestParam(value = "wechatId", required = true)String wechatId) {
+        return wxTemplateService.getAllTemp(wechatId);
     }
     //===================模板消息end==========================================
 
