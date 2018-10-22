@@ -132,22 +132,41 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "获取列表")
     public ListEnvelop<ModuleVO> findAll (
             @ApiParam(name = "status", value = "状态")
-            @RequestParam(value = "status", required = false) String status) throws Exception {
-        String filters = null;
+            @RequestParam(value = "status", required = false) String status,
+            @ApiParam(name = "type", value = "类型")
+            @RequestParam(value = "type", required = false) String type,
+            @ApiParam(name = "name", value = "名称")
+            @RequestParam(value = "name", required = false) String name) throws Exception {
+        String filters = "";
         if(StringUtils.isNotBlank(status)){
-            filters = "status="+status;
+            filters = "status="+status+";";
         }
-        List<ModuleDO> modules = moduleService.search(null, filters, null);
+        if(StringUtils.isNotBlank(name)){
+            filters += "name?"+name+";";
+        }
+        if(StringUtils.isNotBlank(type)){
+            filters += "type="+type+";";
+        }
+        List<ModuleDO> modules = moduleService.search(null, filters, "-createTime");
         List<ModuleVO> moduleVOs = convertToModels(modules,new ArrayList<>(modules.size()),ModuleVO.class);
+        moduleVOs.forEach(moduleVO -> {
+            if(CommonContant.DEFAULT_PARENTID.equals(moduleVO.getParentId())){
+                moduleVO.setParentName(CommonContant.DEFAULT_PARENTNAME);
+            }else {
+                ModuleDO moduleDO = moduleService.findOne(moduleVO.getParentId());
+                moduleVO.setParentName(moduleDO.getName());
+            }
+        });
         Map<String,List<ModuleVO>> map = moduleVOs.stream().collect(Collectors.groupingBy(ModuleVO::getParentId));
         moduleVOs.forEach(module->{
             List<ModuleVO> tmp = map.get(module.getId());
             module.setChildren(tmp);
         });
-        moduleVOs = moduleVOs.stream()
-                .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentId()))
-                .collect(Collectors.toList());
-
+        if(StringUtils.isBlank(name)) {
+            moduleVOs = moduleVOs.stream()
+                    .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentId()))
+                    .collect(Collectors.toList());
+        }
         return success(moduleVOs);
     }
 
