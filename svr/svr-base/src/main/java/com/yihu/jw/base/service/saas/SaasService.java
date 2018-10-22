@@ -1,6 +1,7 @@
 package com.yihu.jw.base.service.saas;
 
 import com.yihu.jw.base.dao.dict.*;
+import com.yihu.jw.base.dao.module.ModuleDao;
 import com.yihu.jw.base.dao.module.SaasModuleDao;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
 import com.yihu.jw.base.dao.role.RoleDao;
@@ -13,6 +14,7 @@ import com.yihu.jw.base.dao.user.UserDao;
 import com.yihu.jw.base.dao.user.UserRoleDao;
 import com.yihu.jw.base.service.dict.DictHospitalDeptService;
 import com.yihu.jw.entity.base.dict.*;
+import com.yihu.jw.entity.base.module.ModuleDO;
 import com.yihu.jw.entity.base.module.SaasModuleDO;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.entity.base.role.RoleDO;
@@ -77,6 +79,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     private DictHospitalDeptService dictHospitalDeptService;
     @Autowired
     private SaasModuleDao saasModuleDao;
+    @Autowired
+    private ModuleDao moduleDao;
     @Autowired
     private SaasThemeDao saasThemeDao;
     @Autowired
@@ -279,18 +283,31 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
      * @param saasDO
      */
     @Transactional(rollbackFor = Exception.class)
-    public void saveSystemConfig(SaasDO saasDO){
+    public SaasDO saveSystemConfig(SaasDO saasDO){
 
         SaasDO oldSaas = saasDao.findById(saasDO.getId());
         oldSaas.setSystemName(saasDO.getSystemName());
         oldSaas.setLogo(saasDO.getLogo());
         oldSaas.setAreaNumber(saasDO.getAreaNumber());
         List<SaasModuleDO> saasModuleDOList = saasDO.getSaasModuleList();
+        saasModuleDao.deleteBySaasId(saasDO.getId());
         saasModuleDOList.forEach(saasModuleDO -> {
+            ModuleDO moduleDO = moduleDao.findOne(saasModuleDO.getModuleId());
             saasModuleDO.setSaasId(saasDO.getId());
+            saasModuleDO.setDel(moduleDO.getDel());
+            saasModuleDO.setCreateTime(new Date());
+            saasModuleDO.setIsEnd(moduleDO.getIsEnd());
+            saasModuleDO.setIsMust(moduleDO.getIsMust());
+            saasModuleDO.setName(moduleDO.getName());
+            saasModuleDO.setParentModuleId(moduleDO.getParentId());
+            saasModuleDO.setRemark(moduleDO.getRemark());
+            saasModuleDO.setStatus(moduleDO.getStatus());
+            saasModuleDO.setType(moduleDO.getType());
+            saasModuleDO.setUrl(moduleDO.getUrl());
         });
         saasDao.save(oldSaas);
         saasModuleDao.save(saasModuleDOList);
+        return oldSaas;
     }
 
     public void updateStatus(String id,SaasDO.Status status){
@@ -337,6 +354,9 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     public SaasDO findById(String id){
         return saasDao.findById(id);
     }
+    public SaasDO findByCreateUser(String createUser){
+        return saasDao.findByCreateUser(createUser);
+    }
 
     public SaasDO findByName(String name){
         return saasDao.findByName(name);
@@ -352,24 +372,38 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     public SaasDO saasAudit(SaasDO saas, UserDO user) {
         //初始化角色
         RoleDO roleDO = roleDao.findByCode(roleCode);
-        //初始化租户管理员
-        user.setEnabled(true);
-        user.setLocked(false);
-        user.setSalt(randomString(5));
-        user.setName(user.getEmail());
-        String password = user.getPassword();
-        //密码默认手机号后6位
-        if (StringUtils.isEmpty(password)) {
-            password = user.getMobile().substring(0, 6);
+        //判断该用户是否已经存在
+       UserDO userDO= userDao.findByUsername(saas.getEmail());
+        if (null == userDO) {
+            //初始化租户管理员
+            user.setEnabled(true);
+            user.setLocked(false);
+            user.setSalt(randomString(5));
+            //姓名
+            user.setName(user.getEmail());
+            //账号
+            user.setUsername(user.getEmail());
+            String password = user.getPassword();
+            //密码默认手机号后6位
+            if (StringUtils.isEmpty(password)) {
+                password = user.getMobile().substring(0, 6);
+            }
+            user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
+            user.setSaasId(saas.getId());
+            user = userDao.save(user);
+        } else {
+            userDO.setSaasId(saas.getId());
+            user = userDao.save(userDO);
         }
-        user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
+
         //初始化管理员角色
         UserRoleDO userRoleDO = new UserRoleDO();
         userRoleDO.setRoleId(roleDO.getId());
-        userDao.save(user);
+
         userRoleDO.setUserId(user.getId());
         userRoleDao.save(userRoleDO);
         saas.setManager(user.getId());
+        saas.setManagerName(user.getName());
         saas.setAppId(getCode());
         saas.setAppSecret(getCode());
         saas = saasDao.save(saas);

@@ -37,7 +37,7 @@ public class InterfaceEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.Interface.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<InterfaceVO> create (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         InterfaceDO interfaceDO = toEntity(jsonData, InterfaceDO.class);
 
@@ -78,7 +78,7 @@ public class InterfaceEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.Interface.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<InterfaceVO> update (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         InterfaceDO interfaceDO = toEntity(jsonData, InterfaceDO.class);
         if (null == interfaceDO.getId()) {

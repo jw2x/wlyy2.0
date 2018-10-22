@@ -1,14 +1,25 @@
 package com.yihu.jw.base.service.wx;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.dao.wx.WxTemplateConfigDao;
+import com.yihu.jw.base.dao.wx.WxTemplateDao;
 import com.yihu.jw.entity.base.wx.WxTemplateConfigDO;
+import com.yihu.jw.entity.base.wx.WxTemplateDO;
 import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.rm.base.BaseRequestMapping;
+import com.yihu.jw.rm.base.WechatRequestMapping;
 import com.yihu.jw.util.wechat.WeixinMessagePushUtils;
 import com.yihu.jw.util.wechat.wxhttp.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2017/5/19 0019.
@@ -20,6 +31,8 @@ public class WxTemplateService {
 
     @Autowired
     private WxTemplateConfigDao wxTemplateConfigDao;
+    @Autowired
+    private WxTemplateDao wxTemplateDao;
 
     @Autowired
     private WxAccessTokenService wxAccessTokenService;
@@ -28,19 +41,59 @@ public class WxTemplateService {
     private WeixinMessagePushUtils weixinMessagePushUtils;
 
     public String sendWeTempMesTest(String wechatId,String openid)throws Exception{
-        WxTemplateConfigDO config = wxTemplateConfigDao.findByWechatIdAndTemplateNameAndScene(wechatId,"template_survey","test");
+        WxTemplateConfigDO config = wxTemplateConfigDao.findByWechatIdAndTemplateNameAndSceneAndStatus(wechatId,"template_survey","test",1);
         config.setFirst(config.getFirst().replace("key1","小明"));
         config.setKeyword2("2018-08-21");
         weixinMessagePushUtils.putWxMsg(wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken(),openid,config);
         return "success";
     }
 
-    public String  getAllTemp(String wechatId){
+    public Envelop getAllTemp(String wechatId){
 
         String url ="https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
         String result = HttpUtil.sendGet(url);
-        return result;
+
+        JSONObject tempJsons = JSON.parseObject(result);
+        //获取所有本地模板
+        List<String> localTemps = findAllTempDos(wechatId);
+        //解析公众号模板
+        JSONArray temps = tempJsons.getJSONArray("template_list");
+
+        List<WxTemplateDO> savelist = new ArrayList<>();
+
+        if(temps!=null&&!temps.isEmpty()){
+            for(int i=0;i<temps.size();i++){
+                JSONObject tp = (JSONObject) temps.get(i);
+                String tpid = tp.getString("template_id");
+                if(!localTemps.contains(tpid)){
+                    WxTemplateDO wxTemplateDO = new WxTemplateDO();
+                    wxTemplateDO.setWechatId(wechatId);
+                    wxTemplateDO.setTemplateId(tpid);
+                    wxTemplateDO.setTitle(tp.getString("title"));
+                    wxTemplateDO.setContent(tp.getString("content"));
+                    wxTemplateDO.setStatus(1);
+                    wxTemplateDO.setCreateTime(new Date());
+                    savelist.add(wxTemplateDO);
+                }
+            }
+
+            wxTemplateDao.save(savelist);
+        }
+        return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
+
     }
+
+    public List<String> findAllTempDos(String wechatId){
+        List<WxTemplateDO> list =  wxTemplateDao.findByWxId(wechatId);
+        List<String> rs = new ArrayList<>();
+        if(list!=null&&list.size()>0){
+            for(WxTemplateDO wxTemplateDO:list){
+                rs.add(wxTemplateDO.getTemplateId());
+            }
+        }
+        return rs;
+    }
+
 
 
 //    public WxTemplateDO createWxTemplate(WxTemplateDO wxTemplate) {

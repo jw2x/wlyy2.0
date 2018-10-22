@@ -100,6 +100,24 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
         return failed(message);
     }
 
+    @GetMapping(value = BaseRequestMapping.SystemDict.QUERY_BY_SAASID)
+    @ApiOperation(value = "根据字典类型获取字典")
+    public ListEnvelop queryDictBySaasId(
+            @ApiParam(name = "saasId", value = "saasId")
+            @RequestParam(value = "saasId", required = true) String saasId,
+            @ApiParam(name = "type", value = "字典类型")
+            @RequestParam(value = "type", required = true) String type,
+            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
+            @RequestParam(value = "sorts", required = false) String sorts,
+            @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
+            @RequestParam(value = "page") int page,
+            @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
+            @RequestParam(value = "size") int size
+    ) throws Exception {
+        JSONArray list = systemDictService.getDistListBySaasId(type,saasId,sorts,page,size);
+        return success(list);
+    }
+
     @PostMapping(value = BaseRequestMapping.SystemDict.QUERY_BY_TYPE)
     @ApiOperation(value = "根据字典类型获取字典")
     public ListEnvelop queryDictByType(

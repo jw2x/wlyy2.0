@@ -3,26 +3,23 @@ package com.yihu.iot.controller.analyzer;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.yihu.fastdfs.FastDFSUtil;
 import com.yihu.iot.datainput.service.DataInputService;
 import com.yihu.iot.datainput.util.ConstantUtils;
-import com.yihu.iot.service.company.IotCompanyCertificateService;
-import com.yihu.iot.service.company.IotCompanyService;
-import com.yihu.jw.exception.ApiException;
-import com.yihu.jw.restmodel.iot.company.IotCompanyVO;
-import com.yihu.jw.restmodel.iot.device.IotOrderVO;
 import com.yihu.jw.restmodel.web.Envelop;
-import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
-import com.yihu.jw.rm.iot.DataRequestMapping;
-import com.yihu.jw.rm.iot.IotRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -43,27 +40,33 @@ public class IotAnalyzerController extends EnvelopRestEndpoint {
     @Autowired
     ObjectMapper objectMapper;
 
+    @Autowired
+    private FastDFSUtil fastDFSHelper;
+
+    @Value("${fastDFS.fastdfs_file_url}")
+    private String fastDfsPublicServers;
+
+
+
     /**
      * 基于奕拓小屋上传的体征数据，进行解析入库
-     * @param dataJson
+     * @param jsonData
      * @return
      */
-    @GetMapping(value = "/yitouxiaowu")
-    @ApiOperation(value = "基于传入的JSON串采集数据，进行解析并入库", notes = "JSON串采集数据解析入库")
-    public String findCompanyPage(
-            @ApiParam(name = "dataJson", value = "采集数据JSON串", defaultValue = "")
-            @RequestParam(value = "dataJson", required = false) String dataJson){
-
+    @PostMapping(value = "/yitouxiaowu" ,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @ApiOperation(value = "奕拓体征数据解析入库", notes = "奕拓体征数据解析入库")
+    public String updateDeviceDataTest(
+            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @RequestBody String jsonData){
         Envelop envelop = new Envelop();
         String str = "";
         String strResult = "";
 
         //1. 基础数据初始化
         String accessToken  = "yitouxiaowu";  // 奕拓小屋
-
         try {
             //JSON数据解析
-            Map dataDetail = objectMapper.readValue(dataJson, HashMap.class);
+            Map dataDetail = objectMapper.readValue(jsonData, HashMap.class);
             // 用户信息
             LinkedHashMap memberMap = (LinkedHashMap)dataDetail.get("Member");
             // 身高体重
@@ -188,6 +191,13 @@ public class IotAnalyzerController extends EnvelopRestEndpoint {
             if (ecgMap != null) {
                 data.put("ecg",ecgMap.get("Hr") == null? "": ecgMap.get("Hr").toString());
                 data.put("ecg_unit","次/分");
+                if(!(ecgMap.get("EcgImg") == null)){
+                    String ecgData = ecgMap.get("EcgImg").toString();
+                    byte[] imgByte = Base64.decodeBase64(ecgData);
+                    ObjectNode objectNode = fastDFSHelper.upload(imgByte,"png","");
+                    String resPath = fastDfsPublicServers + objectNode.get("fileId").toString().replaceAll("\"", "");
+                    data.put("filepath",resPath);
+                }
             }
             data.put("hbalc","");
             data.put("hbalc_unit","");

@@ -1,15 +1,21 @@
 package com.yihu.jw.base.endpoint.saas;
 
+import com.yihu.jw.base.contant.CommonContant;
+import com.yihu.jw.base.service.module.SaasModuleService;
 import com.yihu.jw.base.service.saas.BaseEmailTemplateConfigService;
 import com.yihu.jw.base.service.saas.SaasService;
 import com.yihu.jw.base.service.saas.SaasTypeDictService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ErrorCodeUtil;
+import com.yihu.jw.base.util.ValidateUtil;
+import com.yihu.jw.entity.base.module.ModuleDO;
+import com.yihu.jw.entity.base.module.SaasModuleDO;
 import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasTypeDictDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.exception.code.BaseErrorCode;
+import com.yihu.jw.restmodel.base.module.SaasModuleVO;
 import com.yihu.jw.restmodel.base.saas.SaasVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -20,6 +26,7 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
@@ -27,8 +34,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Endpoint - SAAS
@@ -50,6 +60,8 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private BaseEmailTemplateConfigService baseEmailTemplateConfigService;
     @Autowired
+    private SaasModuleService saasModuleService;
+    @Autowired
     JavaMailSender jms;
     @Value("${spring.mail.username}")
     private String username;
@@ -60,6 +72,12 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
             @RequestParam String jsonSaas) throws Exception {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
+        if(!ValidateUtil.isValidMobileNo(saasDO.getMobile())){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+        }
+        if(!ValidateUtil.isValidEmail(saasDO.getEmail())){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+        }
         if (saasService.search("name=" + saasDO.getName()).size() > 0) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.NAME_IS_EXIST), Envelop.class);
         }
@@ -199,6 +217,29 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         return success(saasVO);
     }
 
+    @GetMapping(value = BaseRequestMapping.Saas.FIND_MODULE_BY_SAASID)
+    @ApiOperation(value = "获取租户的模块列表")
+    public ListEnvelop<SaasModuleVO> findModuleBySaasId (
+            @ApiParam(name = "saasId", value = "saasId")
+            @RequestParam(value = "saasId", required = true) String saasId) throws Exception {
+        String filters = "status="+ ModuleDO.Status.available.getValue()+";";
+        if(StringUtils.isNotBlank(saasId)){
+            filters = "saasId="+saasId;
+        }
+        List<SaasModuleDO> modules = saasModuleService.search(null, filters, null);
+        List<SaasModuleVO> moduleVOs = convertToModels(modules,new ArrayList<>(modules.size()),SaasModuleVO.class);
+        Map<String,List<SaasModuleVO>> map = moduleVOs.stream().collect(Collectors.groupingBy(SaasModuleVO::getParentModuleId));
+        moduleVOs.forEach(module->{
+            List<SaasModuleVO> tmp = map.get(module.getId());
+            module.setChildren(tmp);
+        });
+        moduleVOs = moduleVOs.stream()
+                .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentModuleId()))
+                .collect(Collectors.toList());
+
+        return success(moduleVOs);
+    }
+
     @PostMapping(value = BaseRequestMapping.Saas.AUDIT)
     @ApiOperation(value = "审核")
     public ObjEnvelop<SaasDO> audit(
@@ -241,7 +282,6 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             //发送者
             mainMessage.setFrom(username);
             //接收者
-//            mainMessage.setTo("763558454@qq.com");
             mainMessage.setTo(saasDO.getEmail());
             //发送的标题
             mainMessage.setSubject(baseEmailTemplateConfigDO.getTemplateName());

@@ -46,6 +46,10 @@ public class WeiXinMessageUtils {
     // 响应消息类型：图文
     public static final String RESP_MESSAGE_TYPE_NEWS = "news";
 
+
+    //默认值
+    public static final String RESP_MESSAGE_DEFAULT = "default";
+
 //    public static BaseMessage messageProcess(){
 //        BaseMessage message = null;
 //

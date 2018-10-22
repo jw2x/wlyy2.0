@@ -17,8 +17,6 @@ public class WxTemplateDO extends UuidIdentityEntityWithOperator implements java
     // Fields
     private String title;//模板标题
     private String wechatId;//关联的微信code 关联表 Wx_Wechat
-    @Transient
-    private String wechatName;
     private String templateId;//微信模板id
     private String templateName;//模板名称（模板检索名称）
     private String content;//模板内容
@@ -76,10 +74,11 @@ public class WxTemplateDO extends UuidIdentityEntityWithOperator implements java
         this.content = content;
     }
 
+    @Column(name = "status", length = 2)
     public Integer getStatus() {
         return status;
     }
-    // Constructors
+
 
     public void setStatus(Integer status) {
         this.status = status;
@@ -94,11 +93,4 @@ public class WxTemplateDO extends UuidIdentityEntityWithOperator implements java
         this.remark = remark;
     }
 
-    public String getWechatName() {
-        return wechatName;
-    }
-
-    public void setWechatName(String wechatName) {
-        this.wechatName = wechatName;
-    }
 }

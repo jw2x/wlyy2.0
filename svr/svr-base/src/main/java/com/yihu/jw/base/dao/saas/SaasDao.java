@@ -12,4 +12,6 @@ public interface SaasDao extends PagingAndSortingRepository<SaasDO, String> {
     SaasDO findByName(String name);
 
     SaasDO findById(String id);
+
+    SaasDO findByCreateUser(String createUser);
 }

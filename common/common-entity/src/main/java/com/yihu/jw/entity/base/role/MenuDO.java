@@ -48,6 +48,11 @@ public class MenuDO extends UuidIdentityEntityWithOperator {
 	 */
 	private String remark;
 
+	/**
+	 * 是否展示（1是，2否）
+     */
+	private Integer show;
+
 	@Column(name = "saas_id", length = 50)
 	public String getSaasId() {
 		return this.saasId;
@@ -127,5 +132,14 @@ public class MenuDO extends UuidIdentityEntityWithOperator {
 
 	public void setMethod(String method) {
 		this.method = method;
+	}
+
+	@Column(name = "is_show")
+	public Integer getShow() {
+		return show;
+	}
+
+	public void setShow(Integer show) {
+		this.show = show;
 	}
 }

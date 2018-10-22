@@ -41,7 +41,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.Module.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<ModuleVO> create (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         ModuleDO module = toEntity(jsonData, ModuleDO.class);
         int count = moduleService.isExistName(module.getName());
@@ -83,7 +83,7 @@ public class ModuleEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.Module.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<ModuleVO> update (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         ModuleDO module = toEntity(jsonData, ModuleDO.class);
         if (null == module.getId()) {

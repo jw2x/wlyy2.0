@@ -267,6 +267,11 @@ public class WechatCoreService {
                     return getGraphicXMl(scene.getScene(),scene.getWechatId(),message);
                 }
             }
+
+            //如果都没有发送默认消息
+            List<WxReplySceneDO> list = wxReplySceneDao.findByAppOriginIdAndAndDefaultReply(toUserName,WeiXinMessageUtils.RESP_MESSAGE_DEFAULT);
+            WxReplySceneDO wxReplySceneDO = list.get(0);
+            return getGraphicXMl(wxReplySceneDO.getScene(),wxReplySceneDO.getWechatId(),message);
         }
 
         return null;

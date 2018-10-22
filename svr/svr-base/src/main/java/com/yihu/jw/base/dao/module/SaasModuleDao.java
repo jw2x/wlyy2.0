@@ -21,5 +21,9 @@ public interface SaasModuleDao extends PagingAndSortingRepository<SaasModuleDO, 
     @Query("delete from SaasModuleDO p where p.moduleId=?1 ")
     void deleteByModuleId(String moduleId);
 
+    @Modifying
+    @Query("delete from SaasModuleDO p where p.saasId=?1 ")
+    void deleteBySaasId(String saasId);
+
     List<SaasModuleDO> findByModuleId(String moduleId);
 }

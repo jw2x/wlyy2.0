@@ -19,6 +19,7 @@ public class BaseRequestMapping {
         public static final String PAGE = "/page";
         public static final String LIST = "/list";
         public static final String FINDBYID = "/findById";
+        public static final String FIND_MODULE_BY_SAASID = "/findModuleBySaasId";
         public static final String STATUS = "/status";
     }
 
@@ -136,6 +137,7 @@ public class BaseRequestMapping {
     public static class SystemDict extends Basic {
         public static final String PREFIX  = "/system_dict";
         public static final String ALL  = "/query_all";
+        public static final String QUERY_BY_SAASID = "/queryBySaasId";
         public static final String QUERY_BY_TYPE  = "/query_by_type";
     }
 
@@ -144,6 +146,7 @@ public class BaseRequestMapping {
      */
     public static class SystemDictEntry extends Basic {
         public static final String PREFIX  = "/system_dict_entry";
+        public static final String PAGE_SAASID  = "/pageSaasId";
     }
 
     /**
@@ -256,14 +259,17 @@ public class BaseRequestMapping {
         public static final String deleteImgGroupRelation ="/deleteImgGroupRelation";
 
         public static final String saveWxReplyScene ="/saveWxReplyScene";
+        public static final String findDefaultReply ="/findDefaultReply";
         public static final String findWxReplySceneExist ="/findWxReplySceneExist";
         public static final String findWxReplyScene ="/findWxReplyScene";
         public static final String saveWxTemp ="/saveWxTemp";
+        public static final String findWxTempExist ="/findWxTempExist";
         public static final String findWxtemp ="/findWxtemp";
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
-
+        public static final String findWxTemplateConfigExist ="/findWxTemplateConfigExist";
+        public static final String getAllTemp ="/getAllTemp";
         public static final String getusersummary ="/getusersummary";
         public static final String getusercumulate ="/getusercumulate";
 
