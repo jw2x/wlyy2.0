@@ -246,15 +246,15 @@ public class JavaBeanUtils {
      * map转为json
      * @return
      */
-    public String mapListJson(List<Map<String, Object>> mapList) throws Exception {
+    public JSONArray mapListJson(List<Map<String, Object>> mapList) throws Exception {
         JSONArray jsonArray = new JSONArray();
         if (CollectionUtils.isEmpty(mapList)) {
-            return jsonArray.toJSONString();
+            return jsonArray;
         }
         for(Map<String, Object> map : mapList){
             JSONObject jsonObject = JSONObject.parseObject(objectMapper.writeValueAsString(map));
             jsonArray.add(jsonObject);
         }
-        return jsonArray.toJSONString();
+        return jsonArray;
     }
 }

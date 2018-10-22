@@ -8,5 +8,5 @@ import org.apache.commons.lang3.StringUtils;
  * @project jw2.0
  */
 public enum SystemDictEnum {
-    Icd10Dict, HospitalDeptDict, JobTitleDict, HealthProblemDict, DiseaseDict, MedicineDict;
+    Icd10Dict, HospitalDeptDict, JobTitleDict, HealthProblemDict, DiseaseDict, MedicineDict,SystemDict;
 }

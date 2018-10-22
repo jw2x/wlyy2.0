@@ -45,7 +45,7 @@ public class SaasBusinessCardService extends BaseJpaService<SaasBusinessCardDO, 
             return card;
         } else if (type == SaasBusinessCardDO.Type.patient) {
             //模拟加载居民数据
-            Map<String, Object> source = basePatientService.getPatientInfo(sourceId);
+            Map<String, Object> source = basePatientService.getPatientById(sourceId);
             saasBusinessCardDO.forEach(item -> card.put(item.getField(), source.get(item.getField())));
             return card;
         }

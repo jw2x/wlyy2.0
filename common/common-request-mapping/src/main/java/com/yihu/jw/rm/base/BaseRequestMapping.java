@@ -380,7 +380,8 @@ public class BaseRequestMapping {
         public static final String getOrgListByTown  = "/getOrgListByTown";
         public static final String enableOrDis  = "/enableOrDis";
         public static final String docFullInfo  = "/docFullInfo";
-        public static final String docOrgTreeInfo  = "/docOrgTreeInfo";
+        public static final String docOrgDutyTreeInfo  = "/docOrgDutyTreeInfo";
+        public static final String docOrgDeptTreeInfo  = "/docOrgDeptTreeInfo";
     }
 
 
@@ -416,6 +417,7 @@ public class BaseRequestMapping {
         public static final String check_code  = "/check_code";
         public static final String getOrgAreaTree  = "/getOrgAreaTree";
         public static final String queryOneById  = "/queryOneById";
+        public static final String enableOrDis  = "/enableOrDis";
     }
 
 

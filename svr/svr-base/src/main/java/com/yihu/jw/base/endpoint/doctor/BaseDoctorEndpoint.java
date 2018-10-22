@@ -166,7 +166,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      */
     @PostMapping(value = BaseRequestMapping.BaseDoctor.docFullInfo)
     @ApiOperation(value = "获取医生基础信息列表")
-    public Envelop getDoctorFullInfolist(
+    public PageEnvelop getDoctorFullInfolist(
             @ApiParam(name = "nameOrIdcard", value = "医生姓名或医生身份证号")
             @RequestParam(value = "nameOrIdcard", required = false) String nameOrIdcard,
             @RequestParam(value = "orgCode", required = false) String orgCode,
@@ -178,7 +178,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        return success(baseDoctorService.getDoctorFullInfo(nameOrIdcard, orgCode, doctorStatus,page,size,sorts));
+        return success(baseDoctorService.getDoctorFullInfo(nameOrIdcard, orgCode, doctorStatus,page,size,sorts),0,page,size);
     }
 
 
@@ -205,12 +205,27 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      * @return
      * @throws Exception
      */
-    @GetMapping(value = BaseRequestMapping.BaseDoctor.docOrgTreeInfo)
+    @GetMapping(value = BaseRequestMapping.BaseDoctor.docOrgDutyTreeInfo)
     @ApiOperation(value = "获取医生所属机构树形结构数据")
-    public Envelop getOrgAreaTree(
+    public Envelop getOrgDutyTree(
             @ApiParam(name = "doctorCode", value = "doctorCode")
             @RequestParam(value = "doctorCode", required = true) String doctorCode) throws Exception {
         return success(baseDoctorService.getDoctorDutyTree(doctorCode));
+    }
+
+    /**
+     * 获取医生 机构/科室 树形结构数据
+     *
+     * @param doctorCode
+     * @return
+     * @throws Exception
+     */
+    @GetMapping(value = BaseRequestMapping.BaseDoctor.docOrgDeptTreeInfo)
+    @ApiOperation(value = "获取医生所属机构树形结构数据")
+    public Envelop getOrgDeptTree(
+            @ApiParam(name = "doctorCode", value = "doctorCode")
+            @RequestParam(value = "doctorCode", required = true) String doctorCode) throws Exception {
+        return success(baseDoctorService.getDoctorDeptTree(doctorCode));
     }
 
 }

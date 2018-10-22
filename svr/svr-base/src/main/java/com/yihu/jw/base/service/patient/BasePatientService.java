@@ -49,7 +49,7 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
      * @param patientId
      * @return
      */
-    public String getPatientInfo(String patientId) throws Exception{
+    public String getPatientById(String patientId) throws Exception{
         JSONObject result = new JSONObject();
         if(StringUtils.isEmpty(patientId)){
             result.put("result","parameter patientId is null");

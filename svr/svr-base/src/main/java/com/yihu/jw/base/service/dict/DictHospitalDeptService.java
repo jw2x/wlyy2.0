@@ -50,12 +50,16 @@ public class DictHospitalDeptService extends BaseJpaService<DictHospitalDeptDO, 
     public JSONObject queryAll(String saasId, Pageable pageable) throws Exception{
         JSONObject jsonObject = new JSONObject();
         List<Map<String,Object>> list = new ArrayList<>();
+        long count = 0;
         if(StringUtils.isEmpty(saasId)){
             list = dictHospitalDeptDao.findCodeAndName(pageable);
+            count = dictHospitalDeptDao.count();
         }else{
             List orgCodeList = baseOrgService.findOrgCodeBySaasId(saasId);
             list = dictHospitalDeptDao.findByOrgCodeIn(objectMapper.writeValueAsString(orgCodeList),pageable);
+            count = dictHospitalDeptDao.countByCodeIn(saasId);
         }
+        jsonObject.put("count",count);
         jsonObject.put(SystemDictEnum.HospitalDeptDict.toString(),list);
         return jsonObject;
     }

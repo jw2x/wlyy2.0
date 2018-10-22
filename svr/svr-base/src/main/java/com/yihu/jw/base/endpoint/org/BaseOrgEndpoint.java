@@ -124,33 +124,61 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
     public Envelop queryOne (
             @ApiParam(name = "id", value = "id")
             @RequestParam(value = "id", required = true) String id) throws Exception {
-      return success(baseOrgService.queryOneById(id));
+        JSONObject result = baseOrgService.queryOneById(id);
+        if(StringUtils.endsWithIgnoreCase(ConstantUtils.FAIL,result.getString("response"))){
+            return failed(result.getString("msg"));
+        }
+      return success(result.get("msg"));
     }
 
 
     @PostMapping(value = BaseRequestMapping.BaseOrg.baseInfoList)
     @ApiOperation(value = "获取机构基础信息列表")
-    public Envelop queryBaseOrgInfolist(
-            @ApiParam(name = "orgCode", value = "机构名称或机构代码")
-            @RequestParam(value = "orgCode", required = false) String codeOrName,
+    public PageEnvelop queryBaseOrgInfolist(
+            @ApiParam(name = "codeOrName", value = "机构名称或机构代码")
+            @RequestParam(value = "codeOrName", required = false) String codeOrName,
             @ApiParam(name = "orgStatus", value = "机构状态")
             @RequestParam(value = "orgStatus", required = false) String orgStatus,
             @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        return success(baseOrgService.queryOrgBaseInfoList(codeOrName, orgStatus,page,size));
+        JSONObject result = baseOrgService.queryOrgBaseInfoList(codeOrName, orgStatus,page,size);
+        return success(result.getJSONArray("msg"),result.getInteger("count"),page,size);
     }
 
     @GetMapping(value = BaseRequestMapping.BaseOrg.check_code)
-    @ApiOperation(value = "检查代码是否可用(message=1代表可用，message=0代表不可用)")
+    @ApiOperation(value = "检查代码是否可用(message=available代表可用，message=inavailable代表不可用)")
     public Envelop checkCode (
             @ApiParam(name = "code", value = "机构代码", required = true)
             @RequestParam(value = "code", required = false) String code) throws Exception {
         if (baseOrgService.existCode(code)) {
-            return success("1");
+            return success("inavailable");
         } else {
-            return success("0");
+            return success("available");
         }
+    }
+
+    /**
+     * 生效或失效某个机构
+     *
+     * @param id
+     * @param status
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = BaseRequestMapping.BaseOrg.enableOrDis)
+    @ApiOperation(value = "生效或失效某个机构")
+    public Envelop enableOrDisableDoctor(
+            @ApiParam(name = "id", value = "医生标识")
+            @RequestParam(value = "id", required = true) String id,
+            @ApiParam(name = "status", value = "生效或失效标识")
+            @RequestParam(value = "status", required = true) String status) throws Exception {
+        String str = baseOrgService.enableOrDisableOrg(id, status);
+        JSONObject jsonObject = JSONObject.parseObject(str);
+        if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+            return failed(jsonObject.getString("msg"));
+        }
+        return success(jsonObject.getString("response"));
     }
 }

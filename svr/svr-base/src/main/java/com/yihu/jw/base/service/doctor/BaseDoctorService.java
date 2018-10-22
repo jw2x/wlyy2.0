@@ -100,7 +100,7 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
      * @param docStatus
      * @return
      */
-    public String getDoctorFullInfo(String nameOrIdcard,String orgCode,String docStatus,int page,int size,String sort) throws Exception {
+    public JSONArray getDoctorFullInfo(String nameOrIdcard,String orgCode,String docStatus,int page,int size,String sort) throws Exception {
         List<Map<String, Object>> result = new ArrayList<>();
         String pattern = "^\\d+";
         if(StringUtils.isEmpty(nameOrIdcard) && StringUtils.isEmpty(orgCode) && StringUtils.isEmpty(docStatus)){
@@ -184,8 +184,6 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
         } catch (IOException e) {
             result.put("msg","convert hospital jsonObject to baseDoctorHospitalDO failed," + e.getCause());
             result.put("response",ConstantUtils.FAIL);
-            // 如果异常，将保存的医生信息删除
-            this.delete(baseDoctorDO);
             return result.toJSONString();
         }
         baseDoctorRoleService.batchInsert(baseDoctorRoleDOList);
@@ -202,9 +200,6 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
         } catch (IOException e) {
             result.put("msg","convert hospital jsonObject to baseDoctorHospitalDO failed," + e.getCause());
             result.put("response",ConstantUtils.FAIL);
-            // 如果异常，将保存的医生信息，角色关联关系删除
-            this.delete(baseDoctorDO);
-            baseDoctorRoleService.delete(baseDoctorRoleDOList);
             return result.toJSONString();
         }
         baseDoctorHospitalService.batchInsert(hospitalDOList);
@@ -318,7 +313,7 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
     }
 
     /**
-     * 获取医生已选中的机构职务树形结构
+     * 获取医生已选中的机构/职务树形结构
      * @param doctorCode
      * @return
      */
@@ -343,6 +338,51 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
         }
         return getOrgTree(orgTreeList);
     }
+
+    /**
+     * 获取医生已选中的机构/科室树形结构
+     * @param doctorCode
+     * @return
+     */
+    public String getDoctorDeptTree(String doctorCode){
+        if(StringUtils.isEmpty(doctorCode)){
+            return "";
+        }
+        String sql = "select" +
+                "  hos.doctor_code ," +
+                "  hos.hosp_code as parentCode," +
+                "  org.name as parentName," +
+                "  hos.dept_code as childCode," +
+                "  dept.name as childName" +
+                " from" +
+                "  base_doctor_hospital hos," +
+                "  base_org org," +
+                "  dict_hospital_dept dept" +
+                " where" +
+                "  hos.hosp_code = org.code" +
+                "  and" +
+                "  hos.hosp_code = dept.org_code" +
+                "  and" +
+                "  hos.dept_code = dept.code" +
+                "  and doctor_code = '{doctorCode}'";
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql.replace("{doctorCode}",doctorCode));
+        List<OrgTree> orgTreeList = new ArrayList<>();
+        for(Map<String,Object> one : list){
+            OrgTree orgTreeParent = new OrgTree();
+            orgTreeParent.setParentCode("");
+            orgTreeParent.setCode(String.valueOf(one.get("parentCode")));
+            orgTreeParent.setName(String.valueOf(one.get("parentName")));
+            orgTreeList.add(orgTreeParent);
+
+            OrgTree orgTreeChild = new OrgTree();
+            orgTreeChild.setParentCode(String.valueOf(one.get("parentCode")));
+            orgTreeChild.setCode(String.valueOf(one.get("childCode")));
+            orgTreeChild.setName(String.valueOf(one.get("childName")));
+            orgTreeList.add(orgTreeChild);
+        }
+        return getOrgTree(orgTreeList);
+    }
+
     /**
      * 构建树形结构
      * @return

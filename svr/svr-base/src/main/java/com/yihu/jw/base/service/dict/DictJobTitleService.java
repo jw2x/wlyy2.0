@@ -38,12 +38,16 @@ public class DictJobTitleService extends BaseJpaService<DictJobTitleDO, DictJobT
      */
     public JSONObject queryAll(String saasId, Pageable pageable){
         JSONObject jsonObject = new JSONObject();
+        long count = 0;
         List<Map<String,Object>> list = new ArrayList<>();
         if(StringUtils.isEmpty(saasId)){
             list = dictJobTitleDao.findCodeAndName(pageable);
+            count = dictJobTitleDao.count();
         }else{
             list = dictJobTitleDao.findCodeAndNameBySaasId(saasId,pageable);
+            count = dictJobTitleDao.countBySaasId(saasId);
         }
+        jsonObject.put("count",count);
         jsonObject.put(SystemDictEnum.JobTitleDict.toString(),list);
         return jsonObject;
     }
