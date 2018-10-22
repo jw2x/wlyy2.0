@@ -181,4 +181,16 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
         }
         return success(jsonObject.getString("response"));
     }
+
+    /**
+     * 查询机构列表
+     *
+     * @return
+     * @throws Exception
+     */
+    @PostMapping(value = BaseRequestMapping.BaseOrg.enableOrDis)
+    @ApiOperation(value = "查询机构列表")
+    public ListEnvelop queryOrgCodeAndNameList() throws Exception {
+        return success(baseOrgService.findOrgCodeBySaasId(""));
+    }
 }

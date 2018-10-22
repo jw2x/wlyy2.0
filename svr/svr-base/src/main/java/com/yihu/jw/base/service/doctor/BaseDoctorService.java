@@ -55,9 +55,6 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private OrgTreeService orgTreeService;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
 
@@ -67,7 +64,7 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
      * @param doctorId 医生id
      * @return
      */
-    public Map<String,Object> getDoctorInfo(String orgId, String doctorId) throws Exception{
+    public Map<String,Object> getOneDoctorInfo(String orgId, String doctorId) throws Exception{
         Map<String,Object> resultMap = new HashMap<>();
 
         if(StringUtils.isEmpty(orgId) || StringUtils.isEmpty(doctorId)){
@@ -100,42 +97,78 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
      * @param docStatus
      * @return
      */
-    public JSONArray getDoctorFullInfo(String nameOrIdcard,String orgCode,String docStatus,int page,int size,String sort) throws Exception {
-        List<Map<String, Object>> result = new ArrayList<>();
-        String pattern = "^\\d+";
-        if(StringUtils.isEmpty(nameOrIdcard) && StringUtils.isEmpty(orgCode) && StringUtils.isEmpty(docStatus)){
-            result = baseDoctorDao.queryDoctorFullInfo();
-        }else if(!StringUtils.isEmpty(nameOrIdcard)){
-            boolean isIdcard = Pattern.matches(pattern, nameOrIdcard);
-            if(isIdcard){
-                if(StringUtils.isEmpty(orgCode) && StringUtils.isEmpty(docStatus) ){
-                    result = baseDoctorDao.queryDoctorFullInfoByIdcard("%" + nameOrIdcard + "%");
-                }else if(!StringUtils.isEmpty(orgCode)){
-                    result = baseDoctorDao.queryDoctorFullInfoByIdcardAndOrg("%" + nameOrIdcard + "%",orgCode);
-                }else if(!StringUtils.isEmpty(docStatus)){
-                    result = baseDoctorDao.queryDoctorFullInfoByIdcardAndDocDel("%" + nameOrIdcard + "%",docStatus);
-                }else{
-                    result = baseDoctorDao.queryDoctorFullInfoByIdcardAndOrgAndDocDel("%" + nameOrIdcard + "%",orgCode,docStatus);
-                }
-            }else{
-                if(StringUtils.isEmpty(orgCode) && StringUtils.isEmpty(docStatus) ){
-                    result = baseDoctorDao.queryDoctorFullInfoByName("%" + nameOrIdcard + "%");
-                }else if(!StringUtils.isEmpty(orgCode)){
-                    result = baseDoctorDao.queryDoctorFullInfoByNameAndOrg("%" + nameOrIdcard + "%",orgCode);
-                }else if(!StringUtils.isEmpty(docStatus)){
-                    result = baseDoctorDao.queryDoctorFullInfoByNameAndDocDel("%" + nameOrIdcard + "%",docStatus);
-                }else{
-                    result = baseDoctorDao.queryDoctorFullInfoByNameAndOrgAndDocDel("%" + nameOrIdcard + "%",orgCode,docStatus);
-                }
-            }
-        }else if(StringUtils.isEmpty(orgCode) && !StringUtils.isEmpty(docStatus) ){
-            result = baseDoctorDao.queryDoctorFullInfoByDocDel(docStatus);
-        }else if(!StringUtils.isEmpty(orgCode) && StringUtils.isEmpty(docStatus)){
-            result = baseDoctorDao.queryDoctorFullInfoByOrg(orgCode);
-        }else {
-            result = baseDoctorDao.queryDoctorFullInfoByOrgAndDocDel(orgCode,docStatus);
-        }
-        return JavaBeanUtils.getInstance().mapListJson(result);
+    public JSONObject queryDoctorListFullInfo(String nameOrIdcard, String orgCode, String docStatus, int page, int size) throws Exception {
+        JSONObject result = new JSONObject();
+        String orgCodeVale = null == orgCode ? "" : orgCode;
+        String del = null == docStatus ? "" : docStatus;
+        String nameOrIdcardValue = null == nameOrIdcard ? "" : nameOrIdcard;
+        int start = 0 == page ? page++ : (page - 1) * size;
+        int end = 0 == size ? 15 : page * size;
+        String sql = "select" +
+                "  tb.id as id," +
+                "  tb.name as name," +
+                "  tb.idcard as idcard,  " +
+                "  tb.sex as sex,  " +
+                "  tb.mobile as mobile,  " +
+                "  GROUP_CONCAT(tb.org SEPARATOR ',') as orgInfo,  " +
+                "  tb.status as status " +
+                "from  " +
+                "  (  " +
+                "    select  " +
+                "     doc.id,  " +
+                "     doc.name,  " +
+                "     doc.idcard,  " +
+                "     case doc.sex when 1 then '男' when 2 then '女' else '未知' end as sex,  " +
+                "     doc.mobile,  " +
+                "     concat(hos.hosp_name,'/',dept.name,'/',hos.doctor_duty_name,'/',hos.job_title_name) as org,  " +
+                "     case doc.del when 0 then '无效' when 1 then '有效' end as status,  " +
+                "      doc.create_time  " +
+                "   from  " +
+                "     base_doctor doc,  " +
+                "     base_doctor_hospital hos,  " +
+                "     dict_hospital_dept dept  " +
+                "  where  " +
+                "    doc.id = hos.doctor_code  " +
+                "    and  " +
+                "    hos.dept_code = dept.code  " +
+                "    and  " +
+                "    ((doc.idcard like '{idcard}' or ''= '{idcard}'  ) and (hos.hosp_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}'))  " +
+                "      or  " +
+                "    ((doc.name like '{name}'  or ''= '{name}' )  and (hos.hosp_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}'))  " +
+                "  ) tb  " +
+                "GROUP BY tb.id order by tb.create_time desc limit {start},{end} ";
+        String finalSql = sql
+                .replace("{idcard}",nameOrIdcardValue)
+                .replace("{name}",nameOrIdcardValue)
+                .replace("{orgCode}",orgCodeVale)
+                .replace("{docStatus}",del)
+                .replace("{start}",String.valueOf(start))
+                .replace("{end}",String.valueOf(end));
+
+        String countSql = " select " +
+                "     count(DISTINCT (doc.id)) as count " +
+                "   from " +
+                "     base_doctor doc, " +
+                "     base_doctor_hospital hos, " +
+                "     dict_hospital_dept dept " +
+                "  where " +
+                "    doc.id = hos.doctor_code " +
+                "    and " +
+                "    hos.dept_code = dept.code " +
+                "    and " +
+                "    ((doc.idcard like '{idcard}' or ''= '{idcard}' ) and (hos.hosp_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}')) " +
+                "      or " +
+                "    ((doc.name like '{name}' or ''= '{name}')  and (hos.hosp_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}')) ";
+        String finalCountSql = countSql
+                .replace("{idcard}",nameOrIdcardValue)
+                .replace("{name}",nameOrIdcardValue)
+                .replace("{orgCode}",orgCodeVale)
+                .replace("{docStatus}",del);
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(finalSql);
+        int count = jdbcTemplate.queryForObject(finalCountSql,Integer.class);
+        result.put("count", count);
+        result.put("msg", JavaBeanUtils.getInstance().mapListJson(list));
+        return result;
     }
 
     /**

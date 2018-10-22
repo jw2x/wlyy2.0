@@ -1,33 +1,21 @@
 package com.yihu.jw.base.service.org;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
-import com.yihu.jw.base.dao.org.BaseOrgUserDao;
-import com.yihu.jw.base.dao.org.OrgTreeDao;
-import com.yihu.jw.base.dao.user.UserDao;
-import com.yihu.jw.base.dao.user.UserRoleDao;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
 import com.yihu.jw.base.service.org.tree.SimpleTreeNode;
-import com.yihu.jw.base.service.org.tree.Tree;
 import com.yihu.jw.base.service.org.tree.TreeNode;
 import com.yihu.jw.base.service.user.UserRoleService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
-import com.yihu.jw.entity.base.doctor.BaseDoctorDO;
 import com.yihu.jw.entity.base.org.BaseOrgUserDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
-import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
-import com.yihu.utils.security.MD5;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -83,9 +71,8 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     public JSONObject queryOrgBaseInfoList(String codeOrName,String orgStatus,int page,int size) throws Exception {
         JSONObject result = new JSONObject();
         int start = 0 == page ? page++ : (page - 1) * size;
-        int end = 0 == size ? size = 10 : page * size;
-        String code = null == codeOrName ? "" : codeOrName;
-        String name = null == codeOrName ? "" : codeOrName;
+        int end = 0 == size ? 15 : page * size;
+        String codeOrNameValue = null == codeOrName ? "" : codeOrName;
         String sql = "select id,code,name,case del when 1 then '有效' else '失效' end as status,concat(province_name,city_name,town_name,address) as address " +
                 " from base_org " +
                 " where " +
@@ -94,11 +81,11 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
                 " ((name like '{name}' or ''='{name}') and (del = '{orgStatus}' or ''='{orgStatus}'))" +
                 " and" +
                 " (del = '{orgStatus}' or ''='{orgStatus}')" +
-                " limit {start},{end}";
+                "  order by create_time desc limit {start},{end}";
         String finalSql = sql
 
-                .replace("{code}", "%" + code + "%")
-                .replace("{name}", "%" + name + "%")
+                .replace("{code}", "%" + codeOrNameValue + "%")
+                .replace("{name}", "%" + codeOrNameValue + "%")
                 .replace("{orgStatus}", null == orgStatus ? "" : orgStatus).replace("{start}", String.valueOf(start))
                 .replace("{end}", String.valueOf(end));
 
@@ -111,8 +98,8 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
                 " AND" +
                 " (del = '{orgStatus}' OR ''='{orgStatus}')";
         String finalCountSql = countSql
-                .replace("{code}", "%" + code + "%")
-                .replace("{name}", "%" + name + "%")
+                .replace("{code}", "%" + codeOrNameValue + "%")
+                .replace("{name}", "%" + codeOrNameValue + "%")
                 .replace("{orgStatus}", null == orgStatus ? "" : orgStatus);
         List<Map<String, Object>> list = jdbcTemplate.queryForList(finalSql);
         Integer count = jdbcTemplate.queryForObject(finalCountSql, Integer.class);
@@ -177,12 +164,17 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             userRoleDO.setRoleId("");
             userRoleDO.setUserId(userDO.getId());
             userRoleService.save(userRoleDO);
+
+            //新增机构与区域的树形结构关系
+            orgTreeService.addOrgTreeNode(baseOrgDO);
         }else{
             BaseOrgDO oldBaseOrgDO = baseOrgDao.findOne(baseOrgDO.getId());
             if(null == oldBaseOrgDO){
                 return "no exist this org";
             }
-            baseOrgDao.save(baseOrgDO);
+            if(!baseOrgDO.getCode().equalsIgnoreCase(oldBaseOrgDO.getCode()) || !baseOrgDO.getName().equalsIgnoreCase(oldBaseOrgDO.getName())){
+                orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.org.getLevelValue());
+            }
             if(!baseOrgDO.getTownCode().equalsIgnoreCase(oldBaseOrgDO.getTownCode())){
                 orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.town.getLevelValue());
             }
@@ -192,6 +184,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             if(!baseOrgDO.getProvinceCode().equalsIgnoreCase(oldBaseOrgDO.getProvinceCode())){
                 orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.province.getLevelValue());
             }
+            baseOrgDao.save(baseOrgDO);
         }
         return ConstantUtils.SUCCESS;
     }
@@ -283,28 +276,5 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             return result;
         }
         return baseOrgDao.findOrgCodeBySaasId(saasId);
-    }
-
-    public static void main(String[] args) {
-        String codeOrName = "aa";
-        String orgStatus = "";
-        int page = 1;
-        int size = 10;
-        int start = (page - 1) * size;
-        int end = page  * size;
-        String sql = "select id,code,name,case del when 1 then '有效' else '失效' end as status,concat(province_name,city_name,town_name,street_name) as address " +
-                "from base_org " +
-                " where " +
-                " (code like '{code}' or ''='{code}')" +
-                " or " +
-                " (name like '{name}' or ''='{name}') " +
-                " and" +
-                " (del = '{orgStatus}' or ''='{orgStatus}')" +
-                " limit {start},{end}";
-        String finalSql = sql.replace("{code}", "%" + codeOrName + "%")
-                .replace("{name}", "%" + codeOrName + "%")
-                .replace("{orgStatus}", orgStatus).replace("{start}", String.valueOf(start))
-                .replace("{end}", String.valueOf(end));
-        System.out.println(finalSql);
     }
 }

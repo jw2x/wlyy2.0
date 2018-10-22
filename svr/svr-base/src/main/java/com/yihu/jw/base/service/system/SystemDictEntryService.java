@@ -3,6 +3,7 @@ package com.yihu.jw.base.service.system;
 import com.yihu.jw.base.dao.system.SystemDictEntryDao;
 import com.yihu.jw.entity.base.system.SystemDictEntryDO;
 import com.yihu.mysql.query.BaseJpaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -11,5 +12,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class SystemDictEntryService extends BaseJpaService<SystemDictEntryDO, SystemDictEntryDao> {
+
+    @Autowired
+    private SystemDictEntryDao systemDictEntryDao;
 
 }

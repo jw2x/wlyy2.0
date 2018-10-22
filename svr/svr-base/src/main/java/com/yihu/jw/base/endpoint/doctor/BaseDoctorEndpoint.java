@@ -8,7 +8,6 @@ import com.yihu.jw.base.util.JavaBeanUtils;
 import com.yihu.jw.restmodel.base.doctor.BaseDoctorVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
-import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
@@ -17,7 +16,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -128,7 +126,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "orgId", required = true) String orgId,
             @ApiParam(name = "doctorId", value = "医生id")
             @RequestParam(value = "doctorId", required = true) String doctorId) throws Exception {
-        Map<String, Object> map = baseDoctorService.getDoctorInfo(orgId, doctorId);
+        Map<String, Object> map = baseDoctorService.getOneDoctorInfo(orgId, doctorId);
         return success(map.toString());
     }
 
@@ -172,13 +170,12 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "orgCode", required = false) String orgCode,
             @ApiParam(name = "doctorStatus", value = "医生是否生效")
             @RequestParam(value = "doctorStatus", required = false) String doctorStatus,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
-            @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        return success(baseDoctorService.getDoctorFullInfo(nameOrIdcard, orgCode, doctorStatus,page,size,sorts),0,page,size);
+        JSONObject result = baseDoctorService.queryDoctorListFullInfo(nameOrIdcard,orgCode, doctorStatus,page,size);
+        return success(result.getJSONArray("msg"),result.getInteger("count"),page,size);
     }
 
 
