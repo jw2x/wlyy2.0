@@ -263,10 +263,12 @@ public class BaseRequestMapping {
         public static final String findWxReplySceneExist ="/findWxReplySceneExist";
         public static final String findWxReplyScene ="/findWxReplyScene";
         public static final String saveWxTemp ="/saveWxTemp";
+        public static final String findWxTempExist ="/findWxTempExist";
         public static final String findWxtemp ="/findWxtemp";
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
+        public static final String findWxTemplateConfigExist ="/findWxTemplateConfigExist";
         public static final String getAllTemp ="/getAllTemp";
         public static final String getusersummary ="/getusersummary";
         public static final String getusercumulate ="/getusercumulate";

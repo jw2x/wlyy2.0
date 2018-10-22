@@ -256,6 +256,17 @@ public class WechatController extends EnvelopRestEndpoint {
         return wechatService.saveWxTemp(wxTemplate);
     }
 
+    @PostMapping(value = BaseRequestMapping.WeChat.findWxTempExist)
+    @ApiOperation(value = "判断微信模板(模板id且模板名称)是否存在", notes = "判断微信模板(模板id且模板名称)是否存在")
+    public Envelop findWxTempExist(@ApiParam(name = "wechatId", value = "微信id")
+                                   @RequestParam(value = "wechatId", required = true)String wechatId,
+                                   @ApiParam(name = "templateName", value = "微信id")
+                                   @RequestParam(value = "templateName", required = true)String templateName,
+                                   @ApiParam(name = "templateId", value = "微信模板id(微信的同步的id)")
+                                   @RequestParam(value = "templateId", required = true)String templateId) {
+       return success(BaseRequestMapping.WeChat.api_success,wechatService.findWxTempExist(wechatId,templateId,templateName));
+    }
+
     @GetMapping(value = BaseRequestMapping.WeChat.findWxtemp)
     @ApiOperation(value = "获取微信模板消息基础信息（列表）", notes = "获取微信模板消息基础信息（列表）")
     public MixEnvelop<WxTemplateVO,WxTemplateVO> findWxtemp(@ApiParam(name = "wechatId", value = "微信id")
@@ -287,12 +298,16 @@ public class WechatController extends EnvelopRestEndpoint {
                                                                                   @RequestParam(value = "wechatId", required = true)String wechatId,
                                                                                   @ApiParam(name = "scene", value = "微信场景值")
                                                                                   @RequestParam(value = "scene", required = true)String scene,
+                                                                                  @ApiParam(name = "templateId", value = "微信公众号模板id")
+                                                                                  @RequestParam(value = "templateId", required = true)String templateId,
                                                                                   @ApiParam(name = "page", value = "第几页")
                                                                                   @RequestParam(value = "page", required = true)Integer page,
                                                                                   @ApiParam(name = "size", value = "分页大小")
                                                                                   @RequestParam(value = "size", required = true)Integer size) {
-        return wechatService.findWxTempConfigList(wechatId, scene, page, size);
+        return wechatService.findWxTempConfigList(wechatId,templateId,scene, page, size);
     }
+
+
 
     @GetMapping(value = BaseRequestMapping.WeChat.findWxTemplateConfig)
     @ApiOperation(value = "获取微信模板列表(单条)", notes = "获取微信模板列表(单条)")
@@ -303,12 +318,20 @@ public class WechatController extends EnvelopRestEndpoint {
                                                                 @ApiParam(name = "scene", value = "场景值")
                                                                 @RequestParam(value = "scene", required = true)String scene) {
         return success(wechatService.findWxTemplateConfig(wechatId,name,scene), WxTemplateConfigVO.class);
+    }
 
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxTemplateConfigExist)
+    @ApiOperation(value = "判断微信配置模板场景值是否存在", notes = "判断微信配置模板场景值是否存在(单条)")
+    public Envelop findWxTemplateConfigExist(@ApiParam(name = "wechatId", value = "微信id")
+                                             @RequestParam(value = "wechatId", required = true)String wechatId,
+                                             @ApiParam(name = "scene", value = "场景值")
+                                             @RequestParam(value = "scene", required = true)String scene) {
+        return success(BaseRequestMapping.WeChat.api_success,wechatService.findWxTemplateConfigExist(wechatId,scene));
     }
 
     @PostMapping(value = BaseRequestMapping.WeChat.getAllTemp)
-    @ApiOperation(value = "获取所有微信模板", notes = "获取所有微信模板")
-    public String  getAllTemp(@ApiParam(name = "wechatId", value = "微信id")
+    @ApiOperation(value = "获取所有微信模板（微信拉取）", notes = "获取所有微信模板（微信拉取）")
+    public Envelop getAllTemp(@ApiParam(name = "wechatId", value = "微信id")
                               @RequestParam(value = "wechatId", required = true)String wechatId) {
         return wxTemplateService.getAllTemp(wechatId);
     }
