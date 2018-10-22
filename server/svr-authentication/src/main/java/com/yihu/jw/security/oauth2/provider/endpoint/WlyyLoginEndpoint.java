@@ -10,6 +10,7 @@ import com.yihu.jw.security.oauth2.provider.WlyyTokenGranter;
 import com.yihu.jw.security.oauth2.provider.error.WlyyOAuth2ExceptionTranslator;
 import com.yihu.utils.security.RSAUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,13 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.PostConstruct;
+import javax.crypto.Cipher;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.PrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.text.SimpleDateFormat;
@@ -118,10 +121,12 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         if (StringUtils.isEmpty(parameters.get("captcha"))) {
             parameters.put("grant_type", "password");
             //解密密码
-            if (parameters.get("password") != null) {
-                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
-                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
-            }
+//            if (parameters.get("password") != null) {
+//                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
+////                byte[] en_data = Hex.decodeHex(parameters.get("password").toCharArray());
+////                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(en_data), rsaPrivateKey));
+//                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
+//            }
         } else {
             parameters.put("grant_type", "captcha");
         }
@@ -246,6 +251,8 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         PublicKey publicKey = new PublicKey();
         publicKey.setModulus(Base64.encodeBase64String(rsaPublicKey.getModulus().toByteArray()));
         publicKey.setExponent(Base64.encodeBase64String(rsaPublicKey.getPublicExponent().toByteArray()));
+//        publicKey.setModulus(new String(Hex.encodeHex(rsaPublicKey.getModulus().toByteArray())));
+//        publicKey.setExponent(new String(Hex.encodeHex(rsaPublicKey.getPublicExponent().toByteArray())));
         httpSession.setAttribute("privateKey", rsaPrivateKey);
         //生成Cookie
         Cookie cookie = new Cookie("oauth2", UUID.randomUUID().toString());
@@ -415,4 +422,5 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         ResponseEntity<Oauth2Envelop> response = new ResponseEntity<>(authenticationFailed, headers, HttpStatus.OK);
         return response;
     }
+
 }
