@@ -7,6 +7,8 @@ import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
+import com.yihu.jw.util.wechat.WeiXinMessageReplyUtils;
+import com.yihu.jw.util.wechat.WeiXinMessageUtils;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -342,6 +344,14 @@ public class WechatService {
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
     }
 
+    public WxReplySceneDO findDefaultReply(String wechatId){
+        List<WxReplySceneDO> list = wxReplySceneDao.findByWechatIdAndDefaultReply(wechatId, WeiXinMessageUtils.RESP_MESSAGE_DEFAULT);
+        if(list!=null&&list.size()>0){
+            return list.get(0);
+        }
+       return null;
+    }
+
     public Map<String,Object> findWxReplySceneExist(String wechatId,String msgType,String event,String content,String scene){
         Map<String,Object> map = new HashedMap();
 
@@ -439,6 +449,7 @@ public class WechatService {
         List<WxReplySceneVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxReplySceneVO.class));
         return MixEnvelop.getSuccessListWithPage(BaseRequestMapping.WeChat.api_success, list, page, size, count);
     }
+
 
     //===================图文素材管理end====================================
 

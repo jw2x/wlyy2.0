@@ -256,6 +256,7 @@ public class BaseRequestMapping {
         public static final String deleteImgGroupRelation ="/deleteImgGroupRelation";
 
         public static final String saveWxReplyScene ="/saveWxReplyScene";
+        public static final String findDefaultReply ="/findDefaultReply";
         public static final String findWxReplySceneExist ="/findWxReplySceneExist";
         public static final String findWxReplyScene ="/findWxReplyScene";
         public static final String saveWxTemp ="/saveWxTemp";
@@ -263,7 +264,7 @@ public class BaseRequestMapping {
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
-
+        public static final String getAllTemp ="/getAllTemp";
         public static final String getusersummary ="/getusersummary";
         public static final String getusercumulate ="/getusercumulate";
 
