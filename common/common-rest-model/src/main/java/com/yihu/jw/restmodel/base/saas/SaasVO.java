@@ -19,7 +19,7 @@ public class SaasVO extends UuidIdentityVOWithOperator {
 
 	@ApiModelProperty(value = "机构编码", example = "495323X")
 	private String orgCode;
-	@ApiModelProperty(value = "系统名称", example = "厦门医疗服务")
+	@ApiModelProperty(value = "租户名称", example = "厦门医疗服务")
 	private String name;
 	@ApiModelProperty(value = "状态", example = "auditPassed")
 	private SaasDO.Status status;

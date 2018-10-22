@@ -95,9 +95,9 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.Saas.SYSTEM_CONFIGURATION)
     @ApiOperation(value = "创建-系统配置")
     public Envelop createSystemConfig (
-            @ApiParam(name = "saasDO", value = "Json数据", required = true)
-            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
-
+            @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
+            @RequestParam String jsonSaas) throws Exception {
+        SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
         saasService.saveSystemConfig(saasDO);
         return success("创建成功",saasDO);
     }
@@ -105,9 +105,9 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.Saas.THEME_STYLE)
     @ApiOperation(value = "创建-主题风格")
     public Envelop createThemeConfig (
-            @ApiParam(name = "saasDO", value = "Json数据", required = true)
-            @RequestParam(value = "saasDO") SaasDO saasDO) throws Exception {
-
+            @ApiParam(name = "jsonSaas", value = "租户数据", required = true)
+            @RequestParam String jsonSaas) throws Exception {
+        SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
         saasService.createThemeConfig(saasDO);
         return success("创建成功");
     }
@@ -184,6 +184,10 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         List<SaasDO> saasDOS = saasService.search(fields, filters, sorts, page, size);
+        saasDOS.forEach(saas->{
+            SaasTypeDictDO saasTypeDictDO = saasTypeDictService.findById(saas.getType());
+            saas.setTypeName(saasTypeDictDO.getName());
+        });
         int count = (int)saasService.getCount(filters);
         return success(saasDOS, count, page, size, SaasVO.class);
     }
