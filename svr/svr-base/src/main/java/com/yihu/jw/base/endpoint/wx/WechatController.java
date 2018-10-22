@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * Created by Trick on 2018/9/26..
+ * Created by Trick on 2018/9/26.
  */
 @RestController
 @RequestMapping(BaseRequestMapping.WeChat.wechat_base)
