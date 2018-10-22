@@ -1,6 +1,7 @@
 package com.yihu.jw.base.endpoint.wx;
 
 import com.yihu.jw.base.service.wx.WxTemplateService;
+import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
@@ -30,7 +31,7 @@ public class WxTemplateController extends EnvelopRestEndpoint {
 
     @PostMapping(value = WechatRequestMapping.WxTemplate.api_getAllTemplate, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "获取所有微信模板", notes = "获取所有微信模板")
-    public String  getAllTemp(String wechatId) {
+    public Envelop getAllTemp(String wechatId) {
         return wxTemplateService.getAllTemp(wechatId);
     }
 

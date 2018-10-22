@@ -460,6 +460,18 @@ public class WechatService {
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
     }
 
+    public Boolean findWxTempExist(String wechatId,String templateId,String templateName){
+        List<WxTemplateDO> list = wxTemplateDao.findByTemplateIdAndWechatId(templateId,wechatId);
+        if(list!=null&&list.size()>0){
+            return true;
+        }
+        List<WxTemplateDO> list2 = wxTemplateDao.findByTemplateNameAndWechatId(templateName,wechatId);
+        if(list2!=null&&list2.size()>0){
+            return true;
+        }
+        return false;
+    }
+
     public MixEnvelop findWxtemp(String wechatId,Integer status,String name,String key,Integer page,Integer size){
         String totalSql = "SELECT " +
                 " COUNT(1) AS total " +
@@ -511,7 +523,7 @@ public class WechatService {
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
     }
 
-    public MixEnvelop findWxTempConfigList(String wechatId,String scene,Integer page,Integer size){
+    public MixEnvelop findWxTempConfigList(String wechatId,String templateId,String scene,Integer page,Integer size){
         String totalSql ="SELECT " +
                 " COUNT(1) AS total " +
                 " FROM " +
@@ -520,6 +532,9 @@ public class WechatService {
                 " g.wechat_id ='"+wechatId+"'";
         if(StringUtils.isNotBlank(scene)){
             totalSql += " AND g.scene = '"+scene+"'";
+        }
+        if(StringUtils.isNotBlank(templateId)){
+            totalSql += " AND g.template_id = '"+templateId+"'";
         }
         List<Map<String, Object>> rstotal = jdbcTemplate.queryForList(totalSql);
         Long count = 0L;
@@ -557,6 +572,9 @@ public class WechatService {
         if(StringUtils.isNotBlank(scene)){
             sql += " AND g.scene = '"+scene+"'";
         }
+        if(StringUtils.isNotBlank(templateId)){
+            totalSql += " AND g.template_id = '"+templateId+"'";
+        }
         sql+=" LIMIT  " + (page - 1) * size + "," + size + "";
         List<WxTemplateConfigVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxTemplateConfigVO.class));
         return MixEnvelop.getSuccessListWithPage(BaseRequestMapping.WeChat.api_success, list, page, size, count);
@@ -566,6 +584,16 @@ public class WechatService {
         WxTemplateConfigDO wxTemplateConfigDO =  wxTemplateConfigDao.findByWechatIdAndTemplateNameAndScene(wechatId,name,scene);
         return wxTemplateConfigDO;
     }
+
+    public Boolean findWxTemplateConfigExist(String wechatId,String scene){
+        List<WxTemplateConfigDO> list =  wxTemplateConfigDao.findByWechatIdAndScene(wechatId,scene);
+        if(list!=null&&list.size()>0){
+            return true;
+        }
+
+        return false;
+    }
+
     //===================模板消息end=======================================
 
     //===================微信统计==========================================
