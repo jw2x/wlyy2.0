@@ -353,4 +353,20 @@ public abstract class EnvelopRestEndpoint {
             return null;
         }
     }
+
+    public String getUNAME(){
+        try {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            String userAgent = request.getHeader("userAgent");
+            if (StringUtils.isEmpty(userAgent)) {
+                userAgent = request.getHeader("User-Agent");
+            }
+            JSONObject json = JSON.parseObject(userAgent);
+            String info = json.getString("uname");
+            String uname = java.net.URLDecoder.decode(info,"UTF-8");
+            return uname;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
