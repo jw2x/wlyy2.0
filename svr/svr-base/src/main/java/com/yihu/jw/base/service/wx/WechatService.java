@@ -461,11 +461,19 @@ public class WechatService {
     }
 
     public Boolean findWxTempExist(String wechatId,String templateId,String templateName){
-        List<WxTemplateDO> list = wxTemplateDao.findByTemplateIdAndWechatId(templateId,wechatId);
+        List<WxTemplateDO> list = wxTemplateDao.findByTemplateIdAndWechatIdAndStatus(templateId,wechatId,1);
         if(list!=null&&list.size()>0){
             return true;
         }
-        List<WxTemplateDO> list2 = wxTemplateDao.findByTemplateNameAndWechatId(templateName,wechatId);
+        List<WxTemplateDO> list2 = wxTemplateDao.findByTemplateNameAndWechatIdAndStatus(templateName,wechatId,1);
+        if(list2!=null&&list2.size()>0){
+            return true;
+        }
+        return false;
+    }
+
+    public Boolean findWxTempNameExist(String wechatId,String templateName){
+        List<WxTemplateDO> list2 = wxTemplateDao.findByTemplateNameAndWechatIdAndStatus(templateName,wechatId,1);
         if(list2!=null&&list2.size()>0){
             return true;
         }
@@ -573,7 +581,7 @@ public class WechatService {
             sql += " AND g.scene = '"+scene+"'";
         }
         if(StringUtils.isNotBlank(templateId)){
-            totalSql += " AND g.template_id = '"+templateId+"'";
+            sql += " AND g.template_id = '"+templateId+"'";
         }
         sql+=" LIMIT  " + (page - 1) * size + "," + size + "";
         List<WxTemplateConfigVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxTemplateConfigVO.class));
@@ -590,7 +598,6 @@ public class WechatService {
         if(list!=null&&list.size()>0){
             return true;
         }
-
         return false;
     }
 

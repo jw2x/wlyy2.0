@@ -1,6 +1,7 @@
 package com.yihu.jw.security.model;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 
 /**
  * Model 公钥
