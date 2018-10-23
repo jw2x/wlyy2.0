@@ -12,6 +12,7 @@ import com.yihu.jw.entity.base.system.SystemDictEntryDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +55,9 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Value("${configDefault.saasId}")
+    private String saasId;
 
     @Override
     public long getCount(String filters) throws ParseException {
@@ -187,7 +191,9 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
         }
         JSONObject dictJson = (JSONObject)jsonParam.get("dict");
         SystemDictDO systemDictDO = objectMapper.readValue(dictJson.toString(),SystemDictDO.class);
-
+        if(StringUtils.isBlank(systemDictDO.getSaasId())){
+            systemDictDO.setSaasId(saasId);
+        }
         if(StringUtils.isEmpty(systemDictDO.getCode()) || StringUtils.isEmpty(systemDictDO.getName())){
             return "code or name of dict is required";
         }

@@ -16,4 +16,7 @@ public class SystemDictEntryService extends BaseJpaService<SystemDictEntryDO, Sy
     @Autowired
     private SystemDictEntryDao systemDictEntryDao;
 
+    public SystemDictEntryDO findById(String id) {
+        return systemDictEntryDao.findOne(id);
+    }
 }
