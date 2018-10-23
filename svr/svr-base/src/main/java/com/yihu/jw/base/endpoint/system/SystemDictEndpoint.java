@@ -1,6 +1,7 @@
 package com.yihu.jw.base.endpoint.system;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.service.system.SystemDictService;
 import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.entity.base.system.SystemDictDO;
@@ -55,9 +56,9 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.SystemDict.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<SystemDictVO> page(
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
-            @RequestParam(value = "fields", required = false) String fields,
+    public Envelop page(
+            @ApiParam(name = "dictType", value = "字典类型")
+            @RequestParam(value = "dictType", required = true) String dictType,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
@@ -66,9 +67,12 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        List<SystemDictDO> systemDictDOS = systemDictService.search(fields, filters, sorts, page, size);
-        int count = (int) systemDictService.getCount(filters);
-        return success(systemDictDOS, count, page, size, SystemDictVO.class);
+
+       JSONObject result =  systemDictService.queryDictPageByType("1",dictType,filters,sorts,page,size);
+       if(StringUtils.equalsIgnoreCase(ConstantUtils.FAIL,result.getString("response"))){
+           return failed(result.getString("msg"));
+       }
+        return success(result.getJSONArray("msg"), result.getInteger("count"), page, size);
     }
 
     @GetMapping(value = BaseRequestMapping.SystemDict.LIST)

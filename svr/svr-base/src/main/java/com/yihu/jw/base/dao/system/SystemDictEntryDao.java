@@ -13,4 +13,6 @@ import java.util.List;
 public interface SystemDictEntryDao extends PagingAndSortingRepository<SystemDictEntryDO, String>, JpaSpecificationExecutor<SystemDictEntryDO> {
 
     List<SystemDictEntryDO> findBySaasId(String saasId);
+
+    List<SystemDictEntryDO> findByDictCodeAndCodeAndSaasId(String dictCode,String code,String saasId);
 }

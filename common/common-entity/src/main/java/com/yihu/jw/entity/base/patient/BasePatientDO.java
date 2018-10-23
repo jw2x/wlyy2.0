@@ -146,6 +146,16 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
     private String liveTownName;
 
     /**
+     * 居住街道代码
+     */
+    private String liveStreetCode;
+    /**
+     * 居住街道名称
+     */
+    private String liveStreetName;
+
+
+    /**
      * 居住居委会代码
      */
     private String committeeCode;
@@ -607,5 +617,22 @@ public class BasePatientDO extends UuidIdentityEntityWithOperator {
 
     public void setLiveTownName(String liveTownName) {
         this.liveTownName = liveTownName;
+    }
+
+    @Column(name = "live_street_code")
+    public String getLiveStreetCode() {
+        return liveStreetCode;
+    }
+
+    public void setLiveStreetCode(String liveStreetCode) {
+        this.liveStreetCode = liveStreetCode;
+    }
+    @Column(name = "live_street_name")
+    public String getLiveStreetName() {
+        return liveStreetName;
+    }
+
+    public void setLiveStreetName(String liveStreetName) {
+        this.liveStreetName = liveStreetName;
     }
 }

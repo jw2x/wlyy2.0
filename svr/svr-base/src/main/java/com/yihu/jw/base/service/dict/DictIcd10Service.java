@@ -40,11 +40,15 @@ public class DictIcd10Service extends BaseJpaService<DictIcd10DO, DictIcd10Dao> 
     public JSONObject queryAll(String saasId, Pageable pageable){
         JSONObject jsonObject = new JSONObject();
         List<Map<String,Object>> list = new ArrayList<>();
+        long count = 0;
         if(!StringUtils.isEmpty(saasId)){
            list = dictIcd10Dao.findCodeAndName(pageable);
+           count = dictIcd10Dao.count();
         }else{
-           list = dictIcd10Dao.findCodeAndNameSa(saasId,pageable);
+           list = dictIcd10Dao.findCodeAndNameSaasId(saasId,pageable);
+            count = dictIcd10Dao.countBySaasId(saasId);
         }
+        jsonObject.put("count",count);
         jsonObject.put(SystemDictEnum.Icd10Dict.toString(),list);
         return jsonObject;
     }

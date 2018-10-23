@@ -153,6 +153,16 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
 	 */
 	private String openid;
 
+	/**
+	 * 职称代码
+	 */
+	private String jobTitleCode;
+
+	/**
+	 * 职称名称
+	 */
+	private String jobTitleName;
+
     /**
 	 * 作废标识，1正常，0作废
 	 */
@@ -374,6 +384,19 @@ public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
         this.del = del;
     }
 
+    public String getJobTitleCode() {
+        return jobTitleCode;
+    }
 
+    public void setJobTitleCode(String jobTitleCode) {
+        this.jobTitleCode = jobTitleCode;
+    }
 
+    public String getJobTitleName() {
+        return jobTitleName;
+    }
+
+    public void setJobTitleName(String jobTitleName) {
+        this.jobTitleName = jobTitleName;
+    }
 }

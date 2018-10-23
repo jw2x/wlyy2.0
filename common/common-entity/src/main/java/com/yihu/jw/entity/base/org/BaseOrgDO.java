@@ -17,6 +17,8 @@ import java.util.Date;
 @Table(name = "base_org")
 public class BaseOrgDO extends UuidIdentityEntityWithOperator {
 
+
+
     /**
 	 * saas化配置
 	 */

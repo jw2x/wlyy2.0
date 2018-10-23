@@ -9,11 +9,14 @@ import com.yihu.jw.base.service.org.tree.TreeNode;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.mysql.query.BaseJpaService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -37,6 +40,7 @@ public class OrgTreeService extends BaseJpaService<OrgTree, OrgTreeDao> {
      * 添加机构和区域的关系
      * @param baseOrgDO
      */
+    @Transactional(rollbackFor = Exception.class)
     public void addOrgTreeNode(BaseOrgDO baseOrgDO){
         List<OrgTree> treeNodes = new ArrayList<>();
         if(!orgTreeDao.existsByCode(baseOrgDO.getCode())){
@@ -79,8 +83,19 @@ public class OrgTreeService extends BaseJpaService<OrgTree, OrgTreeDao> {
      * @param oldBaseOrgDO
      * @param newBaseOrgDO
      */
+    @Transactional(rollbackFor = Exception.class)
     public void updateOrgTreeNode(BaseOrgDO oldBaseOrgDO,BaseOrgDO newBaseOrgDO,int level){
-        if( level == OrgTree.Level.town.getLevelValue() ){
+        if( level == OrgTree.Level.org.getLevelValue() ){
+            OrgTree orgTree = orgTreeDao.findByCode(oldBaseOrgDO.getCode());
+            if(null == orgTree){
+                return;
+            }
+            orgTree.setCode(newBaseOrgDO.getCode());
+            orgTree.setName(newBaseOrgDO.getName());
+            this.save(orgTree);
+            addOrgTreeNode(newBaseOrgDO);
+        }
+        else if( level == OrgTree.Level.town.getLevelValue() ){
             OrgTree orgTree = orgTreeDao.findByCodeAndParentCode(oldBaseOrgDO.getCode(),oldBaseOrgDO.getTownCode());
             if(null == orgTree){
                 return;
@@ -151,5 +166,19 @@ public class OrgTreeService extends BaseJpaService<OrgTree, OrgTreeDao> {
             return result;
         }
         return orgTreeDao.findByLevelLessThanEqual(level);
+    }
+
+    /**
+     * 根据区下面的机构列表
+     *
+     * @param townCode
+     * @return
+     */
+    public List<Map<String, Object>> findOrgListByParentCode(String townCode) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        if (StringUtils.isEmpty(townCode)) {
+            return result;
+        }
+        return orgTreeDao.findOrgListByParentCode(townCode);
     }
 }

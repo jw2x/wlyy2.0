@@ -25,11 +25,13 @@ import java.util.Map;
  */
 public interface DictJobTitleDao extends PagingAndSortingRepository<DictJobTitleDO, Integer>, JpaSpecificationExecutor<DictJobTitleDO>  {
 
-    @Query("select code as code,name as name from DictJobTitleDO where saasId = :saasId")
-    List<Map<String,Object>> findCodeAndNameBySaasId(@Param("saasId") String saasId, Pageable pageable);
+    @Query("select code as code,name as name from DictJobTitleDO where saasId = ?1")
+    List<Map<String,Object>> findCodeAndNameBySaasId(String saasId, Pageable pageable);
 
     @Query("select code as code,name as name from DictJobTitleDO")
     List<Map<String,Object>> findCodeAndName(Pageable pageable);
 
     List<DictJobTitleDO> findBySaasId(String saasId);
+
+    Long countBySaasId(String saasId);
 }

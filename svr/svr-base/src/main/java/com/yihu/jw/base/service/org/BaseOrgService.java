@@ -2,6 +2,8 @@ package com.yihu.jw.base.service.org;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
 import com.yihu.jw.base.service.org.tree.SimpleTreeNode;
@@ -9,7 +11,8 @@ import com.yihu.jw.base.service.org.tree.TreeNode;
 import com.yihu.jw.base.service.user.UserRoleService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ConstantUtils;
-import com.yihu.jw.entity.base.org.BaseOrgDO;
+import com.yihu.jw.base.util.JavaBeanUtils;
+import com.yihu.jw.entity.base.org.BaseOrgUserDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
 import com.yihu.mysql.query.BaseJpaService;
@@ -17,11 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import com.yihu.jw.entity.base.org.BaseOrgDO;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -49,36 +51,81 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
 
     @Autowired
     private UserRoleService userRoleService;
+
+    @Autowired
+    private  BaseOrgUserService baseOrgUserService;
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
 
     /**
      * 机构基础信息列表
-     * @param orgCode
-     * @param orgName
+     * @param codeOrName
      * @param orgStatus
      * @return
      */
-    public List<Map<String,Object>> queryOrgBaseInfoList(String orgCode,String orgName,String orgStatus,int page,int size,String sorts){
-        List<Map<String,Object>> result = new ArrayList<>();
-        if(StringUtils.endsWithIgnoreCase("1",orgStatus)){
-            if(!StringUtils.isEmpty(orgCode) ){
-                result = baseOrgDao.findByCodeAndDel(orgCode,orgStatus,createPage(page,size,sorts));
-            }else if(!StringUtils.isEmpty(orgCode)){
-                result = baseOrgDao.findByNameAndDel(orgName,orgStatus,createPage(page,size,sorts));
-            }else{
-                result = baseOrgDao.findBaseInfoByDel(orgStatus,createPage(page,size,sorts));
-            }
-        }else{
-            if(!StringUtils.isEmpty(orgCode) ){
-                result = baseOrgDao.findByCode(orgCode,createPage(page,size,sorts));
-            }else if(!StringUtils.isEmpty(orgCode)){
-                result = baseOrgDao.findByName(orgName,createPage(page,size,sorts));
-            }else{
-                result = baseOrgDao.findBaseInfo(createPage(page,size,sorts));
-            }
+    public JSONObject queryOrgBaseInfoList(String codeOrName,String orgStatus,int page,int size) throws Exception {
+        JSONObject result = new JSONObject();
+        int start = 0 == page ? page++ : (page - 1) * size;
+        int end = 0 == size ? 15 : page * size;
+        String codeOrNameValue = null == codeOrName ? "" : codeOrName;
+        String sql = "select id,code,name,case del when 1 then '有效' else '失效' end as status,concat(province_name,city_name,town_name,address) as address " +
+                " from base_org " +
+                " where " +
+                " ((code like '{code}' or ''='{code}')  and (del = '{orgStatus}' or ''='{orgStatus}'))" +
+                " or " +
+                " ((name like '{name}' or ''='{name}') and (del = '{orgStatus}' or ''='{orgStatus}'))" +
+                " and" +
+                " (del = '{orgStatus}' or ''='{orgStatus}')" +
+                "  order by create_time desc limit {start},{end}";
+        String finalSql = sql
+
+                .replace("{code}", "%" + codeOrNameValue + "%")
+                .replace("{name}", "%" + codeOrNameValue + "%")
+                .replace("{orgStatus}", null == orgStatus ? "" : orgStatus).replace("{start}", String.valueOf(start))
+                .replace("{end}", String.valueOf(end));
+
+        String countSql = "SELECT count(id)" +
+                " FROM base_org " +
+                " WHERE " +
+                " ((code like '{code}' or ''='{code}')  and (del = '{orgStatus}' or ''='{orgStatus}'))" +
+                " OR " +
+                " ((name like '{name}' or ''='{name}') and (del = '{orgStatus}' or ''='{orgStatus}'))" +
+                " AND" +
+                " (del = '{orgStatus}' OR ''='{orgStatus}')";
+        String finalCountSql = countSql
+                .replace("{code}", "%" + codeOrNameValue + "%")
+                .replace("{name}", "%" + codeOrNameValue + "%")
+                .replace("{orgStatus}", null == orgStatus ? "" : orgStatus);
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(finalSql);
+        Integer count = jdbcTemplate.queryForObject(finalCountSql, Integer.class);
+        result.put("count", count);
+        result.put("msg", JavaBeanUtils.getInstance().mapListJson(list));
+        return result;
+    }
+
+    /**
+     * 根据id查询机构，只查询机构的信息
+     * @param id
+     * @return
+     */
+    public JSONObject queryOneById(String id) throws JsonProcessingException {
+        JSONObject result = new JSONObject();
+        if(StringUtils.isEmpty(id)){
+            result.put("msg","org not exist for id:"+id);
+            result.put("response",ConstantUtils.FAIL);
+            return result;
         }
+        BaseOrgDO baseOrgDO = baseOrgDao.findOne(id);
+        if(null == baseOrgDO){
+            return null;
+        }
+        result.put("response",ConstantUtils.SUCCESS);
+        result.put("msg",baseOrgDO);
         return result;
     }
 
@@ -89,36 +136,45 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
      */
     public String createOrUpdateOrg(BaseOrgDO baseOrgDO,JSONObject orgAdminJson){
         UserDO userDO = null;
-        String mobile = orgAdminJson.getString("mobile");
-        String adminName = orgAdminJson.getString("orgAdmin");
-        if(StringUtils.isEmpty(mobile)){
-            return "paramter for admin is null";
-        }
         //id为空表示新增
         if(StringUtils.isEmpty(baseOrgDO.getId())){
+            String mobile = orgAdminJson.getString("mobile");
+            String adminName = orgAdminJson.getString("orgAdmin");
+            if(StringUtils.isEmpty(mobile)){
+                return "paramter for admin is null";
+            }
+            baseOrgDO.setOrgAdmin(adminName);
             baseOrgDao.save(baseOrgDO);
+
+            //新增机构与管理员关联关系
+            BaseOrgUserDO baseOrgUserDO = new BaseOrgUserDO();
+            baseOrgUserDO.setOrgCode(baseOrgDO.getCode());
+            baseOrgUserDO.setUserAccount(mobile);
+            baseOrgUserService.save(baseOrgUserDO);
 
             //新增用户（管理员）
             userDO = new UserDO();
-            userDO.setUsername(adminName);
+            userDO.setUsername(mobile);
+            userDO.setName(adminName);
             userDO.setMobile(mobile);
-            userService.register(userDO);
+            userService.registerWithMobile(userDO);
 
             // 新增用户角色关联关系
             UserRoleDO userRoleDO = new UserRoleDO();
             userRoleDO.setRoleId("");
-            userRoleDO.setUserId("");
+            userRoleDO.setUserId(userDO.getId());
             userRoleService.save(userRoleDO);
+
+            //新增机构与区域的树形结构关系
+            orgTreeService.addOrgTreeNode(baseOrgDO);
         }else{
-            String adminId = orgAdminJson.getString("id");
-            if(StringUtils.isEmpty(adminId)){
-                return "paramter id for admin is null when update";
-            }
             BaseOrgDO oldBaseOrgDO = baseOrgDao.findOne(baseOrgDO.getId());
             if(null == oldBaseOrgDO){
                 return "no exist this org";
             }
-            baseOrgDao.save(baseOrgDO);
+            if(!baseOrgDO.getCode().equalsIgnoreCase(oldBaseOrgDO.getCode()) || !baseOrgDO.getName().equalsIgnoreCase(oldBaseOrgDO.getName())){
+                orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.org.getLevelValue());
+            }
             if(!baseOrgDO.getTownCode().equalsIgnoreCase(oldBaseOrgDO.getTownCode())){
                 orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.town.getLevelValue());
             }
@@ -128,14 +184,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             if(!baseOrgDO.getProvinceCode().equalsIgnoreCase(oldBaseOrgDO.getProvinceCode())){
                 orgTreeService.updateOrgTreeNode(oldBaseOrgDO,baseOrgDO,OrgTree.Level.province.getLevelValue());
             }
-            userDO = userService.findById(adminId);
-            //没有修改就不保存
-            if(StringUtils.endsWithIgnoreCase(adminName,userDO.getUsername()) && StringUtils.endsWithIgnoreCase(mobile,userDO.getMobile())){
-                return ConstantUtils.SUCCESS;
-            }
-            userDO.setUsername(adminName);
-            userDO.setMobile(mobile);
-            userService.save(userDO);
+            baseOrgDao.save(baseOrgDO);
         }
         return ConstantUtils.SUCCESS;
     }
@@ -153,6 +202,30 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
         return baseOrgDao.existsByCode(code);
     }
 
+    /**
+     * 生效或失效单个机构
+     * @param id
+     * @param del
+     * @return
+     */
+    public String enableOrDisableOrg(String id,String del){
+        JSONObject result = new JSONObject();
+        if(StringUtils.isEmpty(id) || StringUtils.isEmpty(del)){
+            result.put("msg","parameter id or del is null");
+            result.put("response",ConstantUtils.FAIL);
+            return result.toJSONString();
+        }
+        BaseOrgDO baseOrgDO = baseOrgDao.findOne(id);
+        if( null == baseOrgDO ){
+            result.put("msg","org not exist for id:" + id);
+            result.put("response",ConstantUtils.FAIL);
+            return result.toJSONString();
+        }
+        baseOrgDO.setDel(del);
+        this.save(baseOrgDO);
+        result.put("response",ConstantUtils.SUCCESS);
+        return result.toJSONString();
+    }
     /**
      * 构建机构区域树形结构
      * @return
@@ -193,15 +266,30 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     }
 
     /**
-     * 查找某一saasId下的所有机构code
+     * 查找某一saasId下的有效的机构code
      * @param saasId
      * @return
      */
-    public List findOrgCodeBySaasId(String saasId){
+    public List findOrgCodeListBySaasId(String saasId){
         List result = new ArrayList();
         if(StringUtils.isEmpty(saasId)){
             return result;
         }
         return baseOrgDao.findOrgCodeBySaasId(saasId);
     }
+
+     /**
+     * 查找某一saasId下的有效的机构列表，新增团队时选择归属机构时用到
+     * @param saasId
+     * @return
+     */
+    public List findOrgListBySaasId(String saasId){
+        List result = new ArrayList();
+        if(StringUtils.isEmpty(saasId)){
+            return result;
+        }
+        return baseOrgDao.findOrgCodeBySaasId(saasId);
+    }
+
+
 }

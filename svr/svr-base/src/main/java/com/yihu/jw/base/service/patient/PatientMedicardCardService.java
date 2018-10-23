@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -41,6 +43,17 @@ public class PatientMedicardCardService extends BaseJpaService<PatientMedicareCa
         return patientMedicareCardDao.findByPatientCode(patientCode);
     }
 
-
+    /**
+     * 根据居民标识获取关联卡id列表
+     * @param patientCode
+     * @return
+     */
+    public Set<Object> findIdListByPatientCode(String patientCode){
+        Set<Object> result = new HashSet<>();
+        if(StringUtils.isEmpty(patientCode)){
+            return result;
+        }
+        return patientMedicareCardDao.findIdListByPatientCode(patientCode);
+    }
 
 }

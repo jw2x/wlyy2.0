@@ -40,12 +40,12 @@ public class SaasBusinessCardService extends BaseJpaService<SaasBusinessCardDO, 
         /*Map<String, Object> card = new HashMap<>();
         if (type == SaasBusinessCardDO.Type.doctor) {
             //模拟加载医生数据
-            Map<String, Object> source = doctorService.getDoctorInfo(orgId, sourceId);
+            Map<String, Object> source = doctorService.getOneDoctorInfo(orgId, sourceId);
             saasBusinessCardDO.forEach(item -> card.put(item.getField(), source.get(item.getField())));
             return card;
         } else if (type == SaasBusinessCardDO.Type.patient) {
             //模拟加载居民数据
-            Map<String, Object> source = basePatientService.getPatientInfo(sourceId);
+            Map<String, Object> source = basePatientService.getPatientById(sourceId);
             saasBusinessCardDO.forEach(item -> card.put(item.getField(), source.get(item.getField())));
             return card;
         }

@@ -34,16 +34,6 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
 	private String doctorCode;
 
     /**
-	 * 医生角色标识
-	 */
-	private String roleCode;
-
-    /**
-	 * 医院角色名称
-	 */
-	private String roleName;
-
-    /**
 	 * 职称代码
 	 */
 	private String jobTitleCode;
@@ -58,18 +48,29 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
      */
     private String deptCode;
 
+    /**
+     * 职务代码
+     */
+    private String doctorDutyCode;
+
+    /**
+     * 职务名称
+     */
+    private String doctorDutyName;
 
     /**
 	 * 作废标识，1正常，0作废
 	 */
 	private String del;
 
-    /**
-	 * 
-	 */
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+08:00")
-	private Date createTime;
+	public BaseDoctorHospitalDO(){}
 
+	public BaseDoctorHospitalDO(String hospCode,String hospName,String doctorDutyCode,String doctorDutyName){
+	    this.hospCode = hospCode;
+	    this.hospName = hospName;
+	    this.doctorDutyCode = doctorDutyCode;
+	    this.doctorDutyName = doctorDutyName;
+    }
 
 	@Column(name = "hosp_code")
     public String getHospCode() {
@@ -96,22 +97,6 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
         this.doctorCode = doctorCode;
     }
 
-    @Column(name = "role_code")
-    public String getRoleCode() {
-        return roleCode;
-    }
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
-    }
-
-	@Column(name = "role_name")
-    public String getRoleName() {
-        return roleName;
-    }
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-
 	@Column(name = "job_title_code")
     public String getJobTitleCode() {
         return jobTitleCode;
@@ -136,19 +121,27 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
         this.del = del;
     }
 
-	@Column(name = "create_time")
-    public Date getCreateTime() {
-        return createTime;
-    }
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
     public String getDeptCode() {
         return deptCode;
     }
 
     public void setDeptCode(String deptCode) {
         this.deptCode = deptCode;
+    }
+
+    public String getDoctorDutyCode() {
+        return doctorDutyCode;
+    }
+
+    public void setDoctorDutyCode(String doctorDutyCode) {
+        this.doctorDutyCode = doctorDutyCode;
+    }
+
+    public String getDoctorDutyName() {
+        return doctorDutyName;
+    }
+
+    public void setDoctorDutyName(String doctorDutyName) {
+        this.doctorDutyName = doctorDutyName;
     }
 }
