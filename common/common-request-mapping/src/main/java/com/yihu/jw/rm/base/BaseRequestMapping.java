@@ -140,6 +140,7 @@ public class BaseRequestMapping {
         public static final String ALL  = "/query_all";
         public static final String QUERY_BY_SAASID = "/queryBySaasId";
         public static final String QUERY_BY_TYPE  = "/query_by_type";
+        public static final String CREATE_BY_TYPE = "/createByType";
     }
 
     /**

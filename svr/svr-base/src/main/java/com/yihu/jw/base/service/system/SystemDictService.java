@@ -7,6 +7,7 @@ import com.yihu.jw.base.dao.system.SystemDictDao;
 import com.yihu.jw.base.enums.SystemDictEnum;
 import com.yihu.jw.base.service.dict.*;
 import com.yihu.jw.base.util.ConstantUtils;
+import com.yihu.jw.entity.base.dict.*;
 import com.yihu.jw.entity.base.system.SystemDictDO;
 import com.yihu.jw.entity.base.system.SystemDictEntryDO;
 import com.yihu.mysql.query.BaseJpaService;
@@ -253,6 +254,61 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
         }else{
             list = this.search(null,filters,sorts,page,size);
             count = this.getCount(filters);
+        }
+        result.put("response",ConstantUtils.SUCCESS);
+        result.put("count",count);
+        result.put("msg",list);
+        return result;
+    }
+
+
+    /**
+     * 查询字典分页信息
+     * @param type
+     * @param json
+     * @return
+     */
+    public JSONObject createDictByType(String type,String json) throws ParseException {
+        JSONObject result = new JSONObject();
+        if (StringUtils.isEmpty(json) || StringUtils.isEmpty(json)) {
+            result.put("msg","parameter dictType or userId is null");
+            result.put("response",ConstantUtils.FAIL);
+            return result;
+        }
+        List list = new ArrayList();
+        long count = 0;
+        if (SystemDictEnum.Icd10Dict == SystemDictEnum.valueOf(type)) {
+            DictIcd10DO dictIcd10DO=convertToModel(json,DictIcd10DO.class);
+            dictIcd10DO.setSaasId(saasId);
+            dictIcd10Service.save(dictIcd10DO);
+        } else if (SystemDictEnum.HospitalDeptDict == SystemDictEnum.valueOf(type)) {
+            //科室只与机构有关。
+            DictHospitalDeptDO dictHospitalDeptDO=convertToModel(json,DictHospitalDeptDO.class);
+            dictHospitalDeptService.save(dictHospitalDeptDO);
+        } else if (SystemDictEnum.JobTitleDict == SystemDictEnum.valueOf(type)) {
+
+            DictJobTitleDO dictJobTitleDO=convertToModel(json,DictJobTitleDO.class);
+            dictJobTitleDO.setSaasId(saasId);
+            dictJobTitleService.save(dictJobTitleDO);
+
+        } else if (SystemDictEnum.HealthProblemDict == SystemDictEnum.valueOf(type)) {
+            DictHealthProblemDO dictHealthProblemDO=convertToModel(json,DictHealthProblemDO.class);
+            dictHealthProblemDO.setSaasId(saasId);
+            dictHealthProblemService.save(dictHealthProblemDO);
+
+        } else if (SystemDictEnum.MedicineDict == SystemDictEnum.valueOf(type)) {
+            DictMedicineDO dictMedicineDO=convertToModel(json,DictMedicineDO.class);
+            dictMedicineDO.setSaasId(saasId);
+            dictMedicineService.save(dictMedicineDO);
+
+        } else if (SystemDictEnum.DiseaseDict == SystemDictEnum.valueOf(type)) {
+            DictDiseaseDO dictDiseaseDO=convertToModel(json,DictDiseaseDO.class);
+            dictDiseaseDO.setSaasId(saasId);
+            dictDiseaseService.save(dictDiseaseDO);
+        }else{
+            SystemDictDO systemDictDO=convertToModel(json,SystemDictDO.class);
+            systemDictDO.setSaasId(saasId);
+            this.save(systemDictDO);
         }
         result.put("response",ConstantUtils.SUCCESS);
         result.put("count",count);

@@ -41,14 +41,15 @@ public class UserNoticeEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.Module.PAGE)
     @ApiOperation(value = "获取分页")
-    public PageEnvelop<UserNoticeVO> page (
-            @ApiParam(name = "userId", value = "用户id")
-            @RequestParam(value = "userId", required = true) String userId,
+    public PageEnvelop<UserNoticeVO> page(
+//            @ApiParam(name = "userId", value = "用户id")
+//            @RequestParam(value = "userId", required = true) String userId,
             @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-        return userNoticeService.queryPage(page,size,userId);
+        String userId = getUID();
+        return userNoticeService.queryPage(page, size, userId);
     }
 
 }

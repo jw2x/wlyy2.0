@@ -154,4 +154,19 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
         JSONArray list = systemDictService.getDistListByType(type, userId, sorts, page, size);
         return success(list);
     }
+
+    @PostMapping(value = BaseRequestMapping.SystemDict.CREATE_BY_TYPE)
+    @ApiOperation(value = "根据不同的类型创建字典")
+    public Envelop createAndUpdate(
+            @ApiParam(name = "dictType", value = "字典类型", required = true)
+            @RequestParam(value = "dictType") String dictType,
+            @ApiParam(name = "jsonData", value = "字典Json数据", required = true)
+            @RequestParam(value = "jsonData") String jsonData) throws Exception {
+        JSONObject result =  systemDictService.createDictByType(dictType,jsonData);
+        if(StringUtils.equalsIgnoreCase(ConstantUtils.FAIL,result.getString("response"))){
+            return failed(result.getString("msg"));
+        }
+        return success(result.getJSONArray("msg"));
+    }
+
 }
