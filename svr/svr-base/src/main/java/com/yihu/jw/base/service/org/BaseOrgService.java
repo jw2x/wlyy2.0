@@ -12,11 +12,13 @@ import com.yihu.jw.base.service.user.UserRoleService;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
+import com.yihu.jw.entity.base.org.BaseOrgSaasDO;
 import com.yihu.jw.entity.base.org.BaseOrgUserDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.entity.base.user.UserRoleDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -40,8 +42,14 @@ import java.util.*;
 @Service
 public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
 
+    @Value("${configDefault.saasId}")
+    private String defaultSaasId;
+
     @Autowired
     private BaseOrgDao baseOrgDao;
+
+    @Autowired
+    private BaseOrgSaasService baseOrgSaasService;
 
     @Autowired
     private OrgTreeService orgTreeService;
@@ -145,6 +153,12 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             }
             baseOrgDO.setOrgAdmin(adminName);
             baseOrgDao.save(baseOrgDO);
+
+            //新增机构与saas关联关系，初始saas设置为默认值，机构分配给租户在租户管理中操作
+            BaseOrgSaasDO baseOrgSaasDO = new BaseOrgSaasDO();
+            baseOrgSaasDO.setOrgCode(baseOrgDO.getCode());
+            baseOrgSaasDO.setSaasid(defaultSaasId);
+            baseOrgSaasService.save(baseOrgSaasDO);
 
             //新增机构与管理员关联关系
             BaseOrgUserDO baseOrgUserDO = new BaseOrgUserDO();

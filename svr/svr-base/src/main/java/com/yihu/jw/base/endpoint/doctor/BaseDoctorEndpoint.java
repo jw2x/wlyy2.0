@@ -44,7 +44,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private OrgTreeService orgTreeService;
 
-    @PostMapping(value = BaseRequestMapping.BaseDoctor.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BaseDoctor.CREATE)
     @ApiOperation(value = "新增医生")
     public Envelop create(
             @ApiParam(name = "jsonData", value = "Json数据", required = true)
@@ -67,7 +67,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.BaseDoctor.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BaseDoctor.UPDATE)
     @ApiOperation(value = "更新医生")
     public Envelop update(
             @ApiParam(name = "jsonData", value = "Json数据", required = true)
@@ -112,9 +112,8 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     }
 
     /**
-     * 单个医生信息（基本信息 + 医院执业信息）
+     * 单个医生信息（基本信息 + 医院执业及角色信息）
      *
-     * @param orgId
      * @param doctorId
      * @return
      * @throws Exception
@@ -122,12 +121,13 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.BaseDoctor.DOCINFO)
     @ApiOperation(value = "获取单个医生及其执业信息")
     public Envelop doctorHosplist(
-            @ApiParam(name = "orgId", value = "医院id")
-            @RequestParam(value = "orgId", required = true) String orgId,
-            @ApiParam(name = "doctorId", value = "医生id")
+            @ApiParam(name = "doctorId", value = "医生标识")
             @RequestParam(value = "doctorId", required = true) String doctorId) throws Exception {
-        Map<String, Object> map = baseDoctorService.getOneDoctorInfo(orgId, doctorId);
-        return success(map.toString());
+        JSONObject jsonObject = baseDoctorService.getOneDoctorInfo(doctorId);
+        if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+            return failed(jsonObject.getString("msg"));
+        }
+        return success(jsonObject.getString("msg"));
     }
 
     /**

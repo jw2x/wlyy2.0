@@ -6,7 +6,6 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.base.dao.doctor.BaseDoctorDao;
 import com.yihu.jw.base.service.org.OrgTree;
-import com.yihu.jw.base.service.org.OrgTreeService;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
 import com.yihu.jw.base.service.org.tree.SimpleTreeNode;
 import com.yihu.jw.base.service.org.tree.TreeNode;
@@ -14,6 +13,7 @@ import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
 import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
 import com.yihu.jw.entity.base.doctor.BaseDoctorRoleDO;
+import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -25,7 +25,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * 
@@ -60,34 +59,40 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
 
     /**
      * 获取医生信息
-     * @param orgId 医生所属机构id
      * @param doctorId 医生id
      * @return
      */
-    public Map<String,Object> getOneDoctorInfo(String orgId, String doctorId) throws Exception{
-        Map<String,Object> resultMap = new HashMap<>();
-
-        if(StringUtils.isEmpty(orgId) || StringUtils.isEmpty(doctorId)){
-            return resultMap;
+    public JSONObject getOneDoctorInfo(String doctorId) throws Exception{
+        JSONObject result = new JSONObject();
+        if(StringUtils.isEmpty(doctorId)){
+            result.put("msg","parameter doctorId is null ");
+            result.put("response",ConstantUtils.FAIL);
+            return result;
         }
 
         //医生基本信息
         List<BaseDoctorDO> doctors = this.findByField("id",doctorId);
         if(CollectionUtils.isEmpty(doctors)){
-            return resultMap;
+            result.put("msg","doctor not exist for id:" + doctorId);
+            result.put("response",ConstantUtils.FAIL);
+            return result;
         }
-        resultMap = JavaBeanUtils.getInstance().bean2Map(doctors.get(0));
 
-        //医生执业信息
-        String[] paramNames = {"hospCode","doctorCode"};
-        Object[] paramValue = {orgId,doctorId};
-        List<BaseDoctorHospitalDO> baseDoctorHospitalDOS = baseDoctorHospitalService.findByFields(paramNames,paramValue);
-        if(CollectionUtils.isEmpty(baseDoctorHospitalDOS)){
-            return resultMap;
+        //医生归属业务模块角色信息
+        String[] paramNames = {"doctorCode","del"};
+        Object[] paramValue = {doctorId,"1"};
+        List<BaseDoctorRoleDO> roleList = baseDoctorRoleService.findByFields(paramNames,paramValue);
+        if(CollectionUtils.isEmpty(roleList)){
+            result.put("msg","doctor role not exist for id:" + doctorId);
+            result.put("response",ConstantUtils.FAIL);
+            return result;
         }
-        Map<String,Object> doctorHospMap = JavaBeanUtils.getInstance().bean2Map(baseDoctorHospitalDOS.get(0));
-        resultMap.putAll(doctorHospMap);
-        return resultMap;
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("doctor",doctors.get(0));
+        jsonObject.put("role",roleList);
+        result.put("response",ConstantUtils.SUCCESS);
+        result.put("msg",jsonObject);
+        return result;
     }
 
     /**
@@ -111,6 +116,7 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
                 "  tb.sex as sex,  " +
                 "  tb.mobile as mobile,  " +
                 "  GROUP_CONCAT(tb.org SEPARATOR ',') as orgInfo,  " +
+                "  tb.job_title_name as jobTitleName,  " +
                 "  tb.status as status " +
                 "from  " +
                 "  (  " +
@@ -120,7 +126,8 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
                 "     doc.idcard,  " +
                 "     case doc.sex when 1 then '男' when 2 then '女' else '未知' end as sex,  " +
                 "     doc.mobile,  " +
-                "     concat(hos.hosp_name,'/',dept.name,'/',hos.doctor_duty_name,'/',hos.job_title_name) as org,  " +
+                "     concat(hos.org_name,'/',dept.name,'/',hos.doctor_duty_name) as org,  " +
+                "     doc.job_title_name,  " +
                 "     case doc.del when 0 then '无效' when 1 then '有效' end as status,  " +
                 "      doc.create_time  " +
                 "   from  " +
@@ -132,9 +139,9 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
                 "    and  " +
                 "    hos.dept_code = dept.code  " +
                 "    and  " +
-                "    ((doc.idcard like '{idcard}' or ''= '{idcard}'  ) and (hos.hosp_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}'))  " +
+                "    ((doc.idcard like '{idcard}' or ''= '{idcard}'  ) and (hos.org_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}'))  " +
                 "      or  " +
-                "    ((doc.name like '{name}'  or ''= '{name}' )  and (hos.hosp_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}'))  " +
+                "    ((doc.name like '{name}'  or ''= '{name}' )  and (hos.org_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}'))  " +
                 "  ) tb  " +
                 "GROUP BY tb.id order by tb.create_time desc limit {start},{end} ";
         String finalSql = sql
@@ -156,9 +163,9 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
                 "    and " +
                 "    hos.dept_code = dept.code " +
                 "    and " +
-                "    ((doc.idcard like '{idcard}' or ''= '{idcard}' ) and (hos.hosp_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}')) " +
+                "    ((doc.idcard like '{idcard}' or ''= '{idcard}' ) and (hos.org_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}')) " +
                 "      or " +
-                "    ((doc.name like '{name}' or ''= '{name}')  and (hos.hosp_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}')) ";
+                "    ((doc.name like '{name}' or ''= '{name}')  and (hos.org_code = '{orgCode}' or ''= '{orgCode}') and (doc.del = '{docStatus}' or ''= '{docStatus}')) ";
         String finalCountSql = countSql
                 .replace("{idcard}",nameOrIdcardValue)
                 .replace("{name}",nameOrIdcardValue)
@@ -359,12 +366,12 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
         for(BaseDoctorHospitalDO one : list){
             OrgTree orgTreeParent = new OrgTree();
             orgTreeParent.setParentCode("");
-            orgTreeParent.setCode(one.getHospCode());
-            orgTreeParent.setName(one.getHospName());
+            orgTreeParent.setCode(one.getOrgCode());
+            orgTreeParent.setName(one.getOrgName());
             orgTreeList.add(orgTreeParent);
 
             OrgTree orgTreeChild = new OrgTree();
-            orgTreeChild.setParentCode(one.getHospCode());
+            orgTreeChild.setParentCode(one.getOrgCode());
             orgTreeChild.setCode(one.getDoctorDutyCode());
             orgTreeChild.setName(one.getDoctorDutyName());
             orgTreeList.add(orgTreeChild);

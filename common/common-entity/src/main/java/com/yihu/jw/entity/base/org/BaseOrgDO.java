@@ -1,6 +1,9 @@
 package com.yihu.jw.entity.base.org;
 
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,8 +19,6 @@ import java.util.Date;
 @Entity
 @Table(name = "base_org")
 public class BaseOrgDO extends UuidIdentityEntityWithOperator {
-
-
 
     /**
 	 * saas化配置

@@ -85,7 +85,7 @@ public class UserService extends BaseJpaService<UserDO, UserDao> {
     }
 
     /**
-     * 判断手机号是否存在
+     * 判断用户名是否存在
      * @param username
      * @return
      */
