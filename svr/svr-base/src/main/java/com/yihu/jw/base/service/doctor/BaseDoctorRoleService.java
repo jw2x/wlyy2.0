@@ -7,8 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 医生角色关联信息服务service
@@ -38,5 +37,19 @@ public class BaseDoctorRoleService extends BaseJpaService<BaseDoctorRoleDO, Base
             return result;
         }
         return baseDoctorRoleDao.findIdListByDoctorCode(doctorCode);
+    }
+
+    /**
+     * 根据医生标识获取医生相关联的角色Id列表
+     *
+     * @param doctorCode
+     * @return
+     */
+    public List<BaseDoctorRoleDO> queryDoctorRoleList(String doctorCode,String del) {
+        List<BaseDoctorRoleDO> result = new ArrayList<>();
+        if (StringUtils.isEmpty(doctorCode)) {
+            return result;
+        }
+        return baseDoctorRoleDao.findByDoctorCodeAndDel(doctorCode,del);
     }
 }

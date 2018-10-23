@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -23,4 +25,6 @@ public interface BaseDoctorRoleDao extends PagingAndSortingRepository<BaseDoctor
 
     @Query("select id from BaseDoctorRoleDO where doctorCode = ?1")
     Set<Object> findIdListByDoctorCode(String doctorCode);
+
+    List<BaseDoctorRoleDO> findByDoctorCodeAndDel(String doctorCode,String del);
 }
