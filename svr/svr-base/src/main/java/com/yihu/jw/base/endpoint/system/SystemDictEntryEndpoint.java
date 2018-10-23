@@ -12,6 +12,7 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -65,8 +66,10 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
     @GetMapping(value = BaseRequestMapping.SystemDictEntry.PAGE_SAASID)
     @ApiOperation(value = "获取分页")
     public PageEnvelop<SystemDictEntryVO> pageSaasId (
-            @ApiParam(name = "saasId", value = "true")
+            @ApiParam(name = "saasId", value = "saasId")
             @RequestParam(value = "saasId", required = true) String saasId,
+            @ApiParam(name = "value", value = "请输入字典代码或值查询")
+            @RequestParam(value = "value", required = false) String value,
             @ApiParam(name = "dictCode", value = "字典code")
             @RequestParam(value = "dictCode", required = true) String dictCode,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
@@ -78,6 +81,9 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
         StringBuilder filters = new StringBuilder();
         filters.append("saasId=").append(saasId).append(";")
                 .append("dictCode=").append(dictCode).append(";");
+        if(StringUtils.isNotBlank(value)){
+            filters.append("code?").append(value).append(" g1;").append("value?").append(value).append(" g1;");
+        }
         List<SystemDictEntryDO> systemDictEntryDOS = systemDictEntryService.search(null, filters.toString(), sorts, page, size);
         int count = (int)systemDictEntryService.getCount(filters.toString());
         return success(systemDictEntryDOS, count, page, size, SystemDictEntryVO.class);

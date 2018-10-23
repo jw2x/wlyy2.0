@@ -18,10 +18,12 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
     private String name;
     @ApiModelProperty(value = "父ID", example = "402803ee656498890165649ad2da0000")
     private String parentId;
+    @ApiModelProperty(value = "父name", example = "无")
+    private String parentName;
     @ApiModelProperty(value = "url", example = "/doctor/*")
     private String url;
     @ApiModelProperty(value = "类型", example = "0通用，1医生端你，2居民端")
-    private String type;
+    private Integer type;
     @ApiModelProperty(value = "状态", example = "1有效，0失效")
     private Integer status;
     @ApiModelProperty(value = "备注", example = "我是备注")
@@ -83,11 +85,11 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
         this.isEnd = isEnd;
     }
 
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(Integer type) {
         this.type = type;
     }
 
@@ -113,5 +115,13 @@ public class ModuleVO extends UuidIdentityVOWithOperator {
 
     public void setIsCheck(Integer isCheck) {
         this.isCheck = isCheck;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 }

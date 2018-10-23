@@ -5,6 +5,7 @@ import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * @author progr1mmer
@@ -39,6 +40,7 @@ public class MenuDO extends UuidIdentityEntityWithOperator {
 	 * 父级ID
 	 */
 	private String parentId;
+	private String parentName;
 	/**
 	 * 状态
 	 */
@@ -141,5 +143,14 @@ public class MenuDO extends UuidIdentityEntityWithOperator {
 
 	public void setShow(Integer show) {
 		this.show = show;
+	}
+
+	@Transient
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 }
