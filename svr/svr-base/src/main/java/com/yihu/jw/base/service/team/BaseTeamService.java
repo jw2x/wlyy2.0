@@ -6,19 +6,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.base.dao.team.BaseTeamDao;
 import com.yihu.jw.base.dao.team.BaseTeamMemberDao;
 import com.yihu.jw.base.util.ConstantUtils;
+import com.yihu.jw.base.util.JavaBeanUtils;
+import com.yihu.jw.entity.base.doctor.BaseDoctorDO;
+import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
+import com.yihu.jw.entity.base.doctor.BaseDoctorRoleDO;
+import com.yihu.jw.entity.base.patient.BasePatientDO;
+import com.yihu.jw.entity.base.patient.PatientMedicareCardDO;
 import com.yihu.jw.entity.base.team.BaseTeamMemberDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.team.BaseTeamDO;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 
@@ -47,6 +51,13 @@ public class BaseTeamService extends BaseJpaService<BaseTeamDO, BaseTeamDao> {
     @Autowired
     private ObjectMapper objectMapper;
 
+    /**
+     * 新增团队
+     * @param jsonData
+     * @return
+     * @throws Exception
+     */
+    @Transactional(rollbackFor = Exception.class)
     public String createTeam(String jsonData) throws Exception {
         JSONObject jsonObject = JSONObject.parseObject(jsonData);
         JSONObject teamJSONObject = jsonObject.getJSONObject("team");
@@ -55,49 +66,124 @@ public class BaseTeamService extends BaseJpaService<BaseTeamDO, BaseTeamDao> {
             return ConstantUtils.FAIL;
         }
         BaseTeamDO baseTeamDO = objectMapper.readValue(teamJSONObject.toJSONString(),BaseTeamDO.class);
-
+        this.save(baseTeamDO);
         List<BaseTeamMemberDO> memberList = new ArrayList<>();
         teamMemberArray.forEach((teamMember)->{
             try {
                 BaseTeamMemberDO baseTeamMemberDO = objectMapper.readValue(teamMember.toString(),BaseTeamMemberDO.class);
+                baseTeamMemberDO.setTeamCode(baseTeamDO.getId());
                 memberList.add(baseTeamMemberDO);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         });
-        this.save(baseTeamDO);
         baseTeamMemberService.batchInsert(memberList);
         return ConstantUtils.SUCCESS;
     }
 
     /**
-     * 获取团队机构列表
+     * 修改团队
+     * @param jsonData
      * @return
      */
-    public List<Map<String,Object>> getTeamOrgList(){
-        List<Map<String,Object>> result = new ArrayList<>();
-        result = baseTeamDao.getTeamOrgList();
+    @Transactional(rollbackFor = Exception.class)
+    public JSONObject updateTeam(String jsonData){
+        JSONObject result = new JSONObject();
+        if(org.springframework.util.StringUtils.isEmpty(jsonData)){
+            result.put("msg","jsonData is null");
+            result.put("response", ConstantUtils.FAIL);
+            return result;
+        }
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
+        JSONObject team = jsonObject.getJSONObject("team");
+        JSONArray teamMembers = jsonObject.getJSONArray("teamMember");
+        if(null == team || CollectionUtils.isEmpty(teamMembers)){
+            result.put("msg","parameter team or teamMember of jsonData is null");
+            result.put("response", ConstantUtils.FAIL);
+            return result;
+        }
+        //判断团队id是否存在
+        if(org.springframework.util.StringUtils.isEmpty(team.getString("id"))){
+            result.put("msg","parameter id for team is null when update team");
+            result.put("response", ConstantUtils.FAIL);
+            return result;
+        }
+        // 修改团队信息
+        BaseTeamDO baseTeamDO = null;
+        try {
+            baseTeamDO = objectMapper.readValue(team.toJSONString(),BaseTeamDO.class);
+        } catch (IOException e) {
+            result.put("msg","convert team jsonObject to BaseTeamDO failed," + e.getCause());
+            result.put("response",ConstantUtils.FAIL);
+            return result;
+        }
+        this.save(baseTeamDO);
+
+        //修改团队成员信息
+        BaseTeamMemberDO baseTeamMemberDO = null;
+        Set<Object> roleIdList = baseTeamMemberService.findMemberIdList(baseTeamDO.getId());
+        try {
+            for(Object object : teamMembers){
+                baseTeamMemberDO = objectMapper.readValue(object.toString(),BaseTeamMemberDO.class);
+                if(roleIdList.contains(baseTeamMemberDO.getId())){
+                    roleIdList.remove(baseTeamMemberDO.getId());
+                }
+                baseTeamMemberService.save(baseTeamMemberDO);
+            }
+        } catch (IOException e) {
+            result.put("msg","convert teamMember jsonObject to BaseTeamMemberDO failed," + e.getCause());
+            result.put("response",ConstantUtils.FAIL);
+        }
+        baseTeamMemberService.delete(roleIdList.toArray());
+        result.put("response",ConstantUtils.SUCCESS);
+        result.put("msg",baseTeamDO);
         return result;
     }
 
+
     /**
-     * 查看团队成员
+     * 查看团队成员 （姓名，身份证）
      * @param orgCode
      * @param teamCode
      * @return
      */
-    public String getTeamMemberList(String orgCode,String teamCode){
-        List<Map<String,Object>> result = new ArrayList<>();
-        if( StringUtils.isEmpty(orgCode) || StringUtils.isEmpty(orgCode) ){
-            return null;
+    public JSONObject getTeamMemberList(String orgCode,String teamCode) throws Exception {
+        JSONObject result = new JSONObject();
+        if(StringUtils.isEmpty(orgCode) || StringUtils.isEmpty(teamCode)){
+            result.put("msg","parameter orgCode or orgCode is null");
+            result.put("response", ConstantUtils.FAIL);
+            return result;
         }
-        JSONArray list = new JSONArray();
-        result = baseTeamMemberDao.getTeamMemberList();
-        for(Map<String,Object> map : result){
-            JSONObject jsonObject = JSONObject.parseObject(map.toString());
-            list.add(jsonObject);
-        }
-        return list.toJSONString();
+        List<Map<String,Object>> list = baseTeamMemberDao.getTeamMemberList();
+        result.put("response", ConstantUtils.SUCCESS);
+        result.put("msg", JavaBeanUtils.getInstance().mapListJson(list));
+        return result;
     }
 
+    /**
+     * 团队id
+     * @param teamId
+     * @return
+     */
+    public JSONObject getTeamById(String teamId) throws Exception{
+        JSONObject result = new JSONObject();
+        if(StringUtils.isEmpty(teamId)){
+            result.put("msg","parameter teamCode is null");
+            result.put("response",ConstantUtils.FAIL);
+            return result;
+        }
+        List<BaseTeamDO> teamDOList = this.findByField("id",teamId);
+        if(CollectionUtils.isEmpty(teamDOList)){
+            result.put("msg","not exist team for id:"+ teamId);
+            result.put("response",ConstantUtils.FAIL);
+            return result;
+        }
+        List<BaseTeamMemberDO> members = baseTeamMemberService.findMembersByTeamCode(teamId);
+        result.put("response",ConstantUtils.SUCCESS);
+        JSONObject teamInfo = new JSONObject();
+        teamInfo.put("team",teamDOList.get(0));
+        teamInfo.put("teamMember",members);
+        result.put("msg",teamInfo);
+        return result;
+    }
 }

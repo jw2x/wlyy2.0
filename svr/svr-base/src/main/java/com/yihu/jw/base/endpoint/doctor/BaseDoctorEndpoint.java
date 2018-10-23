@@ -225,4 +225,16 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
         return success(baseDoctorService.getDoctorDeptTree(doctorCode));
     }
 
+    @GetMapping(value = BaseRequestMapping.BaseDoctor.getDoctorListByDept)
+    @ApiOperation(value = "获取某一科室下的医生列表")
+    public Envelop getDoctorListByDept(
+            @ApiParam(name = "deptCode", value = "科室代码", required = true)
+            @RequestParam String deptCode) throws Exception {
+        JSONObject jsonObject = baseDoctorService.getDoctorListByDept(deptCode);
+        if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+            return failed(jsonObject.getString("msg"));
+        }
+        return success(jsonObject.getString("msg"));
+    }
+
 }

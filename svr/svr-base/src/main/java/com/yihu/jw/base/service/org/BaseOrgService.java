@@ -266,15 +266,30 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     }
 
     /**
-     * 查找某一saasId下的所有机构code
+     * 查找某一saasId下的有效的机构code
      * @param saasId
      * @return
      */
-    public List findOrgCodeBySaasId(String saasId){
+    public List findOrgCodeListBySaasId(String saasId){
         List result = new ArrayList();
         if(StringUtils.isEmpty(saasId)){
             return result;
         }
         return baseOrgDao.findOrgCodeBySaasId(saasId);
     }
+
+     /**
+     * 查找某一saasId下的有效的机构列表，新增团队时选择归属机构时用到
+     * @param saasId
+     * @return
+     */
+    public List findOrgListBySaasId(String saasId){
+        List result = new ArrayList();
+        if(StringUtils.isEmpty(saasId)){
+            return result;
+        }
+        return baseOrgDao.findOrgCodeBySaasId(saasId);
+    }
+
+
 }

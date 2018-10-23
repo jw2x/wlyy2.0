@@ -7,7 +7,6 @@ import com.yihu.jw.entity.base.org.BaseOrgDO;
 import com.yihu.jw.restmodel.base.org.BaseOrgVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
-import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
@@ -15,12 +14,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * 机构信息控制器
@@ -169,7 +166,7 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
      */
     @PostMapping(value = BaseRequestMapping.BaseOrg.enableOrDis)
     @ApiOperation(value = "生效或失效某个机构")
-    public Envelop enableOrDisableDoctor(
+    public Envelop enableOrDisableOrg(
             @ApiParam(name = "id", value = "医生标识")
             @RequestParam(value = "id", required = true) String id,
             @ApiParam(name = "status", value = "生效或失效标识")
@@ -188,9 +185,9 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = BaseRequestMapping.BaseOrg.enableOrDis)
+    @PostMapping(value = BaseRequestMapping.BaseOrg.queryCodeList)
     @ApiOperation(value = "查询机构列表")
     public ListEnvelop queryOrgCodeAndNameList() throws Exception {
-        return success(baseOrgService.findOrgCodeBySaasId(""));
+        return success(baseOrgService.findOrgCodeListBySaasId(""));
     }
 }

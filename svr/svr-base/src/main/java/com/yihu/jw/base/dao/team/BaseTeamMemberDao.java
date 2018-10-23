@@ -8,6 +8,7 @@ import com.yihu.jw.entity.base.team.BaseTeamMemberDO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -26,4 +27,8 @@ public interface BaseTeamMemberDao extends PagingAndSortingRepository<BaseTeamMe
     @Query("select doc.name,doc.idcard,doc.id from BaseDoctorDO doc where doc.id in (select team.doctorCode from BaseTeamMemberDO team where team.orgCode = ?1 and team.teamCode = ?2)")
     List<Map<String,Object>> getTeamMemberList();
 
+    @Query("select id from BaseTeamMemberDO where teamCode = ?1")
+    Set<Object> findIdListByTeamCode(String teamCode);
+
+    List<BaseTeamMemberDO> findByTeamCode(String teamCode);
 }

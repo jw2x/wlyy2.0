@@ -388,6 +388,7 @@ public class BaseRequestMapping {
         public static final String docFullInfo  = "/docFullInfo";
         public static final String docOrgDutyTreeInfo  = "/docOrgDutyTreeInfo";
         public static final String docOrgDeptTreeInfo  = "/docOrgDeptTreeInfo";
+        public static final String getDoctorListByDept  = "/getDoctorListByDept";
     }
 
 
@@ -424,6 +425,7 @@ public class BaseRequestMapping {
         public static final String getOrgAreaTree  = "/getOrgAreaTree";
         public static final String queryOneById  = "/queryOneById";
         public static final String enableOrDis  = "/enableOrDis";
+        public static final String queryCodeList  = "/queryCodeListBySaasId";
     }
 
 
@@ -468,6 +470,8 @@ public class BaseRequestMapping {
      */
     public static class BaseTeam extends Basic {
         public static final String PREFIX  = "/baseTeam";
+        public static final String queryMemberList  = "/queryMemberList";
+        public static final String queryOne  = "/getTeamById";
     }
 
 

@@ -44,6 +44,7 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
     @Autowired
     private ObjectMapper objectMapper;
 
+
     /**
      * 居民id
      * @param patientId
@@ -65,7 +66,6 @@ public class BasePatientService extends BaseJpaService<BasePatientDO, BasePatien
         result.put("medicareCard",cards);
         return result.toJSONString();
     }
-
     /**
      * 获取用户基础信息，参数为空查全部
      * @param nameOrIdcard

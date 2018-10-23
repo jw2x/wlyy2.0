@@ -4,6 +4,8 @@ import com.yihu.jw.entity.base.org.BaseOrgSaasDO;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
+
 
 /**
  * 
@@ -18,4 +20,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @since 1.
  */
 public interface BaseOrgSaasDao extends PagingAndSortingRepository<BaseOrgSaasDO, String>, JpaSpecificationExecutor<BaseOrgSaasDO>  {
+
+    List<BaseOrgSaasDO> findBySaasid(String saasId);
 }

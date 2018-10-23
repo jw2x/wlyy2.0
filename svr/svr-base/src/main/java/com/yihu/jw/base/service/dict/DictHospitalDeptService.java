@@ -3,11 +3,9 @@ package com.yihu.jw.base.service.dict;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.discovery.converters.Auto;
 import com.yihu.jw.base.dao.dict.DictHospitalDeptDao;
 import com.yihu.jw.base.enums.SystemDictEnum;
 import com.yihu.jw.base.service.org.BaseOrgService;
-import com.yihu.jw.entity.base.dict.DictIcd10DO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +53,7 @@ public class DictHospitalDeptService extends BaseJpaService<DictHospitalDeptDO, 
             list = dictHospitalDeptDao.findCodeAndName(pageable);
             count = dictHospitalDeptDao.count();
         }else{
-            List orgCodeList = baseOrgService.findOrgCodeBySaasId(saasId);
+            List orgCodeList = baseOrgService.findOrgCodeListBySaasId(saasId);
             list = dictHospitalDeptDao.findByOrgCodeIn(objectMapper.writeValueAsString(orgCodeList),pageable);
             count = dictHospitalDeptDao.countByCodeIn(saasId);
         }
@@ -75,7 +73,7 @@ public class DictHospitalDeptService extends BaseJpaService<DictHospitalDeptDO, 
             list = (List<DictHospitalDeptDO>)dictHospitalDeptDao.findAll();
             return list;
         }
-        List orgCodeList = baseOrgService.findOrgCodeBySaasId(saasId);
+        List orgCodeList = baseOrgService.findOrgCodeListBySaasId(saasId);
         try {
             list = dictHospitalDeptDao.findByOrgCodeIn(objectMapper.writeValueAsString(orgCodeList));
         } catch (JsonProcessingException e) {

@@ -14,5 +14,5 @@ public interface SystemDictEntryDao extends PagingAndSortingRepository<SystemDic
 
     List<SystemDictEntryDO> findBySaasId(String saasId);
 
-    List<SystemDictEntryDO> findByDictCodeAndCodeAndSaasId();
+    List<SystemDictEntryDO> findByDictCodeAndCodeAndSaasId(String dictCode,String code,String saasId);
 }

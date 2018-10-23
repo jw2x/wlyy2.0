@@ -433,4 +433,32 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
         filter.getExcludes().add("level");
         return JSONObject.toJSONString(treeNode, filter);
     }
+
+    /**
+     * 获取某一科室下的医生列表
+     * @param deptCode
+     * @return
+     */
+    public JSONObject getDoctorListByDept(String deptCode) throws Exception {
+        JSONObject result = new JSONObject();
+        if(StringUtils.isEmpty(deptCode)){
+            result.put("msg","parameter deptCode is null");
+            result.put("response", ConstantUtils.FAIL);
+            return result;
+        }
+        String sql = "select " +
+                "  DISTINCT hos.doctor_code as doctorCode, " +
+                "  doc.name as name, " +
+                "  hos.dept_code as deptCode " +
+                " from " +
+                "  base_doctor_hospital hos, " +
+                "  base_doctor doc " +
+                " where " +
+                "  hos.doctor_code = doc.id" +
+                " and hos.dept_code = '" + deptCode + "'";
+        List<Map<String,Object>> list = jdbcTemplate.queryForList(sql);
+        result.put("response", ConstantUtils.SUCCESS);
+        result.put("msg",JavaBeanUtils.getInstance().mapListJson(list));
+        return result;
+    }
 }
