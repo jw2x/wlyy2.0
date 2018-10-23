@@ -65,7 +65,7 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
      * @param saasId
      * @return
      */
-    public JSONArray getDistListBySaasId(String type, String saasId, String sorts, int page, int size) throws Exception {
+    public JSONArray getDistListBySaasId(String type, String saasId,String name, String sorts, int page, int size) throws Exception {
         JSONArray jsonArray = new JSONArray();
         JSONObject jsonObject = new JSONObject();
         if (SystemDictEnum.Icd10Dict == SystemDictEnum.valueOf(type)) {

@@ -105,6 +105,8 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
     public ListEnvelop queryDictBySaasId(
             @ApiParam(name = "saasId", value = "saasId")
             @RequestParam(value = "saasId", required = true) String saasId,
+            @ApiParam(name = "name", value = "字典名称")
+            @RequestParam(value = "name", required = false) String name,
             @ApiParam(name = "type", value = "字典类型")
             @RequestParam(value = "type", required = true) String type,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
@@ -114,7 +116,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size
     ) throws Exception {
-        JSONArray list = systemDictService.getDistListBySaasId(type,saasId,sorts,page,size);
+        JSONArray list = systemDictService.getDistListBySaasId(type,saasId,name,sorts,page,size);
         return success(list);
     }
 

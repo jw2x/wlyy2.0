@@ -87,4 +87,8 @@ public class MenuService extends BaseJpaService<MenuDO, MenuDao> {
     public int isExistName(String name){
         return menuDao.isExistName(name);
     }
+
+    public MenuDO findOne(String id){
+        return menuDao.findOne(id);
+    }
 }

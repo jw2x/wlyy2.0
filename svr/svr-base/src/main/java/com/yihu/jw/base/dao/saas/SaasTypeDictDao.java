@@ -19,6 +19,8 @@ public interface SaasTypeDictDao extends PagingAndSortingRepository<SaasTypeDict
 
     SaasTypeDictDO findByCode(Integer code);
 
+    List<SaasTypeDictDO> findListByStatus(SaasTypeDictDO.Status status);
+
     @Query("select Max(code) from SaasTypeDictDO ")
     Integer findTopCode();
 
