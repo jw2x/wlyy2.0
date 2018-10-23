@@ -1,5 +1,7 @@
 package com.yihu.jw.base.service.wx;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.dao.wx.*;
 import com.yihu.jw.entity.base.wx.*;
 import com.yihu.jw.restmodel.base.wx.*;
@@ -572,7 +574,8 @@ public class WechatService {
                 " g.create_user_name AS createUserName, " +
                 " g.update_time AS updateTime, " +
                 " g.update_user AS updateUser, " +
-                " g.update_user_name AS updateUserName " +
+                " g.update_user_name AS updateUserName, " +
+                " g.status " +
                 " FROM " +
                 " wx_template_config g " +
                 " WHERE " +
@@ -605,6 +608,24 @@ public class WechatService {
 
     //===================微信统计==========================================
 
+
+    public Envelop getUserSummaryTitle(String wechatId,String date){
+        String url ="https://api.weixin.qq.com/datacube/getusersummary?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
+        String param = "{ \n" +
+                "    \"begin_date\": \""+date+"\", \n" +
+                "    \"end_date\": \""+date+"\"\n" +
+                "}";
+
+        String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, param);
+
+        String url2 ="https://api.weixin.qq.com/datacube/getusercumulate?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
+        String param2 = "{ \n" +
+                "    \"begin_date\": \""+date+"\", \n" +
+                "    \"end_date\": \""+date+"\"\n" +
+                "}";
+        return null;
+    }
+
     public Envelop getusersummary(String wechatId,String beginDate,String endDate){
         String url ="https://api.weixin.qq.com/datacube/getusersummary?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
         String param = "{ \n" +
@@ -612,6 +633,8 @@ public class WechatService {
                 "    \"end_date\": \""+endDate+"\"\n" +
                 "}";
         String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, param);
+        JSONObject rs = JSON.parseObject(result);
+
         return Envelop.getSuccess(result);
     }
 
