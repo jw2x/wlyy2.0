@@ -15,7 +15,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class InterfaceEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
 
-    @PostMapping(value = BaseRequestMapping.Interface.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Interface.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<InterfaceVO> create (
             @ApiParam(name = "jsonData", value = "Json数据", required = true)
@@ -75,7 +74,7 @@ public class InterfaceEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.Interface.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Interface.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<InterfaceVO> update (
             @ApiParam(name = "jsonData", value = "Json数据", required = true)

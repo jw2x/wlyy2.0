@@ -44,16 +44,28 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
 
         List<InterfaceParamDO> paramDOList = interfaceParamDao.findByInterfaceId(id);
         List<InterfaceParamDO> entryParams = paramDOList.stream()
-                .filter(interfaceParamDO -> InterfaceParamDO.Type.entry.getValue().equals(interfaceParamDO.getType()))
+                .filter(interfaceParamDO -> (InterfaceParamDO.Type.entry.getValue().equals(interfaceParamDO.getType()))
+                &&InterfaceParamDO.Common.no.getValue().equals(interfaceParamDO.getCommon()))
+                .collect(Collectors.toList());
+        List<InterfaceParamDO> commonEntryParams = paramDOList.stream()
+                .filter(interfaceParamDO -> (InterfaceParamDO.Type.entry.getValue().equals(interfaceParamDO.getType()))
+                        &&InterfaceParamDO.Common.yes.getValue().equals(interfaceParamDO.getCommon()))
                 .collect(Collectors.toList());
         List<InterfaceParamDO> outParams = paramDOList.stream()
-                .filter(interfaceParamDO -> InterfaceParamDO.Type.out.getValue().equals(interfaceParamDO.getType()))
+                .filter(interfaceParamDO -> (InterfaceParamDO.Type.out.getValue().equals(interfaceParamDO.getType()))
+                        &&InterfaceParamDO.Common.no.getValue().equals(interfaceParamDO.getCommon()))
+                .collect(Collectors.toList());
+        List<InterfaceParamDO> commonOutParams = paramDOList.stream()
+                .filter(interfaceParamDO -> (InterfaceParamDO.Type.out.getValue().equals(interfaceParamDO.getType()))
+                        &&InterfaceParamDO.Common.yes.getValue().equals(interfaceParamDO.getCommon()))
                 .collect(Collectors.toList());
 
         List<InterfaceErrorCodeDO> errorCodeDOList = interfaceErrorCodeDao.findByInterfaceId(id);
         interfaceDO.setErrorCodes(errorCodeDOList);
         interfaceDO.setEntryParams(entryParams);
         interfaceDO.setOutParams(outParams);
+        interfaceDO.setCommonEntryParams(commonEntryParams);
+        interfaceDO.setCommonOutParams(commonOutParams);
         return interfaceDO;
     }
 
@@ -81,19 +93,41 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
 
         List<InterfaceParamDO> entryParams = interfaceDO.getEntryParams();
         List<InterfaceParamDO> outParams = interfaceDO.getOutParams();
+        List<InterfaceParamDO> commonEntryParams = interfaceDO.getCommonEntryParams();
+        List<InterfaceParamDO> commonOutParams = interfaceDO.getCommonOutParams();
         List<InterfaceErrorCodeDO> errorCodes = interfaceDO.getErrorCodes();
         interfaceDao.save(interfaceDO);
         entryParams.forEach(interfaceParamDO -> {
             interfaceParamDO.setInterfaceId(interfaceDO.getId());
+            interfaceParamDO.setCommon(0);
+            interfaceParamDO.setDel(1);
+            interfaceParamDO.setType(InterfaceParamDO.Type.entry.getValue());
         });
         outParams.forEach(interfaceParamDO -> {
             interfaceParamDO.setInterfaceId(interfaceDO.getId());
+            interfaceParamDO.setCommon(0);
+            interfaceParamDO.setDel(1);
+            interfaceParamDO.setType(InterfaceParamDO.Type.out.getValue());
+        });
+        commonEntryParams.forEach(interfaceParamDO -> {
+            interfaceParamDO.setInterfaceId(interfaceDO.getId());
+            interfaceParamDO.setCommon(1);
+            interfaceParamDO.setDel(1);
+            interfaceParamDO.setType(InterfaceParamDO.Type.entry.getValue());
+        });
+        commonOutParams.forEach(interfaceParamDO -> {
+            interfaceParamDO.setInterfaceId(interfaceDO.getId());
+            interfaceParamDO.setCommon(1);
+            interfaceParamDO.setDel(1);
+            interfaceParamDO.setType(InterfaceParamDO.Type.out.getValue());
         });
         errorCodes.forEach(interfaceErrorCodeDO -> {
             interfaceErrorCodeDO.setInterfaceId(interfaceDO.getId());
         });
         interfaceParamDao.save(entryParams);
         interfaceParamDao.save(outParams);
+        interfaceParamDao.save(commonEntryParams);
+        interfaceParamDao.save(commonOutParams);
         interfaceErrorCodeDao.save(errorCodes);
 
         //为租户新增接口
@@ -117,6 +151,8 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
 
                 List<SaasInterfaceParamDO> saasEntryParams = new ArrayList<>(16);
                 List<SaasInterfaceParamDO> saasOutParams = new ArrayList<>(16);
+                List<SaasInterfaceParamDO> saasCommonEntryParams = new ArrayList<>(16);
+                List<SaasInterfaceParamDO> saasCommonOutParams = new ArrayList<>(16);
                 List<SaasInterfaceErrorCodeDO> saasErrorCodes = new ArrayList<>(16);
                 saasInterfaceDao.save(saasInterfaceDO);
                 entryParams.forEach(interfaceParamDO -> {
@@ -126,6 +162,14 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
                 outParams.forEach(interfaceParamDO -> {
                     SaasInterfaceParamDO saasInterfaceParamDO = addSaasInterfaceParamDO(saasInterfaceDO,interfaceParamDO);
                     saasOutParams.add(saasInterfaceParamDO);
+                });
+                commonEntryParams.forEach(interfaceParamDO -> {
+                    SaasInterfaceParamDO saasInterfaceParamDO = addSaasInterfaceParamDO(saasInterfaceDO,interfaceParamDO);
+                    saasCommonEntryParams.add(saasInterfaceParamDO);
+                });
+                commonOutParams.forEach(interfaceParamDO -> {
+                    SaasInterfaceParamDO saasInterfaceParamDO = addSaasInterfaceParamDO(saasInterfaceDO,interfaceParamDO);
+                    saasCommonOutParams.add(saasInterfaceParamDO);
                 });
                 errorCodes.forEach(interfaceErrorCodeDO -> {
                     SaasInterfaceErrorCodeDO saasInterfaceErrorCodeDO = new SaasInterfaceErrorCodeDO();
@@ -139,6 +183,8 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
                     saasErrorCodes.add(saasInterfaceErrorCodeDO);
                 });
                 saasInterfaceParamDao.save(saasEntryParams);
+                saasInterfaceParamDao.save(saasCommonEntryParams);
+                saasInterfaceParamDao.save(saasCommonOutParams);
                 saasInterfaceParamDao.save(saasOutParams);
                 saasInterfaceErrorCodeDao.save(saasErrorCodes);
             });
@@ -158,6 +204,7 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
         saasInterfaceParamDO.setSaasId(saasInterfaceDO.getSaasId());
         saasInterfaceParamDO.setDel(interfaceParamDO.getDel());
         saasInterfaceParamDO.setName(interfaceParamDO.getName());
+        saasInterfaceParamDO.setCommon(interfaceParamDO.getCommon());
         saasInterfaceParamDO.setDataType(interfaceParamDO.getDataType());
         saasInterfaceParamDO.setDescription(interfaceParamDO.getDescription());
         saasInterfaceParamDO.setExample(interfaceParamDO.getExample());

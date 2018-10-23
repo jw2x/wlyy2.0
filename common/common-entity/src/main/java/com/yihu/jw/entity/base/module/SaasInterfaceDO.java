@@ -28,8 +28,13 @@ public class SaasInterfaceDO extends UuidIdentityEntity {
     private Integer status;//状态（1启用中，0已暂停）
     private String remark;//接口说明
     private String url;//https请求地址
+    private String requestDemo;//请求示例
+    private String responseDemo;//响应示例
+    private String errorDemo;//异常示例
 
+    private List<SaasInterfaceParamDO> commonEntryParams;//公共入参
     private List<SaasInterfaceParamDO> entryParams;//入参
+    private List<SaasInterfaceParamDO> commonOutParams;//公共出参
     private List<SaasInterfaceParamDO> outParams;//出参
     private List<SaasInterfaceErrorCodeDO> errorCodes;//错误说明
 
@@ -166,5 +171,50 @@ public class SaasInterfaceDO extends UuidIdentityEntity {
 
     public void setErrorCodes(List<SaasInterfaceErrorCodeDO> errorCodes) {
         this.errorCodes = errorCodes;
+    }
+
+    @Transient
+    public List<SaasInterfaceParamDO> getCommonEntryParams() {
+        return commonEntryParams;
+    }
+
+    public void setCommonEntryParams(List<SaasInterfaceParamDO> commonEntryParams) {
+        this.commonEntryParams = commonEntryParams;
+    }
+
+    @Transient
+    public List<SaasInterfaceParamDO> getCommonOutParams() {
+        return commonOutParams;
+    }
+
+    public void setCommonOutParams(List<SaasInterfaceParamDO> commonOutParams) {
+        this.commonOutParams = commonOutParams;
+    }
+
+    @Column(name = "request_demo")
+    public String getRequestDemo() {
+        return requestDemo;
+    }
+
+    public void setRequestDemo(String requestDemo) {
+        this.requestDemo = requestDemo;
+    }
+
+    @Column(name = "response_demo")
+    public String getResponseDemo() {
+        return responseDemo;
+    }
+
+    public void setResponseDemo(String responseDemo) {
+        this.responseDemo = responseDemo;
+    }
+
+    @Column(name = "error_demo")
+    public String getErrorDemo() {
+        return errorDemo;
+    }
+
+    public void setErrorDemo(String errorDemo) {
+        this.errorDemo = errorDemo;
     }
 }

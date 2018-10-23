@@ -41,19 +41,41 @@ public class SaasInterfaceService extends BaseJpaService<SaasInterfaceDO, SaasIn
 
         List<SaasInterfaceParamDO> entryParams = interfaceDO.getEntryParams();
         List<SaasInterfaceParamDO> outParams = interfaceDO.getOutParams();
+        List<SaasInterfaceParamDO> commonEntryParams = interfaceDO.getEntryParams();
+        List<SaasInterfaceParamDO> commonOutParams = interfaceDO.getOutParams();
         List<SaasInterfaceErrorCodeDO> errorCodes = interfaceDO.getErrorCodes();
         interfaceDao.save(interfaceDO);
         entryParams.forEach(interfaceParamDO -> {
             interfaceParamDO.setSaasInterfaceId(interfaceDO.getId());
+            interfaceParamDO.setCommon(0);
+            interfaceParamDO.setDel(1);
+            interfaceParamDO.setType(InterfaceParamDO.Type.entry.getValue());
         });
         outParams.forEach(interfaceParamDO -> {
             interfaceParamDO.setSaasInterfaceId(interfaceDO.getId());
+            interfaceParamDO.setCommon(0);
+            interfaceParamDO.setDel(1);
+            interfaceParamDO.setType(InterfaceParamDO.Type.out.getValue());
+        });
+        commonEntryParams.forEach(interfaceParamDO -> {
+            interfaceParamDO.setSaasInterfaceId(interfaceDO.getId());
+            interfaceParamDO.setCommon(1);
+            interfaceParamDO.setDel(1);
+            interfaceParamDO.setType(InterfaceParamDO.Type.entry.getValue());
+        });
+        commonOutParams.forEach(interfaceParamDO -> {
+            interfaceParamDO.setSaasInterfaceId(interfaceDO.getId());
+            interfaceParamDO.setCommon(1);
+            interfaceParamDO.setDel(1);
+            interfaceParamDO.setType(InterfaceParamDO.Type.out.getValue());
         });
         errorCodes.forEach(interfaceErrorCodeDO -> {
             interfaceErrorCodeDO.setSaasInterfaceId(interfaceDO.getId());
         });
         interfaceParamDao.save(entryParams);
         interfaceParamDao.save(outParams);
+        interfaceParamDao.save(commonOutParams);
+        interfaceParamDao.save(commonEntryParams);
         interfaceErrorCodeDao.save(errorCodes);
 
         return interfaceDO;
@@ -69,15 +91,27 @@ public class SaasInterfaceService extends BaseJpaService<SaasInterfaceDO, SaasIn
 
         List<SaasInterfaceParamDO> paramDOList = interfaceParamDao.findBySaasInterfaceId(id);
         List<SaasInterfaceParamDO> entryParams = paramDOList.stream()
-                .filter(interfaceParamDO -> InterfaceParamDO.Type.entry.getValue().equals(interfaceParamDO.getType()))
+                .filter(interfaceParamDO -> (InterfaceParamDO.Type.entry.getValue().equals(interfaceParamDO.getType()))
+                        &&InterfaceParamDO.Common.no.getValue().equals(interfaceParamDO.getCommon()))
                 .collect(Collectors.toList());
         List<SaasInterfaceParamDO> outParams = paramDOList.stream()
-                .filter(interfaceParamDO -> InterfaceParamDO.Type.out.getValue().equals(interfaceParamDO.getType()))
+                .filter(interfaceParamDO -> (InterfaceParamDO.Type.out.getValue().equals(interfaceParamDO.getType()))
+                        &&InterfaceParamDO.Common.no.getValue().equals(interfaceParamDO.getCommon()))
+                .collect(Collectors.toList());
+        List<SaasInterfaceParamDO> commonEntryParams = paramDOList.stream()
+                .filter(interfaceParamDO -> (InterfaceParamDO.Type.entry.getValue().equals(interfaceParamDO.getType()))
+                        &&InterfaceParamDO.Common.yes.getValue().equals(interfaceParamDO.getCommon()))
+                .collect(Collectors.toList());
+        List<SaasInterfaceParamDO> commonOutParams = paramDOList.stream()
+                .filter(interfaceParamDO -> (InterfaceParamDO.Type.out.getValue().equals(interfaceParamDO.getType()))
+                        &&InterfaceParamDO.Common.yes.getValue().equals(interfaceParamDO.getCommon()))
                 .collect(Collectors.toList());
 
         List<SaasInterfaceErrorCodeDO> errorCodeDOList = interfaceErrorCodeDao.findBySaasInterfaceId(id);
         interfaceDO.setErrorCodes(errorCodeDOList);
         interfaceDO.setEntryParams(entryParams);
+        interfaceDO.setCommonEntryParams(commonEntryParams);
+        interfaceDO.setCommonOutParams(commonOutParams);
         interfaceDO.setOutParams(outParams);
         return interfaceDO;
     }
