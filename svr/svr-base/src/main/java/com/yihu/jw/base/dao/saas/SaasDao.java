@@ -1,7 +1,10 @@
 package com.yihu.jw.base.dao.saas;
 
 import com.yihu.jw.entity.base.saas.SaasDO;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+
+import java.util.List;
 
 /**
  * Dao - SAAS
@@ -14,4 +17,7 @@ public interface SaasDao extends PagingAndSortingRepository<SaasDO, String> {
     SaasDO findById(String id);
 
     SaasDO findByCreateUser(String createUser);
+
+    @Query("from SaasDO  ")
+    List<SaasDO> findList();
 }

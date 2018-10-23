@@ -36,6 +36,7 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 	private String remark; //备注
 	private String logo; //远程fastDFS文件地址
     private String type; //类型
+    private String typeName; //租户类型名称
 	private String manager; //管理员 - 关联user表id字段
 	private String email; //管理员邮箱
 	private String mobile; //管理员手机号码
@@ -237,5 +238,14 @@ public class SaasDO extends UuidIdentityEntityWithOperator {
 
     public void setAppSecret(String appSecret) {
         this.appSecret = appSecret;
+    }
+
+    @Transient
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 }

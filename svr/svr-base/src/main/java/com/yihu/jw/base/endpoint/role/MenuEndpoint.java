@@ -127,19 +127,64 @@ public class MenuEndpoint extends EnvelopRestEndpoint {
     @GetMapping(value = BaseRequestMapping.Menu.LIST)
     @ApiOperation(value = "获取列表")
     public ListEnvelop<MenuVO> list (
-            @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
-            @RequestParam(value = "fields", required = false) String fields,
-            @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
-            @RequestParam(value = "filters", required = false) String filters,
-            @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
-            @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-        List<MenuDO> menuDOS = menuService.search(fields, filters, sorts);
+            @ApiParam(name = "id", value = "id")
+            @RequestParam(value = "id", required = false) String id) throws Exception {
+        String filters = "";
+        if(StringUtils.isNotBlank(id)){
+            filters = "parentId="+id+";";
+        }
+        List<MenuDO> menuDOS = menuService.search(null, filters, "+sort");
+        MenuDO menuDO = menuService.findOne(id);
+        menuDOS.forEach(menu -> {
+            if(CommonContant.DEFAULT_PARENTID.equals(menu.getParentId())){
+                menu.setParentName(CommonContant.DEFAULT_PARENTNAME);
+            }else {
+                menu.setParentName(menuDO.getName());
+            }
+        });
         return success(menuDOS, MenuVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.Module.FIND_ALL)
+    @GetMapping(value = BaseRequestMapping.Menu.FIND_ALL)
     @ApiOperation(value = "获取列表")
     public ListEnvelop<MenuVO> findAll (
+            @ApiParam(name = "status", value = "状态")
+            @RequestParam(value = "status", required = false) String status,
+            @ApiParam(name = "name", value = "名称")
+            @RequestParam(value = "name", required = false) String name) throws Exception {
+        String filters = "";
+        if(StringUtils.isNotBlank(status)){
+            filters = "status="+status+";";
+        }
+        if(StringUtils.isNotBlank(name)){
+            filters += "name?"+name+";";
+        }
+        List<MenuDO> menuDOs = menuService.search(null, filters, "+sort");
+        List<MenuVO> menuVOs = convertToModels(menuDOs,new ArrayList<>(menuDOs.size()), MenuVO.class);
+        menuVOs.forEach(menuVO -> {
+            if(CommonContant.DEFAULT_PARENTID.equals(menuVO.getParentId())){
+                menuVO.setParentName(CommonContant.DEFAULT_PARENTNAME);
+            }else {
+                MenuDO menuDO = menuService.findOne(menuVO.getParentId());
+                menuVO.setParentName(menuDO.getName());
+            }
+        });
+        Map<String,List<MenuVO>> map = menuVOs.stream().collect(Collectors.groupingBy(MenuVO::getParentId));
+        menuVOs.forEach(menu->{
+            List<MenuVO> tmp = map.get(menu.getId());
+            menu.setChildren(tmp);
+        });
+        if(StringUtils.isBlank(name)){
+            menuVOs = menuVOs.stream()
+                    .filter(menu -> CommonContant.DEFAULT_PARENTID.equals(menu.getParentId()))
+                    .collect(Collectors.toList());
+        }
+        return success(menuVOs);
+    }
+
+    @GetMapping(value = BaseRequestMapping.Menu.GET_TREE)
+    @ApiOperation(value = "获取列表")
+    public ListEnvelop<MenuVO> getTree (
             @ApiParam(name = "status", value = "状态")
             @RequestParam(value = "status", required = false) String status) throws Exception {
         String filters = null;

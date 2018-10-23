@@ -84,10 +84,9 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
             }
 
             //租户类型
-            Iterable<SaasTypeDictDO> saasTypeDictDOs = saasTypeDictDao.findAll();
+            List<SaasTypeDictDO> saasTypeDictDOs = saasTypeDictDao.findListByStatus(SaasTypeDictDO.Status.effective);
             List<SaasTypeModuleDO> saasTypeModuleDOList = new ArrayList<>(16);
-            while (saasTypeDictDOs.iterator().hasNext()){
-                SaasTypeDictDO saasTypeDictDO = saasTypeDictDOs.iterator().next();
+            for (SaasTypeDictDO saasTypeDictDO : saasTypeDictDOs) {
                 SaasTypeModuleDO saasTypeModuleDO = new SaasTypeModuleDO();
                 saasTypeModuleDO.setCreateTime(new Date());
                 saasTypeModuleDO.setDel(moduleDO.getDel());
@@ -128,10 +127,9 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
             saasTypeModuleDao.save(saasTypeModuleDOList);
 
             //租户
-            Iterable<SaasDO> saasDOs = saasDao.findAll();
+            Iterable<SaasDO> saasDOs = saasDao.findList();
             List<SaasModuleDO> saasModuleDOList = new ArrayList<>(16);
-            while (saasDOs.iterator().hasNext()){
-                SaasDO saasDO = saasDOs.iterator().next();
+            for (SaasDO saasDO : saasDOs) {
                 SaasModuleDO saasModuleDO = new SaasModuleDO();
                 saasModuleDO.setCreateTime(new Date());
                 saasModuleDO.setDel(moduleDO.getDel());
@@ -197,14 +195,16 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
      * @param moduleDO
      */
     public void available(ModuleDO moduleDO){
-        moduleDO.setStatus(ModuleDO.Status.unAvailable.getValue());
+        moduleDO.setStatus(ModuleDO.Status.available.getValue());
         moduleDao.save(moduleDO);
 
         addSubModule(moduleDO);
 
-        ModuleDO parentModule = moduleDao.findOne(moduleDO.getParentId());
-        if(ModuleDO.Status.unAvailable.getValue().equals(parentModule.getStatus())){
-            available(moduleDO);
+        if(!CommonContant.DEFAULT_PARENTID.equals(moduleDO.getParentId())){
+            ModuleDO parentModule = moduleDao.findOne(moduleDO.getParentId());
+            if(ModuleDO.Status.available.getValue().equals(parentModule.getStatus())){
+                available(parentModule);
+            }
         }
     }
 
@@ -224,8 +224,8 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
         //把子类失效
         List<ModuleDO> moduleDOList = moduleDao.findByParentId(moduleDO.getId());
         moduleDOList.forEach(module->{
-            if(ModuleDO.Status.available.getValue().equals(module.getStatus())){
-                unavailable(moduleDO);
+            if(ModuleDO.Status.unAvailable.getValue().equals(module.getStatus())){
+                unavailable(module);
             }
         });
     }
@@ -239,4 +239,7 @@ public class ModuleService extends BaseJpaService<ModuleDO, ModuleDao> {
         return moduleDao.isExistName(name);
     }
 
+    public ModuleDO findOne(String id){
+        return moduleDao.findOne(id);
+    }
 }

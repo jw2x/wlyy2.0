@@ -20,6 +20,7 @@ public class WxReplySceneDO extends UuidIdentityEntityWithOperator implements ja
     private String event;//微信事件类型：SCAN，LOCATION，CLICK，subscribe，unsubscribe
     private String scene;//图文消息/自定义消息，分组场景，微信的eventKey
     private String content;//居民回复内容，消息字段
+    private String defaultReply;//如果值为：default， 则是微信默认回复配置发送的图文
     private Integer status;//状态(-1删除 0 冻结 1可用
 
     @Column(name = "wechat_id")
@@ -74,6 +75,15 @@ public class WxReplySceneDO extends UuidIdentityEntityWithOperator implements ja
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    @Column(name = "default_reply")
+    public String getDefaultReply() {
+        return defaultReply;
+    }
+
+    public void setDefaultReply(String defaultReply) {
+        this.defaultReply = defaultReply;
     }
 
     @Column(name = "status")

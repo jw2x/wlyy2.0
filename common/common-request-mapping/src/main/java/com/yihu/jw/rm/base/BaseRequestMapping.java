@@ -86,6 +86,7 @@ public class BaseRequestMapping {
         public static final String STATUS  = "/status";
         public static final String IS_NAME_EXIST  = "/isNameExist";
         public static final String FIND_ALL  = "/findAll";
+        public static final String GET_TREE  = "/getTree";
 
     }
 
@@ -188,6 +189,7 @@ public class BaseRequestMapping {
         public static final String IS_NAME_EXIST  = "/isNameExist";
         public static final String MOVE_UP  = "/moveUp";
         public static final String MOVE_DOWN  = "/moveDown";
+        public static final String GET_TREE  = "/getTree";
         public static final String FIND_ALL  = "/findAll";
     }
 
@@ -259,14 +261,18 @@ public class BaseRequestMapping {
         public static final String deleteImgGroupRelation ="/deleteImgGroupRelation";
 
         public static final String saveWxReplyScene ="/saveWxReplyScene";
+        public static final String findDefaultReply ="/findDefaultReply";
         public static final String findWxReplySceneExist ="/findWxReplySceneExist";
         public static final String findWxReplyScene ="/findWxReplyScene";
         public static final String saveWxTemp ="/saveWxTemp";
+        public static final String findWxTempExist ="/findWxTempExist";
+        public static final String findWxTempNameExist ="/findWxTempNameExist";
         public static final String findWxtemp ="/findWxtemp";
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
-
+        public static final String findWxTemplateConfigExist ="/findWxTemplateConfigExist";
+        public static final String getAllTemp ="/getAllTemp";
         public static final String getusersummary ="/getusersummary";
         public static final String getusercumulate ="/getusercumulate";
 
