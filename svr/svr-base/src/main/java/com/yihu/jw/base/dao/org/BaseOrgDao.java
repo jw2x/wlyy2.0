@@ -24,36 +24,20 @@ import java.util.Map;
  */
 public interface BaseOrgDao extends PagingAndSortingRepository<BaseOrgDO, String>, JpaSpecificationExecutor<BaseOrgDO>  {
 
-    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where code like ?1")
-    List<Map<String,Object>> findByCode(String code,Pageable pageable);
-
-    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where code like ?1 and del = ?2")
-    List<Map<String,Object>> findByCodeAndDel(String code, String del,Pageable pageable);
-
-    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where name like ?1")
-    List<Map<String,Object>> findByName(String name,Pageable pageable);
-
-    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where name like ?1 and del = ?2")
-    List<Map<String,Object>> findByNameAndDel(String name, String del,Pageable pageable);
-
-    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO")
-    List<Map<String,Object>> findBaseInfo(Pageable pageable);
-
-    @Query("select id as id,code as code,name as name,case del when 1 then '有效' else '失效' end as status,concat(provinceName,cityName,townName,streetName) as address from BaseOrgDO where del = ?1")
-    List<Map<String,Object>> findBaseInfoByDel(String del, Pageable pageable);
-
-    @Query("select new BaseOrgDO(provinceCode,provinceName,cityCode,cityName,townCode,townName,code,name) from BaseOrgDO")
-    List<BaseOrgDO> findOrgByArea();
-
     @Query(value="select b.* from base_org b where b.code= ?1 and b.saasid= ?2 limit 1",nativeQuery = true)
     BaseOrgDO findByCodeAndSaasId(String code,String saasId);
 
     boolean existsByCode(String code);
 
+    BaseOrgDO findByCode(String code);
+
     @Modifying
     @Query("delete from BaseOrgDO p where p.saasid=?1 ")
     void deleteBySaasId(String saasId);
 
-    @Query("select id from BaseOrgDO where saasid = ?1")
+    @Query("select id from BaseOrgDO where del = 1 and saasid = ?1")
     List findOrgCodeBySaasId(String saasId);
+
+    @Query("select code as code,name as name from BaseOrgDO where del = 1 and saasid = ?1 ")
+    List<Map<String,Object>> findOrgListBySaasId(String saasId);
 }

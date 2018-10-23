@@ -43,11 +43,6 @@ public class IotAnalyzerController extends EnvelopRestEndpoint {
     @Autowired
     private FastDFSUtil fastDFSHelper;
 
-    @Value("${fastDFS.fastdfs_file_url}")
-    private String fastDfsPublicServers;
-
-
-
     /**
      * 基于奕拓小屋上传的体征数据，进行解析入库
      * @param jsonData
@@ -195,7 +190,7 @@ public class IotAnalyzerController extends EnvelopRestEndpoint {
                     String ecgData = ecgMap.get("EcgImg").toString();
                     byte[] imgByte = Base64.decodeBase64(ecgData);
                     ObjectNode objectNode = fastDFSHelper.upload(imgByte,"png","");
-                    String resPath = fastDfsPublicServers + objectNode.get("fileId").toString().replaceAll("\"", "");
+                    String resPath = objectNode.get("fileId").toString().replaceAll("\"", "");
                     data.put("filepath",resPath);
                 }
             }
@@ -215,12 +210,19 @@ public class IotAnalyzerController extends EnvelopRestEndpoint {
                 Map res = new HashMap();
                 res.put("success", "false");
                 res.put("message", result.getString("msg"));
+
                 strResult = objectMapper.writeValueAsString(res);
                 return strResult;
             }else{
                 Map res = new HashMap();
                 res.put("success", "true");
                 res.put("message", "体征信息上传成功。");
+
+                JSONArray ridRes = new JSONArray();
+                ridRes = (JSONArray)result.get("rid");
+                String rid = ridRes.get(0).toString();
+                res.put("rid", rid);
+
                 strResult = objectMapper.writeValueAsString(res);
                 return strResult;
             }

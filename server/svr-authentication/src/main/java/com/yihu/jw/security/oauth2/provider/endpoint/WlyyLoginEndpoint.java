@@ -1,16 +1,17 @@
 package com.yihu.jw.security.oauth2.provider.endpoint;
 
+import com.yihu.jw.restmodel.base.wx.WxTemplateConfigVO;
+import com.yihu.jw.restmodel.web.Envelop;
+import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.security.core.userdetails.jdbc.WlyyUserDetailsService;
-import com.yihu.jw.security.model.Captcha;
-import com.yihu.jw.security.model.Oauth2Envelop;
-import com.yihu.jw.security.model.PublicKey;
-import com.yihu.jw.security.model.WlyyUserSimple;
+import com.yihu.jw.security.model.*;
 import com.yihu.jw.security.oauth2.core.redis.WlyyRedisVerifyCodeService;
 import com.yihu.jw.security.oauth2.provider.WlyyTokenGranter;
 import com.yihu.jw.security.oauth2.provider.error.WlyyOAuth2ExceptionTranslator;
 import com.yihu.utils.security.RSAUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
@@ -121,12 +123,14 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         if (StringUtils.isEmpty(parameters.get("captcha"))) {
             parameters.put("grant_type", "password");
             //解密密码
-//            if (parameters.get("password") != null) {
+            if (parameters.get("password") != null) {
 //                RSAPrivateKey rsaPrivateKey = (RSAPrivateKey)httpSession.getAttribute("privateKey");
-////                byte[] en_data = Hex.decodeHex(parameters.get("password").toCharArray());
-////                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(en_data), rsaPrivateKey));
-//                parameters.put("password", RSAUtils.decryptByPrivateKey(new String(Base64.decodeBase64(parameters.get("password"))), rsaPrivateKey));
-//            }
+                KeyPair keyPair = (KeyPair)httpSession.getAttribute("privateKey");
+//                parameters.put("password", RSAUtils.decryptByPrivateKey(parameters.get("password"), rsaPrivateKey));
+                String password = com.yihu.jw.security.utils.RSAUtils.decryptBase64(parameters.get("password"),keyPair);
+                parameters.put("password",password);
+//                parameters.put("password", RSAUtils.decryptByPrivateKey(parameters.get("password"), rsaPrivateKey));
+            }
         } else {
             parameters.put("grant_type", "captcha");
         }
@@ -249,8 +253,12 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         RSAPublicKey rsaPublicKey = (RSAPublicKey) map.get("public");
         RSAPrivateKey rsaPrivateKey = (RSAPrivateKey) map.get("private");
         PublicKey publicKey = new PublicKey();
-        publicKey.setModulus(Base64.encodeBase64String(rsaPublicKey.getModulus().toByteArray()));
-        publicKey.setExponent(Base64.encodeBase64String(rsaPublicKey.getPublicExponent().toByteArray()));
+
+        publicKey.setModulus(rsaPublicKey.getModulus().toString(16));
+        publicKey.setExponent(rsaPublicKey.getPublicExponent().toString(16));
+
+//        publicKey.setModulus(Base64.encodeBase64String(rsaPublicKey.getModulus().toByteArray()));
+//        publicKey.setExponent(Base64.encodeBase64String(rsaPublicKey.getPublicExponent().toByteArray()));
 //        publicKey.setModulus(new String(Hex.encodeHex(rsaPublicKey.getModulus().toByteArray())));
 //        publicKey.setExponent(new String(Hex.encodeHex(rsaPublicKey.getPublicExponent().toByteArray())));
         httpSession.setAttribute("privateKey", rsaPrivateKey);
@@ -264,6 +272,15 @@ public class WlyyLoginEndpoint extends AbstractEndpoint {
         headers.set("Pragma", "no-cache");
         Oauth2Envelop<PublicKey> oauth2Envelop = new Oauth2Envelop<>("public_key", 200, publicKey);
         return new ResponseEntity<>(oauth2Envelop, headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/oauth/getPublicKey", method = RequestMethod.GET)
+    public ObjEnvelop<PublickeyVO> getPublicKey(HttpSession httpSession, HttpServletResponse httpServletResponse){
+        KeyPair keyPair =  com.yihu.jw.security.utils.RSAUtils.getKey();
+        httpSession.setAttribute("privateKey", keyPair);
+        PublickeyVO pk = new PublickeyVO();
+        pk.setPublicKey(com.yihu.jw.security.utils.RSAUtils.generateBase64PublicKey(keyPair));
+        return ObjEnvelop.getSuccess("success",pk);
     }
 
     /**

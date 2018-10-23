@@ -36,4 +36,7 @@ public interface OrgTreeDao extends PagingAndSortingRepository<OrgTree, Integer>
     OrgTree findByCode(String code);
 
     boolean existsByCode(String code);
+
+    @Query("select tree.code as code,tree.name as name from OrgTree tree where parentCode = ?1 and level = 3")
+    List<Map<String,Object>> findOrgListByParentCode(String parent);
 }

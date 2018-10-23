@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Trick on 2018/8/31.
@@ -15,5 +16,5 @@ public interface PatientMedicareCardDao extends PagingAndSortingRepository<Patie
     List<PatientMedicareCardDO> findByPatientCode(String patientCode);
 
     @Query("select id from PatientMedicareCardDO where patientCode = ?1")
-    List<Object> findIdListByPatientCode(String patientCode);
+    Set<Object> findIdListByPatientCode(String patientCode);
 }

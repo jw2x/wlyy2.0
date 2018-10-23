@@ -256,15 +256,25 @@ public class WechatController extends EnvelopRestEndpoint {
         return wechatService.saveWxTemp(wxTemplate);
     }
 
-    @PostMapping(value = BaseRequestMapping.WeChat.findWxTempExist)
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxTempExist)
     @ApiOperation(value = "判断微信模板(模板id且模板名称)是否存在", notes = "判断微信模板(模板id且模板名称)是否存在")
     public Envelop findWxTempExist(@ApiParam(name = "wechatId", value = "微信id")
                                    @RequestParam(value = "wechatId", required = true)String wechatId,
-                                   @ApiParam(name = "templateName", value = "微信id")
+                                   @ApiParam(name = "templateName", value = "微信模板名称")
                                    @RequestParam(value = "templateName", required = true)String templateName,
                                    @ApiParam(name = "templateId", value = "微信模板id(微信的同步的id)")
                                    @RequestParam(value = "templateId", required = true)String templateId) {
        return success(BaseRequestMapping.WeChat.api_success,wechatService.findWxTempExist(wechatId,templateId,templateName));
+    }
+
+    @GetMapping(value = BaseRequestMapping.WeChat.findWxTempNameExist)
+    @ApiOperation(value = "判断微信模板(模板名称)是否存在", notes = "判断微信模板(模板名称)是否存在")
+    public Envelop findWxTempNameExist(@ApiParam(name = "wechatId", value = "微信id")
+                                       @RequestParam(value = "wechatId", required = true)String wechatId,
+                                       @ApiParam(name = "templateName", value = "微信模板名称")
+                                       @RequestParam(value = "templateName", required = true)String templateName) {
+        return success(BaseRequestMapping.WeChat.api_success,wechatService.findWxTempNameExist(wechatId,templateName));
+
     }
 
     @GetMapping(value = BaseRequestMapping.WeChat.findWxtemp)
@@ -297,9 +307,9 @@ public class WechatController extends EnvelopRestEndpoint {
     public MixEnvelop<WxTemplateConfigVO,WxTemplateConfigVO> findWxTempConfigList(@ApiParam(name = "wechatId", value = "微信id")
                                                                                   @RequestParam(value = "wechatId", required = true)String wechatId,
                                                                                   @ApiParam(name = "scene", value = "微信场景值")
-                                                                                  @RequestParam(value = "scene", required = true)String scene,
+                                                                                  @RequestParam(value = "scene", required = false)String scene,
                                                                                   @ApiParam(name = "templateId", value = "微信公众号模板id")
-                                                                                  @RequestParam(value = "templateId", required = true)String templateId,
+                                                                                  @RequestParam(value = "templateId", required = false)String templateId,
                                                                                   @ApiParam(name = "page", value = "第几页")
                                                                                   @RequestParam(value = "page", required = true)Integer page,
                                                                                   @ApiParam(name = "size", value = "分页大小")
@@ -364,6 +374,6 @@ public class WechatController extends EnvelopRestEndpoint {
 //    @GetMapping(value = "header")
 //    @ApiOperation(value = "测试header", notes = "测试header")
 //    public String getHeader(){
-//        return getUID();
+//        return getUNAME();
 //    }
 }

@@ -5,7 +5,6 @@ import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.restmodel.base.patient.BasePatientVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
-import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
@@ -14,7 +13,6 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -78,7 +76,7 @@ public class BasePatientEndpoint extends EnvelopRestEndpoint {
     public Envelop getPatientById(
             @ApiParam(name = "id", value = "居民id")
             @RequestParam(value = "id", required = true) String id) throws Exception {
-        String result = basePatientService.getPatientInfo(id);
+        String result = basePatientService.getPatientById(id);
         return success(result);
     }
 

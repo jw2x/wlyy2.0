@@ -32,7 +32,7 @@ import java.util.Map;
 public class DictHealthProblemService extends BaseJpaService<DictHealthProblemDO, DictHealthProblemDao> {
 
     @Autowired
-    private DictJobTitleDao dictJobTitleDao;
+    private DictHealthProblemDao dictHealthProblemDao;
     /**
      * 查询某一租户下的健康问题字典信息，如果saadId为空表示当前用户角色为超级管理员，超级管理员可以看到所有数据
      * @param saasId
@@ -41,11 +41,15 @@ public class DictHealthProblemService extends BaseJpaService<DictHealthProblemDO
     public JSONObject queryAll(String saasId, Pageable pageable){
         JSONObject jsonObject = new JSONObject();
         List<Map<String,Object>> list = new ArrayList<>();
+        long count = 0;
         if(StringUtils.isEmpty(saasId)){
-            list = dictJobTitleDao.findCodeAndName(pageable);
+            list = dictHealthProblemDao.findCodeAndName(pageable);
+            count = dictHealthProblemDao.count();
         }else{
-            list = dictJobTitleDao.findCodeAndNameBySaasId(saasId,pageable);
+            list = dictHealthProblemDao.findCodeAndNameBySaasId(saasId,pageable);
+            count = dictHealthProblemDao.countBySaasId(saasId);
         }
+        jsonObject.put("count",count);
         jsonObject.put(SystemDictEnum.HealthProblemDict.toString(),list);
         return jsonObject;
     }

@@ -175,6 +175,17 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
     private String liveTownName;
 
     /**
+     * 居住街道代码
+     */
+    @ApiModelProperty(value = "居住街道代码", example = "参考居住街道代码")
+    private String liveStreetCode;
+
+    /**
+     * 居住街道名称
+     */
+    @ApiModelProperty(value = "居住街道名称", example = "参考居住街道名称")
+    private String liveStreetName;
+    /**
      * 居委会代码
      */
     @ApiModelProperty(value = "居委会代码", example = "参考居委会代码")
@@ -623,5 +634,21 @@ public class BasePatientVO extends UuidIdentityVOWithOperator {
 
     public void setLiveTownName(String liveTownName) {
         this.liveTownName = liveTownName;
+    }
+
+    public String getLiveStreetCode() {
+        return liveStreetCode;
+    }
+
+    public void setLiveStreetCode(String liveStreetCode) {
+        this.liveStreetCode = liveStreetCode;
+    }
+
+    public String getLiveStreetName() {
+        return liveStreetName;
+    }
+
+    public void setLiveStreetName(String liveStreetName) {
+        this.liveStreetName = liveStreetName;
     }
 }

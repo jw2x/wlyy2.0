@@ -1,9 +1,15 @@
 package com.yihu.jw.base.dao.doctor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 
@@ -19,4 +25,11 @@ import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
  */
 public interface BaseDoctorHospitalDao extends PagingAndSortingRepository<BaseDoctorHospitalDO, Integer>, JpaSpecificationExecutor<BaseDoctorHospitalDO>  {
 
+    List<BaseDoctorHospitalDO> findByHospCodeAndDoctorCode(String hospCode,String doctorCode);
+
+    @Query("select id from BaseDoctorHospitalDO where doctorCode = ?1")
+    Set<Object> findIdListByHospCodeAndDoctorCode(String doctorCode);
+
+    @Query("select new BaseDoctorHospitalDO(hospCode,hospName,doctorDutyCode,doctorDutyName) from BaseDoctorHospitalDO where doctorCode = ?1")
+    List<BaseDoctorHospitalDO> getOrgAndDutyByDoctorCode(String doctorCode);
 }

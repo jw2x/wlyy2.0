@@ -24,11 +24,13 @@ import java.util.Map;
  */
 public interface DictIcd10Dao extends PagingAndSortingRepository<DictIcd10DO, Integer>, JpaSpecificationExecutor<DictIcd10DO>  {
 
-    @Query("select code as code,name as name from DictIcd10DO where code = ?1")
-    List<Map<String,Object>> findCodeAndNameSa(String saasId,Pageable pageable);
+    @Query("select code as code,name as name from DictIcd10DO where saasId = ?1")
+    List<Map<String,Object>> findCodeAndNameSaasId(String saasId, Pageable pageable);
 
     @Query("select code as code,name as name from DictIcd10DO")
     List<Map<String,Object>> findCodeAndName(Pageable pageable);
 
     List<DictIcd10DO> findBySaasId(String saasId);
+
+    Long countBySaasId(String saasId);
 }

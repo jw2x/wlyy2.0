@@ -3,6 +3,7 @@ package com.yihu.jw.base.dao.dict;
 import com.yihu.jw.entity.base.dict.DictDiseaseDO;
 import com.yihu.jw.entity.base.dict.DictIcd10DO;
 import feign.Param;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
@@ -26,11 +27,13 @@ import java.util.Map;
  */
 public interface DictHealthProblemDao extends PagingAndSortingRepository<DictHealthProblemDO, Integer>, JpaSpecificationExecutor<DictHealthProblemDO>  {
 
-    @Query("select code as code,name as name from DictHealthProblemDO where saasId = :saasId")
-    List<DictHealthProblemDO> findCodeAndNameBySaasId(@Param("saasId") String saasId);
+    @Query("select code as code,name as name from DictHealthProblemDO where saasId = ?1")
+    List<Map<String,Object>> findCodeAndNameBySaasId(String saasId, Pageable pageable);
 
     @Query("select code as code,name as name from DictHealthProblemDO")
-    List<Map<String,Object>> findCodeAndName();
+    List<Map<String,Object>> findCodeAndName(Pageable pageable);
 
     List<DictHealthProblemDO> findBySaasId(String saasId);
+
+    Long countBySaasId(String saasId);
 }

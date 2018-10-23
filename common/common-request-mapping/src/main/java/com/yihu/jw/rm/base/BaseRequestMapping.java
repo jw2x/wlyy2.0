@@ -266,6 +266,7 @@ public class BaseRequestMapping {
         public static final String findWxReplyScene ="/findWxReplyScene";
         public static final String saveWxTemp ="/saveWxTemp";
         public static final String findWxTempExist ="/findWxTempExist";
+        public static final String findWxTempNameExist ="/findWxTempNameExist";
         public static final String findWxtemp ="/findWxtemp";
         public static final String saveWxTempConfig ="/saveWxTempConfig";
         public static final String findWxTempConfigList ="/findWxTempConfigList";
@@ -385,8 +386,12 @@ public class BaseRequestMapping {
     public static class BaseDoctor extends Basic {
         public static final String PREFIX  = "/baseDoctor";
         public static final String DOCINFO  = "/docInfo";
+        public static final String getOrgListByTown  = "/getOrgListByTown";
+        public static final String enableOrDis  = "/enableOrDis";
         public static final String docFullInfo  = "/docFullInfo";
-        public static final String docOrgTreeInfo  = "/docOrgTreeInfo";
+        public static final String docOrgDutyTreeInfo  = "/docOrgDutyTreeInfo";
+        public static final String docOrgDeptTreeInfo  = "/docOrgDeptTreeInfo";
+        public static final String getDoctorListByDept  = "/getDoctorListByDept";
     }
 
 
@@ -405,6 +410,13 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/baseDoctorRoleDict";
     }
 
+ /**
+     * 医生角色关联关系
+     */
+    public static class BaseDoctorRole extends Basic {
+        public static final String PREFIX  = "/baseDoctorRole";
+    }
+
 
     /**
      * 机构信息
@@ -414,6 +426,9 @@ public class BaseRequestMapping {
         public static final String baseInfoList  = "/baseInfoList";
         public static final String check_code  = "/check_code";
         public static final String getOrgAreaTree  = "/getOrgAreaTree";
+        public static final String queryOneById  = "/queryOneById";
+        public static final String enableOrDis  = "/enableOrDis";
+        public static final String queryCodeList  = "/queryCodeListBySaasId";
     }
 
 
@@ -458,6 +473,8 @@ public class BaseRequestMapping {
      */
     public static class BaseTeam extends Basic {
         public static final String PREFIX  = "/baseTeam";
+        public static final String queryMemberList  = "/queryMemberList";
+        public static final String queryOne  = "/getTeamById";
     }
 
 
@@ -525,10 +542,18 @@ public class BaseRequestMapping {
 
 
     /**
-     * 职称字典
+     * 医生职称字典
      */
     public static class DictJobTitle extends Basic {
         public static final String PREFIX  = "/dictJobTitle";
+    }
+
+
+    /**
+     * 医生职务字典
+     */
+    public static class DictDoctorDuty extends Basic {
+        public static final String PREFIX  = "/dictDoctorDuty";
     }
 
 

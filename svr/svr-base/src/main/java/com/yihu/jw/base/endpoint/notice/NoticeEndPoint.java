@@ -34,11 +34,11 @@ public class NoticeEndPoint extends EnvelopRestEndpoint {
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
 
-    @PostMapping(value = BaseRequestMapping.Notice.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Notice.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<NoticeVO> create (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestParam String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam(value = "jsonData", required = true)  String jsonData) throws Exception {
         NoticeDO noticeDO = toEntity(jsonData, NoticeDO.class);
         if(StringUtils.isBlank(noticeDO.getTitle())||noticeDO.getTitle().length()>50){
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Notice.LIMIT_TITLE), ObjEnvelop.class);
@@ -73,11 +73,11 @@ public class NoticeEndPoint extends EnvelopRestEndpoint {
         return success("发布成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.Notice.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.Notice.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<NoticeVO> update (
-            @ApiParam(name = "json_data", value = "Json数据", required = true)
-            @RequestParam String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam(value = "jsonData", required = true) String jsonData) throws Exception {
         NoticeDO noticeDO = toEntity(jsonData, NoticeDO.class);
         if (null == noticeDO.getId()) {
             return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Common.ID_IS_NULL), ObjEnvelop.class);
@@ -102,6 +102,11 @@ public class NoticeEndPoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
+        if(StringUtils.isBlank(filters)){
+            filters="del=1;";
+        }else {
+            filters="del=1;"+filters;
+        }
         List<NoticeDO> noticeDOs = noticeService.search(fields, filters, sorts, page, size);
         int count = (int)noticeService.getCount(filters);
         return success(noticeDOs, count, page, size, NoticeVO.class);
@@ -116,6 +121,11 @@ public class NoticeEndPoint extends EnvelopRestEndpoint {
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        if(StringUtils.isBlank(filters)){
+            filters="del=1;";
+        }else {
+            filters="del=1;"+filters;
+        }
         List<NoticeDO> noticeDOs = noticeService.search(fields, filters, sorts);
         return success(noticeDOs, NoticeVO.class);
     }

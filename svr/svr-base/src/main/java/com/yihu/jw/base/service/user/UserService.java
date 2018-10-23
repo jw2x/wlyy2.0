@@ -22,7 +22,7 @@ public class UserService extends BaseJpaService<UserDO, UserDao> {
     @Autowired
     private UserDao userDao;
 
-    public UserDO register(UserDO userDO) {
+    public UserDO registerWithIdcard(UserDO userDO) {
         userDO.setSalt(randomString(5));
         userDO.setEnabled(true);
         userDO.setLocked(false);
@@ -30,6 +30,24 @@ public class UserService extends BaseJpaService<UserDO, UserDao> {
         String password = userDO.getPassword();
         if (StringUtils.isEmpty(password)) {
             password = userDO.getIdcard().substring(0, 5);
+        }
+        userDO.setPassword(MD5.md5Hex(password + "{" + userDO.getSalt() + "}"));
+        return userDao.save(userDO);
+    }
+
+    /**
+     * 手机号作为账号，初始密码为手机号后6位
+     * @param userDO
+     * @return
+     */
+    public UserDO registerWithMobile(UserDO userDO) {
+        userDO.setSalt(randomString(5));
+        userDO.setEnabled(true);
+        userDO.setLocked(false);
+        userDO.setLoginFailureCount(0);
+        String password = userDO.getPassword();
+        if (StringUtils.isEmpty(password)) {
+            password =  userDO.getMobile().substring(0, 5);
         }
         userDO.setPassword(MD5.md5Hex(password + "{" + userDO.getSalt() + "}"));
         return userDao.save(userDO);

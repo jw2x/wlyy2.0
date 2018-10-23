@@ -135,17 +135,29 @@ public class SaasTypeDictEndpoint extends EnvelopRestEndpoint {
             //根据租户类型获取关联的模块（右边树）
             String fis = "status=1;saasTypeId=" + saasTypeDictId;
             List<SaasTypeModuleDO> saasTypeModuleDOList = saasTypeModuleService.search(fis);
-            //获取租户类型关联的生效中的模块
-            List<SaasTypeModuleVO> saasTypeModuleVOS = convertToModels(saasTypeModuleDOList, new ArrayList<>(saasTypeModuleDOList.size()), SaasTypeModuleVO.class);
-            Map<String, List<SaasTypeModuleVO>> map = saasTypeModuleVOS.stream().collect(Collectors.groupingBy(SaasTypeModuleVO::getParentModuleId));
-            saasTypeModuleVOS.forEach(module -> {
-                List<SaasTypeModuleVO> tmp = map.get(module.getModuleId());
+            List<ModuleVO> moduleVOList=new ArrayList<>();
+            ModuleVO moduleVO;
+            for(SaasTypeModuleDO  saasTypeModuleDO:saasTypeModuleDOList){
+                moduleVO=new ModuleVO();
+                moduleVO.setId(saasTypeModuleDO.getModuleId());
+                moduleVO.setName(saasTypeModuleDO.getName());
+                moduleVO.setParentId(saasTypeModuleDO.getParentModuleId());
+                moduleVO.setIsCheck(1);
+                moduleVO.setIsMust(saasTypeModuleDO.getIsMust());
+                moduleVO.setIsEnd(saasTypeModuleDO.getIsEnd());
+                moduleVOList.add(moduleVO);
+            }
+//            //获取租户类型关联的生效中的模块
+//            List<SaasTypeModuleVO> saasTypeModuleVOS = convertToModels(saasTypeModuleDOList, new ArrayList<>(saasTypeModuleDOList.size()), SaasTypeModuleVO.class);
+            Map<String, List<ModuleVO>> map = moduleVOList.stream().collect(Collectors.groupingBy(ModuleVO::getParentId));
+            moduleVOList.forEach(module -> {
+                List<ModuleVO> tmp = map.get(module.getId());
                 module.setChildren(tmp);
             });
-            saasTypeModuleVOS = saasTypeModuleVOS.stream()
-                    .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentModuleId()))
+            moduleVOList = moduleVOList.stream()
+                    .filter(module -> CommonContant.DEFAULT_PARENTID.equals(module.getParentId()))
                     .collect(Collectors.toList());
-            envelop.setDetailModelList(saasTypeModuleVOS);
+            envelop.setDetailModelList(moduleVOList);
         }
         envelop.setStatus(EnvelopStatus.success.code);
         envelop.setMessage("success");
