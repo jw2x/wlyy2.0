@@ -274,6 +274,7 @@ public class BaseRequestMapping {
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
         public static final String findWxTemplateConfigExist ="/findWxTemplateConfigExist";
         public static final String getAllTemp ="/getAllTemp";
+        public static final String getFansTitle ="/getFansTitle";
         public static final String getusersummary ="/getusersummary";
         public static final String getusercumulate ="/getusercumulate";
 
@@ -616,6 +617,19 @@ public class BaseRequestMapping {
      */
     public static class MqMessageSubscriber extends Basic {
         public static final String PREFIX  = "/mq_message_subscriber";
+    }
+    /**
+     * 业务模块角色
+     */
+    public static class BaseRoleModule extends Basic {
+        public static final String PREFIX  = "/baseRoleModule";
+    }
+
+    /**
+     * 功能菜单角色
+     */
+    public static class BaseRoleMenu extends Basic {
+        public static final String PREFIX  = "/baseRoleMenu";
     }
 
 }

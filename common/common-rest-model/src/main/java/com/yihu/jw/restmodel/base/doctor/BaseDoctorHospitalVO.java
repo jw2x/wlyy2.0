@@ -26,13 +26,13 @@ public class BaseDoctorHospitalVO extends IntegerIdentityVO{
 	 * 医院标识
 	 */
 	@ApiModelProperty(value = "医院标识", example = "")
-    private String hospCode;
+    private String orgCode;
 
     /**
 	 * 医院名称
 	 */
 	@ApiModelProperty(value = "医院名称", example = "厦门市中医院")
-    private String hospName;
+    private String orgName;
 
     /**
 	 * 职称代码
@@ -72,18 +72,18 @@ public class BaseDoctorHospitalVO extends IntegerIdentityVO{
     private Date createTime;
 
 
-    public String getHospCode() {
-        return hospCode;
+    public String getOrgCode() {
+        return orgCode;
     }
-    public void setHospCode(String hospCode) {
-        this.hospCode = hospCode;
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 
-    public String getHospName() {
-        return hospName;
+    public String getOrgName() {
+        return orgName;
     }
-    public void setHospName(String hospName) {
-        this.hospName = hospName;
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     public String getJobTitleCode() {

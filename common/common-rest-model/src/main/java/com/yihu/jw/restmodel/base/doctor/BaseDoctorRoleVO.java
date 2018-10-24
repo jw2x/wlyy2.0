@@ -27,10 +27,22 @@ public class BaseDoctorRoleVO extends IntegerIdentityVO{
     private String doctorCode;
 
     /**
-	 * 医生角色code
+	 * 医生业务模块角色code
 	 */
-	@ApiModelProperty(value = "医生角色id", example = "")
-    private String roleCode;
+	@ApiModelProperty(value = "医生业务模块角色code", example = "")
+    private String roleModuleCode;
+
+    /**
+	 * 医生业务模块角色名称
+	 */
+	@ApiModelProperty(value = "医生业务模块角色名称", example = "")
+    private String name;
+
+	/**
+	 * 医生业务模块角色名称
+	 */
+	@ApiModelProperty(value = "医生业务模块角色说明", example = "")
+    private String description;
 
     /**
 	 * 作废标识，1正常，0作废
@@ -45,11 +57,11 @@ public class BaseDoctorRoleVO extends IntegerIdentityVO{
         this.doctorCode = doctorCode;
     }
 
-    public String getRoleCode() {
-        return roleCode;
+    public String getRoleModuleCode() {
+        return roleModuleCode;
     }
-    public void setRoleCode(String roleCode) {
-        this.roleCode = roleCode;
+    public void setRoleModuleCode(String roleModuleCode) {
+        this.roleModuleCode = roleModuleCode;
     }
 
     public String getDel() {
@@ -59,5 +71,19 @@ public class BaseDoctorRoleVO extends IntegerIdentityVO{
         this.del = del;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

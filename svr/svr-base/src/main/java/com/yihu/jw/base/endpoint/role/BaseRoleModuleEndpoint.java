@@ -1,8 +1,8 @@
-package com.yihu.jw.base.endpoint.doctor;
+package com.yihu.jw.base.endpoint.role;
 
-import com.yihu.jw.base.service.doctor.BaseDoctorRoleService;
-import com.yihu.jw.entity.base.doctor.BaseDoctorRoleDO;
-import com.yihu.jw.restmodel.base.doctor.BaseDoctorRoleVO;
+import com.yihu.jw.base.service.role.BaseRoleModuleService;
+import com.yihu.jw.entity.base.role.BaseRoleModuleDO;
+import com.yihu.jw.restmodel.base.role.BaseRoleModuleVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
@@ -20,59 +20,59 @@ import java.util.List;
 
 /**
 *
-* 医生角色关联信息控制器
+* 业务模块角色控制器
 *
 * @version
 * <pre>
  * Author	Version		Date		Changes
- * litaohong 	1.0  		2018年10月19日 	Created
+ * litaohong 	1.0  		2018年10月23日 	Created
  *
  * </pre>
 * @since 1.
 */
 @RestController
-@RequestMapping(value = BaseRequestMapping.BaseDoctorRole.PREFIX)
-@Api(value = "医生角色关联信息管理", description = "医生角色关联信息管理服务接口", tags = {"wlyy基础服务 - 医生角色关联信息管理服务接口"})
-public class BaseDoctorRoleEndpoint extends EnvelopRestEndpoint {
+@RequestMapping(value = BaseRequestMapping.BaseRoleModule.PREFIX)
+@Api(value = "业务模块角色管理", description = "业务模块角色管理服务接口", tags = {"wlyy基础服务 - 业务模块角色管理服务接口"})
+public class BaseRoleModuleEndpoint extends EnvelopRestEndpoint {
 
 @Autowired
-private BaseDoctorRoleService baseDoctorRoleService;
+private BaseRoleModuleService baseRoleModuleService;
 
-@PostMapping(value = BaseRequestMapping.BaseDoctorRole.CREATE)
+@PostMapping(value = BaseRequestMapping.BaseRoleModule.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @ApiOperation(value = "创建")
-public ObjEnvelop<BaseDoctorRoleVO> create (
+public ObjEnvelop<BaseRoleModuleVO> create (
     @ApiParam(name = "json_data", value = "Json数据", required = true)
     @RequestBody String jsonData) throws Exception {
-    BaseDoctorRoleDO baseDoctorRole = toEntity(jsonData, BaseDoctorRoleDO.class);
-    baseDoctorRole = baseDoctorRoleService.save(baseDoctorRole);
-    return success(baseDoctorRole, BaseDoctorRoleVO.class);
+    BaseRoleModuleDO baseRoleModule = toEntity(jsonData, BaseRoleModuleDO.class);
+    baseRoleModule = baseRoleModuleService.save(baseRoleModule);
+    return success(baseRoleModule, BaseRoleModuleVO.class);
     }
 
-    @PostMapping(value = BaseRequestMapping.BaseDoctorRole.DELETE)
+    @PostMapping(value = BaseRequestMapping.BaseRoleModule.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
     @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
     @RequestParam(value = "ids") String ids) {
-    baseDoctorRoleService.delete(ids.split(","));
+    baseRoleModuleService.delete(ids.split(","));
     return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.BaseDoctorRole.UPDATE)
+    @PostMapping(value = BaseRequestMapping.BaseRoleModule.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "更新")
-    public ObjEnvelop<BaseDoctorRoleVO> update (
+    public ObjEnvelop<BaseRoleModuleVO> update (
         @ApiParam(name = "json_data", value = "Json数据", required = true)
         @RequestBody String jsonData) throws Exception {
-        BaseDoctorRoleDO baseDoctorRole = toEntity(jsonData, BaseDoctorRoleDO.class);
-        if (null == baseDoctorRole.getId()) {
+        BaseRoleModuleDO baseRoleModule = toEntity(jsonData, BaseRoleModuleDO.class);
+        if (null == baseRoleModule.getId()) {
         return failed("ID不能为空", ObjEnvelop.class);
         }
-        baseDoctorRole = baseDoctorRoleService.save(baseDoctorRole);
-        return success(baseDoctorRole, BaseDoctorRoleVO.class);
+        baseRoleModule = baseRoleModuleService.save(baseRoleModule);
+        return success(baseRoleModule, BaseRoleModuleVO.class);
         }
 
-        @GetMapping(value = BaseRequestMapping.BaseDoctorRole.PAGE)
+        @GetMapping(value = BaseRequestMapping.BaseRoleModule.PAGE)
         @ApiOperation(value = "获取分页")
-        public PageEnvelop<BaseDoctorRoleVO> page (
+        public PageEnvelop<BaseRoleModuleVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
@@ -83,22 +83,22 @@ public ObjEnvelop<BaseDoctorRoleVO> create (
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-            List<BaseDoctorRoleDO> baseDoctorRoles = baseDoctorRoleService.search(fields, filters, sorts, page, size);
-                int count = (int)baseDoctorRoleService.getCount(filters);
-                return success(baseDoctorRoles, count, page, size, BaseDoctorRoleVO.class);
+            List<BaseRoleModuleDO> baseRoleModules = baseRoleModuleService.search(fields, filters, sorts, page, size);
+                int count = (int)baseRoleModuleService.getCount(filters);
+                return success(baseRoleModules, count, page, size, BaseRoleModuleVO.class);
          }
 
-         @GetMapping(value = BaseRequestMapping.BaseDoctorRole.LIST)
+         @GetMapping(value = BaseRequestMapping.BaseRoleModule.LIST)
          @ApiOperation(value = "获取列表")
-         public ListEnvelop<BaseDoctorRoleVO> list (
+         public ListEnvelop<BaseRoleModuleVO> list (
              @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
              @RequestParam(value = "fields", required = false) String fields,
              @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
              @RequestParam(value = "filters", required = false) String filters,
              @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
              @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
-             List<BaseDoctorRoleDO> baseDoctorRoles = baseDoctorRoleService.search(fields, filters, sorts);
-                  return success(baseDoctorRoles, BaseDoctorRoleVO.class);
+             List<BaseRoleModuleDO> baseRoleModules = baseRoleModuleService.search(fields, filters, sorts);
+                  return success(baseRoleModules, BaseRoleModuleVO.class);
          }
 
  }

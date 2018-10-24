@@ -58,6 +58,9 @@ public class UserDO extends UuidIdentityEntityWithOperator {
     //saas化的id
     private String  saasId;
 
+    //平台角色标识（超管，租管，机管）
+    private String  roleCode;
+
     public UserDO(){}
 
     public UserDO(String username,String password,String mobile){
@@ -198,5 +201,13 @@ public class UserDO extends UuidIdentityEntityWithOperator {
 
     public void setSaasId(String saasId) {
         this.saasId = saasId;
+    }
+
+    public String getRoleCode() {
+        return roleCode;
+    }
+    @Column(name = "role_code",nullable = false)
+    public void setRoleCode(String roleCode) {
+        this.roleCode = roleCode;
     }
 }

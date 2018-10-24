@@ -1,11 +1,9 @@
 package com.yihu.jw.entity.base.doctor;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.yihu.jw.entity.IntegerIdentityEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Date;
 
 
 /**
@@ -21,27 +19,17 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
     /**
 	 * 医院标识
 	 */
-	private String hospCode;
+	private String orgCode;
 
     /**
 	 * 医院名称
 	 */
-	private String hospName;
+	private String orgName;
 
     /**
      * 医生标识
      */
 	private String doctorCode;
-
-    /**
-	 * 职称代码
-	 */
-	private String jobTitleCode;
-
-    /**
-	 * 职称名称
-	 */
-	private String jobTitleName;
 
     /**
      * 医生所在机构部门标识
@@ -65,27 +53,27 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
 
 	public BaseDoctorHospitalDO(){}
 
-	public BaseDoctorHospitalDO(String hospCode,String hospName,String doctorDutyCode,String doctorDutyName){
-	    this.hospCode = hospCode;
-	    this.hospName = hospName;
+	public BaseDoctorHospitalDO(String orgCode, String orgName, String doctorDutyCode, String doctorDutyName){
+	    this.orgCode = orgCode;
+	    this.orgName = orgName;
 	    this.doctorDutyCode = doctorDutyCode;
 	    this.doctorDutyName = doctorDutyName;
     }
 
-	@Column(name = "hosp_code")
-    public String getHospCode() {
-        return hospCode;
+	@Column(name = "org_code")
+    public String getOrgCode() {
+        return orgCode;
     }
-    public void setHospCode(String hospCode) {
-        this.hospCode = hospCode;
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
     }
 
-	@Column(name = "hosp_name")
-    public String getHospName() {
-        return hospName;
+	@Column(name = "org_name")
+    public String getOrgName() {
+        return orgName;
     }
-    public void setHospName(String hospName) {
-        this.hospName = hospName;
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     @Column(name = "doctor_code")
@@ -95,22 +83,6 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
 
     public void setDoctorCode(String doctorCode) {
         this.doctorCode = doctorCode;
-    }
-
-	@Column(name = "job_title_code")
-    public String getJobTitleCode() {
-        return jobTitleCode;
-    }
-    public void setJobTitleCode(String jobTitleCode) {
-        this.jobTitleCode = jobTitleCode;
-    }
-
-	@Column(name = "job_title_name")
-    public String getJobTitleName() {
-        return jobTitleName;
-    }
-    public void setJobTitleName(String jobTitleName) {
-        this.jobTitleName = jobTitleName;
     }
 
 	@Column(name = "del")

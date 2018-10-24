@@ -94,26 +94,26 @@ public class UserEndpoint extends EnvelopRestEndpoint {
     }
 
     @GetMapping(value = BaseRequestMapping.User.CHECK_USERNAME)
-    @ApiOperation(value = "检查用户名是否可用(message=1代表可用，message=0代表不可用)")
+    @ApiOperation(value = "检查用户名是否可用(message=available代表可用，message=inavailable代表不可用)")
     public Envelop checkName (
             @ApiParam(name = "username", value = "用户名", required = true)
             @RequestParam(value = "username", required = false) String username) throws Exception {
         if (userService.existUserName(username)) {
-            return success("1");
+            return success("inavailable");
         } else {
-            return success("0");
+            return success("available");
         }
     }
 
     @GetMapping(value = BaseRequestMapping.User.CHECK_MOBILE)
-    @ApiOperation(value = "检查手机号是否可用(message=1代表可用，message=0代表不可用)")
+    @ApiOperation(value = "检查手机号是否可用(message=available代表可用，message=inavailable代表不可用)")
     public Envelop checkMobile (
             @ApiParam(name = "mobile", value = "手机号", required = true)
             @RequestParam(value = "mobile", required = false) String mobile) throws Exception {
         if (userService.existMobile(mobile)) {
-            return success("1");
+            return success("inavailable");
         } else {
-            return success("0");
+            return success("available");
         }
     }
 
