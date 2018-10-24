@@ -18,7 +18,6 @@ import java.util.Date;
 */
 @Entity
 @Table(name = "base_doctor")
-@Where(clause = "del = 1")
 public class BaseDoctorDO extends UuidIdentityEntityWithOperator {
 
     /**

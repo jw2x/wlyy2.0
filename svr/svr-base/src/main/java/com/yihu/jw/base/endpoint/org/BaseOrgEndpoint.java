@@ -185,9 +185,9 @@ public class BaseOrgEndpoint extends EnvelopRestEndpoint {
      * @return
      * @throws Exception
      */
-    @PostMapping(value = BaseRequestMapping.BaseOrg.queryCodeList)
-    @ApiOperation(value = "查询机构列表")
+    @PostMapping(value = BaseRequestMapping.BaseOrg.queryOrgCodeAndNameListBySaasId)
+    @ApiOperation(value = "查询机构代码和名称列表")
     public ListEnvelop queryOrgCodeAndNameList() throws Exception {
-        return success(baseOrgService.findOrgCodeListBySaasId(""));
+        return success(baseOrgService.findOrgListBySaasId(""));
     }
 }

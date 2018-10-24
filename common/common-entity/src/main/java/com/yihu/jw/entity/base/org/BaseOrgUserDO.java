@@ -1,7 +1,7 @@
 package com.yihu.jw.entity.base.org;
 
 import com.yihu.jw.entity.IntegerIdentityEntity;
-import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -23,9 +23,9 @@ public class BaseOrgUserDO extends IntegerIdentityEntity {
 	private String orgCode;
 
     /**
-	 * 用户账号，base_user表里的username
+	 * 用户账号，base_user表里的id
 	 */
-	private String userAccount;
+	private String userId;
 
 
 	@Column(name = "org_code")
@@ -36,12 +36,12 @@ public class BaseOrgUserDO extends IntegerIdentityEntity {
         this.orgCode = orgCode;
     }
 
-	@Column(name = "user_account")
-    public String getUserAccount() {
-        return userAccount;
+	@Column(name = "user_id")
+    public String getUserId() {
+        return userId;
     }
-    public void setUserAccount(String userAccount) {
-        this.userAccount = userAccount;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
 

@@ -695,7 +695,7 @@ CREATE TABLE `base_role_authority` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色权限';
 
 -- 用户角色
-Drop table IF EXISTS `base_user_role`;
+Drop table IF EXISTS base_user_menu_role;
 CREATE TABLE `base_user_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT '用户ID',

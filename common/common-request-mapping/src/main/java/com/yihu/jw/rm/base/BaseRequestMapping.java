@@ -429,7 +429,7 @@ public class BaseRequestMapping {
         public static final String getOrgAreaTree  = "/getOrgAreaTree";
         public static final String queryOneById  = "/queryOneById";
         public static final String enableOrDis  = "/enableOrDis";
-        public static final String queryCodeList  = "/queryCodeListBySaasId";
+        public static final String queryOrgCodeAndNameListBySaasId  = "/queryOrgCodeAndNameListBySaasId";
     }
 
 
