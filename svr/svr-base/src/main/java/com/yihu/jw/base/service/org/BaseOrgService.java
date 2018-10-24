@@ -261,8 +261,8 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
     }
 
     public String getOrgAreaTree(String saasId){
-        StringBuffer sql = new StringBuffer("SELECT t.* from base_org b,org_tree t ")
-                .append("WHERE b.saasid='").append(saasId).append("' AND ")
+        StringBuffer sql = new StringBuffer("SELECT t.* from base_org b,org_tree t,base_org_saas o ")
+                .append("WHERE o.saasid='").append(saasId).append("' AND o.org_code = b.`code` AND ")
                 .append("(b.`code`= t.`code` or b.city_code=t.`code` or b.province_code = t.`code` or b.town_code=t.`code`)");
 
         List<TreeNode> treeNodes = new ArrayList<>();

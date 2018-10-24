@@ -32,11 +32,21 @@ public class InterfaceVO extends UuidIdentityVO {
     private String remark;
     @ApiModelProperty(value = "https请求地址", example = "")
     private String url;
+    @ApiModelProperty(value = "请求示例", example = "")
+    private String requestDemo;
+    @ApiModelProperty(value = "响应示例", example = "")
+    private String responseDemo;
+    @ApiModelProperty(value = "异常示例", example = "")
+    private String errorDemo;
 
     @ApiModelProperty(value = "入参", example = "")
     private List<InterfaceParamVO> entryParams;
     @ApiModelProperty(value = "出参", example = "")
     private List<InterfaceParamVO> outParams;
+    @ApiModelProperty(value = "公共入参", example = "")
+    private List<InterfaceParamVO> commonEntryParams;
+    @ApiModelProperty(value = "公共出参", example = "")
+    private List<InterfaceParamVO> commonOutParams;
     @ApiModelProperty(value = "错误说明", example = "")
     private List<InterfaceErrorCodeVO> errorCodes;
 
@@ -142,5 +152,45 @@ public class InterfaceVO extends UuidIdentityVO {
 
     public void setErrorCodes(List<InterfaceErrorCodeVO> errorCodes) {
         this.errorCodes = errorCodes;
+    }
+
+    public List<InterfaceParamVO> getCommonEntryParams() {
+        return commonEntryParams;
+    }
+
+    public void setCommonEntryParams(List<InterfaceParamVO> commonEntryParams) {
+        this.commonEntryParams = commonEntryParams;
+    }
+
+    public List<InterfaceParamVO> getCommonOutParams() {
+        return commonOutParams;
+    }
+
+    public void setCommonOutParams(List<InterfaceParamVO> commonOutParams) {
+        this.commonOutParams = commonOutParams;
+    }
+
+    public String getRequestDemo() {
+        return requestDemo;
+    }
+
+    public void setRequestDemo(String requestDemo) {
+        this.requestDemo = requestDemo;
+    }
+
+    public String getResponseDemo() {
+        return responseDemo;
+    }
+
+    public void setResponseDemo(String responseDemo) {
+        this.responseDemo = responseDemo;
+    }
+
+    public String getErrorDemo() {
+        return errorDemo;
+    }
+
+    public void setErrorDemo(String errorDemo) {
+        this.errorDemo = errorDemo;
     }
 }

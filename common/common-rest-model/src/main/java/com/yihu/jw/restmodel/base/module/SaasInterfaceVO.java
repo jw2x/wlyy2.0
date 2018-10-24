@@ -37,7 +37,17 @@ public class SaasInterfaceVO extends UuidIdentityVO {
     private String remark;
     @ApiModelProperty(value = "https请求地址", example = "")
     private String url;
+    @ApiModelProperty(value = "请求示例", example = "")
+    private String requestDemo;
+    @ApiModelProperty(value = "响应示例", example = "")
+    private String responseDemo;
+    @ApiModelProperty(value = "异常示例", example = "")
+    private String errorDemo;
 
+    @ApiModelProperty(value = "公共入参", example = "")
+    private List<SaasInterfaceParamVO> commonEntryParams;
+    @ApiModelProperty(value = "公共出参", example = "")
+    private List<SaasInterfaceParamVO> commonOutParams;
     @ApiModelProperty(value = "入参", example = "")
     private List<SaasInterfaceParamVO> entryParams;
     @ApiModelProperty(value = "出参", example = "")
@@ -163,5 +173,45 @@ public class SaasInterfaceVO extends UuidIdentityVO {
 
     public void setErrorCodes(List<SaasInterfaceErrorCodeVO> errorCodes) {
         this.errorCodes = errorCodes;
+    }
+
+    public List<SaasInterfaceParamVO> getCommonEntryParams() {
+        return commonEntryParams;
+    }
+
+    public void setCommonEntryParams(List<SaasInterfaceParamVO> commonEntryParams) {
+        this.commonEntryParams = commonEntryParams;
+    }
+
+    public List<SaasInterfaceParamVO> getCommonOutParams() {
+        return commonOutParams;
+    }
+
+    public void setCommonOutParams(List<SaasInterfaceParamVO> commonOutParams) {
+        this.commonOutParams = commonOutParams;
+    }
+
+    public String getRequestDemo() {
+        return requestDemo;
+    }
+
+    public void setRequestDemo(String requestDemo) {
+        this.requestDemo = requestDemo;
+    }
+
+    public String getResponseDemo() {
+        return responseDemo;
+    }
+
+    public void setResponseDemo(String responseDemo) {
+        this.responseDemo = responseDemo;
+    }
+
+    public String getErrorDemo() {
+        return errorDemo;
+    }
+
+    public void setErrorDemo(String errorDemo) {
+        this.errorDemo = errorDemo;
     }
 }
