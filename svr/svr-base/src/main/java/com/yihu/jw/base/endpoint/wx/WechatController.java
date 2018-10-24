@@ -1,6 +1,7 @@
 package com.yihu.jw.base.endpoint.wx;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.service.wx.WechatService;
 import com.yihu.jw.base.service.wx.WxTemplateService;
 import com.yihu.jw.entity.base.wx.*;
@@ -350,24 +351,33 @@ public class WechatController extends EnvelopRestEndpoint {
     //===================微信粉丝统计==========================================
     @GetMapping(value = BaseRequestMapping.WeChat.getusersummary)
     @ApiOperation(value = "获取用户增减数据", notes = "获取用户增减数据")
-    public Envelop getusersummary(@ApiParam(name = "wechatId", value = "微信id")
+    public ObjEnvelop<JSONObject> getusersummary(@ApiParam(name = "wechatId", value = "微信id")
                                   @RequestParam(value = "wechatId", required = true)String wechatId,
                                   @ApiParam(name = "beginDate", value = "开始时间，例如：2014-12-02")
                                   @RequestParam(value = "beginDate", required = true)String beginDate,
                                   @ApiParam(name = "endDate", value = "结束时间，例如：2014-12-07")
                                   @RequestParam(value = "endDate", required = true)String endDate) {
-        return wechatService.getusersummary(wechatId,beginDate,endDate);
+        return success(BaseRequestMapping.WeChat.api_success,wechatService.getusersummary(wechatId,beginDate,endDate));
+    }
+
+    @GetMapping(value = BaseRequestMapping.WeChat.getFansTitle)
+    @ApiOperation(value = "获取粉丝统计头部数据", notes = "获取粉丝统计头部数据")
+    public ObjEnvelop<StatisticsTitleVO> getFansTitle(@ApiParam(name = "wechatId", value = "微信id")
+                                          @RequestParam(value = "wechatId", required = true)String wechatId,
+                                          @ApiParam(name = "date", value = "计算日期")
+                                          @RequestParam(value = "date", required = true)String date) {
+        return success(BaseRequestMapping.WeChat.api_success,wechatService.getFansTitle(wechatId,date));
     }
 
     @GetMapping(value = BaseRequestMapping.WeChat.getusercumulate)
     @ApiOperation(value = "获取累计用户数据", notes = "获取累计用户数据")
-    public Envelop getusercumulate(@ApiParam(name = "wechatId", value = "微信id")
+    public ObjEnvelop<JSONObject> getusercumulate(@ApiParam(name = "wechatId", value = "微信id")
                                    @RequestParam(value = "wechatId", required = true)String wechatId,
-                                   @ApiParam(name = "beginDate", value = "开始时间，例如：2014-12-02")
+                                                  @ApiParam(name = "beginDate", value = "开始时间，例如：2014-12-02")
                                    @RequestParam(value = "beginDate", required = true)String beginDate,
-                                   @ApiParam(name = "endDate", value = "结束时间，例如：2014-12-07")
+                                                  @ApiParam(name = "endDate", value = "结束时间，例如：2014-12-07")
                                    @RequestParam(value = "endDate", required = true)String endDate) {
-        return wechatService.getusercumulate(wechatId,beginDate,endDate);
+        return success(BaseRequestMapping.WeChat.api_success,wechatService.getusercumulate(wechatId,beginDate,endDate));
     }
 
     //===================微信粉丝统计end==========================================

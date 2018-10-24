@@ -273,6 +273,7 @@ public class BaseRequestMapping {
         public static final String findWxTemplateConfig ="/findWxTemplateConfig";
         public static final String findWxTemplateConfigExist ="/findWxTemplateConfigExist";
         public static final String getAllTemp ="/getAllTemp";
+        public static final String getFansTitle ="/getFansTitle";
         public static final String getusersummary ="/getusersummary";
         public static final String getusercumulate ="/getusercumulate";
 
