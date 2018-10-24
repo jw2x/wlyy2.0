@@ -1,6 +1,7 @@
 package com.yihu.jw.base.service.wx;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.dao.wx.*;
 import com.yihu.jw.entity.base.wx.*;
@@ -11,6 +12,7 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import com.yihu.jw.util.wechat.WeiXinMessageReplyUtils;
 import com.yihu.jw.util.wechat.WeiXinMessageUtils;
+import io.swagger.util.Json;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -609,7 +611,10 @@ public class WechatService {
     //===================微信统计==========================================
 
 
-    public Envelop getUserSummaryTitle(String wechatId,String date){
+    public StatisticsTitleVO getFansTitle(String wechatId,String date){
+
+        StatisticsTitleVO statisticsTitleVO = new StatisticsTitleVO();
+        //获取统计增量
         String url ="https://api.weixin.qq.com/datacube/getusersummary?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
         String param = "{ \n" +
                 "    \"begin_date\": \""+date+"\", \n" +
@@ -618,34 +623,62 @@ public class WechatService {
 
         String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, param);
 
+        JSONObject rs = JSON.parseObject(result);
+        JSONArray list = rs.getJSONArray("list");
+
+        if(list!=null&&list.size()>0&&!list.isEmpty()){
+            JSONObject info = (JSONObject)list.get(0);
+            Integer new_user = info.getInteger("new_user");
+            Integer cancel_user = info.getInteger("cancel_user");
+            Integer add_user = new_user-cancel_user;
+            statisticsTitleVO.setNew_user(new_user);
+            statisticsTitleVO.setCancel_user(cancel_user);
+            statisticsTitleVO.setAdd_user(add_user);
+        }
+        //获取统计总量
         String url2 ="https://api.weixin.qq.com/datacube/getusercumulate?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
         String param2 = "{ \n" +
                 "    \"begin_date\": \""+date+"\", \n" +
                 "    \"end_date\": \""+date+"\"\n" +
                 "}";
-        return null;
+        String result2 = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url2, param2);
+
+        JSONObject rs2 = JSON.parseObject(result2);
+        JSONArray list2 = rs2.getJSONArray("list");
+        if(list2!=null&&list2.size()>0&&!list2.isEmpty()){
+            JSONObject info = (JSONObject)list2.get(0);
+            Integer cumulate_user = info.getInteger("cumulate_user");
+            statisticsTitleVO.setCumulate_user(cumulate_user);
+        }
+
+        return statisticsTitleVO;
     }
 
-    public Envelop getusersummary(String wechatId,String beginDate,String endDate){
+    public JSONObject getusersummary(String wechatId,String beginDate,String endDate){
+
         String url ="https://api.weixin.qq.com/datacube/getusersummary?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
-        String param = "{ \n" +
-                "    \"begin_date\": \""+beginDate+"\", \n" +
-                "    \"end_date\": \""+endDate+"\"\n" +
-                "}";
-        String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, param);
-        JSONObject rs = JSON.parseObject(result);
 
-        return Envelop.getSuccess(result);
+        JSONObject paramJson = new JSONObject();
+
+        paramJson.put("begin_date",beginDate);
+        paramJson.put("end_date",endDate);
+
+
+        String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, paramJson.toJSONString());
+        JSONObject rs = JSON.parseObject(result);
+        return rs;
     }
 
-    public Envelop getusercumulate(String wechatId,String beginDate,String endDate){
+    public JSONObject getusercumulate(String wechatId,String beginDate,String endDate){
         String url ="https://api.weixin.qq.com/datacube/getusercumulate?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
-        String param = "{ \n" +
-                "    \"begin_date\": \""+beginDate+"\", \n" +
-                "    \"end_date\": \""+endDate+"\"\n" +
-                "}";
-        String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, param);
-        return Envelop.getSuccess(result);
+        JSONObject paramJson = new JSONObject();
+
+        paramJson.put("begin_date",beginDate);
+        paramJson.put("end_date",endDate);
+
+        String result = com.yihu.jw.util.wechat.wxhttp.HttpUtil.sendPost(url, paramJson.toJSONString());
+        JSONObject rs = JSON.parseObject(result);
+        return rs;
     }
 
     //===================微信统计end=======================================
