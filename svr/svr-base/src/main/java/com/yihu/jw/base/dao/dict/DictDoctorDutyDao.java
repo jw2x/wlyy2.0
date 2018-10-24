@@ -18,4 +18,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
  * @since 1.
  */
 public interface DictDoctorDutyDao extends PagingAndSortingRepository<DictDoctorDutyDO, Integer>, JpaSpecificationExecutor<DictDoctorDutyDO>  {
+
+    boolean existsByCode(String code);
+
+    DictDoctorDutyDO findByCode(String code);
 }

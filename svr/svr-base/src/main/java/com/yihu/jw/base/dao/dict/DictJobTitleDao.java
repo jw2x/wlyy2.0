@@ -34,4 +34,8 @@ public interface DictJobTitleDao extends PagingAndSortingRepository<DictJobTitle
     List<DictJobTitleDO> findBySaasId(String saasId);
 
     Long countBySaasId(String saasId);
+
+    DictJobTitleDO findByCode(String code);
+
+    boolean existsByCode(String code);
 }

@@ -37,4 +37,8 @@ public interface DictHospitalDeptDao extends PagingAndSortingRepository<DictHosp
 
     Long countByCodeIn(String orgCode);
 
+    boolean existsByCodeAndOrgCode(String code,String orgCode);
+
+    DictHospitalDeptDO findByCode(String code);
+
 }

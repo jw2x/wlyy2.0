@@ -30,6 +30,8 @@ public class SystemDictEntryVO extends UuidIdentityVO {
 	//备注
 	@ApiModelProperty(value = "备注", example = "我是备注")
 	private String remark;
+	@ApiModelProperty(value = "所属租户id", example = "1")
+	private String saasId;
 
 	public String getDictCode() {
 		return dictCode;
@@ -77,5 +79,13 @@ public class SystemDictEntryVO extends UuidIdentityVO {
 
 	public void setRemark(String remark) {
 		this.remark = remark;
+	}
+
+	public String getSaasId() {
+		return saasId;
+	}
+
+	public void setSaasId(String saasId) {
+		this.saasId = saasId;
 	}
 }

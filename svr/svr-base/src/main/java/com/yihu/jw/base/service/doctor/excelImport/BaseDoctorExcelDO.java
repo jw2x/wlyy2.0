@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *  基础人口信息列表-excel实体类
+ *  医生信息列表-excel实体类
  * @author lith
  * Created at 2018/10/22.
  */
@@ -25,34 +25,37 @@ public class BaseDoctorExcelDO extends ExcelUtil implements Validation {
 
     @Location(x=0)
     @ValidRepeat
-    String name;
+    String name;//姓名
     @Location(x=1)
     @ValidRepeat
-    String del;
+    String del;//状态(1生效，0失效)
     @Location(x=2)
     @ValidRepeat
-    String sex;
+    Integer sex;//性别（1男2女）
     @Location(x=3)
     @ValidRepeat
-    String idcard;
+    String idcard;//身份证号
     @Location(x=4)
     @ValidRepeat
-    String mobile;
+    String mobile;//联系方式
     @Location(x=5)
     @ValidRepeat
-    String hospitalInfo;
+    String hospitalInfo;//机构/部门/职务
     @Location(x=6)
     @ValidRepeat
-    Integer roleInfo;
+    String jobTitleName;//职称
     @Location(x=7)
     @ValidRepeat
-    String isFamous;
+    String roleInfo;//归属业务模块角色
     @Location(x=8)
     @ValidRepeat
-    Integer expertise;
+    Integer isFamous;//是否名医
     @Location(x=9)
     @ValidRepeat
-    String brief;
+    String expertise;//专长
+    @Location(x=10)
+    @ValidRepeat
+    String brief;//简介
 
     private String  saasId;
     //租户创建时间
@@ -79,4 +82,171 @@ public class BaseDoctorExcelDO extends ExcelUtil implements Validation {
         return rs;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDel() {
+        return del;
+    }
+
+    public void setDel(String del) {
+        this.del = del;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public String getIdcard() {
+        return idcard;
+    }
+
+    public void setIdcard(String idcard) {
+        this.idcard = idcard;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getHospitalInfo() {
+        return hospitalInfo;
+    }
+
+    public void setHospitalInfo(String hospitalInfo) {
+        this.hospitalInfo = hospitalInfo;
+    }
+
+    public String getRoleInfo() {
+        return roleInfo;
+    }
+
+    public void setRoleInfo(String roleInfo) {
+        this.roleInfo = roleInfo;
+    }
+
+    public Integer getIsFamous() {
+        return isFamous;
+    }
+
+    public void setIsFamous(Integer isFamous) {
+        this.isFamous = isFamous;
+    }
+
+    public String getExpertise() {
+        return expertise;
+    }
+
+    public void setExpertise(String expertise) {
+        this.expertise = expertise;
+    }
+
+    public String getBrief() {
+        return brief;
+    }
+
+    public void setBrief(String brief) {
+        this.brief = brief;
+    }
+
+    public String getSaasId() {
+        return saasId;
+    }
+
+    public void setSaasId(String saasId) {
+        this.saasId = saasId;
+    }
+
+    public Date getSaasCreateTime() {
+        return saasCreateTime;
+    }
+
+    public void setSaasCreateTime(Date saasCreateTime) {
+        this.saasCreateTime = saasCreateTime;
+    }
+
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
+    }
+
+    public String getProvinceName() {
+        return provinceName;
+    }
+
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
+    }
+
+    public String getCityCode() {
+        return cityCode;
+    }
+
+    public void setCityCode(String cityCode) {
+        this.cityCode = cityCode;
+    }
+
+    public String getCityName() {
+        return cityName;
+    }
+
+    public void setCityName(String cityName) {
+        this.cityName = cityName;
+    }
+
+    public String getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
+    }
+
+    public String getDistrictName() {
+        return districtName;
+    }
+
+    public void setDistrictName(String districtName) {
+        this.districtName = districtName;
+    }
+
+    public Integer getNcdNum() {
+        return ncdNum;
+    }
+
+    public void setNcdNum(Integer ncdNum) {
+        this.ncdNum = ncdNum;
+    }
+
+    public int getYearNow() {
+        return yearNow;
+    }
+
+    public void setYearNow(int yearNow) {
+        this.yearNow = yearNow;
+    }
+
+    public String getJobTitleName() {
+        return jobTitleName;
+    }
+
+    public void setJobTitleName(String jobTitleName) {
+        this.jobTitleName = jobTitleName;
+    }
 }

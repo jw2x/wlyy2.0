@@ -94,4 +94,5 @@ public class DictHospitalDeptService extends BaseJpaService<DictHospitalDeptDO, 
        }
        return dictHospitalDeptDao.findByOrgCode(orgCode);
     }
+
 }
