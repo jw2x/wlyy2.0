@@ -123,6 +123,7 @@ public class InterfaceService extends BaseJpaService<InterfaceDO, InterfaceDao> 
         });
         errorCodes.forEach(interfaceErrorCodeDO -> {
             interfaceErrorCodeDO.setInterfaceId(interfaceDO.getId());
+            interfaceErrorCodeDO.setDel(1);
         });
         interfaceParamDao.save(entryParams);
         interfaceParamDao.save(outParams);

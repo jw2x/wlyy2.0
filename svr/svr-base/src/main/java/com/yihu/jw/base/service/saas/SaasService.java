@@ -4,6 +4,7 @@ import com.yihu.jw.base.dao.dict.*;
 import com.yihu.jw.base.dao.module.ModuleDao;
 import com.yihu.jw.base.dao.module.SaasModuleDao;
 import com.yihu.jw.base.dao.org.BaseOrgDao;
+import com.yihu.jw.base.dao.org.BaseOrgSaasDao;
 import com.yihu.jw.base.dao.role.RoleDao;
 import com.yihu.jw.base.dao.saas.SaasDao;
 import com.yihu.jw.base.dao.saas.SaasThemeDao;
@@ -17,14 +18,13 @@ import com.yihu.jw.entity.base.dict.*;
 import com.yihu.jw.entity.base.module.ModuleDO;
 import com.yihu.jw.entity.base.module.SaasModuleDO;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
-import com.yihu.jw.entity.base.role.RoleDO;
+import com.yihu.jw.entity.base.org.BaseOrgSaasDO;
 import com.yihu.jw.entity.base.saas.BaseEmailTemplateConfigDO;
 import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.saas.SaasThemeDO;
 import com.yihu.jw.entity.base.saas.SaasThemeExtendDO;
 import com.yihu.jw.entity.base.system.SystemDictEntryDO;
 import com.yihu.jw.entity.base.user.UserDO;
-import com.yihu.jw.entity.base.user.UserRoleDO;
 import com.yihu.mysql.query.BaseJpaService;
 import com.yihu.utils.security.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,6 +84,8 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
     @Autowired
     private SaasThemeDao saasThemeDao;
     @Autowired
+    private BaseOrgSaasDao baseOrgSaasDao;
+    @Autowired
     private SaasThemeExtendDao saasThemeExtendDao;
     @Value("${configDefault.saasId}")
     private String defaultSaasId;
@@ -111,39 +113,17 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         saas.setStatus(SaasDO.Status.auditPassed);
         saas = saasDao.save(saas);
         List<BaseOrgDO> orgDOList = saas.getOrgList();
+        List<BaseOrgSaasDO> baseOrgSaasDOs = new ArrayList<>(orgDOList.size());
         if(orgDOList!=null&&orgDOList.size()>0){
             String saasId = saas.getId();
             orgDOList.forEach(org->{
-                BaseOrgDO orgDO = baseOrgDao.findByCodeAndSaasId(org.getCode(),defaultSaasId);
-                org.setSaasid(saasId);
-                org.setName(orgDO.getName());
-                org.setCreateTime(new Date());
-                org.setAddress(orgDO.getAddress());
-                org.setAlias(orgDO.getAlias());
-                org.setBrief(orgDO.getBrief());
-                org.setCityCode(orgDO.getCityCode());
-                org.setCityName(orgDO.getCityName());
-                org.setDel(orgDO.getDel());
-                org.setIntro(orgDO.getIntro());
-                org.setLatitude(orgDO.getLatitude());
-                org.setLegalperson(orgDO.getLegalperson());
-                org.setLongitude(orgDO.getLongitude());
-                org.setName(orgDO.getName());
-                org.setOrgAdmin(orgDO.getOrgAdmin());
-                org.setOrgUrl(orgDO.getOrgUrl());
-                org.setPhoto(orgDO.getPhoto());
-                org.setProvinceCode(orgDO.getProvinceCode());
-                org.setProvinceName(orgDO.getProvinceName());
-                org.setQrcode(orgDO.getQrcode());
-                org.setSpell(orgDO.getSpell());
-                org.setStreetCode(orgDO.getStreetCode());
-                org.setStreetName(orgDO.getStreetName());
-                org.setTownCode(orgDO.getTownCode());
-                org.setTownName(orgDO.getTownName());
-                org.setType(orgDO.getType());
+                BaseOrgSaasDO baseOrgSaasDO = new BaseOrgSaasDO();
+                baseOrgSaasDO.setOrgCode(org.getCode());
+                baseOrgSaasDO.setSaasid(saasId);
+                baseOrgSaasDOs.add(baseOrgSaasDO);
             });
         }
-        baseOrgDao.save(orgDOList);
+        baseOrgSaasDao.save(baseOrgSaasDOs);
 
         //用户信息初始化
         UserDO userDO = new UserDO();
@@ -370,10 +350,10 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
      */
     @Transactional(rollbackFor = Exception.class)
     public SaasDO saasAudit(SaasDO saas, UserDO user) {
-        //初始化角色
-        RoleDO roleDO = roleDao.findByCode(roleCode);
+
         //判断该用户是否已经存在
-       UserDO userDO= userDao.findByUsername(saas.getEmail());
+        UserDO userDO= userDao.findByUsername(saas.getEmail());
+        userDO.setRoleCode(roleCode);
         if (null == userDO) {
             //初始化租户管理员
             user.setEnabled(true);
@@ -396,12 +376,6 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
             user = userDao.save(userDO);
         }
 
-        //初始化管理员角色
-        UserRoleDO userRoleDO = new UserRoleDO();
-        userRoleDO.setRoleId(roleDO.getId());
-
-        userRoleDO.setUserId(user.getId());
-        userRoleDao.save(userRoleDO);
         saas.setManager(user.getId());
         saas.setManagerName(user.getName());
         saas.setAppId(getCode());
