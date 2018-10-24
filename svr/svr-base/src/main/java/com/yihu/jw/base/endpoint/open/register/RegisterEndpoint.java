@@ -70,10 +70,10 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
         SaasDO saasDO = toEntity(jsonSaas, SaasDO.class);
 
         if(!ValidateUtil.isValidMobileNo(saasDO.getMobile())){
-            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.MOBILE_IS_EXIST), Envelop.class);
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.PHONE_IS_NOT_FORMAT), Envelop.class);
         }
         if(!ValidateUtil.isValidEmail(saasDO.getEmail())){
-            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_EXIST), Envelop.class);
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_NOT_FORMAT), Envelop.class);
         }
 
         String redisKey = redisPrefix + saasDO.getEmail();
@@ -147,6 +147,10 @@ public class RegisterEndpoint extends EnvelopRestEndpoint {
     @ApiOperation(value = "邮件发送")
     public Envelop send(@ApiParam(name = "email", value = "邮箱地址", required = true)
                          @RequestParam String email) throws Exception {
+
+        if(!ValidateUtil.isValidEmail(email)){
+            return failed(errorCodeUtil.getErrorMsg(BaseErrorCode.Saas.EMAIL_IS_NOT_FORMAT), Envelop.class);
+        }
         //建立邮件消息
         SimpleMailMessage mainMessage = new SimpleMailMessage();
         //发送者

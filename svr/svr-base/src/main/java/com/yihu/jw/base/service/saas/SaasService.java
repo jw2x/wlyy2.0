@@ -353,7 +353,6 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
 
         //判断该用户是否已经存在
         UserDO userDO= userDao.findByUsername(saas.getEmail());
-        userDO.setRoleCode(roleCode);
         if (null == userDO) {
             //初始化租户管理员
             user.setEnabled(true);
@@ -370,6 +369,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
             }
             user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
             user.setSaasId(saas.getId());
+            user.setRoleCode(roleCode);
             user = userDao.save(user);
         } else {
             userDO.setSaasId(saas.getId());
