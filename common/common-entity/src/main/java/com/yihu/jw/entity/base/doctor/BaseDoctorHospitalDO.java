@@ -60,7 +60,7 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
 	    this.doctorDutyName = doctorDutyName;
     }
 
-	@Column(name = "hosp_code")
+	@Column(name = "org_code")
     public String getOrgCode() {
         return orgCode;
     }
@@ -68,7 +68,7 @@ public class BaseDoctorHospitalDO extends IntegerIdentityEntity {
         this.orgCode = orgCode;
     }
 
-	@Column(name = "hosp_name")
+	@Column(name = "org_name")
     public String getOrgName() {
         return orgName;
     }

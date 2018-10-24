@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,13 +32,18 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
 
     @Autowired
     private SystemDictService systemDictService;
+    @Value("${configDefault.saasId}")
+    private String saasId;
+
 
     @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
-            @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
-            @RequestParam(value = "ids") String ids) {
-        systemDictService.delete(ids.split(","));
+            @ApiParam(name = "dictId", value = "字典id", required = true)
+            @RequestParam(value = "dictId") String dictId,
+            @ApiParam(name = "dictType", value = "字典类型")
+            @RequestParam(value = "dictType", required = true) String dictType) throws Exception{
+        systemDictService.deleteDictByType(dictId,dictType);
         return success("删除成功");
     }
 
@@ -47,6 +53,9 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "json", value = "Json数据", required = true)
             @RequestParam String jsonData) throws Exception {
         SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
+        if(StringUtils.isBlank(systemDictDO.getSaasId())){
+            systemDictDO.setSaasId(saasId);
+        }
         if (null == systemDictDO.getCode()) {
             return failed("ID不能为空", Envelop.class);
         }
@@ -67,7 +76,11 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
-
+        if (StringUtils.isBlank(filters)) {
+            filters = "saasId=" + saasId+";";
+        } else {
+            filters = "saasId=" + saasId + ";" + filters;
+        }
        JSONObject result =  systemDictService.queryDictPageByType("1",dictType,filters,sorts,page,size);
        if(StringUtils.equalsIgnoreCase(ConstantUtils.FAIL,result.getString("response"))){
            return failed(result.getString("msg"));
@@ -84,6 +97,11 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        if (StringUtils.isBlank(filters)) {
+            filters = "saasId=" + saasId+";";
+        } else {
+            filters = "saasId=" + saasId + ";" + filters;
+        }
         List<SystemDictDO> systemDictDOS = systemDictService.search(fields, filters, sorts);
         return success(systemDictDOS, SystemDictVO.class);
     }
@@ -94,6 +112,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "jsonData", value = "json数据，系统字典及其值")
             @RequestParam(value = "jsonData", required = true) String jsonData) throws Exception {
         String message = systemDictService.createSystemDict(jsonData);
+
         if (StringUtils.equalsIgnoreCase(message, ConstantUtils.SUCCESS)) {
             return success(message);
         }
@@ -137,4 +156,19 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
         JSONArray list = systemDictService.getDistListByType(type, userId, sorts, page, size);
         return success(list);
     }
+
+    @PostMapping(value = BaseRequestMapping.SystemDict.CREATE_BY_TYPE)
+    @ApiOperation(value = "根据不同的类型创建字典")
+    public Envelop createAndUpdate(
+            @ApiParam(name = "dictType", value = "字典类型", required = true)
+            @RequestParam(value = "dictType") String dictType,
+            @ApiParam(name = "jsonData", value = "字典Json数据", required = true)
+            @RequestParam(value = "jsonData") String jsonData) throws Exception {
+        JSONObject result =  systemDictService.createDictByType(dictType,jsonData);
+        if(StringUtils.equalsIgnoreCase(ConstantUtils.FAIL,result.getString("response"))){
+            return failed(result.getString("msg"));
+        }
+        return success(result.getJSONArray("msg"));
+    }
+
 }

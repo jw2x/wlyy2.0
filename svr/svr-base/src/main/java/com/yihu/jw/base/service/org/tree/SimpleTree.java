@@ -14,11 +14,40 @@ public class SimpleTree implements Tree{
         initTreeNodeList();
     }
 
+    public SimpleTree(List<TreeNode> list,String isOrg){
+        initOrgTreeNodeMap(list);
+        initTreeNodeList();
+    }
+
+    private void initOrgTreeNodeMap(List<TreeNode> list){
+        SimpleTreeNode treeNode = null;
+        for(TreeNode item : list){
+            treeNode = new SimpleTreeNode(item);
+//            treeNodesMap.put(treeNode.getParentNodeId() + treeNode.getNodeId(), treeNode);
+            treeNodesMap.put( treeNode.getNodeId(), treeNode);
+        }
+
+        Iterator<SimpleTreeNode> iter = treeNodesMap.values().iterator();
+        SimpleTreeNode parentTreeNode = null;
+        while(iter.hasNext()){
+            treeNode = iter.next();
+            if(treeNode.getParentNodeId() == null || treeNode.getParentNodeId() == ""){
+                continue;
+            }
+
+            parentTreeNode = treeNodesMap.get(treeNode.getParentNodeId());
+            if(parentTreeNode != null){
+                treeNode.setParent(parentTreeNode);
+                parentTreeNode.addChild(treeNode);
+            }
+        }
+    }
+
     private void initTreeNodeMap(List<TreeNode> list){
         SimpleTreeNode treeNode = null;
         for(TreeNode item : list){
             treeNode = new SimpleTreeNode(item);
-            treeNodesMap.put(treeNode.getNodeId(), treeNode);
+            treeNodesMap.put(treeNode.getParentNodeId() + treeNode.getNodeId(), treeNode);
         }
 
         Iterator<SimpleTreeNode> iter = treeNodesMap.values().iterator();

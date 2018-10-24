@@ -5,4 +5,5 @@ public interface TreeNode {
     String extractNodeName();
     String extractNodeParentId();
     Integer extractOrderNum();
+    boolean extractChecked();
 }

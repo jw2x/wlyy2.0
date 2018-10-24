@@ -137,7 +137,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
         if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
             return failed(jsonObject.getString("msg"));
         }
-        return success(jsonObject.getString("msg"));
+        return success(jsonObject.getJSONObject("msg"));
     }
 
     /**
@@ -198,11 +198,16 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      */
     @GetMapping(value = BaseRequestMapping.BaseDoctor.getOrgListByTown)
     @ApiOperation(value = "根据区域获取机构列表")
-    public Envelop enableOrDisableDoctor(
+    public Envelop getOrgListByTown(
+            @ApiParam(name = "doctorCode", value = "townCode")
+            @RequestParam(value = "doctorCode", required = true) String doctorCode,
             @ApiParam(name = "townCode", value = "townCode")
             @RequestParam(value = "townCode", required = true) String townCode) throws Exception {
-        List<Map<String, Object>> result = orgTreeService.findOrgListByParentCode(townCode);
-        return success(JavaBeanUtils.getInstance().mapListJson(result));
+        JSONObject jsonObject = baseDoctorService.getOrgListByTownAndDoctorCode(doctorCode,townCode);
+        if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+            return failed(jsonObject.getString("msg"));
+        }
+        return success(jsonObject.getJSONArray("msg"));
     }
 
     /**
@@ -213,11 +218,15 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      * @throws Exception
      */
     @GetMapping(value = BaseRequestMapping.BaseDoctor.docOrgDutyTreeInfo)
-    @ApiOperation(value = "获取医生所属机构树形结构数据")
+    @ApiOperation(value = "获取医生 机构/职务 树形结构数据")
     public Envelop getOrgDutyTree(
             @ApiParam(name = "doctorCode", value = "doctorCode")
             @RequestParam(value = "doctorCode", required = true) String doctorCode) throws Exception {
-        return success(baseDoctorService.getDoctorDutyTree(doctorCode));
+        JSONObject jsonObject = baseDoctorService.getDoctorDutyTree(doctorCode);
+        if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+            return failed(jsonObject.getString("msg"));
+        }
+        return success(jsonObject.get("msg"));
     }
 
     /**
@@ -228,11 +237,15 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
      * @throws Exception
      */
     @GetMapping(value = BaseRequestMapping.BaseDoctor.docOrgDeptTreeInfo)
-    @ApiOperation(value = "获取医生所属机构树形结构数据")
+    @ApiOperation(value = "获取医生 机构/科室 树形结构数据")
     public Envelop getOrgDeptTree(
             @ApiParam(name = "doctorCode", value = "doctorCode")
             @RequestParam(value = "doctorCode", required = true) String doctorCode) throws Exception {
-        return success(baseDoctorService.getDoctorDeptTree(doctorCode));
+        JSONObject jsonObject = baseDoctorService.getDoctorDeptTree(doctorCode);
+        if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+            return failed(jsonObject.getString("msg"));
+        }
+        return success(jsonObject.getJSONArray("msg"));
     }
 
     @GetMapping(value = BaseRequestMapping.BaseDoctor.getDoctorListByDept)
@@ -244,7 +257,7 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
         if (jsonObject.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
             return failed(jsonObject.getString("msg"));
         }
-        return success(jsonObject.getString("msg"));
+        return success(jsonObject.getJSONArray("msg"));
     }
 
     @PostMapping(value = BaseRequestMapping.BaseDoctor.DOCTOR_INFO_IMPORT)

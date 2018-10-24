@@ -248,7 +248,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
 
         List<TreeNode> treeNodes = new ArrayList<>();
         treeNodes.addAll(orgTreeService.findListByLevel(OrgTree.Level.org.getLevelValue()));
-        SimpleTree tree = new SimpleTree(treeNodes);
+        SimpleTree tree = new SimpleTree(treeNodes,"");
         List<SimpleTreeNode> treeNode = tree.getRoot();
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getExcludes().add("parent");
@@ -267,7 +267,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
 
         List<TreeNode> treeNodes = new ArrayList<>();
         treeNodes.addAll(jdbcTemplate.query(sql.toString(),new BeanPropertyRowMapper(OrgTree.class)));
-        SimpleTree tree = new SimpleTree(treeNodes);
+        SimpleTree tree = new SimpleTree(treeNodes,"");
         List<SimpleTreeNode> treeNode = tree.getRoot();
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getExcludes().add("parent");
