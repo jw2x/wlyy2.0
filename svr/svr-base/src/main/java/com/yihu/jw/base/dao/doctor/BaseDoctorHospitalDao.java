@@ -25,11 +25,11 @@ import java.util.Set;
  */
 public interface BaseDoctorHospitalDao extends PagingAndSortingRepository<BaseDoctorHospitalDO, Integer>, JpaSpecificationExecutor<BaseDoctorHospitalDO>  {
 
-    List<BaseDoctorHospitalDO> findByHospCodeAndDoctorCode(String hospCode,String doctorCode);
+    List<BaseDoctorHospitalDO> findByOrgCodeAndDoctorCode(String orgCode, String doctorCode);
 
     @Query("select id from BaseDoctorHospitalDO where doctorCode = ?1")
-    Set<Object> findIdListByHospCodeAndDoctorCode(String doctorCode);
+    Set<Object> findIdListByOrgCodeAndDoctorCode(String doctorCode);
 
-    @Query("select new BaseDoctorHospitalDO(hospCode,hospName,doctorDutyCode,doctorDutyName) from BaseDoctorHospitalDO where doctorCode = ?1")
+    @Query("select new BaseDoctorHospitalDO(orgCode,orgName,doctorDutyCode,doctorDutyName) from BaseDoctorHospitalDO where doctorCode = ?1")
     List<BaseDoctorHospitalDO> getOrgAndDutyByDoctorCode(String doctorCode);
 }

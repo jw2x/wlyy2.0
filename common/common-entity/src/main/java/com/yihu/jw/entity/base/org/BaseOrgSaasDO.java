@@ -2,6 +2,10 @@ package com.yihu.jw.entity.base.org;
 
 import com.yihu.jw.entity.IntegerIdentityEntity;
 import com.yihu.jw.entity.UuidIdentityEntityWithOperator;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -15,6 +19,7 @@ import javax.persistence.Table;
 */
 @Entity
 @Table(name = "base_org_saas")
+@Component
 public class BaseOrgSaasDO extends IntegerIdentityEntity {
 
     /**

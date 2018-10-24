@@ -40,7 +40,7 @@ public class BaseDoctorHospitalService extends BaseJpaService<BaseDoctorHospital
         if (StringUtils.isEmpty(hospCode) || StringUtils.isEmpty(doctorCode)) {
             return result;
         }
-        return baseDoctorHospitalDao.findByHospCodeAndDoctorCode(hospCode, doctorCode);
+        return baseDoctorHospitalDao.findByOrgCodeAndDoctorCode(hospCode, doctorCode);
     }
 
     /**
@@ -54,7 +54,7 @@ public class BaseDoctorHospitalService extends BaseJpaService<BaseDoctorHospital
         if (StringUtils.isEmpty(doctorCode)) {
             return result;
         }
-        return baseDoctorHospitalDao.findIdListByHospCodeAndDoctorCode(doctorCode);
+        return baseDoctorHospitalDao.findIdListByOrgCodeAndDoctorCode(doctorCode);
     }
 
     /**

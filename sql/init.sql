@@ -787,9 +787,18 @@ drop table IF EXISTS `base_role_module`;
 create table `base_role_module`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
-  `role_id` varchar(100) DEFAULT NULL COMMENT '角色id',
-  `module_id` varchar(50) not null COMMENT '业务模块id',
-  primary key (id)
+  `code` varchar(100) DEFAULT NULL COMMENT '角色标识',
+  `name` varchar(100) DEFAULT NULL COMMENT '角色名称',
+  `module_id` varchar(50) not null COMMENT '业务模块id，多个用逗号分割',
+  `del` varchar(1) not null COMMENT '状态，0失效，1有效',
+  `create_user` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '创建人',
+  `create_user_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '创建人名',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  `update_user` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '修改人',
+  `update_user_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL COMMENT '修改人名',
+  `update_time` datetime NOT NULL COMMENT '修改时间',
+  primary key (id),
+  key `code` (`code`)
 )
   ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块角色';
 
