@@ -38,7 +38,7 @@ public class BaseDoctorRoleEndpoint extends EnvelopRestEndpoint {
 @Autowired
 private BaseDoctorRoleService baseDoctorRoleService;
 
-@PostMapping(value = BaseRequestMapping.BaseDoctorRole.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@PostMapping(value = BaseRequestMapping.BaseDoctorRole.CREATE)
 @ApiOperation(value = "创建")
 public ObjEnvelop<BaseDoctorRoleVO> create (
     @ApiParam(name = "json_data", value = "Json数据", required = true)
@@ -57,7 +57,7 @@ public ObjEnvelop<BaseDoctorRoleVO> create (
     return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.BaseDoctorRole.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.BaseDoctorRole.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<BaseDoctorRoleVO> update (
         @ApiParam(name = "json_data", value = "Json数据", required = true)

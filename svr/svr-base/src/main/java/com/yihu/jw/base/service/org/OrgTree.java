@@ -6,6 +6,7 @@ import com.yihu.jw.entity.IntegerIdentityEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "org_tree")
@@ -15,6 +16,8 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
     private String name;
     //当前树节点所在层级，例如省在第一级,用0表示
     private Integer level;
+
+    private boolean checked;
 
     public enum Level{
         province(0),
@@ -63,6 +66,11 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
         return null;
     }
 
+    @Override
+    public boolean extractChecked() {
+        return this.checked;
+    }
+
     @Column(name = "code", nullable = false)
     public String getCode() {
         return code;
@@ -99,4 +107,12 @@ public class OrgTree extends IntegerIdentityEntity implements TreeNode {
         this.level = level;
     }
 
+    @Transient
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 }
