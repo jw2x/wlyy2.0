@@ -393,6 +393,7 @@ public class BaseRequestMapping {
         public static final String docOrgDutyTreeInfo  = "/docOrgDutyTreeInfo";
         public static final String docOrgDeptTreeInfo  = "/docOrgDeptTreeInfo";
         public static final String getDoctorListByDept  = "/getDoctorListByDept";
+        public static final String DOCTOR_INFO_IMPORT  = "/baseDoctorInfoImport";
     }
 
 

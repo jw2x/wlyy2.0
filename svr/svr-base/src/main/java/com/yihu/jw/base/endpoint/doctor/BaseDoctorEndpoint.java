@@ -1,10 +1,15 @@
 package com.yihu.jw.base.endpoint.doctor;
 
 import com.alibaba.fastjson.JSONObject;
+import com.yihu.jw.base.endpoint.common.excel.AExcelReader;
+import com.yihu.jw.base.endpoint.common.populationBatchImport.PopulationMsg;
 import com.yihu.jw.base.service.doctor.BaseDoctorService;
+import com.yihu.jw.base.service.doctor.excelImport.BaseDoctorExcelDO;
+import com.yihu.jw.base.service.doctor.excelImport.BaseDoctorExcelDOReader;
 import com.yihu.jw.base.service.org.OrgTreeService;
 import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.jw.restmodel.base.doctor.BaseDoctorVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
@@ -16,12 +21,17 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import com.yihu.jw.entity.base.doctor.BaseDoctorDO;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 医生基础信息控制器
@@ -237,4 +247,29 @@ public class BaseDoctorEndpoint extends EnvelopRestEndpoint {
         return success(jsonObject.getString("msg"));
     }
 
+    @PostMapping(value = BaseRequestMapping.BaseDoctor.DOCTOR_INFO_IMPORT)
+    @Transactional(rollbackFor = Exception.class)
+    @ApiOperation(value = "基础医生信息列表导入")
+    public Envelop importData(
+            @ApiParam(name = "file", value = "文件", required = true)
+            @RequestPart(value = "file") MultipartFile file,
+            HttpServletRequest request) throws IOException, ManageException {
+        try {
+            request.setCharacterEncoding("UTF-8");
+            AExcelReader excelReader = new BaseDoctorExcelDOReader();
+            excelReader.read(file);
+            //验证未通过（暂无验证）
+            List<BaseDoctorExcelDO> errorLs = excelReader.getErrorLs();
+            List<BaseDoctorExcelDO> correctLs = excelReader.getCorrectLs();
+            if(correctLs.size()>0){
+                Map<String, Object> result = baseDoctorService.batchInsertDoctor(correctLs);
+                result.put("errorLs", errorLs);
+                return success("导入成功!", result);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return failed("导入异常,请检查导入文件格式" + e.getMessage());
+        }
+        return failed("导入失败");
+    }
 }
