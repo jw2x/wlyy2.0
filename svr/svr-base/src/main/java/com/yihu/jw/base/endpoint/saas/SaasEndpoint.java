@@ -267,7 +267,10 @@ public class SaasEndpoint extends EnvelopRestEndpoint {
         userDO.setUsername(userDO.getEmail());
         //初始化租户信息
         saasService.save(saasDO);
-        saasDO = saasService.saasAudit(saasDO, userDO);
+        //审核通过，初始化用户信息
+        if("auditPassed".equals(status.name())){
+            saasDO = saasService.saasAudit(saasDO, userDO);
+        }
         return send(saasDO);
     }
 

@@ -9,11 +9,13 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
+import com.yihu.utils.pinyin.PinyinUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,18 +32,31 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
     
     @Autowired
     private SystemDictEntryService systemDictEntryService;
+    @Value("${configDefault.saasId}")
+    private String saasId;
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SystemDictEntry.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<SystemDictEntryVO> create (
-            @ApiParam(name = "json", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam(value = "jsonData") String jsonData) throws Exception {
         SystemDictEntryDO systemDictEntryDO = toEntity(jsonData, SystemDictEntryDO.class);
+        if(StringUtils.isBlank(systemDictEntryDO.getDictCode())){
+            return failed("字典编码不能为空！",ObjEnvelop.class);
+        }if(StringUtils.isBlank(systemDictEntryDO.getCode())){
+            return failed("字典项编码不能为空！",ObjEnvelop.class);
+        }
+        if(StringUtils.isBlank(systemDictEntryDO.getSaasId())){
+            systemDictEntryDO.setSaasId(saasId);
+        }
+        if(StringUtils.isNotBlank(systemDictEntryDO.getValue())){
+            systemDictEntryDO.setPyCode(PinyinUtil.getPinYinHeadChar(systemDictEntryDO.getValue(), true));
+        }
         systemDictEntryDO = systemDictEntryService.save(systemDictEntryDO);
         return success(systemDictEntryDO, SystemDictEntryVO.class);
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
+    @PostMapping(value = BaseRequestMapping.SystemDictEntry.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
             @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
@@ -50,14 +65,25 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.SystemDict.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SystemDictEntry.UPDATE)
     @ApiOperation(value = "更新")
     public Envelop update (
-            @ApiParam(name = "json", value = "Json数据", required = true)
-            @RequestBody String jsonData) throws Exception {
+            @ApiParam(name = "jsonData", value = "Json数据", required = true)
+            @RequestParam(value = "jsonData") String jsonData) throws Exception {
         SystemDictEntryDO systemDictEntryDO = toEntity(jsonData, SystemDictEntryDO.class);
         if (null == systemDictEntryDO.getId()) {
             return failed("ID不能为空", Envelop.class);
+        }
+        if(StringUtils.isBlank(systemDictEntryDO.getDictCode())){
+            return failed("字典编码不能为空！",ObjEnvelop.class);
+        }if(StringUtils.isBlank(systemDictEntryDO.getCode())){
+            return failed("字典项编码不能为空！",ObjEnvelop.class);
+        }
+        if(StringUtils.isBlank(systemDictEntryDO.getSaasId())){
+            systemDictEntryDO.setSaasId(saasId);
+        }
+        if(StringUtils.isNotBlank(systemDictEntryDO.getValue())){
+            systemDictEntryDO.setPyCode(PinyinUtil.getPinYinHeadChar(systemDictEntryDO.getValue(), true));
         }
         systemDictEntryDO = systemDictEntryService.save(systemDictEntryDO);
         return success(systemDictEntryDO, SystemDictEntryVO.class);
@@ -89,7 +115,7 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
         return success(systemDictEntryDOS, count, page, size, SystemDictEntryVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.PAGE)
+    @GetMapping(value = BaseRequestMapping.SystemDictEntry.PAGE)
     @ApiOperation(value = "获取分页")
     public PageEnvelop<SystemDictEntryVO> page (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
@@ -102,12 +128,17 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
+        if (StringUtils.isBlank(filters)) {
+            filters = "saasId=" + saasId+";";
+        } else {
+            filters = "saasId=" + saasId + ";" + filters;
+        }
         List<SystemDictEntryDO> systemDictEntryDOS = systemDictEntryService.search(fields, filters, sorts, page, size);
         int count = (int)systemDictEntryService.getCount(filters);
         return success(systemDictEntryDOS, count, page, size, SystemDictEntryVO.class);
     }
 
-    @GetMapping(value = BaseRequestMapping.SystemDict.LIST)
+    @GetMapping(value = BaseRequestMapping.SystemDictEntry.LIST)
     @ApiOperation(value = "获取列表")
     public ListEnvelop<SystemDictEntryVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
@@ -116,7 +147,21 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        if (StringUtils.isBlank(filters)) {
+            filters = "saasId=" + saasId+";";
+        } else {
+            filters = "saasId=" + saasId + ";" + filters;
+        }
         List<SystemDictEntryDO> systemDictEntryDOS = systemDictEntryService.search(fields, filters, sorts);
         return success(systemDictEntryDOS, SystemDictEntryVO.class);
+    }
+
+    @GetMapping(value = BaseRequestMapping.SystemDictEntry.FINDBYID)
+    @ApiOperation(value = "根据id获取详情")
+    public ObjEnvelop<SystemDictEntryVO> getSystemDictEntryById(
+            @ApiParam(name = "dictEntryId", value = "字典项id")
+            @RequestParam(value = "dictEntryId", required = true) String dictEntryId) throws Exception {
+        SystemDictEntryDO systemDictEntryDO = systemDictEntryService.findById(dictEntryId);
+        return success(systemDictEntryDO, SystemDictEntryVO.class);
     }
 }

@@ -54,4 +54,8 @@ public class DictHealthProblemService extends BaseJpaService<DictHealthProblemDO
         return jsonObject;
     }
 
+    public void deleteById(Integer id){
+        dictHealthProblemDao.delete(id);
+    }
+
 }

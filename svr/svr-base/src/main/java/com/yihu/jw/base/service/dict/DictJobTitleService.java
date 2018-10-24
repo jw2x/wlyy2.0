@@ -52,4 +52,8 @@ public class DictJobTitleService extends BaseJpaService<DictJobTitleDO, DictJobT
         return jsonObject;
     }
 
+    public void deleteById(Integer id){
+        dictJobTitleDao.delete(id);
+    }
+
 }

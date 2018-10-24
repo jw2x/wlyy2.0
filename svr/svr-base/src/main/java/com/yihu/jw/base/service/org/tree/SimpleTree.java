@@ -18,7 +18,7 @@ public class SimpleTree implements Tree{
         SimpleTreeNode treeNode = null;
         for(TreeNode item : list){
             treeNode = new SimpleTreeNode(item);
-            treeNodesMap.put(treeNode.getNodeId(), treeNode);
+            treeNodesMap.put(treeNode.getParentNodeId() + treeNode.getNodeId(), treeNode);
         }
 
         Iterator<SimpleTreeNode> iter = treeNodesMap.values().iterator();

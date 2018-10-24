@@ -21,9 +21,12 @@ public class SimpleTreeNode {
     //节点所在的层级
     @JSONField(ordinal=5)
     private int level;
+    //节点是否被选中
+    @JSONField(ordinal=6)
+    private boolean checked;
     private SimpleTreeNode parent;
     //当前节点的二子节点
-    @JSONField(ordinal=6)
+    @JSONField(ordinal=7)
     private List<SimpleTreeNode> children = new ArrayList<>();
     //当前节点的子孙节点
     private List<SimpleTreeNode> allChildren = new ArrayList<>();
@@ -32,7 +35,7 @@ public class SimpleTreeNode {
         this.nodeId = obj.extractNodeId();
         this.nodeName = obj.extractNodeName();
         this.parentNodeId = obj.extractNodeParentId();
-//        this.orderNum = obj.extractOrderNum();
+        this.checked = obj.extractChecked();
     }
     public void addChild(SimpleTreeNode treeNode){
         this.children.add(treeNode);
@@ -81,6 +84,14 @@ public class SimpleTreeNode {
     }
     public void setOrderNum(int orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
     }
 
     public List<SimpleTreeNode> getAllChildren() {

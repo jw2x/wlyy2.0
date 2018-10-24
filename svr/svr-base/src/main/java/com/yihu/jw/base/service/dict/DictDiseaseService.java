@@ -48,4 +48,7 @@ public class DictDiseaseService extends BaseJpaService<DictDiseaseDO, DictDiseas
         jsonObject.put(SystemDictEnum.DiseaseDict.toString(),list);
         return jsonObject;
     }
+    public void deleteById(Integer id){
+        dictDiseaseDao.delete(id);
+    }
 }
