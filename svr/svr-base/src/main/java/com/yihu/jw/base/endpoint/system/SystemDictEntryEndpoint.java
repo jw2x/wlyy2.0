@@ -9,6 +9,7 @@ import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
+import com.yihu.utils.pinyin.PinyinUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -48,6 +49,9 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
         if(StringUtils.isBlank(systemDictEntryDO.getSaasId())){
             systemDictEntryDO.setSaasId(saasId);
         }
+        if(StringUtils.isNotBlank(systemDictEntryDO.getValue())){
+            systemDictEntryDO.setPyCode(PinyinUtil.getPinYinHeadChar(systemDictEntryDO.getValue(), true));
+        }
         systemDictEntryDO = systemDictEntryService.save(systemDictEntryDO);
         return success(systemDictEntryDO, SystemDictEntryVO.class);
     }
@@ -70,8 +74,16 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
         if (null == systemDictEntryDO.getId()) {
             return failed("ID不能为空", Envelop.class);
         }
+        if(StringUtils.isBlank(systemDictEntryDO.getDictCode())){
+            return failed("字典编码不能为空！",ObjEnvelop.class);
+        }if(StringUtils.isBlank(systemDictEntryDO.getCode())){
+            return failed("字典项编码不能为空！",ObjEnvelop.class);
+        }
         if(StringUtils.isBlank(systemDictEntryDO.getSaasId())){
             systemDictEntryDO.setSaasId(saasId);
+        }
+        if(StringUtils.isNotBlank(systemDictEntryDO.getValue())){
+            systemDictEntryDO.setPyCode(PinyinUtil.getPinYinHeadChar(systemDictEntryDO.getValue(), true));
         }
         systemDictEntryDO = systemDictEntryService.save(systemDictEntryDO);
         return success(systemDictEntryDO, SystemDictEntryVO.class);
@@ -117,7 +129,7 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         if (StringUtils.isBlank(filters)) {
-            filters = "saasId=" + saasId;
+            filters = "saasId=" + saasId+";";
         } else {
             filters = "saasId=" + saasId + ";" + filters;
         }
@@ -136,7 +148,7 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         if (StringUtils.isBlank(filters)) {
-            filters = "saasId=" + saasId;
+            filters = "saasId=" + saasId+";";
         } else {
             filters = "saasId=" + saasId + ";" + filters;
         }
@@ -146,8 +158,9 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.SystemDictEntry.FINDBYID)
     @ApiOperation(value = "根据id获取详情")
-    public ObjEnvelop<SystemDictEntryVO> getSystemDictEntryById(@ApiParam(name = "dictEntryId", value = "字典项id")
-                                                                @RequestParam(value = "dictEntryId", required = true) String dictEntryId) throws Exception {
+    public ObjEnvelop<SystemDictEntryVO> getSystemDictEntryById(
+            @ApiParam(name = "dictEntryId", value = "字典项id")
+            @RequestParam(value = "dictEntryId", required = true) String dictEntryId) throws Exception {
         SystemDictEntryDO systemDictEntryDO = systemDictEntryService.findById(dictEntryId);
         return success(systemDictEntryDO, SystemDictEntryVO.class);
     }

@@ -39,9 +39,11 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
     @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
     @ApiOperation(value = "删除")
     public Envelop delete(
-            @ApiParam(name = "ids", value = "id串，中间用,分隔", required = true)
-            @RequestParam(value = "ids") String ids) {
-        systemDictService.delete(ids.split(","));
+            @ApiParam(name = "dictId", value = "字典id", required = true)
+            @RequestParam(value = "dictId") String dictId,
+            @ApiParam(name = "dictType", value = "字典类型")
+            @RequestParam(value = "dictType", required = true) String dictType) throws Exception{
+        systemDictService.deleteDictByType(dictId,dictType);
         return success("删除成功");
     }
 
@@ -75,7 +77,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         if (StringUtils.isBlank(filters)) {
-            filters = "saasId=" + saasId;
+            filters = "saasId=" + saasId+";";
         } else {
             filters = "saasId=" + saasId + ";" + filters;
         }
@@ -96,7 +98,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
         if (StringUtils.isBlank(filters)) {
-            filters = "saasId=" + saasId;
+            filters = "saasId=" + saasId+";";
         } else {
             filters = "saasId=" + saasId + ";" + filters;
         }

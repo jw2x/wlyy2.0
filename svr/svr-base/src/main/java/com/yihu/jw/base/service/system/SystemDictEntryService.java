@@ -5,6 +5,7 @@ import com.yihu.jw.entity.base.system.SystemDictEntryDO;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Service - 系统字典项
@@ -18,5 +19,9 @@ public class SystemDictEntryService extends BaseJpaService<SystemDictEntryDO, Sy
 
     public SystemDictEntryDO findById(String id) {
         return systemDictEntryDao.findOne(id);
+    }
+
+    public void deleteByDictCode(String dictCode) {
+        systemDictEntryDao.deleteByDictCode(dictCode);
     }
 }

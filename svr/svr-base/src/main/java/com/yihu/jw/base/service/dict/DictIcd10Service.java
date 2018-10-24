@@ -52,5 +52,8 @@ public class DictIcd10Service extends BaseJpaService<DictIcd10DO, DictIcd10Dao> 
         jsonObject.put(SystemDictEnum.Icd10Dict.toString(),list);
         return jsonObject;
     }
+    public void deleteById(Integer id){
+        dictIcd10Dao.delete(id);
+    }
 
 }

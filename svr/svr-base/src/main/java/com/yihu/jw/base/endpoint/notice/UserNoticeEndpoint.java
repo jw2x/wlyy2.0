@@ -11,6 +11,7 @@ import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,15 +41,16 @@ public class UserNoticeEndpoint extends EnvelopRestEndpoint {
     }
 
     @GetMapping(value = BaseRequestMapping.Module.PAGE)
-    @ApiOperation(value = "获取分页")
+    @ApiOperation(value = "获取分页") 
     public PageEnvelop<UserNoticeVO> page(
-//            @ApiParam(name = "userId", value = "用户id")
-//            @RequestParam(value = "userId", required = true) String userId,
             @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
         String userId = getUID();
+        if(StringUtils.isBlank(userId)){
+            return failed("用户信息获取失败！",PageEnvelop.class);
+        }
         return userNoticeService.queryPage(page, size, userId);
     }
 
