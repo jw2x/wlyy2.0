@@ -17,10 +17,11 @@ public class SaasInterfaceParamDO extends UuidIdentityEntity {
     private String saasId;//saas_id
     private String saasInterfaceId;//接口id
     private String name;//参数名
-    private Integer paramType;//参数类型
-    private Integer dataType;//数据类型
+    private String paramType;//参数类型
+    private String dataType;//数据类型
     private Integer isRequire;//是否必填(1是，0否)
     private Integer maxLength;//最大长度
+    private Integer common;//是否公共（1是，0不是）
     private String description;//描述
     private String example;//示例
     private Integer type;//类型（1入参，2出参）
@@ -55,20 +56,20 @@ public class SaasInterfaceParamDO extends UuidIdentityEntity {
     }
 
     @Column(name = "param_type")
-    public Integer getParamType() {
+    public String getParamType() {
         return paramType;
     }
 
-    public void setParamType(Integer paramType) {
+    public void setParamType(String paramType) {
         this.paramType = paramType;
     }
 
     @Column(name = "data_type")
-    public Integer getDataType() {
+    public String getDataType() {
         return dataType;
     }
 
-    public void setDataType(Integer dataType) {
+    public void setDataType(String dataType) {
         this.dataType = dataType;
     }
 
@@ -133,5 +134,14 @@ public class SaasInterfaceParamDO extends UuidIdentityEntity {
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    @Column(name = "common")
+    public Integer getCommon() {
+        return common;
+    }
+
+    public void setCommon(Integer common) {
+        this.common = common;
     }
 }

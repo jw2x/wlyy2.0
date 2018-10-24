@@ -26,8 +26,13 @@ public class InterfaceDO extends UuidIdentityEntity {
     private Integer status;//状态（1生效中，0已失效）
     private String remark;//接口说明
     private String url;//https请求地址
+    private String requestDemo;//请求示例
+    private String responseDemo;//响应示例
+    private String errorDemo;//异常示例
 
     private List<InterfaceParamDO> entryParams;//入参
+    private List<InterfaceParamDO> commonEntryParams;//公共入参
+    private List<InterfaceParamDO> commonOutParams;//公共出参
     private List<InterfaceParamDO> outParams;//出参
     private List<InterfaceErrorCodeDO> errorCodes;//错误说明
 
@@ -121,6 +126,33 @@ public class InterfaceDO extends UuidIdentityEntity {
         this.url = url;
     }
 
+    @Column(name = "request_demo")
+    public String getRequestDemo() {
+        return requestDemo;
+    }
+
+    public void setRequestDemo(String requestDemo) {
+        this.requestDemo = requestDemo;
+    }
+
+    @Column(name = "response_demo")
+    public String getResponseDemo() {
+        return responseDemo;
+    }
+
+    public void setResponseDemo(String responseDemo) {
+        this.responseDemo = responseDemo;
+    }
+
+    @Column(name = "error_demo")
+    public String getErrorDemo() {
+        return errorDemo;
+    }
+
+    public void setErrorDemo(String errorDemo) {
+        this.errorDemo = errorDemo;
+    }
+
     @Transient
     public List<InterfaceParamDO> getEntryParams() {
         return entryParams;
@@ -146,5 +178,23 @@ public class InterfaceDO extends UuidIdentityEntity {
 
     public void setErrorCodes(List<InterfaceErrorCodeDO> errorCodes) {
         this.errorCodes = errorCodes;
+    }
+
+    @Transient
+    public List<InterfaceParamDO> getCommonEntryParams() {
+        return commonEntryParams;
+    }
+
+    public void setCommonEntryParams(List<InterfaceParamDO> commonEntryParams) {
+        this.commonEntryParams = commonEntryParams;
+    }
+
+    @Transient
+    public List<InterfaceParamDO> getCommonOutParams() {
+        return commonOutParams;
+    }
+
+    public void setCommonOutParams(List<InterfaceParamDO> commonOutParams) {
+        this.commonOutParams = commonOutParams;
     }
 }

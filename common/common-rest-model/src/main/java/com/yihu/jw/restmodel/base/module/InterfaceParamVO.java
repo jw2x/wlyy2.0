@@ -15,13 +15,15 @@ public class InterfaceParamVO extends UuidIdentityVO {
     @ApiModelProperty(value = "参数名", example = "user")
     private String name;
     @ApiModelProperty(value = "参数类型", example = "HEADER")
-    private Integer paramType;
+    private String paramType;
     @ApiModelProperty(value = "数据类型", example = "VERCHAR")
-    private Integer dataType;
+    private String dataType;
     @ApiModelProperty(value = "是否必填(1是，0否)", example = "1")
     private Integer isRequire;
     @ApiModelProperty(value = "最大长度", example = "1")
     private Integer maxLength;
+    @ApiModelProperty(value = "是否公共（1是，0不是）", example = "1")
+    private Integer common;
     @ApiModelProperty(value = "描述", example = "")
     private String description;
     @ApiModelProperty(value = "示例", example = "")
@@ -49,19 +51,19 @@ public class InterfaceParamVO extends UuidIdentityVO {
         this.name = name;
     }
 
-    public Integer getParamType() {
+    public String getParamType() {
         return paramType;
     }
 
-    public void setParamType(Integer paramType) {
+    public void setParamType(String paramType) {
         this.paramType = paramType;
     }
 
-    public Integer getDataType() {
+    public String getDataType() {
         return dataType;
     }
 
-    public void setDataType(Integer dataType) {
+    public void setDataType(String dataType) {
         this.dataType = dataType;
     }
 
@@ -119,5 +121,13 @@ public class InterfaceParamVO extends UuidIdentityVO {
 
     public void setDel(Integer del) {
         this.del = del;
+    }
+
+    public Integer getCommon() {
+        return common;
+    }
+
+    public void setCommon(Integer common) {
+        this.common = common;
     }
 }

@@ -15,7 +15,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public class SaasInterfaceEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private ErrorCodeUtil errorCodeUtil;
 
-    @PostMapping(value = BaseRequestMapping.SaasInterface.CREATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasInterface.CREATE)
     @ApiOperation(value = "创建")
     public ObjEnvelop<SaasInterfaceVO> create (
             @ApiParam(name = "jsonData", value = "Json数据", required = true)
@@ -75,7 +74,7 @@ public class SaasInterfaceEndpoint extends EnvelopRestEndpoint {
         return success("删除成功");
     }
 
-    @PostMapping(value = BaseRequestMapping.SaasInterface.UPDATE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = BaseRequestMapping.SaasInterface.UPDATE)
     @ApiOperation(value = "更新")
     public ObjEnvelop<SaasInterfaceVO> update (
             @ApiParam(name = "jsonData", value = "Json数据", required = true)
