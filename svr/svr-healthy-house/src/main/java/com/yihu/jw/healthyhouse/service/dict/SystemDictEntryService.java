@@ -89,9 +89,22 @@ public class SystemDictEntryService extends BaseJpaService<SystemDictEntry, Syst
      * 根据字典id获取字典项编码和值
      */
     public List getDictEntryCodeAndValueByDictId(String dict_id) {
-        String sql = "SELECT code,value FROM system_dict_entries where dict_id=:dict_id";
+        String pcode = UserConstant.DEFAULT_PARENTID;
+        String sql = "SELECT code,value FROM system_dict_entries where dict_id=:dict_id AND pcode =:pcode";
         SQLQuery sqlQuery = currentSession().createSQLQuery(sql);
         sqlQuery.setParameter("dict_id", dict_id);
+        sqlQuery.setParameter("pcode", pcode);
+        return sqlQuery.list();
+    }
+    /**
+     * 根据字典id获取字典项编码和值
+     */
+    public List getDictEntryCodeAndValueByDictIdAndPcode(String dict_id) {
+        String pcode = UserConstant.DEFAULT_PARENTID;
+        String sql = "SELECT code,value FROM system_dict_entries where dict_id=:dict_id  AND pcode !=:pcode ";
+        SQLQuery sqlQuery = currentSession().createSQLQuery(sql);
+        sqlQuery.setParameter("dict_id", dict_id);
+        sqlQuery.setParameter("pcode", pcode);
         return sqlQuery.list();
     }
 
@@ -134,4 +147,6 @@ public class SystemDictEntryService extends BaseJpaService<SystemDictEntry, Syst
         }
         return list;
     }
+
+
 }
