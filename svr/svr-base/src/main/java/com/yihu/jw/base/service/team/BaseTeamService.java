@@ -5,8 +5,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yihu.jw.base.dao.team.BaseTeamDao;
 import com.yihu.jw.base.dao.team.BaseTeamMemberDao;
+import com.yihu.jw.base.service.dict.DictHospitalDeptService;
+import com.yihu.jw.base.service.doctor.BaseDoctorService;
+import com.yihu.jw.base.service.org.OrgTree;
 import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
+import com.yihu.jw.entity.base.dict.DictHospitalDeptDO;
 import com.yihu.jw.entity.base.doctor.BaseDoctorDO;
 import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
 import com.yihu.jw.entity.base.doctor.BaseDoctorRoleDO;
@@ -50,6 +54,12 @@ public class BaseTeamService extends BaseJpaService<BaseTeamDO, BaseTeamDao> {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private BaseDoctorService baseDoctorService;
+
+    @Autowired
+    private DictHospitalDeptService dictHospitalDeptService;
 
     /**
      * 新增团队
@@ -184,6 +194,78 @@ public class BaseTeamService extends BaseJpaService<BaseTeamDO, BaseTeamDao> {
         teamInfo.put("team",teamDOList.get(0));
         teamInfo.put("teamMember",members);
         result.put("msg",teamInfo);
+        return result;
+    }
+
+
+    /**
+     * 生成 机构/科室/医生 树形结构
+     */
+    public JSONObject generateOneOrgDeptDoctorTree(String orgCode,String orgName) throws Exception {
+        JSONObject result = new JSONObject();
+        if(org.springframework.util.StringUtils.isEmpty(orgCode) || StringUtils.isEmpty(orgName) ){
+            result.put("msg","parameter orgCode or orgName is not allowed to be null");
+            result.put("response", ConstantUtils.FAIL);
+            return result;
+        }
+        //获取该机构下的科室列表
+        List<DictHospitalDeptDO> deptList = dictHospitalDeptService.findDeptByOrgCode(orgCode);
+        StringBuilder sb = new StringBuilder();
+        deptList.forEach(one -> sb.append(one.getCode()).append(","));
+        //获取该机构下的医生列表
+        String sql = " SELECT " +
+                "  hos.doctor_code AS doctorCode," +
+                "  doc.name AS doctorName," +
+                "  org.code  AS orgCode," +
+                "  org.name     AS orgName," +
+                "  dept.code    AS deptCode," +
+                "  dept.name    AS deptName" +
+                " FROM " +
+                "  base_doctor_hospital hos," +
+                "  dict_hospital_dept dept," +
+                "  base_org org," +
+                "  base_doctor doc" +
+                " WHERE " +
+                "  hos.doctor_code = doc.id AND" +
+                "  hos.org_code = org.code AND" +
+                "  hos.org_code = dept.org_code AND" +
+                "  hos.dept_code = dept.code AND hos.org_code = '" + orgCode +"'";
+
+        List<Map<String,Object>> doctorList = jdbcTemplate.queryForList(sql);
+        Map<String,Map<String,Object>> deptDoctorMap = new HashMap<>();
+        for(Map<String,Object> doctorMap : doctorList){
+            String deptCode = String.valueOf(deptDoctorMap.get("deptCode"));
+            if(deptDoctorMap.containsKey(deptCode)){
+                deptDoctorMap.get(deptCode).putAll(doctorMap);
+            }else{
+                deptDoctorMap.put(deptCode,doctorMap);
+            }
+        }
+        List<OrgTree> orgTreeList = new ArrayList<>();
+        // 循环科室医生，组装tree结构
+        for(String key : deptDoctorMap.keySet()){
+            OrgTree deptTree = new OrgTree();
+            deptTree.setParentCode(orgCode);
+            deptTree.setCode(String.valueOf(deptDoctorMap.get(key).get("deptCode")));
+            deptTree.setCode(String.valueOf(deptDoctorMap.get(key).get("deptName")));
+
+            OrgTree doctorTree = new OrgTree();
+            deptTree.setParentCode(String.valueOf(deptDoctorMap.get(key).get("deptCode")));
+            deptTree.setCode(String.valueOf(deptDoctorMap.get(key).get("doctorCode")));
+            deptTree.setCode(String.valueOf(deptDoctorMap.get(key).get("doctorName")));
+
+            orgTreeList.add(deptTree);
+            orgTreeList.add(doctorTree);
+        }
+
+        OrgTree orgTree = new OrgTree();
+        orgTree.setCode(orgCode);
+        orgTree.setName(orgName);
+
+        orgTreeList.add(orgTree);
+
+        result.put("response", ConstantUtils.SUCCESS);
+        result.put("msg",objectMapper.readValue(baseDoctorService.makeTree(orgTreeList),JSONArray.class));
         return result;
     }
 }
