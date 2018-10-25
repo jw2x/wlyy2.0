@@ -131,6 +131,9 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         userDO.setMobile(saas.getMobile());
         userDO.setName(saas.getManagerName());
         userDO.setUsername(userDO.getEmail());
+        userDO.setAk("access_key");
+        userDO.setGender(UserDO.Gender.male);
+        userDO.setLoginFailureCount(0);
 
         saasAudit(saas, userDO);
         send(saas);
