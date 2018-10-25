@@ -12,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  *系统字典项。
@@ -46,6 +47,7 @@ public class SystemDictEntry implements Serializable {
     protected String updateUser;
     //更新者
     protected String updateUserName;
+    public List<SystemDictEntry> systemDictEntryChildrenList;
 
     public SystemDictEntry(){
     }
@@ -171,5 +173,14 @@ public class SystemDictEntry implements Serializable {
 
     public void setUpdateUserName(String updateUserName) {
         this.updateUserName = updateUserName;
+    }
+
+    @Transient
+    public List<SystemDictEntry> getSystemDictEntryChildrenList() {
+        return systemDictEntryChildrenList;
+    }
+
+    public void setSystemDictEntryChildrenList(List<SystemDictEntry> systemDictEntryChildrenList) {
+        this.systemDictEntryChildrenList = systemDictEntryChildrenList;
     }
 }

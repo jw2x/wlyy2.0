@@ -28,7 +28,7 @@ public class MapUtil {
 
     public static void main(String[] args) {
         double distance = getDistance(118.191839, 24.49555, 118.15639977090478000000, 24.48613312327105300000);
-        System.out.println(distance);
+//        System.out.println(distance);
     }
 
 }

@@ -108,7 +108,6 @@ public class ActivatedInterceptor {
         }
 
         String userId = request.getHeader("userId");
-        System.out.println(userId);
         if (userId == null) {
             response.setStatus(402);
             return joinPoint.proceed();

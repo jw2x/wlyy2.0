@@ -36,5 +36,7 @@ public interface SystemDictEntryDao extends JpaRepository<SystemDictEntry, DictE
     @Query("select max(entry.sort) from SystemDictEntry entry where entry.dictId = :dictId")
     Integer getNextEntrySN(@Param("dictId") String dictId);
 
+    List<SystemDictEntry> findAllByDictId(String dictId);
+
 }
 

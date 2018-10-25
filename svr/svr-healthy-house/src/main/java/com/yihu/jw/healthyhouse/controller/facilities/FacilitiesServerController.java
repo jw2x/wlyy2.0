@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,21 +156,25 @@ public class FacilitiesServerController extends EnvelopRestEndpoint {
 
     @ApiOperation(value = "app按照分类获取-设施服务列表", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.FacilitiesServer.LIST_FACILITIESERVERS_BY_TYPE)
-    public ObjEnvelop<Map> getFacilitiesServerByType() throws Exception {
-        Map<String, List<FacilityServer>> map = new HashMap<>();
+    public ListEnvelop<Map> getFacilitiesServerByType() throws Exception {
+        List<Map> mapList=new ArrayList<>();
+        Map<String, Object> map ;
         List<FacilityServer> facilityServerList;
         //获取系统字典-设施服务类型
-        List<SystemDictEntry> systemDictEntryList = systemDictEntryService.getDictEntryCodeAndValueByDictId(SystemDictConstant.FACILITIE_SERVERS_TYPE_DICT_ID);
+        List<SystemDictEntry> systemDictEntryList = systemDictEntryService.getDictEntryCodeAndValueByDictIdAndPcode(SystemDictConstant.FACILITIE_SERVERS_TYPE_DICT_ID);
         for (Object object : systemDictEntryList) {
             Object[] obj=(Object[])object;
             if(null!=obj[0]&&StringUtils.isNotEmpty(obj[0].toString()) ){
+                map = new HashMap<>();
                 String filters = "type=" + obj[0].toString();
                 facilityServerList = facilityServerService.search("", filters, "");
+                map.put("name",null==obj[1]?"":obj[1].toString());
                 map.put(obj[0].toString(), facilityServerList);
+                mapList.add(map);
             }
 
         }
-        return success(map);
+        return success("success",mapList);
     }
 
 
