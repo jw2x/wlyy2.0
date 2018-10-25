@@ -255,7 +255,6 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
             for(Object object : role){
                 baseDoctorRoleDO = objectMapper.readValue(object.toString(),BaseDoctorRoleDO.class);
                 baseDoctorRoleDO.setDoctorCode(baseDoctorDO.getId());
-                baseDoctorRoleDO.setDel(baseDoctorDO.getDel());
                 baseDoctorRoleDOList.add(baseDoctorRoleDO);
             }
         } catch (IOException e) {
@@ -339,14 +338,15 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
                         roleIdList.remove(baseDoctorRoleDO.getId());
                     }
                     baseDoctorRoleDO.setDoctorCode(baseDoctorDO.getId());
-                    baseDoctorRoleDO.setDel(baseDoctorDO.getDel());
                     baseDoctorRoleService.save(baseDoctorRoleDO);
                 }
             } catch (IOException e) {
                 result.put("msg","convert hospital jsonObject to baseDoctorHospitalDO failed," + e.getCause());
                 result.put("response",ConstantUtils.FAIL);
             }
-            baseDoctorRoleService.delete(roleIdList.toArray());
+            if(roleIdList.size() > 0){
+                baseDoctorRoleService.delete(roleIdList.toArray());
+            }
         }
 
 
@@ -367,7 +367,9 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
                  result.put("msg","convert hospital jsonObject to baseDoctorHospitalDO failed," + e.getCause());
                  result.put("response",ConstantUtils.FAIL);
              }
-             baseDoctorHospitalService.delete(hospitalIdList.toArray());
+             if(hospitalIdList.size() > 0){
+                 baseDoctorHospitalService.delete(hospitalIdList.toArray());
+             }
          }
 
         result.put("response",ConstantUtils.SUCCESS);
@@ -401,7 +403,7 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
     }
 
     /**
-     * 获取医生已选中的区县/机构列表，当有机构是被选中时，要标有checked=true的状态前端加载生成树形机构，
+     * 获取医生已选中的区县/机构列表，当有机构是被选中时，要标有checked=true的状态，由前端加载生成树形机构，
      * @param doctorCode
      * @return
      */
@@ -421,10 +423,10 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
         }
         Map<String,Map<String, Object>> orgCodeMap = new HashMap<>();
         list.forEach( one-> orgCodeMap.put(String.valueOf(one.get("code")),one));
-        List<BaseDoctorHospitalDO> selectedList = baseDoctorHospitalService.getOrgAndDutyListByDoctorCode(doctorCode);
-        for(BaseDoctorHospitalDO one : selectedList){
-            if(orgCodeMap.containsKey(one.getOrgCode())){
-                orgCodeMap.get(one.getOrgCode()).put("checked",true);
+        List<Map<String,Object>> selectedList = baseDoctorHospitalService.getOrgAndDutyListByDoctorCode(doctorCode);
+        for(Map<String,Object> one : selectedList){
+            if(orgCodeMap.containsKey(one.get("orgCode"))){
+                orgCodeMap.get(one.get("orgCode")).put("checked",true);
             }
         }
         result.put("response", ConstantUtils.SUCCESS);
@@ -434,7 +436,7 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
 
 
     /**
-     * 获取医生已选中的机构/职务树形结构,当有机构是被选中时，要标有checked=true的状态
+     * 获取医生已选中的机构/职务树形结构,当有机构是被选中时，要标有checked=true的状态，生成树形结构，前端直接获取
      * @param doctorCode
      * @return
      */
@@ -445,26 +447,26 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
             result.put("response", ConstantUtils.FAIL);
             return result;
         }
-        List<DictDoctorDutyDO> dutyDOList = dictDoctorDutyService.search(null);
+        List<DictDoctorDutyDO> dutyDOList = dictDoctorDutyService.search(null,"-name");
 
-        List<BaseDoctorHospitalDO> selectedDutylist = baseDoctorHospitalService.getOrgAndDutyListByDoctorCode(doctorCode);
+        List<Map<String,Object>> selectedDutylist = baseDoctorHospitalService.getOrgAndDutyListByDoctorCode(doctorCode);
         Set<String> selectedDutySet = new HashSet<>();
-        selectedDutylist.forEach( one -> selectedDutySet.add(one.getOrgCode()+one.getDoctorDutyCode()) );
+        selectedDutylist.forEach( one -> selectedDutySet.add(String.valueOf(one.get("orgCode"))+one.get("doctorDutyCode")));
 
         List<OrgTree> orgTreeList = new ArrayList<>();
-        for(BaseDoctorHospitalDO one : selectedDutylist){
+        for(Map<String,Object> one : selectedDutylist){
             OrgTree orgTreeParent = new OrgTree();
             orgTreeParent.setParentCode("");
-            orgTreeParent.setCode(one.getOrgCode());
-            orgTreeParent.setName(one.getOrgName());
+            orgTreeParent.setCode(String.valueOf(one.get("orgCode")));
+            orgTreeParent.setName(String.valueOf(one.get("orgName")));
             orgTreeList.add(orgTreeParent);
 
             for(DictDoctorDutyDO dictDoctorDutyDO :dutyDOList){
                 OrgTree orgTreeChild = new OrgTree();
-                orgTreeChild.setParentCode(one.getOrgCode());
+                orgTreeChild.setParentCode(String.valueOf(one.get("orgCode")));
                 orgTreeChild.setCode(dictDoctorDutyDO.getCode());
                 orgTreeChild.setName(dictDoctorDutyDO.getName());
-                if(selectedDutySet.contains(one.getOrgCode()+dictDoctorDutyDO.getCode())){
+                if(selectedDutySet.contains(String.valueOf(one.get("orgCode"))+dictDoctorDutyDO.getCode())){
                     orgTreeParent.setChecked(true);
                     orgTreeChild.setChecked(true);
                 }
@@ -472,12 +474,13 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
             }
         }
         result.put("response", ConstantUtils.SUCCESS);
-        result.put("msg", objectMapper.readValue(makeTree(orgTreeList),JSONArray.class));
+        // 不同医院职务可以相同
+        result.put("msg", objectMapper.readValue(makeTree(orgTreeList,true),JSONArray.class));
         return result;
     }
 
     /**
-     * 获取医生已选中的机构/科室树形结构
+     * 获取医生已选中的机构/科室树形结构,当有机构是被选中时，要标有checked=true的状态，生成树形结构，前端直接获取
      * @param doctorCode
      * @return
      */
@@ -488,7 +491,28 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
             result.put("response", ConstantUtils.FAIL);
             return result;
         }
-        String deptSql = "select" +
+
+        //医生已选中的机构的里的科室列表
+        String orgDeptSql = "SELECT" +
+                "  org.code AS orgCode," +
+                "  org.name     AS orgName," +
+                "  dept.code    AS deptCode," +
+                "  dept.name    AS deptName" +
+                " FROM" +
+                "  base_org org," +
+                "  dict_hospital_dept dept" +
+                " WHERE" +
+                "  dept.org_code = org.code" +
+                "  AND" +
+                "  dept.org_code" +
+                "  in (" +
+                "    SELECT DISTINCT hos.org_code from" +
+                "      base_doctor_hospital hos where hos.doctor_code = '" + doctorCode + "'" +
+                "  ) ORDER BY dept.name";
+        List<Map<String,Object>> deptList = jdbcTemplate.queryForList(orgDeptSql);
+
+        //医生已选中的机构的里的所在科室
+        String doctorSelectedDeptSql = "select" +
                 "  hos.doctor_code ," +
                 "  hos.org_code as orgCode," +
                 "  org.name as orgName," +
@@ -501,37 +525,39 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
                 " where" +
                 "  hos.org_code = org.code" +
                 "  and" +
-                "  hos.org_code = dept.org_code";
-
-        String doctorSelectedDeptSql = deptSql + " and  hos.dept_code = dept.code and hos.doctor_code = '{doctorCode}'";
+                "  hos.org_code = dept.org_code" +
+                " and  hos.dept_code = dept.code and hos.doctor_code = '" + doctorCode + "' " +
+                "  ORDER BY dept.name";
         List<Map<String,Object>> selectedDeptlist = jdbcTemplate.queryForList(doctorSelectedDeptSql.replace("{doctorCode}",doctorCode));
-        List<Map<String,Object>> deptList = jdbcTemplate.queryForList(deptSql);
 
         Set<String> selectedDeptCodeSet = new HashSet<>();
-        selectedDeptlist.forEach( one -> selectedDeptCodeSet.add(String.valueOf(one.get("orgCode")) + String.valueOf(one.get("deptCode"))));
-
         List<OrgTree> orgTreeList = new ArrayList<>();
-        for(Map<String,Object> one : selectedDeptlist){
+        selectedDeptlist.forEach(one -> {
+            selectedDeptCodeSet.add(String.valueOf(one.get("orgCode")) + String.valueOf(one.get("deptCode")));
+            //机构树
             OrgTree orgTreeParent = new OrgTree();
             orgTreeParent.setParentCode("");
             orgTreeParent.setCode(String.valueOf(one.get("orgCode")));
             orgTreeParent.setName(String.valueOf(one.get("orgName")));
             orgTreeList.add(orgTreeParent);
+            //本身就是加载已经选中了的机构，所以机构状态为true
+            orgTreeParent.setChecked(true);
+        });
 
-            for(Map<String,Object> dept :deptList){
-                OrgTree orgTreeChild = new OrgTree();
-                orgTreeChild.setParentCode(String.valueOf(dept.get("orgCode")));
-                orgTreeChild.setCode(String.valueOf(dept.get("deptCode")));
-                orgTreeChild.setName(String.valueOf(dept.get("deptName")));
-                orgTreeList.add(orgTreeChild);
-                if(selectedDeptCodeSet.contains(String.valueOf(dept.get("orgCode")) + dept.get("deptCode"))){
-                    orgTreeParent.setChecked(true);
-                    orgTreeChild.setChecked(true);
-                }
+        //科室树
+        for (Map<String, Object> dept : deptList) {
+            OrgTree orgTreeChild = new OrgTree();
+            orgTreeChild.setParentCode(String.valueOf(dept.get("orgCode")));
+            orgTreeChild.setCode(String.valueOf(dept.get("deptCode")));
+            orgTreeChild.setName(String.valueOf(dept.get("deptName")));
+            orgTreeList.add(orgTreeChild);
+            if (selectedDeptCodeSet.contains(String.valueOf(dept.get("orgCode")) + dept.get("deptCode"))) {
+                orgTreeChild.setChecked(true);
             }
         }
         result.put("response", ConstantUtils.SUCCESS);
-        result.put("msg",objectMapper.readValue(makeTree(orgTreeList),JSONArray.class));
+        //不同医院科室可以相同
+        result.put("msg",objectMapper.readValue(makeTree(orgTreeList,true),JSONArray.class));
         return result;
     }
 
@@ -539,10 +565,10 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
      * 构建树形结构
      * @return
      */
-    public String makeTree(List<OrgTree> orgTreeList ){
+    public String makeTree(List<OrgTree> orgTreeList,boolean isAllowedRepeat){
         List<TreeNode> treeNodes = new ArrayList<>();
         treeNodes.addAll(orgTreeList);
-        SimpleTree tree = new SimpleTree(treeNodes);
+        SimpleTree tree = new SimpleTree(treeNodes,isAllowedRepeat);
         List<SimpleTreeNode> treeNode = tree.getRoot();
         SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
         filter.getExcludes().add("parent");
@@ -646,9 +672,9 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
                         dictJobTitleDO = jobTitleDao.findByCode(roleCode);
                         baseDoctorRoleDO = new BaseDoctorRoleDO();
                         baseDoctorRoleDO.setDoctorCode(baseDoctorDO.getId());
-                        baseDoctorRoleDO.setRoleModuleCode(dictJobTitleDO.getCode());
-                        baseDoctorRoleDO.setName(dictJobTitleDO.getName());
-                        baseDoctorRoleDO.setDel("1");
+//                        baseDoctorRoleDO.setRoleModuleCode(dictJobTitleDO.getCode());
+//                        baseDoctorRoleDO.setName(dictJobTitleDO.getName());
+//                        baseDoctorRoleDO.setDel("1");
                         baseDoctorRoleDOList.add(baseDoctorRoleDO);
                     }
                     baseDoctorRoleService.batchInsert(baseDoctorRoleDOList);

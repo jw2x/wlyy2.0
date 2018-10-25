@@ -201,17 +201,36 @@ public class BaseTeamService extends BaseJpaService<BaseTeamDO, BaseTeamDao> {
     /**
      * 生成 机构/科室/医生 树形结构
      */
-    public JSONObject generateOneOrgDeptDoctorTree(String orgCode,String orgName) throws Exception {
+    public JSONObject generateOneOrgDeptDoctorTree(String jsonData) throws Exception {
+        JSONObject jsonObject = JSONObject.parseObject(jsonData);
         JSONObject result = new JSONObject();
-        if(org.springframework.util.StringUtils.isEmpty(orgCode) || StringUtils.isEmpty(orgName) ){
+        String orgCode = jsonObject.getString("orgCode");
+        String orgName = jsonObject.getString("orgName");
+        if(StringUtils.isEmpty(orgCode) || StringUtils.isEmpty(orgName)){
             result.put("msg","parameter orgCode or orgName is not allowed to be null");
             result.put("response", ConstantUtils.FAIL);
             return result;
         }
+
+        List<OrgTree> orgTreeList = new ArrayList<>();
+
+        OrgTree orgTree = new OrgTree();
+        orgTree.setParentCode("");
+        orgTree.setCode(orgCode);
+        orgTree.setName(orgName);
+
+        orgTreeList.add(orgTree);
+
         //获取该机构下的科室列表
         List<DictHospitalDeptDO> deptList = dictHospitalDeptService.findDeptByOrgCode(orgCode);
-        StringBuilder sb = new StringBuilder();
-        deptList.forEach(one -> sb.append(one.getCode()).append(","));
+        deptList.forEach(one -> {
+            OrgTree deptTree = new OrgTree();
+            deptTree.setParentCode(orgCode);
+            deptTree.setCode(one.getCode());
+            deptTree.setName(one.getName());
+            orgTreeList.add(deptTree);
+        });
+
         //获取该机构下的医生列表
         String sql = " SELECT " +
                 "  hos.doctor_code AS doctorCode," +
@@ -234,38 +253,32 @@ public class BaseTeamService extends BaseJpaService<BaseTeamDO, BaseTeamDao> {
         List<Map<String,Object>> doctorList = jdbcTemplate.queryForList(sql);
         Map<String,Map<String,Object>> deptDoctorMap = new HashMap<>();
         for(Map<String,Object> doctorMap : doctorList){
-            String deptCode = String.valueOf(deptDoctorMap.get("deptCode"));
+            String deptCode = String.valueOf(doctorMap.get("deptCode"));
             if(deptDoctorMap.containsKey(deptCode)){
                 deptDoctorMap.get(deptCode).putAll(doctorMap);
             }else{
                 deptDoctorMap.put(deptCode,doctorMap);
             }
         }
-        List<OrgTree> orgTreeList = new ArrayList<>();
+
         // 循环科室医生，组装tree结构
         for(String key : deptDoctorMap.keySet()){
             OrgTree deptTree = new OrgTree();
             deptTree.setParentCode(orgCode);
             deptTree.setCode(String.valueOf(deptDoctorMap.get(key).get("deptCode")));
-            deptTree.setCode(String.valueOf(deptDoctorMap.get(key).get("deptName")));
+            deptTree.setName(String.valueOf(deptDoctorMap.get(key).get("deptName")));
 
             OrgTree doctorTree = new OrgTree();
-            deptTree.setParentCode(String.valueOf(deptDoctorMap.get(key).get("deptCode")));
-            deptTree.setCode(String.valueOf(deptDoctorMap.get(key).get("doctorCode")));
-            deptTree.setCode(String.valueOf(deptDoctorMap.get(key).get("doctorName")));
+            doctorTree.setParentCode(String.valueOf(deptDoctorMap.get(key).get("deptCode")));
+            doctorTree.setCode(String.valueOf(deptDoctorMap.get(key).get("doctorCode")));
+            doctorTree.setName(String.valueOf(deptDoctorMap.get(key).get("doctorName")));
 
             orgTreeList.add(deptTree);
             orgTreeList.add(doctorTree);
         }
 
-        OrgTree orgTree = new OrgTree();
-        orgTree.setCode(orgCode);
-        orgTree.setName(orgName);
-
-        orgTreeList.add(orgTree);
-
         result.put("response", ConstantUtils.SUCCESS);
-        result.put("msg",objectMapper.readValue(baseDoctorService.makeTree(orgTreeList),JSONArray.class));
+        result.put("msg",objectMapper.readValue(baseDoctorService.makeTree(orgTreeList,false),JSONArray.class));
         return result;
     }
 }

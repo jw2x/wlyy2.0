@@ -411,8 +411,14 @@ public class BaseRequestMapping {
     /**
      * 医生角色字典
      */
-    public static class BaseDoctorRoleDict extends Basic {
-        public static final String PREFIX  = "/baseDoctorRoleDict";
+    public static class BaseDoctorRoleInfo extends Basic {
+        public static final String PREFIX  = "/baseDoctorRoleInfo";
+    }
+/**
+     * 医生模块角色关联表
+     */
+    public static class BaseModuleRole extends Basic {
+        public static final String PREFIX  = "/baseModuleRole";
     }
 
  /**
@@ -480,6 +486,7 @@ public class BaseRequestMapping {
         public static final String PREFIX  = "/baseTeam";
         public static final String queryMemberList  = "/queryMemberList";
         public static final String queryOne  = "/getTeamById";
+        public static final String getTeamTree  = "/getTeamTree";
     }
 
 

@@ -9,8 +9,8 @@ public class SimpleTree implements Tree{
     private HashMap<String, SimpleTreeNode> treeNodesMap = new HashMap<String, SimpleTreeNode>();
     private List<SimpleTreeNode> treeNodesList = new ArrayList<SimpleTreeNode>();
 
-    public SimpleTree(List<TreeNode> list){
-        initTreeNodeMap(list);
+    public SimpleTree(List<TreeNode> list,boolean isAllowedRepeat){
+        initTreeNodeMap(list,isAllowedRepeat);
         initTreeNodeList();
     }
 
@@ -43,11 +43,16 @@ public class SimpleTree implements Tree{
         }
     }
 
-    private void initTreeNodeMap(List<TreeNode> list){
+    private void initTreeNodeMap(List<TreeNode> list,boolean isAllowedRepeat){
         SimpleTreeNode treeNode = null;
         for(TreeNode item : list){
             treeNode = new SimpleTreeNode(item);
-            treeNodesMap.put(treeNode.getParentNodeId() + treeNode.getNodeId(), treeNode);
+            if(isAllowedRepeat){
+                treeNodesMap.put(treeNode.getParentNodeId() + treeNode.getNodeId(), treeNode);
+            }else{
+                treeNodesMap.put(treeNode.getNodeId(), treeNode);
+            }
+
         }
 
         Iterator<SimpleTreeNode> iter = treeNodesMap.values().iterator();
