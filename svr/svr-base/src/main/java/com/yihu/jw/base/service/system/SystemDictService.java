@@ -91,6 +91,8 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
 
         } else if (SystemDictEnum.DiseaseDict == SystemDictEnum.valueOf(type)) {
             jsonObject = dictDiseaseService.queryAll(saasId, createPage(page, size, sorts));
+        } else {
+            jsonObject = this.queryAll(saasId, createPage(page, size, sorts));
         }
         jsonArray.add(jsonObject);
         return jsonArray;
@@ -286,7 +288,9 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
         long count = 0;
         if (SystemDictEnum.Icd10Dict == SystemDictEnum.valueOf(type)) {
             DictIcd10DO dictIcd10DO = objectMapper.readValue(json, DictIcd10DO.class);
-            dictIcd10DO.setSaasId(saasId);
+            if(StringUtils.isBlank(dictIcd10DO.getSaasId())){
+                dictIcd10DO.setSaasId(saasId);
+            }
             dictIcd10Service.save(dictIcd10DO);
         } else if (SystemDictEnum.HospitalDeptDict == SystemDictEnum.valueOf(type)) {
             //科室只与机构有关。
@@ -295,22 +299,30 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
         } else if (SystemDictEnum.JobTitleDict == SystemDictEnum.valueOf(type)) {
 
             DictJobTitleDO dictJobTitleDO = objectMapper.readValue(json, DictJobTitleDO.class);
-            dictJobTitleDO.setSaasId(saasId);
+            if(StringUtils.isBlank(dictJobTitleDO.getSaasId())){
+                dictJobTitleDO.setSaasId(saasId);
+            }
             dictJobTitleService.save(dictJobTitleDO);
 
         } else if (SystemDictEnum.HealthProblemDict == SystemDictEnum.valueOf(type)) {
             DictHealthProblemDO dictHealthProblemDO = objectMapper.readValue(json, DictHealthProblemDO.class);
-            dictHealthProblemDO.setSaasId(saasId);
+            if(StringUtils.isBlank(dictHealthProblemDO.getSaasId())){
+                dictHealthProblemDO.setSaasId(saasId);
+            }
             dictHealthProblemService.save(dictHealthProblemDO);
 
         } else if (SystemDictEnum.MedicineDict == SystemDictEnum.valueOf(type)) {
             DictMedicineDO dictMedicineDO = objectMapper.readValue(json, DictMedicineDO.class);
-            dictMedicineDO.setSaasId(saasId);
+            if(StringUtils.isBlank(dictMedicineDO.getSaasId())){
+                dictMedicineDO.setSaasId(saasId);
+            }
             dictMedicineService.save(dictMedicineDO);
 
         } else if (SystemDictEnum.DiseaseDict == SystemDictEnum.valueOf(type)) {
             DictDiseaseDO dictDiseaseDO = objectMapper.readValue(json, DictDiseaseDO.class);
-            dictDiseaseDO.setSaasId(saasId);
+            if(StringUtils.isBlank(dictDiseaseDO.getSaasId())){
+                dictDiseaseDO.setSaasId(saasId);
+            }
             dictDiseaseService.save(dictDiseaseDO);
         } else {
             SystemDictDO systemDictDO = objectMapper.readValue(json, SystemDictDO.class);
@@ -321,7 +333,9 @@ public class SystemDictService extends BaseJpaService<SystemDictDO, SystemDictDa
                 systemDictDO.setPyCode(PinyinUtil.getPinYinHeadChar(systemDictDO.getName(), true));
             }
             systemDictDO.setType(SystemDictDO.Type.basic);
-            systemDictDO.setSaasId(saasId);
+            if(StringUtils.isBlank(systemDictDO.getSaasId())){
+                systemDictDO.setSaasId(saasId);
+            }
             this.save(systemDictDO);
         }
         result.put("response", ConstantUtils.SUCCESS);

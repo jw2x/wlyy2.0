@@ -382,6 +382,19 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         saas.setAppSecret(getCode());
         saas = saasDao.save(saas);
         String saasId = saas.getId();
+
+        //字典配置（由于需要支持租户对字典的crud，目前考虑直接复制一套字典给租户单独使用）
+//        List<SystemDictDO> systemDictDOList = systemDictDao.findBySaasId(defaultSaasId);
+//        List<SystemDictDO> dictDOList = new ArrayList<>(systemDictDOList.size());
+//        systemDictDOList.forEach(dict->{
+//            SystemDictDO systemDictDO = new SystemDictDO();
+//            systemDictDO.setSaasId(saasId);
+//            systemDictDO.setName(dict.getName());
+//            systemDictDO.setCode(dict.getCode());
+//            systemDictDO.setPyCode(dict.getPyCode());
+//            systemDictDO.setType(dict.getType());
+//            dictDOList.add(systemDictDO);
+//        });
         //系统字典项
         List<SystemDictEntryDO> systemDictEntryDOList = systemDictEntryDao.findBySaasId(defaultSaasId);
         List<SystemDictEntryDO> dictEntryDOList = new ArrayList<>(systemDictEntryDOList.size());
@@ -462,17 +475,17 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
             diseaseDO.setCreateTime(new Date());
             diseaseDOList.add(diseaseDO);
         });
-        //科室字典
-        List<DictHospitalDeptDO> dictHospitalDeptDOList = dictHospitalDeptService.findBySaasId(defaultSaasId);
-        List<DictHospitalDeptDO> hospitalDeptDOList = new ArrayList<>(dictHospitalDeptDOList.size());
-        dictHospitalDeptDOList.forEach(dict->{
-            DictHospitalDeptDO deptDO = new DictHospitalDeptDO();
-            deptDO.setOrgCode(saasId);
-            deptDO.setName(dict.getName());
-            deptDO.setCode(dict.getCode());
-            deptDO.setCreateTime(new Date());
-            hospitalDeptDOList.add(deptDO);
-        });
+//        //科室字典
+//        List<DictHospitalDeptDO> dictHospitalDeptDOList = dictHospitalDeptService.findBySaasId(defaultSaasId);
+//        List<DictHospitalDeptDO> hospitalDeptDOList = new ArrayList<>(dictHospitalDeptDOList.size());
+//        dictHospitalDeptDOList.forEach(dict->{
+//            DictHospitalDeptDO deptDO = new DictHospitalDeptDO();
+//            deptDO.setOrgCode(saasId);
+//            deptDO.setName(dict.getName());
+//            deptDO.setCode(dict.getCode());
+//            deptDO.setCreateTime(new Date());
+//            hospitalDeptDOList.add(deptDO);
+//        });
 
         //保存数据
 //        systemDictDao.save(dictDOList);
@@ -482,7 +495,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         dictIcd10Dao.save(icd10DOList);
         dictHealthProblemDao.save(healthProblemDOList);
         dictDiseaseDao.save(diseaseDOList);
-        dictHospitalDeptService.batchInsert(hospitalDeptDOList);
+//        dictHospitalDeptService.batchInsert(hospitalDeptDOList);
         return saas;
     }
 

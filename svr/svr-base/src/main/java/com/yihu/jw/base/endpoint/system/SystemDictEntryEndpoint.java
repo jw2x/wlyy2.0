@@ -16,7 +16,6 @@ import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private SystemDictEntryService systemDictEntryService;
     @Value("${configDefault.saasId}")
-    private String saasId;
+    private String defaultSaasId;
 
     @PostMapping(value = BaseRequestMapping.SystemDictEntry.CREATE)
     @ApiOperation(value = "创建")
@@ -47,7 +46,7 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             return failed("字典项编码不能为空！",ObjEnvelop.class);
         }
         if(StringUtils.isBlank(systemDictEntryDO.getSaasId())){
-            systemDictEntryDO.setSaasId(saasId);
+            systemDictEntryDO.setSaasId(defaultSaasId);
         }
         if(StringUtils.isNotBlank(systemDictEntryDO.getValue())){
             systemDictEntryDO.setPyCode(PinyinUtil.getPinYinHeadChar(systemDictEntryDO.getValue(), true));
@@ -80,7 +79,7 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             return failed("字典项编码不能为空！",ObjEnvelop.class);
         }
         if(StringUtils.isBlank(systemDictEntryDO.getSaasId())){
-            systemDictEntryDO.setSaasId(saasId);
+            systemDictEntryDO.setSaasId(defaultSaasId);
         }
         if(StringUtils.isNotBlank(systemDictEntryDO.getValue())){
             systemDictEntryDO.setPyCode(PinyinUtil.getPinYinHeadChar(systemDictEntryDO.getValue(), true));
@@ -122,12 +121,17 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "fields", required = false) String fields,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
+            @ApiParam(name = "saasId", value = "saasId")
+            @RequestParam(value = "saasId", required = false) String saasId,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "page", value = "分页大小", required = true, defaultValue = "1")
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
+        if(StringUtils.isBlank(saasId)){
+            saasId = defaultSaasId;
+        }
         if (StringUtils.isBlank(filters)) {
             filters = "saasId=" + saasId+";";
         } else {
@@ -143,10 +147,15 @@ public class SystemDictEntryEndpoint extends EnvelopRestEndpoint {
     public ListEnvelop<SystemDictEntryVO> list (
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "saasId", value = "saasId")
+            @RequestParam(value = "saasId", required = false) String saasId,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        if(StringUtils.isBlank(saasId)){
+            saasId = defaultSaasId;
+        }
         if (StringUtils.isBlank(filters)) {
             filters = "saasId=" + saasId+";";
         } else {

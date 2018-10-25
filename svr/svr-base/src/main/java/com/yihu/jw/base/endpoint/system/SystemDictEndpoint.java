@@ -8,7 +8,6 @@ import com.yihu.jw.entity.base.system.SystemDictDO;
 import com.yihu.jw.restmodel.base.system.SystemDictVO;
 import com.yihu.jw.restmodel.web.Envelop;
 import com.yihu.jw.restmodel.web.ListEnvelop;
-import com.yihu.jw.restmodel.web.PageEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
 import io.swagger.annotations.Api;
@@ -33,7 +32,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
     @Autowired
     private SystemDictService systemDictService;
     @Value("${configDefault.saasId}")
-    private String saasId;
+    private String defaultSaasId;
 
 
     @PostMapping(value = BaseRequestMapping.SystemDict.DELETE)
@@ -54,7 +53,7 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam String jsonData) throws Exception {
         SystemDictDO systemDictDO = toEntity(jsonData, SystemDictDO.class);
         if(StringUtils.isBlank(systemDictDO.getSaasId())){
-            systemDictDO.setSaasId(saasId);
+            systemDictDO.setSaasId(defaultSaasId);
         }
         if (null == systemDictDO.getCode()) {
             return failed("ID不能为空", Envelop.class);
@@ -68,6 +67,8 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
     public Envelop page(
             @ApiParam(name = "dictType", value = "字典类型")
             @RequestParam(value = "dictType", required = true) String dictType,
+            @ApiParam(name = "saasId", value = "saasId")
+            @RequestParam(value = "saasId", required = false) String saasId,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
@@ -76,6 +77,9 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
             @RequestParam(value = "page") int page,
             @ApiParam(name = "size", value = "页码", required = true, defaultValue = "15")
             @RequestParam(value = "size") int size) throws Exception {
+        if(StringUtils.isBlank(saasId)){
+            saasId = defaultSaasId;
+        }
         if (StringUtils.isBlank(filters)) {
             filters = "saasId=" + saasId+";";
         } else {
@@ -93,10 +97,15 @@ public class SystemDictEndpoint extends EnvelopRestEndpoint {
     public ListEnvelop<SystemDictVO> list(
             @ApiParam(name = "fields", value = "返回的字段，为空返回全部字段")
             @RequestParam(value = "fields", required = false) String fields,
+            @ApiParam(name = "saasId", value = "saasId")
+            @RequestParam(value = "saasId", required = false) String saasId,
             @ApiParam(name = "filters", value = "过滤器，为空检索所有条件")
             @RequestParam(value = "filters", required = false) String filters,
             @ApiParam(name = "sorts", value = "排序，规则参见说明文档")
             @RequestParam(value = "sorts", required = false) String sorts) throws Exception {
+        if(StringUtils.isBlank(saasId)){
+            saasId = defaultSaasId;
+        }
         if (StringUtils.isBlank(filters)) {
             filters = "saasId=" + saasId+";";
         } else {
