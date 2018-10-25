@@ -36,6 +36,7 @@ public class HealthyHouseMapping {
             public static final String GETDICTENTRYBYDICTIDANDNAME = "/getDictEntryByDictIdAndName";
             public static final String DELETEBYDICTIDANDCODE = "/deleteByDictIdAndCode";
             public static final String ISEXISTSDICTENTRYBYDICTIDANDCODE = "/isExistsDictEntryByDictIdAndCode";
+            public static final String GET_DICT_ENTRY_LIST_BY_DICT_ID = "/list/getSystemDictEntrysByList";
         }
 
         //设施

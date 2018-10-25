@@ -378,9 +378,20 @@ public class FacilityService extends BaseJpaService<Facility, FacilityDao> {
             Map<String,Double> location = (Map<String, Double>) result1.get("location");
             facility.setLatitude(location.get("lat"));
             facility.setLongitude(location.get("lng"));
-            System.out.println(result);
+//            System.out.println(result);
         }
 
+    }
+
+    /**
+     * 根据服务类型获取设施
+     */
+    public List<String> getFacilityCodeByServerTypeList(String[] type) {
+        Session s = currentSession();
+        String hql = "SELECT  DISTINCT fsr.facilitie_code FROM  facility_server_relation fsr,facility_server fs WHERE fsr.service_code=fs.code and fs.type IN(:type)";
+        Query query = s.createSQLQuery(hql);
+        query.setParameter("type", type);
+        return query.list();
     }
 
 }

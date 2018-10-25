@@ -1,5 +1,6 @@
 package com.yihu.jw.healthyhouse.service.dict;
 
+import com.yihu.jw.healthyhouse.constant.UserConstant;
 import com.yihu.jw.healthyhouse.dao.dict.SystemDictEntryDao;
 import com.yihu.jw.healthyhouse.model.dict.DictEntryKey;
 import com.yihu.jw.healthyhouse.model.dict.SystemDictEntry;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,5 +107,31 @@ public class SystemDictEntryService extends BaseJpaService<SystemDictEntry, Syst
             return null;
         }
 
+    }
+
+    public List<SystemDictEntry> getSystemDictEntryListByDictId(String dictId){
+        return  systemDictEntryDao.findAllByDictId(dictId);
+    }
+
+    /**
+     * 获取字典项,获取最小字典项。
+     *
+     * @param dictId
+     * @param code
+     * @return
+     */
+    public List<String> getMinDictEntryCodeByCode(String dictId, String code) {
+        List<String> list = new ArrayList<>();
+        list.add(code);
+        SystemDictEntry systemDictEntry = systemDictEntryDao.findOne(new DictEntryKey(code, dictId));
+        if (null != systemDictEntry && systemDictEntry.getPcode().equals(UserConstant.DEFAULT_PARENTID)) {
+            list.remove(code);
+            String sql = "SELECT code FROM system_dict_entries where dict_id=:dict_id AND pcode=:pcode";
+            SQLQuery sqlQuery = currentSession().createSQLQuery(sql);
+            sqlQuery.setParameter("dict_id", dictId);
+            sqlQuery.setParameter("pcode", code);
+            list = sqlQuery.list();
+        }
+        return list;
     }
 }

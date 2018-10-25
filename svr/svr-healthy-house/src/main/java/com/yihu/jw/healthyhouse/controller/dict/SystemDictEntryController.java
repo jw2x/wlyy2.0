@@ -1,6 +1,7 @@
 package com.yihu.jw.healthyhouse.controller.dict;
 
 
+import com.yihu.jw.healthyhouse.constant.UserConstant;
 import com.yihu.jw.healthyhouse.model.dict.DictEntryKey;
 import com.yihu.jw.healthyhouse.model.dict.SystemDict;
 import com.yihu.jw.healthyhouse.model.dict.SystemDictEntry;
@@ -17,6 +18,7 @@ import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author zdm
@@ -131,10 +133,26 @@ public class SystemDictEntryController extends EnvelopRestEndpoint {
 
     @GetMapping(HealthyHouseMapping.HealthyHouse.SystemDictEntry.LIST)
     @ApiOperation(value = "根据dictId获取所有字典项")
-    public ListEnvelop GetSystemDictEntryListByDictId(
+    public ListEnvelop getSystemDictEntryListByDictId(
             @ApiParam(name = "dictId", value = "字典id")
             @RequestParam(value = "dictId") String dictId) throws Exception {
         List<SystemDictEntry> cardList = systemDictEntryService.getDictEntryCodeAndValueByDictId(dictId);
+        return success(cardList);
+    }
+
+    @GetMapping(HealthyHouseMapping.HealthyHouse.SystemDictEntry.GET_DICT_ENTRY_LIST_BY_DICT_ID)
+    @ApiOperation(value = "设施服务补充：根据dictId获取所有字典项-包含子类列表")
+    public ListEnvelop getSystemDictEntrysByList(
+            @ApiParam(name = "dictId", value = "字典id")
+            @RequestParam(value = "dictId") String dictId) throws Exception {
+        List<SystemDictEntry> cardList = systemDictEntryService.getSystemDictEntryListByDictId(dictId);
+        // 根据父节点分组
+        Map<String,List<SystemDictEntry>> map=cardList.stream().collect(Collectors.groupingBy(SystemDictEntry::getPcode));
+        cardList.stream().forEach(systemDictEntry -> {
+            List<SystemDictEntry> list=map.get(systemDictEntry.getCode());
+            systemDictEntry.setSystemDictEntryChildrenList(list);
+        });
+        cardList=cardList.stream().filter(systemDictEntry-> UserConstant.DEFAULT_PARENTID.equals(systemDictEntry.getPcode())).collect(Collectors.toList());
         return success(cardList);
     }
 

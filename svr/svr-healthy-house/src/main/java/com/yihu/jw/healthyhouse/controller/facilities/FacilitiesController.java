@@ -1,9 +1,11 @@
 package com.yihu.jw.healthyhouse.controller.facilities;
 
 import com.yihu.jw.exception.business.ManageException;
+import com.yihu.jw.healthyhouse.constant.UserConstant;
 import com.yihu.jw.healthyhouse.model.facility.Facility;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServer;
 import com.yihu.jw.healthyhouse.model.facility.FacilityServerRelation;
+import com.yihu.jw.healthyhouse.service.dict.SystemDictEntryService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerRelationService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityServerService;
 import com.yihu.jw.healthyhouse.service.facility.FacilityService;
@@ -52,6 +54,8 @@ public class FacilitiesController extends EnvelopRestEndpoint {
     private FacilityServerService facilityServerService;
     @Autowired
     private FacilityServerRelationService facilityServerRelationService;
+    @Autowired
+    private SystemDictEntryService systemDictEntryService;
 
     @ApiOperation(value = "获取设施列表", responseContainer = "List")
     @GetMapping(value = HealthyHouseMapping.HealthyHouse.Facilities.PAGE)
@@ -333,7 +337,7 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             @RequestParam(value = "sorts", required = false) String sorts,
             @ApiParam(name = "facilityCategory", value = "设施分类：1小屋、2步道、3餐厅", defaultValue = "1")
             @RequestParam(value = "facilityCategory", required = false) String facilityCategory,
-            @ApiParam(name = "facilityServerType", value = "非必传参数：设施服务类型：dinner吃饭、measure测量、sports运动", defaultValue = "measure")
+            @ApiParam(name = "facilityServerType", value = "非必传参数：设施服务类型（大类或小类）：dinner就餐、measure测量、sports运动", defaultValue = "measure")
             @RequestParam(value = "facilityServerType", required = false) String facilityServerType,
             @ApiParam(name = "facilityServerCodes", value = "非必传参数：设施服务编码，可多个，用逗号隔开", defaultValue = "jkxwServer003,HFHS7C5B5")
             @RequestParam(value = "facilityServerCodes", required = false) String facilityServerCodes) throws Exception {
@@ -346,8 +350,10 @@ public class FacilitiesController extends EnvelopRestEndpoint {
                 facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
             }
         } else if (StringUtils.isNotEmpty(facilityServerType)) {
+            //查找最小服务分类
+             List<String> list= systemDictEntryService.getMinDictEntryCodeByCode(UserConstant.FACILITIES_SERVER_DICT_ID, facilityServerType);
             //设施编码为空，设施服务类型不为空，按设施服务类型获取设施
-            List<String> facilityCodeList = facilityService.getFacilityCodeByServerType(facilityServerType);
+            List<String> facilityCodeList = facilityService.getFacilityCodeByServerTypeList(list.toArray(new String[list.size()]));
             if (null != facilityCodeList && facilityCodeList.size() > 0) {
                 facilityList = facilityService.getFacilityByFacilityCode(facilityCodeList);
             }
@@ -475,7 +481,6 @@ public class FacilitiesController extends EnvelopRestEndpoint {
             if (dataList.size() > 0) {
                 //TODO 导入
                 facilityService.batchInsertDemo(dataList);
-                System.out.println(dataList);
                 return success("导入成功!");
             }
 
