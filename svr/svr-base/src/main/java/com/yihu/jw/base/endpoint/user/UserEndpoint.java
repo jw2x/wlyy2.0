@@ -1,5 +1,6 @@
 package com.yihu.jw.base.endpoint.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yihu.jw.base.service.user.UserService;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.jw.restmodel.base.user.UserVO;
@@ -17,6 +18,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Endpoint - 后台管理员
@@ -117,4 +119,10 @@ public class UserEndpoint extends EnvelopRestEndpoint {
         }
     }
 
+    @GetMapping(value = BaseRequestMapping.User.findUserBaseInfo)
+    @ApiOperation(value = "获取登录基本信息")
+    public ObjEnvelop<Map<String,Object>> findUserBaseInfo(@ApiParam(name = "id", value = "用户id", required = true)
+                                                               @RequestParam(value = "id", required = false)String id){
+        return success(BaseRequestMapping.User.api_success,userService.findUserBaseInfo(id));
+    }
 }
