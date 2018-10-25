@@ -163,7 +163,7 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
             //新增机构与管理员关联关系
             BaseOrgUserDO baseOrgUserDO = new BaseOrgUserDO();
             baseOrgUserDO.setOrgCode(baseOrgDO.getCode());
-            baseOrgUserDO.setUserAccount(mobile);
+            baseOrgUserDO.setUserId(mobile);
             baseOrgUserService.save(baseOrgUserDO);
 
             //新增用户（管理员）
@@ -286,9 +286,9 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
      */
     public List findOrgCodeListBySaasId(String saasId){
         List result = new ArrayList();
-        if(StringUtils.isEmpty(saasId)){
+        /*if(StringUtils.isEmpty(saasId)){
             return result;
-        }
+        }*/
         return baseOrgDao.findOrgCodeBySaasId(saasId);
     }
 
@@ -298,11 +298,11 @@ public class BaseOrgService extends BaseJpaService<BaseOrgDO, BaseOrgDao> {
      * @return
      */
     public List findOrgListBySaasId(String saasId){
-        List result = new ArrayList();
-        if(StringUtils.isEmpty(saasId)){
-            return result;
-        }
-        return baseOrgDao.findOrgCodeBySaasId(saasId);
+//        List result = new ArrayList();
+//        if(StringUtils.isEmpty(saasId)){
+//            return result;
+//        }
+        return baseOrgDao.findOrgListBySaasId();
     }
 
 

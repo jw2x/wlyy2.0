@@ -7,33 +7,25 @@ import javax.persistence.Table;
 
 
 /**
- * 医生与业务模块角色关联信息实体
+ * 业务模块与业务模块角色关联信息实体
  * 
  * @author litaohong on  2018年10月25日
  *
  */
 @Entity
-@Table(name = "base_doctor_role")
-public class BaseDoctorRoleDO extends IntegerIdentityEntity {
+@Table(name = "base_module_role")
+public class BaseModuleRoleDO extends IntegerIdentityEntity {
 
     /**
-	 * 医生code
-	 */
-	private String doctorCode;
-
-    /**
-	 * 医生角色id
+	 * 角色标识
 	 */
 	private String roleCode;
 
+    /**
+	 * 业务模块id
+	 */
+	private String moduleId;
 
-	@Column(name = "doctor_code")
-    public String getDoctorCode() {
-        return doctorCode;
-    }
-    public void setDoctorCode(String doctorCode) {
-        this.doctorCode = doctorCode;
-    }
 
 	@Column(name = "role_code")
     public String getRoleCode() {
@@ -41,6 +33,14 @@ public class BaseDoctorRoleDO extends IntegerIdentityEntity {
     }
     public void setRoleCode(String roleCode) {
         this.roleCode = roleCode;
+    }
+
+	@Column(name = "module_id")
+    public String getModuleId() {
+        return moduleId;
+    }
+    public void setModuleId(String moduleId) {
+        this.moduleId = moduleId;
     }
 
 

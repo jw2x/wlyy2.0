@@ -4,13 +4,11 @@ import com.yihu.jw.base.dao.doctor.BaseDoctorHospitalDao;
 import com.yihu.mysql.query.BaseJpaService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 医生职业信息服务service
@@ -27,6 +25,9 @@ public class BaseDoctorHospitalService extends BaseJpaService<BaseDoctorHospital
 
     @Autowired
     private BaseDoctorHospitalDao baseDoctorHospitalDao;
+
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     /**
      * 根据机构标识和医生标识获取医生相关联的部门职务职称等
@@ -59,14 +60,24 @@ public class BaseDoctorHospitalService extends BaseJpaService<BaseDoctorHospital
 
     /**
      * 根据医生标识获取医生已经选择的机构和职务信息
+     *
      * @param doctorCode
      * @return
      */
-    List<BaseDoctorHospitalDO> getOrgAndDutyListByDoctorCode(String doctorCode){
-        List<BaseDoctorHospitalDO> result = new ArrayList<>();
-        if(StringUtils.isEmpty(doctorCode)) {
+    List<Map<String, Object>> getOrgAndDutyListByDoctorCode(String doctorCode) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        if (StringUtils.isEmpty(doctorCode)) {
             return result;
         }
-        return baseDoctorHospitalDao.getOrgAndDutyByDoctorCode(doctorCode);
+        String sql = "SELECT" +
+                "  org_code         AS orgCode," +
+                "  org_name         AS orgName," +
+                "  doctor_duty_code AS doctorDutyCode," +
+                "  doctor_duty_name AS doctorDutyName " +
+                " FROM base_doctor_hospital" +
+                " WHERE doctor_code = '{doctorCode}'" +
+                " GROUP BY orgCode" +
+                " ORDER BY doctorDutyName DESC";
+        return jdbcTemplate.queryForList(sql.replace("{doctorCode}",doctorCode));
     }
 }

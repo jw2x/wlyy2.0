@@ -8,37 +8,50 @@ import java.util.Date;
 
 /**
  * 
- * 医生角色字典vo
+ * 业务模块角色字典（给医生用的）vo
  * 
  * @version 
  * <pre>
  * Author	Version		Date		Changes
- * Administrator 	1.0  2018年09月05日 Created
+ * litaohong 	1.0  2018年10月25日 Created
  *
  * </pre>
  * @since 1.
  */
-@ApiModel(value = "BaseDoctorRoleDictVO", description = "医生角色字典")
-public class BaseDoctorRoleDictVO extends IntegerIdentityVO{
+@ApiModel(value = "BaseDoctorRoleInfoVO", description = "业务模块角色字典（给医生用的）")
+public class BaseDoctorRoleInfoVO extends IntegerIdentityVO{
+
+    /**
+	 * saasid,不同租户各自医生的业务模块角色信息独立
+	 */
+	@ApiModelProperty(value = "saasid,不同租户各自医生的业务模块角色信息独立", example = "模块1")
+    private String saasid;
 
     /**
 	 * 角色code
 	 */
-	@ApiModelProperty(value = "角色code", example = "")
+	@ApiModelProperty(value = "角色code", example = "模块1")
     private String code;
 
     /**
 	 * 角色名称：全科医生、专科医生、健康管理师、管理员等
 	 */
-	@ApiModelProperty(value = "角色名称：全科医生、专科医生、健康管理师、管理员等", example = "")
+	@ApiModelProperty(value = "角色名称：全科医生、专科医生、健康管理师、管理员等", example = "模块1")
     private String name;
 
     /**
 	 * 作废标识，1正常，0作废
 	 */
-	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "1")
+	@ApiModelProperty(value = "作废标识，1正常，0作废", example = "模块1")
     private String del;
 
+
+    public String getSaasid() {
+        return saasid;
+    }
+    public void setSaasid(String saasid) {
+        this.saasid = saasid;
+    }
 
     public String getCode() {
         return code;

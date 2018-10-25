@@ -38,6 +38,9 @@ public interface BaseOrgDao extends PagingAndSortingRepository<BaseOrgDO, String
     @Query("select id from BaseOrgDO where del = 1 and saasid = ?1")
     List findOrgCodeBySaasId(String saasId);
 
-    @Query("select code as code,name as name from BaseOrgDO where del = 1 and saasid = ?1 ")
-    List<Map<String,Object>> findOrgListBySaasId(String saasId);
+   /* @Query("select code as code,name as name from BaseOrgDO where del = 1 and saasid = ?1 ")
+    List<Map<String,Object>> findOrgListBySaasId(String saasId);*/
+
+    @Query("select code as code,name as name from BaseOrgDO where del = 1")
+    List<Map<String,Object>> findOrgListBySaasId();
 }

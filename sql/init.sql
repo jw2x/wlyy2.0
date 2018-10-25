@@ -99,10 +99,11 @@ CREATE TABLE `base_doctor` (
   UNIQUE KEY `idx_id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生基本信息';
 
--- 医生角色字典表
-drop table IF EXISTS `base_doctor_role_dict`;
-CREATE TABLE `base_doctor_role_dict` (
+-- 业务模块角色字典表（给医生用的）
+drop table IF EXISTS `base_doctor_role_info`;
+CREATE TABLE `base_doctor_role_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
+  `saasid` varchar(50) NOT NULL COMMENT 'saasid,不同租户各自医生的业务模块角色信息独立',
   `code` varchar(50) NOT NULL COMMENT '角色code',
   `name` varchar(50) NOT NULL COMMENT '角色名称：全科医生、专科医生、健康管理师、管理员等',
   `del` varchar(1) DEFAULT '1' COMMENT '作废标识，1正常，0作废',
@@ -114,7 +115,8 @@ CREATE TABLE `base_doctor_role_dict` (
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_doctor_code` (`code`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生角色字典';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块角色字典（给医生用的）';
+
 
 -- 医生角色关联表
 drop table IF EXISTS `base_doctor_role`;
@@ -122,10 +124,19 @@ CREATE TABLE `base_doctor_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，关联表',
   `doctor_code` varchar(50) NOT NULL COMMENT '医生code',
   `role_code` varchar(50) NOT NULL COMMENT '医生角色id',
-  `del` varchar(1) DEFAULT '1' COMMENT '作废标识，1正常，0作废',
-  `create_time` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生角色关联信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生与业务模块角色关联信息';
+
+
+-- 业务模块信息与角色关联表
+drop table IF EXISTS `base_module_role`;
+create table `base_module_role`
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
+  `role_code` varchar(100) DEFAULT NULL COMMENT '角色标识',
+  `module_id` varchar(50) not null COMMENT '业务模块id',
+  primary key (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块与业务模块角色关联信息';
 
 -- 医生执业表（一个医生可在多个医院供职，角色等）
 drop table IF EXISTS `base_doctor_hospital`;
@@ -142,6 +153,7 @@ CREATE TABLE `base_doctor_hospital` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='医生执业信息';
 
+  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块角色关联表';
 -- 居民信息表
 drop table IF EXISTS `base_patient`;
 CREATE TABLE `base_patient` (
@@ -695,7 +707,7 @@ CREATE TABLE `base_role_authority` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='角色权限';
 
 -- 用户角色
-Drop table IF EXISTS `base_user_role`;
+Drop table IF EXISTS base_user_menu_role;
 CREATE TABLE `base_user_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `user_id` varchar(50) CHARACTER SET utf8 NOT NULL COMMENT '用户ID',
@@ -787,26 +799,6 @@ create table `base_role_menu`
 (
   `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
   `saasid` varchar(50) DEFAULT NULL COMMENT 'saasid,每个租户',
-  `code` varchar(100) DEFAULT NULL COMMENT '角色标识',
-  `name` varchar(100) DEFAULT NULL COMMENT '角色名称',
-  `module_id` varchar(50) not null COMMENT '业务模块id，多个用逗号分割',
-  `del` varchar(1) not null COMMENT '状态，0失效，1有效',
-  `create_user` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '创建人',
-  `create_user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '创建人名',
-  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
-  `update_user` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '修改人',
-  `update_user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT '修改人名',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
-  primary key (id),
-  key `code` (`code`)
-)
-  ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='业务模块角色';
-
--- 业务模块角色表
-drop table IF EXISTS `base_role_module`;
-create table `base_role_module`
-(
-  `id` int(11) NOT NULL AUTO_INCREMENT  COMMENT '表id，自增长，字典型',
   `code` varchar(100) DEFAULT NULL COMMENT '角色标识',
   `name` varchar(100) DEFAULT NULL COMMENT '角色名称',
   `module_id` varchar(50) not null COMMENT '业务模块id，多个用逗号分割',

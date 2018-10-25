@@ -30,6 +30,6 @@ public interface BaseDoctorHospitalDao extends PagingAndSortingRepository<BaseDo
     @Query("select id from BaseDoctorHospitalDO where doctorCode = ?1")
     Set<Object> findIdListByOrgCodeAndDoctorCode(String doctorCode);
 
-    @Query("select new BaseDoctorHospitalDO(orgCode,orgName,doctorDutyCode,doctorDutyName) from BaseDoctorHospitalDO where doctorCode = ?1")
-    List<BaseDoctorHospitalDO> getOrgAndDutyByDoctorCode(String doctorCode);
+    @Query(value = "select org_code as orgCode,org_name as orgName,doctor_duty_code as doctorDutyCode ,doctor_duty_name as doctorDutyName from base_doctor_hospital where doctor_code = ?1 GROUP BY orgCode ORDER BY orgName DESC",nativeQuery = true)
+    List<Map<String,Object>> getOrgAndDutyByDoctorCode(String doctorCode);
 }

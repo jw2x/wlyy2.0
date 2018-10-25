@@ -6,17 +6,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+
 
 /**
  * 
- * 医生角色关联信息 数据库访问层
+ * 医生与业务模块角色关联信息 数据库访问层
  * 
  * @version 
  * <pre>
  * Author	Version		Date		Changes
- * litaohong 	1.0  		2018年10月19日 	Created
+ * litaohong 	1.0  		2018年10月25日 	Created
  *
  * </pre>
  * @since 1.
@@ -26,5 +26,5 @@ public interface BaseDoctorRoleDao extends PagingAndSortingRepository<BaseDoctor
     @Query("select id from BaseDoctorRoleDO where doctorCode = ?1")
     Set<Object> findIdListByDoctorCode(String doctorCode);
 
-    List<BaseDoctorRoleDO> findByDoctorCodeAndDel(String doctorCode,String del);
+    List<BaseDoctorRoleDO> findByDoctorCode(String doctorCode);
 }

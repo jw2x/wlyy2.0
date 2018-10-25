@@ -130,4 +130,15 @@ public class BaseTeamEndpoint extends EnvelopRestEndpoint {
              return success(team.getJSONObject("msg"));
          }
 
+         @GetMapping(value = BaseRequestMapping.BaseTeam.getTeamTree)
+         @ApiOperation(value = "团队机构/科室/医生树形结构")
+         public Envelop generateOneOrgDeptDoctorTree (
+             @ApiParam(name = "jsonData", value = "json,包含团队机构，团队机构名称，已勾选的医生")
+             @RequestParam(value = "jsonData", required = true) String jsonData) throws Exception {
+             JSONObject team = baseTeamService.generateOneOrgDeptDoctorTree(jsonData);
+             if (team.getString("response").equalsIgnoreCase(ConstantUtils.FAIL)) {
+                 return failed(team.getString("msg"));
+             }
+             return success(team.getJSONArray("msg"));
+         }
 }
