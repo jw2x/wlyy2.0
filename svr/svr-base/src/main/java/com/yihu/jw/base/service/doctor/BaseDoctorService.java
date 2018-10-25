@@ -4,9 +4,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.yihu.jw.base.dao.dict.DictDoctorDutyDao;
+import com.yihu.jw.base.dao.dict.DictHospitalDeptDao;
+import com.yihu.jw.base.dao.dict.DictJobTitleDao;
 import com.yihu.jw.base.dao.doctor.BaseDoctorDao;
 import com.yihu.jw.base.service.dict.DictDoctorDutyService;
 import com.yihu.jw.base.service.dict.DictHospitalDeptService;
+import com.yihu.jw.base.dao.doctor.BaseDoctorHospitalDao;
+import com.yihu.jw.base.dao.org.BaseOrgDao;
+import com.yihu.jw.base.service.doctor.excelImport.BaseDoctorExcelDO;
 import com.yihu.jw.base.service.org.OrgTree;
 import com.yihu.jw.base.service.org.OrgTreeService;
 import com.yihu.jw.base.service.org.tree.SimpleTree;
@@ -16,9 +22,13 @@ import com.yihu.jw.base.util.ConstantUtils;
 import com.yihu.jw.base.util.JavaBeanUtils;
 import com.yihu.jw.entity.base.dict.DictDoctorDutyDO;
 import com.yihu.jw.entity.base.dict.DictHospitalDeptDO;
+import com.yihu.jw.entity.base.dict.DictJobTitleDO;
+import com.yihu.jw.entity.base.dict.DictDoctorDutyDO;
+import com.yihu.jw.entity.base.dict.DictHospitalDeptDO;
 import com.yihu.jw.entity.base.doctor.BaseDoctorHospitalDO;
 import com.yihu.jw.entity.base.doctor.BaseDoctorRoleDO;
 import com.yihu.jw.entity.base.org.BaseOrgDO;
+import com.yihu.jw.exception.business.ManageException;
 import com.yihu.mysql.query.BaseJpaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -61,6 +71,16 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private BaseOrgDao baseOrgDao;
+    @Autowired
+    private DictHospitalDeptDao deptDao;
+    @Autowired
+    private DictDoctorDutyDao dutyDao;
+    @Autowired
+    private BaseDoctorHospitalDao doctorHospitalDao;
+    @Autowired
+    private DictJobTitleDao jobTitleDao;
 
     @Autowired
     private OrgTreeService orgTreeService;
@@ -554,4 +574,85 @@ public class BaseDoctorService extends BaseJpaService<BaseDoctorDO, BaseDoctorDa
         result.put("msg",JavaBeanUtils.getInstance().mapListJson(list));
         return result;
     }
+
+    public Map<String, Object> batchInsertDoctor(List<BaseDoctorExcelDO> doctors) throws ManageException {
+        Map<String, Object> result = new HashMap<>();
+        //批量存储的集合
+//        int correctCount = 0;
+//        List<BaseDoctorExcelDO> corrects = new ArrayList<>();
+        BaseDoctorDO baseDoctorDO;
+        //批量存储
+        for(BaseDoctorExcelDO one:doctors){
+            baseDoctorDO = new BaseDoctorDO();
+            baseDoctorDO.setName(one.getName());
+            baseDoctorDO.setDel(one.getDel());
+            baseDoctorDO.setSex(one.getSex());
+            baseDoctorDO.setIdcard(one.getIdcard());
+            baseDoctorDO.setMobile(one.getMobile());
+            baseDoctorDO.setIsFamous(one.getIsFamous());
+            baseDoctorDO.setExpertise(one.getExpertise());
+            baseDoctorDO.setIntroduce(one.getBrief());
+            if(!StringUtils.isEmpty(one.getJobTitleName())){
+                String[] job = one.getJobTitleName().split(",");
+                String jobCode = job[0];
+                DictJobTitleDO jobTitleDO = jobTitleDao.findByCode(jobCode);
+                baseDoctorDO.setJobTitleCode(jobTitleDO.getCode());
+                baseDoctorDO.setJobTitleName(jobTitleDO.getName());
+            }
+//            baseDoctorDao.save(baseDoctorDO);
+            if(!StringUtils.isEmpty(one.getHospitalInfo())){
+                BaseOrgDO orgDO = null;
+                DictHospitalDeptDO hospitalDeptDO = null;
+                DictDoctorDutyDO doctorDutyDO = null;
+                String[] hospitals = one.getHospitalInfo().split(";");
+                List<BaseDoctorHospitalDO> doctorHospitalList = new ArrayList<>();
+                for(String hospital:hospitals){
+                    String[] element = hospital.split("/");
+                    String[] org = element[0].split(",");//机构
+                    String[] dept = element[1].split(",");//部门
+                    String[] duty = element[2].split(",");//职务
+                    String orgCode = org[0];
+                    String deptCode = dept[0];
+                    String dutyCode = duty[0];
+                    orgDO =baseOrgDao.findByCode(orgCode);
+                    hospitalDeptDO = deptDao.findByCode(deptCode);
+                    doctorDutyDO = dutyDao.findByCode(dutyCode);
+
+                    //医生执业信息实体
+                    BaseDoctorHospitalDO doctorHospitalDO = new BaseDoctorHospitalDO();
+                    doctorHospitalDO.setOrgCode(orgDO.getCode());
+                    doctorHospitalDO.setOrgName(orgDO.getName());
+                    doctorHospitalDO.setDoctorCode(baseDoctorDO.getId());
+                    doctorHospitalDO.setDeptCode(hospitalDeptDO.getCode());
+                    doctorHospitalDO.setDoctorDutyCode(doctorDutyDO.getCode());
+                    doctorHospitalDO.setDoctorDutyName(doctorDutyDO.getName());
+                    doctorHospitalDO.setDel("1");
+                    doctorHospitalList.add(doctorHospitalDO);
+                }
+                doctorHospitalDao.save(doctorHospitalList);
+                if(!StringUtils.isEmpty(one.getRoleInfo())){
+                    BaseDoctorRoleDO baseDoctorRoleDO = null;
+                    DictJobTitleDO dictJobTitleDO = null;
+                    String[] roles = one.getRoleInfo().split(";");
+                    List<BaseDoctorRoleDO> baseDoctorRoleDOList = new ArrayList<>();
+                    for(String role:roles){
+                        String[] element = role.split(",");
+                        String roleCode = element[0];
+                        dictJobTitleDO = jobTitleDao.findByCode(roleCode);
+                        baseDoctorRoleDO = new BaseDoctorRoleDO();
+                        baseDoctorRoleDO.setDoctorCode(baseDoctorDO.getId());
+                        baseDoctorRoleDO.setRoleModuleCode(dictJobTitleDO.getCode());
+                        baseDoctorRoleDO.setName(dictJobTitleDO.getName());
+                        baseDoctorRoleDO.setDel("1");
+                        baseDoctorRoleDOList.add(baseDoctorRoleDO);
+                    }
+                    baseDoctorRoleService.batchInsert(baseDoctorRoleDOList);
+                }
+            }
+        }
+        result.put("correctCount", doctors.size());
+        return result;
+    }
+
+
 }

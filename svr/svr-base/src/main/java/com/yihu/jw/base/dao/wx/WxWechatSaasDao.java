@@ -11,4 +11,6 @@ import java.util.List;
  */
 public interface WxWechatSaasDao  extends PagingAndSortingRepository<WxWechatSaasDO, String>, JpaSpecificationExecutor<WxWechatSaasDO> {
     List<WxWechatSaasDO> findByWechatId(String wechatId);
+
+    List<WxWechatSaasDO> findBySaasId(String saasId);
 }

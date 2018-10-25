@@ -131,6 +131,9 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         userDO.setMobile(saas.getMobile());
         userDO.setName(saas.getManagerName());
         userDO.setUsername(userDO.getEmail());
+        userDO.setAk("access_key");
+        userDO.setGender(UserDO.Gender.male);
+        userDO.setLoginFailureCount(0);
 
         saasAudit(saas, userDO);
         send(saas);
@@ -353,7 +356,6 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
 
         //判断该用户是否已经存在
         UserDO userDO= userDao.findByUsername(saas.getEmail());
-        userDO.setRoleCode(roleCode);
         if (null == userDO) {
             //初始化租户管理员
             user.setEnabled(true);
@@ -370,6 +372,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
             }
             user.setPassword(MD5.md5Hex(password + "{" + user.getSalt() + "}"));
             user.setSaasId(saas.getId());
+            user.setRoleCode(roleCode);
             user = userDao.save(user);
         } else {
             userDO.setSaasId(saas.getId());
@@ -382,6 +385,19 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         saas.setAppSecret(getCode());
         saas = saasDao.save(saas);
         String saasId = saas.getId();
+
+        //字典配置（由于需要支持租户对字典的crud，目前考虑直接复制一套字典给租户单独使用）
+//        List<SystemDictDO> systemDictDOList = systemDictDao.findBySaasId(defaultSaasId);
+//        List<SystemDictDO> dictDOList = new ArrayList<>(systemDictDOList.size());
+//        systemDictDOList.forEach(dict->{
+//            SystemDictDO systemDictDO = new SystemDictDO();
+//            systemDictDO.setSaasId(saasId);
+//            systemDictDO.setName(dict.getName());
+//            systemDictDO.setCode(dict.getCode());
+//            systemDictDO.setPyCode(dict.getPyCode());
+//            systemDictDO.setType(dict.getType());
+//            dictDOList.add(systemDictDO);
+//        });
         //系统字典项
         List<SystemDictEntryDO> systemDictEntryDOList = systemDictEntryDao.findBySaasId(defaultSaasId);
         List<SystemDictEntryDO> dictEntryDOList = new ArrayList<>(systemDictEntryDOList.size());
@@ -462,17 +478,17 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
             diseaseDO.setCreateTime(new Date());
             diseaseDOList.add(diseaseDO);
         });
-        //科室字典
-        List<DictHospitalDeptDO> dictHospitalDeptDOList = dictHospitalDeptService.findBySaasId(defaultSaasId);
-        List<DictHospitalDeptDO> hospitalDeptDOList = new ArrayList<>(dictHospitalDeptDOList.size());
-        dictHospitalDeptDOList.forEach(dict->{
-            DictHospitalDeptDO deptDO = new DictHospitalDeptDO();
-            deptDO.setOrgCode(saasId);
-            deptDO.setName(dict.getName());
-            deptDO.setCode(dict.getCode());
-            deptDO.setCreateTime(new Date());
-            hospitalDeptDOList.add(deptDO);
-        });
+//        //科室字典
+//        List<DictHospitalDeptDO> dictHospitalDeptDOList = dictHospitalDeptService.findBySaasId(defaultSaasId);
+//        List<DictHospitalDeptDO> hospitalDeptDOList = new ArrayList<>(dictHospitalDeptDOList.size());
+//        dictHospitalDeptDOList.forEach(dict->{
+//            DictHospitalDeptDO deptDO = new DictHospitalDeptDO();
+//            deptDO.setOrgCode(saasId);
+//            deptDO.setName(dict.getName());
+//            deptDO.setCode(dict.getCode());
+//            deptDO.setCreateTime(new Date());
+//            hospitalDeptDOList.add(deptDO);
+//        });
 
         //保存数据
 //        systemDictDao.save(dictDOList);
@@ -482,7 +498,7 @@ public class SaasService extends BaseJpaService<SaasDO, SaasDao> {
         dictIcd10Dao.save(icd10DOList);
         dictHealthProblemDao.save(healthProblemDOList);
         dictDiseaseDao.save(diseaseDOList);
-        dictHospitalDeptService.batchInsert(hospitalDeptDOList);
+//        dictHospitalDeptService.batchInsert(hospitalDeptDOList);
         return saas;
     }
 

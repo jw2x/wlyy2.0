@@ -142,6 +142,12 @@ public class WechatService {
 
         if(wxWechatSaasDOs!=null&&wxWechatSaasDOs.size()>0){
             for(WxWechatSaasDO wxs:wxWechatSaasDOs){
+                //删除该SaaS之前所以微信的关联关系
+                List<WxWechatSaasDO> allsaas = wxWechatSaasDao.findBySaasId(wxs.getSaasId());
+                if(allsaas!=null&&allsaas.size()>0){
+                    wxWechatSaasDao.delete(allsaas);
+                }
+
                 wxs.setWechatId(wechat.getId());
             }
             wxWechatSaasDao.save(wxWechatSaasDOs);
@@ -152,14 +158,23 @@ public class WechatService {
     public Envelop updateWxAndSaas(WxWechatDO wxWechatDO, List<WxWechatSaasDO> wxWechatSaasDOs) {
         wechatDao.save(wxWechatDO);
 
+        //删除该微信所以SaaS关联关系
         List<WxWechatSaasDO> ws = wxWechatSaasDao.findByWechatId(wxWechatDO.getId());
         wxWechatSaasDao.delete(ws);
 
         if(wxWechatSaasDOs!=null&&wxWechatSaasDOs.size()>0){
 
             for(WxWechatSaasDO wxs:wxWechatSaasDOs){
+
+                //删除该SaaS之前所以微信的关联关系
+                List<WxWechatSaasDO> allsaas = wxWechatSaasDao.findBySaasId(wxs.getSaasId());
+                if(allsaas!=null&&allsaas.size()>0){
+                    wxWechatSaasDao.delete(allsaas);
+                }
+
                 wxs.setWechatId(wxWechatDO.getId());
             }
+            //保存现有SaaS关系
             wxWechatSaasDao.save(wxWechatSaasDOs);
         }
         return Envelop.getSuccess(BaseRequestMapping.WeChat.api_success);
@@ -183,14 +198,19 @@ public class WechatService {
 
     //====================图文素材管理============================
 
-    public MixEnvelop findWechatCombo(){
+    public MixEnvelop findWechatCombo(String saasId){
         String sql ="SELECT t.id,t.`name`," +
                 "t.app_origin_id AS appOriginId," +
                 "t.public_type AS publicType " +
                 "from wx_wechat t";
+        if(StringUtils.isNotBlank(saasId)){
+            sql += " JOIN wx_wechat_saas s ON s.wechat_id = t.id " +
+                   " WHERE s.saas_id ="+saasId;
+        }
         List<WxComboVO> list = jdbcTemplate.query(sql, new BeanPropertyRowMapper(WxComboVO.class));
         return MixEnvelop.getSuccessList(BaseRequestMapping.WeChat.api_success,list);
     }
+
 
     public MixEnvelop findWechatImgGroup(String wechatId,String scene,Integer page,Integer size){
 
@@ -657,6 +677,7 @@ public class WechatService {
     public JSONObject getusersummary(String wechatId,String beginDate,String endDate){
 
         String url ="https://api.weixin.qq.com/datacube/getusersummary?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
+        //          "https://api.weixin.qq.com/datacube/getusersummary?access_token=ACCESS_TOKEN"
 
         JSONObject paramJson = new JSONObject();
 
@@ -670,6 +691,7 @@ public class WechatService {
     }
 
     public JSONObject getusercumulate(String wechatId,String beginDate,String endDate){
+
         String url ="https://api.weixin.qq.com/datacube/getusercumulate?access_token="+wxAccessTokenService.getWxAccessTokenById(wechatId).getAccessToken();
         JSONObject paramJson = new JSONObject();
 

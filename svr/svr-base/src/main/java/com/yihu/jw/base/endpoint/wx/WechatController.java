@@ -11,12 +11,10 @@ import com.yihu.jw.restmodel.web.MixEnvelop;
 import com.yihu.jw.restmodel.web.ObjEnvelop;
 import com.yihu.jw.restmodel.web.endpoint.EnvelopRestEndpoint;
 import com.yihu.jw.rm.base.BaseRequestMapping;
-import com.yihu.jw.rm.base.WechatRequestMapping;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -94,8 +92,9 @@ public class WechatController extends EnvelopRestEndpoint {
 
     @GetMapping(value = BaseRequestMapping.WeChat.findWechatCombo)
     @ApiOperation(value = "微信信息下拉框", notes = "微信信息下拉框")
-    public MixEnvelop<WxComboVO,WxComboVO> findWechatCombo() {
-        return wechatService.findWechatCombo();
+    public MixEnvelop<WxComboVO,WxComboVO> findWechatCombo(@ApiParam(name = "saasId", value = "微信id")
+                                                           @RequestParam(value = "saasId", required = false)String saasId) {
+        return wechatService.findWechatCombo(saasId);
     }
 
     //====================微信与租户管理end=======================

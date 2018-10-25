@@ -156,8 +156,10 @@ public class BaseRequestMapping {
      */
     public static class User extends Basic {
         public static final String PREFIX  = "/user";
+        public static final String api_success ="success";
         public static final String CHECK_USERNAME = "/check_username";
         public static final String CHECK_MOBILE = "/check_mobile";
+        public static final String findUserBaseInfo = "/findUserBaseInfo";
     }
 
     /**
@@ -394,6 +396,7 @@ public class BaseRequestMapping {
         public static final String docOrgDutyTreeInfo  = "/docOrgDutyTreeInfo";
         public static final String docOrgDeptTreeInfo  = "/docOrgDeptTreeInfo";
         public static final String getDoctorListByDept  = "/getDoctorListByDept";
+        public static final String DOCTOR_INFO_IMPORT  = "/baseDoctorInfoImport";
     }
 
 

@@ -1,10 +1,18 @@
 package com.yihu.jw.base.service.user;
 
+import com.alibaba.fastjson.JSONObject;
+import com.yihu.jw.base.dao.role.BaseRoleMenuDao;
+import com.yihu.jw.base.dao.role.RoleDao;
+import com.yihu.jw.base.dao.saas.SaasDao;
 import com.yihu.jw.base.dao.user.UserDao;
+import com.yihu.jw.entity.base.role.RoleDO;
+import com.yihu.jw.entity.base.saas.SaasDO;
 import com.yihu.jw.entity.base.user.UserDO;
 import com.yihu.mysql.query.BaseJpaService;
 import com.yihu.utils.security.MD5;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -21,6 +29,14 @@ public class UserService extends BaseJpaService<UserDO, UserDao> {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private RoleDao roleDao;
+    @Autowired
+    private SaasDao saasDao;
+    @Autowired
+    private BaseRoleMenuDao baseRoleMenuDao;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     public UserDO registerWithIdcard(UserDO userDO) {
         userDO.setSalt(randomString(5));
@@ -108,5 +124,59 @@ public class UserService extends BaseJpaService<UserDO, UserDao> {
         return result;
     }
 
+    public Map<String,Object> findUserBaseInfo(String id){
+
+        Map<String,Object> userinfo = new HashedMap();
+
+        UserDO user = userDao.findOne(id);
+        RoleDO role = roleDao.findByCode(user.getRoleCode());
+
+        userinfo.put("id",user.getId());
+        userinfo.put("name",user.getName());
+        userinfo.put("role",role.getName());
+        userinfo.put("roleCode",role.getCode());
+        userinfo.put("system",role.getSystem());
+
+        if("admin".equals(role.getCode())){
+
+        }else if("saasAdmin".equals(role.getCode())){
+
+            if(org.apache.commons.lang3.StringUtils.isNotBlank(user.getId())){
+                SaasDO saas = saasDao.findOne(user.getSaasId());
+                Map<String,Object> ss = new HashedMap();
+                ss.put("id",saas.getId());
+                ss.put("name",saas.getName());
+                userinfo.put("saas",ss);
+            }
+
+
+        }else if("hosAdmin".equals(role.getCode())){
+            String sql = "SELECT " +
+                    " g.code AS orgCode, " +
+                    " g.province_code AS provinceCode, " +
+                    " g.province_name AS privinceName, " +
+                    " g.city_code AS cityCode, " +
+                    " g.city_name AS cityName, " +
+                    " g.town_code AS townCode, " +
+                    " g.town_name AS townName, " +
+                    " g.street_code AS streetCode, " +
+                    " g.street_name AS streetName, " +
+                    " g.name, " +
+                    " address " +
+                    " FROM " +
+                    " base_org g " +
+                    " JOIN base_org_user u ON g.`code` = u.org_code " +
+                    " WHERE  " +
+                    " u.user_id = '"+id+"'";
+            List<Map<String,Object>> org = jdbcTemplate.queryForList(sql);
+            userinfo.put("org",org.get(0));
+        }
+
+        return userinfo;
+    }
+
+//    public Map<String,Object> findUserMenu(String id){
+//
+//    }
 
 }
