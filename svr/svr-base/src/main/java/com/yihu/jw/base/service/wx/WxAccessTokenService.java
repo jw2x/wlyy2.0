@@ -102,10 +102,10 @@ public class WxAccessTokenService extends BaseJpaService<WxAccessTokenDO, WxAcce
         try {
             //根据wechatCode查找出appid和appSecret
             WxWechatDO wxWechat = wechatDao.findById(wechatId);
+            List<WxAccessTokenDO> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenById(wechatId);
             if(wxWechat==null){
                 throw new ApiException(WechatRequestMapping.WxConfig.message_fail_wxWechat_is_no_exist, ExceptionCode.common_error_params_code);
             }
-            List<WxAccessTokenDO> wxAccessTokens =  wxAccessTokenDao.getWxAccessTokenById(wechatId);
             if(wxAccessTokens!=null&&wxAccessTokens.size()>0){
                 for (WxAccessTokenDO accessToken : wxAccessTokens) {
                     if ((System.currentTimeMillis() - accessToken.getAddTimestamp()) < (accessToken.getExpiresIn() * 500)) {
